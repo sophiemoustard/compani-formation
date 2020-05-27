@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://c7105f53.ngrok.io';
+const baseURL = 'http://36559f22.ngrok.io';
 
 export default {
   authenticate: async (payload) => {
