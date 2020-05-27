@@ -9,6 +9,7 @@ import AuthenticationScreen from './src/screens/AuthenticationScreen';
 import ProgramListScreen from './src/screens/ProgramListScreen';
 import CourseListScreen from './src/screens/CourseListScreen';
 import CourseProfileScreen from './src/screens/CourseProfileScreen';
+import { Provider as AuthProvider } from './src/context/AuthContext';
 
 const switchNavigator = createSwitchNavigator({
   authenticationFlow: createStackNavigator({
@@ -23,4 +24,12 @@ const switchNavigator = createSwitchNavigator({
   })
 });
 
-export default createAppContainer(switchNavigator);
+const App = createAppContainer(switchNavigator);
+
+export default () => {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
