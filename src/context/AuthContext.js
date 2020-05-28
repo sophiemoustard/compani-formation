@@ -30,5 +30,5 @@ const tryLocalSignIn = dispatch => async () => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn },
-  { isSignedIn: false }
+  { token: null }
 );
