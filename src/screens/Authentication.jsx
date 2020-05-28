@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
+import { Context as AuthContext } from '../context/AuthContext';
 
 const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
+  const { signIn } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
