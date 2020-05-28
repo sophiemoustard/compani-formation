@@ -2,11 +2,10 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import AuthenticationScreen from './src/screens/AuthenticationScreen';
-import ProgramListScreen from './src/screens/ProgramListScreen';
-import CourseListScreen from './src/screens/CourseListScreen';
-import CourseProfileScreen from './src/screens/CourseProfileScreen';
-import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import AuthenticationScreen from './src/screens/Authentication';
+import ProgramListScreen from './src/screens/ProgramList';
+import CourseListScreen from './src/screens/CourseList';
+import ResolveAuthScreen from './src/screens/ResolveAuth';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 
@@ -16,10 +15,7 @@ const switchNavigator = createSwitchNavigator({
     Authentication: AuthenticationScreen,
   }),
   mainFlow: createBottomTabNavigator({
-    courseflow: createStackNavigator({
-      CourseList: CourseListScreen,
-      CourseProfile: CourseProfileScreen,
-    }),
+    CourseList: CourseListScreen,
     ProgramList: ProgramListScreen,
   })
 });
