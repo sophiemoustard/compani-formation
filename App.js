@@ -1,19 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import AuthenticationScreen from './src/screens/Authentication';
+import ProgramListScreen from './src/screens/ProgramList';
+import CourseListScreen from './src/screens/CourseList';
+import ResolveAuthScreen from './src/screens/ResolveAuth';
+import { Provider as AuthProvider } from './src/context/AuthContext';
+import { setNavigator } from './src/navigationRef';
 
-export default function App() {
+const switchNavigator = createSwitchNavigator({
+  ResolveAuthScreen,
+  authenticationFlow: createStackNavigator({
+    Authentication: AuthenticationScreen,
+  }),
+  mainFlow: createBottomTabNavigator({
+    CourseList: CourseListScreen,
+    ProgramList: ProgramListScreen,
+  })
+});
+
+const App = createAppContainer(switchNavigator);
+
+export default () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <AuthProvider>
+      <App ref={(navigator) => { setNavigator(navigator) }} />
+    </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
