@@ -11,9 +11,21 @@ const AuthenticationScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} />
-      <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword} />
-      <NiButton style={styles.button} caption="Connexion" onPress={() => signIn({ email, password })} />
+      <NiInput
+        style={styles.input}
+        caption="Email"
+        value={email}
+        onChangeText={setEmail}
+        type="email"
+      />
+     <NiInput
+        style={styles.input}
+        caption="Mot de passe"
+        value={password}
+        onChangeText={setPasssword}
+        type="password"
+      />
+     <NiButton style={styles.button} caption="Connexion" onPress={() => signIn({ email, password })} />
     </View>
   );
 }

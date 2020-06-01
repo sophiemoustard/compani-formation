@@ -1,11 +1,22 @@
 import React from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
 
-const NiInput = ({ style, value, onChangeText, caption }) => {
+const NiInput = ({ style, value, onChangeText, caption, type }) => {
+  const isPassword = type === 'password';
+  const autoCapitalize = ['password', 'email'].includes(type) ? 'none' : 'sentences';
+  const keyboradType = type === 'email' ? 'email-address' : 'default';
+
   return (
     <View style={style}>
       <Text style={styles.text}>{caption}</Text>
-      <TextInput value={value} onChangeText={onChangeText} style={styles.input} />
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        style={styles.input}
+        secureTextEntry={isPassword}
+        autoCapitalize={autoCapitalize}
+        keyboardType={keyboradType}
+      />
     </View>
   );
 }
