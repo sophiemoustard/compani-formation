@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-  }
+  },
 });
 
 export default AuthenticationScreen;
