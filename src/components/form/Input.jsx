@@ -7,7 +7,7 @@ const NiInput = ({ style, value, onChangeText, caption, type }) => {
   const isPassword = type === 'password';
   const autoCapitalize = ['password', 'email'].includes(type) ? 'none' : 'sentences';
   const keyboradType = type === 'email' ? 'email-address' : 'default';
-  const showPasswordIcon = showPassword ? "eye-off" : "eye";
+  const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
   const togglePassword = () => { setShowPassword(!showPassword) }
   const inputStyle = isPassword ? { ...styles.input, paddingRight: 30 } : styles.input;
@@ -20,7 +20,7 @@ const NiInput = ({ style, value, onChangeText, caption, type }) => {
           autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
         {isPassword &&
           <TouchableOpacity style={styles.inputIcon} onPress={togglePassword}>
-            <MaterialCommunityIcons name={showPasswordIcon} size={16} />
+            <MaterialCommunityIcons name={showPasswordIcon} size={20} />
           </TouchableOpacity>}
       </View>
     </View>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   inputIcon: {
     position: 'absolute',
-    top: 12,
+    top: 10,
     right: 15,
   }
 });
