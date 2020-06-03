@@ -1,25 +1,32 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import { Context as AuthContext } from '../context/AuthContext';
 
-const AuthenticationScreen = ({ navigation }) => {
+const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
   const { signIn } = useContext(AuthContext);
+  const isIOS = Platform.OS == 'ios';
 
   return (
-    <View style={styles.container}>
-      <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} />
-      <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword} />
-      <NiButton style={styles.button} caption="Connexion" onPress={() => signIn({ email, password })} />
-    </View>
+    <KeyboardAvoidingView style={styles.container} behavior={isIOS ? 'padding' : 'height'}>
+      <View style={styles.inner}>
+        <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
+        <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
+          type="password" />
+        <NiButton style={styles.button} caption="Connexion" onPress={() => signIn({ email, password })} />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  inner: {
     flex: 1,
     backgroundColor: '#EEE',
     paddingHorizontal: 20,
@@ -32,7 +39,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-  }
+  },
 });
 
 export default AuthenticationScreen;
