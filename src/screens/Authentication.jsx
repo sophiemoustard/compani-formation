@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-    backgroundColor: '#EEE',
     paddingHorizontal: 20,
     justifyContent: 'center',
   },
