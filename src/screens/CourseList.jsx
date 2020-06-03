@@ -2,6 +2,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import NiButton from '../components/form/Button';
+import screensStyle from '../styles/screens.style';
 
 const CourseListScreen = ({ navigation }) => {
   const logOut = async () => {
@@ -14,17 +15,11 @@ const CourseListScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={screensStyle.container}>
       <Text>List of courses</Text>
-      <NiButton style={styles.button} caption="Déconnexion" onPress={logOut} />
+      <NiButton caption="Déconnexion" onPress={logOut} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default CourseListScreen;
