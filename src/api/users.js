@@ -1,9 +1,9 @@
 import axios from 'axios';
-
-const baseURL = 'http://11a7d8587123.ngrok.io';
+import getEnvVars from '../../environment';
 
 export default {
   authenticate: async (payload) => {
+    const { baseURL } = getEnvVars();
     const response = await axios.post(`${baseURL}/users/authenticate`, payload);
     return response.data.data
   },
