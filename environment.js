@@ -1,18 +1,11 @@
 import Constants from 'expo-constants';
-
-const ENV = {
-  dev: {
-    baseURL: 'ngrok_url',
-  },
-  staging: {
-    baseURL: 'autre_url',
-  },
-}
+import localEnv from './env/.env.local.js';
+import stagingEnv from './env/.env.staging.js';
 
 const getEnvVars = (env = Constants.manifest.releaseChannel) => {
-  if (__DEV__) return ENV.dev;
-  else if (env.indexOf('staging')) return ENV.staging;
-  else return ENV.dev;
+  if (__DEV__) return localEnv;
+  else if (env.indexOf('staging')) return stagingEnv;
+  else return localEnv;
 };
 
 export default getEnvVars;
