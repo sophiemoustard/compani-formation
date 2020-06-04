@@ -12,7 +12,7 @@ const AuthenticationScreen = () => {
   const isIOS = Platform.OS == 'ios';
 
   return (
-    <KeyboardAvoidingView style={[styles.container, screensStyle.container]} behavior={isIOS ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
@@ -24,7 +24,8 @@ const AuthenticationScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  inner: {
+    flex: 1,
     paddingHorizontal: 20,
     justifyContent: 'center',
   },

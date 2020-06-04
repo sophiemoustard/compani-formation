@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import commonStyle from './common';
+import variables from './variables';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: commonStyle.NEUTRAL_BACKGROUND_COLOR,
+    backgroundColor: variables.NEUTRAL_BACKGROUND_COLOR,
   },
 });
