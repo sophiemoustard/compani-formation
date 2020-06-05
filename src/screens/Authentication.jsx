@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -14,6 +14,9 @@ const AuthenticationScreen = () => {
   return (
     <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={ require('../../assets/compani_logo.png') } />
+        </View>
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
           type="password" />
@@ -24,6 +27,14 @@ const AuthenticationScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  imageContainer: {
+    alignItems: 'center'
+  },
+  image: {
+    width: 150,
+    height: 30,
+    alignItems: 'center'
+  },
   inner: {
     flex: 1,
     paddingHorizontal: 20,
