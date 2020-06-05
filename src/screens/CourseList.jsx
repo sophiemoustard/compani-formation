@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { Text, View, AsyncStorage } from 'react-native';
 import NiButton from '../components/form/Button';
 import screensStyle from '../styles/screens.style';
 
