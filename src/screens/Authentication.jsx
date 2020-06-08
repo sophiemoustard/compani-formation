@@ -3,6 +3,7 @@ import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import { Context as AuthContext } from '../context/AuthContext';
+import screensStyle from '../styles/screens.style';
 
 const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const AuthenticationScreen = () => {
   const isIOS = Platform.OS == 'ios';
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={isIOS ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
@@ -23,9 +24,6 @@ const AuthenticationScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   inner: {
     flex: 1,
     paddingHorizontal: 20,
