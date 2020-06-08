@@ -21,7 +21,8 @@
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.9",
     "react-navigation-stack": "^2.5.1",
-    "react-navigation-tabs": "^2.8.13"
+    "react-navigation-tabs": "^2.8.13",
+    "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",
