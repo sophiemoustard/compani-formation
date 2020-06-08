@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import variables from '../../styles/variables';
 
 const NiButton = ({ style, caption, onPress }) => {
   return (
@@ -14,7 +15,7 @@ const NiButton = ({ style, caption, onPress }) => {
 const styles = StyleSheet.create({
   container: {},
   button: {
-    backgroundColor: '#E2007A',
+    backgroundColor: variables.PRIMARY_COLOR,
     borderRadius: 2,
     display: 'flex',
     flexDirection: 'row',
