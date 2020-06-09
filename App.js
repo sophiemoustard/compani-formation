@@ -1,5 +1,5 @@
-import React from 'react';
-import { StatusBar, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StatusBar, View, StyleSheet, AppState } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AuthenticationScreen from './src/screens/Authentication';
@@ -9,6 +9,8 @@ import ResolveAuthScreen from './src/screens/ResolveAuth';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 import variables from './src/styles/variables';
+import getEnvVars from './environment';
+import Version from './src/api/version';
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuthScreen,
@@ -19,9 +21,28 @@ const switchNavigator = createSwitchNavigator({
   })
 });
 
-const App = createAppContainer(switchNavigator);
 
-export default () => {
+const AppContainer = createAppContainer(switchNavigator);
+export default App = () => {
+  const [mustUpdate, setMustUpdate] = useState(false);
+
+  checkUpdate = async (nextState) => {
+    if (nextState === 'active') {
+      const envVars = getEnvVars();
+      const checkUpdate = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
+      setMustUpdate(checkUpdate.mustUpdate);
+    }
+  }
+
+  useEffect(() => {
+    AppState.addEventListener('change', checkUpdate);
+
+    return () => {
+      setMustUpdate(false);
+      AppState.removeEventListener('change', checkUpdate);
+    }
+  });
+
   return (
     <AuthProvider>
       <View style={[styles.statusBar]}>
