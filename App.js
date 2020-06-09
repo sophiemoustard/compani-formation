@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, StyleSheet, AppState } from 'react-native';
+import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AuthenticationScreen from './src/screens/Authentication';
@@ -25,6 +25,7 @@ const switchNavigator = createSwitchNavigator({
 
 const AppContainer = createAppContainer(switchNavigator);
 export default App = () => {
+  const appUrl = Platform.OS == 'ios' ? '' : 'market://details?id=com.alenvi.compani';
   const [modalOpened, setModalOpened] = useState(false);
 
   checkUpdate = async (nextState) => {
@@ -50,6 +51,7 @@ export default App = () => {
         title="Nouvelle version de l'app disponible !"
         contentText="Merci de mettre votre application à jour pour pouvoir continuer d'utiliser l'application :)"
         buttonCaption="Mettre à jour"
+        onPress={() => { Linking.openURL(appUrl) }}
         onRequestClose={() => setModalOpened(false)}
       ></NiModal>
       <AuthProvider>
