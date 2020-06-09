@@ -11,6 +11,7 @@ import { setNavigator } from './src/navigationRef';
 import variables from './src/styles/variables';
 import getEnvVars from './environment';
 import Version from './src/api/version';
+import NiModal from './src/components/Modal';
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuthScreen,
@@ -24,13 +25,13 @@ const switchNavigator = createSwitchNavigator({
 
 const AppContainer = createAppContainer(switchNavigator);
 export default App = () => {
-  const [mustUpdate, setMustUpdate] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   checkUpdate = async (nextState) => {
     if (nextState === 'active') {
       const envVars = getEnvVars();
-      const checkUpdate = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
-      setMustUpdate(checkUpdate.mustUpdate);
+      const { mustUpdate } = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
+      setModalOpened(mustUpdate);
     }
   }
 
@@ -38,18 +39,26 @@ export default App = () => {
     AppState.addEventListener('change', checkUpdate);
 
     return () => {
-      setMustUpdate(false);
       AppState.removeEventListener('change', checkUpdate);
     }
   });
 
   return (
-    <AuthProvider>
-      <View style={[styles.statusBar]}>
-        <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
-      </View>
-      <App ref={(navigator) => { setNavigator(navigator); }} />
-    </AuthProvider>
+    <>
+      <NiModal
+        visible={modalOpened}
+        title="Nouvelle version de l'app disponible !"
+        contentText="Merci de mettre votre application à jour pour pouvoir continuer d'utiliser l'application :)"
+        buttonCaption="Mettre à jour"
+        onRequestClose={() => setModalOpened(false)}
+      ></NiModal>
+      <AuthProvider>
+        <View style={[styles.statusBar]}>
+          <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
+        </View>
+        <AppContainer ref={(navigator) => { setNavigator(navigator); }} />
+      </AuthProvider>
+    </>
   );
 };
 
