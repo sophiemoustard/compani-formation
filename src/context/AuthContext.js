@@ -25,7 +25,7 @@ const tryLocalSignIn = dispatch => async () => {
     dispatch({ type: 'signin', payload: token });
     navigate('CourseList');
   } else navigate('Authentication');
-}
+};
 
 export const { Provider, Context } = createDataContext(
   authReducer,

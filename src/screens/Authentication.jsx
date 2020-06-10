@@ -24,7 +24,7 @@ const AuthenticationScreen = () => {
       </View>
     </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   imageContainer: {

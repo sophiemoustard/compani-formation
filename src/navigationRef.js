@@ -9,5 +9,5 @@ export const setNavigator = nav => {
 export const navigate = (routeName, params) => {
   navigator.dispatch(
     NavigationActions.navigate({ routeName, params })
-  )
+	);
 };

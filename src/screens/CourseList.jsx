@@ -3,6 +3,7 @@ import React from 'react';
 import { Text, View, AsyncStorage } from 'react-native';
 import NiButton from '../components/form/Button';
 import screensStyle from '../styles/screens.style';
+import PropTypes from 'prop-types';
 
 const CourseListScreen = ({ navigation }) => {
   const logOut = async () => {
@@ -20,6 +21,10 @@ const CourseListScreen = ({ navigation }) => {
       <NiButton caption="Déconnexion" onPress={logOut} />
     </View>
   );
-}
+};
+
+CourseListScreen.propTypes = {
+  navigation: PropTypes.object,
+};
 
 export default CourseListScreen;

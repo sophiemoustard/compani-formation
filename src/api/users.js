@@ -5,6 +5,6 @@ export default {
   authenticate: async (payload) => {
     const { baseURL } = getEnvVars();
     const response = await axios.post(`${baseURL}/users/authenticate`, payload);
-    return response.data.data
+    return response.data.data;
   },
 };
