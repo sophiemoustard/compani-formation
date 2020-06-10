@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import PropTypes from 'prop-types';
 
 export default (reducer, actions, defaultValue) => {
   const Context = React.createContext();
@@ -15,8 +16,12 @@ export default (reducer, actions, defaultValue) => {
       <Context.Provider value={{ ...state, ...boundActions }}>
         {children}
       </Context.Provider>
-    )
-  }
+    );
+  };
+
+  Provider.propTypes = {
+    children: PropTypes.node
+  };
 
   return { Context, Provider };
 };

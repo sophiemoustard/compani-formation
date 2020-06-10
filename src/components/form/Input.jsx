@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -9,7 +10,7 @@ const NiInput = ({ style, value, onChangeText, caption, type }) => {
   const keyboradType = type === 'email' ? 'email-address' : 'default';
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
-  const togglePassword = () => { setShowPassword(!showPassword) }
+  const togglePassword = () => { setShowPassword(!showPassword); };
   const inputStyle = isPassword ? { ...styles.input, paddingRight: 30 } : styles.input;
 
   return (
@@ -25,7 +26,15 @@ const NiInput = ({ style, value, onChangeText, caption, type }) => {
       </View>
     </View>
   );
-}
+};
+
+NiInput.propTypes = {
+  style: PropTypes.object,
+  value: PropTypes.string,
+  onChangeText: PropTypes.func,
+  caption: PropTypes.string,
+  type: PropTypes.string,
+};
 
 const styles = StyleSheet.create({
   input: {
