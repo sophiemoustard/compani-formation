@@ -15,8 +15,8 @@ const NiButton = ({ style, caption, onPress }) => {
 
 NiButton.propTypes = {
   style: PropTypes.object,
-	caption: PropTypes.string,
-	onPress: PropTypes.func,
+  caption: PropTypes.string,
+  onPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
