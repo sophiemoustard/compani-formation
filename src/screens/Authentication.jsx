@@ -12,7 +12,7 @@ const AuthenticationScreen = () => {
   const isIOS = Platform.OS == 'ios';
 
   return (
-    <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={{...screensStyle.container, ...styles.container}} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={ require('../../assets/compani_logo.png') } />
@@ -27,6 +27,9 @@ const AuthenticationScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 0,
+  },
   imageContainer: {
     alignItems: 'center'
   },
