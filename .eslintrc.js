@@ -20,7 +20,7 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'react/display-name': 'off',
-		'max-len': ['error', { 'code' : 120, 'tabWidth': 2 }],
+    'max-len': ['error', { 'code' : 120, 'tabWidth': 2 }],
   },
   globals: {
     __DEV__: true,
