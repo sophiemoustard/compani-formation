@@ -9,6 +9,6 @@ const ProgramListScreen = () => {
       <Text>List of programs</Text>
     </View>
   );
-}
+};
 
 export default ProgramListScreen;
