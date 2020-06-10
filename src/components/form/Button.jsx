@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import variables from '../../styles/variables';
 
@@ -10,6 +11,12 @@ const NiButton = ({ style, caption, onPress }) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+NiButton.propTypes = {
+  style: PropTypes.object,
+	caption: PropTypes.string,
+	onPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

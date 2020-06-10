@@ -27,10 +27,10 @@ export default () => {
       <View style={[styles.statusBar]}>
         <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
       </View>
-      <App ref={(navigator) => { setNavigator(navigator) }} />
+      <App ref={(navigator) => { setNavigator(navigator); }} />
     </AuthProvider>
   );
-}
+};
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
