@@ -1,4 +1,4 @@
 export default {
   PRIMARY_COLOR: '#E2007A',
-  NEUTRAL_BACKGROUND_COLOR: '#EEE'
+  NEUTRAL_BACKGROUND_COLOR: '#eee',
 };
