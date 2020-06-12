@@ -24,24 +24,24 @@ const switchNavigator = createSwitchNavigator({
 
 
 const AppContainer = createAppContainer(switchNavigator);
-export default App = () => {
+const App = () => {
   const appUrl = Platform.OS == 'ios' ? '' : 'market://details?id=com.alenvi.compani';
   const [modalOpened, setModalOpened] = useState(false);
 
-  checkUpdate = async (nextState) => {
+  const checkUpdate = async (nextState) => {
     if (nextState === 'active') {
       const envVars = getEnvVars();
       const { mustUpdate } = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
       setModalOpened(mustUpdate);
     }
-  }
+  };
 
   useEffect(() => {
     AppState.addEventListener('change', checkUpdate);
 
     return () => {
       AppState.removeEventListener('change', checkUpdate);
-    }
+    };
   });
 
   return (
@@ -51,7 +51,7 @@ export default App = () => {
         title="Nouvelle version de l'app disponible !"
         contentText="Merci de mettre votre application à jour pour pouvoir continuer d'utiliser l'application :)"
         buttonCaption="Mettre à jour"
-        onPress={() => { Linking.openURL(appUrl) }}
+        onPress={() => { Linking.openURL(appUrl); }}
         onRequestClose={() => setModalOpened(false)}
       />
       <AuthProvider>
@@ -63,6 +63,8 @@ export default App = () => {
     </>
   );
 };
+
+export default App;
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
