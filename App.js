@@ -53,7 +53,7 @@ export default App = () => {
         buttonCaption="Mettre à jour"
         onPress={() => { Linking.openURL(appUrl) }}
         onRequestClose={() => setModalOpened(false)}
-      ></NiModal>
+      />
       <AuthProvider>
         <View style={[styles.statusBar]}>
           <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />

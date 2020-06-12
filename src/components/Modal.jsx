@@ -4,10 +4,7 @@ import NiButton from '../components/form/Button';
 
 const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-    >
+    <Modal visible={visible} transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent} >
           <Text style={styles.title}>{title}</Text>
