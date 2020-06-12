@@ -18,7 +18,7 @@ const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {
 };
 
 NiModal.propTypes = {
-  visible: PropTypes.boolean,
+  visible: PropTypes.bool,
   title: PropTypes.string,
   contentText: PropTypes.string,
   buttonCaption: PropTypes.string,

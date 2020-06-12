@@ -25,7 +25,9 @@ const switchNavigator = createSwitchNavigator({
 
 const AppContainer = createAppContainer(switchNavigator);
 const App = () => {
-  const appUrl = Platform.OS == 'ios' ? '' : 'market://details?id=com.alenvi.compani';
+  const appUrl = Platform.OS == 'ios'
+    ? 'https://apps.apple.com/app/id1447513534'
+    : 'market://details?id=com.alenvi.compani';
   const [modalOpened, setModalOpened] = useState(false);
 
   const checkUpdate = async (nextState) => {
@@ -43,6 +45,8 @@ const App = () => {
       AppState.removeEventListener('change', checkUpdate);
     };
   });
+
+  checkUpdate('active');
 
   return (
     <>
