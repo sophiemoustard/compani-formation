@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../components/form/Button';
 
@@ -14,6 +15,14 @@ const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {
       </View>
     </Modal>
   );
+};
+
+NiModal.propTypes = {
+  visible: PropTypes.boolean,
+  title: PropTypes.string,
+  contentText: PropTypes.string,
+  buttonCaption: PropTypes.string,
+  onPress: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
