@@ -1,5 +1,5 @@
-import React from 'react';
-import { StatusBar, View, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import AuthenticationScreen from './src/screens/Authentication';
@@ -9,6 +9,9 @@ import ResolveAuthScreen from './src/screens/ResolveAuth';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 import variables from './src/styles/variables';
+import getEnvVars from './environment';
+import Version from './src/api/version';
+import NiModal from './src/components/Modal';
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuthScreen,
@@ -19,18 +22,53 @@ const switchNavigator = createSwitchNavigator({
   })
 });
 
-const App = createAppContainer(switchNavigator);
 
-export default () => {
+const AppContainer = createAppContainer(switchNavigator);
+const App = () => {
+  const appUrl = Platform.OS == 'ios'
+    ? 'https://apps.apple.com/app/id1447513534'
+    : 'market://details?id=com.alenvi.compani';
+  const [modalOpened, setModalOpened] = useState(false);
+
+  const checkUpdate = async (nextState) => {
+    if (nextState === 'active') {
+      const envVars = getEnvVars();
+      const { mustUpdate } = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
+      setModalOpened(mustUpdate);
+    }
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', checkUpdate);
+
+    return () => {
+      AppState.removeEventListener('change', checkUpdate);
+    };
+  });
+
+  checkUpdate('active');
+
   return (
-    <AuthProvider>
-      <View style={[styles.statusBar]}>
-        <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
-      </View>
-      <App ref={(navigator) => { setNavigator(navigator); }} />
-    </AuthProvider>
+    <>
+      <NiModal
+        visible={modalOpened}
+        title="Nouvelle version de l'app disponible !"
+        contentText="Merci de mettre votre application à jour pour pouvoir continuer d'utiliser l'application :)"
+        buttonCaption="Mettre à jour"
+        onPress={() => { Linking.openURL(appUrl); }}
+        onRequestClose={() => setModalOpened(false)}
+      />
+      <AuthProvider>
+        <View style={[styles.statusBar]}>
+          <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
+        </View>
+        <AppContainer ref={(navigator) => { setNavigator(navigator); }} />
+      </AuthProvider>
+    </>
   );
 };
+
+export default App;
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
