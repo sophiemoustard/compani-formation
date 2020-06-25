@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform, Image, Text } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import { Context as AuthContext } from '../context/AuthContext';
 import screensStyle from '../styles/screens.style';
+import getEnvVars from '../../environment';
+import Constants from 'expo-constants';
 
 const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +18,8 @@ const AuthenticationScreen = () => {
       <View style={styles.inner}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={ require('../../assets/compani_logo.png') } />
+          <Text>{Constants.manifest.releaseChannel}</Text>
+          <Text>{getEnvVars().baseURL}</Text>
         </View>
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
