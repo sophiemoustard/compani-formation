@@ -44,7 +44,6 @@ const AuthenticationScreen = () => {
         <View style={styles.buttonContainer}>
           <NiButton style={styles.button} caption="Connexion" onPress={() => onPress()}
             disabled={loading} />
-          { loading && <ActivityIndicator style={styles.loading} animating={loading} color={variables.PRIMARY_COLOR} size="small"></ActivityIndicator>}
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -77,9 +76,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  loading: {
-    marginLeft: 10,
-  }
 });
 
 export default AuthenticationScreen;
