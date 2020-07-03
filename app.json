@@ -20,11 +20,11 @@
     "assetBundlePatterns": ["assets/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.2"
     },
     "android": {
       "package": "com.alenvi.compani",
-      "versionCode": 1
+      "versionCode": 5
     }
   }
 }
