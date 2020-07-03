@@ -48,7 +48,7 @@ function AppContainer () {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token === null
         ? <Stack.Screen name="Authentication" component={AuthenticationScreen} />
         : <Stack.Screen name="Home" component={Home} />}
