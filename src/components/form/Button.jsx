@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import variables from '../../styles/variables';
 
 const NiButton = ({ style, caption, onPress, disabled }) => {
   return (
     <View style={[styles.container, style, disabled ? styles.disabled : '']}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
-        <Text style={styles.textButton}>{caption}</Text>
+        { !disabled && <Text style={styles.textButton}>{caption}</Text> }
+        { disabled && <ActivityIndicator style={styles.loading} animating={disabled} color={variables.PRIMARY_COLOR} size="small"></ActivityIndicator>}
       </TouchableOpacity>
     </View>
   );
@@ -32,6 +33,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40,
     alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 100,
   },
   textButton: {
     color: 'white',
