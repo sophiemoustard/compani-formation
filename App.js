@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AuthenticationScreen from './src/screens/Authentication';
 import ProgramListScreen from './src/screens/ProgramList';
 import CourseListScreen from './src/screens/CourseList';
+import ProfileScreen from './src/screens/Profile';
 import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 import { navigationRef } from './src/navigationRef';
 import variables from './src/styles/variables';
@@ -16,10 +18,24 @@ import NiModal from './src/components/Modal';
 const Tab = createBottomTabNavigator();
 
 function Home() {
+  const screenOptions = ({ route }) => ({
+    tabBarIcon: ({ size, color }) => {
+      const icons = { CourseList: 'book', ProgramList: 'search', Profile: 'person-outline' };
+
+      return (
+        <MaterialIcons name={icons[route.name]} color={color} size={size} />
+      );
+    },
+  });
+
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="ProgramList" component={ProgramListScreen} options={{ tabBarLabel: 'Catalogue!' }} />
+    <Tab.Navigator
+      tabBarOptions={{ activeTintColor: variables.PRIMARY_COLOR }}
+      screenOptions={screenOptions}
+    >
+      <Tab.Screen name="ProgramList" component={ProgramListScreen} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="CourseList" component={CourseListScreen} options={{ tabBarLabel: 'Mes formations' }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
 }
