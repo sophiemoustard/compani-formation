@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Platform, Image, Text } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform, Image, ActivityIndicator } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import screensStyle from '../styles/screens.style';
+import variables from '../styles/variables';
 
 const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ const AuthenticationScreen = () => {
 
   const onPress = async () => {
     try {
-      setLoading(false);
+      setLoading(true);
       setError(true);
       setErrorMessage('');
       await signIn(email, password);
@@ -39,9 +40,12 @@ const AuthenticationScreen = () => {
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
           type="password" />
-        <NiErrorMessage message={ errorMessage }  show={ error } />
-        <NiButton style={styles.button} caption="Connexion" onPress={() => onPress()}
-          disabled={loading} />
+        <NiErrorMessage message={errorMessage} show={error} />
+        <View style={styles.buttonContainer}>
+          <NiButton style={styles.button} caption="Connexion" onPress={() => onPress()}
+            disabled={loading} />
+          { loading && <ActivityIndicator style={styles.loading} animating={loading} color={variables.PRIMARY_COLOR} size="small"></ActivityIndicator>}
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -64,11 +68,18 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 10,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignSelf: 'center',
+  },
   button: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  loading: {
+    marginLeft: 10,
+  }
 });
 
 export default AuthenticationScreen;

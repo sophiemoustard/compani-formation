@@ -4,8 +4,8 @@ import { Text, StyleSheet, View } from 'react-native';
 
 const NiErrorMessage = ({ style, message, show }) => {
   return (
-    <View style={{ ...styles.container, ...style }}>
-      { show && <Text style={ styles.message }>{ message }</Text> }
+    <View style={{...styles.container, ...style}}>
+      { show && <Text style={styles.message}>{message}</Text> }
     </View>
   );
 };
