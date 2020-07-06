@@ -1,15 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Platform, Image, Text } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
+import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import screensStyle from '../styles/screens.style';
 
 const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loading, error, errorMessage } = useContext(AuthContext);
   const isIOS = Platform.OS == 'ios';
+
+  const onPress = () =>  signIn({ email, password });
 
   return (
     <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
@@ -20,7 +23,10 @@ const AuthenticationScreen = () => {
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
           type="password" />
-        <NiButton style={styles.button} caption="Connexion" onPress={() => signIn({ email, password })} />
+        <NiErrorMessage message={errorMessage} show={error} />
+        <View style={styles.buttonContainer}>
+          <NiButton style={styles.button} caption="Connexion" onPress={onPress} loading={loading} />
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -43,8 +49,12 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 10,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignSelf: 'center',
+  },
   button: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },

@@ -5,20 +5,35 @@ import { navigate } from '../navigationRef';
 
 const authReducer = (state, actions) => {
   switch (actions.type) {
+    case 'beforeSignin':
+      return { ...state, error: false, errorMessage: '', loading: true };
     case 'signin':
-      return { ...state, token: actions.payload };
+      return { ...state, loading: false, token: actions.payload };
+    case 'signinError':
+      return { ...state, loading: false, error: true, errorMessage: actions.payload };
     case 'signout':
-      return { ...state, token: null };
+      return { ...state, token: null, loading: false, error: false, errorMessage: '' };
     default:
       return state;
   }
 };
 
 const signIn = dispatch => async ({ email, password }) => {
-  const authentication = await Users.authenticate({ email, password });
-  await AsyncStorage.setItem('token', authentication.token);
-  dispatch({ type: 'signin', payload: authentication.token });
-  navigate('Home', { screen: 'CourseList' });
+  try {
+    dispatch({ type: 'beforeSignin' });
+
+    const authentication = await Users.authenticate({ email, password });
+    await AsyncStorage.setItem('token', authentication.token);
+    dispatch({ type: 'signin', payload: authentication.token });
+    navigate('Home', { screen: 'CourseList' });
+  } catch (e) {
+    dispatch({
+      type: 'signinError',
+      payload: e.response.status === 401
+        ? 'L\'email et/ou le mot de passe est incorrect.'
+        : 'Impossible de se connecter'
+    });
+  }
 };
 
 const signOut = dispatch => async () => {
@@ -38,5 +53,5 @@ const tryLocalSignIn = dispatch => async () => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut },
-  { token: null }
+  { token: null, loading: false, error: false, errorMessage: '' }
 );
