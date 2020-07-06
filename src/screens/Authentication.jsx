@@ -9,25 +9,10 @@ import screensStyle from '../styles/screens.style';
 const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loading, error, errorMessage } = useContext(AuthContext);
   const isIOS = Platform.OS == 'ios';
 
-  const onPress = async () => {
-    setLoading(true);
-    setError(false);
-    setErrorMessage('');
-
-    const message = await signIn({ email, password });
-
-    if (message) {
-      setError(true);
-      setErrorMessage(message);
-      setLoading(false);
-    }
-  };
+  const onPress = () =>  signIn({ email, password });
 
   return (
     <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>

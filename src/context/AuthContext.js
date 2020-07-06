@@ -5,10 +5,14 @@ import { navigate } from '../navigationRef';
 
 const authReducer = (state, actions) => {
   switch (actions.type) {
+    case 'beforeSignin':
+      return { ...state, ...actions.payload };
     case 'signin':
-      return { ...state, token: actions.payload };
+      return { ...state, ...actions.payload };
+    case 'signinError':
+      return { ...state, ...actions.payload };
     case 'signout':
-      return { ...state, token: null };
+      return { ...state, token: null, loading: false, error: false, errorMessage: '' };
     default:
       return state;
   }
@@ -16,13 +20,23 @@ const authReducer = (state, actions) => {
 
 const signIn = dispatch => async ({ email, password }) => {
   try {
+    dispatch({ type: 'beforeSignin', payload: { error: false, errorMessage: '', loading: true } });
+
     const authentication = await Users.authenticate({ email, password });
     await AsyncStorage.setItem('token', authentication.token);
-    dispatch({ type: 'signin', payload: authentication.token });
+    dispatch({ type: 'signin', payload: { token: authentication.token, loading: false } });
     navigate('Home', { screen: 'CourseList' });
   } catch (e) {
-    if (e.response.status === 401) return 'L\'email et/ou le mot de passe est incorrect.' ;
-    else return 'Impossible de se connecter';
+    dispatch({
+      type: 'signinError',
+      payload: {
+        loading: false,
+        error: true,
+        errorMessage: e.response.status === 401
+          ? 'L\'email et/ou le mot de passe est incorrect.'
+          : 'Impossible de se connecter'
+      },
+    });
   }
 };
 
@@ -35,7 +49,7 @@ const signOut = dispatch => async () => {
 const tryLocalSignIn = dispatch => async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
-    dispatch({ type: 'signin', payload: token });
+    dispatch({ type: 'signin', payload: { token } });
     navigate('Home', { screen: 'CourseList' });
   } else navigate('Authentication');
 };
@@ -43,5 +57,5 @@ const tryLocalSignIn = dispatch => async () => {
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut },
-  { token: null }
+  { token: null, loading: false, error: false, errorMessage: '' }
 );
