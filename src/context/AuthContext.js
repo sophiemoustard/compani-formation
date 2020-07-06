@@ -15,10 +15,15 @@ const authReducer = (state, actions) => {
 };
 
 const signIn = dispatch => async ({ email, password }) => {
-  const authentication = await Users.authenticate({ email, password });
-  await AsyncStorage.setItem('token', authentication.token);
-  dispatch({ type: 'signin', payload: authentication.token });
-  navigate('Home', { screen: 'CourseList' });
+  try {
+    const authentication = await Users.authenticate({ email, password });
+    await AsyncStorage.setItem('token', authentication.token);
+    dispatch({ type: 'signin', payload: authentication.token });
+    navigate('Home', { screen: 'CourseList' });
+  } catch (e) {
+    if (e.response.status === 401) return 'L\'email et/ou le mot de passe est incorrect.' ;
+    else return 'Impossible de se connecter';
+  }
 };
 
 const signOut = dispatch => async () => {
