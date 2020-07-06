@@ -1,29 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { MaterialIcons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import PropTypes from 'prop-types';
 import AuthenticationScreen from './src/screens/Authentication';
 import ProgramListScreen from './src/screens/ProgramList';
 import CourseListScreen from './src/screens/CourseList';
-import ResolveAuthScreen from './src/screens/ResolveAuth';
-import { Provider as AuthProvider } from './src/context/AuthContext';
-import { setNavigator } from './src/navigationRef';
+import ProfileScreen from './src/screens/Profile';
+import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
+import { navigationRef } from './src/navigationRef';
 import variables from './src/styles/variables';
 import getEnvVars from './environment';
 import Version from './src/api/version';
 import NiModal from './src/components/Modal';
 
-const switchNavigator = createSwitchNavigator({
-  ResolveAuthScreen,
-  Authentication: AuthenticationScreen,
-  mainFlow: createBottomTabNavigator({
-    CourseList: CourseListScreen,
-    ProgramList: ProgramListScreen,
-  })
-});
+const Tab = createBottomTabNavigator();
 
+const tabBarIcon = route => ({ size, color }) => {
+  const icons = { CourseList: 'book', ProgramList: 'search', Profile: 'person-outline' };
 
-const AppContainer = createAppContainer(switchNavigator);
+  return (
+    <MaterialIcons name={icons[route.name]} color={color} size={size} />
+  );
+};
+
+tabBarIcon.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.string,
+};
+
+const Home = () => {
+  const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
+
+  return (
+    <Tab.Navigator
+      tabBarOptions={{ activeTintColor: variables.PRIMARY_COLOR }}
+      screenOptions={screenOptions}
+    >
+      <Tab.Screen name="ProgramList" component={ProgramListScreen} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="CourseList" component={CourseListScreen} options={{ tabBarLabel: 'Mes formations' }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profil' }} />
+    </Tab.Navigator>
+  );
+};
+
+const Stack = createStackNavigator();
+
+const AppContainer = () => {
+  const { tryLocalSignIn, token } = useContext(AuthContext);
+  useEffect(() => { tryLocalSignIn(); }, []);
+
+  return (
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {token === null
+        ? <Stack.Screen name="Authentication" component={AuthenticationScreen} />
+        : <Stack.Screen name="Home" component={Home} />}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const App = () => {
   const appUrl = Platform.OS == 'ios'
     ? 'https://apps.apple.com/app/id1447513534'
@@ -62,7 +101,7 @@ const App = () => {
         <View style={[styles.statusBar]}>
           <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
         </View>
-        <AppContainer ref={(navigator) => { setNavigator(navigator); }} />
+        <AppContainer />
       </AuthProvider>
     </>
   );
