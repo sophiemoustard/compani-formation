@@ -6,11 +6,11 @@ import { navigate } from '../navigationRef';
 const authReducer = (state, actions) => {
   switch (actions.type) {
     case 'beforeSignin':
-      return { ...state, ...actions.payload };
+      return { ...state, error: false, errorMessage: '', loading: true };
     case 'signin':
-      return { ...state, ...actions.payload };
+      return { ...state, loading: false, token: actions.payload };
     case 'signinError':
-      return { ...state, ...actions.payload };
+      return { ...state, loading: false, error: true, errorMessage: actions.payload };
     case 'signout':
       return { ...state, token: null, loading: false, error: false, errorMessage: '' };
     default:
@@ -20,22 +20,18 @@ const authReducer = (state, actions) => {
 
 const signIn = dispatch => async ({ email, password }) => {
   try {
-    dispatch({ type: 'beforeSignin', payload: { error: false, errorMessage: '', loading: true } });
+    dispatch({ type: 'beforeSignin' });
 
     const authentication = await Users.authenticate({ email, password });
     await AsyncStorage.setItem('token', authentication.token);
-    dispatch({ type: 'signin', payload: { token: authentication.token, loading: false } });
+    dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'CourseList' });
   } catch (e) {
     dispatch({
       type: 'signinError',
-      payload: {
-        loading: false,
-        error: true,
-        errorMessage: e.response.status === 401
-          ? 'L\'email et/ou le mot de passe est incorrect.'
-          : 'Impossible de se connecter'
-      },
+      payload: e.response.status === 401
+        ? 'L\'email et/ou le mot de passe est incorrect.'
+        : 'Impossible de se connecter'
     });
   }
 };
@@ -49,7 +45,7 @@ const signOut = dispatch => async () => {
 const tryLocalSignIn = dispatch => async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
-    dispatch({ type: 'signin', payload: { token } });
+    dispatch({ type: 'signin', payload: token });
     navigate('Home', { screen: 'CourseList' });
   } else navigate('Authentication');
 };
