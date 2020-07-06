@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Platform, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import screensStyle from '../styles/screens.style';
-import variables from '../styles/variables';
 
 const AuthenticationScreen = () => {
   const [email, setEmail] = useState('');
@@ -17,16 +16,15 @@ const AuthenticationScreen = () => {
   const isIOS = Platform.OS == 'ios';
 
   const onPress = async () => {
-    try {
-      setLoading(true);
+    setLoading(true);
+    setError(false);
+    setErrorMessage('');
+
+    const message = await signIn({ email, password });
+
+    if (message) {
       setError(true);
-      setErrorMessage('');
-      await signIn(email, password);
-    } catch (e) {
-      if (e.response.status === 400) setErrorMessage('L\'email et/ou le mot de passe est incorrect.');
-      else setErrorMessage('Impossible de se connecter');
-      setError(true);
-    } finally {
+      setErrorMessage(message);
       setLoading(false);
     }
   };
@@ -42,8 +40,7 @@ const AuthenticationScreen = () => {
           type="password" />
         <NiErrorMessage message={errorMessage} show={error} />
         <View style={styles.buttonContainer}>
-          <NiButton style={styles.button} caption="Connexion" onPress={() => onPress()}
-            disabled={loading} />
+          <NiButton style={styles.button} caption="Connexion" onPress={onPress} loading={loading} />
         </View>
       </View>
     </KeyboardAvoidingView>
