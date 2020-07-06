@@ -13,6 +13,8 @@ const authReducer = (state, actions) => {
       return { ...state, loading: false, error: true, errorMessage: actions.payload };
     case 'signout':
       return { ...state, token: null, loading: false, error: false, errorMessage: '' };
+    case 'render':
+      return { ...state, appIsReady: true };
     default:
       return state;
   }
@@ -47,11 +49,12 @@ const tryLocalSignIn = dispatch => async () => {
   if (token) {
     dispatch({ type: 'signin', payload: token });
     navigate('Home', { screen: 'CourseList' });
-  } else navigate('Authentication');
+  }
+  dispatch({ type: 'render' });
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut },
-  { token: null, loading: false, error: false, errorMessage: '' }
+  { token: null, loading: false, error: false, errorMessage: '', appIsReady: false }
 );
