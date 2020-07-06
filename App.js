@@ -4,6 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import PropTypes from 'prop-types';
 import AuthenticationScreen from './src/screens/Authentication';
 import ProgramListScreen from './src/screens/ProgramList';
 import CourseListScreen from './src/screens/CourseList';
@@ -17,16 +18,21 @@ import NiModal from './src/components/Modal';
 
 const Tab = createBottomTabNavigator();
 
-function Home() {
-  const screenOptions = ({ route }) => ({
-    tabBarIcon: ({ size, color }) => {
-      const icons = { CourseList: 'book', ProgramList: 'search', Profile: 'person-outline' };
+const tabBarIcon = route => ({ size, color }) => {
+  const icons = { CourseList: 'book', ProgramList: 'search', Profile: 'person-outline' };
 
-      return (
-        <MaterialIcons name={icons[route.name]} color={color} size={size} />
-      );
-    },
-  });
+  return (
+    <MaterialIcons name={icons[route.name]} color={color} size={size} />
+  );
+};
+
+tabBarIcon.propTypes = {
+  color: PropTypes.string,
+  size: PropTypes.string,
+};
+
+const Home = () => {
+  const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
   return (
     <Tab.Navigator
@@ -38,11 +44,11 @@ function Home() {
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
-}
+};
 
 const Stack = createStackNavigator();
 
-function AppContainer () {
+const AppContainer = () => {
   const { tryLocalSignIn, token } = useContext(AuthContext);
   useEffect(() => { tryLocalSignIn(); }, []);
 
@@ -55,7 +61,7 @@ function AppContainer () {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 const App = () => {
   const appUrl = Platform.OS == 'ios'
