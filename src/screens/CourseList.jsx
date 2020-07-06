@@ -31,7 +31,7 @@ const CourseListScreen = () => {
 
 const styles = StyleSheet.create({
   nextEventContainer: {
-    paddingLeft: variables.MAIN_MARGIN_LEFT
+    paddingLeft: variables.MAIN_MARGIN_LEFT,
   }
 });
 

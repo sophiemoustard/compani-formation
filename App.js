@@ -49,15 +49,17 @@ const Home = () => {
 const Stack = createStackNavigator();
 
 const AppContainer = () => {
-  const { tryLocalSignIn, token } = useContext(AuthContext);
+  const { tryLocalSignIn, token, appIsReady } = useContext(AuthContext);
   useEffect(() => { tryLocalSignIn(); }, []);
+
+  if (!appIsReady) return null;
 
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token === null
-        ? <Stack.Screen name="Authentication" component={AuthenticationScreen} />
-        : <Stack.Screen name="Home" component={Home} />}
+        ? <><Stack.Screen name="Authentication" component={AuthenticationScreen} /></>
+        : <><Stack.Screen name="Home" component={Home} /></>}
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -80,12 +82,8 @@ const App = () => {
   useEffect(() => {
     AppState.addEventListener('change', checkUpdate);
 
-    return () => {
-      AppState.removeEventListener('change', checkUpdate);
-    };
-  });
-
-  checkUpdate('active');
+    return () => { AppState.removeEventListener('change', checkUpdate); };
+  }, []);
 
   return (
     <>
