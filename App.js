@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PropTypes from 'prop-types';
 import AuthenticationScreen from './src/screens/Authentication';
+import ForgotPasswordScreen from './src/screens/ForgotPassword';
 import ProgramListScreen from './src/screens/ProgramList';
 import CourseListScreen from './src/screens/CourseList';
 import ProfileScreen from './src/screens/Profile';
@@ -58,8 +59,11 @@ const AppContainer = () => {
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token === null
-        ? <Stack.Screen name="Authentication" component={AuthenticationScreen} />
-        : <Stack.Screen name="Home" component={Home} />}
+          ? <>
+            <Stack.Screen name="Authentication" component={AuthenticationScreen} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          </>
+          : <Stack.Screen name="Home" component={Home} />}
       </Stack.Navigator>
     </NavigationContainer>
   );
