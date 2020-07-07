@@ -58,8 +58,8 @@ const AppContainer = () => {
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {token === null
-        ? <><Stack.Screen name="Authentication" component={AuthenticationScreen} /></>
-        : <><Stack.Screen name="Home" component={Home} /></>}
+        ? <Stack.Screen name="Authentication" component={AuthenticationScreen} />
+        : <Stack.Screen name="Home" component={Home} />}
       </Stack.Navigator>
     </NavigationContainer>
   );

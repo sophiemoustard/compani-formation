@@ -5,7 +5,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import variables from '../styles/variables';
 
 const NextEvent = ({ event }) => {
-  const day = moment(event.date).day();
+  const day = moment(event.date).date();
   const month = moment(event.date).format('MMM');
   const title = event.program.substring(0, 40);
   return <View style={{...styles.container}}>
