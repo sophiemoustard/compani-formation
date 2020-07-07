@@ -6,7 +6,7 @@ import screensStyle from '../styles/screens.style';
 const ProgramListScreen = () => {
   return (
     <View style={screensStyle.container}>
-      <Text>Catalogue de programmes</Text>
+      <Text style={screensStyle.title}>Catalogue</Text>
     </View>
   );
 };

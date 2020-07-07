@@ -9,7 +9,7 @@ const Profile = () => {
 
   return (
     <View style={screensStyle.container}>
-      <Text>Mon profil</Text>
+      <Text style={screensStyle.title}>Mon profil</Text>
       <NiButton caption="Déconnexion" onPress={signOut} />
     </View>
   );
