@@ -25,10 +25,11 @@ const ForgotPasswordScreen = ({ navigation }) => {
     setSuccessMessage('');
     try {
       await Users.forgotPassword({ email });
-      setSuccessMessage('Un email vous a été envoyé !');
+      setSuccessMessage('Un email a été envoyé à l\'adresse indiquée ! Redirection ...');
+      setTimeout(goBack, 2000);
     } catch (e) {
       setError(true);
-      setErrorMessage('Erreur lors de la reinitialisation de votre mot de passe.');
+      setErrorMessage('Erreur lors de la réinitialisation de votre mot de passe.');
     } finally {
       setLoading(false);
     }
