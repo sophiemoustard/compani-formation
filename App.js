@@ -12,7 +12,7 @@ import CourseListScreen from './src/screens/CourseList';
 import ProfileScreen from './src/screens/Profile';
 import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 import { navigationRef } from './src/navigationRef';
-import variables from './src/styles/variables';
+import { NEUTRAL_BACKGROUND_COLOR, PRIMARY_COLOR } from './src/styles/variables';
 import getEnvVars from './environment';
 import Version from './src/api/version';
 import NiModal from './src/components/Modal';
@@ -37,7 +37,7 @@ const Home = () => {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{ activeTintColor: variables.PRIMARY_COLOR }}
+      tabBarOptions={{ activeTintColor: PRIMARY_COLOR }}
       screenOptions={screenOptions}
     >
       <Tab.Screen name="ProgramList" component={ProgramListScreen} options={{ tabBarLabel: 'Explorer' }} />
@@ -101,7 +101,7 @@ const App = () => {
       />
       <AuthProvider>
         <View style={[styles.statusBar]}>
-          <StatusBar translucent barStyle="dark-content" backgroundColor={variables.NEUTRAL_BACKGROUND_COLOR} />
+          <StatusBar translucent barStyle="dark-content" backgroundColor={NEUTRAL_BACKGROUND_COLOR} />
         </View>
         <AppContainer />
       </AuthProvider>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statusBar: {
-    backgroundColor: variables.NEUTRAL_BACKGROUND_COLOR,
+    backgroundColor: NEUTRAL_BACKGROUND_COLOR,
     height: STATUSBAR_HEIGHT,
   },
 });

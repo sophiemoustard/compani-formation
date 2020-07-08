@@ -6,7 +6,6 @@ import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import screensStyle from '../styles/screens.style';
-import variables from '../styles/variables';
 
 const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

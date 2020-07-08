@@ -6,23 +6,26 @@ import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import screensStyle from '../styles/screens.style';
-import variables from '../styles/variables';
+import { WHITE, PRIMARY_COLOR, POSITIVE } from '../styles/variables';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState(false);
   const isIOS = Platform.OS == 'ios';
 
   const sendEmail = async () =>  {
+    if (!email) return;
+
     setLoading(true);
     setError(false);
     setErrorMessage('');
+    setSuccessMessage('');
     try {
-      if (!email) return;
       await Users.forgotPassword({ email });
-      goBack();
+      setSuccessMessage('Un email vous a été envoyé !');
     } catch (e) {
       setError(true);
       setErrorMessage('Erreur lors de la reinitialisation de votre mot de passe.');
@@ -42,10 +45,11 @@ const ForgotPasswordScreen = ({ navigation }) => {
         <Text>Entrez votre email pour réinitialiser votre mot de passe.</Text>
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiErrorMessage message={errorMessage} show={error} />
+        {successMessage !== '' && <Text style={styles.success}>{successMessage}</Text>}
         <View style={styles.buttonContainer}>
+          <NiButton style={styles.button} caption="Retour" onPress={goBack} bgColor={WHITE}
+            color={PRIMARY_COLOR} />
           <NiButton style={styles.button} caption="Envoyer" onPress={sendEmail} loading={loading} />
-          <NiButton style={styles.button} caption="Retour" onPress={goBack} bgColor={variables.WHITE}
-            color={variables.PRIMARY_COLOR} />  
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -85,6 +89,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  success: {
+    color: POSITIVE,
+    marginBottom: 10,
+  }
 });
 
 export default ForgotPasswordScreen;
