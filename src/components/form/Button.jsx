@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import variables from '../../styles/variables';
+import { WHITE, PRIMARY_COLOR } from '../../styles/variables';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
   const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: color, borderWidth: 1 };
@@ -10,7 +10,7 @@ const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
     <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
       onPress={onPress} disabled={loading}>
       { !loading && <Text style={{...styles.textButton, color}}>{caption}</Text> }
-      { loading && <ActivityIndicator style={styles.loading} color={variables.white} size="small" />}
+      { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
     </TouchableOpacity>
   );
 };
@@ -26,8 +26,8 @@ NiButton.propTypes = {
 
 NiButton.defaultProps = {
   loading: false,
-  bgColor: variables.PRIMARY_COLOR,
-  color: variables.WHITE,
+  bgColor: PRIMARY_COLOR,
+  color: WHITE,
 };
 
 const styles = StyleSheet.create({

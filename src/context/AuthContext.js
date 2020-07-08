@@ -24,9 +24,9 @@ const authReducer = (state, actions) => {
 
 const signIn = dispatch => async ({ email, password }) => {
   try {
-    dispatch({ type: 'beforeSignin' });
     if (!email || !password) return;
 
+    dispatch({ type: 'beforeSignin' });
     const authentication = await Users.authenticate({ email, password });
     await AsyncStorage.setItem('token', authentication.token);
     dispatch({ type: 'signin', payload: authentication.token });

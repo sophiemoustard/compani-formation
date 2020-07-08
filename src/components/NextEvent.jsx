@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
-import variables from '../styles/variables';
+import { GREY } from '../styles/variables';
 
 const NextEvent = ({ event }) => {
   const day = moment(event.date).date();
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 170,
     borderWidth: 1,
-    borderColor: variables.GREY,
+    borderColor: GREY,
     borderRadius: 10,
     marginRight: 10,
   },
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     borderRightWidth: 1,
-    borderRightColor: variables.GREY,
+    borderRightColor: GREY,
     padding: 5,
   },
   day: {
