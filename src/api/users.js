@@ -7,4 +7,9 @@ export default {
     const response = await axios.post(`${baseURL}/users/authenticate`, payload);
     return response.data.data;
   },
+  forgotPassword: async (payload) => {
+    const { baseURL } = getEnvVars();
+    const mailInfo = await axios.post(`${baseURL}/users/forgot-password`, payload);
+    return mailInfo.data.data.mailInfo;
+  },
 };
