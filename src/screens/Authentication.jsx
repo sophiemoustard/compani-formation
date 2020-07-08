@@ -1,18 +1,23 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
+import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import screensStyle from '../styles/screens.style';
 
-const AuthenticationScreen = () => {
+const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
-  const { signIn, loading, error, errorMessage } = useContext(AuthContext);
+  const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
   const isIOS = Platform.OS == 'ios';
 
   const onPress = () =>  signIn({ email, password });
+  const forgotPassword = () => {
+    resetError();
+    navigation.navigate('ForgotPassword');
+  };
 
   return (
     <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
@@ -23,13 +28,18 @@ const AuthenticationScreen = () => {
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
           type="password" />
+        <TouchableOpacity style={styles.forgotPassword} onPress={forgotPassword}>
+          <Text style={styles.forgotPasswordText}>Mot de passe oublié</Text>
+        </TouchableOpacity>
         <NiErrorMessage message={errorMessage} show={error} />
-        <View style={styles.buttonContainer}>
-          <NiButton style={styles.button} caption="Connexion" onPress={onPress} loading={loading} />
-        </View>
+        <NiButton caption="Connexion" onPress={onPress} loading={loading} />
       </View>
     </KeyboardAvoidingView>
   );
+};
+
+AuthenticationScreen.propTypes = {
+  navigation: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -49,14 +59,13 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 10,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignSelf: 'center',
+  forgotPassword: {
+    alignSelf: 'flex-end',
+    marginBottom: 10,
   },
-  button: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+  forgotPasswordText: {
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
   },
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, FlatList, StyleSheet } from 'react-native';
 import screensStyle from '../styles/screens.style';
-import variables from '../styles/variables.js';
+import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
 import NextEvent from '../components/NextEvent';
 
 const nextEvents = [
@@ -31,7 +31,7 @@ const CourseListScreen = () => {
 
 const styles = StyleSheet.create({
   nextEventContainer: {
-    paddingLeft: variables.MAIN_MARGIN_LEFT,
+    paddingLeft: MAIN_MARGIN_LEFT,
   }
 });
 

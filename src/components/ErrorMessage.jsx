@@ -4,7 +4,7 @@ import { Text, StyleSheet, View } from 'react-native';
 
 const NiErrorMessage = ({ style, message, show }) => {
   return (
-    <View style={{...styles.container, ...style}}>
+    <View style={style}>
       { show && <Text style={styles.message}>{message}</Text> }
     </View>
   );
@@ -17,10 +17,8 @@ NiErrorMessage.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 10,
-  },
   message: {
+    marginBottom: 10,
     color: '#f00'
   },
 });

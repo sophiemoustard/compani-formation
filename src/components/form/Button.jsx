@@ -1,24 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import variables from '../../styles/variables';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { WHITE, PRIMARY_COLOR } from '../../styles/variables';
 
-const NiButton = ({ style, caption, onPress, loading }) => {
+const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
+  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: color, borderWidth: 1 };
+
   return (
-    <View style={[styles.container, style, loading ? styles.loading : '']}>
-      <TouchableOpacity style={styles.button} onPress={onPress} disabled={loading}>
-        { !loading && <Text style={styles.textButton}>{caption}</Text> }
-        { loading && <ActivityIndicator style={styles.loading} color={variables.white} size="small" />}
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
+      onPress={onPress} disabled={loading}>
+      { !loading && <Text style={{...styles.textButton, color}}>{caption}</Text> }
+      { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
+    </TouchableOpacity>
   );
 };
 
 NiButton.propTypes = {
   style: PropTypes.object,
-  caption: PropTypes.string,
-  onPress: PropTypes.func,
+  caption: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
   loading: PropTypes.bool,
+  bgColor: PropTypes.string,
+  color: PropTypes.string,
+};
+
+NiButton.defaultProps = {
+  loading: false,
+  bgColor: PRIMARY_COLOR,
+  color: WHITE,
 };
 
 const styles = StyleSheet.create({
@@ -27,8 +36,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   button: {
-    backgroundColor: variables.PRIMARY_COLOR,
-    borderRadius: 2,
+    borderRadius: 5,
     display: 'flex',
     flexDirection: 'row',
     height: 40,
@@ -37,7 +45,6 @@ const styles = StyleSheet.create({
     minWidth: 100,
   },
   textButton: {
-    color: 'white',
     marginHorizontal: 10,
   }
 });

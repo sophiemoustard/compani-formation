@@ -11,6 +11,8 @@ const authReducer = (state, actions) => {
       return { ...state, loading: false, token: actions.payload };
     case 'signinError':
       return { ...state, loading: false, error: true, errorMessage: actions.payload };
+    case 'resetError':
+      return { ...state, loading: false, error: false, errorMessage: '' };
     case 'signout':
       return { ...state, token: null, loading: false, error: false, errorMessage: '' };
     case 'render':
@@ -22,8 +24,9 @@ const authReducer = (state, actions) => {
 
 const signIn = dispatch => async ({ email, password }) => {
   try {
-    dispatch({ type: 'beforeSignin' });
+    if (!email || !password) return;
 
+    dispatch({ type: 'beforeSignin' });
     const authentication = await Users.authenticate({ email, password });
     await AsyncStorage.setItem('token', authentication.token);
     dispatch({ type: 'signin', payload: authentication.token });
@@ -53,8 +56,12 @@ const tryLocalSignIn = dispatch => async () => {
   dispatch({ type: 'render' });
 };
 
+const resetError = dispatch => () => {
+  dispatch({ type: 'resetError' });
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signIn, tryLocalSignIn, signOut },
+  { signIn, tryLocalSignIn, signOut, resetError },
   { token: null, loading: false, error: false, errorMessage: '', appIsReady: false }
 );
