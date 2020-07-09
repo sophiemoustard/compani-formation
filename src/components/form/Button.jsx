@@ -8,7 +8,7 @@ const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
 
   return (
     <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
-      onPress={onPress} disabled={loading}>
+      onPress={onPress} disabled={loading} testID={caption}>
       { !loading && <Text style={{...styles.textButton, color}}>{caption}</Text> }
       { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
     </TouchableOpacity>

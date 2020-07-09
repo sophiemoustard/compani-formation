@@ -13,7 +13,7 @@ const nextEvents = [
 const CourseListScreen = () => {
   return (
     <View style={screensStyle.container}>
-      <Text style={screensStyle.title}>Mes formations</Text>
+      <Text style={screensStyle.title} testID='header'>Mes formations</Text>
       <Text style={screensStyle.subtitle}>Prochains évènements</Text>
       <View>
         <FlatList

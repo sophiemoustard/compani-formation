@@ -18,7 +18,7 @@ const NiInput = ({ style, value, onChangeText, caption, type }) => {
       <Text style={styles.text}>{caption}</Text>
       <View>
         <TextInput value={value} onChangeText={onChangeText} style={inputStyle} secureTextEntry={secureTextEntry}
-          autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
+          autoCapitalize={autoCapitalize} keyboardType={keyboradType} testID={caption} />
         {isPassword &&
           <TouchableOpacity style={styles.inputIcon} onPress={togglePassword}>
             <MaterialCommunityIcons name={showPasswordIcon} size={20} />
