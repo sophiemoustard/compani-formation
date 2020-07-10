@@ -14,7 +14,7 @@ const nextEvents = [
 const CourseListScreen = () => {
   return (
     <View style={screensStyle.container}>
-      <Text style={screensStyle.title}>Mes formations</Text>
+      <Text style={screensStyle.title} testID='header'>Mes formations</Text>
       <View style={styles.blobContainer}>
         <Blob style={styles.blob} color="#FFEA95" />
       </View>
