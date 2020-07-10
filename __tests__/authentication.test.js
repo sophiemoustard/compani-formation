@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { render, fireEvent, waitFor, act } from 'react-native-testing-library';
+import { render, fireEvent, waitFor } from 'react-native-testing-library';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
 import getEnvVars from '../environment';
-import { AppContainer } from '../src/stack';
+import { AppContainer } from '../src/AppContainer';
 
 describe('Authentication tests', () => {
   let axiosMock;
@@ -27,12 +27,12 @@ describe('Authentication tests', () => {
       );
 
     const emailInput = await waitFor(() => element.getByTestId('Email'));
-    const passwordInput = await waitFor(() => element.getByTestId('Mot de passe'));
-    const sendButton = await waitFor(() => element.getByTestId('Connexion'));
+    fireEvent.changeText(emailInput, 'test@alenvi.io');
 
-    fireEvent.changeText(emailInput, 'chloe@alenvi.io');
+    const passwordInput = await waitFor(() => element.getByTestId('Mot de passe'));
     fireEvent.changeText(passwordInput, '123456');
 
+    const sendButton = await waitFor(() => element.getByTestId('Connexion'));
     fireEvent.press(sendButton);
 
     const header = await waitFor(() => element.getByTestId('header'));
