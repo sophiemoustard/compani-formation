@@ -4,7 +4,7 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import getEnvVars from './environment';
 import Version from './src/api/version';
 import NiModal from './src/components/Modal';
-import { AppContainer } from './src/stack';
+import { AppContainer } from './src/AppContainer';
 import { NEUTRAL_BACKGROUND_COLOR } from './src/styles/variables';
 
 
