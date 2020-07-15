@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { WHITE } from '../../styles/variables';
 
-const NiInput = ({ style, value, onChangeText, caption, type }) => {
+const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
   const autoCapitalize = ['password', 'email'].includes(type) ? 'none' : 'sentences';
@@ -11,11 +12,17 @@ const NiInput = ({ style, value, onChangeText, caption, type }) => {
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
   const togglePassword = () => { setShowPassword(!showPassword); };
-  const inputStyle = isPassword ? { ...styles.input, paddingRight: 30 } : styles.input;
+  const inputStyle = { ...styles.input };
+  const textStyle = { ...styles.text };
+  if (isPassword) inputStyle.paddingRight = 30;
+  if (darkMode) {
+    inputStyle.backgroundColor = WHITE;
+    textStyle.color = WHITE;
+  }
 
   return (
     <View style={style}>
-      <Text style={styles.text}>{caption}</Text>
+      <Text style={textStyle}>{caption}</Text>
       <View>
         <TextInput value={value} onChangeText={onChangeText} style={inputStyle} secureTextEntry={secureTextEntry}
           autoCapitalize={autoCapitalize} keyboardType={keyboradType} testID={caption} />
@@ -34,6 +41,7 @@ NiInput.propTypes = {
   onChangeText: PropTypes.func,
   caption: PropTypes.string,
   type: PropTypes.string,
+  darkMode: PropTypes.bool,
 };
 
 const styles = StyleSheet.create({
@@ -43,7 +51,7 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: 16,
   },
   text: {
     marginBottom: 4,
