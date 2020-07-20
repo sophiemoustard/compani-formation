@@ -12,8 +12,8 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
   const togglePassword = () => { setShowPassword(!showPassword); };
-  const inputStyle = { ...styles.input };
   const textStyle = { ...styles.text };
+  const inputStyle = { ...styles.input };
   if (isPassword) inputStyle.paddingRight = 30;
   if (darkMode) {
     inputStyle.backgroundColor = WHITE;
@@ -24,8 +24,8 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
     <View style={style}>
       <Text style={textStyle}>{caption}</Text>
       <View>
-        <TextInput value={value} onChangeText={onChangeText} style={inputStyle} secureTextEntry={secureTextEntry}
-          autoCapitalize={autoCapitalize} keyboardType={keyboradType} testID={caption} />
+        <TextInput value={value} onChangeText={onChangeText} testID={caption} secureTextEntry={secureTextEntry}
+          style={inputStyle} autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
         {isPassword &&
           <TouchableOpacity style={styles.inputIcon} onPress={togglePassword}>
             <MaterialCommunityIcons name={showPasswordIcon} size={20} />
