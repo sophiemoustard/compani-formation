@@ -4,7 +4,7 @@ import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-nat
 import { WHITE, PRIMARY_COLOR } from '../../styles/variables';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
-  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: color, borderWidth: 1 };
+  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: bgColor, borderWidth: 1 };
 
   return (
     <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   button: {
-    borderRadius: 5,
+    borderRadius: 16,
     display: 'flex',
     flexDirection: 'row',
     height: 40,
