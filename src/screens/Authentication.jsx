@@ -1,12 +1,20 @@
 import React, { useState, useContext } from 'react';
-import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  ImageBackground,
+  useWindowDimensions,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
-import screensStyle from '../styles/screens.style';
-import { WHITE } from '../styles/variables'
+import { WHITE } from '../styles/variables';
 
 const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -21,11 +29,14 @@ const AuthenticationScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
-      <ImageBackground style={styles.image} source={ require('../../assets/authentication_background_image.jpg') }>
+    <ImageBackground
+      style={{...styles.image, height: useWindowDimensions().height}}
+      source={require('../../assets/authentication_background_image.jpg')}
+    >
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
         <View style={styles.inner}>
           <Text style={styles.title}>
-          Identifiez-vous pour{'\n'}accéder aux informations
+            Identifiez-vous pour{'\n'}accéder aux informations
           </Text>
           <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email"
             darkMode={true} />
@@ -37,8 +48,8 @@ const AuthenticationScreen = ({ navigation }) => {
           <NiErrorMessage message={errorMessage} show={error} />
           <NiButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
         </View>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ImageBackground>
   );
 };
 
@@ -47,19 +58,13 @@ AuthenticationScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    alignItems: 'center'
+  image: {
+    resizeMode: 'cover',
   },
   inner: {
     flex: 1,
     width: '80%',
-    justifyContent: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
   },
   title: {
@@ -71,7 +76,6 @@ const styles = StyleSheet.create({
   },
   input: {
     marginVertical: 10,
-    color: WHITE,
   },
   forgotPassword: {
     alignSelf: 'flex-end',
