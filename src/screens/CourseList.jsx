@@ -31,7 +31,10 @@ class CourseListScreen extends Component {
         <View style={styles.blobContainer}>
           <Blob style={styles.blob} color="#FFEA95" />
         </View>
-        <Text style={screensStyle.subtitle}>Formations en cours ({this.state.courses.length})</Text>
+        <View style={styles.contentTitle}>
+          <Text style={screensStyle.subtitle}>Formations en cours</Text>
+          <Text style={styles.numberWithRound}> {this.state.courses.length} </Text>
+        </View>
       </View>
     );
   }
@@ -41,8 +44,22 @@ const styles = StyleSheet.create({
   nextEventContainer: {
     paddingLeft: MAIN_MARGIN_LEFT,
   },
+  contentTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   blobContainer: { position: 'relative' },
-  blob: { position: 'absolute', top: -10 }
+  blob: { position: 'absolute', top: -10 },
+  numberWithRound: {
+    fontSize: 14,
+    marginBottom: 10,
+    backgroundColor: '#FFF9DF',
+    color: '#D5AD0A',
+    fontWeight: 'bold',
+    padding: 2,
+    marginLeft: 8,
+    borderRadius: 8,
+  }
 });
 
 export default CourseListScreen;
