@@ -2,9 +2,9 @@ import { alenviAxios } from './ressources/alenviAxios';
 import getEnvVars from '../../environment';
 
 export default {
-  getByUser: async (payload) => {
+  get: async (params) => {
     const { baseURL } = getEnvVars();
-    const response = await alenviAxios.get(`${baseURL}/courses`, payload);
+    const response = await alenviAxios.get(`${baseURL}/courses`, { params });
     return response.data.data.courses;
   },
 };

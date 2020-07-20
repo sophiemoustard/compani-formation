@@ -29,6 +29,7 @@ const signIn = dispatch => async ({ email, password }) => {
     dispatch({ type: 'beforeSignin' });
     const authentication = await Users.authenticate({ email, password });
     await AsyncStorage.setItem('token', authentication.token);
+    await AsyncStorage.setItem('user_id', authentication.user._id);
     dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'CourseList' });
   } catch (e) {

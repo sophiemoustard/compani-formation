@@ -4,6 +4,7 @@ import screensStyle from '../styles/screens.style';
 import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
 import Courses from '../api/courses';
 import Blob from '../components/Blob';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class CourseListScreen extends Component {
   constructor(props) {
@@ -14,10 +15,11 @@ class CourseListScreen extends Component {
 
   async componentDidMount () {
     try {
-      const courses = await Courses.getByUser();
+      const userId = await AsyncStorage.getItem('user_id');
+      const courses = await Courses.get({ trainees: userId });
+
       this.setState({ courses });
     } catch (e) {
-      console.error(e);
       this.setState({ courses: [] });
     }
   }
