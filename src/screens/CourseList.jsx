@@ -16,7 +16,7 @@ class CourseListScreen extends Component {
   async componentDidMount () {
     try {
       const userId = await AsyncStorage.getItem('user_id');
-      const courses = await Courses.get({ trainees: userId });
+      const courses = await Courses.getMyCourses({ trainees: userId });
 
       this.setState({ courses });
     } catch (e) {
