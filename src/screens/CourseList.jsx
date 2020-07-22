@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import screensStyle from '../styles/screens.style';
 import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
 import Courses from '../api/courses';
 import Blob from '../components/Blob';
-import AsyncStorage from '@react-native-community/async-storage';
+import CourseCard from '../components/CourseCard';
 
 class CourseListScreen extends Component {
   constructor(props) {
@@ -30,10 +31,18 @@ class CourseListScreen extends Component {
         <Text style={screensStyle.title} testID='header'>Mes formations</Text>
         <View style={styles.blobContainer}>
           <Blob style={styles.blob} color="#FFEA95" />
-        </View>
-        <View style={styles.contentTitle}>
-          <Text style={screensStyle.subtitle}>Formations en cours</Text>
-          <Text style={styles.numberWithRound}> {this.state.courses.length} </Text>
+          <View style={styles.contentTitle}>
+            <Text style={screensStyle.subtitle}>Formations en cours</Text>
+            <Text style={styles.coursesCount}> {this.state.courses.length} </Text>
+          </View>
+          <FlatList
+            horizontal
+            data={this.state.courses}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => <CourseCard course={item} />}
+            style={{...styles.courseContainer}}
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
       </View>
     );
@@ -41,7 +50,7 @@ class CourseListScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  nextEventContainer: {
+  courseContainer: {
     paddingLeft: MAIN_MARGIN_LEFT,
   },
   contentTitle: {
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
   },
   blobContainer: { position: 'relative' },
   blob: { position: 'absolute', top: -10 },
-  numberWithRound: {
+  coursesCount: {
     fontSize: 14,
     marginBottom: 10,
     backgroundColor: '#FFF9DF',
