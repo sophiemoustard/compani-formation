@@ -6,7 +6,8 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -22,6 +23,8 @@ module.exports = {
     semi: ['error', 'always'],
     'react/display-name': 'off',
     'max-len': ['error', { 'code' : 120, 'tabWidth': 2 }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   },
   globals: {
     __DEV__: true,

@@ -11,7 +11,7 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const keyboradType = type === 'email' ? 'email-address' : 'default';
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
-  const togglePassword = () => { setShowPassword(!showPassword); };
+  const togglePassword = () => { setShowPassword(showPassword => !showPassword); };
   const textStyle = { ...styles.text };
   const inputStyle = { ...styles.input };
   if (isPassword) inputStyle.paddingRight = 30;
