@@ -43,7 +43,7 @@ const CourseListScreen = () => {
           data={courses}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => <CourseCard course={item} />}
-          style={{...styles.courseContainer}}
+          style={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -54,6 +54,7 @@ const CourseListScreen = () => {
 const styles = StyleSheet.create({
   courseContainer: {
     paddingLeft: MAIN_MARGIN_LEFT,
+    paddingRight: MAIN_MARGIN_LEFT,
   },
   contentTitle: {
     flexDirection: 'row',
