@@ -21,6 +21,7 @@
     ]
   },
   "dependencies": {
+    "@react-native-community/async-storage": "~1.11.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.6.1",
     "@react-navigation/native": "^5.6.1",
@@ -36,10 +37,9 @@
     "react-native-gesture-handler": "~1.6.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
-    "react-test-renderer": "~16.11.0",
-    "sharp-cli": "^1.14.1",
     "react-native-svg": "12.1.0",
-    "@react-native-community/async-storage": "~1.11.0"
+    "react-test-renderer": "~16.11.0",
+    "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -47,6 +47,7 @@
     "babel-preset-expo": "^8.2.3",
     "eslint": "^7.4.0",
     "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "jest-expo": "^38.0.2",
     "react-native-testing-library": "^2.1.0"
   },
