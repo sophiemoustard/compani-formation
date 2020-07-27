@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { GREY, WHITE } from '../styles/variables';
 
-const NextEvent = ({ course }) => {
+const CourseCell = ({ course }) => {
   const programImage = get(course, 'program.image.link') || '';
   const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
   const programName = course.program.name.length > 50 ? `${course.program.name.slice(0, 48)}...` : course.program.name;
@@ -17,7 +17,7 @@ const NextEvent = ({ course }) => {
   </View>;
 };
 
-NextEvent.propTypes = {
+CourseCell.propTypes = {
   course: PropTypes.object,
 };
 
@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: borderRadius,
     borderTopRightRadius: borderRadius,
     height: imageHeight,
+    borderWidth: 1,
+    borderColor: GREY,
   },
   imageContainer: {
     height: imageHeight,
@@ -35,19 +37,20 @@ const styles = StyleSheet.create({
   container: {
     height: 150,
     width: 200,
-    borderWidth: 1,
-    borderColor: GREY,
     borderRadius: borderRadius,
     marginRight: 10,
-    backgroundColor: WHITE,
   },
   title: {
     padding: 5,
     backgroundColor: WHITE,
     borderBottomLeftRadius: borderRadius,
     borderBottomRightRadius: borderRadius,
-    height: 30,
+    height: 50,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: GREY,
   }
 });
 
-export default NextEvent;
+export default CourseCell;
