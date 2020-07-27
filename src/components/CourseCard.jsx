@@ -7,40 +7,43 @@ import { GREY, WHITE } from '../styles/variables';
 const NextEvent = ({ course }) => {
   const programImage = get(course, 'program.image.link') || '';
 
-  return <View style={{...styles.container, ...styles.imageContainer}}>
-    <View>
-      <ImageBackground source={{ uri: programImage }} imageStyle={styles.image}
-        style={styles.imageContainer}>
-        <Text>{course.program.name}</Text>
-      </ImageBackground>
+  return <View style={styles.container}>
+    <View style={styles.imageContainer}>
+      <ImageBackground source={{ uri: programImage }} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
     </View>
-    <View style={{ backgroundColor: WHITE }}><Text>{course.program.name}</Text></View>
+    <View style={styles.title}><Text>{course.program.name}</Text></View>
   </View>;
 };
 
 NextEvent.propTypes = {
   course: PropTypes.object,
 };
+
+const imageHeight = 100;
+const borderRadius = 10;
 const styles = StyleSheet.create({
   image: {
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    height: 120,
+    borderTopLeftRadius: borderRadius,
+    borderTopRightRadius: borderRadius,
+    height: imageHeight,
   },
   imageContainer: {
-    width: 200,
-    resizeMode: 'contain'
+    height: imageHeight,
   },
   container: {
     height: 150,
+    width: 200,
     borderWidth: 1,
     borderColor: GREY,
-    borderRadius: 10,
+    borderRadius: borderRadius,
     marginRight: 10,
     backgroundColor: WHITE,
   },
   title: {
     padding: 5,
+    backgroundColor: WHITE,
+    borderBottomLeftRadius: borderRadius,
+    borderBottomRightRadius: borderRadius,
   }
 });
 
