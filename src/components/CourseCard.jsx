@@ -6,12 +6,14 @@ import { GREY, WHITE } from '../styles/variables';
 
 const NextEvent = ({ course }) => {
   const programImage = get(course, 'program.image.link') || '';
+  const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
+  const programName = course.program.name.length > 50 ? `${course.program.name.slice(0, 48)}...` : course.program.name;
 
   return <View style={styles.container}>
     <View style={styles.imageContainer}>
-      <ImageBackground source={{ uri: programImage }} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
+      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
     </View>
-    <View style={styles.title}><Text>{course.program.name}</Text></View>
+    <View style={styles.title}><Text>{programName}</Text></View>
   </View>;
 };
 
@@ -44,6 +46,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     borderBottomLeftRadius: borderRadius,
     borderBottomRightRadius: borderRadius,
+    height: 30,
   }
 });
 
