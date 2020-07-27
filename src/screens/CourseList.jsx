@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import screensStyle from '../styles/screens.style';
 import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
@@ -7,47 +8,48 @@ import Courses from '../api/courses';
 import Blob from '../components/Blob';
 import CourseCard from '../components/CourseCard';
 
-class CourseListScreen extends Component {
-  constructor(props) {
-    super(props);
+const CourseListScreen = () => {
+  const [courses, setCourses] = useState([]);
 
-    this.state = { courses: [] };
-  }
+  const getCourses = async () => {
+    const userId = await AsyncStorage.getItem('user_id');
+    const courses = await Courses.getUserCourses({ trainees: userId });
+    setCourses(courses);
+  };
 
-  async componentDidMount () {
-    try {
-      const userId = await AsyncStorage.getItem('user_id');
-      const courses = await Courses.getUserCourses({ trainees: userId });
+  useEffect(() => {
+    async function fetchData () { getCourses(); }
+    fetchData();
+  }, []);
 
-      this.setState({ courses });
-    } catch (e) {
-      this.setState({ courses: [] });
-    }
-  }
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    async function fetchData () { getCourses(); }
+    isFocused && fetchData();
+  }, [isFocused]);
 
-  render () {
-    return (
-      <View style={screensStyle.container}>
-        <Text style={screensStyle.title} testID='header'>Mes formations</Text>
-        <View style={styles.blobContainer}>
-          <Blob style={styles.blob} color="#FFEA95" />
-          <View style={styles.contentTitle}>
-            <Text style={screensStyle.subtitle}>Formations en cours</Text>
-            <Text style={styles.coursesCount}> {this.state.courses.length} </Text>
-          </View>
-          <FlatList
-            horizontal
-            data={this.state.courses}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <CourseCard course={item} />}
-            style={{...styles.courseContainer}}
-            showsHorizontalScrollIndicator={false}
-          />
+
+  return (
+    <View style={screensStyle.container}>
+      <Text style={screensStyle.title} testID='header'>Mes formations</Text>
+      <View style={styles.blobContainer}>
+        <Blob style={styles.blob} color="#FFEA95" />
+        <View style={styles.contentTitle}>
+          <Text style={screensStyle.subtitle}>Formations en cours</Text>
+          <Text style={styles.coursesCount}> {courses.length} </Text>
         </View>
+        <FlatList
+          horizontal
+          data={courses}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <CourseCard course={item} />}
+          style={{...styles.courseContainer}}
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   courseContainer: {
