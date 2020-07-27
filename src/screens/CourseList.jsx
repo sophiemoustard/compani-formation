@@ -6,7 +6,7 @@ import screensStyle from '../styles/screens.style';
 import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
 import Courses from '../api/courses';
 import Blob from '../components/Blob';
-import CourseCard from '../components/CourseCard';
+import CourseCell from '../components/CourseCell';
 
 const CourseListScreen = () => {
   const [courses, setCourses] = useState([]);
@@ -42,7 +42,7 @@ const CourseListScreen = () => {
           horizontal
           data={courses}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <CourseCard course={item} />}
+          renderItem={({ item }) => <CourseCell course={item} />}
           style={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
         />
