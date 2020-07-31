@@ -9,7 +9,7 @@ export default {
   },
   getCourse: async (courseId) => {
     const { baseURL } = getEnvVars();
-    const response = await alenviAxios.get(`${baseURL}/courses/${courseId}/public-infos`);
+    const response = await alenviAxios.get(`${baseURL}/courses/${courseId}/user`);
     return response.data.data.course;
   },
 };
