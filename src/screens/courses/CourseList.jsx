@@ -9,7 +9,7 @@ import groupBy from 'lodash/groupBy';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import screensStyle from '../styles/screens.style';
-import { MAIN_MARGIN_LEFT, PRIMARY_LIGHT, PRIMARY_DARK } from '../styles/variables.js';
+import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../styles/variables.js';
 import Courses from '../api/courses';
 import Blob from '../components/Blob';
 import CourseCell from '../components/CourseCell';
@@ -41,7 +41,7 @@ const CourseListScreen = ({ navigation }) => {
           return slotsByDate;
         })
         .flat();
-      console.log('test');
+
       futureSlots.sort((a, b) => moment(a.date, 'DD/MM/YYYY').diff(moment(b.date, 'DD/MM/YYYY'), 'days'));
       setNextEvents(futureSlots);
     } catch (e) {
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
   nextEventsCountContainer: {
     fontSize: 14,
     marginBottom: 10,
-    backgroundColor: PRIMARY_LIGHT,
-    color: PRIMARY_DARK,
+    backgroundColor: PRIMARY_COLOR_LIGHT,
+    color: PRIMARY_COLOR_DARK,
     fontWeight: 'bold',
     padding: 2,
     marginLeft: 8,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   nextEventsCount: {
     fontSize: 14,
-    color: PRIMARY_DARK,
+    color: PRIMARY_COLOR_DARK,
     fontWeight: 'bold',
   }
 });
