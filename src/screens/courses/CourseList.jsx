@@ -1,5 +1,5 @@
+import moment from 'moment/min/moment-with-locales';
 import 'array-flat-polyfill';
-import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -8,12 +8,12 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
-import screensStyle from '../styles/screens.style';
-import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../styles/variables.js';
-import Courses from '../api/courses';
-import Blob from '../components/Blob';
-import CourseCell from '../components/CourseCell';
-import SlotCell from '../components/SlotCell';
+import screensStyle from '../../styles/screens.style';
+import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../../styles/variables.js';
+import Courses from '../../api/courses';
+import Blob from '../../components/Blob';
+import CourseCell from '../../components/CourseCell';
+import SlotCell from '../../components/SlotCell';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);

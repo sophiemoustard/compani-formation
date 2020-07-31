@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
