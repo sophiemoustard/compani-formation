@@ -31,7 +31,7 @@ const signIn = dispatch => async ({ email, password }) => {
     await AsyncStorage.setItem('token', authentication.token);
     await AsyncStorage.setItem('user_id', authentication.user._id);
     dispatch({ type: 'signin', payload: authentication.token });
-    navigate('Home', { screen: 'CourseList' });
+    navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   } catch (e) {
     dispatch({
       type: 'signinError',
@@ -52,7 +52,7 @@ const tryLocalSignIn = dispatch => async () => {
   const token = await AsyncStorage.getItem('token');
   if (token) {
     dispatch({ type: 'signin', payload: token });
-    navigate('Home', { screen: 'CourseList' });
+    navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   }
   dispatch({ type: 'render' });
 };
