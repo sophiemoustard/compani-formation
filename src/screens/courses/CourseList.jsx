@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import screensStyle from '../styles/screens.style';
-import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
-import Courses from '../api/courses';
-import Blob from '../components/Blob';
-import CourseCell from '../components/CourseCell';
+import screensStyle from '../../styles/screens.style';
+import { MAIN_MARGIN_LEFT } from '../../styles/variables.js';
+import Courses from '../../api/courses';
+import Blob from '../../components/Blob';
+import CourseCell from '../../components/CourseCell';
 
 const CourseListScreen = () => {
   const [courses, setCourses] = useState([]);
@@ -29,7 +29,7 @@ const CourseListScreen = () => {
   }, [isFocused]);
 
 
-  return (
+  return ( 
     <View style={screensStyle.container}>
       <Text style={screensStyle.title} testID='header'>Mes formations</Text>
       <View style={styles.blobContainer}>
