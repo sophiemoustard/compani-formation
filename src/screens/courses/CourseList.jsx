@@ -1,3 +1,4 @@
+import 'array-flat-polyfill';
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
@@ -19,28 +20,35 @@ const CourseListScreen = ({ navigation }) => {
   const [nextEvents, setNextEvents] = useState([]);
 
   const getCourses = async () => {
-    const userId = await AsyncStorage.getItem('user_id');
-    const courses = await Courses.getUserCourses({ trainees: userId });
-    setCourses(courses);
+    try {
+      const userId = await AsyncStorage.getItem('user_id');
+      const courses = await Courses.getUserCourses({ trainees: userId });
+      setCourses(courses);
 
-    setNextEvents(() => []);
-    const futureSlots = courses.map(course => ({
-        name: get(course, 'program.name') || '',
-        steps: get(course, 'program.steps') || [],
-        slots: course.slots.filter(slot => moment().isBefore(slot.startDate)),
-      }))
-      .filter(course => course.slots.length)
-      .map(course => {
-        const slotsByDate = [];
-        const groupedBySlots = groupBy(course.slots, s => moment(s.startDate).format('DD/MM/YYYY'));
-        for (const date in groupedBySlots) {
-          slotsByDate.push({ ...omit(course, ['slots']), date, slots: groupedBySlots[date] });
-        }
-        return slotsByDate;
-      })
-      .flat();
-    futureSlots.sort((a, b) => moment(a.date, 'DD/MM/YYYY').diff(moment(b.date, 'DD/MM/YYYY'), 'days'));
-    setNextEvents(futureSlots);
+      setNextEvents(() => []);
+      const futureSlots = courses.map(course => ({
+          name: get(course, 'program.name') || '',
+          steps: get(course, 'program.steps') || [],
+          slots: course.slots.filter(slot => moment().isBefore(slot.startDate)),
+        }))
+        .filter(course => course.slots.length)
+        .map(course => {
+          const slotsByDate = [];
+          const groupedBySlots = groupBy(course.slots, s => moment(s.startDate).format('DD/MM/YYYY'));
+          for (const date in groupedBySlots) {
+            slotsByDate.push({ ...omit(course, ['slots']), date, slots: groupedBySlots[date] });
+          }
+          return slotsByDate;
+        })
+        .flat();
+      console.log('test');
+      futureSlots.sort((a, b) => moment(a.date, 'DD/MM/YYYY').diff(moment(b.date, 'DD/MM/YYYY'), 'days'));
+      setNextEvents(futureSlots);
+    } catch (e) {
+      console.log(e);
+      setCourses(() => []);
+      setNextEvents(() => []);
+    }
   };
 
   useEffect(() => {
@@ -61,7 +69,9 @@ const CourseListScreen = ({ navigation }) => {
       <View style={styles.sectionContainer}>
         <View style={styles.contentTitle}>
           <Text style={screensStyle.subtitle}>Prochains évènements</Text>
-          <Text style={styles.nextEventsCount}> {Object.keys(nextEvents).length} </Text>
+          <View style={styles.nextEventsCountContainer}>
+            <Text  style={styles.nextEventsCount}> {Object.keys(nextEvents).length} </Text>
+          </View>
         </View>
         <FlatList
           horizontal
@@ -76,7 +86,7 @@ const CourseListScreen = ({ navigation }) => {
         <Blob style={styles.blob} color="#FFEA95" />
         <View style={styles.contentTitle}>
           <Text style={screensStyle.subtitle}>Formations en cours</Text>
-          <Text style={styles.coursesCount}> {courses.length} </Text>
+          <View style={styles.coursesCountContainer}><Text style={styles.coursesCount}> {courses.length} </Text></View>
         </View>
         <FlatList
           horizontal
@@ -106,7 +116,7 @@ const styles = StyleSheet.create({
   },
   sectionContainer: { position: 'relative', marginBottom: 100 },
   blob: { position: 'absolute', top: -10 },
-  coursesCount: {
+  coursesCountContainer: {
     fontSize: 14,
     marginBottom: 10,
     backgroundColor: '#FFF9DF',
@@ -116,7 +126,12 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     borderRadius: 8,
   },
-  nextEventsCount: {
+  coursesCount: {
+    fontSize: 14,
+    color: '#D5AD0A',
+    fontWeight: 'bold',
+  },
+  nextEventsCountContainer: {
     fontSize: 14,
     marginBottom: 10,
     backgroundColor: PRIMARY_LIGHT,
@@ -125,6 +140,11 @@ const styles = StyleSheet.create({
     padding: 2,
     marginLeft: 8,
     borderRadius: 8,
+  },
+  nextEventsCount: {
+    fontSize: 14,
+    color: PRIMARY_DARK,
+    fontWeight: 'bold',
   }
 });
 

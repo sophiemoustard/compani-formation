@@ -25,7 +25,7 @@ const SlotCell = ({ slotsByDay }) => {
 
   return <View style={styles.container}>
     <View style={styles.dateContainer}>
-      <Text style={styles.dayOfWeek}>{dateFormat.format('ddd')}</Text>
+      <View style={styles.dayOfWeekContainer}><Text style={styles.dayOfWeek}>{dateFormat.format('ddd')}</Text></View>
       <Text style={styles.dayOfMonth}>{dateFormat.format('D')}</Text>
       <Text style={styles.month}>{dateFormat.format('MMM')}</Text>
     </View>
@@ -71,14 +71,16 @@ const styles = StyleSheet.create({
     borderColor: PRIMARY_COLOR,
     alignItems: 'center',
   },
-  dayOfWeek: {
+  dayOfWeekContainer: {
     borderTopLeftRadius: borderRadius,
     borderTopRightRadius: borderRadius,
     backgroundColor: PRIMARY_COLOR,
-    color: WHITE,
     width: 50,
-    textAlign: 'center',
+  },
+  dayOfWeek: {
+    color: WHITE,
     fontSize: 12,
+    textAlign: 'center',
   },
   dayOfMonth: {
     fontSize: 18,
