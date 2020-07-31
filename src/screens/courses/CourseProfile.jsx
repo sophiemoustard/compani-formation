@@ -1,14 +1,74 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, ImageBackground } from 'react-native';
+import get from 'lodash/get';
+import PropTypes from 'prop-types';
+import { MaterialIcons } from '@expo/vector-icons';
+import Courses from '../../api/courses';
+import { WHITE, BLACK, MAIN_MARGIN_LEFT } from '../../styles/variables';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const CourseProfileScreen = () => {
+const CourseProfileScreen = ({ route, navigation }) => {
+  const [course, setCourse] = useState(null);
+  const getCourse = async () => {
+    const courses = await Courses.getCourse(route.params.courseId);
+    setCourse(courses);
+  };
+
+  useEffect(() => {
+    async function fetchData () { await getCourse(); }
+    fetchData();
+  }, []);
+
+  const programImage = get(course, 'program.image.link') || '';
+  const programName = get(course, 'program.name') || '';
+  const source = programImage ? { uri: programImage } : require('../../../assets/authentication_background_image.jpg');
+  const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+
   return (
-    <View>
-      <Text>Profile</Text>
+    course && <View>
+      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.arrow} onPress={goBack}>
+          <MaterialIcons name="arrow-back" color="white" size={24} />
+        </TouchableOpacity>
+        <Text style={styles.title}>{programName}</Text>
+      </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+CourseProfileScreen.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.exact({
+      courseId: PropTypes.string.isRequired,
+    })
+  }),
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }),
+};
+
+const imageHeight = 200;
+const styles = StyleSheet.create({
+  image: {
+    height: imageHeight,
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    height: imageHeight,
+  },
+  arrow: {
+    margin: MAIN_MARGIN_LEFT,
+  },
+  title: {
+    color: WHITE,
+    margin: MAIN_MARGIN_LEFT,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textShadowColor: BLACK,
+    textShadowRadius: 1
+  }
+});
 
 export default CourseProfileScreen;

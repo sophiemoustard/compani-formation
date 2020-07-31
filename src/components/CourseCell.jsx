@@ -9,7 +9,10 @@ const CourseCell = ({ course, navigation }) => {
   const programImage = get(course, 'program.image.link') || '';
   const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
   const programName = course.program.name.length > 50 ? `${course.program.name.slice(0, 48)}...` : course.program.name;
-  const goToCourse = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile' } });
+  const goToCourse = () => navigation.navigate(
+    'Home',
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: course._id } } }
+  );
 
   return <TouchableOpacity style={styles.container} onPress={goToCourse}>
     <View style={styles.imageContainer}>
