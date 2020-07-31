@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-import screensStyle from '../styles/screens.style';
-import { MAIN_MARGIN_LEFT } from '../styles/variables.js';
-import Courses from '../api/courses';
-import Blob from '../components/Blob';
-import CourseCell from '../components/CourseCell';
+import PropTypes from 'prop-types';
+import screensStyle from '../../styles/screens.style';
+import { MAIN_MARGIN_LEFT } from '../../styles/variables.js';
+import Courses from '../../api/courses';
+import Blob from '../../components/Blob';
+import CourseCell from '../../components/CourseCell';
 
-const CourseListScreen = () => {
+const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
 
   const getCourses = async () => {
@@ -29,7 +30,7 @@ const CourseListScreen = () => {
   }, [isFocused]);
 
 
-  return (
+  return ( 
     <View style={screensStyle.container}>
       <Text style={screensStyle.title} testID='header'>Mes formations</Text>
       <View style={styles.blobContainer}>
@@ -42,13 +43,17 @@ const CourseListScreen = () => {
           horizontal
           data={courses}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <CourseCell course={item} />}
+          renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
           style={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
         />
       </View>
     </View>
   );
+};
+
+CourseListScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -8,6 +8,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(async function (config) {
   const token = await AsyncStorage.getItem('token');
+
   // Headers for request only to API (alenvi)
   config.headers.common['x-access-token'] = token;
   return config;
