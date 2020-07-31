@@ -29,7 +29,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
       <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.arrow} onPress={goBack}>
-          <MaterialIcons name="arrow-back" color="white" size={24} />
+          <MaterialIcons name="arrow-back" color={WHITE} size={24} />
         </TouchableOpacity>
         <Text style={styles.title}>{programName}</Text>
       </View>
