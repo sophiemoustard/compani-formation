@@ -5,6 +5,7 @@ export const NEUTRAL_BACKGROUND_COLOR = '#fff';
 export const WHITE = 'white';
 export const GREY = '#9B9B9B';
 export const BLACK = 'black';
+export const GREY_DARK = '#766570';
 export const POSITIVE = '#21B945';
 export const SECONDARY = '#F29400';
 

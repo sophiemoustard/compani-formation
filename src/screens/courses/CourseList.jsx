@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -12,7 +13,6 @@ import Courses from '../api/courses';
 import Blob from '../components/Blob';
 import CourseCell from '../components/CourseCell';
 import SlotCell from '../components/SlotCell';
-import moment from 'moment';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -97,8 +97,8 @@ CourseListScreen.propTypes = {
 
 const styles = StyleSheet.create({
   courseContainer: {
-    paddingLeft: MAIN_MARGIN_LEFT,
-    paddingRight: MAIN_MARGIN_LEFT,
+    marginLeft: MAIN_MARGIN_LEFT,
+    marginRight: MAIN_MARGIN_LEFT,
   },
   contentTitle: {
     flexDirection: 'row',
