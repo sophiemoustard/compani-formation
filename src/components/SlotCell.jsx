@@ -4,6 +4,8 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
 import { GREY, PRIMARY_COLOR, WHITE } from '../styles/variables';
+import { capitalize } from '../core/helpers/utils';
+import { stepTypeOptions } from '../core/data/constants';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
@@ -12,22 +14,24 @@ const SlotCell = ({ slotsByDay }) => {
   let slotsSteps = '';
   if (steps) {
     for (const slot of slotsByDay.slots) {
-      const stepName = get(slot, 'step.name') || '';
-      const truncatedStepName = stepName.length > 15 ? `${stepName.slice(0, 13)}...` : stepName;
+      const stepType = get(slot, 'step.type');
+      const stepTypeLabel = stepType ? stepTypeOptions[stepType] : '';
       const indexOfStep = steps.indexOf(get(slot, 'step._id') || '');
       if (indexOfStep < 0) continue;
 
-      slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${truncatedStepName.toUpperCase()}`;
+      slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${stepTypeLabel.toUpperCase()}`;
     }
   }
 
-  const dateFormat = moment(date, 'DD/MM/YYYY');
+  const formattedDate = moment(date, 'DD/MM/YYYY');
 
   return <View style={styles.container}>
     <View style={styles.dateContainer}>
-      <View style={styles.dayOfWeekContainer}><Text style={styles.dayOfWeek}>{dateFormat.format('ddd')}</Text></View>
-      <Text style={styles.dayOfMonth}>{dateFormat.format('D')}</Text>
-      <Text style={styles.month}>{dateFormat.format('MMM')}</Text>
+      <View style={styles.dayOfWeekContainer}>
+        <Text style={styles.dayOfWeek}>{capitalize(formattedDate.format('ddd'))}</Text>
+      </View>
+      <Text style={styles.dayOfMonth}>{capitalize(formattedDate.format('D'))}</Text>
+      <Text style={styles.month}>{capitalize(formattedDate.format('MMM'))}</Text>
     </View>
     <View style={styles.textContainer}>
       <View><Text style={styles.programName}>{truncatedProgramName || ''}</Text></View>

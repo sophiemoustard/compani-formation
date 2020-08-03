@@ -29,7 +29,7 @@ const CourseListScreen = ({ navigation }) => {
       const futureSlots = courses.map(course => ({
           name: get(course, 'program.name') || '',
           steps: get(course, 'program.steps') || [],
-          slots: course.slots.filter(slot => moment().isBefore(slot.startDate)),
+          slots: course.slots.filter(slot => moment().isSameOrBefore(slot.startDate, 'days')),
         }))
         .filter(course => course.slots.length)
         .map(course => {
@@ -66,27 +66,33 @@ const CourseListScreen = ({ navigation }) => {
   return ( 
     <View style={screensStyle.container}>
       <Text style={screensStyle.title} testID='header'>Mes formations</Text>
-      <View style={styles.sectionContainer}>
-        <View style={styles.contentTitle}>
-          <Text style={screensStyle.subtitle}>Prochains évènements</Text>
-          <View style={styles.nextEventsCountContainer}>
-            <Text  style={styles.nextEventsCount}> {Object.keys(nextEvents).length} </Text>
+      { Object.keys(nextEvents).length > 0 &&
+        <>
+          <View style={styles.sectionContainer}>
+            <View style={styles.contentTitle}>
+              <Text style={screensStyle.subtitle}>Prochains évènements</Text>
+              <View style={{ ...styles.nextEventsCountContainer, ...styles.countContainer }}>
+                <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
+              </View>
+            </View>
+            <FlatList
+              horizontal
+              data={nextEvents}
+              keyExtractor={(item) => item.date}
+              renderItem={({ item }) => <SlotCell slotsByDay={item} />}
+              style={styles.courseContainer}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
-        </View>
-        <FlatList
-          horizontal
-          data={nextEvents}
-          keyExtractor={(item) => item.date}
-          renderItem={({ item }) => <SlotCell slotsByDay={item} />}
-          style={styles.courseContainer}
-          showsHorizontalScrollIndicator={false}
-        />
-      </View>
+        </>
+      }
       <View style={styles.sectionContainer}>
         <Blob style={styles.blob} color="#FFEA95" />
         <View style={styles.contentTitle}>
           <Text style={screensStyle.subtitle}>Formations en cours</Text>
-          <View style={styles.coursesCountContainer}><Text style={styles.coursesCount}> {courses.length} </Text></View>
+          <View style={{ ...styles.coursesCountContainer, ...styles.countContainer }}>
+            <Text style={styles.coursesCount}> {courses.length} </Text>
+          </View>
         </View>
         <FlatList
           horizontal
@@ -117,14 +123,7 @@ const styles = StyleSheet.create({
   sectionContainer: { position: 'relative', marginBottom: 100 },
   blob: { position: 'absolute', top: -10 },
   coursesCountContainer: {
-    fontSize: 14,
-    marginBottom: 10,
     backgroundColor: '#FFF9DF',
-    color: '#D5AD0A',
-    fontWeight: 'bold',
-    padding: 2,
-    marginLeft: 8,
-    borderRadius: 8,
   },
   coursesCount: {
     fontSize: 14,
@@ -132,19 +131,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   nextEventsCountContainer: {
-    fontSize: 14,
-    marginBottom: 10,
     backgroundColor: PRIMARY_COLOR_LIGHT,
-    color: PRIMARY_COLOR_DARK,
-    fontWeight: 'bold',
-    padding: 2,
-    marginLeft: 8,
-    borderRadius: 8,
   },
   nextEventsCount: {
     fontSize: 14,
     color: PRIMARY_COLOR_DARK,
     fontWeight: 'bold',
+  },
+  countContainer: {
+    marginBottom: 10,
+    padding: 2,
+    marginLeft: 8,
+    borderRadius: 8,
   }
 });
 
