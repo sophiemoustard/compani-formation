@@ -13,11 +13,13 @@ const SlotCell = ({ slotsByDay }) => {
 
   let slotsSteps = '';
   if (steps) {
+    const alreadyUsedIndexOfStep = [];
     for (const slot of slotsByDay.slots) {
       const stepType = get(slot, 'step.type');
       const stepTypeLabel = stepType ? stepTypeOptions[stepType] : '';
       const indexOfStep = steps.indexOf(get(slot, 'step._id') || '');
-      if (indexOfStep < 0) continue;
+      if (indexOfStep < 0 || alreadyUsedIndexOfStep.indexOf(indexOfStep) >= 0) continue;
+      alreadyUsedIndexOfStep.push(indexOfStep);
 
       slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${stepTypeLabel.toUpperCase()}`;
     }
@@ -56,7 +58,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: 10,
-    borderRadius: borderRadius,
     maxWidth: 175,
     overflow: 'hidden',
   },
