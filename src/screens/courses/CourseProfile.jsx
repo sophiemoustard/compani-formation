@@ -10,8 +10,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
   const getCourse = async () => {
-    const courses = await Courses.getCourse(route.params.courseId);
-    setCourse(courses);
+    const course = await Courses.getCourse(route.params.courseId);
+    setCourse(course);
   };
 
   useEffect(() => {
