@@ -1,9 +1,9 @@
-import moment from 'moment/min/moment-with-locales';
 import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
 import { GREY, PRIMARY_COLOR, WHITE } from '../styles/variables';
+import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 import { stepTypeOptions } from '../core/data/constants';
 
@@ -36,8 +36,8 @@ const SlotCell = ({ slotsByDay }) => {
       <Text style={styles.month}>{capitalize(formattedDate.format('MMM'))}</Text>
     </View>
     <View style={styles.textContainer}>
-      <View><Text style={styles.programName}>{truncatedProgramName || ''}</Text></View>
-      <View><Text style={styles.slotsSteps}>{slotsSteps}</Text></View>
+      <Text style={styles.programName}>{truncatedProgramName || ''}</Text>
+      <Text style={styles.slotsSteps}>{slotsSteps}</Text>
     </View>
   </View>;
 };
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     maxWidth: 175,
     overflow: 'hidden',
+    justifyContent: 'space-between',
   },
   programName: {
     fontWeight: 'bold',

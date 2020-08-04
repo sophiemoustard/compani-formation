@@ -1,4 +1,3 @@
-import moment from 'moment/min/moment-with-locales';
 import 'array-flat-polyfill';
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
@@ -8,6 +7,7 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
+import moment from '../../core/helpers/moment';
 import screensStyle from '../../styles/screens.style';
 import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../../styles/variables.js';
 import Courses from '../../api/courses';

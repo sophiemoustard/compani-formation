@@ -1,4 +1,3 @@
-import moment from 'moment/min/moment-with-locales';
 import React, { useState, useEffect } from 'react';
 import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
 import { Provider as AuthProvider } from './src/context/AuthContext';
@@ -7,8 +6,6 @@ import Version from './src/api/version';
 import NiModal from './src/components/Modal';
 import { AppContainer } from './src/AppContainer';
 import { NEUTRAL_BACKGROUND_COLOR } from './src/styles/variables';
-
-moment.locale('fr');
 
 const App = () => {
   const appUrl = Platform.OS == 'ios'
