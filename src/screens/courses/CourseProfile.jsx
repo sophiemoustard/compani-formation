@@ -8,6 +8,7 @@ import Courses from '../../api/courses';
 import { WHITE, BLACK, MAIN_MARGIN_LEFT } from '../../styles/variables';
 import OnSiteCell from '../../components/OnSiteCell';
 import { ON_SITE } from '../../core/data/constants';
+import screensStyle from '../../styles/screens.style';
 
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
@@ -27,7 +28,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   return (
-    course && <View>
+    course && <View style={screensStyle.container}>
       <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.arrow} onPress={goBack}>
@@ -38,7 +39,8 @@ const CourseProfileScreen = ({ route, navigation }) => {
       <FlatList
         data={course.program.steps}
         keyExtractor={(item) => item._id}
-        renderItem={({ item }) => item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} />}
+        renderItem={({ item, index }) =>
+          item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} index={index} />}
       />
     </View>
   );

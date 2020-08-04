@@ -20,7 +20,7 @@ const SlotCell = ({ slotsByDay }) => {
       if (indexOfStep < 0 || alreadyUsedIndexOfStep.indexOf(indexOfStep) >= 0) continue;
       alreadyUsedIndexOfStep.push(indexOfStep);
 
-      slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${stepTypeLabel.toUpperCase()}`;
+      slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${stepTypeLabel}`;
     }
   }
 
