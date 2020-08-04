@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { View, StyleSheet, Text, ImageBackground, FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
 import Courses from '../../api/courses';
 import { WHITE, BLACK, MAIN_MARGIN_LEFT } from '../../styles/variables';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import OnSiteCell from '../../components/OnSiteCell';
+import { ON_SITE } from '../../core/data/constants';
 
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
@@ -33,6 +35,11 @@ const CourseProfileScreen = ({ route, navigation }) => {
         </TouchableOpacity>
         <Text style={styles.title}>{programName}</Text>
       </View>
+      <FlatList
+        data={course.program.steps}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} />}
+      />
     </View>
   );
 };
