@@ -7,7 +7,6 @@ import NiModal from './src/components/Modal';
 import { AppContainer } from './src/AppContainer';
 import { NEUTRAL_BACKGROUND_COLOR } from './src/styles/variables';
 
-
 const App = () => {
   const appUrl = Platform.OS == 'ios'
     ? 'https://apps.apple.com/app/id1447513534'

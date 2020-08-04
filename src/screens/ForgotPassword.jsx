@@ -6,7 +6,7 @@ import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import screensStyle from '../styles/screens.style';
-import { WHITE, PRIMARY_COLOR, POSITIVE } from '../styles/variables';
+import { WHITE, PRIMARY_COLOR, POSITIVE_COLOR } from '../styles/variables';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   success: {
-    color: POSITIVE,
+    color: POSITIVE_COLOR,
     marginBottom: 10,
   }
 });
