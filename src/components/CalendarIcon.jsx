@@ -5,20 +5,26 @@ import { PRIMARY_COLOR, WHITE } from '../styles/variables';
 import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 
-const CalendarIcon = ({ date }) => {
-  const formattedDate = moment(date, 'DD/MM/YYYY');
+const CalendarIcon = ({ date, toPlan }) => {
+  const formattedDate = !toPlan ? moment(date, 'DD/MM/YYYY') : '';
 
   return <View style={styles.dateContainer}>
     <View style={styles.dayOfWeekContainer}>
-      <Text style={styles.dayOfWeek}>{capitalize(formattedDate.format('ddd'))}</Text>
+      <Text style={styles.dayOfWeek}>{!toPlan && capitalize(formattedDate.format('ddd'))}</Text>
     </View>
-    <Text style={styles.dayOfMonth}>{capitalize(formattedDate.format('D'))}</Text>
-    <Text style={styles.month}>{capitalize(formattedDate.format('MMM'))}</Text>
+    {!toPlan &&
+      <>
+        <Text style={styles.dayOfMonth}>{capitalize(formattedDate.format('D'))}</Text>
+        <Text style={styles.month}>{!toPlan && capitalize(formattedDate.format('MMM'))}</Text>
+      </>
+    }
+    {toPlan && <Text style={styles.toPlan}>?</Text>}
   </View>;
 };
 
 CalendarIcon.propTypes = {
   date: PropTypes.string,
+  toPlan: PropTypes.bool,
 };
 
 const borderRadius = 10;
@@ -52,6 +58,10 @@ const styles = StyleSheet.create({
     color: PRIMARY_COLOR,
     fontSize: 14,
     height: 18,
+  },
+  toPlan: {
+    fontSize: 24,
+    height: 40,
   }
 });
 

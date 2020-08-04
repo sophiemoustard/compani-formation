@@ -8,7 +8,7 @@ import { stepTypeOptions } from '../core/data/constants';
 
 const OnSiteCell = ({ step, slots, index}) => {
   const slotsFiltered = slots.filter(slot => slot.step === step._id).sort((a,b) => moment(a).isBefore(b) );
-  let startDate, endDate;
+  let startDate;
   let toPlan = true;
   const stepTypeLabel = stepTypeOptions[step.type];
 
@@ -16,12 +16,11 @@ const OnSiteCell = ({ step, slots, index}) => {
 
   if (slotsFiltered.length) {
     startDate = slotsFiltered[0].startDate;
-    endDate = slotsFiltered[slotsFiltered.length - 1].endDate;
     toPlan = false;
   }
 
   return <View style={styles.container}>
-    { !toPlan && <CalendarIcon date={moment(startDate)} /> }
+    <CalendarIcon date={moment(startDate)} toPlan={toPlan} />
     <View style={styles.textContainer}>
       <Text style={styles.stepType}>{stepTypeText}</Text>
       <Text style={styles.stepName}>{step.name}</Text>
