@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: BORDER_RADIUS.SM,
     borderTopRightRadius: BORDER_RADIUS.SM,
     height: imageHeight,
-    borderWidth: 1,
-    borderColor: GREY,
   },
   imageContainer: {
     height: imageHeight,
@@ -49,16 +47,14 @@ const styles = StyleSheet.create({
     width: COURSE_CELL_WIDTH,
     borderRadius: BORDER_RADIUS.SM,
     marginRight: MARGIN.SM,
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY,
   },
   title: {
     padding: PADDING.MD,
     backgroundColor: WHITE,
     borderBottomLeftRadius: BORDER_RADIUS.SM,
     borderBottomRightRadius: BORDER_RADIUS.SM,
-    borderLeftWidth: BORDER_WIDTH,
-    borderRightWidth: BORDER_WIDTH,
-    borderBottomWidth: BORDER_WIDTH,
-    borderColor: GREY,
   }
 });
 

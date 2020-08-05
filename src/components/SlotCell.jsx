@@ -5,7 +5,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { GREY } from '../styles/variables';
 import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
-import { MARGIN, PADDING, COURSE_CELL_WIDTH, IS_SMALL_SCREEN } from '../styles/metrics';
+import { MARGIN, PADDING, COURSE_CELL_WIDTH, IS_SMALL_SCREEN, BORDER_RADIUS } from '../styles/metrics';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
@@ -49,10 +49,9 @@ SlotCell.propTypes = {
   }),
 };
 
-const borderRadius = 10;
 const styles = StyleSheet.create({
   container: {
-    borderRadius: borderRadius,
+    borderRadius: BORDER_RADIUS.SM,
     marginRight: MARGIN.SM,
     padding: PADDING.MD,
     borderWidth: 1,
