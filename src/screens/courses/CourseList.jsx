@@ -71,32 +71,30 @@ const CourseListScreen = ({ navigation }) => {
   return ( 
     <View style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      { Object.keys(nextEvents).length > 0 &&
-        <>
-          <View style={styles.sectionContainer}>
-            <View style={styles.contentTitle}>
-              <Text style={commonStyles.subtitle}>Prochains évènements</Text>
-              <View style={{ ...styles.nextEventsCountContainer, ...styles.countContainer }}>
-                <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
-              </View>
+      {Object.keys(nextEvents).length > 0 &&
+        <View style={styles.sectionContainer}>
+          <View style={styles.contentTitle}>
+            <Text style={commonStyles.subtitle}>Prochains évènements</Text>
+            <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
+              <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
             </View>
-            <FlatList
-              horizontal
-              data={nextEvents}
-              keyExtractor={(item) => item.date}
-              renderItem={({ item }) => <SlotCell slotsByDay={item} />}
-              style={styles.courseContainer}
-              showsHorizontalScrollIndicator={false}
-            />
           </View>
-        </>
+          <FlatList
+            horizontal
+            data={nextEvents}
+            keyExtractor={(item) => item.date}
+            renderItem={({ item }) => <SlotCell slotsByDay={item} />}
+            style={styles.courseContainer}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
       }
       <View style={styles.sectionContainer}>
         <Blob style={styles.blob} color="#FFEA95" />
         <View style={styles.contentTitle}>
           <Text style={commonStyles.subtitle}>Formations en cours</Text>
-          <View style={{ ...styles.coursesCountContainer, ...styles.countContainer }}>
-            <Text style={styles.coursesCount}> {courses.length} </Text>
+          <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
+            <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
         </View>
         <FlatList
@@ -118,12 +116,12 @@ CourseListScreen.propTypes = {
 
 const styles = StyleSheet.create({
   courseContainer: {
-    marginLeft: MAIN_MARGIN_LEFT,
-    marginRight: MAIN_MARGIN_LEFT,
+    paddingLeft: MAIN_MARGIN_LEFT,
+    paddingRight: MAIN_MARGIN_LEFT,
   },
   contentTitle: {
     flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: MARGIN.MD,
   },
   sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   blob: { position: 'absolute', top: -10 },
@@ -143,12 +141,6 @@ const styles = StyleSheet.create({
     color: PRIMARY_COLOR_DARK,
     fontWeight: 'bold',
   },
-  countContainer: {
-    marginBottom: MARGIN.SM,
-    padding: PADDING.XS,
-    marginLeft: MARGIN.SM,
-    borderRadius: BORDER_RADIUS.XS,
-  }
 });
 
 export default CourseListScreen;

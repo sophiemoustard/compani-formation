@@ -16,7 +16,7 @@ export const PADDING = {
   XS: 2,
   SM: 5,
   MD: 10,
-  LG: '',
+  LG: 15,
   XL: 20,
   XXL: 40,
 };
@@ -26,7 +26,7 @@ export const BORDER_RADIUS = {
   XS: 5,
   SM: 10,
   MD: 15,
-  LG: '',
+  LG: 20,
   XL: 25,
 };
 
