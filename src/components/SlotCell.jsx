@@ -6,6 +6,7 @@ import { stepTypeOptions } from '../core/data/constants';
 import commonStyles from '../styles/common';
 import CalendarIcon from './CalendarIcon';
 import { MARGIN, PADDING, IS_SMALL_SCREEN } from '../styles/metrics';
+import { GREY_600 } from '../styles/colors';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   slotsSteps: {
-    color: '#766570',
+    color: GREY_600,
     fontSize: 12,
   },
 });

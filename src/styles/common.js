@@ -1,12 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { NEUTRAL_BACKGROUND_COLOR, MAIN_MARGIN_LEFT, GREY } from './variables';
-import { BORDER_RADIUS, MARGIN, PADDING, COURSE_CELL_WIDTH } from './metrics';
+import { BORDER_RADIUS, MARGIN, PADDING, COURSE_CELL_WIDTH, MAIN_MARGIN_LEFT } from './metrics';
+import { WHITE, TRANSPARENT_GREY } from './colors';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: NEUTRAL_BACKGROUND_COLOR,
-  },
+  container: { flex: 1, backgroundColor: WHITE },
   title: {
     fontWeight: 'bold',
     fontSize: 28,
@@ -23,7 +20,7 @@ export default StyleSheet.create({
     marginRight: MARGIN.SM,
     width: COURSE_CELL_WIDTH,
     borderWidth: 1,
-    borderColor: GREY,
+    borderColor: TRANSPARENT_GREY,
   },
   countContainer: {
     marginBottom: MARGIN.SM,

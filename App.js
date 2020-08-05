@@ -5,7 +5,7 @@ import getEnvVars from './environment';
 import Version from './src/api/version';
 import NiModal from './src/components/Modal';
 import { AppContainer } from './src/AppContainer';
-import { NEUTRAL_BACKGROUND_COLOR } from './src/styles/variables';
+import { WHITE } from './src/styles/colors';
 
 const App = () => {
   const appUrl = Platform.OS == 'ios'
@@ -39,7 +39,7 @@ const App = () => {
       />
       <AuthProvider>
         <View style={[styles.statusBar]}>
-          <StatusBar translucent barStyle="dark-content" backgroundColor={NEUTRAL_BACKGROUND_COLOR} />
+          <StatusBar translucent barStyle="dark-content" backgroundColor={WHITE} />
         </View>
         <AppContainer />
       </AuthProvider>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statusBar: {
-    backgroundColor: NEUTRAL_BACKGROUND_COLOR,
+    backgroundColor: WHITE,
     height: STATUSBAR_HEIGHT,
   },
 });

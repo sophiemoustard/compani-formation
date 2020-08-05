@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from '../core/helpers/moment';
 import CalendarIcon from './CalendarIcon';
-import { GREY_LIGHT, BLACK } from '../styles/variables';
 import { stepTypeOptions } from '../core/data/constants';
 import { MARGIN, PADDING } from '../styles/metrics';
+import { GREY_600, GREY_100, BLACK } from '../styles/colors';
 
 const OnSiteCell = ({ step, slots, index}) => {
   const stepSlots = slots.filter(slot => slot.step === step._id).sort((a,b) => moment(a).isBefore(b));
@@ -31,7 +31,7 @@ OnSiteCell.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: GREY_LIGHT,
+    backgroundColor: GREY_100,
     marginVertical: MARGIN.XS,
     flexDirection: 'row',
     padding: PADDING.MD,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   stepType: {
-    color: '#766570',
+    color: GREY_600,
     fontSize: 12,
   },
   stepName: {

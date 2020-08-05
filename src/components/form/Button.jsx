@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { WHITE, PRIMARY_COLOR } from '../../styles/variables';
 import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN } from '../../styles/metrics';
+import { ALT_PINK_500, WHITE } from '../../styles/colors';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
   const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: bgColor, borderWidth: 1 };
@@ -27,7 +27,7 @@ NiButton.propTypes = {
 
 NiButton.defaultProps = {
   loading: false,
-  bgColor: PRIMARY_COLOR,
+  bgColor: ALT_PINK_500,
   color: WHITE,
 };
 

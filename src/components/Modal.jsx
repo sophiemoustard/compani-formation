@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../components/form/Button';
-import { WHITE } from '../styles/variables';
+import { WHITE } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../styles/metrics';
 
 const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {

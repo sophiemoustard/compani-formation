@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
-import { PRIMARY_COLOR, WHITE } from '../styles/variables';
 import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
+import { ALT_PINK_500, WHITE } from '../styles/colors';
 
 const CalendarIcon = ({ date }) => {
   return (
@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
     height: 60,
     borderWidth: BORDER_WIDTH,
     borderRadius: BORDER_RADIUS.SM,
-    borderColor: PRIMARY_COLOR,
+    borderColor: ALT_PINK_500,
     alignItems: 'center',
     paddingBottom: PADDING.SM,
   },
   dayOfWeekContainer: {
     borderTopLeftRadius: BORDER_RADIUS.SM,
     borderTopRightRadius: BORDER_RADIUS.SM,
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: ALT_PINK_500,
     width,
     height: 15,
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     height: 22,
   },
   month: {
-    color: PRIMARY_COLOR,
+    color: ALT_PINK_500,
     fontSize: 14,
     height: 18,
   },

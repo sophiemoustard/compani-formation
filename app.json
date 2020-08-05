@@ -8,11 +8,11 @@
     "orientation": "portrait",
     "primaryColor": "#F29400",
     "icon": "./assets/icon.png",
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#FFFFFF",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFFFFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

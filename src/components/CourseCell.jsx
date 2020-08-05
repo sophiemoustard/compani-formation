@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { WHITE } from '../styles/variables';
+import { WHITE } from '../styles/colors';
 import commonStyles from '../styles/common';
 import { BORDER_RADIUS, PADDING, IS_SMALL_SCREEN } from '../styles/metrics';
 

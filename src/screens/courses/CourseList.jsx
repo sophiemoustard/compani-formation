@@ -9,12 +9,11 @@ import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import moment from '../../core/helpers/moment';
 import commonStyles from '../../styles/common';
-import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../../styles/variables.js';
 import Courses from '../../api/courses';
-import Blob from '../../components/Blob';
 import CourseCell from '../../components/CourseCell';
 import SlotCell from '../../components/SlotCell';
-import { MARGIN, PADDING, BORDER_RADIUS } from '../../styles/metrics';
+import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
+import { ALT_PINK_600, ALT_PINK_100, YELLOW_200, YELLOW_800 } from '../../styles/colors';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -90,7 +89,6 @@ const CourseListScreen = ({ navigation }) => {
         </View>
       }
       <View style={styles.sectionContainer}>
-        <Blob style={styles.blob} color="#FFEA95" />
         <View style={styles.contentTitle}>
           <Text style={commonStyles.subtitle}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
@@ -126,19 +124,19 @@ const styles = StyleSheet.create({
   sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   blob: { position: 'absolute', top: -10 },
   coursesCountContainer: {
-    backgroundColor: '#FFF9DF',
+    backgroundColor: YELLOW_200,
   },
   coursesCount: {
     fontSize: 14,
-    color: '#D5AD0A',
+    color:  YELLOW_800,
     fontWeight: 'bold',
   },
   nextEventsCountContainer: {
-    backgroundColor: PRIMARY_COLOR_LIGHT,
+    backgroundColor: ALT_PINK_100,
   },
   nextEventsCount: {
     fontSize: 14,
-    color: PRIMARY_COLOR_DARK,
+    color: ALT_PINK_600,
     fontWeight: 'bold',
   },
 });
