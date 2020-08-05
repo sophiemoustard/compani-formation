@@ -8,7 +8,7 @@ import Courses from '../../api/courses';
 import { WHITE, BLACK, MAIN_MARGIN_LEFT } from '../../styles/variables';
 import OnSiteCell from '../../components/OnSiteCell';
 import { ON_SITE } from '../../core/data/constants';
-import screensStyle from '../../styles/screens.style';
+import commonStyles from '../../styles/common';
 
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
@@ -28,7 +28,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   return (
-    course && <View style={screensStyle.container}>
+    course && <View style={commonStyles.container}>
       <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.arrow} onPress={goBack}>

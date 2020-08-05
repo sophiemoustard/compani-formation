@@ -2,9 +2,10 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
-import { GREY, WHITE } from '../styles/variables';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { BORDER_RADIUS, MARGIN, BORDER_WIDTH, PADDING, COURSE_CELL_WIDTH, IS_SMALL_SCREEN } from '../styles/metrics';
+import { WHITE } from '../styles/variables';
+import commonStyles from '../styles/common';
+import { BORDER_RADIUS, PADDING, IS_SMALL_SCREEN } from '../styles/metrics';
 
 const CourseCell = ({ course, navigation }) => {
   const programImage = get(course, 'program.image.link') || '';
@@ -19,7 +20,7 @@ const CourseCell = ({ course, navigation }) => {
   );
 
   return (
-    <TouchableOpacity style={styles.container} onPress={goToCourse}>
+    <TouchableOpacity style={commonStyles.courseCellContainer} onPress={goToCourse}>
       <View style={styles.imageContainer}>
         <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       </View>
@@ -42,13 +43,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: imageHeight,
-  },
-  container: {
-    width: COURSE_CELL_WIDTH,
-    borderRadius: BORDER_RADIUS.SM,
-    marginRight: MARGIN.SM,
-    borderWidth: BORDER_WIDTH,
-    borderColor: GREY,
   },
   title: {
     padding: PADDING.MD,

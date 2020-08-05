@@ -5,7 +5,7 @@ import Users from '../api/users';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
-import screensStyle from '../styles/screens.style';
+import commonStyles from '../styles/common';
 import { WHITE, PRIMARY_COLOR, POSITIVE_COLOR } from '../styles/variables';
 import { MARGIN, PADDING } from '../styles/metrics';
 
@@ -39,7 +39,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const goBack = () => { navigation.navigate('Authentication'); };
 
   return (
-    <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={commonStyles.container} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={ require('../../assets/compani_logo.png') } />

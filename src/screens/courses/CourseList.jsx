@@ -8,7 +8,7 @@ import groupBy from 'lodash/groupBy';
 import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import moment from '../../core/helpers/moment';
-import screensStyle from '../../styles/screens.style';
+import commonStyles from '../../styles/common';
 import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../../styles/variables.js';
 import Courses from '../../api/courses';
 import Blob from '../../components/Blob';
@@ -69,13 +69,13 @@ const CourseListScreen = ({ navigation }) => {
 
 
   return ( 
-    <View style={screensStyle.container}>
-      <Text style={screensStyle.title} testID='header'>Mes formations</Text>
+    <View style={commonStyles.container}>
+      <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       { Object.keys(nextEvents).length > 0 &&
         <>
           <View style={styles.sectionContainer}>
             <View style={styles.contentTitle}>
-              <Text style={screensStyle.subtitle}>Prochains évènements</Text>
+              <Text style={commonStyles.subtitle}>Prochains évènements</Text>
               <View style={{ ...styles.nextEventsCountContainer, ...styles.countContainer }}>
                 <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
               </View>
@@ -94,7 +94,7 @@ const CourseListScreen = ({ navigation }) => {
       <View style={styles.sectionContainer}>
         <Blob style={styles.blob} color="#FFEA95" />
         <View style={styles.contentTitle}>
-          <Text style={screensStyle.subtitle}>Formations en cours</Text>
+          <Text style={commonStyles.subtitle}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...styles.countContainer }}>
             <Text style={styles.coursesCount}> {courses.length} </Text>
           </View>
