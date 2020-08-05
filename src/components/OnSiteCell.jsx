@@ -7,18 +7,12 @@ import { GREY_LIGHT, BLACK } from '../styles/variables';
 import { stepTypeOptions } from '../core/data/constants';
 
 const OnSiteCell = ({ step, slots, index}) => {
-  const stepSlots = slots.filter(slot => slot.step === step._id).sort((a,b) => moment(a).isBefore(b) );
-  let startDate;
-  let toPlan = true;
-
-  if (stepSlots.length) {
-    startDate = stepSlots[0].startDate;
-    toPlan = false;
-  }
+  const stepSlots = slots.filter(slot => slot.step === step._id).sort((a,b) => moment(a).isBefore(b));
+  const startDate = stepSlots.length ? stepSlots[0].startDate : null;
 
   return (
     <View style={styles.container}>
-      <CalendarIcon date={startDate} toPlan={toPlan} />
+      <CalendarIcon date={startDate} />
       <View style={styles.textContainer}>
         <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[step.type]}`}</Text>
         <Text style={styles.stepName}>{step.name}</Text>

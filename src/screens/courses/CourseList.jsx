@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
-import omit from 'lodash/omit';
+import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import moment from '../../core/helpers/moment';
 import screensStyle from '../../styles/screens.style';
@@ -37,9 +37,9 @@ const CourseListScreen = ({ navigation }) => {
           const groupedBySlots = groupBy(course.slots, s => moment(s.startDate).format('DD/MM/YYYY'));
           for (const date in groupedBySlots) {
             slotsByDate.push({
-              ...omit(course, ['slots']),
-              date: moment(date, 'DD/MM/YYYY'),
-              slots: groupedBySlots[date],
+              ...pick(course, ['name', 'steps']),
+              date: moment(date, 'DD/MM/YYYY').toISOString(),
+              slots: groupedBySlots[date].map((slot => slot.step ? ({ step: slot.step }) : ({}) )),
             });
           }
           return slotsByDate;

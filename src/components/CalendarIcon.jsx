@@ -5,19 +5,17 @@ import { PRIMARY_COLOR, WHITE } from '../styles/variables';
 import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 
-const CalendarIcon = ({ date, toPlan }) => {
-  const formattedDate = !toPlan ? moment(date) : '';
-
+const CalendarIcon = ({ date }) => {
   return (
     <View style={styles.dateContainer}>
       <View style={styles.dayOfWeekContainer}>
-        <Text style={styles.dayOfWeek}>{!toPlan && capitalize(formattedDate.format('ddd'))}</Text>
+        <Text style={styles.dayOfWeek}>{date && capitalize(moment(date).format('ddd'))}</Text>
       </View>
-      { toPlan
+      { !date
         ? <Text style={styles.toPlan}>?</Text>
         : <>
-          <Text style={styles.dayOfMonth}>{capitalize(formattedDate.format('D'))}</Text>
-          <Text style={styles.month}>{capitalize(formattedDate.format('MMM'))}</Text>
+          <Text style={styles.dayOfMonth}>{capitalize(moment(date).format('D'))}</Text>
+          <Text style={styles.month}>{capitalize(moment(date).format('MMM'))}</Text>
         </>
       }
     </View>
@@ -26,7 +24,6 @@ const CalendarIcon = ({ date, toPlan }) => {
 
 CalendarIcon.propTypes = {
   date: PropTypes.string,
-  toPlan: PropTypes.bool,
 };
 
 const borderRadius = 10;

@@ -35,7 +35,16 @@ const SlotCell = ({ slotsByDay }) => {
 };
 
 SlotCell.propTypes = {
-  slotsByDay: PropTypes.object,
+  slotsByDay: PropTypes.exact({
+    date: PropTypes.string,
+    name: PropTypes.string,
+    steps: PropTypes.arrayOf(PropTypes.string),
+    slots: PropTypes.arrayOf(
+      PropTypes.shape({
+        step: PropTypes.shape({ type: PropTypes.string, _id: PropTypes.string })
+      }),
+    ),
+  }),
 };
 
 const borderRadius = 10;
