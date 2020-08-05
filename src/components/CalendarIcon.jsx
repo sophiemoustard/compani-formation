@@ -6,20 +6,22 @@ import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 
 const CalendarIcon = ({ date, toPlan }) => {
-  const formattedDate = !toPlan ? moment(date, 'DD/MM/YYYY') : '';
+  const formattedDate = !toPlan ? moment(date) : '';
 
-  return <View style={styles.dateContainer}>
-    <View style={styles.dayOfWeekContainer}>
-      <Text style={styles.dayOfWeek}>{!toPlan && capitalize(formattedDate.format('ddd'))}</Text>
+  return (
+    <View style={styles.dateContainer}>
+      <View style={styles.dayOfWeekContainer}>
+        <Text style={styles.dayOfWeek}>{!toPlan && capitalize(formattedDate.format('ddd'))}</Text>
+      </View>
+      { toPlan
+        ? <Text style={styles.toPlan}>?</Text>
+        : <>
+          <Text style={styles.dayOfMonth}>{capitalize(formattedDate.format('D'))}</Text>
+          <Text style={styles.month}>{capitalize(formattedDate.format('MMM'))}</Text>
+        </>
+      }
     </View>
-    {!toPlan &&
-      <>
-        <Text style={styles.dayOfMonth}>{capitalize(formattedDate.format('D'))}</Text>
-        <Text style={styles.month}>{!toPlan && capitalize(formattedDate.format('MMM'))}</Text>
-      </>
-    }
-    {toPlan && <Text style={styles.toPlan}>?</Text>}
-  </View>;
+  );
 };
 
 CalendarIcon.propTypes = {

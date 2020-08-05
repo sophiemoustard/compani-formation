@@ -36,7 +36,11 @@ const CourseListScreen = ({ navigation }) => {
           const slotsByDate = [];
           const groupedBySlots = groupBy(course.slots, s => moment(s.startDate).format('DD/MM/YYYY'));
           for (const date in groupedBySlots) {
-            slotsByDate.push({ ...omit(course, ['slots']), date, slots: groupedBySlots[date] });
+            slotsByDate.push({
+              ...omit(course, ['slots']),
+              date: moment(date, 'DD/MM/YYYY'),
+              slots: groupedBySlots[date],
+            });
           }
           return slotsByDate;
         })

@@ -23,14 +23,15 @@ const SlotCell = ({ slotsByDay }) => {
       slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${stepTypeLabel}`;
     }
   }
-
-  return <View style={styles.container}>
-    <CalendarIcon date={date} />
-    <View style={styles.textContainer}>
-      <Text style={styles.programName}>{truncatedProgramName || ''}</Text>
-      <Text style={styles.slotsSteps}>{slotsSteps}</Text>
+  return (
+    <View style={styles.container}>
+      <CalendarIcon date={date} />
+      <View style={styles.textContainer}>
+        <Text style={styles.programName}>{truncatedProgramName || ''}</Text>
+        <Text style={styles.slotsSteps}>{slotsSteps}</Text>
+      </View>
     </View>
-  </View>;
+  );
 };
 
 SlotCell.propTypes = {
