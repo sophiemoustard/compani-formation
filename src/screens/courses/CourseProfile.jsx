@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ImageBackground } from 'react-native';
+import { View, StyleSheet, Text, ImageBackground, FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
 import Courses from '../../api/courses';
 import { WHITE, BLACK, MAIN_MARGIN_LEFT } from '../../styles/variables';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import OnSiteCell from '../../components/OnSiteCell';
+import { ON_SITE } from '../../core/data/constants';
+import screensStyle from '../../styles/screens.style';
 
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
   const getCourse = async () => {
-    const courses = await Courses.getCourse(route.params.courseId);
-    setCourse(courses);
+    const course = await Courses.getCourse(route.params.courseId);
+    setCourse(course);
   };
 
   useEffect(() => {
@@ -25,7 +28,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   return (
-    course && <View>
+    course && <View style={screensStyle.container}>
       <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.arrow} onPress={goBack}>
@@ -33,6 +36,12 @@ const CourseProfileScreen = ({ route, navigation }) => {
         </TouchableOpacity>
         <Text style={styles.title}>{programName}</Text>
       </View>
+      <FlatList
+        data={course.program.steps}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item, index }) =>
+          item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} index={index} />}
+      />
     </View>
   );
 };

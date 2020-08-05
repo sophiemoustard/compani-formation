@@ -14,12 +14,14 @@ const CourseCell = ({ course, navigation }) => {
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: course._id } } }
   );
 
-  return <TouchableOpacity style={styles.container} onPress={goToCourse}>
-    <View style={styles.imageContainer}>
-      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
-    </View>
-    <View style={styles.title}><Text>{programName}</Text></View>
-  </TouchableOpacity>;
+  return (
+    <TouchableOpacity style={styles.container} onPress={goToCourse}>
+      <View style={styles.imageContainer}>
+        <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
+      </View>
+      <View style={styles.title}><Text>{programName}</Text></View>
+    </TouchableOpacity>
+  );
 };
 
 CourseCell.propTypes = {

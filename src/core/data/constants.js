@@ -1,3 +1,4 @@
+export const ON_SITE = 'on_site';
 export const stepTypeOptions = {
-  on_site: 'Présentiel',
+  [ON_SITE]: 'Présentiel',
 };
