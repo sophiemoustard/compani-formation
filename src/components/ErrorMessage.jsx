@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, StyleSheet, View } from 'react-native';
+import { MARGIN } from '../styles/metrics';
 
 const NiErrorMessage = ({ style, message, show }) => {
   return (
@@ -18,7 +19,7 @@ NiErrorMessage.propTypes = {
 
 const styles = StyleSheet.create({
   message: {
-    marginBottom: 10,
+    marginBottom: MARGIN.SM,
     color: '#f00'
   },
 });

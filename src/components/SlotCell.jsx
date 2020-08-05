@@ -5,10 +5,12 @@ import { Text, View, StyleSheet } from 'react-native';
 import { GREY } from '../styles/variables';
 import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
+import { MARGIN, PADDING, COURSE_CELL_WIDTH, IS_SMALL_SCREEN } from '../styles/metrics';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
-  const truncatedProgramName = name.length > 40 ? `${name.slice(0, 38)}...` : name;
+  const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
+  const truncatedProgramName = name.length > titleLimit ? `${name.slice(0, titleLimit - 3)}...` : name;
 
   let slotsSteps = '';
   if (steps) {
@@ -51,16 +53,16 @@ const borderRadius = 10;
 const styles = StyleSheet.create({
   container: {
     borderRadius: borderRadius,
-    marginRight: 10,
-    padding: 10,
+    marginRight: MARGIN.SM,
+    padding: PADDING.MD,
     borderWidth: 1,
     borderColor: GREY,
     flexDirection: 'row',
+    width: COURSE_CELL_WIDTH,
   },
   textContainer: {
-    marginLeft: 10,
-    maxWidth: 175,
-    overflow: 'hidden',
+    marginLeft: MARGIN.SM,
+    width: '70%',
     justifyContent: 'space-between',
   },
   programName: {

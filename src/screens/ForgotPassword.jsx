@@ -7,6 +7,7 @@ import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import screensStyle from '../styles/screens.style';
 import { WHITE, PRIMARY_COLOR, POSITIVE_COLOR } from '../styles/variables';
+import { MARGIN, PADDING } from '../styles/metrics';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -64,7 +65,7 @@ ForgotPasswordScreen.propTypes = {
 const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: MARGIN.XXL,
   },
   image: {
     width: 160,
@@ -73,11 +74,11 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: PADDING.XL,
     justifyContent: 'center',
   },
   input: {
-    marginVertical: 10,
+    marginVertical: MARGIN.SM,
   },
   buttonContainer: {
     display: 'flex',
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   },
   success: {
     color: POSITIVE_COLOR,
-    marginBottom: 10,
+    marginBottom: MARGIN.SM,
   }
 });
 

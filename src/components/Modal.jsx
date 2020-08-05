@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../components/form/Button';
+import { WHITE } from '../styles/variables';
+import { BORDER_RADIUS, PADDING, MARGIN } from '../styles/metrics';
 
 const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {
   return (
@@ -31,24 +33,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    padding: 40,
+    padding: PADDING.XXL,
     backgroundColor: '#00000040',
   },
   modalContent: {
     display: 'flex',
-    backgroundColor: 'white',
-    borderRadius: 25,
-    padding: 20,
+    backgroundColor: WHITE,
+    borderRadius: BORDER_RADIUS.XL,
+    padding: PADDING.XL,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: MARGIN.LG,
     textAlign: 'center'
   },
   contentText: {
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: MARGIN.LG,
   },
   button: {
     display: 'flex',

@@ -14,6 +14,7 @@ import Courses from '../../api/courses';
 import Blob from '../../components/Blob';
 import CourseCell from '../../components/CourseCell';
 import SlotCell from '../../components/SlotCell';
+import { MARGIN, PADDING, BORDER_RADIUS } from '../../styles/metrics';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  sectionContainer: { position: 'relative', marginBottom: 100 },
+  sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   blob: { position: 'absolute', top: -10 },
   coursesCountContainer: {
     backgroundColor: '#FFF9DF',
@@ -143,10 +144,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   countContainer: {
-    marginBottom: 10,
-    padding: 2,
-    marginLeft: 8,
-    borderRadius: 8,
+    marginBottom: MARGIN.SM,
+    padding: PADDING.XS,
+    marginLeft: MARGIN.SM,
+    borderRadius: BORDER_RADIUS.XS,
   }
 });
 

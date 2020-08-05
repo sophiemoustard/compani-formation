@@ -15,6 +15,7 @@ import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import { WHITE } from '../styles/variables';
+import { MARGIN } from '../styles/metrics';
 
 const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -72,14 +73,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: WHITE,
-    marginBottom: 30,
+    marginBottom: MARGIN.XL,
   },
   input: {
-    marginVertical: 10,
+    marginVertical: MARGIN.SM,
   },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginBottom: 10,
+    marginBottom: MARGIN.SM,
   },
   forgotPasswordText: {
     textDecorationStyle: 'solid',
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     color: WHITE,
   },
   button: {
-    marginTop: 35,
+    marginTop: MARGIN.XL,
   },
 });
 

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { WHITE, PRIMARY_COLOR } from '../../styles/variables';
+import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN } from '../../styles/metrics';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
   const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: bgColor, borderWidth: 1 };
@@ -31,21 +32,20 @@ NiButton.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  container: {},
   loading: {
     opacity: 0.6,
   },
   button: {
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.MD,
     display: 'flex',
     flexDirection: 'row',
-    height: 40,
+    height: INPUT_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: 100,
   },
   textButton: {
-    marginHorizontal: 10,
+    marginHorizontal: MARGIN.SM,
   }
 });
 
