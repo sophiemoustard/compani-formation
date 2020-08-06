@@ -3,9 +3,8 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { WHITE } from '../styles/colors';
-import commonStyles from '../styles/common';
-import { BORDER_RADIUS, PADDING, IS_SMALL_SCREEN } from '../styles/metrics';
+import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
+import { BORDER_RADIUS, PADDING, IS_SMALL_SCREEN, COURSE_CELL_WIDTH } from '../styles/metrics';
 
 const CourseCell = ({ course, navigation }) => {
   const programImage = get(course, 'program.image.link') || '';
@@ -20,7 +19,7 @@ const CourseCell = ({ course, navigation }) => {
   );
 
   return (
-    <TouchableOpacity style={commonStyles.courseCellContainer} onPress={goToCourse}>
+    <TouchableOpacity style={styles.cousreContainer} onPress={goToCourse}>
       <View style={styles.imageContainer}>
         <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       </View>
@@ -36,6 +35,12 @@ CourseCell.propTypes = {
 
 const imageHeight = 100;
 const styles = StyleSheet.create({
+  cousreContainer: {
+    borderRadius: BORDER_RADIUS.SM,
+    width: COURSE_CELL_WIDTH,
+    borderWidth: 1,
+    borderColor: TRANSPARENT_GREY,
+  },
   image: {
     borderTopLeftRadius: BORDER_RADIUS.SM,
     borderTopRightRadius: BORDER_RADIUS.SM,

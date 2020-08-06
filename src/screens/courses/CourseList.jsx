@@ -73,7 +73,7 @@ const CourseListScreen = ({ navigation }) => {
       {Object.keys(nextEvents).length > 0 &&
         <View style={styles.sectionContainer}>
           <View style={styles.contentTitle}>
-            <Text style={commonStyles.subtitle}>Prochains évènements</Text>
+            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
               <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
             </View>
@@ -83,14 +83,14 @@ const CourseListScreen = ({ navigation }) => {
             data={nextEvents}
             keyExtractor={(item) => item.date}
             renderItem={({ item }) => <SlotCell slotsByDay={item} />}
-            style={styles.courseContainer}
+            contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false}
           />
         </View>
       }
       <View style={styles.sectionContainer}>
         <View style={styles.contentTitle}>
-          <Text style={commonStyles.subtitle}>Formations en cours</Text>
+          <Text style={commonStyles.sectionTitle}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
             <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
@@ -100,7 +100,7 @@ const CourseListScreen = ({ navigation }) => {
           data={courses}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
-          style={styles.courseContainer}
+          contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
         />
       </View>
@@ -114,8 +114,7 @@ CourseListScreen.propTypes = {
 
 const styles = StyleSheet.create({
   courseContainer: {
-    paddingLeft: MAIN_MARGIN_LEFT,
-    paddingRight: MAIN_MARGIN_LEFT,
+    paddingHorizontal: MAIN_MARGIN_LEFT,
   },
   contentTitle: {
     flexDirection: 'row',

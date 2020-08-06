@@ -3,10 +3,9 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
 import { stepTypeOptions } from '../core/data/constants';
-import commonStyles from '../styles/common';
 import CalendarIcon from './CalendarIcon';
-import { MARGIN, PADDING, IS_SMALL_SCREEN } from '../styles/metrics';
-import { GREY } from '../styles/colors';
+import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
+import { GREY, TRANSPARENT_GREY } from '../styles/colors';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
@@ -52,7 +51,10 @@ SlotCell.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    ...commonStyles.courseCellContainer,
+    borderRadius: BORDER_RADIUS.SM,
+    width: COURSE_CELL_WIDTH,
+    borderWidth: 1,
+    borderColor: TRANSPARENT_GREY,
     flexDirection: 'row',
     padding: PADDING.MD,
   },
