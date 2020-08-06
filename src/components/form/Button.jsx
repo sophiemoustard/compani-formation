@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN } from '../../styles/metrics';
-import { ALT_PINK_500, WHITE } from '../../styles/colors';
+import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
+import { ALT_PINK, WHITE } from '../../styles/colors';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
-  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: bgColor, borderWidth: 1 };
+  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: color };
 
   return (
     <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
@@ -27,7 +27,7 @@ NiButton.propTypes = {
 
 NiButton.defaultProps = {
   loading: false,
-  bgColor: ALT_PINK_500,
+  bgColor: ALT_PINK[500],
   color: WHITE,
 };
 
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: BORDER_RADIUS.MD,
+    borderWidth: BORDER_WIDTH,
     display: 'flex',
     flexDirection: 'row',
     height: INPUT_HEIGHT,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH } from '../../styles/metrics';
-import { GREY_200, WHITE } from '../../styles/colors';
+import { GREY, WHITE } from '../../styles/colors';
 
 const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +48,7 @@ NiInput.propTypes = {
 const styles = StyleSheet.create({
   input: {
     borderWidth: BORDER_WIDTH,
-    borderColor: GREY_200,
+    borderColor: GREY[200],
     height: INPUT_HEIGHT,
     alignItems: 'center',
     paddingHorizontal: PADDING.MD,

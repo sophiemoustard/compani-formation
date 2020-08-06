@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../components/form/Button';
-import { WHITE } from '../styles/colors';
+import { WHITE, MODAL_BACKDROP_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../styles/metrics';
 
 const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     padding: PADDING.XXL,
-    backgroundColor: '#00000040',
+    backgroundColor: MODAL_BACKDROP_GREY,
   },
   modalContent: {
     display: 'flex',

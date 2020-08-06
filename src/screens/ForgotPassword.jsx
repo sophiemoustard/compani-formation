@@ -7,7 +7,7 @@ import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import commonStyles from '../styles/common';
 import { MARGIN, PADDING } from '../styles/metrics';
-import { GREEN_500, WHITE, ALT_PINK_500,  } from '../styles/colors';
+import { GREEN, WHITE, ALT_PINK,  } from '../styles/colors';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -50,7 +50,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         {successMessage !== '' && <Text style={styles.success}>{successMessage}</Text>}
         <View style={styles.buttonContainer}>
           <NiButton style={styles.button} caption="Retour" onPress={goBack} bgColor={WHITE}
-            color={ALT_PINK_500} />
+            color={ALT_PINK[500]} />
           <NiButton style={styles.button} caption="Envoyer" onPress={sendEmail} loading={loading} />
         </View>
       </View>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   success: {
-    color: GREEN_500,
+    color: GREEN[500],
     marginBottom: MARGIN.SM,
   }
 });

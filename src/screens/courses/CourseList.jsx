@@ -13,7 +13,7 @@ import Courses from '../../api/courses';
 import CourseCell from '../../components/CourseCell';
 import SlotCell from '../../components/SlotCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
-import { ALT_PINK_600, ALT_PINK_100, YELLOW_200, YELLOW_800 } from '../../styles/colors';
+import { ALT_PINK, YELLOW } from '../../styles/colors';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -124,19 +124,19 @@ const styles = StyleSheet.create({
   sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   blob: { position: 'absolute', top: -10 },
   coursesCountContainer: {
-    backgroundColor: YELLOW_200,
+    backgroundColor: YELLOW[200],
   },
   coursesCount: {
     fontSize: 14,
-    color:  YELLOW_800,
+    color:  YELLOW[800],
     fontWeight: 'bold',
   },
   nextEventsCountContainer: {
-    backgroundColor: ALT_PINK_100,
+    backgroundColor: ALT_PINK[100],
   },
   nextEventsCount: {
     fontSize: 14,
-    color: ALT_PINK_600,
+    color: ALT_PINK[600],
     fontWeight: 'bold',
   },
 });
