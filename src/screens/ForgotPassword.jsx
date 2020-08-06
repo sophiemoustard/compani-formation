@@ -50,7 +50,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         {successMessage !== '' && <Text style={styles.success}>{successMessage}</Text>}
         <View style={styles.buttonContainer}>
           <NiButton style={styles.button} caption="Retour" onPress={goBack} bgColor={WHITE}
-            color={ALT_PINK[500]} />
+            color={ALT_PINK[500]} borderColor={ALT_PINK[500]} />
           <NiButton style={styles.button} caption="Envoyer" onPress={sendEmail} loading={loading} />
         </View>
       </View>

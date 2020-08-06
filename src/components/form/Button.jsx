@@ -4,8 +4,8 @@ import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-nat
 import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
 import { ALT_PINK, WHITE } from '../../styles/colors';
 
-const NiButton = ({ style, caption, onPress, loading, bgColor, color }) => {
-  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: color };
+const NiButton = ({ style, caption, onPress, loading, bgColor, color, borderColor }) => {
+  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: borderColor };
 
   return (
     <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
@@ -23,12 +23,14 @@ NiButton.propTypes = {
   loading: PropTypes.bool,
   bgColor: PropTypes.string,
   color: PropTypes.string,
+  borderColor: PropTypes.string,
 };
 
 NiButton.defaultProps = {
   loading: false,
   bgColor: ALT_PINK[500],
   color: WHITE,
+  borderColor: ALT_PINK[500],
 };
 
 const styles = StyleSheet.create({
