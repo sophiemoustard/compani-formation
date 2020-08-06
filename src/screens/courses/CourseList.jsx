@@ -67,6 +67,7 @@ const CourseListScreen = ({ navigation }) => {
     isFocused && fetchData();
   }, [isFocused]);
 
+  const renderSeparator = () => <View style={styles.separator} />;
 
   return ( 
     <ScrollView style={commonStyles.container}>
@@ -86,6 +87,7 @@ const CourseListScreen = ({ navigation }) => {
             renderItem={({ item }) => <SlotCell slotsByDay={item} />}
             contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={renderSeparator}
           />
         </View>
       }
@@ -103,6 +105,7 @@ const CourseListScreen = ({ navigation }) => {
           renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
           contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={renderSeparator}
         />
       </View>
     </ScrollView>
@@ -116,6 +119,9 @@ CourseListScreen.propTypes = {
 const styles = StyleSheet.create({
   courseContainer: {
     paddingHorizontal: MAIN_MARGIN_LEFT,
+  },
+  separator: {
+    marginRight: 8,
   },
   contentTitle: {
     flexDirection: 'row',
