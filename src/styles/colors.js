@@ -70,7 +70,7 @@ export const GREEN = {
 };
 
 // Purple
-export const PURLPE = {
+export const PURPLE = {
   '100': '#EBE9FB',
   '300': '#A8A0EC',
   '400': '#847ADC',
@@ -113,4 +113,4 @@ export const WHITE = 'white';
 export const BLACK = 'black';
 export const TRANSPARENT_GREY = '#BDBBBC';
 export const MODAL_BACKDROP_GREY = '#00000040';
-export const RED = '#f00';
+export const RED = '#FF0000';

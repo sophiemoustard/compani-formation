@@ -19,7 +19,7 @@ const CourseCell = ({ course, navigation }) => {
   );
 
   return (
-    <TouchableOpacity style={styles.cousreContainer} onPress={goToCourse}>
+    <TouchableOpacity style={styles.courseContainer} onPress={goToCourse}>
       <View style={styles.imageContainer}>
         <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       </View>
@@ -35,7 +35,7 @@ CourseCell.propTypes = {
 
 const imageHeight = 100;
 const styles = StyleSheet.create({
-  cousreContainer: {
+  courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
     width: COURSE_CELL_WIDTH,
     borderWidth: 1,
