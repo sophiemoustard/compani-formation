@@ -1,13 +1,14 @@
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import commonStyles from '../styles/common';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ProgramListScreen = () => {
   return (
-    <View style={commonStyles.container}>
+    <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title}>Catalogue</Text>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ImageBackground, FlatList } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -10,6 +10,9 @@ import { MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import OnSiteCell from '../../components/OnSiteCell';
 import { ON_SITE } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
+import { YellowBox } from 'react-native';
+
+YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
@@ -29,21 +32,22 @@ const CourseProfileScreen = ({ route, navigation }) => {
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   return (
-    course && <View style={commonStyles.container}>
-      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.arrow} onPress={goBack}>
-          <MaterialIcons name="arrow-back" color={WHITE} size={24} />
-        </TouchableOpacity>
-        <Text style={styles.title}>{programName}</Text>
-      </View>
-      <FlatList
-        data={course.program.steps}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item, index }) =>
-          item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} index={index} />}
-      />
-    </View>
+    course &&
+      <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+        <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.arrow} onPress={goBack}>
+            <MaterialIcons name="arrow-back" color={WHITE} size={24} />
+          </TouchableOpacity>
+          <Text style={styles.title}>{programName}</Text>
+        </View>
+        <FlatList
+          data={course.program.steps}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) =>
+            item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} index={index} />}
+        />
+      </ScrollView>
   );
 };
 

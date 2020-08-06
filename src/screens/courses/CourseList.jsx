@@ -14,6 +14,7 @@ import CourseCell from '../../components/CourseCell';
 import SlotCell from '../../components/SlotCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { ALT_PINK, YELLOW } from '../../styles/colors';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -68,7 +69,7 @@ const CourseListScreen = ({ navigation }) => {
 
 
   return ( 
-    <View style={commonStyles.container}>
+    <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {Object.keys(nextEvents).length > 0 &&
         <View style={styles.sectionContainer}>
@@ -104,7 +105,7 @@ const CourseListScreen = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
