@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ImageBackground, FlatList } from 'react-native';
+import { View, StyleSheet, Text, ImageBackground, FlatList, YellowBox } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -10,7 +11,6 @@ import { MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import OnSiteCell from '../../components/OnSiteCell';
 import { ON_SITE } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
-import { YellowBox } from 'react-native';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
@@ -25,6 +25,12 @@ const CourseProfileScreen = ({ route, navigation }) => {
     async function fetchData () { await getCourse(); }
     fetchData();
   }, []);
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    async function fetchData () { await getCourse(); }
+    if (isFocused) fetchData();
+  }, [isFocused]);
 
   const programImage = get(course, 'program.image.link') || '';
   const programName = get(course, 'program.name') || '';
