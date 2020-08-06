@@ -1,34 +1,23 @@
 import React from 'react';
-import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
+import moment from '../core/helpers/moment';
 import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
 import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { GREY, TRANSPARENT_GREY } from '../styles/colors';
 import { truncate } from '../core/helpers/utils';
 
-const SlotCell = ({ slotsByDay }) => {
-  const { date, name, steps } = slotsByDay;
+const SlotCell = ({ nextSlotsStep }) => {
+  const { name, type, stepNumber } = nextSlotsStep;
   const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
   const truncatedProgramName = truncate(name, titleLimit);
+  let slotsSteps = `ÉTAPE ${stepNumber} - ${stepTypeOptions[type]}`;
+  const dates = Object.keys(nextSlotsStep.slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
 
-  let slotsSteps = '';
-  if (steps) {
-    const alreadyUsedIndexOfStep = [];
-    for (const slot of slotsByDay.slots) {
-      const stepType = get(slot, 'step.type');
-      const stepTypeLabel = stepType ? stepTypeOptions[stepType] : '';
-      const indexOfStep = steps.indexOf(get(slot, 'step._id') || '');
-      if (indexOfStep < 0 || alreadyUsedIndexOfStep.indexOf(indexOfStep) >= 0) continue;
-      alreadyUsedIndexOfStep.push(indexOfStep);
-
-      slotsSteps += `${slotsSteps ? '\n' : ''}ÉTAPE ${indexOfStep + 1} - ${stepTypeLabel}`;
-    }
-  }
   return (
     <View style={styles.container}>
-      <CalendarIcon date={date} />
+      <CalendarIcon dates={dates} />
       <View style={styles.textContainer}>
         <Text style={styles.programName}>{truncatedProgramName || ''}</Text>
         <Text style={styles.slotsSteps}>{slotsSteps}</Text>
@@ -38,15 +27,13 @@ const SlotCell = ({ slotsByDay }) => {
 };
 
 SlotCell.propTypes = {
-  slotsByDay: PropTypes.exact({
-    date: PropTypes.string,
+  nextSlotsStep: PropTypes.exact({
+    firstSlot: PropTypes.string,
+    id: PropTypes.string,
     name: PropTypes.string,
-    steps: PropTypes.arrayOf(PropTypes.string),
-    slots: PropTypes.arrayOf(
-      PropTypes.shape({
-        step: PropTypes.shape({ type: PropTypes.string, _id: PropTypes.string })
-      }),
-    ),
+    slots: PropTypes.object,
+    type: PropTypes.string,
+    stepNumber: PropTypes.number,
   }),
 };
 

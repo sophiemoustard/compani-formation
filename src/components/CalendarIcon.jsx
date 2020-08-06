@@ -6,31 +6,54 @@ import { capitalize } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { PINK, WHITE } from '../styles/colors';
 
-const CalendarIcon = ({ date }) => {
+const CalendarIcon = ({ dates }) => {
+  let daysOfWeek, daysOfMonth, months;
+  if (dates.length) {
+    const firstDate = moment(dates[0]);
+
+    daysOfWeek = capitalize(moment(firstDate).format('ddd'));
+    daysOfMonth = capitalize(moment(firstDate).format('D'));
+    months = capitalize(moment(firstDate).format('MMM'));
+
+    if (dates.length > 1) {
+      const secondDate = moment(dates[1]);
+      daysOfWeek += `, ${capitalize(moment(secondDate).format('ddd'))}`;
+      daysOfMonth += `, ${capitalize(moment(secondDate).format('D'))}`;
+      const month = capitalize(moment(secondDate).format('MMM'));
+      if (!months.match(month)) months += `, ${month}`;
+    }
+
+    if (dates.length > 2) {
+      daysOfWeek += '...';
+      daysOfMonth += '...';
+      const monthsSet = [... new Set(dates.map(date => capitalize(moment(date).format('MMM'))))];
+      if (monthsSet.length > 2) months += '...';
+    }
+  }
+
   return (
     <View style={styles.dateContainer}>
       <View style={styles.dayOfWeekContainer}>
-        <Text style={styles.dayOfWeek}>{date && capitalize(moment(date).format('ddd'))}</Text>
+        <Text style={styles.dayOfWeek}>{dates.length && daysOfWeek}</Text>
       </View>
-      { !date
-        ? <Text style={styles.toPlan}>?</Text>
-        : <>
-          <Text style={styles.dayOfMonth}>{capitalize(moment(date).format('D'))}</Text>
-          <Text style={styles.month}>{capitalize(moment(date).format('MMM'))}</Text>
+      { dates.length
+        ? <>
+          <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
+          <Text style={styles.month}>{months}</Text>
         </>
+        : <Text style={styles.toPlan}>?</Text> 
       }
     </View>
   );
 };
 
 CalendarIcon.propTypes = {
-  date: PropTypes.string,
+  dates: PropTypes.arrayOf(PropTypes.string),
 };
 
-const width = 50;
 const styles = StyleSheet.create({
   dateContainer: {
-    width,
+    minWidth: 50,
     height: 60,
     borderWidth: BORDER_WIDTH,
     borderRadius: BORDER_RADIUS.SM,
@@ -42,7 +65,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: BORDER_RADIUS.SM,
     borderTopRightRadius: BORDER_RADIUS.SM,
     backgroundColor: PINK[500],
-    width,
+    width: '100%',
     height: 15,
   },
   dayOfWeek: {
@@ -53,11 +76,13 @@ const styles = StyleSheet.create({
   dayOfMonth: {
     fontSize: 18,
     height: 22,
+    paddingHorizontal: 5,
   },
   month: {
     color: PINK[500],
     fontSize: 14,
     height: 18,
+    paddingHorizontal: 5,
   },
   toPlan: {
     fontSize: 24,

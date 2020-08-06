@@ -27,28 +27,30 @@ const CourseListScreen = ({ navigation }) => {
       setCourses(courses);
 
       setNextEvents(() => []);
-      const futureSlots = courses.map(course => ({
-        name: get(course, 'program.name') || '',
-        steps: get(course, 'program.steps') || [],
-        slots: course.slots.filter(slot => moment().isSameOrBefore(slot.startDate, 'days')),
-      }))
-        .filter(course => course.slots.length)
-        .map(course => {
-          const slotsByDate = [];
-          const groupedBySlots = groupBy(course.slots, s => moment(s.startDate).format('DD/MM/YYYY'));
-          for (const date in groupedBySlots) {
-            slotsByDate.push({
-              ...pick(course, ['name', 'steps']),
-              date: moment(date, 'DD/MM/YYYY').toISOString(),
-              slots: groupedBySlots[date].map((slot => slot.step ? ({ step: slot.step }) : ({}) )),
-            });
-          }
-          return slotsByDate;
-        })
-        .flat();
 
-      futureSlots.sort((a, b) => moment(a.date, 'DD/MM/YYYY').diff(moment(b.date, 'DD/MM/YYYY'), 'days'));
-      setNextEvents(futureSlots);
+      const futureSlots = [];
+      for (const course of courses) {
+        const courseSteps = get(course, 'program.steps') || [];
+        const stepSlots = groupBy(course.slots, s => s.step._id);
+
+        for (const step in stepSlots) {
+          const nextSlots = stepSlots[step]
+            .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
+            .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
+          futureSlots.push({
+            ...pick(course.program, ['name']),
+            id: step,
+            stepNumber: courseSteps.indexOf(step) + 1,
+            firstSlot: nextSlots[0].startDate,
+            type: nextSlots[0].step.type,
+            slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
+          });
+        }
+      }
+      const futureSlotsFiltered = futureSlots.filter(step => Object.keys(step.slots).length)
+        .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
+
+      setNextEvents(futureSlotsFiltered);
     } catch (e) {
       console.error(e);
       setCourses(() => []);
@@ -72,24 +74,25 @@ const CourseListScreen = ({ navigation }) => {
   return ( 
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      {Object.keys(nextEvents).length > 0 &&
-        <View style={styles.sectionContainer}>
-          <View style={styles.contentTitle}>
-            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
-            <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
+      { nextEvents.length > 0 &&
+        <>
+          <View style={styles.sectionContainer}>
+            <View style={styles.contentTitle}>
+              <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+              <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
+                <Text style={styles.coursesCount}>{nextEvents.length}</Text>
+              </View>
             </View>
+            <FlatList
+              horizontal
+              data={nextEvents}
+              keyExtractor={(item) => `${item.name} - ${item.id}`}
+              renderItem={({ item }) => <SlotCell nextSlotsStep={item} />}
+              style={styles.courseContainer}
+              showsHorizontalScrollIndicator={false}
+            />
           </View>
-          <FlatList
-            horizontal
-            data={nextEvents}
-            keyExtractor={(item) => item.date}
-            renderItem={({ item }) => <SlotCell slotsByDay={item} />}
-            contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={renderSeparator}
-          />
-        </View>
+        </>
       }
       <View style={styles.sectionContainer}>
         <View style={styles.contentTitle}>

@@ -9,11 +9,11 @@ import { GREY, BLACK } from '../styles/colors';
 
 const OnSiteCell = ({ step, slots, index}) => {
   const stepSlots = slots.filter(slot => slot.step === step._id).sort((a, b) => moment(a).isBefore(b));
-  const startDate = stepSlots.length ? stepSlots[0].startDate : null;
+  const dates = stepSlots.length ? stepSlots.map(stepSlot => stepSlot.startDate) : [];
 
   return (
     <View style={styles.container}>
-      <CalendarIcon date={startDate} />
+      <CalendarIcon dates={dates} />
       <View style={styles.textContainer}>
         <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[step.type]}`}</Text>
         <Text style={styles.stepName}>{step.name}</Text>
