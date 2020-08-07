@@ -8,7 +8,7 @@ import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } fr
 import { GREY, TRANSPARENT_GREY } from '../styles/colors';
 import { truncate } from '../core/helpers/utils';
 
-const SlotCell = ({ nextSlotsStep }) => {
+const NextStepCell = ({ nextSlotsStep }) => {
   const { name, type, stepNumber } = nextSlotsStep;
   const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
   const truncatedProgramName = truncate(name, titleLimit);
@@ -26,7 +26,7 @@ const SlotCell = ({ nextSlotsStep }) => {
   );
 };
 
-SlotCell.propTypes = {
+NextStepCell.propTypes = {
   nextSlotsStep: PropTypes.exact({
     firstSlot: PropTypes.string,
     id: PropTypes.string,
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SlotCell;
+export default NextStepCell;

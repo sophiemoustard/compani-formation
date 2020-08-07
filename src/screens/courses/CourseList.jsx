@@ -16,47 +16,43 @@ import { PINK, YELLOW } from '../../styles/colors';
 import { ScrollView } from 'react-native-gesture-handler';
 import NextStepCell from '../../components/NextStepCell';
 
+const formatDataForNextSteps = (courses) => {
+  const futureSlots = [];
+  for (const course of courses) {
+    const courseSteps = get(course, 'program.steps') || [];
+    const stepSlots = groupBy(course.slots, s => s.step._id);
+
+    for (const step in stepSlots) {
+      const nextSlots = stepSlots[step]
+        .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
+        .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
+
+      if (!nextSlots.length) continue;
+      futureSlots.push({
+        ...pick(course.program, ['name']),
+        id: step,
+        stepNumber: courseSteps.indexOf(step) + 1,
+        firstSlot: nextSlots[0].startDate,
+        type: nextSlots[0].step.type,
+        slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
+      });
+    }
+  }
+  return futureSlots.filter(step => Object.keys(step.slots).length)
+    .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
+};
+
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
-  const [nextEvents, setNextEvents] = useState([]);
 
   const getCourses = async () => {
     try {
       const userId = await AsyncStorage.getItem('user_id');
       const courses = await Courses.getUserCourses({ trainees: userId });
       setCourses(courses);
-
-      setNextEvents(() => []);
-
-      const futureSlots = [];
-      for (const course of courses) {
-        const courseSteps = get(course, 'program.steps') || [];
-        const stepSlots = groupBy(course.slots, s => s.step._id);
-
-        for (const step in stepSlots) {
-          const nextSlots = stepSlots[step]
-            .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
-            .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
-
-          if (!nextSlots.length) continue;
-          futureSlots.push({
-            ...pick(course.program, ['name']),
-            id: step,
-            stepNumber: courseSteps.indexOf(step) + 1,
-            firstSlot: nextSlots[0].startDate,
-            type: nextSlots[0].step.type,
-            slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
-          });
-        }
-      }
-      const futureSlotsFiltered = futureSlots.filter(step => Object.keys(step.slots).length)
-        .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
-
-      setNextEvents(futureSlotsFiltered);
     } catch (e) {
       console.error(e);
       setCourses(() => []);
-      setNextEvents(() => []);
     }
   };
 
@@ -72,22 +68,23 @@ const CourseListScreen = ({ navigation }) => {
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
+  const futureSlots = formatDataForNextSteps(courses);
 
   return ( 
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      { nextEvents.length > 0 &&
+      { futureSlots.length > 0 &&
         <>
           <View style={styles.sectionContainer}>
             <View style={styles.contentTitle}>
-              <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
-              <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-                <Text style={styles.coursesCount}>{nextEvents.length}</Text>
+            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+            <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
+                <Text style={styles.coursesCount}>{futureSlots.length}</Text>
               </View>
             </View>
             <FlatList
               horizontal
-              data={nextEvents}
+              data={futureSlots}
               keyExtractor={(item) => `${item.name} - ${item.id}`}
               renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
               style={styles.courseContainer}

@@ -8,8 +8,10 @@ import { MARGIN, PADDING } from '../styles/metrics';
 import { GREY, BLACK } from '../styles/colors';
 
 const OnSiteCell = ({ step, slots, index}) => {
-  const stepSlots = slots.filter(slot => slot.step === step._id).sort((a, b) => moment(a).isBefore(b));
-  const dates = stepSlots.length ? stepSlots.map(stepSlot => stepSlot.startDate) : [];
+  const stepSlots = slots.filter(slot => slot.step === step._id);
+  const dates = stepSlots.length
+    ? stepSlots.map(stepSlot => stepSlot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
+    : [];
 
   return (
     <View style={styles.container}>
