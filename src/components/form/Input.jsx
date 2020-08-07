@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH } from '../../styles/metrics';
+import { Feather } from '@expo/vector-icons';
+import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH, ICON } from '../../styles/metrics';
 import { GREY, WHITE } from '../../styles/colors';
 
 const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
@@ -15,7 +15,6 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const togglePassword = () => { setShowPassword(showPassword => !showPassword); };
   const textStyle = { ...styles.text };
   const inputStyle = { ...styles.input };
-  if (isPassword) inputStyle.paddingRight = 30;
   if (darkMode) {
     inputStyle.backgroundColor = WHITE;
     textStyle.color = WHITE;
@@ -24,12 +23,12 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   return (
     <View style={style}>
       <Text style={textStyle}>{caption}</Text>
-      <View>
+      <View style={inputStyle}>
         <TextInput value={value} onChangeText={onChangeText} testID={caption} secureTextEntry={secureTextEntry}
-          style={inputStyle} autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
+          style={styles.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
         {isPassword &&
           <TouchableOpacity style={styles.inputIcon} onPress={togglePassword}>
-            <MaterialCommunityIcons name={showPasswordIcon} size={20} />
+            <Feather name={showPasswordIcon} size={ICON.SM} />
           </TouchableOpacity>}
       </View>
     </View>
@@ -51,16 +50,19 @@ const styles = StyleSheet.create({
     borderColor: GREY[200],
     height: INPUT_HEIGHT,
     alignItems: 'center',
-    paddingHorizontal: PADDING.MD,
     borderRadius: BORDER_RADIUS.MD,
+    display: 'flex',
+    flexDirection: 'row',
   },
   text: {
     marginBottom: MARGIN.XS,
   },
   inputIcon: {
-    position: 'absolute',
-    top: 10,
-    right: 15,
+    paddingRight: PADDING.MD,
+  },
+  innerInput: {
+    flex: 1,
+    paddingHorizontal: PADDING.MD,
   }
 });
 

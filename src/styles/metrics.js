@@ -32,8 +32,8 @@ export const BORDER_RADIUS = {
 
 export const ICON = {
   XS: '',
-  SM: '',
-  MD: '',
+  SM: 16,
+  MD: 24,
   LG: '',
   XL: '',
 };
@@ -42,10 +42,9 @@ export const IOS_WIDTH_THRESHOLD = 375;
 export const ANDROID_PIXEL_DENSITY_THRESHOLD = 2;
 export const SCREEN_WIDTH = width < height ? width : height;
 export const SCREEN_HEIGHT = width < height ? height : width;
-const PIXEL_RATIO = PixelRatio.get();
 export const IS_SMALL_SCREEN = Platform.select({
   ios: SCREEN_WIDTH < IOS_WIDTH_THRESHOLD,
-  android: PIXEL_RATIO < ANDROID_PIXEL_DENSITY_THRESHOLD,
+  android: PixelRatio.get() < ANDROID_PIXEL_DENSITY_THRESHOLD,
 });
 
 export const INPUT_HEIGHT = 40;
