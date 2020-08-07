@@ -111,6 +111,6 @@ export const GREY = {
 
 export const WHITE = 'white';
 export const BLACK = 'black';
-export const TRANSPARENT_GREY = '#BDBBBC';
+export const TRANSPARENT_GREY = 'rgba(31, 20, 27, 0.2)';
 export const MODAL_BACKDROP_GREY = '#00000040';
 export const RED = '#FF0000';
