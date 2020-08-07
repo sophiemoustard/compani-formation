@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
+import { truncate } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, IS_SMALL_SCREEN, COURSE_CELL_WIDTH } from '../styles/metrics';
 
 const CourseCell = ({ course, navigation }) => {
   const programImage = get(course, 'program.image.link') || '';
   const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
   const titleLimit = IS_SMALL_SCREEN ? 45 : 60;
-  const programName = course.program.name.length > titleLimit
-    ? `${course.program.name.slice(0, titleLimit - 3)}...`
-    : course.program.name;
+  const programName = truncate(course.program.name, titleLimit);
   const goToCourse = () => navigation.navigate(
     'Home',
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: course._id } } }

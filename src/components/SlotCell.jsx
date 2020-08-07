@@ -6,11 +6,12 @@ import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
 import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { GREY, TRANSPARENT_GREY } from '../styles/colors';
+import { truncate } from '../core/helpers/utils';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
   const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
-  const truncatedProgramName = name.length > titleLimit ? `${name.slice(0, titleLimit - 3)}...` : name;
+  const truncatedProgramName = truncate(name, titleLimit);
 
   let slotsSteps = '';
   if (steps) {
