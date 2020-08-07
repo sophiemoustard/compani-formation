@@ -50,7 +50,7 @@ const CourseListScreen = ({ navigation }) => {
       futureSlots.sort((a, b) => moment(a.date, 'DD/MM/YYYY').diff(moment(b.date, 'DD/MM/YYYY'), 'days'));
       setNextEvents(futureSlots);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       setCourses(() => []);
       setNextEvents(() => []);
     }

@@ -8,7 +8,7 @@ import { MARGIN, PADDING } from '../styles/metrics';
 import { GREY, BLACK } from '../styles/colors';
 
 const OnSiteCell = ({ step, slots, index}) => {
-  const stepSlots = slots.filter(slot => slot.step === step._id).sort((a,b) => moment(a).isBefore(b));
+  const stepSlots = slots.filter(slot => slot.step === step._id).sort((a, b) => moment(a).isBefore(b));
   const startDate = stepSlots.length ? stepSlots[0].startDate : null;
 
   return (
