@@ -32,7 +32,6 @@ NextStepCell.propTypes = {
   }),
 };
 
-const widthTextContainer = IS_SMALL_SCREEN ? '45%' : '60%';
 const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS.SM,
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: MARGIN.SM,
-    width: widthTextContainer,
+    flex: 1,
     justifyContent: 'space-between',
   },
   programName: {
