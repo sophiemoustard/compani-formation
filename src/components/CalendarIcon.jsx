@@ -55,7 +55,11 @@ const styles = StyleSheet.create({
   dateContainer: {
     minWidth: 50,
     height: 60,
-    borderWidth: BORDER_WIDTH,
+    // Do not merge the borderWidths params, avoid an unwanted line in android
+    borderTopWidth: BORDER_WIDTH,
+    borderBottomWidth: BORDER_WIDTH,
+    borderLeftWidth: BORDER_WIDTH,
+    borderRightWidth: BORDER_WIDTH,
     borderRadius: BORDER_RADIUS.SM,
     borderColor: PINK[500],
     alignItems: 'center',
