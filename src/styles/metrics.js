@@ -34,7 +34,7 @@ export const ICON = {
   XS: 16,
   SM: 20,
   MD: 24,
-  LG: '',
+  LG: 26,
   XL: '',
 };
 

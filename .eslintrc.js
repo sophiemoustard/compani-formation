@@ -24,6 +24,7 @@ module.exports = {
     'comma-spacing': ['error', { before: false, after: true }],
     'space-infix-ops': 'error',
     'indent': ['error', 2],
+    'space-before-blocks': ['error', { 'functions': 'always', 'keywords': 'always', 'classes': 'always' }],
   },
   globals: {
     __DEV__: true,

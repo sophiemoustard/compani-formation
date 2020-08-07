@@ -6,8 +6,8 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Feather } from '@expo/vector-icons';
 import Courses from '../../api/courses';
-import { WHITE, BLACK } from '../../styles/colors';
-import { MAIN_MARGIN_LEFT, ICON } from '../../styles/metrics';
+import { WHITE, GREY } from '../../styles/colors';
+import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
 import OnSiteCell from '../../components/OnSiteCell';
 import ELearningCell from '../../components/ELearningCell';
 import { ON_SITE, E_LEARNING } from '../../core/data/constants';
@@ -39,30 +39,30 @@ const CourseProfileScreen = ({ route, navigation }) => {
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   const renderCells = ({ item, index }) => {
-    if (item.type === ON_SITE) {
-      return <OnSiteCell step={item} slots={course.slots} index={index} />;
-    }
+    if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course.slots} index={index} />;
 
-    if (item.type === E_LEARNING) {
-      return <ELearningCell step={item} index={index} />;
-    }
+    if (item.type === E_LEARNING) return <ELearningCell step={item} index={index} />;
 
     return null;
   };
 
-  return (
-    course && (
-      <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-        <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.arrow} onPress={goBack}>
-            <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
-          </TouchableOpacity>
-          <Text style={styles.title}>{programName}</Text>
-        </View>
-        <FlatList data={course.program.steps} keyExtractor={(item) => item._id} renderItem={renderCells} />
-      </ScrollView>
-    )
+  const renderSeparator = () => <View style={styles.separator} />;
+
+  return course && (
+    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.arrow} onPress={goBack}>
+          <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
+        </TouchableOpacity>
+        <Text style={styles.title}>{programName}</Text>
+      </View>
+      <FlatList
+        data={course.program.steps}
+        keyExtractor={(item) => item._id}
+        renderItem={renderCells}
+        ItemSeparatorComponent={renderSeparator}/>
+    </ScrollView>
   );
 };
 
@@ -95,9 +95,12 @@ const styles = StyleSheet.create({
     margin: MAIN_MARGIN_LEFT,
     fontSize: 20,
     fontWeight: 'bold',
-    textShadowColor: BLACK,
+    textShadowColor: GREY[800],
     textShadowRadius: 1
-  }
+  },
+  separator: {
+    margin: MARGIN.MD,
+  },
 });
 
 export default CourseProfileScreen;
