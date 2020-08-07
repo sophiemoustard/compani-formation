@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textShadowColor: GREY[800],
-    textShadowRadius: 1
+    textShadowRadius:  4,
+    textShadowOffset: { width: 0, height: 1 },
   },
   separator: {
     margin: MARGIN.MD,
