@@ -4,7 +4,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
-import { PINK, WHITE } from '../styles/colors';
+import { PINK, WHITE, GREY } from '../styles/colors';
 
 const CalendarIcon = ({ dates }) => {
   let daysOfWeek, daysOfMonth, months;
@@ -60,16 +60,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: BORDER_WIDTH,
     borderLeftWidth: BORDER_WIDTH,
     borderRightWidth: BORDER_WIDTH,
+    backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.SM,
     borderColor: PINK[500],
     alignItems: 'center',
     paddingBottom: PADDING.SM,
     overflow: 'hidden',
+    elevation: 5,
+    shadowColor: GREY[200],
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
   },
   dayOfWeekContainer: {
     backgroundColor: PINK[500],
     width: '100%',
     paddingHorizontal: PADDING.MD,
+    justifyContent: 'center',
   },
   dayOfWeek: {
     color: WHITE,
