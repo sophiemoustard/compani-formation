@@ -10,7 +10,7 @@ import { truncate } from '../core/helpers/utils';
 
 const NextStepCell = ({ nextSlotsStep }) => {
   const { name, type, stepNumber, slots } = nextSlotsStep;
-  const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
+  const titleLimit = IS_SMALL_SCREEN ? 20 : 35;
   const truncatedProgramName = truncate(name, titleLimit);
   let slotsSteps = `ÉTAPE ${stepNumber} - ${stepTypeOptions[type]}`;
   const dates = Object.keys(slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS.SM,
     width: COURSE_CELL_WIDTH,
+    overflow: 'hidden',
     borderWidth: 1,
     borderColor: TRANSPARENT_GREY,
     flexDirection: 'row',
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: MARGIN.SM,
-    width: '70%',
+    width: '60%',
     justifyContent: 'space-between',
   },
   programName: {

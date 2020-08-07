@@ -88,8 +88,9 @@ const CourseListScreen = ({ navigation }) => {
               data={futureSlots}
               keyExtractor={(item) => `${item.name} - ${item.stepNumber}`}
               renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
-              style={styles.courseContainer}
+              contentContainerStyle={styles.courseContainer}
               showsHorizontalScrollIndicator={false}
+              ItemSeparatorComponent={renderSeparator}
             />
           </View>
         </>
