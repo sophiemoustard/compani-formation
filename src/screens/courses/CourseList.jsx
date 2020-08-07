@@ -11,10 +11,10 @@ import moment from '../../core/helpers/moment';
 import commonStyles from '../../styles/common';
 import Courses from '../../api/courses';
 import CourseCell from '../../components/CourseCell';
-import SlotCell from '../../components/SlotCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
 import { ScrollView } from 'react-native-gesture-handler';
+import NextStepCell from '../../components/NextStepCell';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -37,6 +37,8 @@ const CourseListScreen = ({ navigation }) => {
           const nextSlots = stepSlots[step]
             .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
             .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
+
+          if (!nextSlots.length) continue;
           futureSlots.push({
             ...pick(course.program, ['name']),
             id: step,
@@ -87,7 +89,7 @@ const CourseListScreen = ({ navigation }) => {
               horizontal
               data={nextEvents}
               keyExtractor={(item) => `${item.name} - ${item.id}`}
-              renderItem={({ item }) => <SlotCell nextSlotsStep={item} />}
+              renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
               style={styles.courseContainer}
               showsHorizontalScrollIndicator={false}
             />

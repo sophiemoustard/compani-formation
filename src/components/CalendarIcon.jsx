@@ -8,41 +8,45 @@ import { PINK, WHITE } from '../styles/colors';
 
 const CalendarIcon = ({ dates }) => {
   let daysOfWeek, daysOfMonth, months;
+  const dateFormat = 'DD/MM/YYY';
   if (dates.length) {
-    const firstDate = moment(dates[0]);
+    const datesFormatted = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
+    const firstDate = moment(datesFormatted[0], dateFormat);
 
-    daysOfWeek = capitalize(moment(firstDate).format('ddd'));
-    daysOfMonth = capitalize(moment(firstDate).format('D'));
-    months = capitalize(moment(firstDate).format('MMM'));
+    daysOfWeek = capitalize(moment(firstDate, dateFormat).format('ddd'));
+    daysOfMonth = capitalize(moment(firstDate, dateFormat).format('D'));
+    months = capitalize(moment(firstDate, dateFormat).format('MMM'));
 
-    if (dates.length > 1) {
-      const secondDate = moment(dates[1]);
-      daysOfWeek += `, ${capitalize(moment(secondDate).format('ddd'))}`;
-      daysOfMonth += `, ${capitalize(moment(secondDate).format('D'))}`;
-      const month = capitalize(moment(secondDate).format('MMM'));
+    if (datesFormatted.length > 1) {
+      const secondDate = moment(datesFormatted[1], dateFormat);
+      daysOfWeek += `, ${capitalize(moment(secondDate, dateFormat).format('ddd'))}`;
+      daysOfMonth += `, ${capitalize(moment(secondDate, dateFormat).format('D'))}`;
+      const month = capitalize(moment(secondDate, dateFormat).format('MMM'));
       if (!months.match(month)) months += `, ${month}`;
     }
 
-    if (dates.length > 2) {
+    if (datesFormatted.length > 2) {
       daysOfWeek += '...';
       daysOfMonth += '...';
-      const monthsSet = [... new Set(dates.map(date => capitalize(moment(date).format('MMM'))))];
+      const monthsSet = [... new Set(datesFormatted.map(date => capitalize(moment(date, dateFormat).format('MMM'))))];
       if (monthsSet.length > 2) months += '...';
     }
   }
 
   return (
-    <View style={styles.dateContainer}>
+    <View>
       <View style={styles.dayOfWeekContainer}>
-        <Text style={styles.dayOfWeek}>{dates.length && daysOfWeek}</Text>
+        <Text style={styles.dayOfWeek}>{dates.length ? daysOfWeek : '' }</Text>
       </View>
-      { dates.length
-        ? <>
-          <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
-          <Text style={styles.month}>{months}</Text>
-        </>
-        : <Text style={styles.toPlan}>?</Text> 
-      }
+      <View style={styles.dateContainer}>
+        { dates.length
+          ? <>
+            <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
+            <Text style={styles.month}>{months}</Text>
+          </>
+          : <Text style={styles.toPlan}>?</Text> 
+        }
+      </View>
     </View>
   );
 };
@@ -54,9 +58,10 @@ CalendarIcon.propTypes = {
 const styles = StyleSheet.create({
   dateContainer: {
     minWidth: 50,
-    height: 60,
+    height: 45,
     borderWidth: BORDER_WIDTH,
-    borderRadius: BORDER_RADIUS.SM,
+    borderBottomLeftRadius: BORDER_RADIUS.SM,
+    borderBottomRightRadius: BORDER_RADIUS.SM,
     borderColor: PINK[500],
     alignItems: 'center',
     paddingBottom: PADDING.SM,
@@ -67,6 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: PINK[500],
     width: '100%',
     height: 15,
+    paddingHorizontal: 10,
   },
   dayOfWeek: {
     color: WHITE,
