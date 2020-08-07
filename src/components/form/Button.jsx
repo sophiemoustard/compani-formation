@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
-import { ALT_PINK, WHITE } from '../../styles/colors';
+import { PINK, WHITE } from '../../styles/colors';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color, borderColor }) => {
   const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: borderColor };
@@ -28,9 +28,9 @@ NiButton.propTypes = {
 
 NiButton.defaultProps = {
   loading: false,
-  bgColor: ALT_PINK[500],
+  bgColor: PINK[500],
   color: WHITE,
-  borderColor: ALT_PINK[500],
+  borderColor: PINK[500],
 };
 
 const styles = StyleSheet.create({

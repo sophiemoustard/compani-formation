@@ -4,10 +4,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import Courses from '../../api/courses';
 import { WHITE, BLACK } from '../../styles/colors';
-import { MAIN_MARGIN_LEFT } from '../../styles/metrics';
+import { MAIN_MARGIN_LEFT, ICON } from '../../styles/metrics';
 import OnSiteCell from '../../components/OnSiteCell';
 import { ON_SITE } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
@@ -43,7 +43,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
         <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
         <View style={styles.header}>
           <TouchableOpacity style={styles.arrow} onPress={goBack}>
-            <MaterialIcons name="arrow-back" color={WHITE} size={24} />
+            <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
           </TouchableOpacity>
           <Text style={styles.title}>{programName}</Text>
         </View>

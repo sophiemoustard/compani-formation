@@ -24,19 +24,6 @@ export const ORANGE = {
   '900': '#7B341E',
 };
 
-// Pink
-export const PINK = {
-  '100': '#FFF5F7',
-  '200': '#FFD1E9',
-  '300': '#FB93C0',
-  '400': '#F764A9',
-  '500': '#F13593',
-  '600': '#D91C81',
-  '700': '#AC166B',
-  '800': '#7C1352',
-  '900': '#540738',
-};
-
 // Teal
 export const TEAL = {
   '100': '#D0FBF6',
@@ -44,16 +31,6 @@ export const TEAL = {
   '400': '#1DBAA8',
   '500': '#0FA595',
   '800': '#045D53',
-};
-
-// PurpleGrey
-export const PURPLE_GREY = {
-  '100': '#F6F6F9',
-  '200': '#DADAE2',
-  '400': '#9E9EA7',
-  '500': '#6E6D7A',
-  '600': '#555563',
-  '800': '#2C2C3A',
 };
 
 // Green
@@ -78,15 +55,8 @@ export const PURPLE = {
   '600': '#3527AC',
 };
 
-// AltYellow
-export const ALT_YELLOW = {
-  '300': '#FFEA95',
-  '400': '#F7DD72',
-  '500': '#F3CA25',
-};
-
 // AltPink
-export const ALT_PINK = {
+export const PINK = {
   '100': '#FFEBF1',
   '200': '#FBB8D2',
   '300': '#F18FB5',

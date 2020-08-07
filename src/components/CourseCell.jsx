@@ -39,10 +39,9 @@ const styles = StyleSheet.create({
     width: COURSE_CELL_WIDTH,
     borderWidth: 1,
     borderColor: TRANSPARENT_GREY,
+    overflow: 'hidden',
   },
   image: {
-    borderTopLeftRadius: BORDER_RADIUS.SM,
-    borderTopRightRadius: BORDER_RADIUS.SM,
     height: imageHeight,
   },
   imageContainer: {

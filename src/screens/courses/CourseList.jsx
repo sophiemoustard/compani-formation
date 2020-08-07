@@ -13,7 +13,7 @@ import Courses from '../../api/courses';
 import CourseCell from '../../components/CourseCell';
 import SlotCell from '../../components/SlotCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
-import { ALT_PINK, YELLOW } from '../../styles/colors';
+import { PINK, YELLOW } from '../../styles/colors';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const CourseListScreen = ({ navigation }) => {
@@ -138,11 +138,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   nextEventsCountContainer: {
-    backgroundColor: ALT_PINK[100],
+    backgroundColor: PINK[100],
   },
   nextEventsCount: {
     fontSize: 14,
-    color: ALT_PINK[600],
+    color: PINK[600],
     fontWeight: 'bold',
   },
 });
