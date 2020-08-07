@@ -75,25 +75,23 @@ const CourseListScreen = ({ navigation }) => {
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       { futureSlots.length > 0 &&
-        <>
-          <View style={styles.sectionContainer}>
-            <View style={styles.contentTitle}>
-            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
-            <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-                <Text style={styles.coursesCount}>{futureSlots.length}</Text>
-              </View>
+        <View style={styles.sectionContainer}>
+          <View style={styles.contentTitle}>
+          <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+          <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
+              <Text style={styles.coursesCount}>{futureSlots.length}</Text>
             </View>
-            <FlatList
-              horizontal
-              data={futureSlots}
-              keyExtractor={(item) => `${item.name} - ${item.stepNumber}`}
-              renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
-              contentContainerStyle={styles.courseContainer}
-              showsHorizontalScrollIndicator={false}
-              ItemSeparatorComponent={renderSeparator}
-            />
           </View>
-        </>
+          <FlatList
+            horizontal
+            data={futureSlots}
+            keyExtractor={(item) => `${item.name} - ${item.stepNumber}`}
+            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
+            contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={renderSeparator}
+          />
+        </View>
       }
       <View style={styles.sectionContainer}>
         <View style={styles.contentTitle}>

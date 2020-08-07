@@ -13,15 +13,15 @@ const CalendarIcon = ({ dates }) => {
     const datesFormatted = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
     const firstDate = moment(datesFormatted[0], dateFormat);
 
-    daysOfWeek = capitalize(moment(firstDate, dateFormat).format('ddd'));
-    daysOfMonth = capitalize(moment(firstDate, dateFormat).format('D'));
-    months = capitalize(moment(firstDate, dateFormat).format('MMM'));
+    daysOfWeek = capitalize(firstDate.format('ddd'));
+    daysOfMonth = capitalize(firstDate.format('D'));
+    months = capitalize(firstDate.format('MMM'));
 
     if (datesFormatted.length > 1) {
       const secondDate = moment(datesFormatted[1], dateFormat);
-      daysOfWeek += `, ${capitalize(moment(secondDate, dateFormat).format('ddd'))}`;
-      daysOfMonth += `, ${capitalize(moment(secondDate, dateFormat).format('D'))}`;
-      const month = capitalize(moment(secondDate, dateFormat).format('MMM'));
+      daysOfWeek += `, ${capitalize(secondDate.format('ddd'))}`;
+      daysOfMonth += `, ${capitalize(secondDate.format('D'))}`;
+      const month = capitalize(secondDate.format('MMM'));
       if (!months.match(month)) months += `, ${month}`;
     }
 
@@ -65,12 +65,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   dayOfWeekContainer: {
-    borderTopLeftRadius: BORDER_RADIUS.SM,
-    borderTopRightRadius: BORDER_RADIUS.SM,
     backgroundColor: PINK[500],
     width: '100%',
     height: 15,
-    paddingHorizontal: 10,
+    paddingHorizontal: PADDING.MD,
   },
   dayOfWeek: {
     color: WHITE,
@@ -80,13 +78,13 @@ const styles = StyleSheet.create({
   dayOfMonth: {
     fontSize: 18,
     height: 22,
-    paddingHorizontal: 5,
+    paddingHorizontal: PADDING.SM,
   },
   month: {
     color: PINK[500],
     fontSize: 14,
     height: 18,
-    paddingHorizontal: 5,
+    paddingHorizontal: PADDING.SM,
   },
   toPlan: {
     fontSize: 24,
