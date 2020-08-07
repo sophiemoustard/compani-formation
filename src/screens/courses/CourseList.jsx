@@ -38,6 +38,7 @@ const formatDataForNextSteps = (courses) => {
       });
     }
   }
+
   return futureSlots.filter(step => Object.keys(step.slots).length)
     .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'))
     .map(slot => ({ ...omit(slot, ['firstSlot']) }));
@@ -74,11 +75,11 @@ const CourseListScreen = ({ navigation }) => {
   return ( 
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      { futureSlots.length > 0 &&
+      {futureSlots.length > 0 &&
         <View style={styles.sectionContainer}>
           <View style={styles.contentTitle}>
-          <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
-          <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
+            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+            <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
               <Text style={styles.coursesCount}>{futureSlots.length}</Text>
             </View>
           </View>

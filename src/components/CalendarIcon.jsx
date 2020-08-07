@@ -11,17 +11,15 @@ const CalendarIcon = ({ dates }) => {
   const dateFormat = 'DD/MM/YYY';
   if (dates.length) {
     const datesFormatted = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
-    const firstDate = moment(datesFormatted[0], dateFormat);
 
-    daysOfWeek = capitalize(firstDate.format('ddd'));
-    daysOfMonth = capitalize(firstDate.format('D'));
-    months = capitalize(firstDate.format('MMM'));
+    daysOfWeek = capitalize(moment(datesFormatted[0], dateFormat).format('ddd'));
+    daysOfMonth = capitalize(moment(datesFormatted[0], dateFormat).format('D'));
+    months = capitalize(moment(datesFormatted[0], dateFormat).format('MMM'));
 
     if (datesFormatted.length > 1) {
-      const secondDate = moment(datesFormatted[1], dateFormat);
-      daysOfWeek += `, ${capitalize(secondDate.format('ddd'))}`;
-      daysOfMonth += `, ${capitalize(secondDate.format('D'))}`;
-      const month = capitalize(secondDate.format('MMM'));
+      daysOfWeek += `, ${capitalize(moment(datesFormatted[1], dateFormat).format('ddd'))}`;
+      daysOfMonth += `, ${capitalize(moment(datesFormatted[1], dateFormat).format('D'))}`;
+      const month = capitalize(moment(datesFormatted[1], dateFormat).format('MMM'));
       if (!months.match(month)) months += `, ${month}`;
     }
 
@@ -38,7 +36,7 @@ const CalendarIcon = ({ dates }) => {
       <View style={styles.dayOfWeekContainer}>
         <Text style={styles.dayOfWeek}>{dates.length ? daysOfWeek : '' }</Text>
       </View>
-      { dates.length
+      {dates.length
         ? <>
           <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
           <Text style={styles.month}>{months}</Text>
@@ -67,7 +65,6 @@ const styles = StyleSheet.create({
   dayOfWeekContainer: {
     backgroundColor: PINK[500],
     width: '100%',
-    height: 15,
     paddingHorizontal: PADDING.MD,
   },
   dayOfWeek: {
