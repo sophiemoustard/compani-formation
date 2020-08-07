@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import pick from 'lodash/pick';
+import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
 import moment from '../../core/helpers/moment';
 import commonStyles from '../../styles/common';
@@ -30,7 +31,6 @@ const formatDataForNextSteps = (courses) => {
       if (!nextSlots.length) continue;
       futureSlots.push({
         ...pick(course.program, ['name']),
-        id: step,
         stepNumber: courseSteps.indexOf(step) + 1,
         firstSlot: nextSlots[0].startDate,
         type: nextSlots[0].step.type,
@@ -39,7 +39,8 @@ const formatDataForNextSteps = (courses) => {
     }
   }
   return futureSlots.filter(step => Object.keys(step.slots).length)
-    .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
+    .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'))
+    .map(slot => ({ ...omit(slot, ['firstSlot']) }));
 };
 
 const CourseListScreen = ({ navigation }) => {
@@ -85,7 +86,7 @@ const CourseListScreen = ({ navigation }) => {
             <FlatList
               horizontal
               data={futureSlots}
-              keyExtractor={(item) => `${item.name} - ${item.id}`}
+              keyExtractor={(item) => `${item.name} - ${item.stepNumber}`}
               renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
               style={styles.courseContainer}
               showsHorizontalScrollIndicator={false}

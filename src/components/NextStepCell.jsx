@@ -9,11 +9,11 @@ import { GREY, TRANSPARENT_GREY } from '../styles/colors';
 import { truncate } from '../core/helpers/utils';
 
 const NextStepCell = ({ nextSlotsStep }) => {
-  const { name, type, stepNumber } = nextSlotsStep;
+  const { name, type, stepNumber, slots } = nextSlotsStep;
   const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
   const truncatedProgramName = truncate(name, titleLimit);
   let slotsSteps = `ÉTAPE ${stepNumber} - ${stepTypeOptions[type]}`;
-  const dates = Object.keys(nextSlotsStep.slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
+  const dates = Object.keys(slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
 
   return (
     <View style={styles.container}>
@@ -28,8 +28,6 @@ const NextStepCell = ({ nextSlotsStep }) => {
 
 NextStepCell.propTypes = {
   nextSlotsStep: PropTypes.exact({
-    firstSlot: PropTypes.string,
-    id: PropTypes.string,
     name: PropTypes.string,
     slots: PropTypes.object,
     type: PropTypes.string,
