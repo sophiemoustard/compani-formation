@@ -6,12 +6,9 @@ import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
 import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { GREY, TRANSPARENT_GREY } from '../styles/colors';
-import { truncate } from '../core/helpers/utils';
 
 const NextStepCell = ({ nextSlotsStep }) => {
   const { name, type, stepNumber, slots } = nextSlotsStep;
-  const titleLimit = IS_SMALL_SCREEN ? 20 : 35;
-  const truncatedProgramName = truncate(name, titleLimit);
   let slotsSteps = `ÉTAPE ${stepNumber} - ${stepTypeOptions[type]}`;
   const dates = Object.keys(slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
 
@@ -19,8 +16,8 @@ const NextStepCell = ({ nextSlotsStep }) => {
     <View style={styles.container}>
       <CalendarIcon dates={dates} />
       <View style={styles.textContainer}>
-        <Text style={styles.programName}>{truncatedProgramName || ''}</Text>
-        <Text style={styles.slotsSteps}>{slotsSteps}</Text>
+        <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.programName}>{name || ''}</Text>
+        <Text lineBreakMode={'tail'} numberOfLines={1} style={styles.slotsSteps}>{slotsSteps}</Text>
       </View>
     </View>
   );
@@ -35,11 +32,11 @@ NextStepCell.propTypes = {
   }),
 };
 
+const widthTextContainer = IS_SMALL_SCREEN ? '45%' : '60%';
 const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS.SM,
     width: COURSE_CELL_WIDTH,
-    overflow: 'hidden',
     borderWidth: 1,
     borderColor: TRANSPARENT_GREY,
     flexDirection: 'row',
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: MARGIN.SM,
-    width: '60%',
+    width: widthTextContainer,
     justifyContent: 'space-between',
   },
   programName: {

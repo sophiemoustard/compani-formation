@@ -34,19 +34,17 @@ const CalendarIcon = ({ dates }) => {
   }
 
   return (
-    <View>
+    <View style={styles.dateContainer}>
       <View style={styles.dayOfWeekContainer}>
         <Text style={styles.dayOfWeek}>{dates.length ? daysOfWeek : '' }</Text>
       </View>
-      <View style={styles.dateContainer}>
-        { dates.length
-          ? <>
-            <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
-            <Text style={styles.month}>{months}</Text>
-          </>
-          : <Text style={styles.toPlan}>?</Text> 
-        }
-      </View>
+      { dates.length
+        ? <>
+          <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
+          <Text style={styles.month}>{months}</Text>
+        </>
+        : <Text style={styles.toPlan}>?</Text>
+      }
     </View>
   );
 };
@@ -58,13 +56,13 @@ CalendarIcon.propTypes = {
 const styles = StyleSheet.create({
   dateContainer: {
     minWidth: 50,
-    height: 45,
+    height: 60,
     borderWidth: BORDER_WIDTH,
-    borderBottomLeftRadius: BORDER_RADIUS.SM,
-    borderBottomRightRadius: BORDER_RADIUS.SM,
+    borderRadius: BORDER_RADIUS.SM,
     borderColor: PINK[500],
     alignItems: 'center',
     paddingBottom: PADDING.SM,
+    overflow: 'hidden',
   },
   dayOfWeekContainer: {
     borderTopLeftRadius: BORDER_RADIUS.SM,
