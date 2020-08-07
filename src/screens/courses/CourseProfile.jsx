@@ -9,7 +9,8 @@ import Courses from '../../api/courses';
 import { WHITE, BLACK } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON } from '../../styles/metrics';
 import OnSiteCell from '../../components/OnSiteCell';
-import { ON_SITE } from '../../core/data/constants';
+import ELearningCell from '../../components/ELearningCell';
+import { ON_SITE, E_LEARNING } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
@@ -37,8 +38,20 @@ const CourseProfileScreen = ({ route, navigation }) => {
   const source = programImage ? { uri: programImage } : require('../../../assets/authentication_background_image.jpg');
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
+  const renderCells = ({ item, index }) => {
+    if (item.type === ON_SITE) {
+      return <OnSiteCell step={item} slots={course.slots} index={index} />;
+    }
+
+    if (item.type === E_LEARNING) {
+      return <ELearningCell step={item} index={index} />;
+    }
+
+    return null;
+  };
+
   return (
-    course &&
+    course && (
       <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
         <View style={styles.header}>
@@ -47,13 +60,9 @@ const CourseProfileScreen = ({ route, navigation }) => {
           </TouchableOpacity>
           <Text style={styles.title}>{programName}</Text>
         </View>
-        <FlatList
-          data={course.program.steps}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item, index }) =>
-            item.type === ON_SITE && <OnSiteCell step={item} slots={course.slots} index={index} />}
-        />
+        <FlatList data={course.program.steps} keyExtractor={(item) => item._id} renderItem={renderCells} />
       </ScrollView>
+    )
   );
 };
 
