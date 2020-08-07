@@ -8,12 +8,13 @@ import groupBy from 'lodash/groupBy';
 import pick from 'lodash/pick';
 import PropTypes from 'prop-types';
 import moment from '../../core/helpers/moment';
-import screensStyle from '../../styles/screens.style';
-import { MAIN_MARGIN_LEFT, PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from '../../styles/variables.js';
+import commonStyles from '../../styles/common';
 import Courses from '../../api/courses';
-import Blob from '../../components/Blob';
 import CourseCell from '../../components/CourseCell';
 import SlotCell from '../../components/SlotCell';
+import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
+import { ALT_PINK, YELLOW } from '../../styles/colors';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const CourseListScreen = ({ navigation }) => {
   const [courses, setCourses] = useState([]);
@@ -66,36 +67,35 @@ const CourseListScreen = ({ navigation }) => {
     isFocused && fetchData();
   }, [isFocused]);
 
+  const renderSeparator = () => <View style={styles.separator} />;
 
   return ( 
-    <View style={screensStyle.container}>
-      <Text style={screensStyle.title} testID='header'>Mes formations</Text>
-      { Object.keys(nextEvents).length > 0 &&
-        <>
-          <View style={styles.sectionContainer}>
-            <View style={styles.contentTitle}>
-              <Text style={screensStyle.subtitle}>Prochains évènements</Text>
-              <View style={{ ...styles.nextEventsCountContainer, ...styles.countContainer }}>
-                <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
-              </View>
+    <ScrollView style={commonStyles.container}>
+      <Text style={commonStyles.title} testID='header'>Mes formations</Text>
+      {Object.keys(nextEvents).length > 0 &&
+        <View style={styles.sectionContainer}>
+          <View style={styles.contentTitle}>
+            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+            <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
+              <Text style={styles.nextEventsCount}>{Object.keys(nextEvents).length}</Text>
             </View>
-            <FlatList
-              horizontal
-              data={nextEvents}
-              keyExtractor={(item) => item.date}
-              renderItem={({ item }) => <SlotCell slotsByDay={item} />}
-              style={styles.courseContainer}
-              showsHorizontalScrollIndicator={false}
-            />
           </View>
-        </>
+          <FlatList
+            horizontal
+            data={nextEvents}
+            keyExtractor={(item) => item.date}
+            renderItem={({ item }) => <SlotCell slotsByDay={item} />}
+            contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={renderSeparator}
+          />
+        </View>
       }
       <View style={styles.sectionContainer}>
-        <Blob style={styles.blob} color="#FFEA95" />
         <View style={styles.contentTitle}>
-          <Text style={screensStyle.subtitle}>Formations en cours</Text>
-          <View style={{ ...styles.coursesCountContainer, ...styles.countContainer }}>
-            <Text style={styles.coursesCount}> {courses.length} </Text>
+          <Text style={commonStyles.sectionTitle}>Formations en cours</Text>
+          <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
+            <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
         </View>
         <FlatList
@@ -103,11 +103,12 @@ const CourseListScreen = ({ navigation }) => {
           data={courses}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
-          style={styles.courseContainer}
+          contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={renderSeparator}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -117,37 +118,33 @@ CourseListScreen.propTypes = {
 
 const styles = StyleSheet.create({
   courseContainer: {
-    marginLeft: MAIN_MARGIN_LEFT,
-    marginRight: MAIN_MARGIN_LEFT,
+    paddingHorizontal: MAIN_MARGIN_LEFT,
+  },
+  separator: {
+    marginRight: 8,
   },
   contentTitle: {
     flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: MARGIN.MD,
   },
-  sectionContainer: { position: 'relative', marginBottom: 100 },
+  sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   blob: { position: 'absolute', top: -10 },
   coursesCountContainer: {
-    backgroundColor: '#FFF9DF',
+    backgroundColor: YELLOW[200],
   },
   coursesCount: {
     fontSize: 14,
-    color: '#D5AD0A',
+    color:  YELLOW[800],
     fontWeight: 'bold',
   },
   nextEventsCountContainer: {
-    backgroundColor: PRIMARY_COLOR_LIGHT,
+    backgroundColor: ALT_PINK[100],
   },
   nextEventsCount: {
     fontSize: 14,
-    color: PRIMARY_COLOR_DARK,
+    color: ALT_PINK[600],
     fontWeight: 'bold',
   },
-  countContainer: {
-    marginBottom: 10,
-    padding: 2,
-    marginLeft: 8,
-    borderRadius: 8,
-  }
 });
 
 export default CourseListScreen;

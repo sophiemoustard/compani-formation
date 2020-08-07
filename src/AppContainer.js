@@ -12,7 +12,7 @@ import CourseProfileScreen from './screens/courses/CourseProfile';
 import ProfileScreen from './screens/Profile';
 import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
-import { PRIMARY_COLOR } from './styles/variables';
+import { ALT_PINK } from './styles/colors';
 
 const CourseStack = createStackNavigator();
 
@@ -45,7 +45,7 @@ const Home = () => {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{ activeTintColor: PRIMARY_COLOR }}
+      tabBarOptions={{ activeTintColor: ALT_PINK[500] }}
       screenOptions={screenOptions}
     >
       <Tab.Screen name="ProgramList" component={ProgramListScreen} options={{ tabBarLabel: 'Explorer' }} />

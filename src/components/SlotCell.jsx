@@ -2,13 +2,16 @@ import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
-import { GREY } from '../styles/variables';
 import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
+import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
+import { GREY, TRANSPARENT_GREY } from '../styles/colors';
+import { truncate } from '../core/helpers/utils';
 
 const SlotCell = ({ slotsByDay }) => {
   const { date, name, steps } = slotsByDay;
-  const truncatedProgramName = name.length > 40 ? `${name.slice(0, 38)}...` : name;
+  const titleLimit = IS_SMALL_SCREEN ? 28 : 40;
+  const truncatedProgramName = truncate(name, titleLimit);
 
   let slotsSteps = '';
   if (steps) {
@@ -47,20 +50,18 @@ SlotCell.propTypes = {
   }),
 };
 
-const borderRadius = 10;
 const styles = StyleSheet.create({
   container: {
-    borderRadius: borderRadius,
-    marginRight: 10,
-    padding: 10,
+    borderRadius: BORDER_RADIUS.SM,
+    width: COURSE_CELL_WIDTH,
     borderWidth: 1,
-    borderColor: GREY,
+    borderColor: TRANSPARENT_GREY,
     flexDirection: 'row',
+    padding: PADDING.MD,
   },
   textContainer: {
-    marginLeft: 10,
-    maxWidth: 175,
-    overflow: 'hidden',
+    marginLeft: MARGIN.SM,
+    width: '70%',
     justifyContent: 'space-between',
   },
   programName: {
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   slotsSteps: {
-    color: '#766570',
+    color: GREY[600],
     fontSize: 12,
   },
 });

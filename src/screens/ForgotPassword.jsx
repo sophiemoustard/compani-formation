@@ -5,8 +5,9 @@ import Users from '../api/users';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
-import screensStyle from '../styles/screens.style';
-import { WHITE, PRIMARY_COLOR, POSITIVE_COLOR } from '../styles/variables';
+import commonStyles from '../styles/common';
+import { MARGIN, PADDING } from '../styles/metrics';
+import { GREEN, WHITE, ALT_PINK,  } from '../styles/colors';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const goBack = () => { navigation.navigate('Authentication'); };
 
   return (
-    <KeyboardAvoidingView style={screensStyle.container} behavior={isIOS ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={commonStyles.container} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={ require('../../assets/compani_logo.png') } />
@@ -49,7 +50,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         {successMessage !== '' && <Text style={styles.success}>{successMessage}</Text>}
         <View style={styles.buttonContainer}>
           <NiButton style={styles.button} caption="Retour" onPress={goBack} bgColor={WHITE}
-            color={PRIMARY_COLOR} />
+            color={ALT_PINK[500]} borderColor={ALT_PINK[500]} />
           <NiButton style={styles.button} caption="Envoyer" onPress={sendEmail} loading={loading} />
         </View>
       </View>
@@ -64,7 +65,7 @@ ForgotPasswordScreen.propTypes = {
 const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: MARGIN.XXL,
   },
   image: {
     width: 160,
@@ -73,11 +74,11 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: PADDING.XL,
     justifyContent: 'center',
   },
   input: {
-    marginVertical: 10,
+    marginVertical: MARGIN.SM,
   },
   buttonContainer: {
     display: 'flex',
@@ -91,8 +92,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   success: {
-    color: POSITIVE_COLOR,
-    marginBottom: 10,
+    color: GREEN[500],
+    marginBottom: MARGIN.SM,
   }
 });
 
