@@ -5,20 +5,20 @@ import { navigate } from '../navigationRef';
 
 const authReducer = (state, actions) => {
   switch (actions.type) {
-    case 'beforeSignin':
-      return { ...state, error: false, errorMessage: '', loading: true };
-    case 'signin':
-      return { ...state, loading: false, token: actions.payload };
-    case 'signinError':
-      return { ...state, loading: false, error: true, errorMessage: actions.payload };
-    case 'resetError':
-      return { ...state, loading: false, error: false, errorMessage: '' };
-    case 'signout':
-      return { ...state, token: null, loading: false, error: false, errorMessage: '' };
-    case 'render':
-      return { ...state, appIsReady: true };
-    default:
-      return state;
+  case 'beforeSignin':
+    return { ...state, error: false, errorMessage: '', loading: true };
+  case 'signin':
+    return { ...state, loading: false, token: actions.payload };
+  case 'signinError':
+    return { ...state, loading: false, error: true, errorMessage: actions.payload };
+  case 'resetError':
+    return { ...state, loading: false, error: false, errorMessage: '' };
+  case 'signout':
+    return { ...state, token: null, loading: false, error: false, errorMessage: '' };
+  case 'render':
+    return { ...state, appIsReady: true };
+  default:
+    return state;
   }
 };
 

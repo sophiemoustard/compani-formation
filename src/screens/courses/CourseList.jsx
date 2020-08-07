@@ -28,10 +28,10 @@ const CourseListScreen = ({ navigation }) => {
 
       setNextEvents(() => []);
       const futureSlots = courses.map(course => ({
-          name: get(course, 'program.name') || '',
-          steps: get(course, 'program.steps') || [],
-          slots: course.slots.filter(slot => moment().isSameOrBefore(slot.startDate, 'days')),
-        }))
+        name: get(course, 'program.name') || '',
+        steps: get(course, 'program.steps') || [],
+        slots: course.slots.filter(slot => moment().isSameOrBefore(slot.startDate, 'days')),
+      }))
         .filter(course => course.slots.length)
         .map(course => {
           const slotsByDate = [];
@@ -50,7 +50,7 @@ const CourseListScreen = ({ navigation }) => {
       futureSlots.sort((a, b) => moment(a.date, 'DD/MM/YYYY').diff(moment(b.date, 'DD/MM/YYYY'), 'days'));
       setNextEvents(futureSlots);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       setCourses(() => []);
       setNextEvents(() => []);
     }

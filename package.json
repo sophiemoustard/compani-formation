@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "node_modules/jest-expo/node_modules/jest/bin/jest.js"
+    "test": "node_modules/jest-expo/node_modules/jest/bin/jest.js",
+    "lint": "eslint ./src --ext .js --ext .jsx --ext .tx -c .eslintrc.js"
   },
   "jest": {
     "preset": "jest-expo",

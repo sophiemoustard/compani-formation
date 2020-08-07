@@ -4,17 +4,11 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended'
-  ],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true
-    },
+    ecmaFeatures: { jsx: true },
     ecmaVersion: 11,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['react'],
   rules: {
@@ -22,9 +16,14 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'react/display-name': 'off',
-    'max-len': ['error', { 'code' : 120, 'tabWidth': 2 }],
+    'max-len': ['error', { code: 120, tabWidth: 2 }],
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn'
+    'react-hooks/exhaustive-deps': 'warn',
+    'no-console': ['error', { allow: ['error'] }],
+    'brace-style': ['error', '1tbs', { allowSingleLine: true }],
+    'comma-spacing': ['error', { before: false, after: true }],
+    'space-infix-ops': 'error',
+    'indent': ['error', 2],
   },
   globals: {
     __DEV__: true,
