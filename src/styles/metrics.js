@@ -31,8 +31,8 @@ export const BORDER_RADIUS = {
 };
 
 export const ICON = {
-  XS: '',
-  SM: 16,
+  XS: 16,
+  SM: 20,
   MD: 24,
   LG: '',
   XL: '',

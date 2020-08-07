@@ -28,7 +28,7 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
           style={styles.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
         {isPassword &&
           <TouchableOpacity style={styles.inputIcon} onPress={togglePassword}>
-            <Feather name={showPasswordIcon} size={ICON.SM} />
+            <Feather name={showPasswordIcon} size={ICON.XS} />
           </TouchableOpacity>}
       </View>
     </View>
