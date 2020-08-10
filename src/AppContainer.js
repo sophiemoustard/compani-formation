@@ -59,6 +59,7 @@ const MainStack = createStackNavigator();
 
 export const AppContainer = () => {
   const { tryLocalSignIn, token, appIsReady } = useContext(AuthContext);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
   if (!appIsReady) return null;
