@@ -5,7 +5,7 @@ import moment from '../core/helpers/moment';
 import CalendarIcon from './CalendarIcon';
 import { stepTypeOptions } from '../core/data/constants';
 import { MARGIN, PADDING } from '../styles/metrics';
-import { GREY, BLACK } from '../styles/colors';
+import { GREY } from '../styles/colors';
 
 const OnSiteCell = ({ step, slots, index}) => {
   const stepSlots = slots.filter(slot => slot.step === step._id);
@@ -18,7 +18,7 @@ const OnSiteCell = ({ step, slots, index}) => {
       <CalendarIcon dates={dates} />
       <View style={styles.textContainer}>
         <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[step.type]}`}</Text>
-        <Text style={styles.stepName}>{step.name}</Text>
+        <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.stepName}>{step.name}</Text>
       </View>
     </View>
   );
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: GREY[100],
-    marginVertical: MARGIN.XS,
     flexDirection: 'row',
     padding: PADDING.MD,
   },
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   stepName: {
-    color: BLACK,
+    color: GREY[800],
     fontWeight: 'bold',
     fontSize: 16,
   },
