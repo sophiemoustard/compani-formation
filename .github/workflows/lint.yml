@@ -22,4 +22,3 @@ jobs:
 
       # Run ESLint
       - run: yarn lint
-   
