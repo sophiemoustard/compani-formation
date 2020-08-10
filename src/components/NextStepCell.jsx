@@ -16,8 +16,8 @@ const NextStepCell = ({ nextSlotsStep }) => {
     <View style={styles.container}>
       <CalendarIcon dates={dates} />
       <View style={styles.textContainer}>
-        <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.programName}>{name || ''}</Text>
         <Text lineBreakMode={'tail'} numberOfLines={1} style={styles.slotsSteps}>{slotsSteps}</Text>
+        <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.programName}>{name || ''}</Text>
       </View>
     </View>
   );
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   textContainer: {
     marginLeft: MARGIN.SM,
     flex: 1,
-    justifyContent: 'space-between',
   },
   programName: {
     fontWeight: 'bold',

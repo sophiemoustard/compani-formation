@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import moment from '../core/helpers/moment';
 import CalendarIcon from './CalendarIcon';
 import { stepTypeOptions } from '../core/data/constants';
-import { MARGIN, PADDING } from '../styles/metrics';
+import { MARGIN, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { GREY } from '../styles/colors';
 
 const OnSiteCell = ({ step, slots, index}) => {
@@ -35,7 +35,9 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: GREY[100],
     flexDirection: 'row',
-    padding: PADDING.MD,
+    padding: PADDING.LG,
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY[200],
   },
   textContainer: {
     marginLeft: MARGIN.MD,
