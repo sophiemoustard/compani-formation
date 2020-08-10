@@ -2,12 +2,12 @@ import axios from 'axios';
 import getEnvVars from '../../environment';
 
 export default {
-  authenticate: async (payload) => {
+  authenticate: async payload => {
     const { baseURL } = getEnvVars();
     const response = await axios.post(`${baseURL}/users/authenticate`, payload);
     return response.data.data;
   },
-  forgotPassword: async (payload) => {
+  forgotPassword: async payload => {
     const { baseURL } = getEnvVars();
     const mailInfo = await axios.post(`${baseURL}/users/forgot-password`, payload);
     return mailInfo.data.data.mailInfo;

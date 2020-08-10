@@ -8,26 +8,29 @@ import groupBy from 'lodash/groupBy';
 import pick from 'lodash/pick';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
+import { ScrollView } from 'react-native-gesture-handler';
 import moment from '../../core/helpers/moment';
 import commonStyles from '../../styles/common';
 import Courses from '../../api/courses';
 import CourseCell from '../../components/CourseCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
-import { ScrollView } from 'react-native-gesture-handler';
 import NextStepCell from '../../components/NextStepCell';
 
-const formatDataForNextSteps = (courses) => {
+const formatDataForNextSteps = courses => {
   const futureSlots = [];
+  // eslint-disable-next-line no-restricted-syntax
   for (const course of courses) {
     const courseSteps = get(course, 'program.steps') || [];
     const stepSlots = groupBy(course.slots, s => s.step._id);
 
+    // eslint-disable-next-line guard-for-in, no-restricted-syntax
     for (const step in stepSlots) {
       const nextSlots = stepSlots[step]
         .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
         .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
 
+      // eslint-disable-next-line no-continue
       if (!nextSlots.length) continue;
       futureSlots.push({
         ...pick(course.program, ['name']),
@@ -59,20 +62,21 @@ const CourseListScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    async function fetchData () { getCourses(); }
+    async function fetchData() { getCourses(); }
     fetchData();
   }, []);
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    async function fetchData () { getCourses(); }
+    async function fetchData() { getCourses(); }
+    // eslint-disable-next-line no-unused-expressions
     isFocused && fetchData();
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
   const futureSlots = formatDataForNextSteps(courses);
 
-  return ( 
+  return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {futureSlots.length > 0 &&
@@ -86,7 +90,7 @@ const CourseListScreen = ({ navigation }) => {
           <FlatList
             horizontal
             data={futureSlots}
-            keyExtractor={(item) => `${item.name} - ${item.stepNumber}`}
+            keyExtractor={item => `${item.name} - ${item.stepNumber}`}
             renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
             contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false}
@@ -104,7 +108,7 @@ const CourseListScreen = ({ navigation }) => {
         <FlatList
           horizontal
           data={courses}
-          keyExtractor={(item) => item._id}
+          keyExtractor={item => item._id}
           renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
           contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
   },
   coursesCount: {
     fontSize: 14,
-    color:  YELLOW[800],
+    color: YELLOW[800],
     fontWeight: 'bold',
   },
   nextEventsCountContainer: {

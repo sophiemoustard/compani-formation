@@ -24,14 +24,14 @@ const CourseProfileScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    async function fetchData () { await getCourse(); }
+    async function fetchData() { await getCourse(); }
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    async function fetchData () { await getCourse(); }
+    async function fetchData() { await getCourse(); }
     if (isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
@@ -64,7 +64,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
       </ImageBackground>
       <FlatList
         data={course.program.steps}
-        keyExtractor={(item) => item._id}
+        keyExtractor={item => item._id}
         renderItem={renderCells}
         ItemSeparatorComponent={renderSeparator}/>
     </ScrollView>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textShadowColor: GREY[800],
-    textShadowRadius:  4,
+    textShadowRadius: 4,
     textShadowOffset: { width: 0, height: 1 },
   },
   separator: {

@@ -7,7 +7,9 @@ import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { PINK, WHITE, GREY } from '../styles/colors';
 
 const CalendarIcon = ({ dates }) => {
-  let daysOfWeek, daysOfMonth, months;
+  let daysOfWeek;
+  let daysOfMonth;
+  let months;
   const dateFormat = 'DD/MM/YYY';
   if (dates.length) {
     const datesFormatted = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
@@ -26,7 +28,7 @@ const CalendarIcon = ({ dates }) => {
     if (datesFormatted.length > 2) {
       daysOfWeek += '...';
       daysOfMonth += '...';
-      const monthsSet = [... new Set(datesFormatted.map(date => capitalize(moment(date, dateFormat).format('MMM'))))];
+      const monthsSet = [...new Set(datesFormatted.map(date => capitalize(moment(date, dateFormat).format('MMM'))))];
       if (monthsSet.length > 2) months += '...';
     }
   }

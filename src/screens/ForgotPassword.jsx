@@ -7,7 +7,7 @@ import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
 import commonStyles from '../styles/common';
 import { MARGIN, PADDING } from '../styles/metrics';
-import { GREEN, WHITE, PINK,  } from '../styles/colors';
+import { GREEN, WHITE, PINK } from '../styles/colors';
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -15,9 +15,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState(false);
-  const isIOS = Platform.OS == 'ios';
+  const isIOS = Platform.OS === 'ios';
 
-  const sendEmail = async () =>  {
+  const sendEmail = async () => {
     if (!email) return;
 
     setLoading(true);

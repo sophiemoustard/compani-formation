@@ -5,19 +5,17 @@ import NiButton from '../components/form/Button';
 import { WHITE, MODAL_BACKDROP_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../styles/metrics';
 
-const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => {
-  return (
-    <Modal visible={visible} transparent={true}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent} >
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.contentText}>{contentText}</Text>
-          <NiButton style={styles.button} caption={buttonCaption} onPress={onPress}></NiButton>
-        </View>
+const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => (
+  <Modal visible={visible} transparent={true}>
+    <View style={styles.modalContainer}>
+      <View style={styles.modalContent} >
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.contentText}>{contentText}</Text>
+        <NiButton style={styles.button} caption={buttonCaption} onPress={onPress}></NiButton>
       </View>
-    </Modal>
-  );
-};
+    </View>
+  </Modal>
+);
 
 NiModal.propTypes = {
   visible: PropTypes.bool,

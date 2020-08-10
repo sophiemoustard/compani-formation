@@ -30,6 +30,8 @@
     "array-flat-polyfill": "^1.0.1",
     "axios": "^0.19.2",
     "babel-jest": "^26.1.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.18.0",
     "expo": "^38.0.8",
     "moment": "^2.27.0",

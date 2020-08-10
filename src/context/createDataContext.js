@@ -8,7 +8,8 @@ export default (reducer, actions, defaultValue) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
 
     const boundActions = {};
-    for (let key in actions) {
+    // eslint-disable-next-line guard-for-in, no-restricted-syntax
+    for (const key in actions) {
       boundActions[key] = actions[key](dispatch);
     }
 

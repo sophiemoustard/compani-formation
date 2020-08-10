@@ -21,9 +21,9 @@ const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
   const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
-  const isIOS = Platform.OS == 'ios';
+  const isIOS = Platform.OS === 'ios';
 
-  const onPress = () =>  signIn({ email, password });
+  const onPress = () => signIn({ email, password });
   const forgotPassword = () => {
     resetError();
     navigation.navigate('ForgotPassword');
@@ -31,7 +31,7 @@ const AuthenticationScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      style={{...styles.image, height: useWindowDimensions().height}}
+      style={{ ...styles.image, height: useWindowDimensions().height }}
       source={require('../../assets/authentication_background_image.jpg')}
     >
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>

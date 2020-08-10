@@ -7,7 +7,7 @@ import { stepTypeOptions } from '../core/data/constants';
 import { MARGIN, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { GREY } from '../styles/colors';
 
-const OnSiteCell = ({ step, slots, index}) => {
+const OnSiteCell = ({ step, slots, index }) => {
   const stepSlots = slots.filter(slot => slot.step === step._id);
   const dates = stepSlots.length
     ? stepSlots.map(stepSlot => stepSlot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
