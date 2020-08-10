@@ -51,7 +51,7 @@ const CalendarIcon = ({ dates }) => {
 };
 
 CalendarIcon.propTypes = {
-  dates: PropTypes.arrayOf(PropTypes.string),
+  dates: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -88,7 +88,13 @@ const styles = StyleSheet.create({
     height: imageHeight,
     position: 'relative',
   },
-  gradient: { position: 'absolute', left: 0, right: 0, bottom: 0, height: imageHeight * 0.4 },
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: imageHeight * 0.4,
+  },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
