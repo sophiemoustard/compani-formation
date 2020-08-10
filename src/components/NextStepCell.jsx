@@ -4,7 +4,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import moment from '../core/helpers/moment';
 import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
-import { MARGIN, PADDING, IS_SMALL_SCREEN, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
+import { MARGIN, PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { GREY, TRANSPARENT_GREY } from '../styles/colors';
 
 const NextStepCell = ({ nextSlotsStep }) => {

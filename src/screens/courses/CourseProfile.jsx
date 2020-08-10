@@ -24,12 +24,14 @@ const CourseProfileScreen = ({ route, navigation }) => {
   useEffect(() => {
     async function fetchData () { await getCourse(); }
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFocused = useIsFocused();
   useEffect(() => {
     async function fetchData () { await getCourse(); }
     if (isFocused) fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
   const programImage = get(course, 'program.image.link') || '';

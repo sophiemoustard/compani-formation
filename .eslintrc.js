@@ -18,7 +18,7 @@ module.exports = {
     'react/display-name': 'off',
     'max-len': ['error', { code: 120, tabWidth: 2 }],
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'error',
     'no-console': ['error', { allow: ['error'] }],
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
     'comma-spacing': ['error', { before: false, after: true }],
