@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: GREY[100],
     flexDirection: 'row',
-    padding: PADDING.MD,
+    padding: PADDING.LG,
   },
   textContainer: {
     marginLeft: MARGIN.MD,
