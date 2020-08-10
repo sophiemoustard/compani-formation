@@ -32,17 +32,20 @@ const CalendarIcon = ({ dates }) => {
   }
 
   return (
-    <View style={styles.dateContainer}>
-      <View style={styles.dayOfWeekContainer}>
-        <Text style={styles.dayOfWeek}>{dates.length ? daysOfWeek : '' }</Text>
+    <View style={styles.container}>
+      <View style={styles.dateContainer}>
+        <View style={styles.dayOfWeekContainer}>
+          <Text style={styles.dayOfWeek}>{dates.length ? daysOfWeek : '' }</Text>
+        </View>
+        {dates.length
+          ? <>
+            <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
+            <Text style={styles.month}>{months}</Text>
+          </>
+          : <Text style={styles.toPlan}>?</Text>
+        }
       </View>
-      {dates.length
-        ? <>
-          <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
-          <Text style={styles.month}>{months}</Text>
-        </>
-        : <Text style={styles.toPlan}>?</Text>
-      }
+      <View style={styles.shadow} />
     </View>
   );
 };
@@ -52,8 +55,11 @@ CalendarIcon.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  dateContainer: {
+  container: {
     minWidth: 50,
+    height: 63,
+  },
+  dateContainer: {
     height: 60,
     // Do not merge the borderWidths params, avoid an unwanted line in android
     borderTopWidth: BORDER_WIDTH,
@@ -66,11 +72,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: PADDING.SM,
     overflow: 'hidden',
-    elevation: 5,
-    shadowColor: GREY[200],
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 1,
-    shadowRadius: 0,
   },
   dayOfWeekContainer: {
     backgroundColor: PINK[500],
@@ -97,7 +98,16 @@ const styles = StyleSheet.create({
   toPlan: {
     fontSize: 24,
     height: 40,
-  }
+  },
+  shadow: {
+    minWidth: 50,
+    height: BORDER_RADIUS.SM + 3,
+    backgroundColor: GREY[200],
+    top: -BORDER_RADIUS.SM,
+    zIndex: -1,
+    borderBottomLeftRadius: BORDER_RADIUS.SM,
+    borderBottomRightRadius: BORDER_RADIUS.SM,
+  },
 });
 
 export default CalendarIcon;
