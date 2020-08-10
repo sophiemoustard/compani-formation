@@ -41,7 +41,8 @@
     "react-native-screens": "~2.9.0",
     "react-native-svg": "12.1.0",
     "react-test-renderer": "~16.11.0",
-    "sharp-cli": "^1.14.1"
+    "sharp-cli": "^1.14.1",
+    "expo-linear-gradient": "~8.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",

@@ -5,6 +5,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Feather } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Courses from '../../api/courses';
 import { WHITE, GREY } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
@@ -52,13 +53,15 @@ const CourseProfileScreen = ({ route, navigation }) => {
 
   return course && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.arrow} onPress={goBack}>
-          <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
-        </TouchableOpacity>
-        <Text style={styles.title}>{programName}</Text>
-      </View>
+      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }}>
+        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.arrow} onPress={goBack}>
+            <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
+          </TouchableOpacity>
+          <Text style={styles.title}>{programName}</Text>
+        </View>
+      </ImageBackground>
       <FlatList
         data={course.program.steps}
         keyExtractor={(item) => item._id}
@@ -83,11 +86,14 @@ const imageHeight = 200;
 const styles = StyleSheet.create({
   image: {
     height: imageHeight,
+    position: 'relative',
   },
+  gradient: { position: 'absolute', left: 0, right: 0, bottom: 0, height: imageHeight * 0.4 },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     height: imageHeight,
+    position: 'absolute',
   },
   arrow: {
     margin: MAIN_MARGIN_LEFT,
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
   },
   separator: {
-    margin: MARGIN.MD,
+    marginBottom: MARGIN.MD,
   },
 });
 
