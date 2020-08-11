@@ -2,13 +2,13 @@ module.exports = {
   env: {
     es6: true,
     node: true,
-    jest: true
+    jest: true,
   },
   extends: ['airbnb-base', 'eslint:recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
   parserOptions: {
     ecmaFeatures: { jsx: true },
     ecmaVersion: 11,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: ['react'],
   rules: {
@@ -30,22 +30,22 @@ module.exports = {
     'no-use-before-define': 0,
     'func-names': 0,
     'global-require': 0,
-    'no-param-reassign': 0,
-    'comma-dangle': ['error', {
-      arrays: 'ignore',
-      objects: 'ignore',
-      imports: 'ignore',
-      exports: 'ignore',
-      functions: 'ignore'
-    }],
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'never',
+      },
+    ],
     'object-curly-newline': ['error', { consistent: true }],
-    'no-shadow': 0,
     'operator-linebreak': ['error', 'before', { overrides: { '&&': 'after' } }],
-    'no-unused-expressions': ['error', { allowTernary: true }],
-    'arrow-parens': ['error', 'as-needed']
+    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }], // option require
   },
   globals: {
     __DEV__: true,
-    Platform: true
-  }
+    Platform: true,
+  },
 };

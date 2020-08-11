@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   image: {
     width: 160,
     height: 30,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   inner: {
     flex: 1,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   success: {
     color: GREEN[500],
     marginBottom: MARGIN.SM,
-  }
+  },
 });
 
 export default ForgotPasswordScreen;

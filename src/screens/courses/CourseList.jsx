@@ -17,7 +17,7 @@ import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
 import NextStepCell from '../../components/NextStepCell';
 
-const formatDataForNextSteps = courses => {
+const formatDataForNextSteps = (courses) => {
   const futureSlots = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const course of courses) {
@@ -53,8 +53,8 @@ const CourseListScreen = ({ navigation }) => {
   const getCourses = async () => {
     try {
       const userId = await AsyncStorage.getItem('user_id');
-      const courses = await Courses.getUserCourses({ trainees: userId });
-      setCourses(courses);
+      const fetchedCourses = await Courses.getUserCourses({ trainees: userId });
+      setCourses(fetchedCourses);
     } catch (e) {
       console.error(e);
       setCourses(() => []);

@@ -21,7 +21,7 @@ export default (reducer, actions, defaultValue) => {
   };
 
   Provider.propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   };
 
   return { Context, Provider };

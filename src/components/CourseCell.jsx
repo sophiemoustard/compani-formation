@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     borderBottomLeftRadius: BORDER_RADIUS.SM,
     borderBottomRightRadius: BORDER_RADIUS.SM,
-  }
+  },
 });
 
 export default CourseCell;

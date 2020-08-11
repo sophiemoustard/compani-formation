@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     marginHorizontal: MARGIN.SM,
-  }
+  },
 });
 
 export default NiButton;

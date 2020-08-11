@@ -19,8 +19,8 @@ YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
   const getCourse = async () => {
-    const course = await Courses.getCourse(route.params.courseId);
-    setCourse(course);
+    const fetchedCourse = await Courses.getCourse(route.params.courseId);
+    setCourse(fetchedCourse);
   };
 
   useEffect(() => {
@@ -75,7 +75,7 @@ CourseProfileScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.exact({
       courseId: PropTypes.string.isRequired,
-    })
+    }),
   }),
   navigation: PropTypes.shape({
     navigate: PropTypes.func,

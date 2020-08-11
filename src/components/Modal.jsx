@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: MARGIN.LG,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   contentText: {
     textAlign: 'center',
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-  }
+  },
 });
 
 export default NiModal;
