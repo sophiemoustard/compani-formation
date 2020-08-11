@@ -69,8 +69,7 @@ const CourseListScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     async function fetchData() { getCourses(); }
-    // eslint-disable-next-line no-unused-expressions
-    isFocused && fetchData();
+    if (isFocused) fetchData();
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
