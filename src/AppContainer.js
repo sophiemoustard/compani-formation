@@ -16,14 +16,12 @@ import { PINK } from './styles/colors';
 
 const CourseStack = createStackNavigator();
 
-const Courses = () => {
-  return (
-    <CourseStack.Navigator headerMode="none">
-      <CourseStack.Screen name="CourseList" component={CourseListScreen} />
-      <CourseStack.Screen name="CourseProfile" component={CourseProfileScreen} />
-    </CourseStack.Navigator>
-  );
-};
+const Courses = () => (
+  <CourseStack.Navigator headerMode="none">
+    <CourseStack.Screen name="CourseList" component={CourseListScreen} />
+    <CourseStack.Screen name="CourseProfile" component={CourseProfileScreen} />
+  </CourseStack.Navigator>
+);
 
 const Tab = createBottomTabNavigator();
 

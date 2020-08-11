@@ -37,7 +37,7 @@ const signIn = dispatch => async ({ email, password }) => {
       type: 'signinError',
       payload: e.response.status === 401
         ? 'L\'email et/ou le mot de passe est incorrect.'
-        : 'Impossible de se connecter'
+        : 'Impossible de se connecter',
     });
   }
 };

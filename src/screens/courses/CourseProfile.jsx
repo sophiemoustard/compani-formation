@@ -19,19 +19,19 @@ YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 const CourseProfileScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState(null);
   const getCourse = async () => {
-    const course = await Courses.getCourse(route.params.courseId);
-    setCourse(course);
+    const fetchedCourse = await Courses.getCourse(route.params.courseId);
+    setCourse(fetchedCourse);
   };
 
   useEffect(() => {
-    async function fetchData () { await getCourse(); }
+    async function fetchData() { await getCourse(); }
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    async function fetchData () { await getCourse(); }
+    async function fetchData() { await getCourse(); }
     if (isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
@@ -64,7 +64,7 @@ const CourseProfileScreen = ({ route, navigation }) => {
       </ImageBackground>
       <FlatList
         data={course.program.steps}
-        keyExtractor={(item) => item._id}
+        keyExtractor={item => item._id}
         renderItem={renderCells}
         ItemSeparatorComponent={renderSeparator}/>
     </ScrollView>
@@ -75,7 +75,7 @@ CourseProfileScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.exact({
       courseId: PropTypes.string.isRequired,
-    })
+    }),
   }),
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textShadowColor: GREY[800],
-    textShadowRadius:  4,
+    textShadowRadius: 4,
     textShadowOffset: { width: 0, height: 1 },
   },
   separator: {

@@ -5,12 +5,12 @@ import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/
 import { PINK, WHITE } from '../../styles/colors';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color, borderColor }) => {
-  const buttonStyle = {...styles.button, backgroundColor: bgColor, borderColor: borderColor };
+  const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
 
   return (
     <TouchableOpacity style={[styles.container, style, loading ? styles.loading : '', buttonStyle]}
       onPress={onPress} disabled={loading} testID={caption}>
-      { !loading && <Text style={{...styles.textButton, color}}>{caption}</Text> }
+      { !loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text> }
       { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
     </TouchableOpacity>
   );
@@ -49,8 +49,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     marginHorizontal: MARGIN.SM,
-  }
+  },
 });
-
 
 export default NiButton;

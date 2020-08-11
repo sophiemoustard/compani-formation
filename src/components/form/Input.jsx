@@ -12,7 +12,7 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const keyboradType = type === 'email' ? 'email-address' : 'default';
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
-  const togglePassword = () => { setShowPassword(showPassword => !showPassword); };
+  const togglePassword = () => { setShowPassword(previousShowPassword => !previousShowPassword); };
   const textStyle = { ...styles.text };
   const inputStyle = { ...styles.input };
   if (darkMode) {
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   innerInput: {
     flex: 1,
     paddingHorizontal: PADDING.MD,
-  }
+  },
 });
 
 export default NiInput;

@@ -9,7 +9,7 @@ import { GREY, TRANSPARENT_GREY } from '../styles/colors';
 
 const NextStepCell = ({ nextSlotsStep }) => {
   const { name, type, stepNumber, slots } = nextSlotsStep;
-  let slotsSteps = `ÉTAPE ${stepNumber} - ${stepTypeOptions[type]}`;
+  const slotsSteps = `ÉTAPE ${stepNumber} - ${stepTypeOptions[type]}`;
   const dates = Object.keys(slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
 
   return (

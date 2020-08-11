@@ -21,5 +21,5 @@ export default StyleSheet.create({
     paddingHorizontal: PADDING.SM,
     marginLeft: MARGIN.SM,
     borderRadius: BORDER_RADIUS.XS,
-  }
+  },
 });
