@@ -16,3 +16,6 @@ api-*
 
 # macOS
 .DS_Store
+
+# Jest
+.jest/

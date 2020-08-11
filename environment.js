@@ -4,8 +4,8 @@ import devEnv from './env/env.dev.js';
 
 const getEnvVars = (env = Constants.manifest.releaseChannel) => {
   if (__DEV__) return localEnv;
-  else if (env === 'dev') return devEnv;
-  else return localEnv;
+  if (env === 'dev') return devEnv;
+  return localEnv;
 };
 
 export default getEnvVars;

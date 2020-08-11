@@ -16,15 +16,14 @@ describe('Authentication tests', () => {
     axiosMock.reset();
   });
 
-
   test('user should authenticate and be redirected to Home page', async () => {
     const { baseURL } = getEnvVars();
     axiosMock.onPost(`${baseURL}/users/authenticate`).reply(200, { data: { data: { token: 'token' } } });
     const element = render(
-        <AuthProvider>
-          <AppContainer/>
-        </AuthProvider>
-      );
+      <AuthProvider>
+        <AppContainer/>
+      </AuthProvider>
+    );
 
     const emailInput = await waitFor(() => element.getByTestId('Email'));
     fireEvent.changeText(emailInput, 'test@alenvi.io');
@@ -40,4 +39,3 @@ describe('Authentication tests', () => {
     expect(header).toBeTruthy();
   });
 });
-
