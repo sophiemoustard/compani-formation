@@ -5,7 +5,7 @@ import * as Font from 'expo-font';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import getEnvVars from './environment';
 import Version from './src/api/version';
-import NiModal from './src/components/Modal';
+import NiModal from './src/components/modal/Modal';
 import { AppContainer } from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
 
