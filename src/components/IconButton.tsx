@@ -1,10 +1,18 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
 import { Feather } from '@expo/vector-icons';
 import { FEATHER } from '../core/data/constants';
 
-const IconButton = ({ iconFamily, onPress, name, color, size, style }) => {
+interface IconButtonProps {
+  iconFamily: string,
+  onPress: () => {},
+  color: string,
+  name: string,
+  size: number,
+  style?: object,
+}
+
+const IconButton = ({ iconFamily, onPress, name, color, size, style }: IconButtonProps) => {
   if (iconFamily === FEATHER) {
     return (
       <TouchableOpacity onPress={onPress} style={style}>
@@ -14,15 +22,6 @@ const IconButton = ({ iconFamily, onPress, name, color, size, style }) => {
   }
 
   return null;
-};
-
-IconButton.propTypes = {
-  iconFamily: PropTypes.string,
-  onPress: PropTypes.func,
-  color: PropTypes.string,
-  name: PropTypes.string,
-  size: PropTypes.number,
-  style: PropTypes.object,
 };
 
 IconButton.defaultProps = {

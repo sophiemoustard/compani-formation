@@ -1,12 +1,17 @@
 import React from 'react';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { CourseType } from 'types/CourseType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
 
-const CourseCell = ({ course, navigation }) => {
+interface CourseCellProps {
+  course: CourseType,
+  navigation: object,
+}
+
+const CourseCell = ({ course, navigation }: CourseCellProps) => {
   const programImage = get(course, 'program.image.link') || '';
   const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
   const goToCourse = () => navigation.navigate(
@@ -24,11 +29,6 @@ const CourseCell = ({ course, navigation }) => {
       </View>
     </TouchableOpacity>
   );
-};
-
-CourseCell.propTypes = {
-  course: PropTypes.object,
-  navigation: PropTypes.object,
 };
 
 const imageHeight = 100;

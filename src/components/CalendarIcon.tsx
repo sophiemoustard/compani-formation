@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
 import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
@@ -7,7 +6,11 @@ import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { PINK, WHITE, GREY } from '../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../styles/fonts';
 
-const CalendarIcon = ({ dates }) => {
+interface CalendarIconProps {
+  dates: Array<string>,
+}
+
+const CalendarIcon = ({ dates }: CalendarIconProps) => {
   let daysOfWeek;
   let daysOfMonth;
   let months;
@@ -51,10 +54,6 @@ const CalendarIcon = ({ dates }) => {
       <View style={styles.shadow} />
     </View>
   );
-};
-
-CalendarIcon.propTypes = {
-  dates: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const styles = StyleSheet.create({

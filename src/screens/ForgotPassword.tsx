@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
-import Proptypes from 'prop-types';
+import { navigationType } from 'types/NavigationType';
 import Users from '../api/users';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
@@ -9,7 +9,11 @@ import commonStyles from '../styles/common';
 import { MARGIN, PADDING } from '../styles/metrics';
 import { GREEN, WHITE, PINK } from '../styles/colors';
 
-const ForgotPasswordScreen = ({ navigation }) => {
+interface ForgotPasswordScreenProps {
+  navigation: navigationType,
+}
+
+const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -56,10 +60,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
       </View>
     </KeyboardAvoidingView>
   );
-};
-
-ForgotPasswordScreen.propTypes = {
-  navigation: Proptypes.object,
 };
 
 const styles = StyleSheet.create({

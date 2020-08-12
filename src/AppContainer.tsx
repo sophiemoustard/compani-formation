@@ -3,7 +3,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import PropTypes from 'prop-types';
 import AuthenticationScreen from './screens/Authentication';
 import ForgotPasswordScreen from './screens/ForgotPassword';
 import ProgramListScreen from './screens/ProgramList';
@@ -13,6 +12,11 @@ import ProfileScreen from './screens/Profile';
 import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
 import { PINK } from './styles/colors';
+
+interface tabBarIconProps {
+  color: string,
+  size: number,
+}
 
 const CourseStack = createStackNavigator();
 
@@ -25,17 +29,12 @@ const Courses = () => (
 
 const Tab = createBottomTabNavigator();
 
-const tabBarIcon = route => ({ size, color }) => {
+const tabBarIcon = route => ({ size, color }: tabBarIconProps) => {
   const icons = { Courses: 'book', ProgramList: 'search', Profile: 'person-outline' };
 
   return (
     <MaterialIcons name={icons[route.name]} color={color} size={size} />
   );
-};
-
-tabBarIcon.propTypes = {
-  color: PropTypes.string,
-  size: PropTypes.string,
 };
 
 const Home = () => {

@@ -7,7 +7,6 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import pick from 'lodash/pick';
 import omit from 'lodash/omit';
-import PropTypes from 'prop-types';
 import moment from '../../core/helpers/moment';
 import commonStyles from '../../styles/common';
 import Courses from '../../api/courses';
@@ -17,8 +16,12 @@ import { PINK, YELLOW } from '../../styles/colors';
 import NextStepCell from '../../components/steps/NextStepCell';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
+interface CourseListScreenProps {
+  navigation: object,
+}
+
 const formatDataForNextSteps = (courses) => {
-  const futureSlots = [];
+  const futureSlots = new Array(0);
   // eslint-disable-next-line no-restricted-syntax
   for (const course of courses) {
     const courseSteps = get(course, 'program.steps') || [];
@@ -47,7 +50,7 @@ const formatDataForNextSteps = (courses) => {
     .map(slot => ({ ...omit(slot, ['firstSlot']) }));
 };
 
-const CourseListScreen = ({ navigation }) => {
+const CourseListScreen = ({ navigation }: CourseListScreenProps) => {
   const [courses, setCourses] = useState([]);
 
   const getCourses = async () => {
@@ -116,10 +119,6 @@ const CourseListScreen = ({ navigation }) => {
       </View>
     </ScrollView>
   );
-};
-
-CourseListScreen.propTypes = {
-  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

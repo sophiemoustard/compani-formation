@@ -9,7 +9,7 @@ import {
   ImageBackground,
   useWindowDimensions,
 } from 'react-native';
-import PropTypes from 'prop-types';
+import { navigationType } from 'types/NavigationType';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
@@ -18,7 +18,11 @@ import { WHITE } from '../styles/colors';
 import { MARGIN } from '../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../styles/fonts';
 
-const AuthenticationScreen = ({ navigation }) => {
+interface AuthenticationScreenProps {
+  navigation: navigationType,
+}
+
+const AuthenticationScreen = ({ navigation }: AuthenticationScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPasssword] = useState('');
   const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
@@ -53,10 +57,6 @@ const AuthenticationScreen = ({ navigation }) => {
       </KeyboardAvoidingView>
     </ImageBackground>
   );
-};
-
-AuthenticationScreen.propTypes = {
-  navigation: PropTypes.object,
 };
 
 const styles = StyleSheet.create({

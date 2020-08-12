@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH, ICON } from '../../styles/metrics';
 import { GREY, WHITE } from '../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 
-const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
+interface NiInputProps {
+  style?: object,
+  value: string,
+  onChangeText: (string) => void,
+  caption: string,
+  type: string,
+  darkMode?: boolean,
+}
+
+const NiInput = ({ style, value, onChangeText, caption, type, darkMode }: NiInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
   const autoCapitalize = ['password', 'email'].includes(type) ? 'none' : 'sentences';
@@ -34,15 +42,6 @@ const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
       </View>
     </View>
   );
-};
-
-NiInput.propTypes = {
-  style: PropTypes.object,
-  value: PropTypes.string,
-  onChangeText: PropTypes.func,
-  caption: PropTypes.string,
-  type: PropTypes.string,
-  darkMode: PropTypes.bool,
 };
 
 const styles = StyleSheet.create({

@@ -1,8 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Svg, { Path } from 'react-native-svg';
 
-const Blob = ({ color, style, size }) => (
+interface blobProps {
+  color: string,
+  style?: object,
+  size?: number,
+}
+
+const Blob = ({ color, style, size }: blobProps) => (
   <Svg width={size} height={size} viewBox="0 0 232 249" fill="none" xmlns="http://www.w3.org/2000/svg"
     style={style}>
     <Path
@@ -13,11 +18,6 @@ const Blob = ({ color, style, size }) => (
   </Svg>
 );
 
-Blob.propTypes = {
-  color: PropTypes.string.isRequired,
-  style: PropTypes.object,
-  size: PropTypes.number,
-};
 Blob.defaultProps = {
   size: 250,
 };

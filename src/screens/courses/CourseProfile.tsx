@@ -14,6 +14,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { routeType, navigationType } from 'types/NavigationType';
 import Courses from '../../api/courses';
 import { WHITE, GREY } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
@@ -25,7 +26,12 @@ import { FIRA_SANS_BLACK } from '../../styles/fonts';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
-const CourseProfileScreen = ({ route, navigation }) => {
+interface CourseProfileScreenProps {
+  route: routeType,
+  navigation: navigationType,
+}
+
+const CourseProfileScreen = ({ route, navigation }: CourseProfileScreenProps) => {
   const [course, setCourse] = useState(null);
   const getCourse = async () => {
     const fetchedCourse = await Courses.getCourse(route.params.courseId);

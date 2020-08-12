@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
+import { StatusBar, View, StyleSheet, AppState, Linking, Platform } from 'react-native';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Provider as AuthProvider } from './src/context/AuthContext';

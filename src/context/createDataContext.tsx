@@ -1,10 +1,13 @@
-import React, { useReducer } from 'react';
-import PropTypes from 'prop-types';
+import React, { useReducer, createContext } from 'react';
+
+interface ProviderProps {
+  children: React.Component,
+}
 
 export default (reducer, actions, defaultValue) => {
-  const Context = React.createContext();
+  const Context = createContext();
 
-  const Provider = ({ children }) => {
+  const Provider = ({ children }: ProviderProps) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
 
     const boundActions = {};
@@ -18,10 +21,6 @@ export default (reducer, actions, defaultValue) => {
         {children}
       </Context.Provider>
     );
-  };
-
-  Provider.propTypes = {
-    children: PropTypes.node,
   };
 
   return { Context, Provider };

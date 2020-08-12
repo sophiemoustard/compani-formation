@@ -1,13 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../form/Button';
 import { WHITE, MODAL_BACKDROP_GREY } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
-const ConfirmModal = ({ visible, title, contentText, buttonCaption, onPress }) => (
-  <Modal visible={visible} transparent={true}>
+interface ConfirmModalProps {
+  visible: boolean,
+  title: string,
+  contentText: string,
+  buttonCaption: string,
+  onPress: () => void,
+  onRequestClose: () => void
+};
+
+const ConfirmModal = ({ visible, title, contentText, buttonCaption, onPress, onRequestClose }: ConfirmModalProps) => (
+  <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent} >
         <Text style={styles.title}>{title}</Text>
@@ -17,14 +25,6 @@ const ConfirmModal = ({ visible, title, contentText, buttonCaption, onPress }) =
     </View>
   </Modal>
 );
-
-ConfirmModal.propTypes = {
-  visible: PropTypes.bool,
-  title: PropTypes.string,
-  contentText: PropTypes.string,
-  buttonCaption: PropTypes.string,
-  onPress: PropTypes.func,
-};
 
 const styles = StyleSheet.create({
   modalContainer: {
