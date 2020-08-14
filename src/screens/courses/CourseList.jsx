@@ -15,7 +15,7 @@ import Courses from '../../api/courses';
 import CourseCell from '../../components/CourseCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
-import NextStepCell from '../../components/NextStepCell';
+import NextStepCell from '../../components/steps/NextStepCell';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const formatDataForNextSteps = (courses) => {

@@ -1,22 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { stepTypeOptions } from '../core/data/constants';
-import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../styles/metrics';
-import { GREY, PINK } from '../styles/colors';
-import IconButton from './IconButton';
-import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../styles/fonts';
+import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../../styles/metrics';
+import { GREY, PINK } from '../../../styles/colors';
+import IconButton from '../IconButton';
+import StepCellTitle from './StepCellTitle';
 
 const ELearningCell = ({ step, index }) => (
   <View style={styles.container}>
     <View style={styles.featherContainer}>
       <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
     </View>
-    <View style={styles.textContainer}>
-      <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[step.type]}`}</Text>
-      <Text lineBreakMode='tail' numberOfLines={2} style={styles.stepName}>{step.name}</Text>
-    </View>
+    <StepCellTitle index={index} step={step} />
     <View style={styles.iconButtonContainer}>
       <IconButton name='chevron-down' onPress={() => {}} size={ICON.SM} color={GREY[600]} />
     </View>
@@ -44,26 +40,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
   },
-  textContainer: {
-    flexDirection: 'column',
-    flex: 1,
-    marginLeft: MARGIN.SM,
-  },
   iconButtonContainer: {
     width: 40,
     alignItems: 'center',
     flexDirection: 'column-reverse',
-  },
-  stepType: {
-    ...NUNITO_SEMI.XS,
-    color: GREY[600],
-  },
-  stepName: {
-    ...FIRA_SANS_MEDIUM.MD,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    color: GREY[800],
   },
 });
 
