@@ -6,6 +6,7 @@ import { stepTypeOptions } from '../core/data/constants';
 import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../styles/metrics';
 import { GREY, PINK } from '../styles/colors';
 import IconButton from './IconButton';
+import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../styles/fonts';
 
 const ELearningCell = ({ step, index }) => (
   <View style={styles.container}>
@@ -54,16 +55,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
   },
   stepType: {
+    ...NUNITO_SEMI.XS,
     color: GREY[600],
-    fontSize: 14,
   },
   stepName: {
+    ...FIRA_SANS_MEDIUM.MD,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     color: GREY[800],
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
 

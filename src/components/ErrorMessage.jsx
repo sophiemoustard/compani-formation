@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, StyleSheet, View } from 'react-native';
 import { MARGIN } from '../styles/metrics';
 import { RED } from '../styles/colors';
+import { FIRA_SANS_REGULAR } from '../styles/fonts';
 
 const NiErrorMessage = ({ style, message, show }) => (
   <View style={style}>
@@ -18,6 +19,7 @@ NiErrorMessage.propTypes = {
 
 const styles = StyleSheet.create({
   message: {
+    ...FIRA_SANS_REGULAR.SM,
     marginBottom: MARGIN.SM,
     color: RED,
   },

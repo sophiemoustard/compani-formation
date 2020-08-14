@@ -16,6 +16,7 @@ import NiErrorMessage from '../components/ErrorMessage';
 import { Context as AuthContext } from '../context/AuthContext';
 import { WHITE } from '../styles/colors';
 import { MARGIN } from '../styles/metrics';
+import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../styles/fonts';
 
 const AuthenticationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -69,9 +70,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    ...FIRA_SANS_BLACK.LG,
     textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
     color: WHITE,
     marginBottom: MARGIN.XL,
   },
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.SM,
   },
   forgotPasswordText: {
+    ...FIRA_SANS_REGULAR.SM,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
     color: WHITE,

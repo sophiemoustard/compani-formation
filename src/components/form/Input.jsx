@@ -4,6 +4,7 @@ import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-nativ
 import { Feather } from '@expo/vector-icons';
 import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH, ICON } from '../../styles/metrics';
 import { GREY, WHITE } from '../../styles/colors';
+import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const NiInput = ({ style, value, onChangeText, caption, type, darkMode }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,12 +56,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   text: {
+    ...FIRA_SANS_REGULAR.SM,
     marginBottom: MARGIN.XS,
   },
   inputIcon: {
     paddingRight: PADDING.MD,
   },
   innerInput: {
+    ...FIRA_SANS_REGULAR.MD,
     flex: 1,
     paddingHorizontal: PADDING.MD,
   },

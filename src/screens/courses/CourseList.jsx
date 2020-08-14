@@ -16,6 +16,7 @@ import CourseCell from '../../components/CourseCell';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
 import NextStepCell from '../../components/NextStepCell';
+import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const formatDataForNextSteps = (courses) => {
   const futureSlots = [];
@@ -101,7 +102,7 @@ const CourseListScreen = ({ navigation }) => {
         <View style={styles.contentTitle}>
           <Text style={commonStyles.sectionTitle}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-            <Text style={styles.coursesCount}>{courses.length}</Text>
+            <Text style={styles.nextEventsCount}>{courses.length}</Text>
           </View>
         </View>
         <FlatList
@@ -139,17 +140,15 @@ const styles = StyleSheet.create({
     backgroundColor: YELLOW[200],
   },
   coursesCount: {
-    fontSize: 14,
+    ...FIRA_SANS_BOLD.MD,
     color: YELLOW[800],
-    fontWeight: 'bold',
   },
   nextEventsCountContainer: {
     backgroundColor: PINK[100],
   },
   nextEventsCount: {
-    fontSize: 14,
+    ...FIRA_SANS_BOLD.MD,
     color: PINK[600],
-    fontWeight: 'bold',
   },
 });
 

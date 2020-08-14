@@ -13,6 +13,7 @@ import OnSiteCell from '../../components/OnSiteCell';
 import ELearningCell from '../../components/ELearningCell';
 import { ON_SITE, E_LEARNING } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
+import { FIRA_SANS_BLACK } from '../../styles/fonts';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
@@ -62,11 +63,8 @@ const CourseProfileScreen = ({ route, navigation }) => {
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
-      <FlatList
-        data={course.program.steps}
-        keyExtractor={item => item._id}
-        renderItem={renderCells}
-        ItemSeparatorComponent={renderSeparator}/>
+      <FlatList data={course.program.steps} keyExtractor={item => item._id} renderItem={renderCells}
+        ItemSeparatorComponent={renderSeparator} />
     </ScrollView>
   );
 };
@@ -105,10 +103,9 @@ const styles = StyleSheet.create({
     margin: MAIN_MARGIN_LEFT,
   },
   title: {
+    ...FIRA_SANS_BLACK.XL,
     color: WHITE,
     margin: MAIN_MARGIN_LEFT,
-    fontSize: 20,
-    fontWeight: 'bold',
     textShadowColor: GREY[800],
     textShadowRadius: 4,
     textShadowOffset: { width: 0, height: 1 },

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, View, StyleSheet, AppState, Linking } from 'react-native';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import getEnvVars from './environment';
 import Version from './src/api/version';
@@ -7,8 +9,19 @@ import NiModal from './src/components/Modal';
 import { AppContainer } from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
 
+const fetchFonts = () => Font.loadAsync({
+  'fira-sans-black': require('./assets/fonts/FiraSans-Black.ttf'),
+  'fira-sans-bold': require('./assets/fonts/FiraSans-Bold.ttf'),
+  'fira-sans-italic': require('./assets/fonts/FiraSans-Italic.ttf'),
+  'fira-sans-medium': require('./assets/fonts/FiraSans-Medium.ttf'),
+  'fira-sans-regular': require('./assets/fonts/FiraSans-Regular.ttf'),
+  'nunito-semi': require('./assets/fonts/Nunito-SemiBold.ttf'),
+  'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),
+});
+
 const App = () => {
-  const appUrl = Platform.OS == 'ios'
+  const [fontLoaded, setFontLoaded] = useState(false);
+  const appUrl = Platform.OS === 'ios'
     ? 'https://apps.apple.com/app/id1447513534'
     : 'market://details?id=com.alenvi.compani';
   const [modalOpened, setModalOpened] = useState(false);
@@ -26,6 +39,8 @@ const App = () => {
 
     return () => { AppState.removeEventListener('change', checkUpdate); };
   }, []);
+
+  if (!fontLoaded) return <AppLoading startAsync={fetchFonts} onFinish={() => setFontLoaded(true)} />;
 
   return (
     <>

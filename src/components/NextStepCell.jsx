@@ -6,6 +6,7 @@ import { stepTypeOptions } from '../core/data/constants';
 import CalendarIcon from './CalendarIcon';
 import { MARGIN, PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { GREY, TRANSPARENT_GREY } from '../styles/colors';
+import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../styles/fonts';
 
 const NextStepCell = ({ nextSlotsStep }) => {
   const { name, type, stepNumber, slots } = nextSlotsStep;
@@ -46,12 +47,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   programName: {
+    ...FIRA_SANS_MEDIUM.MD,
     fontWeight: 'bold',
-    fontSize: 16,
   },
   slotsSteps: {
+    ...NUNITO_SEMI.XS,
     color: GREY[600],
-    fontSize: 12,
   },
 });
 
