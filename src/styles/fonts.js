@@ -113,4 +113,3 @@ export const NUNITO_REGULAR = StyleSheet.create({
     fontFamily: 'nunito-regular',
   },
 });
-// Button -- Fira Sans Medium 18
