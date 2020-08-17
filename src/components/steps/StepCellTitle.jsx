@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
-import { stepTypeOptions } from '../../../core/data/constants';
-import { MARGIN } from '../../../styles/metrics';
-import { GREY } from '../../../styles/colors';
-import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import { stepTypeOptions } from '../../core/data/constants';
+import { MARGIN } from '../../styles/metrics';
+import { GREY } from '../../styles/colors';
+import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
 const StepCellTitle = ({ step, index }) => (
   <View style={styles.textContainer}>
@@ -20,8 +20,8 @@ StepCellTitle.propTypes = {
 
 const styles = StyleSheet.create({
   textContainer: {
+    flex: 1,
     marginLeft: MARGIN.MD,
-    width: '70%',
   },
   stepType: {
     ...NUNITO_SEMI.XS,

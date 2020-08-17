@@ -1,8 +1,7 @@
 import React from 'react';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, ImageBackground } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';

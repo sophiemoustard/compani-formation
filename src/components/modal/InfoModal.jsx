@@ -5,7 +5,7 @@ import { WHITE, MODAL_BACKDROP_GREY, GREY } from '../../styles/colors';
 import { BORDER_RADIUS, ICON, PADDING, MARGIN } from '../../styles/metrics';
 import IconButton from '../IconButton';
 
-const CloseButtonModal = ({ visible, title, content, onRequestClose }) => (
+const InfoModal = ({ visible, title, content, onRequestClose }) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
@@ -14,15 +14,13 @@ const CloseButtonModal = ({ visible, title, content, onRequestClose }) => (
           <IconButton name='x-circle' onPress={onRequestClose} size={ICON.LG}
             color={GREY[500]} style={styles.closeButton}/>
         </View>
-        <View style={styles.content}>
-          {content}
-        </View>
+        <View>{content}</View>
       </View>
     </View>
   </Modal>
 );
 
-CloseButtonModal.propTypes = {
+InfoModal.propTypes = {
   visible: PropTypes.bool,
   title: PropTypes.string,
   content: PropTypes.element,
@@ -42,16 +40,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.XL,
-    width: 320,
+    width: '90%',
     padding: PADDING.LG,
   },
   header: {
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: MARGIN.XL,
   },
   title: {
     flex: 1,
-    marginBottom: MARGIN.XL,
     fontWeight: 'bold',
     fontSize: 16,
     lineHeight: 20,
@@ -60,8 +59,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     width: 40,
   },
-  content: {
-  },
 });
 
-export default CloseButtonModal;
+export default InfoModal;

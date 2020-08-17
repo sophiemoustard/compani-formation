@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ImageBackground, FlatList, YellowBox } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ImageBackground,
+  FlatList,
+  YellowBox,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { Feather } from '@expo/vector-icons';

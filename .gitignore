@@ -12,6 +12,7 @@ web-build/
 web-report/
 env/*
 api-*
+.idea/*
 
 # macOS
 .DS_Store

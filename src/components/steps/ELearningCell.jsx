@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../../styles/metrics';
-import { GREY, PINK } from '../../../styles/colors';
+import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
+import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from './StepCellTitle';
 

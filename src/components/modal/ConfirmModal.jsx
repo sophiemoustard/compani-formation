@@ -4,9 +4,9 @@ import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../form/Button';
 import { WHITE, MODAL_BACKDROP_GREY } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
-import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../styles/fonts';
+import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
-const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => (
+const ConfirmModal = ({ visible, title, contentText, buttonCaption, onPress }) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent} >
@@ -18,7 +18,7 @@ const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => (
   </Modal>
 );
 
-NiModal.propTypes = {
+ConfirmModal.propTypes = {
   visible: PropTypes.bool,
   title: PropTypes.string,
   contentText: PropTypes.string,
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NiModal;
+export default ConfirmModal;

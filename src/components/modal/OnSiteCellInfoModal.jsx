@@ -1,78 +1,68 @@
 import React from 'react';
-import { Feather } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
 import moment from '../../core/helpers/moment';
-import CloseButtonModal from './CloseButtonModal';
-import { ICON, BORDER_WIDTH, MARGIN } from '../../styles/metrics';
+import InfoModal from './InfoModal';
+import { BORDER_WIDTH, MARGIN } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
-import { capitalize } from '../../core/helpers/utils';
+import { capitalizeDate } from '../../core/helpers/utils';
+import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 
 const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }) => {
-  const infoModalContent = () => (
-    <View>
-      <FlatList
-        ItemSeparatorComponent={() => (
-          <View style={styles.stepInfoSeparator} />
-        )}
-        data={removeDuplicateStartDate(stepSlots)}
-        renderItem={({ item }) => stepInfoItem(item)}
-        keyExtractor={item => item._id}
-        scrollEnabled={removeDuplicateStartDate(stepSlots).length > 3}
-      />
-    </View>
-  );
+  const formatStepSlotsForFlatList = (slots) => {
+    const formattedSlots = slots.reduce((acc, slot) => {
+      const startDate = moment(slot.startDate).format('DD/MM/YYYY');
+      if (acc[startDate]) acc[startDate].push(slot);
+      else acc[startDate] = [slot];
+      return acc;
+    },
+    {});
+
+    return Object.keys(formattedSlots).map(key => ({ startDate: key, slots: formattedSlots[key] }));
+  };
+
+  const infoModalContent = () => {
+    const formattedStepSlots = formatStepSlotsForFlatList(stepSlots);
+    return (
+      <View>
+        <FlatList
+          ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)}
+          data={formattedStepSlots}
+          renderItem={({ item }) => stepInfoItem(item)}
+          keyExtractor={item => item.slots._id}
+          scrollEnabled={formattedStepSlots.length > 3}
+        />
+      </View>
+    );
+  };
 
   const stepInfoItem = stepSlot => (
-    <View style={styles.content}>
-      <Text style={styles.date}>{
-        capitalize(`${moment(stepSlot.startDate).format('dddd Do')
-        } ${capitalize(moment(stepSlot.startDate).format('MMMM YYYY'))}`)
-      }</Text>
+    <View>
+      <Text style={styles.date}>{capitalizeDate(stepSlot?.slots[0]?.startDate)}</Text>
       <FlatList
         horizontal
-        ItemSeparatorComponent={() => (
-          <View style={styles.separator} />
-        )}
-        data={stepSlots.filter(
-          element => moment(element.startDate).format('MMMM Do YYYY')
-          === moment(stepSlot.startDate).format('MMMM Do YYYY')
-        )}
-        renderItem={({ item }) => (
-          <View style={styles.datesAndArrowContainer}>
-            <Text style={styles.hours}>{moment(item.startDate).format('hh:mm')}</Text>
-            <View style={styles.arrow}>
-              <Feather name="arrow-right" size={ICON.XS} color={GREY[400]} />
-            </View>
-            <Text style={styles.hours}>{moment(item.endDate).format('hh:mm')}</Text>
-          </View>
-        )}
+        ItemSeparatorComponent={() => (<View style={styles.separator} />)}
+        data={stepSlot.slots}
         keyExtractor={item => item._id}
+        renderItem={({ item }) => onSiteHoursDisplayItem(item)}
       />
-      <Text style={styles.address}>{stepSlot?.address?.fullAddress || ''}</Text>
+      <Text style={styles.address}>{stepSlot?.slots[0]?.address?.fullAddress || ''}</Text>
     </View>
   );
 
-  const removeDuplicateStartDate = array => array
-    .map(e => moment(e.startDate).format('MMMM Do YYYY'))
-    .map((e, i, final) => final.indexOf(e) === i && i)
-    .filter(e => array[e])
-    .map(e => array[e]);
+  const onSiteHoursDisplayItem = stepSlot => (
+    <OnSiteHoursDisplay startDate={stepSlot.startDate} endDate={stepSlot.endDate} />
+  );
 
   return (
-    <CloseButtonModal
-      visible={visible}
-      title={title}
-      content={infoModalContent()}
-      onRequestClose={onRequestClose}
-    />
+    <InfoModal visible={visible} title={title} content={infoModalContent()} onRequestClose={onRequestClose} />
   );
 };
 
 OnSiteCellInfoModal.propTypes = {
   visible: PropTypes.bool,
   title: PropTypes.string,
-  stepSlots: PropTypes.array,
+  stepSlots: PropTypes.arrayOf(PropTypes.object),
   onRequestClose: PropTypes.func,
 };
 
@@ -87,31 +77,16 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.SM,
     alignSelf: 'center',
   },
-  datesAndArrowContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   date: {
     color: GREY[600],
     fontSize: 16,
     lineHeight: 16,
-  },
-  hours: {
-    lineHeight: 24,
-    fontSize: 16,
-  },
-  arrow: {
-    marginHorizontal: MARGIN.XS,
-    marginTop: MARGIN.XS,
   },
   address: {
     color: PINK[600],
     fontSize: 16,
     lineHeight: 20,
     textDecorationLine: 'underline',
-  },
-  content: {
   },
 });
 
