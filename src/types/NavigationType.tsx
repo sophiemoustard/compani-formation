@@ -5,5 +5,5 @@ export interface routeType {
 }
 
 export interface navigationType {
-    navigate: (path: string, option?: { screen: string, params: { screen: string } }) => {},
+    navigate: (path: string, option?: { screen: string, params: object }) => {},
 }

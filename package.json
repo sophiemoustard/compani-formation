@@ -8,7 +8,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "node_modules/jest-expo/node_modules/jest/bin/jest.js",
-    "lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js"
+    "lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
+    "lint2": "eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js"
   },
   "jest": {
     "preset": "jest-expo",

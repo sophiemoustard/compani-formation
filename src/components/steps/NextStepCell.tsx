@@ -1,13 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import { CourseSlotType } from 'types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import CalendarIcon from '../CalendarIcon';
 import { PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../../styles/metrics';
 import { TRANSPARENT_GREY } from '../../styles/colors';
 import StepCellTitle from './StepCellTitle';
 
-const NextStepCell = ({ nextSlotsStep }) => {
+interface NextStepCellProps {
+  nextSlotsStep: NextSlotsStepType,
+}
+
+interface NextSlotsStepType {
+    name: string,
+    slots: Array<CourseSlotType>,
+    type: string,
+    stepNumber: number,
+}
+
+const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
   const { stepNumber, slots } = nextSlotsStep;
   const dates = Object.keys(slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
 
@@ -17,15 +28,6 @@ const NextStepCell = ({ nextSlotsStep }) => {
       <StepCellTitle index={stepNumber} step={nextSlotsStep} />
     </View>
   );
-};
-
-NextStepCell.propTypes = {
-  nextSlotsStep: PropTypes.exact({
-    name: PropTypes.string,
-    slots: PropTypes.object,
-    type: PropTypes.string,
-    stepNumber: PropTypes.number,
-  }),
 };
 
 const styles = StyleSheet.create({
