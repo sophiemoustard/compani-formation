@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
-import moment from '../core/helpers/moment';
-import CalendarIcon from './CalendarIcon';
-import { stepTypeOptions } from '../core/data/constants';
-import { MARGIN, PADDING, BORDER_WIDTH } from '../styles/metrics';
-import { GREY } from '../styles/colors';
+import { View, StyleSheet } from 'react-native';
+import moment from '../../../core/helpers/moment';
+import CalendarIcon from '../CalendarIcon';
+import { PADDING, BORDER_WIDTH } from '../../../styles/metrics';
+import { GREY } from '../../../styles/colors';
+import StepCellTitle from './StepCellTitle';
 
 const OnSiteCell = ({ step, slots, index }) => {
   const stepSlots = slots.filter(slot => slot.step === step._id);
@@ -16,10 +16,7 @@ const OnSiteCell = ({ step, slots, index }) => {
   return (
     <View style={styles.container}>
       <CalendarIcon dates={dates} />
-      <View style={styles.textContainer}>
-        <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[step.type]}`}</Text>
-        <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.stepName}>{step.name}</Text>
-      </View>
+      <StepCellTitle index={index} step={step} />
     </View>
   );
 };
@@ -38,19 +35,6 @@ const styles = StyleSheet.create({
     padding: PADDING.LG,
     borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
-  },
-  textContainer: {
-    marginLeft: MARGIN.MD,
-    width: '70%',
-  },
-  stepType: {
-    color: GREY[600],
-    fontSize: 12,
-  },
-  stepName: {
-    color: GREY[800],
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
 

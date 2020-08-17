@@ -5,6 +5,7 @@ import moment from '../core/helpers/moment';
 import { capitalize } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { PINK, WHITE, GREY } from '../styles/colors';
+import { NUNITO_SEMI, NUNITO_REGULAR } from '../styles/fonts';
 
 const CalendarIcon = ({ dates }) => {
   let daysOfWeek;
@@ -82,23 +83,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dayOfWeek: {
+    ...NUNITO_SEMI.XS,
     color: WHITE,
-    fontSize: 12,
     textAlign: 'center',
   },
   dayOfMonth: {
-    fontSize: 18,
+    ...NUNITO_REGULAR.MD,
     height: 22,
     paddingHorizontal: PADDING.SM,
   },
   month: {
+    ...NUNITO_SEMI.SM,
     color: PINK[500],
-    fontSize: 14,
     height: 18,
     paddingHorizontal: PADDING.SM,
   },
   toPlan: {
-    fontSize: 24,
+    ...NUNITO_REGULAR.XL,
     height: 40,
   },
   shadow: {

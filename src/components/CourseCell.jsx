@@ -5,6 +5,7 @@ import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH } from '../styles/metrics';
+import { FIRA_SANS_MEDIUM } from '../styles/fonts';
 
 const CourseCell = ({ course, navigation }) => {
   const programImage = get(course, 'program.image.link') || '';
@@ -47,6 +48,7 @@ const styles = StyleSheet.create({
     height: imageHeight,
   },
   title: {
+    ...FIRA_SANS_MEDIUM.MD,
     padding: PADDING.MD,
     backgroundColor: WHITE,
     borderBottomLeftRadius: BORDER_RADIUS.SM,

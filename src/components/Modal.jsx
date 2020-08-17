@@ -4,6 +4,7 @@ import { View, Text, Modal, StyleSheet } from 'react-native';
 import NiButton from '../components/form/Button';
 import { WHITE, MODAL_BACKDROP_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../styles/metrics';
+import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../styles/fonts';
 
 const NiModal = ({ visible, title, contentText, buttonCaption, onPress }) => (
   <Modal visible={visible} transparent={true}>
@@ -41,12 +42,12 @@ const styles = StyleSheet.create({
     padding: PADDING.XL,
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    ...FIRA_SANS_BLACK.MD,
     marginBottom: MARGIN.LG,
     textAlign: 'center',
   },
   contentText: {
+    ...FIRA_SANS_REGULAR.MD,
     textAlign: 'center',
     marginBottom: MARGIN.LG,
   },

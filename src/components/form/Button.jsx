@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
 import { PINK, WHITE } from '../../styles/colors';
+import { FIRA_SANS_BLACK } from '../../styles/fonts';
 
 const NiButton = ({ style, caption, onPress, loading, bgColor, color, borderColor }) => {
   const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
     minWidth: 100,
   },
   textButton: {
+    ...FIRA_SANS_BLACK.MD,
     marginHorizontal: MARGIN.SM,
   },
 });
