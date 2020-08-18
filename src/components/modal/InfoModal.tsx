@@ -1,11 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import { WHITE, MODAL_BACKDROP_GREY, GREY } from '../../styles/colors';
 import { BORDER_RADIUS, ICON, PADDING, MARGIN } from '../../styles/metrics';
 import IconButton from '../IconButton';
 
-const InfoModal = ({ visible, title, content, onRequestClose }) => (
+interface InfoModalProps {
+  visible: boolean,
+  title: string,
+  content: React.ReactNode,
+  onRequestClose: () => ({}),
+  headerStyle?: object,
+}
+
+const InfoModal = ({ visible, title, content, onRequestClose }: InfoModalProps) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
@@ -19,14 +26,6 @@ const InfoModal = ({ visible, title, content, onRequestClose }) => (
     </View>
   </Modal>
 );
-
-InfoModal.propTypes = {
-  visible: PropTypes.bool,
-  title: PropTypes.string,
-  content: PropTypes.element,
-  onRequestClose: PropTypes.func,
-  headerStyle: PropTypes.object,
-};
 
 const styles = StyleSheet.create({
   modalContainer: {

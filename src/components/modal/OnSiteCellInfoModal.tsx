@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
+import { StepType } from 'types/StepType';
 import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
 import { BORDER_WIDTH, MARGIN } from '../../styles/metrics';
@@ -8,7 +8,14 @@ import { GREY, PINK } from '../../styles/colors';
 import { capitalizeDate } from '../../core/helpers/utils';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 
-const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }) => {
+interface OnSiteCellInfoModalProps {
+  visible: boolean,
+  title: string,
+  stepSlots: Array<StepType>,
+  onRequestClose: () => ({}),
+}
+
+const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSiteCellInfoModalProps) => {
   const formatStepSlotsForFlatList = (slots) => {
     const formattedSlots = slots.reduce((acc, slot) => {
       const startDate = moment(slot.startDate).format('DD/MM/YYYY');
@@ -57,13 +64,6 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }) => {
   return (
     <InfoModal visible={visible} title={title} content={infoModalContent()} onRequestClose={onRequestClose} />
   );
-};
-
-OnSiteCellInfoModal.propTypes = {
-  visible: PropTypes.bool,
-  title: PropTypes.string,
-  stepSlots: PropTypes.arrayOf(PropTypes.object),
-  onRequestClose: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

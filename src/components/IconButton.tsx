@@ -5,7 +5,7 @@ import { FEATHER } from '../core/data/constants';
 
 interface IconButtonProps {
   iconFamily: string,
-  onPress: () => {},
+  onPress: () => void,
   color: string,
   name: string,
   size: number,

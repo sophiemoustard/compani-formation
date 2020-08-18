@@ -1,12 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { MARGIN, ICON } from '../styles/metrics';
 import { GREY } from '../styles/colors';
 import moment from '../core/helpers/moment';
 
-const OnSiteHoursDisplay = ({ startDate, endDate }) => (
+interface OnSiteHoursDisplayProps {
+  startDate: string,
+  endDate: string,
+}
+
+const OnSiteHoursDisplay = ({ startDate, endDate }: OnSiteHoursDisplayProps) => (
   <View style={styles.datesAndArrowContainer}>
     <Text style={styles.hours}>{moment(startDate).format('HH:mm')}</Text>
     <View style={styles.arrow}>
@@ -15,11 +19,6 @@ const OnSiteHoursDisplay = ({ startDate, endDate }) => (
     <Text style={styles.hours}>{moment(endDate).format('HH:mm')}</Text>
   </View>
 );
-
-OnSiteHoursDisplay.propTypes = {
-  startDate: PropTypes.string,
-  endDate: PropTypes.string,
-};
 
 const styles = StyleSheet.create({
   datesAndArrowContainer: {

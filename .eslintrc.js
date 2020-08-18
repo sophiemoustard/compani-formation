@@ -42,15 +42,10 @@ module.exports = {
       },
     ],
     'object-curly-newline': ['error', { consistent: true }],
-<<<<<<< HEAD
     'operator-linebreak': ['error', 'before', { overrides: { '&&': 'after', '||': 'after', '=': 'after' } }],
-    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }], // option require
-=======
-    'operator-linebreak': ['error', 'before', { overrides: { '&&': 'after' } }],
     'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
-    'no-unused-vars': 'off', // Pour ne pas avoir l'erreur en doublon
     '@typescript-eslint/no-unused-vars': 'error', // eslint ne gère pas les types, typescript les gère à sa place
->>>>>>> Add types and type check
+    'no-unused-vars': 'off', // Pour ne pas avoir l'erreur en doublon
   },
   globals: {
     __DEV__: true,

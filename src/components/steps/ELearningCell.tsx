@@ -19,7 +19,7 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => (
     </View>
     <StepCellTitle index={index} step={step} />
     <View style={styles.iconButtonContainer}>
-      <IconButton name='chevron-down' onPress={() => ({})} size={ICON.SM} color={GREY[600]} />
+      <IconButton name='chevron-down' onPress={() => ({})} size={ICON.SM} color={GREY[500]} />
     </View>
   </View>
 );
