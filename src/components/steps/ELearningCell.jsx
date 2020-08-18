@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../../styles/metrics';
-import { GREY, PINK } from '../../../styles/colors';
+import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
+import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from './StepCellTitle';
 
@@ -14,7 +14,7 @@ const ELearningCell = ({ step, index }) => (
     </View>
     <StepCellTitle index={index} step={step} />
     <View style={styles.iconButtonContainer}>
-      <IconButton name='chevron-down' onPress={() => {}} size={ICON.SM} color={GREY[600]} />
+      <IconButton name='chevron-down' onPress={() => {}} size={ICON.SM} color={GREY[500]} />
     </View>
   </View>
 );

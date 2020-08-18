@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
-import moment from '../../../core/helpers/moment';
+import moment from '../../core/helpers/moment';
 import CalendarIcon from '../CalendarIcon';
-import { PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../../../styles/metrics';
-import { TRANSPARENT_GREY } from '../../../styles/colors';
+import { PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../../styles/metrics';
+import { TRANSPARENT_GREY } from '../../styles/colors';
 import StepCellTitle from './StepCellTitle';
 
 const NextStepCell = ({ nextSlotsStep }) => {

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Text, ScrollView } from 'react-native';
 import commonStyles from '../styles/common';
 
 const ProgramListScreen = () => (

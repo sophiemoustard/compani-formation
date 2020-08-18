@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import get from 'lodash/get';
@@ -8,7 +8,6 @@ import groupBy from 'lodash/groupBy';
 import pick from 'lodash/pick';
 import omit from 'lodash/omit';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native-gesture-handler';
 import moment from '../../core/helpers/moment';
 import commonStyles from '../../styles/common';
 import Courses from '../../api/courses';

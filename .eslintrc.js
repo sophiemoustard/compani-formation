@@ -23,7 +23,7 @@ module.exports = {
     'no-console': ['error', { allow: ['error'] }],
     // Un-used AirBnb rules
     'import/no-extraneous-dependencies': 0,
-    'import/extensions': 0,
+    'import/extensions': ['error', 'never'],
     'import/prefer-default-export': 0,
     'import/no-unresolved': 0,
     'no-underscore-dangle': 0,
@@ -41,7 +41,7 @@ module.exports = {
       },
     ],
     'object-curly-newline': ['error', { consistent: true }],
-    'operator-linebreak': ['error', 'before', { overrides: { '&&': 'after' } }],
+    'operator-linebreak': ['error', 'before', { overrides: { '&&': 'after', '||': 'after', '=': 'after' } }],
     'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }], // option require
   },
   globals: {
