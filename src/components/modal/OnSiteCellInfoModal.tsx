@@ -45,6 +45,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
 
   const stepInfoItem = (stepSlot) => {
     const address = stepSlot?.slots[0]?.address?.fullAddress;
+
     return (
       <View>
         <Text style={styles.date}>{capitalizeDate(stepSlot?.slots[0]?.startDate)}</Text>
