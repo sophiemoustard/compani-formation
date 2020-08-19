@@ -4,17 +4,19 @@ module.exports = {
     node: true,
     jest: true,
   },
+  parser: '@typescript-eslint/parser',
+  plugins: ['react', '@typescript-eslint'],
   extends: ['airbnb-base', 'eslint:recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
   parserOptions: {
     ecmaFeatures: { jsx: true },
     ecmaVersion: 11,
     sourceType: 'module',
   },
-  plugins: ['react'],
   rules: {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
-    indent: ['error', 2],
+    '@typescript-eslint/indent': ['error', 2],
+    indent: 0, // pour ne pas avoir l'erreur en doublon
     'linebreak-style': ['error', 'unix'],
     'react/display-name': 'off',
     'max-len': ['error', { code: 120, tabWidth: 2 }],
@@ -42,7 +44,9 @@ module.exports = {
     ],
     'object-curly-newline': ['error', { consistent: true }],
     'operator-linebreak': ['error', 'before', { overrides: { '&&': 'after', '||': 'after', '=': 'after' } }],
-    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }], // option require
+    'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
+    '@typescript-eslint/no-unused-vars': 'error', // eslint ne gère pas les types, typescript les gère à sa place
+    'no-unused-vars': 'off', // Pour ne pas avoir l'erreur en doublon
   },
   globals: {
     __DEV__: true,
