@@ -1,9 +1,9 @@
-export interface routeType {
+export interface RouteType {
   params: {
     courseId: string,
   }
 }
 
-export interface navigationType {
-    navigate: (path: string, option?: { screen: string, params: object }) => {},
+export interface NavigationType {
+  navigate: (path: string, option?: { screen: string, params: object }) => {},
 }

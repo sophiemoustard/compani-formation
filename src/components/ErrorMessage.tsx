@@ -4,17 +4,17 @@ import { MARGIN } from '../styles/metrics';
 import { RED } from '../styles/colors';
 import { FIRA_SANS_REGULAR } from '../styles/fonts';
 
-const NiErrorMessage = ({ style, message, show }: NiErrorMessageProps) => (
-  <View style={style}>
-    { show && <Text style={styles.message}>{message}</Text> }
-  </View>
-);
-
-interface NiErrorMessageProps {
+interface ErrorMessageProps {
   style?: object,
   message: string,
   show: boolean,
 }
+
+const ErrorMessage = ({ style, message, show }: ErrorMessageProps) => (
+  <View style={style}>
+    { show && <Text style={styles.message}>{message}</Text> }
+  </View>
+);
 
 const styles = StyleSheet.create({
   message: {
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NiErrorMessage;
+export default ErrorMessage;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
-import { StepType } from 'types/StepType';
+import { CourseSlotType } from 'types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
 import { BORDER_WIDTH, MARGIN } from '../../styles/metrics';
@@ -11,8 +11,8 @@ import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 interface OnSiteCellInfoModalProps {
   visible: boolean,
   title: string,
-  stepSlots: Array<StepType>,
-  onRequestClose: () => ({}),
+  stepSlots: Array<CourseSlotType>,
+  onRequestClose: () => void,
 }
 
 const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSiteCellInfoModalProps) => {

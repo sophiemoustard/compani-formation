@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
-import { navigationType } from 'types/NavigationType';
+import { NavigationType } from 'types/NavigationType';
 import Users from '../api/users';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
@@ -9,11 +9,11 @@ import commonStyles from '../styles/common';
 import { MARGIN, PADDING } from '../styles/metrics';
 import { GREEN, WHITE, PINK } from '../styles/colors';
 
-interface ForgotPasswordScreenProps {
-  navigation: navigationType,
+interface ForgotPasswordProps {
+  navigation: NavigationType,
 }
 
-const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
+const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordScreen;
+export default ForgotPassword;

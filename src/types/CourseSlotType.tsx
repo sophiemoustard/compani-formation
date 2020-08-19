@@ -1,7 +1,7 @@
 export interface CourseSlotType {
   _id: string,
-  startDate: string,
-  endDate: string,
+  startDate: Date,
+  endDate: Date,
   courseId: string,
   address: AddressType,
   step: string,
@@ -13,7 +13,7 @@ export interface AddressType {
   city: string,
   zipCode: string,
   location: {
-      coordinates: Array<number>,
-      type: string,
+    coordinates: Array<number>,
+    type: string,
   }
 }

@@ -7,7 +7,7 @@ import { PINK, WHITE, GREY } from '../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../styles/fonts';
 
 interface CalendarIconProps {
-  dates: Array<string>,
+  dates: Array<Date>,
 }
 
 const CalendarIcon = ({ dates }: CalendarIconProps) => {

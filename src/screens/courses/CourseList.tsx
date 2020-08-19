@@ -16,7 +16,7 @@ import { PINK, YELLOW } from '../../styles/colors';
 import NextStepCell from '../../components/steps/NextStepCell';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
-interface CourseListScreenProps {
+interface CourseListProps {
   navigation: object,
 }
 
@@ -50,8 +50,8 @@ const formatDataForNextSteps = (courses) => {
     .map(slot => ({ ...omit(slot, ['firstSlot']) }));
 };
 
-const CourseListScreen = ({ navigation }: CourseListScreenProps) => {
-  const [courses, setCourses] = useState([]);
+const CourseList = ({ navigation }: CourseListProps) => {
+  const [courses, setCourses] = useState(new Array(0));
 
   const getCourses = async () => {
     try {
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseListScreen;
+export default CourseList;

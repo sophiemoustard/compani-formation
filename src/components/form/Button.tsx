@@ -4,17 +4,19 @@ import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/
 import { PINK, WHITE } from '../../styles/colors';
 import { FIRA_SANS_BLACK } from '../../styles/fonts';
 
-interface NiButtonProps {
+interface ButtonProps {
   style?: Object,
   caption: string,
   onPress: () => void,
   loading?: boolean,
-  bgColor: string,
-  color: string,
-  borderColor: string
+  bgColor?: string,
+  color?: string,
+  borderColor?: string
 }
 
-const NiButton = ({ style, caption, onPress, loading, bgColor, color, borderColor }: NiButtonProps) => {
+const Button = (
+  { style, caption, onPress, loading = false, bgColor = PINK[500], color = WHITE, borderColor = PINK[500] }: ButtonProps
+) => {
   const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
 
   return (
@@ -24,13 +26,6 @@ const NiButton = ({ style, caption, onPress, loading, bgColor, color, borderColo
       { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
     </TouchableOpacity>
   );
-};
-
-NiButton.defaultProps = {
-  loading: false,
-  bgColor: PINK[500],
-  color: WHITE,
-  borderColor: PINK[500],
 };
 
 const styles = StyleSheet.create({
@@ -53,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NiButton;
+export default Button;

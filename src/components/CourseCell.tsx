@@ -2,14 +2,14 @@ import React from 'react';
 import get from 'lodash/get';
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { CourseType } from 'types/CourseType';
-import { navigationType } from 'types/NavigationType';
+import { NavigationType } from 'types/NavigationType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
 
 interface CourseCellProps {
   course: CourseType,
-  navigation: navigationType,
+  navigation: NavigationType,
 }
 
 const CourseCell = ({ course, navigation }: CourseCellProps) => {

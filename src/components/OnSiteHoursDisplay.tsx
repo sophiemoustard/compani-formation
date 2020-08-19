@@ -6,8 +6,8 @@ import { GREY } from '../styles/colors';
 import moment from '../core/helpers/moment';
 
 interface OnSiteHoursDisplayProps {
-  startDate: string,
-  endDate: string,
+  startDate: Date,
+  endDate: Date,
 }
 
 const OnSiteHoursDisplay = ({ startDate, endDate }: OnSiteHoursDisplayProps) => (

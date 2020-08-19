@@ -11,10 +11,9 @@ import {
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
-import PropTypes from 'prop-types';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { routeType, navigationType } from 'types/NavigationType';
+import { RouteType, NavigationType } from 'types/NavigationType';
 import Courses from '../../api/courses';
 import { WHITE, GREY } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
@@ -26,12 +25,12 @@ import { FIRA_SANS_BLACK } from '../../styles/fonts';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
-interface CourseProfileScreenProps {
-  route: routeType,
-  navigation: navigationType,
+interface CourseProfileProps {
+  route: RouteType,
+  navigation: NavigationType,
 }
 
-const CourseProfileScreen = ({ route, navigation }: CourseProfileScreenProps) => {
+const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   const [course, setCourse] = useState(null);
   const getCourse = async () => {
     const fetchedCourse = await Courses.getCourse(route.params.courseId);
@@ -83,17 +82,6 @@ const CourseProfileScreen = ({ route, navigation }: CourseProfileScreenProps) =>
   );
 };
 
-CourseProfileScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.exact({
-      courseId: PropTypes.string.isRequired,
-    }),
-  }),
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func,
-  }),
-};
-
 const imageHeight = 200;
 const styles = StyleSheet.create({
   image: {
@@ -129,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseProfileScreen;
+export default CourseProfile;

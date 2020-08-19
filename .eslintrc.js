@@ -15,7 +15,8 @@ module.exports = {
   rules: {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
-    indent: ['error', 2],
+    '@typescript-eslint/indent': ['error', 2],
+    indent: 0, // pour ne pas avoir l'erreur en doublon
     'linebreak-style': ['error', 'unix'],
     'react/display-name': 'off',
     'max-len': ['error', { code: 120, tabWidth: 2 }],

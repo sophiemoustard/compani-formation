@@ -12,10 +12,10 @@ interface NextStepCellProps {
 }
 
 interface NextSlotsStepType {
-    name: string,
-    slots: Array<CourseSlotType>,
-    type: string,
-    stepNumber: number,
+  name: string,
+  slots: Array<CourseSlotType>,
+  type: string,
+  stepNumber: number,
 }
 
 const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {

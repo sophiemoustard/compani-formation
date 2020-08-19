@@ -8,7 +8,7 @@ interface InfoModalProps {
   visible: boolean,
   title: string,
   content: React.ReactNode,
-  onRequestClose: () => ({}),
+  onRequestClose: () => void,
   headerStyle?: object,
 }
 

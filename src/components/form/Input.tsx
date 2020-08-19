@@ -5,7 +5,7 @@ import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH, ICON } from
 import { GREY, WHITE } from '../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 
-interface NiInputProps {
+interface InputProps {
   style?: object,
   value: string,
   onChangeText: (string) => void,
@@ -14,7 +14,7 @@ interface NiInputProps {
   darkMode?: boolean,
 }
 
-const NiInput = ({ style, value, onChangeText, caption, type, darkMode }: NiInputProps) => {
+const Input = ({ style, value, onChangeText, caption, type, darkMode }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
   const autoCapitalize = ['password', 'email'].includes(type) ? 'none' : 'sentences';
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NiInput;
+export default Input;

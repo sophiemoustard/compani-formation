@@ -3,12 +3,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AuthenticationScreen from './screens/Authentication';
-import ForgotPasswordScreen from './screens/ForgotPassword';
-import ProgramListScreen from './screens/ProgramList';
-import CourseListScreen from './screens/courses/CourseList';
-import CourseProfileScreen from './screens/courses/CourseProfile';
-import ProfileScreen from './screens/Profile';
+import Authentication from './screens/Authentication';
+import ForgotPassword from './screens/ForgotPassword';
+import ProgramList from './screens/ProgramList';
+import CourseList from './screens/courses/CourseList';
+import CourseProfile from './screens/courses/CourseProfile';
+import Profile from './screens/Profile';
 import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
 import { PINK } from './styles/colors';
@@ -22,8 +22,8 @@ const CourseStack = createStackNavigator();
 
 const Courses = () => (
   <CourseStack.Navigator headerMode="none">
-    <CourseStack.Screen name="CourseList" component={CourseListScreen} />
-    <CourseStack.Screen name="CourseProfile" component={CourseProfileScreen} />
+    <CourseStack.Screen name="CourseList" component={CourseList} />
+    <CourseStack.Screen name="CourseProfile" component={CourseProfile} />
   </CourseStack.Navigator>
 );
 
@@ -45,9 +45,9 @@ const Home = () => {
       tabBarOptions={{ activeTintColor: PINK[500] }}
       screenOptions={screenOptions}
     >
-      <Tab.Screen name="ProgramList" component={ProgramListScreen} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="ProgramList" component={ProgramList} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profil' }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
 };
@@ -66,8 +66,8 @@ export const AppContainer = () => {
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
         {token === null
           ? <>
-            <MainStack.Screen name="Authentication" component={AuthenticationScreen} />
-            <MainStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+            <MainStack.Screen name="Authentication" component={Authentication} />
+            <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
           </>
           : <MainStack.Screen name="Home" component={Home} />}
       </MainStack.Navigator>
