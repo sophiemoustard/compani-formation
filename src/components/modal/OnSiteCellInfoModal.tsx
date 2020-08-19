@@ -36,26 +36,29 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
           ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)}
           data={formattedStepSlots}
           renderItem={({ item }) => stepInfoItem(item)}
-          keyExtractor={item => item.slots._id}
+          keyExtractor={item => item.startDate}
           scrollEnabled={formattedStepSlots.length > 3}
         />
       </View>
     );
   };
 
-  const stepInfoItem = stepSlot => (
-    <View>
-      <Text style={styles.date}>{capitalizeDate(stepSlot?.slots[0]?.startDate)}</Text>
-      <FlatList
-        horizontal
-        ItemSeparatorComponent={() => (<View style={styles.separator} />)}
-        data={stepSlot.slots}
-        keyExtractor={item => item._id}
-        renderItem={({ item }) => onSiteHoursDisplayItem(item)}
-      />
-      <Text style={styles.address}>{stepSlot?.slots[0]?.address?.fullAddress || ''}</Text>
-    </View>
-  );
+  const stepInfoItem = (stepSlot) => {
+    const address = stepSlot?.slots[0]?.address?.fullAddress;
+    return (
+      <View>
+        <Text style={styles.date}>{capitalizeDate(stepSlot?.slots[0]?.startDate)}</Text>
+        <FlatList
+          horizontal
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          data={stepSlot.slots}
+          keyExtractor={item => item._id}
+          renderItem={({ item }) => onSiteHoursDisplayItem(item)}
+        />
+        {address && <Text style={styles.address}>{address}</Text>}
+      </View>
+    );
+  };
 
   const onSiteHoursDisplayItem = stepSlot => (
     <OnSiteHoursDisplay startDate={stepSlot.startDate} endDate={stepSlot.endDate} />
