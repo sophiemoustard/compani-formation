@@ -50,8 +50,8 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
-  const programImage = get(course, 'program.image.link') || '';
-  const programName = get(course, 'program.name') || '';
+  const programImage = get(course, 'subProgram.program.image.link') || '';
+  const programName = get(course, 'subProgram.program.name') || '';
   const source = programImage ? { uri: programImage } : require('../../../assets/authentication_background_image.jpg');
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
@@ -76,7 +76,7 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
-      <FlatList data={course.program.steps} keyExtractor={item => item._id} renderItem={renderCells}
+      <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} renderItem={renderCells}
         ItemSeparatorComponent={renderSeparator} />
     </ScrollView>
   );

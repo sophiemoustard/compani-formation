@@ -24,7 +24,7 @@ const formatDataForNextSteps = (courses) => {
   const futureSlots = new Array(0);
   // eslint-disable-next-line no-restricted-syntax
   for (const course of courses) {
-    const courseSteps = get(course, 'program.steps') || [];
+    const courseSteps = get(course, 'subProgram.steps') || [];
     const stepSlots = groupBy(course.slots, s => s.step._id);
 
     // eslint-disable-next-line guard-for-in, no-restricted-syntax
@@ -33,15 +33,16 @@ const formatDataForNextSteps = (courses) => {
         .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
         .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
 
-      // eslint-disable-next-line no-continue
-      if (!nextSlots.length) continue;
-      futureSlots.push({
-        ...pick(course.program, ['name']),
-        stepNumber: courseSteps.indexOf(step) + 1,
-        firstSlot: nextSlots[0].startDate,
-        type: nextSlots[0].step.type,
-        slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
-      });
+      if (nextSlots.length) {
+        futureSlots.push({
+          ...pick(course.subProgram.program, ['name']),
+          stepNumber: courseSteps.indexOf(step) + 1,
+          firstSlot: nextSlots[0].startDate,
+          type: nextSlots[0].step.type,
+          slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
+          _id: nextSlots[0]._id,
+        });
+      }
     }
   }
 
