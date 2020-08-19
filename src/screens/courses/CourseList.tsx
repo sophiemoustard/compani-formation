@@ -5,19 +5,18 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
-import pick from 'lodash/pick';
-import omit from 'lodash/omit';
-import moment from '../../core/helpers/moment';
-import commonStyles from '../../styles/common';
 import Courses from '../../api/courses';
+import NextStepCell from '../../components/steps/NextStepCell';
 import CourseCell from '../../components/CourseCell';
+import moment from '../../core/helpers/moment';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
-import NextStepCell from '../../components/steps/NextStepCell';
+import commonStyles from '../../styles/common';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
+import { NavigationType } from '../../types/NavigationType';
 
 interface CourseListProps {
-  navigation: object,
+  navigation: NavigationType,
 }
 
 const formatFuturSlot = nextSlots => ({
