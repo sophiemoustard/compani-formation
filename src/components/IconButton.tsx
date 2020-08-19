@@ -12,7 +12,7 @@ interface IconButtonProps {
   style?: object,
 }
 
-const IconButton = ({ iconFamily, onPress, name, color, size, style }: IconButtonProps) => {
+const IconButton = ({ iconFamily = FEATHER, onPress, name, color, size, style }: IconButtonProps) => {
   if (iconFamily === FEATHER) {
     return (
       <TouchableOpacity onPress={onPress} style={style}>
@@ -22,10 +22,6 @@ const IconButton = ({ iconFamily, onPress, name, color, size, style }: IconButto
   }
 
   return null;
-};
-
-IconButton.defaultProps = {
-  iconFamily: FEATHER,
 };
 
 export default IconButton;
