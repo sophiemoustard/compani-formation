@@ -20,36 +20,32 @@ interface CourseListProps {
   navigation: object,
 }
 
-const formatDataForNextSteps = (courses) => {
-  const futureSlots = new Array(0);
-  // eslint-disable-next-line no-restricted-syntax
-  for (const course of courses) {
-    const courseSteps = get(course, 'subProgram.steps') || [];
-    const stepSlots = groupBy(course.slots, s => s.step._id);
+const formatFuturSlot = nextSlots => ({
+  firstSlot: nextSlots[0].startDate,
+  type: nextSlots[0].step.type,
+  slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
+  _id: nextSlots[0]._id,
+});
 
-    // eslint-disable-next-line guard-for-in, no-restricted-syntax
-    for (const step in stepSlots) {
-      const nextSlots = stepSlots[step]
+const formatCourseStep = (course) => {
+  const courseSteps = get(course, 'subProgram.steps') || [];
+  const stepSlots = groupBy(course.slots, s => s.step._id);
+  const programName = get(course, 'subProgram.program.name');
+
+  return Object.keys(stepSlots).map(
+    (stepId) => {
+      const nextSlots = stepSlots[stepId]
         .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
         .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
 
-      if (nextSlots.length) {
-        futureSlots.push({
-          ...pick(course.subProgram.program, ['name']),
-          stepNumber: courseSteps.indexOf(step) + 1,
-          firstSlot: nextSlots[0].startDate,
-          type: nextSlots[0].step.type,
-          slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
-          _id: nextSlots[0]._id,
-        });
-      }
+      return { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFuturSlot(nextSlots) };
     }
-  }
-
-  return futureSlots.filter(step => Object.keys(step.slots).length)
-    .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'))
-    .map(slot => ({ ...omit(slot, ['firstSlot']) }));
+  );
 };
+
+const formatNextSteps = courses => courses.map(formatCourseStep).flat()
+  .filter(step => Object.keys(step.slots).length)
+  .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const CourseList = ({ navigation }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
@@ -77,23 +73,23 @@ const CourseList = ({ navigation }: CourseListProps) => {
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
-  const futureSlots = formatDataForNextSteps(courses);
+  const nextStep = formatNextSteps(courses);
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      {futureSlots.length > 0 &&
+      {nextStep.length > 0 &&
         <View style={styles.sectionContainer}>
           <View style={styles.contentTitle}>
             <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.coursesCount}>{futureSlots.length}</Text>
+              <Text style={styles.coursesCount}>{nextStep.length}</Text>
             </View>
           </View>
           <FlatList
             horizontal
-            data={futureSlots}
-            keyExtractor={item => `${item.name} - ${item.stepNumber}`}
+            data={nextStep}
+            keyExtractor={item => `${item.name} - ${item.stepIndex}`}
             renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
             contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false}
