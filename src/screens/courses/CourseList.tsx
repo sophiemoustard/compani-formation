@@ -31,15 +31,17 @@ const formatCourseStep = (course) => {
   const stepSlots = groupBy(course.slots, s => s.step._id);
   const programName = get(course, 'subProgram.program.name');
 
-  return Object.keys(stepSlots).map(
-    (stepId) => {
+  return Object.keys(stepSlots)
+    .map((stepId) => {
       const nextSlots = stepSlots[stepId]
         .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
         .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
 
-      return { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFuturSlot(nextSlots) };
-    }
-  );
+      return nextSlots.length
+        ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFuturSlot(nextSlots) }
+        : null;
+    })
+    .filter(step => !!step);
 };
 
 const formatNextSteps = courses => courses.map(formatCourseStep).flat()
@@ -88,7 +90,7 @@ const CourseList = ({ navigation }: CourseListProps) => {
           <FlatList
             horizontal
             data={nextStep}
-            keyExtractor={item => `${item.name} - ${item.stepIndex}`}
+            keyExtractor={item => item._id}
             renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
             contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false}
