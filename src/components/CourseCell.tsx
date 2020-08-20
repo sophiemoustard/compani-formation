@@ -1,8 +1,8 @@
 import React from 'react';
 import get from 'lodash/get';
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
-import { CourseType } from 'types/CourseType';
-import { NavigationType } from 'types/NavigationType';
+import { CourseType } from '../types/CourseType';
+import { NavigationType } from '../types/NavigationType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
@@ -15,7 +15,9 @@ interface CourseCellProps {
 const CourseCell = ({ course, navigation }: CourseCellProps) => {
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
-  const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
+  const source = programImage
+    ? { uri: programImage }
+    : require('../../assets/images/authentication_background_image.jpg');
   const goToCourse = () => navigation.navigate(
     'Home',
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: course._id } } }

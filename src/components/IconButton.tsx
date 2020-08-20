@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { FEATHER } from '../core/data/constants';
 
 interface IconButtonProps {
-  iconFamily: string,
+  iconFamily?: string,
   onPress: () => void,
   color: string,
   name: string,

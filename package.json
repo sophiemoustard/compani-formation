@@ -8,7 +8,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "node_modules/jest-expo/node_modules/jest/bin/jest.js",
-    "lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js"
+    "lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
+    "onlylint": "eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js"
   },
   "jest": {
     "preset": "jest-expo",
@@ -46,6 +47,8 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.18.0",
     "expo": "^38.0.8",
+    "expo-font": "~8.2.1",
+    "expo-linear-gradient": "~8.2.1",
     "moment": "^2.27.0",
     "react": "16.11.0",
     "react-dom": "16.11.0",
@@ -53,11 +56,9 @@
     "react-native-gesture-handler": "~1.6.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
-    "react-native-svg": "12.1.0",
+    "react-native-svg": "^12.1.0",
     "react-test-renderer": "~16.11.0",
-    "sharp-cli": "^1.14.1",
-    "expo-linear-gradient": "~8.2.1",
-    "expo-font": "~8.2.1"
+    "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",

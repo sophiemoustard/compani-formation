@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { StepType } from 'types/StepType';
+import { StepType } from '../../types/StepType';
 import { stepTypeOptions } from '../../core/data/constants';
 import { MARGIN } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';

@@ -18,16 +18,7 @@
 
     // Added options
     "typeRoots": ["./node_modules/@types"],
-    "baseUrl": "src",
-    "paths": {
-      "api": ["api"],
-      "core": ["core"],
-      "context": ["context"],
-      "components": ["components"],
-      "screens": ["screens"],
-      "styles": ["styles"],
-    }
   },
-  "include": ["src/**/*", "App.tsx"],
+  "include": ["src/**/*", "App.tsx", "assets/icons/*"],
   "exclude": ["node_modules"],
 }

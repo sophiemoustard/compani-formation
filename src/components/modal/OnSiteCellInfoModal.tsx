@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
-import { CourseSlotType } from 'types/CourseSlotType';
+import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
 import { BORDER_WIDTH, MARGIN } from '../../styles/metrics';

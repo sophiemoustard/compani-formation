@@ -9,7 +9,7 @@ import {
   ImageBackground,
   useWindowDimensions,
 } from 'react-native';
-import { NavigationType } from 'types/NavigationType';
+import { NavigationType } from '../types/NavigationType';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';
@@ -37,7 +37,7 @@ const Authentication = ({ navigation }: AuthenticationProps) => {
   return (
     <ImageBackground
       style={{ ...styles.image, height: useWindowDimensions().height }}
-      source={require('../../assets/authentication_background_image.jpg')}
+      source={require('../../assets/images/authentication_background_image.jpg')}
     >
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
         <View style={styles.inner}>

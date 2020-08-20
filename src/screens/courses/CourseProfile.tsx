@@ -13,7 +13,7 @@ import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { RouteType, NavigationType } from 'types/NavigationType';
+import { RouteType, NavigationType } from '../../types/NavigationType';
 import Courses from '../../api/courses';
 import { WHITE, GREY } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
@@ -52,7 +52,9 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
 
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
-  const source = programImage ? { uri: programImage } : require('../../../assets/authentication_background_image.jpg');
+  const source = programImage
+    ? { uri: programImage }
+    : require('../../../assets/images/authentication_background_image.jpg');
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   const renderCells = ({ item, index }) => {

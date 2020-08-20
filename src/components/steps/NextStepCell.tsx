@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { CourseSlotType } from 'types/CourseSlotType';
+import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import CalendarIcon from '../CalendarIcon';
 import { PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../../styles/metrics';
