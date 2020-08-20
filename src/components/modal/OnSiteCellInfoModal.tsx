@@ -5,8 +5,8 @@ import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
 import { BORDER_WIDTH, MARGIN } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
-import { capitalizeDate } from '../../core/helpers/utils';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
+import { NUNITO_SEMI, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 interface OnSiteCellInfoModalProps {
   visible: boolean,
@@ -48,7 +48,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
 
     return (
       <View>
-        <Text style={styles.date}>{capitalizeDate(stepSlot?.slots[0]?.startDate)}</Text>
+        <Text style={styles.date}>{moment(stepSlot.slots[0].startDate).format('dddd Do MMMM')}</Text>
         <FlatList
           horizontal
           ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -82,14 +82,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   date: {
+    ...NUNITO_SEMI.XS,
     color: GREY[600],
-    fontSize: 16,
-    lineHeight: 16,
+    textTransform: 'uppercase',
   },
   address: {
+    ...FIRA_SANS_REGULAR.MD,
     color: PINK[600],
-    fontSize: 16,
-    lineHeight: 20,
     textDecorationLine: 'underline',
   },
 });
