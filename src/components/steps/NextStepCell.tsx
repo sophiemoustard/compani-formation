@@ -15,17 +15,17 @@ interface NextSlotsStepType {
   name: string,
   slots: Array<CourseSlotType>,
   type: string,
-  stepNumber: number,
+  stepIndex: number,
 }
 
 const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
-  const { stepNumber, slots } = nextSlotsStep;
-  const dates = Object.keys(slots, 'DD/MM/YYYY').map(date => moment(date, 'DD/MM/YYYY').toISOString());
+  const { stepIndex, slots } = nextSlotsStep;
+  const dates = Object.keys(slots).map(date => moment(date, 'DD/MM/YYYY').toISOString());
 
   return (
     <View style={styles.container}>
       <CalendarIcon dates={dates} />
-      <StepCellTitle index={stepNumber} step={nextSlotsStep} />
+      <StepCellTitle index={stepIndex} step={nextSlotsStep} />
     </View>
   );
 };

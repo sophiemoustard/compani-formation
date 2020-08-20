@@ -13,7 +13,8 @@ interface CourseCellProps {
 }
 
 const CourseCell = ({ course, navigation }: CourseCellProps) => {
-  const programImage = get(course, 'program.image.link') || '';
+  const programImage = get(course, 'subProgram.program.image.link') || '';
+  const programName = get(course, 'subProgram.program.name') || '';
   const source = programImage ? { uri: programImage } : require('../../assets/authentication_background_image.jpg');
   const goToCourse = () => navigation.navigate(
     'Home',
@@ -26,7 +27,7 @@ const CourseCell = ({ course, navigation }: CourseCellProps) => {
         <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
       </View>
       <View style={styles.title}>
-        <Text lineBreakMode={'tail'} numberOfLines={2}>{course.program.name || ''}</Text>
+        <Text lineBreakMode={'tail'} numberOfLines={2}>{programName}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -1,10 +1,10 @@
-import { ProgramType } from './ProgramType';
+import { SubProgramType } from './SubProgramType';
 
 export interface CourseType {
   _id: string,
   contact: ContactType,
   trainees: Array<string>,
-  program: ProgramType,
+  subProgram: SubProgramType,
   company: string,
   type: string,
   trainer: string,
