@@ -28,7 +28,10 @@ const formatFuturSlot = nextSlots => ({
 
 const formatCourseStep = (course) => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const stepSlots = groupBy(course.slots, s => s.step._id);
+  const stepSlots = groupBy(
+    course.slots.filter(s => get(s, 'step._id')),
+    s => s.step._id
+  );
   const programName = get(course, 'subProgram.program.name');
 
   return Object.keys(stepSlots)
