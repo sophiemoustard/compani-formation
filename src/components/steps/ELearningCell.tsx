@@ -36,7 +36,7 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
       {isOpen &&
         <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
           renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
-          contentContainerStyle={styles.activityCellList}/>}
+          contentContainerStyle={styles.activityCellList} showsHorizontalScrollIndicator={false} />}
     </View>
   );
 };
