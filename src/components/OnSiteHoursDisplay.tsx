@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { MARGIN, ICON } from '../styles/metrics';
 import { GREY } from '../styles/colors';
 import moment from '../core/helpers/moment';
+import { FIRA_SANS_REGULAR } from '../styles/fonts';
 
 interface OnSiteHoursDisplayProps {
   startDate: Date,
@@ -27,8 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   hours: {
-    lineHeight: 24,
-    fontSize: 16,
+    ...FIRA_SANS_REGULAR.MD,
   },
   arrow: {
     marginHorizontal: MARGIN.XS,

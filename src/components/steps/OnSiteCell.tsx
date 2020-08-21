@@ -22,14 +22,14 @@ const OnSiteCell = ({ step, slots, index }: OnSiteCellProps) => {
   const dates = stepSlots.length
     ? stepSlots.map(stepSlot => stepSlot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
     : [];
+  const modalTitle = `Etape ${index + 1} - ${step.name}`;
 
   const closeModal = () => setIsModalVisible(false);
-
   const openModal = () => setIsModalVisible(true);
 
   return (
     <>
-      <OnSiteCellInfoModal title={step.name} stepSlots={stepSlots} visible={isModalVisible} onRequestClose={closeModal}
+      <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible} onRequestClose={closeModal}
       />
       <View style={styles.container}>
         <TouchableOpacity onPress={openModal}>

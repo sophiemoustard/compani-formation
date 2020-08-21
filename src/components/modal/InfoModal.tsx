@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import { WHITE, MODAL_BACKDROP_GREY, GREY } from '../../styles/colors';
 import { BORDER_RADIUS, ICON, PADDING, MARGIN } from '../../styles/metrics';
+import { FIRA_SANS_BOLD } from '../../styles/fonts';
 import IconButton from '../IconButton';
 
 interface InfoModalProps {
@@ -49,10 +50,8 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.XL,
   },
   title: {
+    ...FIRA_SANS_BOLD.MD,
     flex: 1,
-    fontWeight: 'bold',
-    fontSize: 16,
-    lineHeight: 20,
   },
   closeButton: {
     alignItems: 'flex-end',
