@@ -59,7 +59,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
 const styles = StyleSheet.create({
   container: {
     minWidth: 50,
-    height: 63,
+    position: 'relative',
   },
   dateContainer: {
     height: 60,
@@ -102,13 +102,14 @@ const styles = StyleSheet.create({
     height: 40,
   },
   shadow: {
-    minWidth: 50,
-    height: BORDER_RADIUS.SM + 3,
-    backgroundColor: GREY[200],
-    top: -BORDER_RADIUS.SM,
+    position: 'absolute',
+    top: 0,
+    bottom: -3,
+    left: 0,
+    right: 0,
     zIndex: -1,
-    borderBottomLeftRadius: BORDER_RADIUS.SM,
-    borderBottomRightRadius: BORDER_RADIUS.SM,
+    borderRadius: BORDER_RADIUS.SM,
+    backgroundColor: GREY[200],
   },
 });
 

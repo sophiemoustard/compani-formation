@@ -4,7 +4,7 @@ import VideoIcon from '../../assets/icons/VideoIcon';
 import LessonIcon from '../../assets/icons/LessonIcon';
 import QuizIcon from '../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../assets/icons/SharingExperienceIcon';
-import { BORDER_RADIUS, BORDER_WIDTH, PADDING } from '../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, PADDING, MARGIN } from '../styles/metrics';
 import { YELLOW } from '../styles/colors';
 import { ActivityType } from '../types/ActivityType';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../core/data/constants';
@@ -42,7 +42,9 @@ const ActivityIcon = ({ activity } : ActivityIconProps) => {
 
 const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => StyleSheet.create({
   container: {
+    position: 'relative',
     alignSelf: 'center',
+    marginBottom: MARGIN.SM,
   },
   button: {
     backgroundColor: buttonBackgroundColor,
@@ -55,13 +57,14 @@ const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => St
     alignSelf: 'center',
   },
   shadow: {
-    height: BORDER_RADIUS.MD + 25,
-    top: -BORDER_RADIUS.MD - 22,
-    marginBottom: -25,
+    position: 'absolute',
+    top: 0,
+    bottom: -3,
+    left: 0,
+    right: 0,
     backgroundColor: buttonBorderColor,
     zIndex: -1,
-    borderBottomRightRadius: BORDER_RADIUS.MD,
-    borderBottomLeftRadius: BORDER_RADIUS.MD,
+    borderRadius: BORDER_RADIUS.MD,
   },
 });
 
