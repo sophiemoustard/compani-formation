@@ -1,6 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { CourseType } from '../types/CourseType';
 import { NavigationType } from '../types/NavigationType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
@@ -26,7 +26,8 @@ const CourseCell = ({ course, navigation }: CourseCellProps) => {
   return (
     <TouchableOpacity style={styles.courseContainer} onPress={goToCourse}>
       <View style={styles.imageContainer}>
-        <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }} />
+        <ImageBackground source={source} imageStyle={styles.image}
+          style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>} />
       </View>
       <View style={styles.title}>
         <Text lineBreakMode={'tail'} numberOfLines={2}>{programName}</Text>

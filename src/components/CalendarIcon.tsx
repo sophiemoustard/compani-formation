@@ -8,7 +8,7 @@ import { NUNITO_SEMI, NUNITO_REGULAR } from '../styles/fonts';
 import Shadow from './style/Shadow';
 
 interface CalendarIconProps {
-  dates: Array<Date>,
+  dates: Array<string>,
 }
 
 const CalendarIcon = ({ dates }: CalendarIconProps) => {

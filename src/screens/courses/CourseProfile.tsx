@@ -8,6 +8,8 @@ import {
   YellowBox,
   TouchableOpacity,
   ScrollView,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -22,6 +24,7 @@ import ELearningCell from '../../components/steps/ELearningCell';
 import { ON_SITE, E_LEARNING } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
 import { FIRA_SANS_BLACK } from '../../styles/fonts';
+import { CourseType } from '../../types/CourseType';
 
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
@@ -31,7 +34,7 @@ interface CourseProfileProps {
 }
 
 const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
-  const [course, setCourse] = useState(null);
+  const [course, setCourse] = useState<CourseType | null>(null);
   const getCourse = async () => {
     const fetchedCourse = await Courses.getCourse(route.params.courseId);
     setCourse(fetchedCourse);
@@ -58,7 +61,7 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   const renderCells = ({ item, index }) => {
-    if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course.slots} index={index} />;
+    if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course?.slots} index={index} />;
 
     if (item.type === E_LEARNING) return <ELearningCell step={item} index={index} />;
 
@@ -69,7 +72,8 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
 
   return course && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-      <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'contain' }}>
+      <ImageBackground source={source} imageStyle={styles.image}
+        style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
         <View style={styles.header}>
           <TouchableOpacity style={styles.arrow} onPress={goBack}>

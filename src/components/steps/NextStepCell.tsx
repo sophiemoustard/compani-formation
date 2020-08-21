@@ -12,6 +12,7 @@ interface NextStepCellProps {
 }
 
 interface NextSlotsStepType {
+  _id: string,
   name: string,
   slots: Array<CourseSlotType>,
   type: string,

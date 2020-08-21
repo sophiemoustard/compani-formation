@@ -12,11 +12,11 @@ import IconButton from '../IconButton';
 
 interface OnSiteCellProps {
   step: StepType,
-  slots: Array<CourseSlotType>,
+  slots?: Array<CourseSlotType>,
   index: number,
 }
 
-const OnSiteCell = ({ step, slots, index }: OnSiteCellProps) => {
+const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const stepSlots = slots.filter(slot => slot.step === step._id);
   const dates = stepSlots.length
