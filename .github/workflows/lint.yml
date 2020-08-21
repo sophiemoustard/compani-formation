@@ -21,4 +21,4 @@ jobs:
       - run: npm ci
 
       # Run ESLint + Ts
-      - run: npm run lint
+      - run: npm run ts-lint

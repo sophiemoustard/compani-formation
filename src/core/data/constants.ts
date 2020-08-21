@@ -8,3 +8,9 @@ export const stepTypeOptions = {
 
 // ICON FAMILY
 export const FEATHER = 'Feather';
+
+// ACTIVITIES
+export const LESSON = 'lesson';
+export const QUIZ = 'quiz';
+export const SHARING_EXPERIENCE = 'sharing_experience';
+export const VIDEO = 'video';

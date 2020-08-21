@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
-import { NavigationType } from 'types/NavigationType';
+import { NavigationType } from '../types/NavigationType';
 import Users from '../api/users';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
@@ -46,7 +46,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
     <KeyboardAvoidingView style={commonStyles.container} behavior={isIOS ? 'padding' : 'height'}>
       <View style={styles.inner}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={ require('../../assets/compani_logo.png') } />
+          <Image style={styles.image} source={ require('../../assets/images/compani_logo.png') } />
         </View>
         <Text>Entrez votre email pour réinitialiser votre mot de passe.</Text>
         <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
