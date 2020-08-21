@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
   topContainer: {
     paddingHorizontal: PADDING.MD,
     flexDirection: 'row',
-    marginBottom: MARGIN.MD,
   },
   featherContainer: {
     width: 40,
@@ -67,7 +66,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
   },
   activityCellList: {
-    paddingHorizontal: PADDING.SM,
+    marginTop: MARGIN.MD,
+    paddingHorizontal: PADDING.MD,
   },
   separator: {
     marginHorizontal: MARGIN.XS,
