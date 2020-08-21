@@ -16,13 +16,13 @@ const QuizIcon = ({ color = GREY[700], style, size = ICON.XL }: QuizIconProps) =
     <Rect x="6" y="18" width="24" height="12" rx="6" fill="#C8BCC3"/>
     <Circle cx="8" cy="8" r="7" fill="#C8BCC3"/>
     <Circle cx="24" cy="24" r="7" fill="white"/>
-    <Circle cx="8" cy="8" r="7" stroke={color} stroke-width="2"/>
-    <Circle cx="24" cy="24" r="7" stroke={color} stroke-width="2"/>
-    <Path d="M6 6L10 10" stroke={color} stroke-width="2" stroke-linecap="round"/>
-    <Path d="M10 6L6 10" stroke={color} stroke-width="2" stroke-linecap="round"/>
-    <Path d="M21 24L23 26L27 22" stroke={color} stroke-width="2" stroke-linecap="round"/>
-    <Path d="M19 6H31" stroke={color} stroke-width="2" stroke-linecap="round"/>
-    <Path d="M19 10H31" stroke={color} stroke-width="2" stroke-linecap="round"/>
+    <Circle cx="8" cy="8" r="7" stroke={color} strokeWidth="2"/>
+    <Circle cx="24" cy="24" r="7" stroke={color} strokeWidth="2"/>
+    <Path d="M6 6L10 10" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M10 6L6 10" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M21 24L23 26L27 22" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M19 6H31" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M19 10H31" stroke={color} strokeWidth="2" strokeLinecap="round"/>
   </Svg>
 );
 

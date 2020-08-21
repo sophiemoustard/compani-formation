@@ -14,10 +14,8 @@ interface ELearningCellProps {
 }
 
 const ELearningCell = ({ step, index }: ELearningCellProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const onPressChevron = () => {
-    setIsOpen(prevState => !prevState);
-  };
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
   const renderActivityCell = activity => <ActivityCell onPress={() => null} activity={activity}/>;
 
@@ -38,7 +36,7 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
       {isOpen &&
         <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
           renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
-          style={styles.activityCellList}/>}
+          contentContainerStyle={styles.activityCellList}/>}
     </View>
   );
 };
@@ -69,10 +67,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
   },
   activityCellList: {
-    marginLeft: MARGIN.SM,
+    paddingHorizontal: PADDING.SM,
   },
   separator: {
-    margin: MARGIN.XS,
+    marginHorizontal: MARGIN.XS,
   },
 });
 

@@ -7,7 +7,7 @@ interface blobProps {
   size?: number,
 }
 
-const Blob = ({ color, style, size }: blobProps) => (
+const Blob = ({ color, style, size = 250 }: blobProps) => (
   <Svg width={size} height={size} viewBox="0 0 232 249" fill="none" xmlns="http://www.w3.org/2000/svg"
     style={style}>
     <Path
@@ -17,9 +17,5 @@ const Blob = ({ color, style, size }: blobProps) => (
     />
   </Svg>
 );
-
-Blob.defaultProps = {
-  size: 250,
-};
 
 export default Blob;

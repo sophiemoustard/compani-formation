@@ -4,31 +4,29 @@ import VideoIcon from '../../assets/icons/VideoIcon';
 import LessonIcon from '../../assets/icons/LessonIcon';
 import QuizIcon from '../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../assets/icons/SharingExperienceIcon';
-import { BORDER_RADIUS, BORDER_WIDTH, PADDING, ICON } from '../styles/metrics';
-import { GREY, YELLOW } from '../styles/colors';
+import { BORDER_RADIUS, BORDER_WIDTH, PADDING } from '../styles/metrics';
+import { YELLOW } from '../styles/colors';
 import { ActivityType } from '../types/ActivityType';
+import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../core/data/constants';
 
 interface ActivityIconProps {
   activity: ActivityType,
 }
 
+interface StylesProps {
+  buttonBackgroundColor: string,
+  buttonBorderColor: string
+}
+
 const ActivityIcon = ({ activity } : ActivityIconProps) => {
-  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonborderColor: YELLOW[500] });
+  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor: YELLOW[500] });
   const coloredStyle = styles(getColors());
 
   const getIcon = () => {
-    if (activity.type === 'sharing_experience') {
-      return (<SharingExperienceIcon size={ICON.XL} color={GREY[700]} style={coloredStyle.videoIcon}/>);
-    }
-    if (activity.type === 'lesson') {
-      return (<LessonIcon size={ICON.XL} color={GREY[700]} style={coloredStyle.videoIcon}/>);
-    }
-    if (activity.type === 'quiz') {
-      return (<QuizIcon size={ICON.XL} color={GREY[700]} style={coloredStyle.videoIcon}/>);
-    }
-    if (activity.type === 'video') {
-      return (<VideoIcon size={ICON.XL} color={GREY[700]} style={coloredStyle.videoIcon}/>);
-    }
+    if (activity.type === SHARING_EXPERIENCE) return (<SharingExperienceIcon style={coloredStyle.icon}/>);
+    if (activity.type === LESSON) return (<LessonIcon style={coloredStyle.icon}/>);
+    if (activity.type === QUIZ) return (<QuizIcon style={coloredStyle.icon}/>);
+    if (activity.type === VIDEO) return (<VideoIcon style={coloredStyle.icon}/>);
     return null;
   };
 
@@ -42,27 +40,28 @@ const ActivityIcon = ({ activity } : ActivityIconProps) => {
   );
 };
 
-const styles = ({ buttonBackgroundColor, buttonborderColor }) => StyleSheet.create({
+const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => StyleSheet.create({
   container: {
     alignSelf: 'center',
   },
   button: {
     backgroundColor: buttonBackgroundColor,
-    borderRadius: BORDER_RADIUS.SM,
-    borderColor: buttonborderColor,
+    borderRadius: BORDER_RADIUS.MD,
+    borderColor: buttonBorderColor,
     borderWidth: BORDER_WIDTH,
     padding: PADDING.LG,
   },
-  videoIcon: {
+  icon: {
     alignSelf: 'center',
   },
   shadow: {
-    height: BORDER_RADIUS.SM + 3,
-    backgroundColor: buttonborderColor,
-    top: -BORDER_RADIUS.SM,
+    height: BORDER_RADIUS.MD + 25,
+    top: -BORDER_RADIUS.MD - 22,
+    marginBottom: -25,
+    backgroundColor: buttonBorderColor,
     zIndex: -1,
-    borderBottomLeftRadius: BORDER_RADIUS.SM,
-    borderBottomRightRadius: BORDER_RADIUS.SM,
+    borderBottomRightRadius: BORDER_RADIUS.MD,
+    borderBottomLeftRadius: BORDER_RADIUS.MD,
   },
 });
 
