@@ -8,7 +8,7 @@ interface ShadowProps {
   borderRadius?: number,
 }
 
-const Shadow = ({ backgroundColor = GREY[200], borderRadius = BORDER_RADIUS.SM } : ShadowProps) => (
+const Shadow = ({ backgroundColor = GREY[200], borderRadius = BORDER_RADIUS.SM }: ShadowProps) => (
   <View style={styles(backgroundColor, borderRadius).shadow} />
 );
 

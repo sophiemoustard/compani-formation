@@ -19,7 +19,7 @@ interface StylesProps {
   buttonBorderColor: string
 }
 
-const ActivityIcon = ({ activity } : ActivityIconProps) => {
+const ActivityIcon = ({ activity }: ActivityIconProps) => {
   const buttonBorderColor = YELLOW[500];
   const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor });
   const coloredStyle = styles(getColors());
