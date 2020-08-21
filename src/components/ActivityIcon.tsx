@@ -8,6 +8,7 @@ import { BORDER_RADIUS, BORDER_WIDTH, PADDING, MARGIN } from '../styles/metrics'
 import { YELLOW } from '../styles/colors';
 import { ActivityType } from '../types/ActivityType';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../core/data/constants';
+import Shadow from './style/Shadow';
 
 interface ActivityIconProps {
   activity: ActivityType,
@@ -19,7 +20,8 @@ interface StylesProps {
 }
 
 const ActivityIcon = ({ activity } : ActivityIconProps) => {
-  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor: YELLOW[500] });
+  const buttonBorderColor = YELLOW[500];
+  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor });
   const coloredStyle = styles(getColors());
 
   const getIcon = () => {
@@ -35,7 +37,7 @@ const ActivityIcon = ({ activity } : ActivityIconProps) => {
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>
-      <View style={coloredStyle.shadow} />
+      <Shadow backgroundColor={buttonBorderColor} borderRadius={BORDER_RADIUS.MD} />
     </View>
   );
 };
@@ -55,16 +57,6 @@ const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => St
   },
   icon: {
     alignSelf: 'center',
-  },
-  shadow: {
-    position: 'absolute',
-    top: 0,
-    bottom: -3,
-    left: 0,
-    right: 0,
-    backgroundColor: buttonBorderColor,
-    zIndex: -1,
-    borderRadius: BORDER_RADIUS.MD,
   },
 });
 
