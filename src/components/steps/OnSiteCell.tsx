@@ -35,7 +35,9 @@ const OnSiteCell = ({ step, slots, index }: OnSiteCellProps) => {
         <TouchableOpacity onPress={openModal}>
           <CalendarIcon dates={dates} />
         </TouchableOpacity>
-        <StepCellTitle index={index} step={step} />
+        <View style={styles.textContainer}>
+          <StepCellTitle index={index} step={step} />
+        </View>
         <IconButton name='info' onPress={openModal} size={ICON.LG}
           color={GREY[500]} style={styles.infoButtonContainer} />
       </View>
@@ -51,6 +53,9 @@ const styles = StyleSheet.create({
     padding: PADDING.LG,
     borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
+  },
+  textContainer: {
+    flex: 1,
   },
   infoButtonContainer: {
     width: 40,

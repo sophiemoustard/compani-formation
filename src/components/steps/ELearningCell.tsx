@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { StepType } from '../../types/StepType';
 import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
@@ -27,9 +27,11 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
         <View style={styles.featherContainer}>
           <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
         </View>
-        <StepCellTitle index={index} step={step} />
+        <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
+          <StepCellTitle index={index} step={step} />
+        </TouchableOpacity>
         <View style={styles.iconButtonContainer}>
-          <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.SM}
+          <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
             color={GREY[500]} />
         </View>
       </View>
@@ -59,6 +61,9 @@ const styles = StyleSheet.create({
     width: 40,
     alignSelf: 'center',
     alignItems: 'center',
+  },
+  textContainer: {
+    flex: 1,
   },
   iconButtonContainer: {
     width: 40,
