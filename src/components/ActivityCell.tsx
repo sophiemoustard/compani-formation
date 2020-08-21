@@ -11,7 +11,7 @@ interface ActivityCellProps {
 
 const ActivityCell = ({ activity, onPress }: ActivityCellProps) => (
   <View style={styles.container}>
-    <TouchableOpacity onPress={onPress} activeOpacity={0.1}>
+    <TouchableOpacity onPress={onPress}>
       <ActivityIcon activity={activity} />
     </TouchableOpacity>
     <Text style={styles.activityName} lineBreakMode={'tail'} numberOfLines={2}>
