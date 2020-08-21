@@ -5,6 +5,7 @@ import { capitalize } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { PINK, WHITE, GREY } from '../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../styles/fonts';
+import Shadow from './style/Shadow';
 
 interface CalendarIconProps {
   dates: Array<Date>,
@@ -51,7 +52,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
           : <Text style={styles.toPlan}>?</Text>
         }
       </View>
-      <View style={styles.shadow} />
+      <Shadow backgroundColor={GREY[200]} borderRadius={BORDER_RADIUS.SM} />
     </View>
   );
 };
@@ -59,7 +60,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
 const styles = StyleSheet.create({
   container: {
     minWidth: 50,
-    height: 63,
+    position: 'relative',
   },
   dateContainer: {
     height: 60,
@@ -100,15 +101,6 @@ const styles = StyleSheet.create({
   toPlan: {
     ...NUNITO_REGULAR.XL,
     height: 40,
-  },
-  shadow: {
-    minWidth: 50,
-    height: BORDER_RADIUS.SM + 3,
-    backgroundColor: GREY[200],
-    top: -BORDER_RADIUS.SM,
-    zIndex: -1,
-    borderBottomLeftRadius: BORDER_RADIUS.SM,
-    borderBottomRightRadius: BORDER_RADIUS.SM,
   },
 });
 

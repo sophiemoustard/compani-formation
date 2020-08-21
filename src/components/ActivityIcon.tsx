@@ -4,10 +4,11 @@ import VideoIcon from '../../assets/icons/VideoIcon';
 import LessonIcon from '../../assets/icons/LessonIcon';
 import QuizIcon from '../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../assets/icons/SharingExperienceIcon';
-import { BORDER_RADIUS, BORDER_WIDTH, PADDING } from '../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, PADDING, MARGIN } from '../styles/metrics';
 import { YELLOW } from '../styles/colors';
 import { ActivityType } from '../types/ActivityType';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../core/data/constants';
+import Shadow from './style/Shadow';
 
 interface ActivityIconProps {
   activity: ActivityType,
@@ -18,8 +19,9 @@ interface StylesProps {
   buttonBorderColor: string
 }
 
-const ActivityIcon = ({ activity } : ActivityIconProps) => {
-  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor: YELLOW[500] });
+const ActivityIcon = ({ activity }: ActivityIconProps) => {
+  const buttonBorderColor = YELLOW[500];
+  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor });
   const coloredStyle = styles(getColors());
 
   const getIcon = () => {
@@ -35,14 +37,16 @@ const ActivityIcon = ({ activity } : ActivityIconProps) => {
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>
-      <View style={coloredStyle.shadow} />
+      <Shadow backgroundColor={buttonBorderColor} borderRadius={BORDER_RADIUS.MD} />
     </View>
   );
 };
 
 const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => StyleSheet.create({
   container: {
+    position: 'relative',
     alignSelf: 'center',
+    marginBottom: MARGIN.SM,
   },
   button: {
     backgroundColor: buttonBackgroundColor,
@@ -53,15 +57,6 @@ const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => St
   },
   icon: {
     alignSelf: 'center',
-  },
-  shadow: {
-    height: BORDER_RADIUS.MD + 25,
-    top: -BORDER_RADIUS.MD - 22,
-    marginBottom: -25,
-    backgroundColor: buttonBorderColor,
-    zIndex: -1,
-    borderBottomRightRadius: BORDER_RADIUS.MD,
-    borderBottomLeftRadius: BORDER_RADIUS.MD,
   },
 });
 

@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.MD,
   },
   sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
-  blob: { position: 'absolute', top: -10 },
   coursesCountContainer: {
     backgroundColor: YELLOW[200],
   },
