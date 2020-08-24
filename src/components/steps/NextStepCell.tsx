@@ -21,7 +21,7 @@ interface NextSlotsStepType {
 
 const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
   const { stepIndex, slots } = nextSlotsStep;
-  const dates = Object.keys(slots).map(date => moment(date, 'DD/MM/YYYY').toISOString());
+  const dates = Object.keys(slots).map(date => moment(date, 'DD/MM/YYYY').toDate());
 
   return (
     <View style={styles.container}>

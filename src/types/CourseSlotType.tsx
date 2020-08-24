@@ -1,7 +1,7 @@
 export interface CourseSlotType {
   _id: string,
-  startDate: string,
-  endDate: string,
+  startDate: Date,
+  endDate: Date,
   courseId: string,
   address: AddressType,
   step: string,
