@@ -23,18 +23,18 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topContainer}>
-        <View style={styles.featherContainer}>
-          <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
-        </View>
-        <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
+      <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
+        <View style={styles.topContainer}>
+          <View style={styles.featherContainer}>
+            <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
+          </View>
           <StepCellTitle index={index} step={step} />
-        </TouchableOpacity>
-        <View style={styles.iconButtonContainer}>
-          <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
-            color={GREY[500]} />
+          <View style={styles.iconButtonContainer}>
+            <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
+              color={GREY[500]} />
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
       {isOpen &&
         <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
           renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
