@@ -3,7 +3,15 @@ import createDataContext from './createDataContext';
 import Users from '../api/users';
 import { navigate } from '../navigationRef';
 
-const authReducer = (state, actions) => {
+export interface StateType {
+  token: string | null,
+  loading: boolean,
+  error: boolean,
+  errorMessage: string,
+  appIsReady: boolean
+}
+
+const authReducer = (state: StateType, actions): StateType => {
   switch (actions.type) {
     case 'beforeSignin':
       return { ...state, error: false, errorMessage: '', loading: true };
@@ -61,7 +69,7 @@ const resetError = dispatch => () => {
   dispatch({ type: 'resetError' });
 };
 
-export const { Provider, Context } = createDataContext(
+export const { Provider, Context }: any = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut, resetError },
   { token: null, loading: false, error: false, errorMessage: '', appIsReady: false }
