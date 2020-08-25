@@ -22,14 +22,14 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
   const renderSeparator = () => <View style={styles.separator} />;
 
   return (
-    <View style={styles.container}>
+    <View style={isOpen ? { ...styles.container, ...styles.openContainer } : styles.container}>
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
           <View style={styles.featherContainer}>
             <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
           </View>
           <StepCellTitle index={index} step={step} />
-          <View style={styles.iconButtonContainer}>
+          <View style={isOpen ? { ...styles.iconButtonContainer, marginRight: MARGIN.MD } : styles.iconButtonContainer}>
             <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
               color={GREY[500]} />
           </View>
@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     borderRadius: BORDER_RADIUS.XL,
     borderColor: GREY[200],
+  },
+  openContainer: {
+    marginRight: 0,
+    borderBottomRightRadius: 0,
+    borderTopRightRadius: 0,
   },
   topContainer: {
     paddingHorizontal: PADDING.MD,
