@@ -8,7 +8,7 @@ interface blobProps {
 }
 
 const Blob = ({ color, style, size = 250 }: blobProps) => (
-  <Svg width={size} height={size} viewBox="0 0 232 249" fill="none" xmlns="http://www.w3.org/2000/svg"
+  <Svg width={size} height={size} viewBox="0 0 232 249" fill="none"
     style={style}>
     <Path
       // eslint-disable-next-line max-len

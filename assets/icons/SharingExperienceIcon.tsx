@@ -11,7 +11,7 @@ interface SharingExperienceIconProps {
 }
 
 const SharingExperienceIcon = ({ color = GREY[700], style, size = ICON.XL }: SharingExperienceIconProps) => (
-  <Svg width={size} height={size} viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>
+  <Svg width={size} height={size} viewBox="0 0 33 33" fill="none" style={style}>
     <Circle cx="23" cy="23" r="10" fill="#C8BCC3"/>
     <Rect x="15" y="25" width="16" height="8" rx="4" fill="white"/>
     <Circle cx="23" cy="17" r="4" fill="white"/>

@@ -11,7 +11,7 @@ interface LessonIconProps {
 }
 
 const LessonIcon = ({ color = GREY[700], style, size = ICON.XL }: LessonIconProps) => (
-  <Svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>
+  <Svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={style}>
     <Path d="M1 3H8.5L16 5.5L23.5 3H31V26H1V3Z" fill="white"/>
     <Rect x="1" y="24" width="30" height="7" fill="#C8BCC3"/>
     <Path d="M1 3H10C11.5913 3 13.1174 3.5619 14.2426 4.5621C15.3679 5.56229 16 6.91885 16 8.33333V27C16 25.9391 15.5259 24.9217 14.682 24.1716C13.8381 23.4214 12.6935 23 11.5 23H1V3Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

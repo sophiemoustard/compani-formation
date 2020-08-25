@@ -1,4 +1,5 @@
 import { SubProgramType } from './SubProgramType';
+import { CourseSlotType } from './CourseSlotType';
 
 export interface CourseType {
   _id: string,
@@ -8,6 +9,7 @@ export interface CourseType {
   company: string,
   type: string,
   trainer: string,
+  slots: Array<CourseSlotType>
 }
 
 export interface ContactType {

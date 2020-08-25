@@ -11,7 +11,7 @@ interface QuizIconProps {
 }
 
 const QuizIcon = ({ color = GREY[700], style, size = ICON.XL }: QuizIconProps) => (
-  <Svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={style}>
+  <Svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={style}>
     <Rect x="2" y="2" width="24" height="12" rx="6" fill="white"/>
     <Rect x="6" y="18" width="24" height="12" rx="6" fill="#C8BCC3"/>
     <Circle cx="8" cy="8" r="7" fill="#C8BCC3"/>
