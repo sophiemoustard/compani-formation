@@ -10,7 +10,6 @@ interface InfoModalProps {
   title: string,
   content: React.ReactNode,
   onRequestClose: () => void,
-  headerStyle?: object,
 }
 
 const InfoModal = ({ visible, title, content, onRequestClose }: InfoModalProps) => (

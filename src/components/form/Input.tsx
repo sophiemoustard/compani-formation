@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.MD,
     display: 'flex',
     flexDirection: 'row',
+    backgroundColor: WHITE,
   },
   text: {
     ...FIRA_SANS_REGULAR.SM,

@@ -1,14 +1,16 @@
-import React, { useReducer, createContext } from 'react';
+import React, { useReducer, createContext, ContextType } from 'react';
+import { StateType } from './AuthContext';
 
-interface ProviderProps {
-  children: React.Component,
+export interface createDataContextType {
+  Context: ContextType<any>,
+  Provider: (children: {children: React.ReactNode}) => JSX.Element
 }
 
-export default (reducer, actions, defaultValue) => {
-  const Context = createContext();
-
-  const Provider = ({ children }: ProviderProps) => {
-    const [state, dispatch] = useReducer(reducer, defaultValue);
+export default (reducer: (state: StateType, actions) => StateType, actions, defaultValue): createDataContextType => {
+  const Provider = ({ children }: {children: React.ReactNode}) => {
+    const [{ token, loading, error, errorMessage, appIsReady },
+      dispatch] = useReducer(reducer, defaultValue);
+    const state = { token, loading, error, errorMessage, appIsReady };
 
     const boundActions = {};
     // eslint-disable-next-line guard-for-in, no-restricted-syntax
@@ -22,6 +24,7 @@ export default (reducer, actions, defaultValue) => {
       </Context.Provider>
     );
   };
+  const Context = createContext(defaultValue);
 
   return { Context, Provider };
 };
