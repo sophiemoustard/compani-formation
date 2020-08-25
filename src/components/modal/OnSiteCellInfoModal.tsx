@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Platform, Linking, TouchableOpacity } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
@@ -16,6 +16,17 @@ interface OnSiteCellInfoModalProps {
 }
 
 const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSiteCellInfoModalProps) => {
+  const openMaps = () => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${37.484847},${-122.148386}`;
+    const label = 'Custom Label';
+    const url = Platform.select({
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`,
+    }) || '';
+
+    Linking.openURL(url);
+  };
   const formatStepSlotsForFlatList = (slots) => {
     const formattedSlots = slots.reduce((acc, slot) => {
       const startDate = moment(slot.startDate).format('DD/MM/YYYY');
@@ -56,7 +67,10 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
           keyExtractor={item => item._id}
           renderItem={({ item }) => onSiteHoursDisplayItem(item)}
         />
-        {address && <Text style={styles.address}>{address}</Text>}
+        {address && (
+          <TouchableOpacity onPress={openMaps}>
+            <Text style={styles.address}>{address}</Text>
+          </TouchableOpacity>)}
       </View>
     );
   };
