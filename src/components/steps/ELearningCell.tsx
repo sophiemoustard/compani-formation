@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { StepType } from '../../types/StepType';
+import { NavigationType } from '../../types/NavigationType';
 import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
@@ -11,13 +12,15 @@ import ActivityCell from '../ActivityCell';
 interface ELearningCellProps {
   step: StepType,
   index: number,
+  navigation: NavigationType,
 }
 
-const ELearningCell = ({ step, index }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
-  const renderActivityCell = activity => <ActivityCell onPress={() => null} activity={activity}/>;
+  const renderActivityCell = activity => <ActivityCell activity={activity}
+    onPress={() => navigation.navigate('ActivityProfile', { activityId: activity._id })}/>;
 
   const renderSeparator = () => <View style={styles.separator} />;
 
