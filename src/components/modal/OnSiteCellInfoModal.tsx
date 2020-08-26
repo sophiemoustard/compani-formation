@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList, Platform, Linking, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
@@ -16,17 +16,6 @@ interface OnSiteCellInfoModalProps {
 }
 
 const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSiteCellInfoModalProps) => {
-  const openMaps = () => {
-    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
-    const latLng = `${37.484847},${-122.148386}`;
-    const label = 'Custom Label';
-    const url = Platform.select({
-      ios: `${scheme}${label}@${latLng}`,
-      android: `${scheme}${latLng}(${label})`,
-    }) || '';
-
-    Linking.openURL(url);
-  };
   const formatStepSlotsForFlatList = (slots) => {
     const formattedSlots = slots.reduce((acc, slot) => {
       const startDate = moment(slot.startDate).format('DD/MM/YYYY');
@@ -54,6 +43,8 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     );
   };
 
+  const openMaps = async address => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${address}`);
+
   const stepInfoItem = (stepSlot) => {
     const address = stepSlot?.slots[0]?.address?.fullAddress;
 
@@ -68,7 +59,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
           renderItem={({ item }) => onSiteHoursDisplayItem(item)}
         />
         {address && (
-          <TouchableOpacity onPress={openMaps}>
+          <TouchableOpacity onPress={() => openMaps(address)}>
             <Text style={styles.address}>{address}</Text>
           </TouchableOpacity>)}
       </View>
