@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import InfoModal from './InfoModal';
@@ -43,6 +43,8 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     );
   };
 
+  const openMaps = async address => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${address}`);
+
   const stepInfoItem = (stepSlot) => {
     const address = stepSlot?.slots[0]?.address?.fullAddress;
 
@@ -56,7 +58,10 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
           keyExtractor={item => item._id}
           renderItem={({ item }) => onSiteHoursDisplayItem(item)}
         />
-        {address && <Text style={styles.address}>{address}</Text>}
+        {address && (
+          <TouchableOpacity onPress={() => openMaps(address)}>
+            <Text style={styles.address}>{address}</Text>
+          </TouchableOpacity>)}
       </View>
     );
   };
