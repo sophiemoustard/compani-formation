@@ -21,15 +21,19 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
 
   const renderSeparator = () => <View style={styles.separator} />;
 
+  const iconButtonStyle = isOpen
+    ? { ...styles.iconButtonContainer, ...styles.openedIconButtonContainer }
+    : styles.iconButtonContainer;
+
   return (
-    <View style={styles.container}>
+    <View style={isOpen ? { ...styles.container, ...styles.openedContainer } : styles.container}>
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
           <View style={styles.featherContainer}>
             <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
           </View>
           <StepCellTitle index={index} step={step} />
-          <View style={styles.iconButtonContainer}>
+          <View style={iconButtonStyle}>
             <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
               color={GREY[500]} />
           </View>
@@ -53,6 +57,11 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.XL,
     borderColor: GREY[200],
   },
+  openedContainer: {
+    marginRight: 0,
+    borderBottomRightRadius: 0,
+    borderTopRightRadius: 0,
+  },
   topContainer: {
     paddingHorizontal: PADDING.MD,
     flexDirection: 'row',
@@ -69,6 +78,9 @@ const styles = StyleSheet.create({
     width: 40,
     alignItems: 'center',
     flexDirection: 'column-reverse',
+  },
+  openedIconButtonContainer: {
+    marginRight: MARGIN.MD,
   },
   activityCellList: {
     marginTop: MARGIN.MD,
