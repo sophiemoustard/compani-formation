@@ -72,7 +72,7 @@ export const AppContainer = () => {
           </>
           : <>
             <MainStack.Screen name="Home" component={Home} />
-            <MainStack.Screen name="CardContainer" component={CardContainer} />
+            <MainStack.Screen name="CardContainer" component={CardContainer} options={{ gestureEnabled: false }} />
           </>
         }
       </MainStack.Navigator>

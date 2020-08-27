@@ -26,7 +26,7 @@ const Activity = ({ route }: CardContainerProps) => {
 
   return (
     <>
-      { activity && activity.cards.length > 0 && (
+      {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>}>
           {activity.cards.map(
             (card, index) => (
