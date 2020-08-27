@@ -1,20 +1,19 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import Activities from '../../api/activities';
 import { ActivityType } from '../../types/ActivityType';
-import { RouteType } from '../../types/NavigationType';
 import TemplateExample from '../../components/TemplateExample';
 
 interface ActivityProfileProps {
-  route: RouteType,
+  route: { params: { activityId?: string } },
 }
 
 const Activity = ({ route }: ActivityProfileProps) => {
   const [activity, setActivity] = useState<ActivityType | null>(null);
   const [cardsPages, setCardsPages] = useState<Array<Object>>([]);
+
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
     setActivity(fetchedActivity);

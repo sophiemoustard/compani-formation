@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { StepType } from '../../types/StepType';
-import { NavigationType } from '../../types/NavigationType';
 import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
@@ -12,7 +11,7 @@ import ActivityCell from '../ActivityCell';
 interface ELearningCellProps {
   step: StepType,
   index: number,
-  navigation: NavigationType,
+  navigation:{ navigate: (path: string, activityId: any) => {} }
 }
 
 const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {

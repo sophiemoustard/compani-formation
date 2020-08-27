@@ -6,9 +6,7 @@ interface TemplateExampleProps {
 }
 
 const TemplateExample = ({ template }: TemplateExampleProps) => (
-  <>
-    <Text>{template}</Text>
-  </>
+  <Text>{template}</Text>
 );
 
 export default TemplateExample;
