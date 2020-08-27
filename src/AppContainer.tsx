@@ -8,7 +8,7 @@ import ForgotPassword from './screens/ForgotPassword';
 import ProgramList from './screens/ProgramList';
 import CourseList from './screens/courses/CourseList';
 import CourseProfile from './screens/courses/CourseProfile';
-import ActivityProfile from './screens/courses/ActivityProfile';
+import CardContainer from './screens/courses/CardContainer';
 import Profile from './screens/Profile';
 import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
@@ -72,7 +72,7 @@ export const AppContainer = () => {
           </>
           : <>
             <MainStack.Screen name="Home" component={Home} />
-            <MainStack.Screen name="ActivityProfile" component={ActivityProfile} />
+            <MainStack.Screen name="CardContainer" component={CardContainer} />
           </>
         }
       </MainStack.Navigator>

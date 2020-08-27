@@ -29,7 +29,7 @@ import { CourseType } from '../../types/CourseType';
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
-  route: { params: { courseId?: string } },
+  route: { params: { courseId: string } },
   navigation: NavigationType,
 }
 
