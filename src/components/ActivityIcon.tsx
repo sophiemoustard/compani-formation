@@ -34,7 +34,7 @@ const ActivityIcon = ({ activity, disabled }: ActivityIconProps) => {
   };
 
   return (
-    <View style={[coloredStyle.container, disabled ? coloredStyle.disabled : {}]}>
+    <View style={[coloredStyle.container, disabled && coloredStyle.disabled]}>
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>

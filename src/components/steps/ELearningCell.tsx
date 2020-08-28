@@ -28,7 +28,7 @@ const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
     : styles.iconButtonContainer;
 
   return (
-    <View style={isOpen ? { ...styles.container, ...styles.openedContainer } : styles.container}>
+    <View style={[styles.container, isOpen && styles.openedContainer]}>
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
           <View style={styles.featherContainer}>
