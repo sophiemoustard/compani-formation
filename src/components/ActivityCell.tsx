@@ -9,16 +9,20 @@ interface ActivityCellProps {
   onPress: () => void,
 }
 
-const ActivityCell = ({ activity, onPress }: ActivityCellProps) => (
-  <View style={styles.container}>
-    <TouchableOpacity onPress={onPress}>
-      <ActivityIcon activity={activity} />
-    </TouchableOpacity>
-    <Text style={styles.activityName} lineBreakMode={'tail'} numberOfLines={2}>
-      {activity.name}
-    </Text>
-  </View>
-);
+const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
+  const disabled = !activity.cards.length;
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity onPress={onPress} disabled={disabled}>
+        <ActivityIcon activity={activity} disabled={disabled} />
+      </TouchableOpacity>
+      <Text style={styles.activityName} lineBreakMode={'tail'} numberOfLines={2}>
+        {activity.name}
+      </Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

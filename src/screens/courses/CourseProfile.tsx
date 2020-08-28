@@ -15,7 +15,7 @@ import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { RouteType, NavigationType } from '../../types/NavigationType';
+import { NavigationType } from '../../types/NavigationType';
 import Courses from '../../api/courses';
 import { WHITE, GREY } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
@@ -29,7 +29,7 @@ import { CourseType } from '../../types/CourseType';
 YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
-  route: RouteType,
+  route: { params: { courseId: string } },
   navigation: NavigationType,
 }
 
@@ -63,7 +63,7 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   const renderCells = ({ item, index }) => {
     if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course?.slots} index={index} />;
 
-    if (item.type === E_LEARNING) return <ELearningCell step={item} index={index} />;
+    if (item.type === E_LEARNING) return <ELearningCell step={item} index={index} navigation={navigation} />;
 
     return null;
   };
