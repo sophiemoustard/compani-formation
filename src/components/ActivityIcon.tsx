@@ -12,6 +12,7 @@ import Shadow from './style/Shadow';
 
 interface ActivityIconProps {
   activity: ActivityType,
+  disabled: Boolean,
 }
 
 interface StylesProps {
@@ -19,7 +20,7 @@ interface StylesProps {
   buttonBorderColor: string
 }
 
-const ActivityIcon = ({ activity }: ActivityIconProps) => {
+const ActivityIcon = ({ activity, disabled }: ActivityIconProps) => {
   const buttonBorderColor = YELLOW[500];
   const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor });
   const coloredStyle = styles(getColors());
@@ -33,7 +34,7 @@ const ActivityIcon = ({ activity }: ActivityIconProps) => {
   };
 
   return (
-    <View style={coloredStyle.container}>
+    <View style={[coloredStyle.container, disabled && coloredStyle.disabled]}>
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>
@@ -57,6 +58,9 @@ const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => St
   },
   icon: {
     alignSelf: 'center',
+  },
+  disabled: {
+    opacity: 0.6,
   },
 });
 

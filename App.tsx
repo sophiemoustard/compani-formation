@@ -53,7 +53,7 @@ const App = () => {
         onRequestClose={() => setModalOpened(false)}
       />
       <AuthProvider>
-        <View style={[styles.statusBar]}>
+        <View style={styles.statusBar}>
           <StatusBar translucent barStyle="dark-content" backgroundColor={WHITE} />
         </View>
         <AppContainer />

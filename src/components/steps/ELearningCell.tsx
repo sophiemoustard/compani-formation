@@ -11,13 +11,15 @@ import ActivityCell from '../ActivityCell';
 interface ELearningCellProps {
   step: StepType,
   index: number,
+  navigation:{ navigate: (path: string, activityId: any) => {} }
 }
 
-const ELearningCell = ({ step, index }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
-  const renderActivityCell = activity => <ActivityCell onPress={() => null} activity={activity}/>;
+  const renderActivityCell = activity => <ActivityCell activity={activity}
+    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id })}/>;
 
   const renderSeparator = () => <View style={styles.separator} />;
 
@@ -26,7 +28,7 @@ const ELearningCell = ({ step, index }: ELearningCellProps) => {
     : styles.iconButtonContainer;
 
   return (
-    <View style={isOpen ? { ...styles.container, ...styles.openedContainer } : styles.container}>
+    <View style={[styles.container, isOpen && styles.openedContainer]}>
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
           <View style={styles.featherContainer}>
