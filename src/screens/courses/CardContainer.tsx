@@ -32,8 +32,8 @@ const Activity = ({ route, navigation }: CardContainerProps) => {
     <Tab.Screen key={index} name={`TemplateType${index}`}>
       {() => (
         <View style={styles.cardScreen}>
-          <CancelModal onPressConfirmButton={goBack}
-            onPressCancelButton={() => setOpenClosingConfirmationModal(false)} visible={openClosingConfirmationModal} />
+          <CancelModal onPressConfirmButton={goBack} onPressCancelButton={() => setOpenClosingConfirmationModal(false)}
+            visible={openClosingConfirmationModal} />
           <IconButton name='x-circle' onPress={() => setOpenClosingConfirmationModal(true)} size={ICON.LG}
             color={GREY[500]} style={styles.closeButton} />
           <Text>{card.template}</Text>
@@ -47,6 +47,13 @@ const Activity = ({ route, navigation }: CardContainerProps) => {
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => { setOpenClosingConfirmationModal(true); return true; }
+    );
+  });
 
   const Tab = createMaterialTopTabNavigator();
 
