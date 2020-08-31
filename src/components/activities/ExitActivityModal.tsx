@@ -4,14 +4,13 @@ import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
-interface ConfirmModalProps {
+interface ExitActivityModalProps {
   visible: boolean,
-  onRequestClose?: () => void,
   onPressCancelButton: () => void,
   onPressConfirmButton: () => void,
 }
 
-const ConfirmModal = ({ visible, onPressCancelButton, onPressConfirmButton }: ConfirmModalProps) => (
+const ExitActivityModal = ({ visible, onPressCancelButton, onPressConfirmButton }: ExitActivityModalProps) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent} >
@@ -48,11 +47,9 @@ const styles = StyleSheet.create({
   title: {
     ...FIRA_SANS_BLACK.MD,
     marginBottom: MARGIN.SM,
-    textAlign: 'left',
   },
   contentText: {
     ...FIRA_SANS_REGULAR.MD,
-    textAlign: 'left',
     marginBottom: MARGIN.MD,
   },
   buttons: {
@@ -71,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmModal;
+export default ExitActivityModal;

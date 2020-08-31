@@ -5,18 +5,18 @@ import Activities from '../../api/activities';
 import { ActivityType } from '../../types/ActivityType';
 import { CardType } from '../../types/CardType';
 import { GREY } from '../../styles/colors';
-import { ICON, MARGIN } from '../../styles/metrics';
+import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import IconButton from '../../components/IconButton';
-import CancelModal from '../../components/modal/CancelModal';
+import { ICON, MARGIN } from '../../styles/metrics';
 
 interface CardContainerProps {
-  route: { params: { activityId: string } },
-  navigation: { navigate: (path: string) => {} }
+  route: { params: { activityId: string, courseId: string } },
+  navigation: { navigate: (path: string, params: object) => {} },
 }
 
 const Activity = ({ route, navigation }: CardContainerProps) => {
   const [activity, setActivity] = useState<ActivityType | null>(null);
-  const [openClosingConfirmationModal, setOpenClosingConfirmationModal] = useState<boolean>(false);
+  const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
 
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
@@ -24,36 +24,45 @@ const Activity = ({ route, navigation }: CardContainerProps) => {
   };
 
   const goBack = () => {
-    setOpenClosingConfirmationModal(false);
-    navigation.navigate('CourseProfile');
+    setExitConfirmationModal(false);
+    navigation.navigate(
+      'Home',
+      { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
+    );
   };
-
-  const renderCardScreen = (card: CardType, index: number) => (
-    <Tab.Screen key={index} name={`TemplateType${index}`}>
-      {() => (
-        <View style={styles.cardScreen}>
-          <CancelModal onPressConfirmButton={goBack} onPressCancelButton={() => setOpenClosingConfirmationModal(false)}
-            visible={openClosingConfirmationModal} />
-          <IconButton name='x-circle' onPress={() => setOpenClosingConfirmationModal(true)} size={ICON.LG}
-            color={GREY[500]} style={styles.closeButton} />
-          <Text>{card.template}</Text>
-        </View>
-      )}
-    </Tab.Screen>
-  );
 
   useEffect(() => {
     async function fetchData() { await getActivity(); }
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     BackHandler.addEventListener(
       'hardwareBackPress',
-      () => { setOpenClosingConfirmationModal(true); return true; }
+      () => { setExitConfirmationModal(true); return true; }
     );
   });
+
+  const renderCardTemplate = (card: CardType) => (
+    <View>
+      <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true) } size={ICON.LG}
+        color={GREY['700']} style={styles.closeButton} />
+      <Text>{card.template}</Text>
+    </View>
+  );
+
+  const renderCardScreen = (card: CardType, index: number) => (
+    <Tab.Screen key={index} name={`TemplateType${index}`}>
+      {() => (
+        <View style={styles.cardScreen}>
+          <ExitActivityModal onPressConfirmButton={goBack} onPressCancelButton={() => setExitConfirmationModal(false)}
+            visible={exitConfirmationModal} />
+          {renderCardTemplate(card)}
+        </View>
+      )}
+    </Tab.Screen>
+  );
 
   const Tab = createMaterialTopTabNavigator();
 

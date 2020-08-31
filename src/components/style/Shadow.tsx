@@ -13,7 +13,7 @@ const Shadow = ({ backgroundColor = GREY[200], borderRadius = BORDER_RADIUS.SM }
   <View style={styles(backgroundColor, borderRadius).shadow} />
 );
 
-export const styles = (backgroundColor, borderRadius) => StyleSheet.create({ // POURQUOI CET EXPORT ? IL EST AGACANT CAR IL REMPLACE L'IMPORT AUTO DE REACT-NATIVE
+const styles = (backgroundColor, borderRadius) => StyleSheet.create({
   shadow: {
     position: 'absolute',
     top: 0,
