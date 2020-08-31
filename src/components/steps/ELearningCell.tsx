@@ -11,7 +11,7 @@ import ActivityCell from '../ActivityCell';
 interface ELearningCellProps {
   step: StepType,
   index: number,
-  navigation:{ navigate: (path: string, activityId: any) => {} }
+  navigation: { navigate: (path: string, activityId: any) => {} }
 }
 
 const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
@@ -19,7 +19,7 @@ const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
   const renderActivityCell = activity => <ActivityCell activity={activity}
-    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id })}/>;
+    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id, navigation })}/>;
 
   const renderSeparator = () => <View style={styles.separator} />;
 
