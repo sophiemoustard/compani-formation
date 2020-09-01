@@ -13,7 +13,7 @@ const Shadow = ({ backgroundColor = GREY[200], borderRadius = BORDER_RADIUS.SM }
   <View style={styles(backgroundColor, borderRadius).shadow} />
 );
 
-export const styles = (backgroundColor, borderRadius) => StyleSheet.create({
+const styles = (backgroundColor, borderRadius) => StyleSheet.create({
   shadow: {
     position: 'absolute',
     top: 0,
