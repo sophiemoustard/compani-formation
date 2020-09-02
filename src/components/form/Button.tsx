@@ -9,27 +9,38 @@ interface ButtonProps {
   caption: string,
   onPress: () => void,
   loading?: boolean,
+  disabled?: boolean,
   bgColor?: string,
   color?: string,
   borderColor?: string
 }
 
 const Button = (
-  { style, caption, onPress, loading = false, bgColor = PINK[500], color = WHITE, borderColor = PINK[500] }: ButtonProps
+  {
+    style,
+    caption,
+    onPress,
+    loading = false,
+    disabled = false,
+    bgColor = PINK[500],
+    color = WHITE,
+    borderColor = PINK[500],
+  }: ButtonProps
 ) => {
   const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
-
+  // eslint-disable-next-line no-console
+  console.log('disabled', disabled);
   return (
-    <TouchableOpacity style={[style, loading && styles.loading, buttonStyle]}
-      onPress={onPress} disabled={loading} testID={caption}>
-      { !loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text> }
-      { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
+    <TouchableOpacity style={[style, disabled && styles.disabled, buttonStyle]}
+      onPress={onPress} disabled={loading || disabled} testID={caption}>
+      { !loading && <Text style={[styles.textButton, { color }, disabled && styles.disabled]}>{caption}</Text> }
+      { loading && <ActivityIndicator style={styles.disabled} color={color} size="small" />}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  loading: {
+  disabled: {
     opacity: 0.6,
   },
   button: {
