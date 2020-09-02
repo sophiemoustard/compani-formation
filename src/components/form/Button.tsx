@@ -16,15 +16,7 @@ interface ButtonProps {
 }
 
 const Button = (
-  {
-    style,
-    caption,
-    onPress,
-    loading = false,
-    bgColor = PINK[500],
-    color = WHITE,
-    borderColor = PINK[500],
-  }: ButtonProps
+  { style, caption, onPress, loading = false, bgColor = PINK[500], color = WHITE, borderColor = PINK[500] }: ButtonProps
 ) => {
   const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
 

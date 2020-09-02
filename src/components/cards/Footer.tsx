@@ -10,10 +10,8 @@ interface FooterProps {
 }
 
 const Footer = ({ index, template }: FooterProps) => {
-  let disabled = false;
   const cardTemplate = CARD_TEMPLATES.find(card => card.value === template);
-
-  if (cardTemplate && cardTemplate.type === QUIZ) disabled = true;
+  const disabled = cardTemplate?.type === QUIZ;
 
   return (
     <View style={styles.container}>
