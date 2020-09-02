@@ -6,31 +6,28 @@ import IconButton from '../../../components/IconButton';
 import { GREY, PINK } from '../../../styles/colors';
 import { MARGIN, ICON } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
-import ArrowButton from '../../../components/ArrowButton';
+import Footer from '../../../components/cards/Footer';
+import { TRANSITION } from '../../../core/data/constants';
 
 interface TransitionCardProps {
   card: CardType,
-  onPressExitbutton: () => void,
-  onPressNext: () => void,
-  onPressBack: () => void,
+  index: number,
+  onPressExitButton: () => void,
   onFocus?: (type: string) => void,
 }
 
-const TransitionCard = ({ card, onPressExitbutton, onPressNext, onPressBack, onFocus }: TransitionCardProps) => {
+const TransitionCard = ({ card, index, onPressExitButton, onFocus }: TransitionCardProps) => {
   const isFocused = useIsFocused();
-  if (onFocus && isFocused) onFocus('transition');
+  if (onFocus && isFocused) onFocus(TRANSITION);
 
   return (
     <View style={styles.container}>
-      <IconButton name='x-circle' onPress={onPressExitbutton} size={ICON.LG}
+      <IconButton name='x-circle' onPress={onPressExitButton} size={ICON.LG}
         color={GREY['000']} style={styles.closeButton} />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{card?.title}</Text>
+        <Text style={styles.title}>{card.title}</Text>
       </View>
-      <View style={styles.buttonContainer}>
-        <ArrowButton direction={'left'} onPress={onPressBack}/>
-        <ArrowButton direction={'right'} onPress={onPressNext}/>
-      </View>
+      <Footer index={index} template={ card.template } color={GREY['000']}/>
     </View>
   );
 };
@@ -44,7 +41,7 @@ const styles = StyleSheet.create({
     margin: MARGIN.MD,
   },
   titleContainer: {
-    marginTop: MARGIN.DOUBLEMD,
+    marginTop: MARGIN.XL,
     justifyContent: 'center',
     flex: 1,
   },
@@ -52,10 +49,6 @@ const styles = StyleSheet.create({
     ...NUNITO_REGULAR_BOLD_ITALIC.XL,
     textAlign: 'center',
     color: GREY['000'],
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
 

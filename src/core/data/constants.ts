@@ -45,3 +45,6 @@ export const CARD_TEMPLATES = [
   { label: 'Question ouverte', value: OPEN_QUESTION, type: QUESTIONNAIRE },
   { label: 'Sondage', value: SURVEY, type: QUESTIONNAIRE },
 ];
+
+export const LEFT = 'left';
+export const RIGHT = 'right';

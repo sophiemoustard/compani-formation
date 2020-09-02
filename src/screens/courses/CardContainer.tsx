@@ -6,7 +6,6 @@ import { ActivityType } from '../../types/ActivityType';
 import { CardType } from '../../types/CardType';
 import { GREY } from '../../styles/colors';
 import ExitActivityModal from '../../components/activities/ExitActivityModal';
-import CardFooter from '../../components/cards/CardFooter';
 import StartCardTemplate from './cardTemplates/StartCardTemplate';
 import EndCardTemplate from './cardTemplates/EndCardTemplate';
 import CardHeader from '../../components/cards/CardHeader';
@@ -57,9 +56,8 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
           <ExitActivityModal onPressConfirmButton={goBack}
             onPressCancelButton={() => setExitConfirmationModal(false)}
             visible={exitConfirmationModal} />
-          <CardTemplate card={card} onPressExit={() => setExitConfirmationModal(true)}
-            onPressNext={() => null} onPressBack={() => null} allowSwipe={isAllowed => setSwipeEnabled(isAllowed)}/>
-          <CardFooter index={index} template={ card.template } />
+          <CardTemplate card={card} index={index} onPressExit={() => setExitConfirmationModal(true)}
+            allowSwipe={isAllowed => setSwipeEnabled(isAllowed)}/>
         </View>
       )}
     </Tab.Screen>

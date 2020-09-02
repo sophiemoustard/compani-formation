@@ -5,41 +5,38 @@ import { GREY } from '../../../styles/colors';
 import IconButton from '../../../components/IconButton';
 import { ICON, MARGIN } from '../../../styles/metrics';
 import TransitionCard from './TransitionCard';
+import Footer from '../../../components/cards/Footer';
+import { TRANSITION } from '../../../core/data/constants';
 
 interface CardTemplateProps {
   card: CardType,
+  index: number,
   onPressExit: () => void,
-  onPressNext: () => void,
-  onPressBack: () => void,
   allowSwipe: (isAllowed: boolean) => void,
 }
 
-const CardTemplate = ({ card, onPressExit, onPressNext, onPressBack, allowSwipe }: CardTemplateProps) => {
+const CardTemplate = ({ card, index, onPressExit, allowSwipe }: CardTemplateProps) => {
   const onFocus = (type) => {
-    if (type === 'transition') allowSwipe(false);
-    else allowSwipe(true);
+    if (type === TRANSITION) allowSwipe(false);
+    else allowSwipe(true); // NE PAS OUBLIER DE GERER VOTRE SWIPE ICI - CF TRANSITIONCARD -
   };
 
-  if (card.template === 'transition') {
-    return <TransitionCard card={card} onPressExitbutton={onPressExit}
-      onPressNext={onPressNext} onPressBack={onPressBack} onFocus={onFocus}/>;
-  }
+  switch (card.template) {
+    case TRANSITION:
+      return <TransitionCard card={card} index={index} onPressExitButton={onPressExit} onFocus={onFocus}/>;
 
-  return (
-    <View>
-      <IconButton name='x-circle' onPress={onPressExit} size={ICON.LG}
-        color={GREY['700']} style={styles.closeButton} />
-      <Text>{card.template}</Text>
-    </View>
-  );
+    default: return (
+      <View>
+        <IconButton name='x-circle' onPress={onPressExit} size={ICON.LG}
+          color={GREY['700']} style={styles.closeButton} />
+        <Text>{card.template}</Text>
+        <Footer template={card.template} index={index} />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
-  cardScreen: {
-    display: 'flex',
-    flex: 1,
-    backgroundColor: GREY[100],
-  },
   closeButton: {
     margin: MARGIN.MD,
   },

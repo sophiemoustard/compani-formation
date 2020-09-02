@@ -4,10 +4,10 @@ import { MARGIN, ICON, BORDER_RADIUS, BORDER_WIDTH } from '../styles/metrics';
 import commonStyle from '../styles/common';
 import IconButton from './IconButton';
 import { GREY } from '../styles/colors';
-import { LEFT, RIGHT } from '../core/data/constants';
+import { LEFT } from '../core/data/constants';
 
 interface ArrowButtonProps {
-  direction: typeof LEFT | typeof RIGHT,
+  direction: 'left' | 'right',
   onPress: () => void,
   disabled?: boolean,
   color?: string,

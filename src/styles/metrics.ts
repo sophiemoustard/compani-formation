@@ -9,7 +9,6 @@ export const MARGIN = {
   MD: 16,
   LG: 24,
   XL: 32,
-  DOUBLEMD: 48,
   XXL: 64,
   XXXL: 128,
 };
