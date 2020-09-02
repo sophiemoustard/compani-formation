@@ -91,9 +91,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GREY[100],
   },
-  closeButton: {
-    margin: MARGIN.MD,
-  },
 });
 
 export default CardContainer;

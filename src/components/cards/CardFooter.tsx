@@ -15,8 +15,8 @@ const CardFooter = ({ index, template }: CardFooterProps) => {
 
   return (
     <View style={styles.container}>
-      <ArrowButton direction={LEFT} disabled={disabled} onPress={() => navigate(`template${index - 1}`)} />
-      <ArrowButton direction={RIGHT} disabled={disabled} onPress={() => navigate(`template${index + 1}`)} />
+      <ArrowButton direction={LEFT} disabled={disabled} onPress={() => navigate(`card-${index - 1}`)} />
+      <ArrowButton direction={RIGHT} disabled={disabled} onPress={() => navigate(`card-${index + 1}`)} />
     </View>
   );
 };
