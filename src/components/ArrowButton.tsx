@@ -13,19 +13,29 @@ interface ArrowButtonProps {
   color?: string,
 }
 
-const ArrowButton = ({ direction, onPress, disabled = false, color = GREY['700'] }: ArrowButtonProps) => (
-  <IconButton disabled={disabled} name={direction === LEFT ? 'arrow-left' : 'arrow-right' } onPress={onPress}
-    size={ICON.LG} color={color}
-    style={[{ ...styles.container, borderColor: color }, disabled && commonStyle.disabled]} />
-);
+interface StylesProps {
+  borderColor: string,
+}
 
-const styles = StyleSheet.create({
+const ArrowButton = ({ direction, onPress, disabled = false, color = GREY['700'] }: ArrowButtonProps) => {
+  const getColors = () => ({ borderColor: color });
+  const coloredStyle = styles(getColors());
+
+  return (
+    <IconButton disabled={disabled} name={direction === LEFT ? 'arrow-left' : 'arrow-right' } onPress={onPress}
+      size={ICON.LG} color={color}
+      style={[coloredStyle.container, disabled && commonStyle.disabled]} />
+  );
+};
+
+const styles = ({ borderColor }: StylesProps) => StyleSheet.create({
   container: {
     marginBottom: MARGIN.XL,
     marginHorizontal: MARGIN.MD,
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: BORDER_WIDTH,
     padding: MARGIN.MD,
+    borderColor,
   },
 });
 
