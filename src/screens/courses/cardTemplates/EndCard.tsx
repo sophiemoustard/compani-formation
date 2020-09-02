@@ -2,13 +2,13 @@ import React from 'react';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
 
-interface EndCardTemplateProps {
+interface EndCardProps {
   courseId: String,
 }
 
-const EndCardTemplate = ({ courseId }: EndCardTemplateProps) => (
+const EndCard = ({ courseId }: EndCardProps) => (
   <Button caption="Terminer"
     onPress={() => navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } })}/>
 );
 
-export default EndCardTemplate;
+export default EndCard;

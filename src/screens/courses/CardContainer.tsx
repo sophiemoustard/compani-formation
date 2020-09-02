@@ -8,8 +8,8 @@ import { GREY } from '../../styles/colors';
 import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import CardFooter from '../../components/cards/CardFooter';
 import { MARGIN } from '../../styles/metrics';
-import StartCardTemplate from './cardTemplates/StartCardTemplate';
-import EndCardTemplate from './cardTemplates/EndCardTemplate';
+import StartCard from './cardTemplates/StartCard';
+import EndCard from './cardTemplates/EndCard';
 import CardHeader from '../../components/cards/CardHeader';
 
 interface CardContainerProps {
@@ -51,12 +51,12 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
     <View>
       <CardHeader onPress={() => setExitConfirmationModal(true)} />
       <Text>{card.template}</Text>
-      <CardFooter index={index} template={ card.template } />
+      <CardFooter index={index} template={card.template} />
     </View>
   );
 
   const renderCardScreen = (card: CardType, index: number) => (
-    <Tab.Screen key={index} name={`template${index}`}>
+    <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
         <View style={styles.cardScreen}>
           <ExitActivityModal onPressConfirmButton={goBack} onPressCancelButton={() => setExitConfirmationModal(false)}
@@ -73,12 +73,12 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
     <>
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
-          <Tab.Screen key={0} name={'template-1'} >
-            {() => <StartCardTemplate />}
+          <Tab.Screen key={0} name={'card--1'} >
+            {() => <StartCard />}
           </Tab.Screen>
           {activity.cards.map((card, index) => renderCardScreen(card, index))}
-          <Tab.Screen key={activity.cards.length + 1} name={`template${activity.cards.length}`}>
-            {() => <EndCardTemplate courseId={route.params.courseId} />}
+          <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
+            {() => <EndCard courseId={route.params.courseId} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>

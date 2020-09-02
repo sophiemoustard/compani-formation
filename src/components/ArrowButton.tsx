@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { MARGIN, ICON, BORDER_RADIUS, BORDER_WIDTH } from '../styles/metrics';
 import commonStyle from '../styles/common';
 import IconButton from './IconButton';
