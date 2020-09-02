@@ -11,7 +11,7 @@ import StartCardTemplate from './cardTemplates/StartCardTemplate';
 import EndCardTemplate from './cardTemplates/EndCardTemplate';
 import CardHeader from '../../components/cards/CardHeader';
 import { MARGIN } from '../../styles/metrics';
-import CardTemplate from '../cards/CardTemplate';
+import CardTemplate from './cardTemplates/CardTemplate';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },

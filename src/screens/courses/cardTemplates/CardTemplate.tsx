@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { CardType } from '../../types/CardType';
-import { GREY } from '../../styles/colors';
-import IconButton from '../../components/IconButton';
-import { ICON, MARGIN } from '../../styles/metrics';
-import TransitionCard from '../cards/TransitionCard';
+import { CardType } from '../../../types/CardType';
+import { GREY } from '../../../styles/colors';
+import IconButton from '../../../components/IconButton';
+import { ICON, MARGIN } from '../../../styles/metrics';
+import TransitionCard from './TransitionCard';
 
 interface CardTemplateProps {
   card: CardType,

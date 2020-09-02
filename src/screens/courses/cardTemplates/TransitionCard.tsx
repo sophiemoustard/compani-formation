@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { CardType } from '../../types/CardType';
-import IconButton from '../../components/IconButton';
-import { GREY, PINK } from '../../styles/colors';
-import { MARGIN, ICON } from '../../styles/metrics';
-import { NUNITO_REGULAR_BOLD_ITALIC } from '../../styles/fonts';
-import ArrowButton from '../../components/ArrowButton';
+import { CardType } from '../../../types/CardType';
+import IconButton from '../../../components/IconButton';
+import { GREY, PINK } from '../../../styles/colors';
+import { MARGIN, ICON } from '../../../styles/metrics';
+import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
+import ArrowButton from '../../../components/ArrowButton';
 
 interface TransitionCardProps {
   card: CardType,
