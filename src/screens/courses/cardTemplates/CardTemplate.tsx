@@ -1,12 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 import { CardType } from '../../../types/CardType';
-import { GREY } from '../../../styles/colors';
-import IconButton from '../../../components/IconButton';
-import { ICON, MARGIN } from '../../../styles/metrics';
 import TransitionCard from './TransitionCard';
-import Footer from '../../../components/cards/Footer';
+import CardFooter from '../../../components/cards/CardFooter';
 import { TRANSITION } from '../../../core/data/constants';
+import CardHeader from '../../../components/cards/CardHeader';
 
 interface CardTemplateProps {
   card: CardType,
@@ -27,19 +25,12 @@ const CardTemplate = ({ card, index, onPressExit, allowSwipe }: CardTemplateProp
 
     default: return (
       <View>
-        <IconButton name='x-circle' onPress={onPressExit} size={ICON.LG}
-          color={GREY['700']} style={styles.closeButton} />
+        <CardHeader onPress={onPressExit} />
         <Text>{card.template}</Text>
-        <Footer template={card.template} index={index} />
+        <CardFooter template={card.template} index={index} />
       </View>
     );
   }
 };
-
-const styles = StyleSheet.create({
-  closeButton: {
-    margin: MARGIN.MD,
-  },
-});
 
 export default CardTemplate;

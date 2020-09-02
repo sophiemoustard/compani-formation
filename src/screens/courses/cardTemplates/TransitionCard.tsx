@@ -2,12 +2,12 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { CardType } from '../../../types/CardType';
-import IconButton from '../../../components/IconButton';
 import { GREY, PINK } from '../../../styles/colors';
-import { MARGIN, ICON } from '../../../styles/metrics';
+import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
-import Footer from '../../../components/cards/Footer';
+import CardFooter from '../../../components/cards/CardFooter';
 import { TRANSITION } from '../../../core/data/constants';
+import CardHeader from '../../../components/cards/CardHeader';
 
 interface TransitionCardProps {
   card: CardType,
@@ -22,12 +22,11 @@ const TransitionCard = ({ card, index, onPressExitButton, onFocus }: TransitionC
 
   return (
     <View style={styles.container}>
-      <IconButton name='x-circle' onPress={onPressExitButton} size={ICON.LG}
-        color={GREY['000']} style={styles.closeButton} />
+      <CardHeader onPress={onPressExitButton} color={GREY['000']}/>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{card.title}</Text>
       </View>
-      <Footer index={index} template={ card.template } color={GREY['000']}/>
+      <CardFooter index={index} template={card.template} color={GREY['000']}/>
     </View>
   );
 };
