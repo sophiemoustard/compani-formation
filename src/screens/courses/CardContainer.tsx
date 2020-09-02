@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, BackHandler } from 'react-native';
+import { View, StyleSheet, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Activities from '../../api/activities';
 import { ActivityType } from '../../types/ActivityType';
@@ -7,10 +7,11 @@ import { CardType } from '../../types/CardType';
 import { GREY } from '../../styles/colors';
 import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import CardFooter from '../../components/cards/CardFooter';
-import { MARGIN } from '../../styles/metrics';
 import StartCardTemplate from './cardTemplates/StartCardTemplate';
 import EndCardTemplate from './cardTemplates/EndCardTemplate';
 import CardHeader from '../../components/cards/CardHeader';
+import { MARGIN } from '../../styles/metrics';
+import CardTemplate from '../cards/CardTemplate';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
@@ -47,21 +48,17 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
     );
   });
 
-  const renderCardTemplate = (card: CardType, index: number) => (
-    <View>
-      <CardHeader onPress={() => setExitConfirmationModal(true)} />
-      <Text>{card.template}</Text>
-      <CardFooter index={index} template={ card.template } />
-    </View>
-  );
-
   const renderCardScreen = (card: CardType, index: number) => (
     <Tab.Screen key={index} name={`template${index}`}>
       {() => (
         <View style={styles.cardScreen}>
-          <ExitActivityModal onPressConfirmButton={goBack} onPressCancelButton={() => setExitConfirmationModal(false)}
+          <CardHeader onPress={() => setExitConfirmationModal(true)} />
+          <ExitActivityModal onPressConfirmButton={goBack}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
             visible={exitConfirmationModal} />
-          {renderCardTemplate(card, index)}
+          <CardTemplate card={card} onPressExit={() => setExitConfirmationModal(true)}
+            onPressNext={() => null} onPressBack={() => null} />
+          <CardFooter index={index} template={ card.template } />
         </View>
       )}
     </Tab.Screen>

@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import CalendarIcon from '../CalendarIcon';
-import { PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH } from '../../styles/metrics';
+import { PADDING, BORDER_RADIUS, COURSE_CELL_WIDTH, BORDER_WIDTH } from '../../styles/metrics';
 import { TRANSPARENT_GREY } from '../../styles/colors';
 import StepCellTitle from './StepCellTitle';
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS.SM,
     width: COURSE_CELL_WIDTH,
-    borderWidth: 1,
+    borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
     flexDirection: 'row',
     padding: PADDING.MD,
