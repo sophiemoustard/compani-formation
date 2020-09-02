@@ -73,7 +73,7 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
   return (
     <>
       {activity && activity.cards.length > 0 && (
-        <Tab.Navigator tabBar={() => <></>}>
+        <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'template-1'} >
             {() => <BeginActivityTemplate />}
           </Tab.Screen>

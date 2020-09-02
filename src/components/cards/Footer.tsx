@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import React from 'react';
-import Button from '../form/Button';
+import { View, StyleSheet } from 'react-native';
+import ArrowButton from '../ArrowButton';
 import { navigate } from '../../navigationRef';
 import { CARD_TEMPLATES, QUIZ } from '../../core/data/constants';
 
@@ -16,10 +16,20 @@ const Footer = ({ index, template }: FooterProps) => {
   if (cardTemplate && cardTemplate.type === QUIZ) disabled = true;
 
   return (
-    <>
-      <Button disabled={disabled} caption="Next" onPress={() => navigate(`template${index + 1}`)} />
-      <Button disabled={disabled} caption="Previous" onPress={() => navigate(`template${index - 1}`)} />
-    </>
+    <View style={styles.container}>
+      <ArrowButton direction='left' disabled={disabled} onPress={() => navigate(`template${index - 1}`)} />
+      <ArrowButton direction='right' disabled={disabled} onPress={() => navigate(`template${index + 1}`)} />
+    </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});
+
 export default Footer;
