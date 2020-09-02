@@ -9,6 +9,10 @@ export const stepTypeOptions = {
 // ICON FAMILY
 export const FEATHER = 'Feather';
 
+// ARROWS DIRECTION
+export const LEFT = 'left';
+export const RIGHT = 'right';
+
 // ACTIVITIES
 export const LESSON = 'lesson';
 export const QUIZ = 'quiz';

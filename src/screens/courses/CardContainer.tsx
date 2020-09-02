@@ -6,11 +6,11 @@ import { ActivityType } from '../../types/ActivityType';
 import { CardType } from '../../types/CardType';
 import { GREY } from '../../styles/colors';
 import ExitActivityModal from '../../components/activities/ExitActivityModal';
-import Footer from '../../components/cards/Footer';
-import IconButton from '../../components/IconButton';
-import { ICON, MARGIN } from '../../styles/metrics';
-import BeginActivityTemplate from './cardTemplates/BeginActivityTemplate';
-import EndActivityTemplate from './cardTemplates/EndActivityTemplate';
+import CardFooter from '../../components/cards/CardFooter';
+import { MARGIN } from '../../styles/metrics';
+import StartCardTemplate from './cardTemplates/StartCardTemplate';
+import EndCardTemplate from './cardTemplates/EndCardTemplate';
+import CardHeader from '../../components/cards/CardHeader';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
@@ -49,10 +49,9 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
 
   const renderCardTemplate = (card: CardType, index: number) => (
     <View>
-      <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true) } size={ICON.LG}
-        color={GREY['700']} style={styles.closeButton} />
+      <CardHeader onPress={() => setExitConfirmationModal(true)} />
       <Text>{card.template}</Text>
-      <Footer index={index} template={ card.template } ></Footer>
+      <CardFooter index={index} template={ card.template } />
     </View>
   );
 
@@ -75,11 +74,11 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'template-1'} >
-            {() => <BeginActivityTemplate />}
+            {() => <StartCardTemplate />}
           </Tab.Screen>
           {activity.cards.map((card, index) => renderCardScreen(card, index))}
           <Tab.Screen key={activity.cards.length + 1} name={`template${activity.cards.length}`}>
-            {() => <EndActivityTemplate courseId={route.params.courseId} />}
+            {() => <EndCardTemplate courseId={route.params.courseId} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>
