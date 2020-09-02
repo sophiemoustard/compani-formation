@@ -13,21 +13,27 @@ interface TransitionCardProps {
   onPressExitbutton: () => void,
   onPressNext: () => void,
   onPressBack: () => void,
+  onFocus?: (type: string) => void,
 }
 
-const TransitionCard = ({ card, onPressExitbutton, onPressNext, onPressBack }: TransitionCardProps) => (
-  <View style={styles.container}>
-    <IconButton name='x-circle' onPress={onPressExitbutton} size={ICON.LG}
-      color={GREY['000']} style={styles.closeButton} />
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>{card?.title}</Text>
+const TransitionCard = ({ card, onPressExitbutton, onPressNext, onPressBack, onFocus }: TransitionCardProps) => {
+  const isFocused = useIsFocused();
+  if (onFocus && isFocused) onFocus('transition');
+
+  return (
+    <View style={styles.container}>
+      <IconButton name='x-circle' onPress={onPressExitbutton} size={ICON.LG}
+        color={GREY['000']} style={styles.closeButton} />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{card?.title}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <ArrowButton direction={'left'} onPress={onPressBack}/>
+        <ArrowButton direction={'right'} onPress={onPressNext}/>
+      </View>
     </View>
-    <View style={styles.buttonContainer}>
-      <ArrowButton direction={'left'} onPress={onPressBack}/>
-      <ArrowButton direction={'right'} onPress={onPressNext}/>
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

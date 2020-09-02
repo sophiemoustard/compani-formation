@@ -21,6 +21,7 @@ interface CardContainerProps {
 const CardContainer = ({ route, navigation }: CardContainerProps) => {
   const [activity, setActivity] = useState<ActivityType | null>(null);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
+  const [swipeEnabled, setSwipeEnabled] = useState(true);
 
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
@@ -57,7 +58,7 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
             onPressCancelButton={() => setExitConfirmationModal(false)}
             visible={exitConfirmationModal} />
           <CardTemplate card={card} onPressExit={() => setExitConfirmationModal(true)}
-            onPressNext={() => null} onPressBack={() => null} />
+            onPressNext={() => null} onPressBack={() => null} allowSwipe={isAllowed => setSwipeEnabled(isAllowed)}/>
           <CardFooter index={index} template={ card.template } />
         </View>
       )}
@@ -69,7 +70,7 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
   return (
     <>
       {activity && activity.cards.length > 0 && (
-        <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+        <Tab.Navigator tabBar={() => null} swipeEnabled={swipeEnabled}>
           <Tab.Screen key={0} name={'template-1'} >
             {() => <StartCardTemplate />}
           </Tab.Screen>

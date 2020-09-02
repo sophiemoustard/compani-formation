@@ -11,12 +11,18 @@ interface CardTemplateProps {
   onPressExit: () => void,
   onPressNext: () => void,
   onPressBack: () => void,
+  allowSwipe: (isAllowed: boolean) => void,
 }
 
-const CardTemplate = ({ card, onPressExit, onPressNext, onPressBack }: CardTemplateProps) => {
+const CardTemplate = ({ card, onPressExit, onPressNext, onPressBack, allowSwipe }: CardTemplateProps) => {
+  const onFocus = (type) => {
+    if (type === 'transition') allowSwipe(false);
+    else allowSwipe(true);
+  };
+
   if (card.template === 'transition') {
     return <TransitionCard card={card} onPressExitbutton={onPressExit}
-      onPressNext={onPressNext} onPressBack={onPressBack} />;
+      onPressNext={onPressNext} onPressBack={onPressBack} onFocus={onFocus}/>;
   }
 
   return (
