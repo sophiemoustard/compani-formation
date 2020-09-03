@@ -6,10 +6,11 @@ import { GREY } from '../../styles/colors';
 
 interface CardHeaderProps {
   onPress: () => void,
+  color?: string,
 }
 
-const CardHeader = ({ onPress }: CardHeaderProps) => (
-  <IconButton name='x-circle' onPress={onPress} size={ICON.LG} color={GREY['700']} style={styles.closeButton} />
+const CardHeader = ({ onPress, color = GREY['700'] }: CardHeaderProps) => (
+  <IconButton name='x-circle' onPress={onPress} size={ICON.LG} color={color} style={styles.closeButton} />
 );
 
 const styles = StyleSheet.create({

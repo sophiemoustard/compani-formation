@@ -15,11 +15,11 @@ interface TransitionProps {
 
 const Transition = ({ card, index, onPressExitButton }: TransitionProps) => (
   <View style={styles.container}>
-    <CardHeader onPress={onPressExitButton} />
+    <CardHeader onPress={onPressExitButton} color={GREY['000']} />
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{card.title}</Text>
     </View>
-    <CardFooter index={index} template={card.template} />
+    <CardFooter index={index} template={card.template} color={GREY['000']} />
   </View>
 );
 
