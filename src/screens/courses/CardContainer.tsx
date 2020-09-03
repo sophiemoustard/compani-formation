@@ -63,11 +63,11 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={swipeEnabled}>
           <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard />}
+            {() => <StartCard allowSwipe={isAllowed => setSwipeEnabled(isAllowed)} />}
           </Tab.Screen>
           {activity.cards.map((card, index) => renderCardScreen(card, index))}
           <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
-            {() => <EndCard courseId={route.params.courseId} />}
+            {() => <EndCard courseId={route.params.courseId} allowSwipe={isAllowed => setSwipeEnabled(isAllowed)} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>
