@@ -1,6 +1,7 @@
 /* eslint-disable import/no-dynamic-require */
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, Image } from 'react-native';
 import { CardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
@@ -18,11 +19,11 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
   return (
     <>
       <CardHeader onPress={onPressExitButton} />
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={commonStyle.cardTitle}>{card.title}</Text>
         <Text style={commonStyle.cardText}>{card.text}</Text>
         { !!imageSource && <Image source={imageSource} style={styles.image}/> }
-      </View>
+      </ScrollView>
       <CardFooter index={index} template={card.template}/>
     </>
   );
