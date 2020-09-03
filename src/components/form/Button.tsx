@@ -21,10 +21,9 @@ const Button = (
   const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
 
   return (
-    <TouchableOpacity style={[style, buttonStyle]}
-      onPress={onPress} disabled={loading} testID={caption}>
-      { !loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text> }
-      { loading && <ActivityIndicator style={commonStyle.disabled} color={color} size="small" />}
+    <TouchableOpacity style={[style, buttonStyle]} onPress={onPress} disabled={loading} testID={caption}>
+      {!loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text>}
+      {loading && <ActivityIndicator style={commonStyle.disabled} color={color} size="small" />}
     </TouchableOpacity>
   );
 };

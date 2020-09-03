@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, StyleProp, V
 import { CourseType } from '../types/CourseType';
 import { NavigationType } from '../types/NavigationType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
-import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH } from '../styles/metrics';
+import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH, BORDER_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
 
 interface CourseCellProps {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
     width: COURSE_CELL_WIDTH,
-    borderWidth: 1,
+    borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
     overflow: 'hidden',
   },

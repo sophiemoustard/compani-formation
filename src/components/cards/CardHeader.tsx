@@ -9,8 +9,7 @@ interface CardHeaderProps {
 }
 
 const CardHeader = ({ onPress }: CardHeaderProps) => (
-  <IconButton name='x-circle' onPress={() => onPress()} size={ICON.LG}
-    color={GREY['700']} style={styles.closeButton} />
+  <IconButton name='x-circle' onPress={onPress} size={ICON.LG} color={GREY['700']} style={styles.closeButton} />
 );
 
 const styles = StyleSheet.create({

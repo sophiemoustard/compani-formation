@@ -6,7 +6,7 @@ import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles
 import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from './StepCellTitle';
-import ActivityCell from '../ActivityCell';
+import ActivityCell from '../activities/ActivityCell';
 
 interface ELearningCellProps {
   step: StepType,
