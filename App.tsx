@@ -17,6 +17,7 @@ const fetchFonts = () => Font.loadAsync({
   'fira-sans-regular': require('./assets/fonts/FiraSans-Regular.ttf'),
   'nunito-semi': require('./assets/fonts/Nunito-SemiBold.ttf'),
   'nunito-regular': require('./assets/fonts/Nunito-Regular.ttf'),
+  'nunito-regular-bold-italic': require('./assets/fonts/Nunito-BoldItalic.ttf'),
 });
 
 const App = () => {
