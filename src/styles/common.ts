@@ -24,4 +24,13 @@ export default StyleSheet.create({
     marginLeft: MARGIN.SM,
     borderRadius: BORDER_RADIUS.XS,
   },
+  cardTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: MARGIN.MD,
+  },
+  cardText: {
+    fontSize: 16,
+    marginBottom: MARGIN.SM,
+  },
 });

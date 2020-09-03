@@ -4,6 +4,8 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import { CardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
+import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
+import commonStyle from '../../../styles/common';
 
 interface TitleTextMediaCardProps {
   card: CardType,
@@ -17,9 +19,9 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
     <>
       <CardHeader onPress={onPressExitButton} />
       <View style={styles.container}>
-        <Text>{card.title}</Text>
-        <Text>{card.text}</Text>
-        { !!imageSource && <Image source={imageSource} /> }
+        <Text style={commonStyle.cardTitle}>{card.title}</Text>
+        <Text style={commonStyle.cardText}>{card.text}</Text>
+        { !!imageSource && <Image source={imageSource} style={styles.image}/> }
       </View>
       <CardFooter index={index} template={card.template}/>
     </>
@@ -29,6 +31,12 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: MARGIN.LG,
+  },
+  image: {
+    resizeMode: 'contain',
+    height: 150,
+    borderRadius: BORDER_RADIUS.MD,
   },
 });
 
