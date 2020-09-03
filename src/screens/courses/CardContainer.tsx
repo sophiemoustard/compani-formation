@@ -7,7 +7,6 @@ import { CardType } from '../../types/CardType';
 import { GREY } from '../../styles/colors';
 import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import CardFooter from '../../components/cards/CardFooter';
-import { MARGIN } from '../../styles/metrics';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardHeader from '../../components/cards/CardHeader';

@@ -18,19 +18,15 @@ const CardFooter = ({ index, template }: CardFooterProps) => {
   const leftRemoved = index === 0;
   const rightRemoved = cardTemplate?.type === QUIZ;
 
-  const coloredStyle = styles(
-    // eslint-disable-next-line no-nested-ternary
-    { justifyContent: leftRemoved ? 'flex-end' : rightRemoved ? 'flex-start' : 'space-between' }
-  );
+  let justifyContent;
+  if (leftRemoved) justifyContent = 'flex-end';
+  else if (rightRemoved) justifyContent = 'flex-start';
+  else justifyContent = 'space-between';
 
   return (
-    <View style={coloredStyle.container}>
-      { !leftRemoved &&
-        <ArrowButton direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />
-      }
-      { !rightRemoved &&
-        <ArrowButton direction={RIGHT} onPress={() => navigate(`card-${index + 1}`)} />
-      }
+    <View style={styles({ justifyContent }).container}>
+      {!leftRemoved && <ArrowButton direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
+      {!rightRemoved && <ArrowButton direction={RIGHT} onPress={() => navigate(`card-${index + 1}`)} />}
     </View>
   );
 };

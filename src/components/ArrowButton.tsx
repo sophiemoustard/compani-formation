@@ -18,13 +18,11 @@ interface StylesProps {
 }
 
 const ArrowButton = ({ direction, onPress, disabled = false, color = GREY['700'] }: ArrowButtonProps) => {
-  const getColors = () => ({ borderColor: color });
-  const coloredStyle = styles(getColors());
+  const coloredStyle = styles({ borderColor: color });
 
   return (
     <IconButton disabled={disabled} name={direction === LEFT ? 'arrow-left' : 'arrow-right' } onPress={onPress}
-      size={ICON.LG} color={color}
-      style={[coloredStyle.container, disabled && commonStyle.disabled]} />
+      size={ICON.LG} color={color} style={[coloredStyle.container, disabled && commonStyle.disabled]} />
   );
 };
 
