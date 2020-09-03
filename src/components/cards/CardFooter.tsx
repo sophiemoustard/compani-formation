@@ -7,13 +7,14 @@ import { CARD_TEMPLATES, QUIZ, LEFT, RIGHT } from '../../core/data/constants';
 interface CardFooterProps {
   index: number,
   template: string,
+  color?: string,
 }
 
 interface StylesProps {
   justifyContent: 'flex-end' | 'space-between' | 'flex-start',
 }
 
-const CardFooter = ({ index, template }: CardFooterProps) => {
+const CardFooter = ({ index, template, color }: CardFooterProps) => {
   const cardTemplate = CARD_TEMPLATES.find(card => card.value === template);
   const leftRemoved = index === 0;
   const rightRemoved = cardTemplate?.type === QUIZ;
@@ -25,8 +26,8 @@ const CardFooter = ({ index, template }: CardFooterProps) => {
 
   return (
     <View style={styles({ justifyContent }).container}>
-      {!leftRemoved && <ArrowButton direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
-      {!rightRemoved && <ArrowButton direction={RIGHT} onPress={() => navigate(`card-${index + 1}`)} />}
+      {!leftRemoved && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
+      {!rightRemoved && <ArrowButton color={color} direction={RIGHT} onPress={() => navigate(`card-${index + 1}`)} />}
     </View>
   );
 };
