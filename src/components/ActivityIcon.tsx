@@ -5,6 +5,7 @@ import LessonIcon from '../../assets/icons/LessonIcon';
 import QuizIcon from '../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../assets/icons/SharingExperienceIcon';
 import { BORDER_RADIUS, BORDER_WIDTH, PADDING, MARGIN } from '../styles/metrics';
+import commonStyle from '../styles/common';
 import { YELLOW } from '../styles/colors';
 import { ActivityType } from '../types/ActivityType';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../core/data/constants';
@@ -34,7 +35,7 @@ const ActivityIcon = ({ activity, disabled }: ActivityIconProps) => {
   };
 
   return (
-    <View style={[coloredStyle.container, disabled && coloredStyle.disabled]}>
+    <View style={[coloredStyle.container, disabled && commonStyle.disabled]}>
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>
@@ -58,9 +59,6 @@ const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => St
   },
   icon: {
     alignSelf: 'center',
-  },
-  disabled: {
-    opacity: 0.6,
   },
 });
 
