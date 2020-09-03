@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import { CardType } from '../../../types/CardType';
 import { GREY, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
@@ -13,31 +11,17 @@ interface TransitionProps {
   card: CardType,
   index: number,
   onPressExitButton: () => void,
-  onFocus: () => void,
 }
 
-const Transition = ({ card, index, onPressExitButton, onFocus }: TransitionProps) => {
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    async function fetchData() { await onFocus(); }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    async function fetchData() { await onFocus(); }
-    if (isFocused) fetchData();
-  }, [isFocused]);
-
-  return (
-    <View style={styles.container}>
-      <CardHeader onPress={onPressExitButton} />
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{card.title}</Text>
-      </View>
-      <CardFooter index={index} template={card.template} />
+const Transition = ({ card, index, onPressExitButton }: TransitionProps) => (
+  <View style={styles.container}>
+    <CardHeader onPress={onPressExitButton} />
+    <View style={styles.titleContainer}>
+      <Text style={styles.title}>{card.title}</Text>
     </View>
-  );
-};
+    <CardFooter index={index} template={card.template} />
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {

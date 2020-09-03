@@ -1,9 +1,11 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { CardType } from '../../../types/CardType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
-import { TRANSITION, CARD_TEMPLATES, QUIZ, QUESTIONNAIRE } from '../../../core/data/constants';
+import { TRANSITION, CARD_TEMPLATES, LESSON } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 
 interface CardTemplateProps {
@@ -14,17 +16,25 @@ interface CardTemplateProps {
 }
 
 const CardTemplate = ({ card, index, onPressExit, allowSwipe }: CardTemplateProps) => {
-  const onFocus = () => {
-    const templatesWithoutSwipe = CARD_TEMPLATES
-      .filter(t => [QUIZ, QUESTIONNAIRE].includes(t.type))
-      .map(t => t.value);
-    if (templatesWithoutSwipe.includes(card.template)) allowSwipe(false);
-    else allowSwipe(true);
+  const isSwipeAllowed = (): boolean => {
+    const templatesWithSwipe = CARD_TEMPLATES.filter(t => LESSON === t.type).map(t => t.value);
+    return templatesWithSwipe.includes(card.template);
   };
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    async function onFocus() { allowSwipe(isSwipeAllowed()); }
+    onFocus();
+  }, []);
+
+  useEffect(() => {
+    async function onFocus() { allowSwipe(isSwipeAllowed()); }
+    if (isFocused) onFocus();
+  }, [isFocused]);
 
   switch (card.template) {
     case TRANSITION:
-      return <Transition card={card} index={index} onPressExitButton={onPressExit} onFocus={onFocus}/>;
+      return <Transition card={card} index={index} onPressExitButton={onPressExit} />;
 
     default:
       return (
