@@ -2,24 +2,25 @@ import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { StepType } from '../../types/StepType';
-import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
+import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON, ICON_BUTTON_HEIGHT } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from './StepCellTitle';
-import ActivityCell from '../ActivityCell';
+import ActivityCell from '../activities/ActivityCell';
 
 interface ELearningCellProps {
   step: StepType,
   index: number,
-  navigation:{ navigate: (path: string, activityId: any) => {} }
+  navigation: { navigate: (path: string, activityId: any) => {} },
+  courseId: string,
 }
 
-const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation, courseId }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
   const renderActivityCell = activity => <ActivityCell activity={activity}
-    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id })}/>;
+    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id, courseId })}/>;
 
   const renderSeparator = () => <View style={styles.separator} />;
 
@@ -35,10 +36,8 @@ const ELearningCell = ({ step, index, navigation }: ELearningCellProps) => {
             <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
           </View>
           <StepCellTitle index={index} step={step} />
-          <View style={iconButtonStyle}>
-            <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
-              color={GREY[500]} />
-          </View>
+          <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
+            color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
       {isOpen &&
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconButtonContainer: {
-    width: 40,
+    width: ICON_BUTTON_HEIGHT,
     alignItems: 'center',
     flexDirection: 'column-reverse',
   },

@@ -113,3 +113,10 @@ export const NUNITO_REGULAR = StyleSheet.create({
     fontFamily: 'nunito-regular',
   },
 });
+
+export const NUNITO_REGULAR_BOLD_ITALIC = StyleSheet.create({
+  XL: {
+    fontSize: 24,
+    fontFamily: 'nunito-regular-bold-italic',
+  },
+});

@@ -24,7 +24,7 @@
     },
     "android": {
       "package": "com.alenvi.compani",
-      "versionCode": 12
+      "versionCode": 14
     }
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
+import commonStyle from '../../styles/common';
 import { PINK, WHITE } from '../../styles/colors';
 import { FIRA_SANS_BLACK } from '../../styles/fonts';
 
@@ -20,18 +21,14 @@ const Button = (
   const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
 
   return (
-    <TouchableOpacity style={[style, loading && styles.loading, buttonStyle]}
-      onPress={onPress} disabled={loading} testID={caption}>
-      { !loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text> }
-      { loading && <ActivityIndicator style={styles.loading} color={color} size="small" />}
+    <TouchableOpacity style={[style, buttonStyle]} onPress={onPress} disabled={loading} testID={caption}>
+      {!loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text>}
+      {loading && <ActivityIndicator style={commonStyle.disabled} color={color} size="small" />}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  loading: {
-    opacity: 0.6,
-  },
   button: {
     borderRadius: BORDER_RADIUS.MD,
     borderWidth: BORDER_WIDTH,

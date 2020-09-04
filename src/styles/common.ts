@@ -5,6 +5,9 @@ import { FIRA_SANS_BLACK, FIRA_SANS_BOLD } from './fonts';
 
 export default StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
+  disabled: {
+    opacity: 0.6,
+  },
   title: {
     marginLeft: MAIN_MARGIN_LEFT,
     marginVertical: MARGIN.XL,
