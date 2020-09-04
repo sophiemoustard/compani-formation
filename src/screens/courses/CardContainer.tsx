@@ -18,7 +18,6 @@ interface CardContainerProps {
 const CardContainer = ({ route, navigation }: CardContainerProps) => {
   const [activity, setActivity] = useState<ActivityType | null>(null);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
-  const [swipeEnabled, setSwipeEnabled] = useState<boolean>(true);
 
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
@@ -49,8 +48,7 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
         <View style={styles.cardScreen}>
           <ExitActivityModal onPressConfirmButton={goBack} onPressCancelButton={() => setExitConfirmationModal(false)}
             visible={exitConfirmationModal} />
-          <CardTemplate card={card} index={index} onPressExit={() => setExitConfirmationModal(true)}
-            allowSwipe={isAllowed => setSwipeEnabled(isAllowed)}/>
+          <CardTemplate card={card} index={index} onPressExit={() => setExitConfirmationModal(true)} />
         </View>
       )}
     </Tab.Screen>
@@ -61,7 +59,7 @@ const CardContainer = ({ route, navigation }: CardContainerProps) => {
   return (
     <>
       {activity && activity.cards.length > 0 && (
-        <Tab.Navigator tabBar={() => <></>} swipeEnabled={swipeEnabled}>
+        <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
             {() => <StartCard />}
           </Tab.Screen>

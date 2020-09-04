@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     ...NUNITO_REGULAR_BOLD_ITALIC.XL,
     textAlign: 'center',
     color: GREY['000'],
+    marginHorizontal: MARGIN.MD,
   },
 });
 
