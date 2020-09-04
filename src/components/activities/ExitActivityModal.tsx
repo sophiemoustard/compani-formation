@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Modal, StyleSheet, TouchableOpacity } from 'react-native';
 import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
-import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 interface ExitActivityModalProps {
   visible: boolean,
@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
     padding: PADDING.LG,
   },
   title: {
-    ...FIRA_SANS_BLACK.MD,
-    marginBottom: MARGIN.SM,
+    ...FIRA_SANS_BOLD.LG,
+    marginBottom: MARGIN.XL,
   },
   contentText: {
     ...FIRA_SANS_REGULAR.MD,
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.XL,
   },
   buttons: {
     display: 'flex',

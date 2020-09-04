@@ -4,7 +4,7 @@ import { StepType } from '../../types/StepType';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import CalendarIcon from '../CalendarIcon';
-import { PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
+import { PADDING, BORDER_WIDTH, ICON, ICON_BUTTON_HEIGHT } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import StepCellTitle from './StepCellTitle';
 import OnSiteCellInfoModal from '../modal/OnSiteCellInfoModal';
@@ -36,8 +36,8 @@ const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
           <CalendarIcon dates={dates} />
         </TouchableOpacity>
         <StepCellTitle index={index} step={step} />
-        <IconButton name='info' onPress={openModal} size={ICON.LG}
-          color={GREY[500]} style={styles.infoButtonContainer} />
+        <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
+          style={styles.infoButtonContainer} />
       </View>
     </>
   );
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     borderColor: GREY[200],
   },
   infoButtonContainer: {
-    width: 40,
+    width: ICON_BUTTON_HEIGHT,
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
