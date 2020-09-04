@@ -27,5 +27,5 @@ const EndCard = ({ courseId, allowSwipe }: EndCardProps) => {
         () => navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } })
       }/>
   );
-}
+};
 export default EndCard;
