@@ -34,7 +34,6 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
 
   const styleWithImgHeight = styles({ imgHeight });
 
-
   return (
     <>
       <CardHeader onPress={onPressExitButton} />
@@ -51,10 +50,10 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
 const styles = ({ imgHeight }: StylesProps) => StyleSheet.create({
   container: {
     flex: 1,
-    margin: MARGIN.LG,
+    marginHorizontal: MARGIN.LG,
   },
   image: {
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     height: imgHeight,
     borderRadius: BORDER_RADIUS.MD,
   },
