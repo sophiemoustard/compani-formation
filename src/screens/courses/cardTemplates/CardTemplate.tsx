@@ -5,8 +5,9 @@ import { useIsFocused } from '@react-navigation/native';
 import { CardType } from '../../../types/CardType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
-import { TRANSITION, CARD_TEMPLATES, LESSON } from '../../../core/data/constants';
+import { TRANSITION, CARD_TEMPLATES, LESSON, TITLE_TEXT_MEDIA } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
+import TitleTextMediaCard from './TitleTextMediaCard';
 
 interface CardTemplateProps {
   card: CardType,
@@ -35,6 +36,8 @@ const CardTemplate = ({ card, index, onPressExit, allowSwipe }: CardTemplateProp
   switch (card.template) {
     case TRANSITION:
       return <Transition card={card} index={index} onPressExitButton={onPressExit} />;
+    case TITLE_TEXT_MEDIA:
+      return <TitleTextMediaCard card={card} index={index} onPressExitButton={onPressExit} />;
 
     default:
       return (
