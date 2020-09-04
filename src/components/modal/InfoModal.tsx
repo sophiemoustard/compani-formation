@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import { WHITE, MODAL_BACKDROP_GREY, GREY } from '../../styles/colors';
-import { BORDER_RADIUS, ICON, PADDING, MARGIN } from '../../styles/metrics';
+import { BORDER_RADIUS, ICON, PADDING, MARGIN, ICON_BUTTON_HEIGHT } from '../../styles/metrics';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 import IconButton from '../IconButton';
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     alignItems: 'flex-end',
-    width: 40,
+    width: ICON_BUTTON_HEIGHT,
   },
 });
 
