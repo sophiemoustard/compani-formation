@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import IconButton from '../IconButton';
-import { ICON, PADDING } from '../../styles/metrics';
+import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 
 interface CardHeaderProps {
