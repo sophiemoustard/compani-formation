@@ -42,15 +42,17 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.XL,
     width: '90%',
-    padding: PADDING.LG,
+    padding: MARGIN.LG,
   },
   title: {
     ...FIRA_SANS_BLACK.MD,
-    marginBottom: MARGIN.SM,
+    marginBottom: MARGIN.XL,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   contentText: {
     ...FIRA_SANS_REGULAR.MD,
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.XL,
   },
   buttons: {
     display: 'flex',

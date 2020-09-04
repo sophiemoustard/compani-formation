@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import IconButton from '../IconButton';
-import { ICON, MARGIN } from '../../styles/metrics';
+import { ICON, PADDING } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 
 interface CardHeaderProps {
@@ -15,7 +15,10 @@ const CardHeader = ({ onPress, color = GREY['700'] }: CardHeaderProps) => (
 
 const styles = StyleSheet.create({
   closeButton: {
-    margin: MARGIN.MD,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
