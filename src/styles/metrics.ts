@@ -51,4 +51,3 @@ export const IS_SMALL_SCREEN = Platform.select({
 
 export const INPUT_HEIGHT = 40;
 export const COURSE_CELL_WIDTH = IS_SMALL_SCREEN ? 230 : 250;
-export const ICON_BUTTON_HEIGHT = 48;
