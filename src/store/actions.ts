@@ -1,5 +1,4 @@
 import { SET_ACTIVITY, ActionType } from '../types/StoreType';
+import { ActivityType } from '../types/ActivityType';
 
-export function setActivity(activity): ActionType {
-  return { type: SET_ACTIVITY, payload: activity };
-}
+export const setActivity = (activity: ActivityType): ActionType => ({ type: SET_ACTIVITY, payload: activity });

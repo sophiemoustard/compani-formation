@@ -10,7 +10,7 @@ import Version from './src/api/version';
 import ConfirmModal from './src/components/modal/ConfirmModal';
 import { AppContainer } from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
-import activities from './src/store/reducers';
+import { activities } from './src/store/reducers';
 
 const store = createStore(activities);
 
