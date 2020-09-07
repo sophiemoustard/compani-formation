@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar, View, StyleSheet, AppState, Linking, Platform } from 'react-native';
+import { createStore } from 'redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Provider as AuthProvider } from './src/context/AuthContext';
@@ -8,6 +10,9 @@ import Version from './src/api/version';
 import ConfirmModal from './src/components/modal/ConfirmModal';
 import { AppContainer } from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
+import activities from './src/store/reducers';
+
+const store = createStore(activities);
 
 const fetchFonts = () => Font.loadAsync({
   'fira-sans-black': require('./assets/fonts/FiraSans-Black.ttf'),
@@ -54,10 +59,12 @@ const App = () => {
         onRequestClose={() => setModalOpened(false)}
       />
       <AuthProvider>
-        <View style={styles.statusBar}>
-          <StatusBar translucent barStyle="dark-content" backgroundColor={WHITE} />
-        </View>
-        <AppContainer />
+        <ReduxProvider store={store}>
+          <View style={styles.statusBar}>
+            <StatusBar translucent barStyle="dark-content" backgroundColor={WHITE} />
+          </View>
+          <AppContainer />
+        </ReduxProvider>
       </AuthProvider>
     </>
   );
