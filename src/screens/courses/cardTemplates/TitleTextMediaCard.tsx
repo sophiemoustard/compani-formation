@@ -50,7 +50,7 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
 const styles = ({ imgHeight }: StylesProps) => StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: MARGIN.LG,
+    marginHorizontal: MARGIN.MD,
   },
   image: {
     resizeMode: 'cover',
