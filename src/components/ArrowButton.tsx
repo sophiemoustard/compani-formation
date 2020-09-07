@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { MARGIN, ICON, BORDER_RADIUS, BORDER_WIDTH } from '../styles/metrics';
 import commonStyle from '../styles/common';
 import IconButton from './IconButton';
-import { GREY } from '../styles/colors';
+import { PINK } from '../styles/colors';
 import { LEFT, RIGHT } from '../core/data/constants';
 
 interface ArrowButtonProps {
@@ -17,7 +17,7 @@ interface StylesProps {
   borderColor: string,
 }
 
-const ArrowButton = ({ direction, onPress, disabled = false, color = GREY['700'] }: ArrowButtonProps) => {
+const ArrowButton = ({ direction, onPress, disabled = false, color = PINK['500'] }: ArrowButtonProps) => {
   const coloredStyle = styles({ borderColor: color });
 
   return (
