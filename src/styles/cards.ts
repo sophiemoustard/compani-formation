@@ -9,6 +9,6 @@ export default StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    marginBottom: MARGIN.SM,
+    marginBottom: MARGIN.MD,
   },
 });
