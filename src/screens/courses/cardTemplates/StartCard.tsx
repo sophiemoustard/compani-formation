@@ -16,13 +16,14 @@ const StartCard = ({ title, courseId }: StartCardProps) => {
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
   };
+
   return (
     <View style={styles.container}>
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
       <View style={styles.contentContainer}>
         <View>
           <ImageBackground style={styles.ImageBackground}
-            source={require('../../../../assets/images/image_background.png')}>
+            source={require('../../../../assets/images/startCardBackground.png')}>
             <Image source={require('../../../../assets/images/doct-liste.png')} style={styles.image} />
           </ImageBackground>
           <Text style={styles.text}>{title}</Text>
