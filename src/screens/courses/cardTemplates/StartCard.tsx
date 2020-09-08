@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, ImageBackground } from 'react-native';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
 import { PINK, WHITE } from '../../../styles/colors';
-import { PADDING } from '../../../styles/metrics';
+import { PADDING, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import CardHeader from '../../../components/cards/CardHeader';
 
@@ -12,39 +12,34 @@ interface StartCardProps {
   courseId: string,
 }
 
-const StartCard = ({ title, courseId }: StartCardProps) => (
-  <View style={styles.container}>
-    <CardHeader
-      color={WHITE}
-      onPress={() => navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } })}
-      icon={'arrow-left'}/>
-    <View style={styles.subcontainer}>
-      <View>
-        <ImageBackground style={styles.pink_potato}
-          source={require('../../../../assets/images/pink_background_start_card.png')}>
-          <ImageBackground style={styles.white_potato}
-            source={require('../../../../assets/images/white_background_start_card.png.png')}>
-            <Image source={require('../../../../assets/images/doct-liste.png')} style={styles.image}/>
+const StartCard = ({ title, courseId }: StartCardProps) => {
+  const goBack = () => {
+    navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+  };
+  return (
+    <View style={styles.container}>
+      <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
+      <View style={styles.contentContainer}>
+        <View>
+          <ImageBackground style={styles.ImageBackground}
+            source={require('../../../../assets/images/image_background.png')}>
+            <Image source={require('../../../../assets/images/doct-liste.png')} style={styles.image} />
           </ImageBackground>
-        </ImageBackground>
-        <Text style={styles.text}>{title}</Text>
+          <Text style={styles.text}>{title}</Text>
+        </View>
+        <Button style={styles.button} bgColor={WHITE} color={PINK['500']} caption="Démarrer"
+          onPress={() => navigate('card-0')} />
       </View>
-      <Button style={styles.button}
-        bgColor={WHITE}
-        color={PINK['500']}
-        caption="Démarrer"
-        onPress={() => navigate('card-0')}
-      />
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: PINK['500'],
     flex: 1,
   },
-  subcontainer: {
+  contentContainer: {
     marginHorizontal: PADDING.XXL,
     justifyContent: 'space-between',
     flex: 1,
@@ -53,18 +48,10 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
     alignSelf: 'center',
-    marginTop: 71,
+    marginTop: MARGIN.XXL,
+    textAlign: 'center',
   },
-  white_potato: {
-    height: 227,
-    width: 260,
-    resizeMode: 'contain',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 7,
-    marginTop: 15,
-  },
-  pink_potato: {
+  ImageBackground: {
     height: 268,
     width: 288,
     resizeMode: 'contain',
@@ -72,12 +59,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    height: 131.91,
+    height: 128,
     resizeMode: 'contain',
     alignSelf: 'center',
   },
   button: {
-    marginBottom: 48,
+    marginBottom: MARGIN.XL,
   },
 });
 
