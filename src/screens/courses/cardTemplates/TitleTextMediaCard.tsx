@@ -12,14 +12,13 @@ import { CardType } from '../../../types/CardType';
 interface TitleTextMediaCardProps {
   card: CardType,
   index: number,
-  onPressExitButton: () => void,
 }
 
 interface StylesProps {
   imgHeight: number,
 }
 
-const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCardProps) => {
+const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
 
   return (
     <>
-      <CardHeader onPress={onPressExitButton} />
+      <CardHeader />
       <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Text style={cardsStyle.text}>{card.text}</Text>

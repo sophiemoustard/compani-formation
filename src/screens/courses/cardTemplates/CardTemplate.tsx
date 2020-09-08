@@ -14,11 +14,10 @@ import { setCardIndex } from '../../../store/actions';
 interface CardTemplateProps {
   index: number,
   activity: ActivityType,
-  onPressExit: () => void,
   dispatch: ({ type, payload }: SetCardIndexType) => void,
 }
 
-const CardTemplate = ({ index, activity, onPressExit, dispatch }: CardTemplateProps) => {
+const CardTemplate = ({ index, activity, dispatch }: CardTemplateProps) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     async function fetchData() { dispatch(setCardIndex(index)); }
@@ -28,14 +27,14 @@ const CardTemplate = ({ index, activity, onPressExit, dispatch }: CardTemplatePr
   const card = activity.cards[index];
   switch (card.template) {
     case TRANSITION:
-      return <Transition onPressExitButton={onPressExit} />;
+      return <Transition />;
     case TITLE_TEXT_MEDIA:
-      return <TitleTextMediaCard card={card} index={index} onPressExitButton={onPressExit} />;
+      return <TitleTextMediaCard />;
 
     default:
       return (
         <View>
-          <CardHeader onPress={onPressExit} />
+          <CardHeader />
           <Text>{card.template}</Text>
           <CardFooter template={card.template} index={index} />
         </View>

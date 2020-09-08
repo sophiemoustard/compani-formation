@@ -1,13 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
-import { StateType } from '../../../types/StoreType';
-import { CardType } from '../../../types/CardType';
 import { PINK, WHITE } from '../../../styles/colors';
-=======
-import { GREY, PINK } from '../../../styles/colors';
->>>>>>> COM-1480 - add selectors
 import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
@@ -19,15 +13,14 @@ import { CardType } from '../../../types/CardType';
 interface TransitionProps {
   index: number,
   card: CardType,
-  onPressExitButton: () => void,
 }
 
-const Transition = ({ onPressExitButton, index, card }: TransitionProps) => {
+const Transition = ({ index, card }: TransitionProps) => {
   if (!card) return null;
 
   return (
     <View style={styles.container}>
-      <CardHeader onPress={onPressExitButton} color={WHITE} />
+      <CardHeader color={WHITE} />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{card.title}</Text>
       </View>
