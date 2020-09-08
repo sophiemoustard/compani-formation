@@ -22,9 +22,9 @@ const StartCard = ({ title, courseId }: StartCardProps) => {
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
       <View style={styles.contentContainer}>
         <View>
-          <ImageBackground style={styles.ImageBackground}
-            source={require('../../../../assets/images/startCardBackground.png')}>
-            <Image source={require('../../../../assets/images/doct-liste.png')} style={styles.image} />
+          <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.imageBackground}
+            source={require('../../../../assets/images/start_card_background.png')}>
+            <Image source={require('../../../../assets/images/doct_liste.png')} style={styles.image} />
           </ImageBackground>
           <Text style={styles.text}>{title}</Text>
         </View>
@@ -48,14 +48,12 @@ const styles = StyleSheet.create({
   text: {
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
-    alignSelf: 'center',
     marginTop: MARGIN.XXL,
     textAlign: 'center',
   },
-  ImageBackground: {
-    height: 268,
+  imageBackground: {
+    height: 264,
     width: 288,
-    resizeMode: 'contain',
     alignSelf: 'center',
     justifyContent: 'center',
   },
