@@ -17,10 +17,11 @@ interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
   navigation: { navigate: (path: string, params: object) => {} },
   activity: ActivityType,
+  cardIndex: number | null,
   dispatch: ({ type, payload }: SetActivityType) => void,
 }
 
-const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerProps) => {
+const CardContainer = ({ route, navigation, activity, dispatch, cardIndex }: CardContainerProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
 
   const getActivity = async () => {
@@ -29,7 +30,7 @@ const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerP
   };
 
   const goBack = () => {
-    setExitConfirmationModal(false);
+    if (exitConfirmationModal) setExitConfirmationModal(false);
     navigation.navigate(
       'Home',
       { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
@@ -43,8 +44,16 @@ const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerP
   }, []);
 
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => { setExitConfirmationModal(true); return true; });
-  });
+    BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (cardIndex === null) goBack();
+        else setExitConfirmationModal(true);
+        return true;
+      }
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardIndex]);
 
   const renderCardScreen = (card: CardType, index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
@@ -84,6 +93,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+const mapStateToProps = (state: StateType) => ({ activity: state.activity, cardIndex: state.cardIndex });
 
 export default connect(mapStateToProps)(CardContainer);
