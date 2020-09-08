@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Image, ScrollView, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { ActivityType } from '../../../types/ActivityType';
-import { StateType } from '../../../types/StoreType';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
+import { getCard } from '../../../store/selectors';
 import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
+import { StateType } from '../../../types/StoreType';
 import { CardType } from '../../../types/CardType';
 
 interface TitleTextMediaCardProps {
-  activity: ActivityType,
+  card: CardType,
   index: number,
   onPressExitButton: () => void,
 }
@@ -19,13 +19,8 @@ interface StylesProps {
   imgHeight: number,
 }
 
-const TitleTextMediaCard = ({ activity, index, onPressExitButton }: TitleTextMediaCardProps) => {
+const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
-  const [card, setCard] = useState<CardType|null>(null);
-
-  useEffect(() => {
-    setCard(activity.cards[index]);
-  }, [activity, index]);
 
   useEffect(() => {
     if (card && card.media?.link) {
@@ -68,6 +63,6 @@ const styles = ({ imgHeight }: StylesProps) => StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ activity: state.activity, index: state.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.cardIndex });
 
 export default connect(mapStateToProps)(TitleTextMediaCard);

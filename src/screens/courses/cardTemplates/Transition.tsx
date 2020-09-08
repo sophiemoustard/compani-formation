@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 import { StateType } from '../../../types/StoreType';
 import { CardType } from '../../../types/CardType';
 import { PINK, WHITE } from '../../../styles/colors';
+=======
+import { GREY, PINK } from '../../../styles/colors';
+>>>>>>> COM-1480 - add selectors
 import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
 import CardHeader from '../../../components/cards/CardHeader';
-import { ActivityType } from '../../../types/ActivityType';
+import { getCard } from '../../../store/selectors';
+import { StateType } from '../../../types/StoreType';
+import { CardType } from '../../../types/CardType';
 
 interface TransitionProps {
   index: number,
-  activity: ActivityType,
+  card: CardType,
   onPressExitButton: () => void,
 }
 
-const Transition = ({ onPressExitButton, index, activity }: TransitionProps) => {
-  const [card, setCard] = useState<CardType|null>(null);
-
-  useEffect(() => {
-    setCard(activity.cards[index]);
-  }, [activity, index]);
-
+const Transition = ({ onPressExitButton, index, card }: TransitionProps) => {
   if (!card) return null;
+
   return (
     <View style={styles.container}>
       <CardHeader onPress={onPressExitButton} color={WHITE} />
@@ -56,6 +57,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ index: state.cardIndex, activity: state.activity });
+const mapStateToProps = (state: StateType) => ({ index: state.cardIndex, card: getCard(state) });
 
 export default connect(mapStateToProps)(Transition);
