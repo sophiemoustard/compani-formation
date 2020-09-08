@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { connect } from 'react-redux';
 import Activities from '../../api/activities';
 import { ActivityType } from '../../types/ActivityType';
 import { CardType } from '../../types/CardType';
@@ -9,19 +10,22 @@ import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
+import { setActivity, ActionType } from '../../store/actions';
+import { StateType } from '../../store/reducers';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
   navigation: { navigate: (path: string, params: object) => {} },
+  activity: ActivityType,
+  dispatch: ({ type, payload }: ActionType) => void,
 }
 
-const CardContainer = ({ route, navigation }: CardContainerProps) => {
-  const [activity, setActivity] = useState<ActivityType | null>(null);
+const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
 
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
-    setActivity(fetchedActivity);
+    dispatch(setActivity(fetchedActivity));
   };
 
   const goBack = () => {
@@ -80,4 +84,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CardContainer;
+const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+
+export default connect(mapStateToProps)(CardContainer);
