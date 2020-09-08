@@ -1,19 +1,22 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { CardType } from '../../../types/CardType';
+import { connect } from 'react-redux';
+import { StateType } from '../../../types/StoreType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
 import { TRANSITION, TITLE_TEXT_MEDIA } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
+import { ActivityType } from '../../../types/ActivityType';
 
 interface CardTemplateProps {
-  card: CardType,
   index: number,
+  activity: ActivityType,
   onPressExit: () => void,
 }
 
-const CardTemplate = ({ card, index, onPressExit }: CardTemplateProps) => {
+const CardTemplate = ({ index, activity, onPressExit }: CardTemplateProps) => {
+  const card = activity.cards[index];
   switch (card.template) {
     case TRANSITION:
       return <Transition card={card} index={index} onPressExitButton={onPressExit} />;
@@ -31,4 +34,6 @@ const CardTemplate = ({ card, index, onPressExit }: CardTemplateProps) => {
   }
 };
 
-export default CardTemplate;
+const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+
+export default connect(mapStateToProps)(CardTemplate);

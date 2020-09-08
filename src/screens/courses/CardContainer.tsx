@@ -10,8 +10,8 @@ import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
-import { setActivity, ActionType } from '../../store/actions';
-import { StateType } from '../../store/reducers';
+import { ActionType, StateType } from '../../types/StoreType';
+import { setActivity } from '../../store/actions';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
@@ -52,7 +52,7 @@ const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerP
         <View style={styles.cardScreen}>
           <ExitActivityModal onPressConfirmButton={goBack} onPressCancelButton={() => setExitConfirmationModal(false)}
             visible={exitConfirmationModal} />
-          <CardTemplate card={card} index={index} onPressExit={() => setExitConfirmationModal(true)} />
+          <CardTemplate index={index} onPressExit={() => setExitConfirmationModal(true)} />
         </View>
       )}
     </Tab.Screen>
