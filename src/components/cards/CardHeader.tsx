@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     width: ICON.LG,
     justifyContent: 'center',
     alignItems: 'center',
+    left: -1,
   },
 });
 
