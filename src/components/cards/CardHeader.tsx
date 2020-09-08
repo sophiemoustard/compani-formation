@@ -7,11 +7,12 @@ import { GREY } from '../../styles/colors';
 interface CardHeaderProps {
   onPress: () => void,
   color?: string,
+  icon?: string,
 }
 
-const CardHeader = ({ onPress, color = GREY['700'] }: CardHeaderProps) => (
+const CardHeader = ({ onPress, color = GREY['700'], icon = 'x-circle' }: CardHeaderProps) => (
   <View style={styles.container}>
-    <IconButton name='x-circle' onPress={onPress} size={ICON.LG} color={color} style={styles.closeButton} />
+    <IconButton name={icon} onPress={onPress} size={ICON.LG} color={color} style={styles.closeButton} />
   </View>
 );
 
