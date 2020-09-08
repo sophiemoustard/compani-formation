@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Image, ScrollView, Dimensions } from 'react-native';
-import { CardType } from '../../../types/CardType';
+import { connect } from 'react-redux';
+import { ActivityType } from '../../../types/ActivityType';
+import { StateType } from '../../../types/StoreType';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
 import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
+import { CardType } from '../../../types/CardType';
 
 interface TitleTextMediaCardProps {
-  card: CardType,
+  activity: ActivityType,
   index: number,
   onPressExitButton: () => void,
 }
@@ -16,12 +19,16 @@ interface StylesProps {
   imgHeight: number,
 }
 
-const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCardProps) => {
-  const imageSource = card.media?.link ? { uri: card.media.link } : '';
+const TitleTextMediaCard = ({ activity, index, onPressExitButton }: TitleTextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
+  const [card, setCard] = useState<CardType|null>(null);
 
   useEffect(() => {
-    if (card.media?.link) {
+    setCard(activity.cards[index]);
+  }, [activity, index]);
+
+  useEffect(() => {
+    if (card && card.media?.link) {
       Image.getSize(card.media?.link || '', (width, height) => {
         const screenWidth = Dimensions.get('window').width;
         const scaleFactor = width / screenWidth;
@@ -29,9 +36,11 @@ const TitleTextMediaCard = ({ card, index, onPressExitButton }: TitleTextMediaCa
         setImgHeight(imageHeight);
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [card]);
 
+  if (!card) return null;
+
+  const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles({ imgHeight });
 
   return (
@@ -59,4 +68,6 @@ const styles = ({ imgHeight }: StylesProps) => StyleSheet.create({
   },
 });
 
-export default TitleTextMediaCard;
+const mapStateToProps = (state: StateType) => ({ activity: state.activity, index: state.cardIndex });
+
+export default connect(mapStateToProps)(TitleTextMediaCard);

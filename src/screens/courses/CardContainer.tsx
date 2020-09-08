@@ -10,14 +10,14 @@ import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
-import { ActionType, StateType } from '../../types/StoreType';
+import { SetActivityType, StateType } from '../../types/StoreType';
 import { setActivity } from '../../store/actions';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
   navigation: { navigate: (path: string, params: object) => {} },
   activity: ActivityType,
-  dispatch: ({ type, payload }: ActionType) => void,
+  dispatch: ({ type, payload }: SetActivityType) => void,
 }
 
 const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerProps) => {

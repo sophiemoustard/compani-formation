@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { StateType } from '../../../types/StoreType';
 import { CardType } from '../../../types/CardType';
 import { PINK, WHITE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
 import CardHeader from '../../../components/cards/CardHeader';
+import { ActivityType } from '../../../types/ActivityType';
 
 interface TransitionProps {
-  card: CardType,
   index: number,
+  activity: ActivityType,
   onPressExitButton: () => void,
 }
 
-const Transition = ({ card, index, onPressExitButton }: TransitionProps) => (
-  <View style={styles.container}>
-    <CardHeader onPress={onPressExitButton} color={WHITE} />
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>{card.title}</Text>
+const Transition = ({ onPressExitButton, index, activity }: TransitionProps) => {
+  const [card, setCard] = useState<CardType|null>(null);
+
+  useEffect(() => {
+    setCard(activity.cards[index]);
+  }, [activity, index]);
+
+  if (!card) return null;
+  return (
+    <View style={styles.container}>
+      <CardHeader onPress={onPressExitButton} color={WHITE} />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{card.title}</Text>
+      </View>
+      <CardFooter index={index} template={card.template} color={WHITE} />
     </View>
-    <CardFooter index={index} template={card.template} color={WHITE} />
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -44,4 +56,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Transition;
+const mapStateToProps = (state: StateType) => ({ index: state.cardIndex, activity: state.activity });
+
+export default connect(mapStateToProps)(Transition);
