@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { StepType } from '../../types/StepType';
-import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON, ICON_BUTTON_HEIGHT } from '../../styles/metrics';
+import { MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS, ICON } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from './StepCellTitle';
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconButtonContainer: {
-    width: ICON_BUTTON_HEIGHT,
     alignItems: 'center',
     flexDirection: 'column-reverse',
   },

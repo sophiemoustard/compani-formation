@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CardType } from '../../../types/CardType';
-import { GREY, PINK } from '../../../styles/colors';
+import { PINK, WHITE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
@@ -15,11 +15,11 @@ interface TransitionProps {
 
 const Transition = ({ card, index, onPressExitButton }: TransitionProps) => (
   <View style={styles.container}>
-    <CardHeader onPress={onPressExitButton} color={GREY['000']} />
+    <CardHeader onPress={onPressExitButton} color={WHITE} />
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{card.title}</Text>
     </View>
-    <CardFooter index={index} template={card.template} color={GREY['000']} />
+    <CardFooter index={index} template={card.template} color={WHITE} />
   </View>
 );
 
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   title: {
     ...NUNITO_REGULAR_BOLD_ITALIC.XL,
     textAlign: 'center',
-    color: GREY['000'],
+    color: WHITE,
     marginHorizontal: MARGIN.MD,
   },
 });
