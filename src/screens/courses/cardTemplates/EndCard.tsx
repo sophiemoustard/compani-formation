@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
-import { YELLOW, PINK, WHITE, GREY } from '../../../styles/colors';
-import { PADDING, MARGIN } from '../../../styles/metrics';
+import { YELLOW, GREY } from '../../../styles/colors';
+import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 
 interface EndCardProps {
@@ -14,13 +14,14 @@ const EndCard = ({ courseId }: EndCardProps) => {
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
   };
+
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.elipse} source={require('../../../../assets/images/end_card_background.png')}>
         <Text style={styles.text}>Activité terminée</Text>
         <Image source={require('../../../../assets/images/aux_fierte.png')} style={styles.image} />
       </ImageBackground>
-      <Button style={styles.button} bgColor={PINK['500']} color={WHITE} caption="Terminer" onPress={goBack} />
+      <Button style={styles.button} caption="Terminer" onPress={goBack} />
     </View>
   );
 };
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     backgroundColor: YELLOW['100'],
     flex: 1,
     justifyContent: 'space-between',
-    paddingHorizontal: PADDING.XXL,
   },
   text: {
     ...FIRA_SANS_BLACK.XL,
@@ -44,12 +44,13 @@ const styles = StyleSheet.create({
   },
   elipse: {
     height: 320,
-    width: 360,
+    width: '100%',
     alignItems: 'center',
     alignSelf: 'center',
   },
   button: {
     marginBottom: MARGIN.XL,
+    marginHorizontal: MARGIN.XL,
   },
 });
 
