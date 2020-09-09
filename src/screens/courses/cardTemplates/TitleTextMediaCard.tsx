@@ -22,7 +22,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
-    if (card && card.media?.link) {
+    if (card?.media?.link) {
       Image.getSize(card.media?.link || '', (width, height) => {
         const screenWidth = Dimensions.get('window').width;
         const scaleFactor = width / screenWidth;

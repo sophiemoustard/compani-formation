@@ -15,6 +15,7 @@ interface CardHeaderProps {
 
 const CardHeader = ({ color = GREY['700'], icon = 'x-circle', dispatch }: CardHeaderProps) => {
   const onPress = () => dispatch(setExitConfirmationModal(true));
+
   return (
     <View style={styles.container}>
       <IconButton name={icon} onPress={onPress} size={ICON.LG} color={color} style={styles.closeButton} />
