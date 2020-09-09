@@ -65,7 +65,7 @@ const CardContainer = ({ route, navigation, activity, dispatch }: CardContainerP
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard />}
+            {() => <StartCard title={activity.name} courseId={route.params.courseId}/>}
           </Tab.Screen>
           {activity.cards.map((card, index) => renderCardScreen(card, index))}
           <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
