@@ -2,19 +2,19 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import IconButton from '../IconButton';
-import { setExitConfirmationModal } from '../../store/actions';
+import Actions from '../../store/actions';
 import { ICON, MARGIN } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
-import { SetExitConfirmationModalType } from '../../types/StoreType';
+import { ActionType } from '../../types/StoreType';
 
 interface CardHeaderProps {
   color?: string,
   icon?: string,
-  dispatch: ({ type, payload }: SetExitConfirmationModalType) => void,
+  setExitConfirmationModal: (boolean) => void,
 }
 
-const CardHeader = ({ color = GREY['700'], icon = 'x-circle', dispatch }: CardHeaderProps) => {
-  const onPress = () => dispatch(setExitConfirmationModal(true));
+const CardHeader = ({ color = GREY['700'], icon = 'x-circle', setExitConfirmationModal }: CardHeaderProps) => {
+  const onPress = () => setExitConfirmationModal(true);
 
   return (
     <View style={styles.container}>
@@ -37,4 +37,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(CardHeader);
+const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
+  setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
+});
+
+export default connect(null, mapDispatchToProps)(CardHeader);

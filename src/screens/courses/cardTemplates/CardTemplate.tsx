@@ -2,27 +2,27 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { StateType, SetCardIndexType } from '../../../types/StoreType';
+import { StateType, ActionType } from '../../../types/StoreType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
 import { TRANSITION, TITLE_TEXT_MEDIA } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
 import { ActivityType } from '../../../types/ActivityType';
-import { setCardIndex } from '../../../store/actions';
+import Actions from '../../../store/actions';
 
 interface CardTemplateProps {
   index: number,
   activity: ActivityType,
-  dispatch: ({ type, payload }: SetCardIndexType) => void,
+  setCardIndex: (number) => void,
 }
 
-const CardTemplate = ({ index, activity, dispatch }: CardTemplateProps) => {
+const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
   const isFocused = useIsFocused();
   useEffect(() => {
-    async function fetchData() { dispatch(setCardIndex(index)); }
+    async function fetchData() { setCardIndex(index); }
     if (isFocused) fetchData();
-  }, [isFocused, dispatch, index]);
+  }, [isFocused, setCardIndex, index]);
 
   const card = activity.cards[index];
   switch (card.template) {
@@ -43,5 +43,8 @@ const CardTemplate = ({ index, activity, dispatch }: CardTemplateProps) => {
 };
 
 const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
+  setCardIndex: index => dispatch(Actions.setCardIndex(index)),
+});
 
-export default connect(mapStateToProps)(CardTemplate);
+export default connect(mapStateToProps, mapDispatchToProps)(CardTemplate);

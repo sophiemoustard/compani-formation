@@ -10,7 +10,7 @@ import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
 import { ActionType, StateType } from '../../types/StoreType';
-import { setActivity, setExitConfirmationModal } from '../../store/actions';
+import Actions from '../../store/actions';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
@@ -18,7 +18,8 @@ interface CardContainerProps {
   activity: ActivityType,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
-  dispatch: ({ type, payload }: ActionType) => void,
+  setActivity: (ActivityType) => void;
+  setExitConfirmationModal: (boolean) => void;
 }
 
 const CardContainer = ({
@@ -27,15 +28,16 @@ const CardContainer = ({
   activity,
   cardIndex,
   exitConfirmationModal,
-  dispatch,
+  setActivity,
+  setExitConfirmationModal,
 }: CardContainerProps) => {
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
-    dispatch(setActivity(fetchedActivity));
+    setActivity(fetchedActivity);
   };
 
   const goBack = () => {
-    if (exitConfirmationModal) dispatch(setExitConfirmationModal(false));
+    if (exitConfirmationModal) setExitConfirmationModal(false);
     navigation.navigate(
       'Home',
       { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
@@ -53,7 +55,7 @@ const CardContainer = ({
       'hardwareBackPress',
       () => {
         if (cardIndex === null) goBack();
-        else dispatch(setExitConfirmationModal(true));
+        else setExitConfirmationModal(true);
         return true;
       }
     );
@@ -65,7 +67,7 @@ const CardContainer = ({
       {() => (
         <View style={styles.cardScreen}>
           <ExitActivityModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-            onPressCancelButton={() => dispatch(setExitConfirmationModal(false))} />
+            onPressCancelButton={() => setExitConfirmationModal(false)} />
           <CardTemplate index={index} />
         </View>
       )}
@@ -104,4 +106,9 @@ const mapStateToProps = (state: StateType) => ({
   exitConfirmationModal: state.exitConfirmationModal,
 });
 
-export default connect(mapStateToProps)(CardContainer);
+const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
+  setActivity: activity => dispatch(Actions.setActivity(activity)),
+  setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);
