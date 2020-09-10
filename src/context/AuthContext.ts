@@ -39,6 +39,7 @@ const signIn = dispatch => async ({ email, password }) => {
 
     await AsyncStorage.setItem('alenvi_token', authentication.token);
     await AsyncStorage.setItem('user_id', authentication.user._id);
+    await AsyncStorage.setItem('refresh_token', authentication.refreshToken);
 
     dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
@@ -58,7 +59,22 @@ const signOut = dispatch => async () => {
   navigate('Authentication');
 };
 
+const refreshAlenviToken = async (refreshToken, dispatch) => {
+  try {
+    const token = await Users.refreshToken({ refreshToken });
+
+    await AsyncStorage.setItem('alenvi_token', token.token);
+    await AsyncStorage.setItem('user_id', token.user._id);
+    await AsyncStorage.setItem('refresh_token', token.refresh_token);
+  } catch (e) {
+    signOut(dispatch)();
+  }
+};
+
 const tryLocalSignIn = dispatch => async () => {
+  const refreshToken = await AsyncStorage.getItem('refresh_token');
+  if (refreshToken) await refreshAlenviToken(refreshToken, dispatch);
+
   const alenviToken = await AsyncStorage.getItem('alenvi_token');
   if (alenviToken) {
     dispatch({ type: 'signin', payload: alenviToken });
