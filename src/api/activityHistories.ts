@@ -1,11 +1,10 @@
 import { alenviAxios } from './ressources/alenviAxios';
 import getEnvVars from '../../environment';
-import { ActivityHistoryType } from '../types/ActivityHistoryType';
 
 export default {
-  postActivityHistories: async (payload): Promise<ActivityHistoryType> => {
+  postActivityHistories: async (payload) => {
     const { baseURL } = getEnvVars();
     const response = await alenviAxios.post(`${baseURL}/activity-histories`, payload);
-    return response.data.data.activityHistories;
+    return response.data.message;
   },
 };
