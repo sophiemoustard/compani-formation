@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem('alenvi_token');
 
   // Headers for request only to API (alenvi)
   // eslint-disable-next-line no-param-reassign

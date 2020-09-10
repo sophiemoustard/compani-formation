@@ -56,7 +56,7 @@ const Home = () => {
 const MainStack = createStackNavigator();
 
 export const AppContainer = () => {
-  const { tryLocalSignIn, token, appIsReady } = useContext(AuthContext);
+  const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
@@ -65,7 +65,7 @@ export const AppContainer = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {token === null
+        {alenviToken === null
           ? <>
             <MainStack.Screen name="Authentication" component={Authentication} />
             <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />

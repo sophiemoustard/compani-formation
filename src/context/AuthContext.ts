@@ -4,7 +4,7 @@ import Users from '../api/users';
 import { navigate } from '../navigationRef';
 
 export interface StateType {
-  token: string | null,
+  alenviToken: string | null,
   loading: boolean,
   error: boolean,
   errorMessage: string,
@@ -16,13 +16,13 @@ const authReducer = (state: StateType, actions): StateType => {
     case 'beforeSignin':
       return { ...state, error: false, errorMessage: '', loading: true };
     case 'signin':
-      return { ...state, loading: false, token: actions.payload };
+      return { ...state, loading: false, alenviToken: actions.payload };
     case 'signinError':
       return { ...state, loading: false, error: true, errorMessage: actions.payload };
     case 'resetError':
       return { ...state, loading: false, error: false, errorMessage: '' };
     case 'signout':
-      return { ...state, token: null, loading: false, error: false, errorMessage: '' };
+      return { ...state, alenviToken: null, loading: false, error: false, errorMessage: '' };
     case 'render':
       return { ...state, appIsReady: true };
     default:
@@ -36,8 +36,10 @@ const signIn = dispatch => async ({ email, password }) => {
 
     dispatch({ type: 'beforeSignin' });
     const authentication = await Users.authenticate({ email, password });
-    await AsyncStorage.setItem('token', authentication.token);
+
+    await AsyncStorage.setItem('alenvi_token', authentication.token);
     await AsyncStorage.setItem('user_id', authentication.user._id);
+
     dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   } catch (e) {
@@ -51,15 +53,15 @@ const signIn = dispatch => async ({ email, password }) => {
 };
 
 const signOut = dispatch => async () => {
-  await AsyncStorage.removeItem('token');
+  await AsyncStorage.removeItem('alenvi_token');
   dispatch({ type: 'signout' });
   navigate('Authentication');
 };
 
 const tryLocalSignIn = dispatch => async () => {
-  const token = await AsyncStorage.getItem('token');
-  if (token) {
-    dispatch({ type: 'signin', payload: token });
+  const alenviToken = await AsyncStorage.getItem('alenvi_token');
+  if (alenviToken) {
+    dispatch({ type: 'signin', payload: alenviToken });
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   }
   dispatch({ type: 'render' });
@@ -72,5 +74,5 @@ const resetError = dispatch => () => {
 export const { Provider, Context }: any = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut, resetError },
-  { token: null, loading: false, error: false, errorMessage: '', appIsReady: false }
+  { alenviToken: null, loading: false, error: false, errorMessage: '', appIsReady: false }
 );
