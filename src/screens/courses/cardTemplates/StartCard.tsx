@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, ImageBackground } from 'react-native';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
 import { PINK, WHITE } from '../../../styles/colors';
-import { PADDING, MARGIN } from '../../../styles/metrics';
+import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import CardHeader from '../../../components/cards/CardHeader';
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    marginHorizontal: PADDING.XXL,
+    marginHorizontal: MARGIN.XL,
     justifyContent: 'space-between',
     flex: 1,
   },

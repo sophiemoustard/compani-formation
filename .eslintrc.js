@@ -24,6 +24,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'error',
     'no-console': ['error', { allow: ['error'] }],
     // Un-used AirBnb rules
+    'implicit-arrow-linebreak': 0,
     'import/no-extraneous-dependencies': 0,
     'import/extensions': ['error', 'never'],
     'import/prefer-default-export': 0,

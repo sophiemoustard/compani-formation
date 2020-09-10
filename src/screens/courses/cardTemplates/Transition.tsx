@@ -1,27 +1,33 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { CardType } from '../../../types/CardType';
+import { connect } from 'react-redux';
 import { PINK, WHITE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
 import CardHeader from '../../../components/cards/CardHeader';
+import { getCard } from '../../../store/selectors';
+import { StateType } from '../../../types/StoreType';
+import { CardType } from '../../../types/CardType';
 
 interface TransitionProps {
-  card: CardType,
   index: number,
-  onPressExitButton: () => void,
+  card: CardType,
 }
 
-const Transition = ({ card, index, onPressExitButton }: TransitionProps) => (
-  <View style={styles.container}>
-    <CardHeader onPress={onPressExitButton} color={WHITE} />
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>{card.title}</Text>
+const Transition = ({ index, card }: TransitionProps) => {
+  if (!card) return null;
+
+  return (
+    <View style={styles.container}>
+      <CardHeader color={WHITE} />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{card.title}</Text>
+      </View>
+      <CardFooter index={index} template={card.template} color={WHITE} />
     </View>
-    <CardFooter index={index} template={card.template} color={WHITE} />
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -44,4 +50,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Transition;
+const mapStateToProps = (state: StateType) => ({ index: state.cardIndex, card: getCard(state) });
+
+export default connect(mapStateToProps)(Transition);
