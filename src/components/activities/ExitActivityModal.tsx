@@ -1,16 +1,25 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import Actions from '../../store/actions';
 import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { ResetType } from '../../types/StoreType';
 
 interface ExitActivityModalProps {
   visible: boolean,
   onPressCancelButton: () => void,
   onPressConfirmButton: () => void,
+  resetActivityReducer: () => void,
 }
 
-const ExitActivityModal = ({ visible, onPressCancelButton, onPressConfirmButton }: ExitActivityModalProps) => (
+const ExitActivityModal = ({
+  visible,
+  onPressCancelButton,
+  onPressConfirmButton,
+  resetActivityReducer,
+}: ExitActivityModalProps) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent} >
@@ -20,7 +29,8 @@ const ExitActivityModal = ({ visible, onPressCancelButton, onPressConfirmButton 
           <TouchableOpacity style={styles.cancelButton} onPress={onPressCancelButton}>
             <Text style={styles.buttonText}>Annuler</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton} onPress={onPressConfirmButton}>
+          <TouchableOpacity style={styles.closeButton}
+            onPress={() => { resetActivityReducer(); onPressConfirmButton(); } }>
             <Text style={styles.buttonText}>Quitter</Text>
           </TouchableOpacity>
         </View>
@@ -68,4 +78,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExitActivityModal;
+const mapDispatchToProps = (dispatch: ({ type }: ResetType) => void) => ({
+  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+});
+export default connect(null, mapDispatchToProps)(ExitActivityModal);
