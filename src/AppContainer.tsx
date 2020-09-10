@@ -45,6 +45,7 @@ const Home = () => {
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
       screenOptions={screenOptions}
+      initialRouteName="Courses"
     >
       <Tab.Screen name="ProgramList" component={ProgramList} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />

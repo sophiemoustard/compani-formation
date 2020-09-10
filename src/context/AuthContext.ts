@@ -61,8 +61,8 @@ const signOut = dispatch => async () => {
   await AsyncStorage.removeItem('alenvi_token_expiry_date');
   await AsyncStorage.removeItem('refresh_token');
   await AsyncStorage.removeItem('refresh_token_expiry_date');
-  dispatch({ type: 'signout' });
 
+  dispatch({ type: 'signout' });
   navigate('Authentication');
 };
 
