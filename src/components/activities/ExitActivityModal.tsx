@@ -19,25 +19,32 @@ const ExitActivityModal = ({
   onPressCancelButton,
   onPressConfirmButton,
   resetActivityReducer,
-}: ExitActivityModalProps) => (
-  <Modal visible={visible} transparent={true}>
-    <View style={styles.modalContainer}>
-      <View style={styles.modalContent} >
-        <Text style={styles.title}>Es-tu sûr de cela ?</Text>
-        <Text style={styles.contentText}>Tous tes progrès dans la leçon seront perdus.</Text>
-        <View style={styles.buttons}>
-          <TouchableOpacity style={styles.cancelButton} onPress={onPressCancelButton}>
-            <Text style={styles.buttonText}>Annuler</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton}
-            onPress={() => { resetActivityReducer(); onPressConfirmButton(); } }>
-            <Text style={styles.buttonText}>Quitter</Text>
-          </TouchableOpacity>
+}: ExitActivityModalProps) => {
+  const onPressConfirmationModal = () => {
+    resetActivityReducer();
+    onPressConfirmButton();
+  };
+
+  return (
+    <Modal visible={visible} transparent={true}>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent} >
+          <Text style={styles.title}>Es-tu sûr de cela ?</Text>
+          <Text style={styles.contentText}>Tous tes progrès dans la leçon seront perdus.</Text>
+          <View style={styles.buttons}>
+            <TouchableOpacity style={styles.cancelButton} onPress={onPressCancelButton}>
+              <Text style={styles.buttonText}>Annuler</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeButton}
+              onPress={onPressConfirmationModal}>
+              <Text style={styles.buttonText}>Quitter</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  </Modal>
-);
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
   modalContainer: {
