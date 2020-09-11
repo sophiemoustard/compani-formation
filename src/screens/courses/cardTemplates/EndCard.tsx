@@ -8,7 +8,7 @@ import { navigate } from '../../../navigationRef';
 import { YELLOW, GREY } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
-import { StateType, ResetType } from '../../../types/StoreType';
+import { StateType } from '../../../types/StoreType';
 import ActivityHistories from '../../../api/activityHistories';
 import { ActivityType } from '../../../types/ActivityType';
 import Actions from '../../../store/actions';
@@ -17,9 +17,10 @@ interface EndCardProps {
   courseId: String,
   activity: ActivityType,
   resetActivityReducer: () => void,
+  setCardIndex: (number) => void,
 }
 
-const EndCard = ({ courseId, activity, resetActivityReducer }: EndCardProps) => {
+const EndCard = ({ courseId, activity, setCardIndex, resetActivityReducer }: EndCardProps) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -29,10 +30,11 @@ const EndCard = ({ courseId, activity, resetActivityReducer }: EndCardProps) => 
         user: userId,
         activity: activity._id,
       });
+      setCardIndex(null);
     }
 
     if (isFocused) fetchData();
-  }, [isFocused, activity]);
+  }, [isFocused, activity, setCardIndex]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
@@ -79,9 +81,13 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.XL,
   },
 });
-const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+const mapStateToProps = (state: StateType) => ({
+  activity: state.activity,
+});
 
-const mapDispatchToProps = (dispatch: ({ type }: ResetType) => void) => ({
+const mapDispatchToProps = dispatch => ({
+  setCardIndex: index => dispatch(Actions.setCardIndex(index)),
   resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(EndCard);
