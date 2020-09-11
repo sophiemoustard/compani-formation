@@ -9,7 +9,7 @@ import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
-import { ActionType, StateType } from '../../types/StoreType';
+import { StateType } from '../../types/StoreType';
 import Actions from '../../store/actions';
 
 interface CardContainerProps {
@@ -20,6 +20,7 @@ interface CardContainerProps {
   exitConfirmationModal: boolean,
   setActivity: (ActivityType) => void;
   setExitConfirmationModal: (boolean) => void;
+  resetActivityReducer: () => void;
 }
 
 const CardContainer = ({
@@ -30,6 +31,7 @@ const CardContainer = ({
   exitConfirmationModal,
   setActivity,
   setExitConfirmationModal,
+  resetActivityReducer,
 }: CardContainerProps) => {
   const getActivity = async () => {
     const fetchedActivity = await Activities.getActivity(route.params.activityId);
@@ -38,6 +40,7 @@ const CardContainer = ({
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
+    resetActivityReducer();
     navigation.navigate(
       'Home',
       { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
@@ -106,9 +109,10 @@ const mapStateToProps = (state: StateType) => ({
   exitConfirmationModal: state.exitConfirmationModal,
 });
 
-const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
+const mapDispatchToProps = dispatch => ({
   setActivity: activity => dispatch(Actions.setActivity(activity)),
   setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
+  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);

@@ -4,6 +4,7 @@ import { ActivityType } from '../types/ActivityType';
 export const SET_ACTIVITY = 'SET_ACTIVITY';
 export const SET_CARD_INDEX = 'SET_CARD_INDEX';
 export const SET_EXIT_CONFIRMATION_MODAL = 'SET_EXIT_CONFIRMATION_MODAL';
+export const RESET_ACTIVITY_REDUCER = 'RESET_ACTIVITY_REDUCER';
 
 export interface SetActivityType {
   type: typeof SET_ACTIVITY,
@@ -17,8 +18,12 @@ export interface SetExitConfirmationModalType {
   type: typeof SET_EXIT_CONFIRMATION_MODAL,
   payload: boolean,
 }
+export interface ResetActivityReducer {
+  type: typeof RESET_ACTIVITY_REDUCER,
+}
 
 export type ActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType;
+export type ResetType = ResetActivityReducer;
 
 export interface StateType {
   activity: ActivityType | null,
