@@ -24,8 +24,7 @@ const ExitActivityModal = ({
           <TouchableOpacity style={styles.cancelButton} onPress={onPressCancelButton}>
             <Text style={styles.buttonText}>Annuler</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton}
-            onPress={onPressConfirmButton}>
+          <TouchableOpacity style={styles.closeButton} onPress={onPressConfirmButton}>
             <Text style={styles.buttonText}>Quitter</Text>
           </TouchableOpacity>
         </View>

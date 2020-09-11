@@ -14,16 +14,15 @@ interface CardHeaderProps {
   setExitConfirmationModal: (boolean) => void,
 }
 
-const CardHeader = ({
-  color = GREY['700'],
-  icon = 'x-circle',
-  setExitConfirmationModal,
-  onPress = () => setExitConfirmationModal(true),
-}: CardHeaderProps) => (
-  <View style={styles.container}>
-    <IconButton name={icon} onPress={onPress} size={ICON.LG} color={color} style={styles.closeButton} />
-  </View>
-);
+const CardHeader = ({ color = GREY['700'], icon = 'x-circle', setExitConfirmationModal, onPress }: CardHeaderProps) => {
+  const iconButtonOnPress = onPress || (() => setExitConfirmationModal(true));
+  return (
+    <View style={styles.container}>
+      <IconButton name={icon} onPress={iconButtonOnPress} size={ICON.LG} color={color}
+        style={styles.closeButton} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

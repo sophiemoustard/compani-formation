@@ -9,7 +9,7 @@ import ExitActivityModal from '../../components/activities/ExitActivityModal';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
-import { ActionType, StateType, ResetType } from '../../types/StoreType';
+import { StateType } from '../../types/StoreType';
 import Actions from '../../store/actions';
 
 interface CardContainerProps {
