@@ -19,7 +19,7 @@ export const activities = (state: StateType = initialState, action: ActionType |
     case SET_EXIT_CONFIRMATION_MODAL:
       return { ...state, exitConfirmationModal: action.payload };
     case RESET_ACTIVITY_REDUCER:
-      return { activity: null, cardIndex: null, exitConfirmationModal: false };
+      return initialState;
     default:
       return state;
   }
