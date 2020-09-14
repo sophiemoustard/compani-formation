@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
+import { BORDER_RADIUS, BUTTON_HEIGHT, MARGIN, BORDER_WIDTH } from '../../styles/metrics';
 import commonStyle from '../../styles/common';
 import { PINK, WHITE } from '../../styles/colors';
 import { FIRA_SANS_BLACK } from '../../styles/fonts';
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     display: 'flex',
     flexDirection: 'row',
-    height: INPUT_HEIGHT,
+    height: BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: 100,

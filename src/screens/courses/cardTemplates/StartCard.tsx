@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, ImageBackground } from 'react-native';
+import { View, StyleSheet, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
@@ -23,7 +23,7 @@ const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) =>
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
       <View style={styles.contentContainer}>
         <View>
@@ -36,14 +36,14 @@ const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) =>
         <Button style={styles.button} bgColor={WHITE} color={PINK['500']} caption="Démarrer"
           onPress={() => navigate('card-0')} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: PINK['500'],
-    flex: 1,
+    flexGrow: 1,
   },
   contentContainer: {
     marginHorizontal: MARGIN.XL,

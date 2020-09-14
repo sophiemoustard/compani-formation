@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import ArrowButton from '../ArrowButton';
 import { navigate } from '../../navigationRef';
+import { MARGIN } from '../../styles/metrics';
+
 import { CARD_TEMPLATES, QUIZ, LEFT, RIGHT } from '../../core/data/constants';
 
 interface CardFooterProps {
@@ -34,10 +36,11 @@ const CardFooter = ({ index, template, color }: CardFooterProps) => {
 
 const styles = ({ justifyContent }: StylesProps) => StyleSheet.create({
   container: {
-    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent,
+    marginBottom: MARGIN.XL,
+    marginHorizontal: MARGIN.LG,
   },
 });
 

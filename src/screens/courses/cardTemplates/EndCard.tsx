@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
@@ -21,20 +21,20 @@ const EndCard = ({ courseId, resetActivityReducer }: EndCardProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <ImageBackground style={styles.elipse} source={require('../../../../assets/images/end_card_background.png')}>
         <Text style={styles.text}>Activité terminée</Text>
         <Image source={require('../../../../assets/images/aux_fierte.png')} style={styles.image} />
       </ImageBackground>
       <Button style={styles.button} caption="Terminer" onPress={goBack} />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: YELLOW['100'],
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'space-between',
   },
   text: {
