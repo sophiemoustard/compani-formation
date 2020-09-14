@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import moment from '../core/helpers/moment';
+import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import Users from '../api/users';
 import { navigate } from '../navigationRef';
@@ -38,11 +38,9 @@ const signIn = dispatch => async ({ email, password }) => {
     dispatch({ type: 'beforeSignin' });
     const authentication = await Users.authenticate({ email, password });
 
-    await AsyncStorage.setItem('alenvi_token', authentication.token);
-    await AsyncStorage.setItem('user_id', authentication.user._id);
-    await AsyncStorage.setItem('refresh_token', authentication.refreshToken);
-    await AsyncStorage.setItem('refresh_token_expiry_date', moment().endOf('d').add(1, 'year').toISOString());
-    await AsyncStorage.setItem('alenvi_token_expiry_date', moment().endOf('d').add(1, 'day').toISOString());
+    await asyncStorage.setAlenviToken(authentication.token);
+    await asyncStorage.setRefreshToken(authentication.refreshToken);
+    await asyncStorage.setUserId(authentication.user._id);
 
     dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
@@ -57,10 +55,8 @@ const signIn = dispatch => async ({ email, password }) => {
 };
 
 const signOut = dispatch => async () => {
-  await AsyncStorage.removeItem('alenvi_token');
-  await AsyncStorage.removeItem('alenvi_token_expiry_date');
-  await AsyncStorage.removeItem('refresh_token');
-  await AsyncStorage.removeItem('refresh_token_expiry_date');
+  await asyncStorage.removeAlenviToken();
+  await asyncStorage.removeRefreshToken();
 
   dispatch({ type: 'signout' });
   navigate('Authentication');
@@ -70,18 +66,16 @@ const refreshAlenviToken = async (refreshToken, dispatch) => {
   try {
     const token = await Users.refreshToken({ refreshToken });
 
-    await AsyncStorage.setItem('alenvi_token', token.token);
-    await AsyncStorage.setItem('user_id', token.user._id);
-    await AsyncStorage.setItem('refresh_token', token.refreshToken);
-    await AsyncStorage.setItem('refresh_token_expiry_date', moment().endOf('d').add(1, 'year').toISOString());
-    await AsyncStorage.setItem('alenvi_token_expiry_date', moment().endOf('d').add(1, 'day').toISOString());
+    await asyncStorage.setAlenviToken(token.token);
+    await asyncStorage.setRefreshToken(token.refreshToken);
+    await asyncStorage.setUserId(token.user._id);
   } catch (e) {
     signOut(dispatch)();
   }
 };
 
 const localSignIn = async (dispatch) => {
-  const alenviToken = await AsyncStorage.getItem('alenvi_token');
+  const { alenviToken } = await asyncStorage.getAlenviToken();
   dispatch({ type: 'signin', payload: alenviToken });
 
   navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
@@ -89,12 +83,10 @@ const localSignIn = async (dispatch) => {
 };
 
 const tryLocalSignIn = dispatch => async () => {
-  const alenviToken = await AsyncStorage.getItem('alenvi_token');
-  const alenviTokenExpiryDate = await AsyncStorage.getItem('alenvi_token_expiry_date');
+  const { alenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
   if (!!alenviToken && moment().isBefore(alenviTokenExpiryDate)) return localSignIn(dispatch);
 
-  const refreshToken = await AsyncStorage.getItem('refresh_token');
-  const refreshTokenExpiryDate = await AsyncStorage.getItem('refresh_token_expiry_date');
+  const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
   if (!!refreshToken && moment().isBefore(refreshTokenExpiryDate)) {
     await refreshAlenviToken(refreshToken, dispatch);
     return localSignIn(dispatch);
