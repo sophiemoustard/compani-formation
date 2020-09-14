@@ -28,7 +28,7 @@ const QuestionCardFooter = ({ index, color }: QuestionCardFooterProps) => {
   );
 };
 
-const styles = (index : number) => StyleSheet.create({
+const styles = (index: number) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

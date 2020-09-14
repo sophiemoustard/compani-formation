@@ -22,9 +22,7 @@ interface SingleChoiceQuestionCard {
 const answerProposal = item => (
   <View style={styles.answerContainer}>
     <TouchableOpacity style={styles.answer}>
-      <Text style={styles.text}>
-        {item}
-      </Text>
+      <Text style={styles.text}>{item}</Text>
     </TouchableOpacity>
     <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
   </View>
