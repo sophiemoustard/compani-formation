@@ -1,7 +1,8 @@
 import { AsyncStorage } from 'react-native';
 import moment from './moment';
 
-const isTokenValid = (token: string | null, expiryDate: string): boolean => !!token && moment().isBefore(expiryDate);
+const isTokenValid = (token: string | null, expiryDate: string | null): boolean =>
+  !!token && moment().isBefore(expiryDate);
 
 interface AlenviToken {
   alenviToken: string | null,

@@ -19,7 +19,7 @@ const refreshAlenviCookies = async (): Promise<boolean> => {
     return false;
   } catch (e) {
     console.error(e);
-    if (e.response.status === 404) {
+    if ([404, 401].includes(e.response.status)) {
       await asyncStorage.removeAlenviToken();
       await asyncStorage.removeRefreshToken();
       await asyncStorage.removeUserId();
