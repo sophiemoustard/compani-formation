@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   StyleSheet,
@@ -21,6 +21,7 @@ import { WHITE, GREY } from '../../styles/colors';
 import { MAIN_MARGIN_LEFT, ICON, MARGIN } from '../../styles/metrics';
 import OnSiteCell from '../../components/steps/OnSiteCell';
 import ELearningCell from '../../components/steps/ELearningCell';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { ON_SITE, E_LEARNING } from '../../core/data/constants';
 import commonStyles from '../../styles/common';
 import { FIRA_SANS_BLACK } from '../../styles/fonts';
@@ -35,9 +36,16 @@ interface CourseProfileProps {
 
 const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
+  const { signOut } = useContext(AuthContext);
+
   const getCourse = async () => {
-    const fetchedCourse = await Courses.getCourse(route.params.courseId);
-    setCourse(fetchedCourse);
+    try {
+      const fetchedCourse = await Courses.getCourse(route.params.courseId);
+      setCourse(fetchedCourse);
+    } catch (e) {
+      if (e.status === 401) signOut();
+      setCourse(null);
+    }
   };
 
   useEffect(() => {

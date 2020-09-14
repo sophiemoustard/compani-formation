@@ -10,7 +10,11 @@ interface ExitActivityModalProps {
   onPressConfirmButton: () => void,
 }
 
-const ExitActivityModal = ({ visible, onPressCancelButton, onPressConfirmButton }: ExitActivityModalProps) => (
+const ExitActivityModal = ({
+  visible,
+  onPressCancelButton,
+  onPressConfirmButton,
+}: ExitActivityModalProps) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent} >

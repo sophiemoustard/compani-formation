@@ -1,10 +1,10 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import createDataContext from './createDataContext';
 import Users from '../api/users';
+import asyncStorage from '../core/helpers/asyncStorage';
+import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
 
 export interface StateType {
-  token: string | null,
+  alenviToken: string | null,
   loading: boolean,
   error: boolean,
   errorMessage: string,
@@ -16,13 +16,13 @@ const authReducer = (state: StateType, actions): StateType => {
     case 'beforeSignin':
       return { ...state, error: false, errorMessage: '', loading: true };
     case 'signin':
-      return { ...state, loading: false, token: actions.payload };
+      return { ...state, loading: false, alenviToken: actions.payload };
     case 'signinError':
       return { ...state, loading: false, error: true, errorMessage: actions.payload };
     case 'resetError':
       return { ...state, loading: false, error: false, errorMessage: '' };
     case 'signout':
-      return { ...state, token: null, loading: false, error: false, errorMessage: '' };
+      return { ...state, alenviToken: null, loading: false, error: false, errorMessage: '' };
     case 'render':
       return { ...state, appIsReady: true };
     default:
@@ -36,8 +36,11 @@ const signIn = dispatch => async ({ email, password }) => {
 
     dispatch({ type: 'beforeSignin' });
     const authentication = await Users.authenticate({ email, password });
-    await AsyncStorage.setItem('token', authentication.token);
-    await AsyncStorage.setItem('user_id', authentication.user._id);
+
+    await asyncStorage.setAlenviToken(authentication.token);
+    await asyncStorage.setRefreshToken(authentication.refreshToken);
+    await asyncStorage.setUserId(authentication.user._id);
+
     dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   } catch (e) {
@@ -51,18 +54,45 @@ const signIn = dispatch => async ({ email, password }) => {
 };
 
 const signOut = dispatch => async () => {
-  await AsyncStorage.removeItem('token');
+  await asyncStorage.removeAlenviToken();
+  await asyncStorage.removeRefreshToken();
+
   dispatch({ type: 'signout' });
   navigate('Authentication');
 };
 
-const tryLocalSignIn = dispatch => async () => {
-  const token = await AsyncStorage.getItem('token');
-  if (token) {
-    dispatch({ type: 'signin', payload: token });
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+const refreshAlenviToken = async (refreshToken, dispatch) => {
+  try {
+    const token = await Users.refreshToken({ refreshToken });
+
+    await asyncStorage.setAlenviToken(token.token);
+    await asyncStorage.setRefreshToken(token.refreshToken);
+    await asyncStorage.setUserId(token.user._id);
+  } catch (e) {
+    signOut(dispatch)();
   }
+};
+
+const localSignIn = async (dispatch) => {
+  const { alenviToken } = await asyncStorage.getAlenviToken();
+  dispatch({ type: 'signin', payload: alenviToken });
+
+  navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   dispatch({ type: 'render' });
+};
+
+const tryLocalSignIn = dispatch => async () => {
+  const { alenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
+  if (asyncStorage.isTokenValid(alenviToken, alenviTokenExpiryDate)) return localSignIn(dispatch);
+
+  const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
+  if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
+    await refreshAlenviToken(refreshToken, dispatch);
+    return localSignIn(dispatch);
+  }
+
+  dispatch({ type: 'render' });
+  return signOut(dispatch)();
 };
 
 const resetError = dispatch => () => {
@@ -72,5 +102,5 @@ const resetError = dispatch => () => {
 export const { Provider, Context }: any = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut, resetError },
-  { token: null, loading: false, error: false, errorMessage: '', appIsReady: false }
+  { alenviToken: null, loading: false, error: false, errorMessage: '', appIsReady: false }
 );

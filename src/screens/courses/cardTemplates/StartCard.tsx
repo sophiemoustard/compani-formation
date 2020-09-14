@@ -1,19 +1,24 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, ImageBackground } from 'react-native';
+import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
 import { PINK, WHITE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import CardHeader from '../../../components/cards/CardHeader';
+import Actions from '../../../store/actions';
+import { ResetType } from '../../../types/StoreType';
 
 interface StartCardProps {
   title: string,
   courseId: string,
+  resetActivityReducer: () => void,
 }
 
-const StartCard = ({ title, courseId }: StartCardProps) => {
+const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) => {
   const goBack = () => {
+    resetActivityReducer();
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
   };
 
@@ -67,4 +72,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StartCard;
+const mapDispatchToProps = (dispatch: ({ type }: ResetType) => void) => ({
+  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+});
+
+export default connect(null, mapDispatchToProps)(StartCard);

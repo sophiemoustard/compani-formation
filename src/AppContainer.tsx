@@ -45,6 +45,7 @@ const Home = () => {
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
       screenOptions={screenOptions}
+      initialRouteName="Courses"
     >
       <Tab.Screen name="ProgramList" component={ProgramList} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
@@ -56,7 +57,7 @@ const Home = () => {
 const MainStack = createStackNavigator();
 
 export const AppContainer = () => {
-  const { tryLocalSignIn, token, appIsReady } = useContext(AuthContext);
+  const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
@@ -65,7 +66,7 @@ export const AppContainer = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {token === null
+        {alenviToken === null
           ? <>
             <MainStack.Screen name="Authentication" component={Authentication} />
             <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />

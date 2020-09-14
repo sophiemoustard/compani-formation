@@ -1,18 +1,23 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
+import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
 import { YELLOW, GREY } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
+import { ResetType } from '../../../types/StoreType';
+import Actions from '../../../store/actions';
 
 interface EndCardProps {
   courseId: String,
+  resetActivityReducer: () => void,
 }
 
-const EndCard = ({ courseId }: EndCardProps) => {
+const EndCard = ({ courseId, resetActivityReducer }: EndCardProps) => {
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    resetActivityReducer();
   };
 
   return (
@@ -54,4 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EndCard;
+const mapDispatchToProps = (dispatch: ({ type }: ResetType) => void) => ({
+  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+});
+export default connect(null, mapDispatchToProps)(EndCard);
