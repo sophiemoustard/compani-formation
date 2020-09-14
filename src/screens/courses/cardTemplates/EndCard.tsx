@@ -26,10 +26,7 @@ const EndCard = ({ courseId, activity, setCardIndex, resetActivityReducer }: End
   useEffect(() => {
     async function fetchData() {
       const userId = await AsyncStorage.getItem('user_id');
-      ActivityHistories.postActivityHistories({
-        user: userId,
-        activity: activity._id,
-      });
+      await ActivityHistories.createActivityHistories({ user: userId, activity: activity._id });
       setCardIndex(null);
     }
 
