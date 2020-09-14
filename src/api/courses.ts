@@ -3,7 +3,7 @@ import getEnvVars from '../../environment';
 import { CourseType } from '../types/CourseType';
 
 export default {
-  getUserCourses: async (params) => {
+  getUserCourses: async (params): Promise<[CourseType]> => {
     const { baseURL } = getEnvVars();
     const response = await alenviAxios.get(`${baseURL}/courses/user`, { params });
     return response.data.data.courses;

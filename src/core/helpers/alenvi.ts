@@ -1,7 +1,7 @@
 import Users from '../../api/users';
 import asyncStorage from './asyncStorage';
 
-const refreshAlenviCookies = async () => {
+const refreshAlenviCookies = async (): Promise<boolean> => {
   try {
     const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
     if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
@@ -31,4 +31,4 @@ const refreshAlenviCookies = async () => {
 
 export default {
   refreshAlenviCookies,
-}
+};

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 import asyncStorage from '../../core/helpers/asyncStorage';
 import alenvi from '../../core/helpers/alenvi';
@@ -8,7 +8,7 @@ const instance = axios.create({
   paramsSerializer: params => qs.stringify(params, { indices: false }),
 });
 
-instance.interceptors.request.use(async (config) => {
+instance.interceptors.request.use(async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
   const { alenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
   if (asyncStorage.isTokenValid(alenviToken, alenviTokenExpiryDate)) {
     config.headers.common['x-access-token'] = alenviToken;
