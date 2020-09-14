@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View, StyleSheet, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -6,6 +6,7 @@ import Activities from '../../api/activities';
 import { ActivityType } from '../../types/ActivityType';
 import { GREY } from '../../styles/colors';
 import ExitActivityModal from '../../components/activities/ExitActivityModal';
+import { Context as AuthContext } from '../../context/AuthContext';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
@@ -33,9 +34,16 @@ const CardContainer = ({
   setExitConfirmationModal,
   resetActivityReducer,
 }: CardContainerProps) => {
+  const { signOut } = useContext(AuthContext);
+
   const getActivity = async () => {
-    const fetchedActivity = await Activities.getActivity(route.params.activityId);
-    setActivity(fetchedActivity);
+    try {
+      const fetchedActivity = await Activities.getActivity(route.params.activityId);
+      setActivity(fetchedActivity);
+    } catch (e) {
+      if (e.status === 401) signOut();
+      setActivity(null);
+    }
   };
 
   const goBack = () => {
@@ -53,17 +61,17 @@ const CardContainer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        if (cardIndex === null) goBack();
-        else setExitConfirmationModal(true);
-        return true;
-      }
-    );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardIndex]);
+  const hardwareBackPress = () => {
+    if (cardIndex === null) goBack();
+    else setExitConfirmationModal(true);
+    return true;
+  };
+
+  useEffect(
+    () => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [cardIndex]
+  );
 
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
