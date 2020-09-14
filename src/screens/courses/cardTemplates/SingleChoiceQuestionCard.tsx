@@ -9,7 +9,7 @@ import { CardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 import { GREY, WHITE } from '../../../styles/colors';
-import { MARGIN, BORDER_RADIUS, BORDER_WIDTH } from '../../../styles/metrics';
+import { MARGIN, BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT } from '../../../styles/metrics';
 import Shadow from '../../../components/style/Shadow';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.XS,
   },
   answer: {
-    minHeight: 48,
+    minHeight: BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: BORDER_WIDTH,

@@ -18,13 +18,11 @@ const QuestionCardFooter = ({ index, color }: QuestionCardFooterProps) => {
   const style = styles(index);
 
   return (
-    <>
-      <View style={style.container}>
-        {!leftRemoved && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
-        <Button style={style.button} bgColor={GREY['300']} color={WHITE} borderColor={GREY['300']}
-          caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
-      </View>
-    </>
+    <View style={style.container}>
+      {!leftRemoved && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
+      <Button style={style.button} bgColor={GREY['300']} color={WHITE} borderColor={GREY['300']}
+        caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
+    </View>
   );
 };
 
