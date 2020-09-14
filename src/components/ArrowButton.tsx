@@ -28,8 +28,6 @@ const ArrowButton = ({ direction, onPress, disabled = false, color = PINK['500']
 
 const styles = ({ borderColor }: StylesProps) => StyleSheet.create({
   container: {
-    marginBottom: MARGIN.XL,
-    marginHorizontal: MARGIN.MD,
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: BORDER_WIDTH,
     padding: MARGIN.MD,

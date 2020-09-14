@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, ImageBackground } from 'react-native';
+import { View, StyleSheet, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
@@ -23,9 +23,9 @@ const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) =>
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
-      <View style={styles.contentContainer}>
+      <View style={styles.wrapper}>
         <View>
           <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.imageBackground}
             source={require('../../../../assets/images/start_card_background.png')}>
@@ -36,16 +36,18 @@ const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) =>
         <Button style={styles.button} bgColor={WHITE} color={PINK['500']} caption="Démarrer"
           onPress={() => navigate('card-0')} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: PINK['500'],
-    flex: 1,
   },
   contentContainer: {
+    flexGrow: 1,
+  },
+  wrapper: {
     marginHorizontal: MARGIN.XL,
     justifyContent: 'space-between',
     flex: 1,

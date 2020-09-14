@@ -7,4 +7,8 @@ export interface CardType {
     publicId: string,
   },
   text?: string,
+  question?: string,
+  qcuGoodAnswer?: string,
+  falsyAnswers?: Array<string>,
+  explanation?: string,
 }
