@@ -1,7 +1,6 @@
-import moment from '../core/helpers/moment';
+import Users from '../api/users';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
-import Users from '../api/users';
 import { navigate } from '../navigationRef';
 
 export interface StateType {
@@ -84,10 +83,10 @@ const localSignIn = async (dispatch) => {
 
 const tryLocalSignIn = dispatch => async () => {
   const { alenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
-  if (!!alenviToken && moment().isBefore(alenviTokenExpiryDate)) return localSignIn(dispatch);
+  if (asyncStorage.isTokenValid(alenviToken, alenviTokenExpiryDate)) return localSignIn(dispatch);
 
   const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
-  if (!!refreshToken && moment().isBefore(refreshTokenExpiryDate)) {
+  if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
     await refreshAlenviToken(refreshToken, dispatch);
     return localSignIn(dispatch);
   }

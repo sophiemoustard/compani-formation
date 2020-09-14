@@ -1,5 +1,5 @@
 import 'array-flat-polyfill';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,6 +8,7 @@ import groupBy from 'lodash/groupBy';
 import Courses from '../../api/courses';
 import NextStepCell from '../../components/steps/NextStepCell';
 import CourseCell from '../../components/CourseCell';
+import { Context as AuthContext } from '../../context/AuthContext';
 import moment from '../../core/helpers/moment';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
@@ -53,6 +54,7 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
 
 const CourseList = ({ navigation }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
+  const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
     try {
@@ -60,6 +62,7 @@ const CourseList = ({ navigation }: CourseListProps) => {
       const fetchedCourses = await Courses.getUserCourses({ trainees: userId });
       setCourses(fetchedCourses);
     } catch (e) {
+      if (e.status === 401) signOut();
       console.error(e);
       setCourses(() => []);
     }
@@ -68,12 +71,14 @@ const CourseList = ({ navigation }: CourseListProps) => {
   useEffect(() => {
     async function fetchData() { getCourses(); }
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFocused = useIsFocused();
   useEffect(() => {
     async function fetchData() { getCourses(); }
     if (isFocused) fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;

@@ -1,6 +1,8 @@
 import { AsyncStorage } from 'react-native';
 import moment from './moment';
 
+const isTokenValid = (token, expiryDate) => !!token && moment().isBefore(expiryDate);
+
 const getAlenviToken = async () => ({
   alenviToken: await AsyncStorage.getItem('alenvi_token'),
   alenviTokenExpiryDate: await AsyncStorage.getItem('alenvi_token_expiry_date'),
@@ -35,7 +37,10 @@ const getUserId = async () => AsyncStorage.getItem('user_id');
 
 const setUserId = async id => AsyncStorage.setItem('user_id', id);
 
+const removeUserId = async () => AsyncStorage.removeItem('user_id');
+
 export default {
+  isTokenValid,
   getAlenviToken,
   setAlenviToken,
   removeAlenviToken,
@@ -44,4 +49,5 @@ export default {
   removeRefreshToken,
   getUserId,
   setUserId,
+  removeUserId,
 };
