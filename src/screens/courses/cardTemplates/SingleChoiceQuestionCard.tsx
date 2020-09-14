@@ -9,7 +9,7 @@ import { CardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 import { GREY, WHITE } from '../../../styles/colors';
-import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
+import { MARGIN, BORDER_RADIUS, BORDER_WIDTH } from '../../../styles/metrics';
 import Shadow from '../../../components/style/Shadow';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 
@@ -18,6 +18,17 @@ interface SingleChoiceQuestionCard {
   courseId: string,
   index: number
 }
+
+const answerProposal = item => (
+  <View style={styles.answerContainer}>
+    <TouchableOpacity style={styles.answer}>
+      <Text style={styles.text}>
+        {item}
+      </Text>
+    </TouchableOpacity>
+    <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
+  </View>
+);
 
 const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestionCard) => {
   const goBack = () => {
@@ -32,18 +43,10 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
         <View>
-          <FlatList data= {shuffle([...card.falsyAnswers, card.qcuGoodAnswer])}
+          <FlatList
+            data={shuffle([...card.falsyAnswers, card.qcuGoodAnswer])}
             keyExtractor={item => item}
-            renderItem={({ item }) =>
-              <View style={styles.answerContainer}>
-                <TouchableOpacity style={styles.answer}>
-                  <Text style={styles.text}>
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-                <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
-              </View>
-            }/>
+            renderItem={({ item }) => answerProposal(item)} />
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} />
@@ -70,10 +73,10 @@ const styles = StyleSheet.create({
     minHeight: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
+    borderWidth: BORDER_WIDTH,
     backgroundColor: WHITE,
     borderColor: GREY['200'],
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.MD,
   },
   text: {
     ...FIRA_SANS_MEDIUM.LG,

@@ -21,7 +21,7 @@ const EndCard = ({ courseId, resetActivityReducer }: EndCardProps) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <ImageBackground style={styles.elipse} source={require('../../../../assets/images/end_card_background.png')}>
         <Text style={styles.text}>Activité terminée</Text>
         <Image source={require('../../../../assets/images/aux_fierte.png')} style={styles.image} />
@@ -34,6 +34,8 @@ const EndCard = ({ courseId, resetActivityReducer }: EndCardProps) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: YELLOW['100'],
+  },
+  contentContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
   },

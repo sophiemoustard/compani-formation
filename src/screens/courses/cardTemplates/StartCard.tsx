@@ -23,9 +23,9 @@ const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) =>
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
-      <View style={styles.contentContainer}>
+      <View style={styles.wrapper}>
         <View>
           <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.imageBackground}
             source={require('../../../../assets/images/start_card_background.png')}>
@@ -43,9 +43,11 @@ const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) =>
 const styles = StyleSheet.create({
   container: {
     backgroundColor: PINK['500'],
-    flexGrow: 1,
   },
   contentContainer: {
+    flexGrow: 1,
+  },
+  wrapper: {
     marginHorizontal: MARGIN.XL,
     justifyContent: 'space-between',
     flex: 1,

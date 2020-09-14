@@ -13,51 +13,37 @@ interface QuestionCardFooterProps {
   color?: string,
 }
 
-interface StylesProps {
-  marginLeft,
-}
-
 const QuestionCardFooter = ({ index, color }: QuestionCardFooterProps) => {
   const leftRemoved = index === 0;
-
-  let marginLeft;
-  if (index > 0) marginLeft = MARGIN.LG;
-  else marginLeft = 0;
+  const style = styles(index);
 
   return (
     <>
-      <View style={styles({ marginLeft }).container}>
-        {!leftRemoved && <ArrowButton color={color}
-          direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
-        <Button style={styles({ marginLeft }).button} bgColor={GREY['300']} color={WHITE} borderColor={GREY['300']}
+      <View style={style.container}>
+        {!leftRemoved && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
+        <Button style={style.button} bgColor={GREY['300']} color={WHITE} borderColor={GREY['300']}
           caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
       </View>
     </>
   );
 };
 
-const styles = ({ marginLeft }: StylesProps) => StyleSheet.create({
+const styles = (index : number) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: MARGIN.XL,
-    marginTop: 10,
+    marginTop: MARGIN.SM,
     marginHorizontal: MARGIN.LG,
   },
   button: {
     flexGrow: 1,
-    marginLeft,
+    marginLeft: index > 0 ? MARGIN.LG : 0,
   },
   text: {
     ...FIRA_SANS_MEDIUM.LG,
     color: WHITE,
-  },
-  gradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
 });
 
