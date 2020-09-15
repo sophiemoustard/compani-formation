@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, StyleSheet, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { StateType } from '../../../../src/types/StoreType';
@@ -8,10 +8,10 @@ import { navigate } from '../../../navigationRef';
 import { CardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
-import { GREY, WHITE } from '../../../styles/colors';
-import { MARGIN, BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT } from '../../../styles/metrics';
-import Shadow from '../../../components/style/Shadow';
+import { GREY } from '../../../styles/colors';
+import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
+import AnswerProposal from '../../../components/cards/AnswerProposal';
 
 interface SingleChoiceQuestionCard {
   card: CardType,
@@ -19,16 +19,14 @@ interface SingleChoiceQuestionCard {
   index: number
 }
 
-const answerProposal = item => (
-  <View style={styles.answerContainer}>
-    <TouchableOpacity style={styles.answer}>
-      <Text style={styles.text}>{item}</Text>
-    </TouchableOpacity>
-    <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
-  </View>
-);
-
 const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestionCard) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (card && card.falsyAnswers && !isPressed) setData(shuffle([...card.falsyAnswers, card.qcuGoodAnswer]));
+  }, [card, isPressed]);
+
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
   };
@@ -42,9 +40,12 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
         <Text style={styles.question}>{card.question}</Text>
         <View>
           <FlatList
-            data={shuffle([...card.falsyAnswers, card.qcuGoodAnswer])}
+            data={data}
             keyExtractor={item => item}
-            renderItem={({ item }) => answerProposal(item)} />
+            renderItem={({ item }) =>
+              <AnswerProposal
+                onPress={() => setIsPressed(true)} isPressed={isPressed}
+                item={item} goodAnswer={card.qcuGoodAnswer} /> } />
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} />
@@ -63,23 +64,6 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_MEDIUM.LG,
     color: GREY['800'],
     marginBottom: MARGIN.XL,
-  },
-  answerContainer: {
-    marginVertical: MARGIN.XS,
-  },
-  answer: {
-    minHeight: BUTTON_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: BORDER_WIDTH,
-    backgroundColor: WHITE,
-    borderColor: GREY['200'],
-    borderRadius: BORDER_RADIUS.MD,
-  },
-  text: {
-    ...FIRA_SANS_MEDIUM.LG,
-    color: GREY['800'],
-    textAlign: 'center',
   },
 });
 
