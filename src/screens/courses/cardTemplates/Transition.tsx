@@ -6,7 +6,7 @@ import { MARGIN } from '../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
 import CardHeader from '../../../components/cards/CardHeader';
-import { getCard } from '../../../store/selectors';
+import { getCard } from '../../../store/activities/selectors';
 import { StateType } from '../../../types/StoreType';
 import { TransitionType } from '../../../types/CardType';
 import { TRANSITION } from '../../../core/data/constants';
@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ index: state.cardIndex, card: getCard(state) });
+const mapStateToProps = (state: StateType) => ({ index: state.activities.cardIndex, card: getCard(state) });
 
 export default connect(mapStateToProps)(Transition);

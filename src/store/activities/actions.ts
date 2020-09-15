@@ -7,8 +7,8 @@ import {
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
   ResetType,
-} from '../types/StoreType';
-import { ActivityType } from '../types/ActivityType';
+} from '../../types/StoreType';
+import { ActivityType } from '../../types/ActivityType';
 
 const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_ACTIVITY, payload: activity });
 const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });

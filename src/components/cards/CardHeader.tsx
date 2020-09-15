@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import IconButton from '../IconButton';
-import Actions from '../../store/actions';
+import Actions from '../../store/activities/actions';
 import { ICON, MARGIN } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import { ActionType } from '../../types/StoreType';

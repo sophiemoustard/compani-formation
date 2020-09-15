@@ -10,7 +10,7 @@ import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
 import TextMediaCard from './TextMediaCard';
 import { ActivityType } from '../../../types/ActivityType';
-import Actions from '../../../store/actions';
+import Actions from '../../../store/activities/actions';
 import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
 
 interface CardTemplateProps {
@@ -49,7 +49,7 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
   }
 };
 
-const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+const mapStateToProps = (state: StateType) => ({ activity: state.activities.activity });
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
   setCardIndex: index => dispatch(Actions.setCardIndex(index)),
 });

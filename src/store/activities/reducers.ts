@@ -1,16 +1,19 @@
 import {
-  StateType,
+  ActivityStateType,
   SET_ACTIVITY,
   SET_CARD_INDEX,
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
   ActionType,
   ResetType,
-} from '../types/StoreType';
+} from '../../types/StoreType';
 
-const initialState: StateType = { activity: null, cardIndex: null, exitConfirmationModal: false };
+const initialState: ActivityStateType = { activity: null, cardIndex: null, exitConfirmationModal: false };
 
-export const activities = (state: StateType = initialState, action: ActionType | ResetType): StateType => {
+export const activities = (
+  state: ActivityStateType = initialState,
+  action: ActionType | ResetType
+): ActivityStateType => {
   switch (action.type) {
     case SET_ACTIVITY:
       return { ...state, activity: action.payload };

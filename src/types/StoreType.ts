@@ -25,8 +25,12 @@ export interface ResetActivityReducer {
 export type ActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType;
 export type ResetType = ResetActivityReducer;
 
-export interface StateType {
+export interface ActivityStateType {
   activity: ActivityType | null,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
+}
+
+export interface StateType {
+  activities: ActivityStateType
 }

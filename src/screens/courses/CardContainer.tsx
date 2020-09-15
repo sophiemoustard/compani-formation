@@ -11,7 +11,7 @@ import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
 import { StateType } from '../../types/StoreType';
-import Actions from '../../store/actions';
+import Actions from '../../store/activities/actions';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
@@ -112,9 +112,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: StateType) => ({
-  activity: state.activity,
-  cardIndex: state.cardIndex,
-  exitConfirmationModal: state.exitConfirmationModal,
+  activity: state.activities.activity,
+  cardIndex: state.activities.cardIndex,
+  exitConfirmationModal: state.activities.exitConfirmationModal,
 });
 
 const mapDispatchToProps = dispatch => ({
