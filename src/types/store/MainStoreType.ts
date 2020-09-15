@@ -4,7 +4,6 @@ export const RESET_MAIN_REDUCER = 'RESET_MAIN_REDUCER';
 
 export interface SetLoggedUserType {
   type: typeof SET_LOGGED_USER,
-  payload: object | null,
 }
 
 export interface ResetMainReducer {
