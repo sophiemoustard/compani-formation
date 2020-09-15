@@ -10,7 +10,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import StartCard from './cardTemplates/StartCard';
 import EndCard from './cardTemplates/EndCard';
 import CardTemplate from './cardTemplates/CardTemplate';
-import { StateType } from '../../types/StoreType';
+import { StateType } from '../../types/store/StoreType';
 import Actions from '../../store/activities/actions';
 
 interface CardContainerProps {

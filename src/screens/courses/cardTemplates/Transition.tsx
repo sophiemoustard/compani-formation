@@ -7,9 +7,9 @@ import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../styles/fonts';
 import CardFooter from '../../../components/cards/CardFooter';
 import CardHeader from '../../../components/cards/CardHeader';
 import { getCard } from '../../../store/activities/selectors';
-import { StateType } from '../../../types/StoreType';
 import { TransitionType } from '../../../types/CardType';
 import { TRANSITION } from '../../../core/data/constants';
+import { StateType } from '../../../types/store/StoreType';
 
 interface TransitionProps {
   index: number,

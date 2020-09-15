@@ -6,9 +6,9 @@ import CardFooter from '../../../components/cards/CardFooter';
 import { getCard } from '../../../store/activities/selectors';
 import { MARGIN } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
-import { StateType } from '../../../types/StoreType';
 import { TitleTextMediaType } from '../../../types/CardType';
 import { TITLE_TEXT_MEDIA } from '../../../core/data/constants';
+import { StateType } from '../../../types/store/StoreType';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,

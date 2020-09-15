@@ -8,7 +8,7 @@ import { navigate } from '../../../navigationRef';
 import { YELLOW, GREY } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
-import { StateType } from '../../../types/StoreType';
+import { StateType } from '../../../types/store/StoreType';
 import ActivityHistories from '../../../api/activityHistories';
 import { ActivityType } from '../../../types/ActivityType';
 import Actions from '../../../store/activities/actions';

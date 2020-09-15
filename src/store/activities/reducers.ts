@@ -1,12 +1,11 @@
+import { ActionType, ResetType } from '../../types/store/StoreType';
 import {
   ActivityStateType,
   SET_ACTIVITY,
   SET_CARD_INDEX,
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
-  ActionType,
-  ResetType,
-} from '../../types/StoreType';
+} from '../../types/store/ActivityStoreType';
 
 const initialState: ActivityStateType = { activity: null, cardIndex: null, exitConfirmationModal: false };
 

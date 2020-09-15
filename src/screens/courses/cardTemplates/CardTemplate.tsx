@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { StateType, ActionType } from '../../../types/StoreType';
+import { StateType, ActionType } from '../../../types/store/StoreType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
 import { TRANSITION, TITLE_TEXT_MEDIA, SINGLE_CHOICE_QUESTION, TEXT_MEDIA } from '../../../core/data/constants';

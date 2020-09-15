@@ -5,7 +5,7 @@ import IconButton from '../IconButton';
 import Actions from '../../store/activities/actions';
 import { ICON, MARGIN } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
-import { ActionType } from '../../types/StoreType';
+import { ActionType } from '../../types/store/StoreType';
 
 interface CardHeaderProps {
   color?: string,

@@ -1,3 +1,4 @@
+import { ResetType } from '../../types/store/StoreType';
 import {
   SET_ACTIVITY,
   SET_CARD_INDEX,
@@ -6,8 +7,7 @@ import {
   SetExitConfirmationModalType,
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
-  ResetType,
-} from '../../types/StoreType';
+} from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
 
 const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_ACTIVITY, payload: activity });
