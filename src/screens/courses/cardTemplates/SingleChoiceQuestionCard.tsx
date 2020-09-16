@@ -51,8 +51,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
             data={answers}
             keyExtractor={item => item}
             renderItem={({ item, index: answerIndex }) =>
-              <QCUAnswer
-                onPress={onSelectAnswer} isPressed={isPressed} isSelected={selectedAnswerIndex === answerIndex}
+              <QCUAnswer onPress={onSelectAnswer} isPressed={isPressed} isSelected={selectedAnswerIndex === answerIndex}
                 index={answerIndex} item={item} isGoodAnswerAndPressed={item === card.qcuGoodAnswer && isPressed} />}
           />
         </View>
