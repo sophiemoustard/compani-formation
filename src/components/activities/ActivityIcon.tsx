@@ -18,13 +18,13 @@ interface ActivityIconProps {
 }
 
 interface StylesProps {
-  buttonBackgroundColor: string,
-  buttonBorderColor: string
+  buttonBorderColor: string,
+  isCompleted: Boolean,
 }
 
 const ActivityIcon = ({ activity, disabled, isCompleted }: ActivityIconProps) => {
   const buttonBorderColor = isCompleted ? GREEN['600'] : YELLOW[500];
-  const getColors = () => ({ buttonBackgroundColor: isCompleted ? GREEN['300'] : YELLOW[300], buttonBorderColor });
+  const getColors = () => ({ buttonBorderColor, isCompleted });
   const coloredStyle = styles(getColors());
 
   const getIcon = () => {
@@ -45,14 +45,14 @@ const ActivityIcon = ({ activity, disabled, isCompleted }: ActivityIconProps) =>
   );
 };
 
-const styles = ({ buttonBackgroundColor, buttonBorderColor }: StylesProps) => StyleSheet.create({
+const styles = ({ buttonBorderColor, isCompleted }: StylesProps) => StyleSheet.create({
   container: {
     position: 'relative',
     alignSelf: 'center',
     marginBottom: MARGIN.SM,
   },
   button: {
-    backgroundColor: buttonBackgroundColor,
+    backgroundColor: isCompleted ? GREEN['300'] : YELLOW[300],
     borderRadius: BORDER_RADIUS.MD,
     borderColor: buttonBorderColor,
     borderWidth: BORDER_WIDTH,
