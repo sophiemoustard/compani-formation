@@ -6,7 +6,7 @@ import QuizIcon from '../../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../../assets/icons/SharingExperienceIcon';
 import { BORDER_RADIUS, BORDER_WIDTH, PADDING, MARGIN } from '../../styles/metrics';
 import commonStyle from '../../styles/common';
-import { YELLOW } from '../../styles/colors';
+import { YELLOW, GREEN } from '../../styles/colors';
 import { ActivityType } from '../../types/ActivityType';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../../core/data/constants';
 import Shadow from '../style/Shadow';
@@ -14,6 +14,7 @@ import Shadow from '../style/Shadow';
 interface ActivityIconProps {
   activity: ActivityType,
   disabled: Boolean,
+  isCompleted: Boolean,
 }
 
 interface StylesProps {
@@ -21,9 +22,9 @@ interface StylesProps {
   buttonBorderColor: string
 }
 
-const ActivityIcon = ({ activity, disabled }: ActivityIconProps) => {
-  const buttonBorderColor = YELLOW[500];
-  const getColors = () => ({ buttonBackgroundColor: YELLOW[300], buttonBorderColor });
+const ActivityIcon = ({ activity, disabled, isCompleted }: ActivityIconProps) => {
+  const buttonBorderColor = isCompleted ? GREEN['600'] : YELLOW[500];
+  const getColors = () => ({ buttonBackgroundColor: isCompleted ? GREEN['300'] : YELLOW[300], buttonBorderColor });
   const coloredStyle = styles(getColors());
 
   const getIcon = () => {

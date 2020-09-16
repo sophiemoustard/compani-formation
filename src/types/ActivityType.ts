@@ -5,4 +5,5 @@ export interface ActivityType {
   name: string,
   type: 'lesson' | 'quiz' | 'sharing_experience' | 'video',
   cards: Array<CardType>,
+  activitiesHistoriesCount: number,
 }
