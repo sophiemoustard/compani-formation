@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import { StateType, ActionType } from '../../../types/StoreType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
-import { TRANSITION, TITLE_TEXT_MEDIA, SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
+import { TRANSITION, TITLE_TEXT_MEDIA, SINGLE_CHOICE_QUESTION, SURVEY } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
 import { ActivityType } from '../../../types/ActivityType';
 import Actions from '../../../store/actions';
 import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
+import SurveyCard from './SurveyCard';
 
 interface CardTemplateProps {
   index: number,
@@ -34,6 +35,8 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <TitleTextMediaCard />;
     case SINGLE_CHOICE_QUESTION:
       return <SingleChoiceQuestionCard />;
+    case SURVEY:
+      return <SurveyCard />;
 
     default:
       return (

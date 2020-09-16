@@ -11,4 +11,5 @@ export interface CardType {
   qcuGoodAnswer?: string,
   falsyAnswers?: Array<string>,
   explanation?: string,
+  label?: { left: string, right: string},
 }

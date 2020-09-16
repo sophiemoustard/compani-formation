@@ -3,30 +3,50 @@ import { View, StyleSheet } from 'react-native';
 import ArrowButton from '../ArrowButton';
 import { navigate } from '../../navigationRef';
 import { LEFT } from '../../core/data/constants';
-import { GREY, WHITE } from '../../styles/colors';
+import { GREY, PINK, WHITE } from '../../styles/colors';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 import { MARGIN } from '../../styles/metrics';
 import Button from '../form/Button';
 
+export const rightButtonStateType = {
+  LOCKED: 'locked',
+  UNLOCKED: 'unlocked',
+};
+
 interface QuestionCardFooterProps {
   index: number,
-  color?: string,
+  arrowButtonColor?: string,
+  rightButtonState?: typeof rightButtonStateType.LOCKED | typeof rightButtonStateType.UNLOCKED,
+  rightButtonCaption?: string,
 }
 
-const QuestionCardFooter = ({ index, color }: QuestionCardFooterProps) => {
+const QuestionCardFooter = ({
+  index,
+  arrowButtonColor = PINK[500],
+  rightButtonState = rightButtonStateType.LOCKED,
+  rightButtonCaption = 'Continuer',
+}: QuestionCardFooterProps) => {
   const leftRemoved = index === 0;
-  const style = styles(index);
+  const style = styles(leftRemoved);
+  const rightButtonBgColor = rightButtonState === rightButtonStateType.LOCKED ? GREY[300] : PINK[500];
+  const onPressRightButton = () => {
+    if (rightButtonState !== rightButtonStateType.LOCKED) return navigate(`card-${index + 1}`);
+
+    return null;
+  };
 
   return (
     <View style={style.container}>
-      {!leftRemoved && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
-      <Button style={style.button} bgColor={GREY['300']} color={WHITE} borderColor={GREY['300']}
-        caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
+      {!leftRemoved &&
+        <ArrowButton color={arrowButtonColor} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />
+      }
+      <Button style={style.button} bgColor={rightButtonBgColor} borderColor={rightButtonBgColor} color={WHITE}
+        caption={rightButtonCaption} onPress={onPressRightButton} />
     </View>
   );
 };
 
-const styles = (index: number) => StyleSheet.create({
+const styles = (leftRemoved: boolean) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -37,7 +57,7 @@ const styles = (index: number) => StyleSheet.create({
   },
   button: {
     flexGrow: 1,
-    marginLeft: index > 0 ? MARGIN.LG : 0,
+    marginLeft: leftRemoved ? 0 : MARGIN.LG,
   },
   text: {
     ...FIRA_SANS_MEDIUM.LG,
