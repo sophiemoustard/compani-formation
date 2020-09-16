@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../api/courses';

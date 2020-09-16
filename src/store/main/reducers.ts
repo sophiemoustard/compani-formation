@@ -6,7 +6,7 @@ const initialState: MainStateType = { loggedUser: null };
 export const main = (state: MainStateType = initialState, action: ActionType | ResetType): MainStateType => {
   switch (action.type) {
     case SET_LOGGED_USER:
-      return { ...state, loggedUser: action.user };
+      return { ...state, loggedUser: action.payload };
     case RESET_MAIN_REDUCER:
       return initialState;
     default:
