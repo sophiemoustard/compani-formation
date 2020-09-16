@@ -5,7 +5,7 @@ import shuffle from 'lodash/shuffle';
 import { StateType } from '../../../../src/types/StoreType';
 import { getCard } from '../../../store/selectors';
 import { navigate } from '../../../navigationRef';
-import { CardType } from '../../../types/CardType';
+import { SingleChoiceQuestionType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
@@ -15,7 +15,7 @@ import QCUAnswer from '../../../components/cards/QCUAnswer';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
-  card: CardType,
+  card: SingleChoiceQuestionType,
   courseId: string,
   index: number
 }
@@ -26,12 +26,12 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
   const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
-    if (card && card.template === SINGLE_CHOICE_QUESTION && card.falsyAnswers && !isPressed) {
+    if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
       setAnswers(shuffle([...card.falsyAnswers, card.qcuGoodAnswer]));
     }
   }, [card, isPressed]);
 
-  if ((card && card.template !== SINGLE_CHOICE_QUESTION) || (!card || !card.falsyAnswers)) return null;
+  if (!card || card.template !== SINGLE_CHOICE_QUESTION) return null;
 
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
