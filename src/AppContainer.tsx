@@ -4,6 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import pick from 'lodash/pick';
+import asyncStorage from './core/helpers/asyncStorage';
 import Profile from './screens/Profile';
 import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
@@ -16,6 +18,8 @@ import CardContainer from './screens/courses/CardContainer';
 import MainActions from './store/main/actions';
 import { PINK } from './styles/colors';
 import { ActionType, ResetType } from './types/store/StoreType';
+import Users from './api/users';
+import { UserType } from './types/UserType';
 
 interface TabBarIconProps {
   color: string,
@@ -60,7 +64,7 @@ const Home = () => {
 const MainStack = createStackNavigator();
 
 interface AppContainerProps {
-  setLoggedUser: () => void;
+  setLoggedUser: (user: UserType) => void;
   resetMainReducer: () => void;
 }
 
@@ -71,7 +75,11 @@ const AppContainer = ({ setLoggedUser, resetMainReducer }: AppContainerProps) =>
   useEffect(() => { tryLocalSignIn(); }, []);
 
   useEffect(() => {
-    async function setUser() { setLoggedUser(); }
+    async function setUser() {
+      const userId = await asyncStorage.getUserId();
+      const user = await Users.getById(userId);
+      setLoggedUser(pick(user, ['_id', 'identity.firstname', 'identity.lastname', 'local.email']));
+    }
     if (alenviToken) setUser();
     else resetMainReducer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +106,7 @@ const AppContainer = ({ setLoggedUser, resetMainReducer }: AppContainerProps) =>
 };
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ResetType) => void) => ({
-  setLoggedUser: () => dispatch(MainActions.setLoggedUser()),
+  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
   resetMainReducer: () => dispatch(MainActions.resetMainReducer()),
 });
 

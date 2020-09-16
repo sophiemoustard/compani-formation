@@ -61,8 +61,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
 
   const getCourses = async () => {
     try {
-      const userId = await AsyncStorage.getItem('user_id');
-      const fetchedCourses = await Courses.getUserCourses({ trainees: userId });
+      const fetchedCourses = await Courses.getUserCourses({ trainees: loggedUserId });
       setCourses(fetchedCourses);
     } catch (e) {
       if (e.status === 401) signOut();
@@ -72,7 +71,6 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   };
 
   useEffect(() => {
-    console.log('loggedUserId', loggedUserId);
     async function fetchData() { getCourses(); }
     if (loggedUserId) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
