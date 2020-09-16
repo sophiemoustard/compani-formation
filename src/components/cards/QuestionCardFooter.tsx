@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import ArrowButton from '../ArrowButton';
 import { navigate } from '../../navigationRef';
 import { LEFT } from '../../core/data/constants';
-import { WHITE } from '../../styles/colors';
+import { WHITE, PINK, GREY } from '../../styles/colors';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 import { MARGIN } from '../../styles/metrics';
 import Button from '../form/Button';
@@ -11,12 +11,12 @@ import Button from '../form/Button';
 interface QuestionCardFooterProps {
   index: number,
   expectedColor,
-  color,
   isPressed: boolean,
 }
 
-const QuestionCardFooter = ({ index, expectedColor, color, isPressed }: QuestionCardFooterProps) => {
+const QuestionCardFooter = ({ index, expectedColor, isPressed }: QuestionCardFooterProps) => {
   const leftRemoved = index === 0;
+  const color = { arrowButton: PINK['500'], button: GREY['300'] };
   const style = styles(index, isPressed);
 
   return (
