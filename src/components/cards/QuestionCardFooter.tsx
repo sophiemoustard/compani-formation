@@ -10,22 +10,21 @@ import Button from '../form/Button';
 
 interface QuestionCardFooterProps {
   index: number,
-  expectedColor,
+  expectedColor: string,
   isPressed: boolean,
 }
 
 const QuestionCardFooter = ({ index, expectedColor, isPressed }: QuestionCardFooterProps) => {
   const leftRemoved = index === 0;
-  const color = { arrowButton: PINK['500'], button: GREY['300'] };
   const style = styles(index, isPressed);
 
   return (
     <View style={style.container}>
-      {!leftRemoved && <ArrowButton color={isPressed ? expectedColor.inputs : color.arrowButton} direction={LEFT}
+      {!leftRemoved && <ArrowButton color={isPressed ? expectedColor : PINK['500']} direction={LEFT}
         onPress={() => navigate(`card-${index - 1}`)} />}
       <View style={style.button}>
-        <Button bgColor={isPressed ? expectedColor.inputs : color.button}
-          color={WHITE} borderColor={isPressed ? expectedColor.inputs : color.button}
+        <Button bgColor={isPressed ? expectedColor : GREY['300']}
+          color={WHITE} borderColor={isPressed ? expectedColor : GREY['300']}
           caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
       </View>
     </View>

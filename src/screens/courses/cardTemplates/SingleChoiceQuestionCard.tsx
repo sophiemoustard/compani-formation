@@ -40,7 +40,7 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
   const expectedColor = answers[selectedAnswerIndex] === card.qcuGoodAnswer
     ? { inputs: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
     : { inputs: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
-  const style = styles(isPressed, expectedColor);
+  const style = styles(isPressed, expectedColor.background, expectedColor.text);
 
   return (
     <>
@@ -61,13 +61,13 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
       </ScrollView>
       <View style={style.footerContainer}>
         <Text style={style.explanation}>{card.explanation}</Text>
-        <QuestionCardFooter expectedColor={expectedColor} index={index} isPressed= {isPressed} />
+        <QuestionCardFooter expectedColor={expectedColor.inputs} index={index} isPressed= {isPressed} />
       </View>
     </>
   );
 };
 
-const styles = (isPressed: boolean, expectedColor) => StyleSheet.create({
+const styles = (isPressed: boolean, backgroundColor: string, textColor: string) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
@@ -84,10 +84,10 @@ const styles = (isPressed: boolean, expectedColor) => StyleSheet.create({
     textAlign: 'justify',
     marginHorizontal: MARGIN.LG,
     marginVertical: MARGIN.MD,
-    color: expectedColor.text,
+    color: textColor,
   },
   footerContainer: {
-    backgroundColor: isPressed ? expectedColor.background : GREY['100'],
+    backgroundColor: isPressed ? backgroundColor : GREY['100'],
   },
 });
 

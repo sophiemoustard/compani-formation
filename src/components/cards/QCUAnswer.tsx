@@ -37,12 +37,10 @@ const QCUAnswer = ({
     if (!isPressed) {
       onPress();
       onSelectedAnswerIndex(index);
-      return isGoodAnswerAndPressed ? setColor(GREEN['600']) : setColor(ORANGE['600']);
     }
-    return null;
   };
 
-  const style = styles(color, isPressed, isSelected, isGoodAnswerAndPressed);
+  const style = styles(color, isSelected, isGoodAnswerAndPressed);
 
   return (
     <View style={style.answerContainer}>
@@ -50,14 +48,13 @@ const QCUAnswer = ({
         <Text style={style.text}>{item}</Text>
         <Feather style={style.icon} name={isGoodAnswerAndPressed ? 'check-circle' : 'x-circle'}/>
       </TouchableOpacity>
-      <Shadow
-        backgroundColor={color}
-        borderRadius={BORDER_RADIUS.LG}/>
-    </View>);
+      <Shadow backgroundColor={color} borderRadius={BORDER_RADIUS.LG}/>
+    </View>
+  );
 };
 
 const styles =
-(color, isPressed: boolean, isSelected: boolean, isGoodAnswerAndPressed: boolean) =>
+(color, isSelected: boolean, isGoodAnswerAndPressed: boolean) =>
   StyleSheet.create({
     answerContainer: {
       marginVertical: MARGIN.XS,
@@ -72,7 +69,7 @@ const styles =
       borderRadius: BORDER_RADIUS.MD,
     },
     icon: {
-      display: (isPressed && isGoodAnswerAndPressed) || (isSelected) ? 'flex' : 'none',
+      display: isGoodAnswerAndPressed || isSelected ? 'flex' : 'none',
       color,
       fontSize: ICON.MD,
       margin: MARGIN.MD,
