@@ -8,15 +8,16 @@ import CardFooter from '../../../components/cards/CardFooter';
 import CardHeader from '../../../components/cards/CardHeader';
 import { getCard } from '../../../store/selectors';
 import { StateType } from '../../../types/StoreType';
-import { CardType } from '../../../types/CardType';
+import { TransitionType } from '../../../types/CardType';
+import { TRANSITION } from '../../../core/data/constants';
 
 interface TransitionProps {
   index: number,
-  card: CardType,
+  card: TransitionType,
 }
 
 const Transition = ({ index, card }: TransitionProps) => {
-  if (!card) return null;
+  if (!card || card.template !== TRANSITION) return null;
 
   return (
     <View style={styles.container}>

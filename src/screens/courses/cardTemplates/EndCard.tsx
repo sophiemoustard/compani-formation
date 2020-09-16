@@ -1,40 +1,60 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Button from '../../../components/form/Button';
 import { navigate } from '../../../navigationRef';
 import { YELLOW, GREY } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
-import { ResetType } from '../../../types/StoreType';
+import { StateType } from '../../../types/StoreType';
+import ActivityHistories from '../../../api/activityHistories';
+import { ActivityType } from '../../../types/ActivityType';
 import Actions from '../../../store/actions';
 
 interface EndCardProps {
   courseId: String,
+  activity: ActivityType,
   resetActivityReducer: () => void,
+  setCardIndex: (number) => void,
 }
 
-const EndCard = ({ courseId, resetActivityReducer }: EndCardProps) => {
+const EndCard = ({ courseId, activity, setCardIndex, resetActivityReducer }: EndCardProps) => {
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    async function fetchData() {
+      const userId = await AsyncStorage.getItem('user_id');
+      await ActivityHistories.createActivityHistories({ user: userId, activity: activity._id });
+      setCardIndex(null);
+    }
+
+    if (isFocused) fetchData();
+  }, [isFocused, activity, setCardIndex]);
+
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
     resetActivityReducer();
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <ImageBackground style={styles.elipse} source={require('../../../../assets/images/end_card_background.png')}>
         <Text style={styles.text}>Activité terminée</Text>
         <Image source={require('../../../../assets/images/aux_fierte.png')} style={styles.image} />
       </ImageBackground>
       <Button style={styles.button} caption="Terminer" onPress={goBack} />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: YELLOW['100'],
-    flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
     justifyContent: 'space-between',
   },
   text: {
@@ -58,8 +78,13 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.XL,
   },
 });
+const mapStateToProps = (state: StateType) => ({
+  activity: state.activity,
+});
 
-const mapDispatchToProps = (dispatch: ({ type }: ResetType) => void) => ({
+const mapDispatchToProps = dispatch => ({
+  setCardIndex: index => dispatch(Actions.setCardIndex(index)),
   resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
 });
-export default connect(null, mapDispatchToProps)(EndCard);
+
+export default connect(mapStateToProps, mapDispatchToProps)(EndCard);

@@ -7,10 +7,11 @@ import { getCard } from '../../../store/selectors';
 import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
 import { StateType } from '../../../types/StoreType';
-import { CardType } from '../../../types/CardType';
+import { TitleTextMediaType } from '../../../types/CardType';
+import { TITLE_TEXT_MEDIA } from '../../../core/data/constants';
 
 interface TitleTextMediaCardProps {
-  card: CardType,
+  card: TitleTextMediaType,
   index: number,
 }
 
@@ -32,7 +33,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
     }
   }, [card]);
 
-  if (!card) return null;
+  if (!card || card.template !== TITLE_TEXT_MEDIA) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles({ imgHeight });
