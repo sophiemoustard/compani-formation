@@ -15,7 +15,7 @@ const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress} disabled={disabled}>
-        <ActivityIcon activity={activity} disabled={disabled} />
+        <ActivityIcon activity={activity} disabled={disabled} isCompleted={!!activity.activityHistories?.length} />
       </TouchableOpacity>
       <Text style={styles.activityName} lineBreakMode={'tail'} numberOfLines={2}>
         {activity.name}

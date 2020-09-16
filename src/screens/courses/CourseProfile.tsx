@@ -93,8 +93,8 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
-      <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} renderItem={renderCells}
-        ItemSeparatorComponent={renderSeparator} />
+      <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
+        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
     </ScrollView>
   );
 };
@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
   },
   separator: {
+    marginBottom: MARGIN.MD,
+  },
+  flatList: {
     marginBottom: MARGIN.MD,
   },
 });
