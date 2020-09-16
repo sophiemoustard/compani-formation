@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { StateType } from '../../../../src/types/StoreType';
 import { getCard } from '../../../store/selectors';
-import { navigate } from '../../../navigationRef';
 import { SingleChoiceQuestionType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
@@ -16,11 +15,10 @@ import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
   card: SingleChoiceQuestionType,
-  courseId: string,
   index: number
 }
 
-const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestionCard) => {
+const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
   const [isPressed, setIsPressed] = useState(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
   const [answers, setAnswers] = useState([]);
