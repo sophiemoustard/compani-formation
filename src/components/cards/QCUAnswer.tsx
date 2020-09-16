@@ -11,9 +11,8 @@ interface QCUAnswerProps {
   isGoodAnswerAndPressed: boolean,
   index: number,
   isPressed: boolean,
-  onPress: any,
+  onPress: (index: number) => void,
   isSelected: boolean,
-  onSelectedAnswerIndex: any,
 }
 
 const QCUAnswer = ({
@@ -23,7 +22,6 @@ const QCUAnswer = ({
   onPress,
   index,
   isSelected,
-  onSelectedAnswerIndex,
 }: QCUAnswerProps) => {
   const [color, setColor] = useState(GREY['200']);
 
@@ -34,10 +32,7 @@ const QCUAnswer = ({
   }, [isGoodAnswerAndPressed, isSelected]);
 
   const setColorOnPress = () => {
-    if (!isPressed) {
-      onPress();
-      onSelectedAnswerIndex(index);
-    }
+    if (!isPressed) onPress(index);
   };
 
   const style = styles(color, isSelected, isGoodAnswerAndPressed);
@@ -53,34 +48,32 @@ const QCUAnswer = ({
   );
 };
 
-const styles =
-(color, isSelected: boolean, isGoodAnswerAndPressed: boolean) =>
-  StyleSheet.create({
-    answerContainer: {
-      marginVertical: MARGIN.XS,
-    },
-    answer: {
-      minHeight: BUTTON_HEIGHT,
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderWidth: BORDER_WIDTH,
-      backgroundColor: WHITE,
-      borderColor: color,
-      borderRadius: BORDER_RADIUS.MD,
-    },
-    icon: {
-      display: isGoodAnswerAndPressed || isSelected ? 'flex' : 'none',
-      color,
-      fontSize: ICON.MD,
-      margin: MARGIN.MD,
-    },
-    text: {
-      ...FIRA_SANS_MEDIUM.LG,
-      color: GREY['800'],
-      textAlign: 'center',
-      alignSelf: 'center',
-      flex: 1,
-    },
-  });
+const styles = (color: string, isSelected: boolean, isGoodAnswerAndPressed: boolean) => StyleSheet.create({
+  answerContainer: {
+    marginVertical: MARGIN.XS,
+  },
+  answer: {
+    minHeight: BUTTON_HEIGHT,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: BORDER_WIDTH,
+    backgroundColor: WHITE,
+    borderColor: color,
+    borderRadius: BORDER_RADIUS.MD,
+  },
+  icon: {
+    display: isGoodAnswerAndPressed || isSelected ? 'flex' : 'none',
+    color,
+    fontSize: ICON.MD,
+    margin: MARGIN.MD,
+  },
+  text: {
+    ...FIRA_SANS_MEDIUM.LG,
+    color: GREY['800'],
+    textAlign: 'center',
+    alignSelf: 'center',
+    flex: 1,
+  },
+});
 
 export default QCUAnswer;

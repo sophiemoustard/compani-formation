@@ -37,6 +37,11 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
   };
 
+  const onSelectAnswer = (selectedIndex) => {
+    setIsPressed(true);
+    setSelectedAnswerIndex(selectedIndex);
+  };
+
   const expectedColor = answers[selectedAnswerIndex] === card.qcuGoodAnswer
     ? { inputs: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
     : { inputs: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
@@ -53,15 +58,14 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
             keyExtractor={item => item}
             renderItem={({ item, index: answerIndex }) =>
               <QCUAnswer
-                onPress={() => setIsPressed(true)} isPressed={isPressed} index={answerIndex}
-                onSelectedAnswerIndex={sai => setSelectedAnswerIndex(sai)}
-                isSelected={selectedAnswerIndex === answerIndex}
-                item={item} isGoodAnswerAndPressed={item === card.qcuGoodAnswer && isPressed} /> } />
+                onPress={onSelectAnswer} isPressed={isPressed} isSelected={selectedAnswerIndex === answerIndex}
+                index={answerIndex} item={item} isGoodAnswerAndPressed={item === card.qcuGoodAnswer && isPressed} />}
+          />
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
         <Text style={style.explanation}>{card.explanation}</Text>
-        <QuestionCardFooter expectedColor={expectedColor.inputs} index={index} isPressed= {isPressed} />
+        <QuestionCardFooter expectedColor={expectedColor.inputs} index={index} isPressed={isPressed} />
       </View>
     </>
   );
