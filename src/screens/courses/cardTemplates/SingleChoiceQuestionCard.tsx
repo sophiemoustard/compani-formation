@@ -1,58 +1,70 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, StyleSheet, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { StateType } from '../../../../src/types/StoreType';
 import { getCard } from '../../../store/selectors';
-import { navigate } from '../../../navigationRef';
-import { CardType } from '../../../types/CardType';
+import { SingleChoiceQuestionType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
-import { GREY, WHITE } from '../../../styles/colors';
-import { MARGIN, BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT } from '../../../styles/metrics';
-import Shadow from '../../../components/style/Shadow';
+import { GREY, GREEN, ORANGE } from '../../../styles/colors';
+import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
+import QCUAnswer from '../../../components/cards/QCUAnswer';
+import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
-  card: CardType,
-  courseId: string,
+  card: SingleChoiceQuestionType,
   index: number
 }
 
-const answerProposal = item => (
-  <View style={styles.answerContainer}>
-    <TouchableOpacity style={styles.answer}>
-      <Text style={styles.text}>{item}</Text>
-    </TouchableOpacity>
-    <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
-  </View>
-);
+const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
+  const [answers, setAnswers] = useState([]);
 
-const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestionCard) => {
-  const goBack = () => {
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+  useEffect(() => {
+    if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
+      setAnswers(shuffle([...card.falsyAnswers, card.qcuGoodAnswer]));
+    }
+  }, [card, isPressed]);
+
+  if (!card || card.template !== SINGLE_CHOICE_QUESTION) return null;
+
+  const onSelectAnswer = (selectedIndex) => {
+    setIsPressed(true);
+    setSelectedAnswerIndex(selectedIndex);
   };
 
-  if (!card || !card.falsyAnswers) return null;
+  const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
+    ? { button: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
+    : { button: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
+  const style = styles(isPressed, expectedColors.background, expectedColors.text);
 
   return (
     <>
-      <CardHeader color={GREY[600]} onPress={() => goBack()} icon='x-circle' />
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.question}>{card.question}</Text>
+      <CardHeader />
+      <ScrollView contentContainerStyle={style.container}>
+        <Text style={style.question}>{card.question}</Text>
         <View>
           <FlatList
-            data={shuffle([...card.falsyAnswers, card.qcuGoodAnswer])}
+            data={answers}
             keyExtractor={item => item}
-            renderItem={({ item }) => answerProposal(item)} />
+            renderItem={({ item, index: answerIndex }) =>
+              <QCUAnswer onPress={onSelectAnswer} isPressed={isPressed} isSelected={selectedAnswerIndex === answerIndex}
+                index={answerIndex} item={item} isGoodAnswerAndPressed={item === card.qcuGoodAnswer && isPressed} />}
+          />
         </View>
       </ScrollView>
-      <QuestionCardFooter index={index} />
+      <View style={style.footerContainer}>
+        <Text style={style.explanation}>{card.explanation}</Text>
+        <QuestionCardFooter expectedColor={expectedColors.button} index={index} isPressed={isPressed} />
+      </View>
     </>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = (isPressed: boolean, backgroundColor: string, textColor: string) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
@@ -64,22 +76,15 @@ const styles = StyleSheet.create({
     color: GREY['800'],
     marginBottom: MARGIN.XL,
   },
-  answerContainer: {
-    marginVertical: MARGIN.XS,
+  explanation: {
+    display: isPressed ? 'flex' : 'none',
+    textAlign: 'justify',
+    marginHorizontal: MARGIN.LG,
+    marginVertical: MARGIN.MD,
+    color: textColor,
   },
-  answer: {
-    minHeight: BUTTON_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: BORDER_WIDTH,
-    backgroundColor: WHITE,
-    borderColor: GREY['200'],
-    borderRadius: BORDER_RADIUS.MD,
-  },
-  text: {
-    ...FIRA_SANS_MEDIUM.LG,
-    color: GREY['800'],
-    textAlign: 'center',
+  footerContainer: {
+    backgroundColor: isPressed ? backgroundColor : GREY['100'],
   },
 });
 
