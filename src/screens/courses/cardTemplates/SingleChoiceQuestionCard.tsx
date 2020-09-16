@@ -36,10 +36,10 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
     setSelectedAnswerIndex(selectedIndex);
   };
 
-  const expectedColor = answers[selectedAnswerIndex] === card.qcuGoodAnswer
-    ? { inputs: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
-    : { inputs: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
-  const style = styles(isPressed, expectedColor.background, expectedColor.text);
+  const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
+    ? { button: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
+    : { button: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
+  const style = styles(isPressed, expectedColors.background, expectedColors.text);
 
   return (
     <>
@@ -59,7 +59,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
       </ScrollView>
       <View style={style.footerContainer}>
         <Text style={style.explanation}>{card.explanation}</Text>
-        <QuestionCardFooter expectedColor={expectedColor.inputs} index={index} isPressed={isPressed} />
+        <QuestionCardFooter expectedColor={expectedColors.button} index={index} isPressed={isPressed} />
       </View>
     </>
   );
