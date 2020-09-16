@@ -33,10 +33,6 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
 
   if (!card || card.template !== SINGLE_CHOICE_QUESTION) return null;
 
-  const goBack = () => {
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
-  };
-
   const onSelectAnswer = (selectedIndex) => {
     setIsPressed(true);
     setSelectedAnswerIndex(selectedIndex);
@@ -49,7 +45,7 @@ const SingleChoiceQuestionCard = ({ card, courseId, index }: SingleChoiceQuestio
 
   return (
     <>
-      <CardHeader color={GREY[600]} onPress={() => goBack()} icon='x-circle' />
+      <CardHeader />
       <ScrollView contentContainerStyle={style.container}>
         <Text style={style.question}>{card.question}</Text>
         <View>
