@@ -35,7 +35,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
 
   if (!card || card.template !== TITLE_TEXT_MEDIA) return null;
 
-  const imageSource = { uri: card.media.link };
+  const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles({ imgHeight });
 
   return (
