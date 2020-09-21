@@ -69,3 +69,9 @@ export interface MultipleChoiceQuestionType {
   qcmAnswers: Array<qcmAnswerFromAPIType>,
   explanation: string,
 }
+export interface FlashType {
+  _id: string,
+  template: string,
+  text: string,
+  backText: string,
+}
