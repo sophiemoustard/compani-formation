@@ -3,12 +3,12 @@ import { StyleSheet, Text, Image, ScrollView, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
-import { getCard } from '../../../store/selectors';
+import { getCard } from '../../../store/activities/selectors';
 import { MARGIN } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
-import { StateType } from '../../../types/StoreType';
 import { TitleTextMediaType } from '../../../types/CardType';
 import { TITLE_TEXT_MEDIA } from '../../../core/data/constants';
+import { StateType } from '../../../types/store/StoreType';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
@@ -58,6 +58,6 @@ const styles = (imgHeight : number) => StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
 
 export default connect(mapStateToProps)(TitleTextMediaCard);

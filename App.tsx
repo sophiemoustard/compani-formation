@@ -8,11 +8,11 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import getEnvVars from './environment';
 import Version from './src/api/version';
 import ConfirmModal from './src/components/modal/ConfirmModal';
-import { AppContainer } from './src/AppContainer';
+import AppContainer from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
-import { activities } from './src/store/reducers';
+import reducers from './src/store/index';
 
-const store = createStore(activities);
+const store = createStore(reducers);
 
 const fetchFonts = () => Font.loadAsync({
   'fira-sans-black': require('./assets/fonts/FiraSans-Black.ttf'),

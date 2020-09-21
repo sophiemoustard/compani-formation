@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import { StateType } from '../../../../src/types/StoreType';
-import { getCard } from '../../../store/selectors';
 import { SingleChoiceQuestionType } from '../../../types/CardType';
+import { StateType } from '../../../types/store/StoreType';
+import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
@@ -88,6 +88,6 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
 
 export default connect(mapStateToProps)(SingleChoiceQuestionCard);

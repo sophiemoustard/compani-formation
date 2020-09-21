@@ -1,8 +1,8 @@
 import 'array-flat-polyfill';
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, FlatList, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../api/courses';
@@ -10,6 +10,7 @@ import NextStepCell from '../../components/steps/NextStepCell';
 import CourseCell from '../../components/CourseCell';
 import { Context as AuthContext } from '../../context/AuthContext';
 import moment from '../../core/helpers/moment';
+import { getLoggedUserId } from '../../store/main/selectors';
 import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
 import commonStyles from '../../styles/common';
@@ -18,6 +19,7 @@ import { NavigationType } from '../../types/NavigationType';
 
 interface CourseListProps {
   navigation: NavigationType,
+  loggedUserId: string | null,
 }
 
 const formatFuturSlot = nextSlots => ({
@@ -52,14 +54,13 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .filter(step => Object.keys(step.slots).length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
-const CourseList = ({ navigation }: CourseListProps) => {
+const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
     try {
-      const userId = await AsyncStorage.getItem('user_id');
-      const fetchedCourses = await Courses.getUserCourses({ trainees: userId });
+      const fetchedCourses = await Courses.getUserCourses({ trainees: loggedUserId });
       setCourses(fetchedCourses);
     } catch (e) {
       if (e.status === 401) signOut();
@@ -70,9 +71,9 @@ const CourseList = ({ navigation }: CourseListProps) => {
 
   useEffect(() => {
     async function fetchData() { getCourses(); }
-    fetchData();
+    if (loggedUserId) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loggedUserId]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -155,4 +156,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseList;
+const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+
+export default connect(mapStateToProps)(CourseList);

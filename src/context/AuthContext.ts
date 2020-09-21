@@ -1,4 +1,4 @@
-import Users from '../api/users';
+import Users from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
@@ -82,8 +82,9 @@ const localSignIn = async (dispatch) => {
 };
 
 const tryLocalSignIn = dispatch => async () => {
+  const userId = await asyncStorage.getUserId();
   const { alenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
-  if (asyncStorage.isTokenValid(alenviToken, alenviTokenExpiryDate)) return localSignIn(dispatch);
+  if (userId && asyncStorage.isTokenValid(alenviToken, alenviTokenExpiryDate)) return localSignIn(dispatch);
 
   const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
   if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {

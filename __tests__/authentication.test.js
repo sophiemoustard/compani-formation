@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { render, fireEvent, waitFor } from 'react-native-testing-library';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
 import getEnvVars from '../environment';
-import { AppContainer } from '../src/AppContainer';
+import AppContainer from '../src/AppContainer';
 
 describe('Authentication tests', () => {
   let axiosMock;

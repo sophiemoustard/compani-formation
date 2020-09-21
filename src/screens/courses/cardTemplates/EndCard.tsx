@@ -8,10 +8,10 @@ import { navigate } from '../../../navigationRef';
 import { YELLOW, GREY } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
-import { StateType } from '../../../types/StoreType';
+import { StateType } from '../../../types/store/StoreType';
 import ActivityHistories from '../../../api/activityHistories';
 import { ActivityType } from '../../../types/ActivityType';
-import Actions from '../../../store/actions';
+import Actions from '../../../store/activities/actions';
 
 interface EndCardProps {
   courseId: String,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = (state: StateType) => ({
-  activity: state.activity,
+  activity: state.activities.activity,
 });
 
 const mapDispatchToProps = dispatch => ({
