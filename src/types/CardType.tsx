@@ -25,3 +25,13 @@ export interface SingleChoiceQuestionType {
   falsyAnswers: Array<string>,
   explanation: string,
 }
+
+export interface TextMediaType {
+  _id: string,
+  template: string,
+  media: {
+    link: string,
+    publicId: string,
+  },
+  text: string,
+}
