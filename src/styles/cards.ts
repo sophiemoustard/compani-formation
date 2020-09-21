@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BLACK } from './fonts';
-import { MARGIN } from './metrics';
+import { BORDER_RADIUS, MARGIN } from './metrics';
 
 export default StyleSheet.create({
   title: {
@@ -10,5 +10,9 @@ export default StyleSheet.create({
   text: {
     ...FIRA_SANS_REGULAR.MD,
     marginBottom: MARGIN.MD,
+  },
+  media: {
+    resizeMode: 'cover',
+    borderRadius: BORDER_RADIUS.MD,
   },
 });

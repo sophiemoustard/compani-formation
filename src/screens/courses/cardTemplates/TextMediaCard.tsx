@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
 import { getCard } from '../../../store/selectors';
-import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
+import { MARGIN } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
 import { StateType } from '../../../types/StoreType';
 import { TextMediaType } from '../../../types/CardType';
@@ -13,10 +13,6 @@ import { TEXT_MEDIA } from '../../../core/data/constants';
 interface TextMediaCardProps {
   card: TextMediaType,
   index: number,
-}
-
-interface StylesProps {
-  imgHeight: number,
 }
 
 const TextMediaCard = ({ card, index }: TextMediaCardProps) => {
@@ -36,29 +32,28 @@ const TextMediaCard = ({ card, index }: TextMediaCardProps) => {
   if (!card || card.template !== TEXT_MEDIA) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
-  const styleWithImgHeight = styles({ imgHeight });
+  const styleWithImgHeight = styles(imgHeight);
 
   return (
     <>
       <CardHeader />
       <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.text}>{card.text}</Text>
-        {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image}/>}
+        {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
       <CardFooter index={index} template={card.template}/>
     </>
   );
 };
 
-const styles = ({ imgHeight }: StylesProps) => StyleSheet.create({
+const styles = (imgHeight: number) => StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: MARGIN.MD,
   },
   image: {
-    resizeMode: 'cover',
+    ...cardsStyle.media,
     height: imgHeight,
-    borderRadius: BORDER_RADIUS.MD,
   },
 });
 

@@ -37,7 +37,7 @@ const styles = (index: number, isPressed: boolean) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: MARGIN.XL,
-    marginTop: MARGIN.SM,
+    marginTop: MARGIN.LG,
     marginHorizontal: MARGIN.LG,
   },
   button: {

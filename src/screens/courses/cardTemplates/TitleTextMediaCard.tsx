@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CardHeader from '../../../components/cards/CardHeader';
 import CardFooter from '../../../components/cards/CardFooter';
 import { getCard } from '../../../store/selectors';
-import { MARGIN, BORDER_RADIUS } from '../../../styles/metrics';
+import { MARGIN } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
 import { StateType } from '../../../types/StoreType';
 import { TitleTextMediaType } from '../../../types/CardType';
@@ -13,10 +13,6 @@ import { TITLE_TEXT_MEDIA } from '../../../core/data/constants';
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
   index: number,
-}
-
-interface StylesProps {
-  imgHeight: number,
 }
 
 const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
@@ -36,7 +32,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
   if (!card || card.template !== TITLE_TEXT_MEDIA) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
-  const styleWithImgHeight = styles({ imgHeight });
+  const styleWithImgHeight = styles(imgHeight);
 
   return (
     <>
@@ -44,22 +40,21 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
       <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Text style={cardsStyle.text}>{card.text}</Text>
-        {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image}/>}
+        {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
       <CardFooter index={index} template={card.template}/>
     </>
   );
 };
 
-const styles = ({ imgHeight }: StylesProps) => StyleSheet.create({
+const styles = (imgHeight : number) => StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: MARGIN.MD,
   },
   image: {
-    resizeMode: 'cover',
+    ...cardsStyle.media,
     height: imgHeight,
-    borderRadius: BORDER_RADIUS.MD,
   },
 });
 

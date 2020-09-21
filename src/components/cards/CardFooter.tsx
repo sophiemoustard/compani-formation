@@ -40,6 +40,7 @@ const styles = ({ justifyContent }: StylesProps) => StyleSheet.create({
     flexDirection: 'row',
     justifyContent,
     marginBottom: MARGIN.XL,
+    marginTop: MARGIN.LG,
     marginHorizontal: MARGIN.LG,
   },
 });
