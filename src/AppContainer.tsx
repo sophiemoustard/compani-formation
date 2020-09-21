@@ -16,6 +16,7 @@ import CourseList from './screens/courses/CourseList';
 import CourseProfile from './screens/courses/CourseProfile';
 import CardContainer from './screens/courses/CardContainer';
 import MainActions from './store/main/actions';
+import Actions from './store/actions';
 import { PINK } from './styles/colors';
 import { ActionType, ResetType } from './types/store/StoreType';
 import Users from './api/users';
@@ -65,10 +66,10 @@ const MainStack = createStackNavigator();
 
 interface AppContainerProps {
   setLoggedUser: (user: UserType) => void;
-  resetMainReducer: () => void;
+  resetAllReducers: () => void;
 }
 
-const AppContainer = ({ setLoggedUser, resetMainReducer }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,7 +82,7 @@ const AppContainer = ({ setLoggedUser, resetMainReducer }: AppContainerProps) =>
       setLoggedUser(pick(user, ['_id', 'identity.firstname', 'identity.lastname', 'local.email']));
     }
     if (alenviToken) setUser();
-    else resetMainReducer();
+    else resetAllReducers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alenviToken]);
 
@@ -107,7 +108,7 @@ const AppContainer = ({ setLoggedUser, resetMainReducer }: AppContainerProps) =>
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ResetType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-  resetMainReducer: () => dispatch(MainActions.resetMainReducer()),
+  resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });
 
 export default connect(null, mapDispatchToProps)(AppContainer);
