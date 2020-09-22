@@ -57,7 +57,9 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
+        {isPressed &&
         <Text style={style.explanation}>{card.explanation}</Text>
+        }
         <QuestionCardFooter expectedColor={expectedColors.button} index={index} isPressed={isPressed} />
       </View>
     </>
@@ -78,7 +80,6 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
   },
   explanation: {
     ...FIRA_SANS_REGULAR.MD,
-    display: isPressed ? 'flex' : 'none',
     textAlign: 'justify',
     marginHorizontal: MARGIN.LG,
     marginVertical: MARGIN.MD,
