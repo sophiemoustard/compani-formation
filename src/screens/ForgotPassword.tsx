@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { NavigationType } from '../types/NavigationType';
-import Users from '../api/users';
+import Users from '../api/authentication';
 import NiInput from '../components/form/Input';
 import NiButton from '../components/form/Button';
 import NiErrorMessage from '../components/ErrorMessage';

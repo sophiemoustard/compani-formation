@@ -6,16 +6,16 @@ import CardFooter from '../../../components/cards/CardFooter';
 import { getCard } from '../../../store/activities/selectors';
 import { MARGIN } from '../../../styles/metrics';
 import cardsStyle from '../../../styles/cards';
-import { TitleTextMediaType } from '../../../types/CardType';
-import { TITLE_TEXT_MEDIA } from '../../../core/data/constants';
 import { StateType } from '../../../types/store/StoreType';
+import { TextMediaType } from '../../../types/CardType';
+import { TEXT_MEDIA } from '../../../core/data/constants';
 
-interface TitleTextMediaCardProps {
-  card: TitleTextMediaType,
+interface TextMediaCardProps {
+  card: TextMediaType,
   index: number,
 }
 
-const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
+const TextMediaCard = ({ card, index }: TextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
     }
   }, [card]);
 
-  if (!card || card.template !== TITLE_TEXT_MEDIA) return null;
+  if (!card || card.template !== TEXT_MEDIA) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles(imgHeight);
@@ -38,7 +38,6 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
     <>
       <CardHeader />
       <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
-        <Text style={cardsStyle.title}>{card.title}</Text>
         <Text style={cardsStyle.text}>{card.text}</Text>
         {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
@@ -47,7 +46,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
   );
 };
 
-const styles = (imgHeight : number) => StyleSheet.create({
+const styles = (imgHeight: number) => StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: MARGIN.MD,
@@ -60,4 +59,4 @@ const styles = (imgHeight : number) => StyleSheet.create({
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
 
-export default connect(mapStateToProps)(TitleTextMediaCard);
+export default connect(mapStateToProps)(TextMediaCard);

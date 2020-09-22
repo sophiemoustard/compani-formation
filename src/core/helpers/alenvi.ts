@@ -1,4 +1,4 @@
-import Users from '../../api/users';
+import Users from '../../api/authentication';
 import asyncStorage from './asyncStorage';
 
 const refreshAlenviCookies = async (): Promise<boolean> => {

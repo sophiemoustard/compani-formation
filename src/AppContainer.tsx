@@ -1,20 +1,28 @@
 import React, { useEffect, useContext } from 'react';
+import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import pick from 'lodash/pick';
+import asyncStorage from './core/helpers/asyncStorage';
+import Profile from './screens/Profile';
+import { Context as AuthContext } from './context/AuthContext';
+import { navigationRef } from './navigationRef';
 import Authentication from './screens/Authentication';
 import ForgotPassword from './screens/ForgotPassword';
 import ProgramList from './screens/ProgramList';
 import CourseList from './screens/courses/CourseList';
 import CourseProfile from './screens/courses/CourseProfile';
 import CardContainer from './screens/courses/CardContainer';
-import Profile from './screens/Profile';
-import { Context as AuthContext } from './context/AuthContext';
-import { navigationRef } from './navigationRef';
+import MainActions from './store/main/actions';
+import Actions from './store/actions';
 import { PINK } from './styles/colors';
+import { ActionType, ResetType } from './types/store/StoreType';
+import Users from './api/users';
+import { UserType } from './types/UserType';
 
-interface tabBarIconProps {
+interface TabBarIconProps {
   color: string,
   size: number,
 }
@@ -30,7 +38,7 @@ const Courses = () => (
 
 const Tab = createBottomTabNavigator();
 
-const tabBarIcon = route => ({ size, color }: tabBarIconProps) => {
+const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
   const icons = { Courses: 'book', ProgramList: 'search', Profile: 'person-outline' };
 
   return (
@@ -56,10 +64,27 @@ const Home = () => {
 
 const MainStack = createStackNavigator();
 
-export const AppContainer = () => {
+interface AppContainerProps {
+  setLoggedUser: (user: UserType) => void;
+  resetAllReducers: () => void;
+}
+
+const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
+
+  useEffect(() => {
+    async function setUser() {
+      const userId = await asyncStorage.getUserId();
+      const user = await Users.getById(userId);
+      setLoggedUser(pick(user, ['_id', 'identity.firstname', 'identity.lastname', 'local.email']));
+    }
+    if (alenviToken) setUser();
+    else resetAllReducers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alenviToken]);
 
   if (!appIsReady) return null;
 
@@ -80,3 +105,10 @@ export const AppContainer = () => {
     </NavigationContainer>
   );
 };
+
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ResetType) => void) => ({
+  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+  resetAllReducers: () => dispatch(Actions.resetAllReducers()),
+});
+
+export default connect(null, mapDispatchToProps)(AppContainer);

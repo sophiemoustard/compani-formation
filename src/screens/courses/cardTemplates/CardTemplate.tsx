@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { StateType, ActionType } from '../../../types/StoreType';
+import { StateType, ActionType } from '../../../types/store/StoreType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
-import { TRANSITION, TITLE_TEXT_MEDIA, SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
+import { TRANSITION, TITLE_TEXT_MEDIA, SINGLE_CHOICE_QUESTION, TEXT_MEDIA } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
+import TextMediaCard from './TextMediaCard';
 import { ActivityType } from '../../../types/ActivityType';
-import Actions from '../../../store/actions';
+import Actions from '../../../store/activities/actions';
 import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
 
 interface CardTemplateProps {
@@ -34,6 +35,8 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <TitleTextMediaCard />;
     case SINGLE_CHOICE_QUESTION:
       return <SingleChoiceQuestionCard />;
+    case TEXT_MEDIA:
+      return <TextMediaCard />;
 
     default:
       return (
@@ -46,7 +49,7 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
   }
 };
 
-const mapStateToProps = (state: StateType) => ({ activity: state.activity });
+const mapStateToProps = (state: StateType) => ({ activity: state.activities.activity });
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
   setCardIndex: index => dispatch(Actions.setCardIndex(index)),
 });

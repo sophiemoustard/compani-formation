@@ -7,8 +7,8 @@ import { PINK, WHITE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import CardHeader from '../../../components/cards/CardHeader';
-import Actions from '../../../store/actions';
-import { ResetType } from '../../../types/StoreType';
+import Actions from '../../../store/activities/actions';
+import { ResetType } from '../../../types/store/StoreType';
 
 interface StartCardProps {
   title: string,

@@ -1,4 +1,4 @@
-import { ActivityType } from '../types/ActivityType';
+import { ActivityType } from '../ActivityType';
 
 // Actions types
 export const SET_ACTIVITY = 'SET_ACTIVITY';
@@ -22,10 +22,9 @@ export interface ResetActivityReducer {
   type: typeof RESET_ACTIVITY_REDUCER,
 }
 
-export type ActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType;
-export type ResetType = ResetActivityReducer;
+export type ActivityActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType;
 
-export interface StateType {
+export interface ActivityStateType {
   activity: ActivityType | null,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
