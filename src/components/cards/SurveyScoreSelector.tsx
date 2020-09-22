@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { GREY, PINK } from '../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { BORDER_WIDTH, ICON } from '../../styles/metrics';
 
 interface SurveyScoreSelectorProps {
   onPressScore: (score: number) => void,
@@ -33,7 +34,7 @@ const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelecto
 
 const styles = StyleSheet.create({
   line: {
-    borderWidth: 1,
+    borderWidth: BORDER_WIDTH,
     position: 'relative',
     top: 17, // = button's size / 2 + border's size
     borderColor: GREY[200],
@@ -43,22 +44,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   buttonContainer: {
-    height: 32,
+    height: ICON.XL,
   },
   button: {
     justifyContent: 'center',
-    height: 32,
+    height: ICON.XL,
   },
   circle: {
-    height: 16,
-    width: 16,
-    borderRadius: 16 / 2,
+    height: ICON.XS,
+    width: ICON.XS,
+    borderRadius: ICON.XS / 2,
     backgroundColor: GREY[200],
   },
   selectedCircle: {
-    height: 32,
-    width: 32,
-    borderRadius: 32 / 2,
+    height: ICON.XL,
+    width: ICON.XL,
+    borderRadius: ICON.XL / 2,
     backgroundColor: PINK[300],
     borderWidth: 2,
     borderColor: PINK[500],
