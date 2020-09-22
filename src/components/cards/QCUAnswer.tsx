@@ -90,7 +90,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isPre
   text: {
     ...FIRA_SANS_MEDIUM.MD,
     color: !isPressed || (!isSelected && isGoodAnswer) ? GREY['800'] : color,
-    marginVertical: MARGIN.XS + MARGIN.SM,
+    marginVertical: MARGIN.LG / 2,
     marginHorizontal: MARGIN.MD,
   },
 });
