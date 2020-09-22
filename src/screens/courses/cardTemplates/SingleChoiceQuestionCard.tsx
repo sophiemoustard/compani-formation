@@ -6,7 +6,7 @@ import { SingleChoiceQuestionType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
-import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
@@ -52,7 +52,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
             keyExtractor={item => item}
             renderItem={({ item, index: answerIndex }) =>
               <QCUAnswer onPress={onSelectAnswer} isPressed={isPressed} isSelected={selectedAnswerIndex === answerIndex}
-                index={answerIndex} item={item} isGoodAnswerAndPressed={item === card.qcuGoodAnswer && isPressed} />}
+                index={answerIndex} item={item} isGoodAnswer={item === card.qcuGoodAnswer} />}
           />
         </View>
       </ScrollView>
@@ -77,6 +77,7 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
     marginBottom: MARGIN.XL,
   },
   explanation: {
+    ...FIRA_SANS_REGULAR.MD,
     display: isPressed ? 'flex' : 'none',
     textAlign: 'justify',
     marginHorizontal: MARGIN.LG,

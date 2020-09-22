@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { MARGIN, ICON, BORDER_RADIUS, BORDER_WIDTH } from '../styles/metrics';
+import { ICON, BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT } from '../styles/metrics';
 import commonStyle from '../styles/common';
 import IconButton from './IconButton';
 import { PINK } from '../styles/colors';
@@ -22,16 +22,19 @@ const ArrowButton = ({ direction, onPress, disabled = false, color = PINK['500']
 
   return (
     <IconButton disabled={disabled} name={direction === LEFT ? 'arrow-left' : 'arrow-right' } onPress={onPress}
-      size={ICON.LG} color={color} style={[coloredStyle.container, disabled && commonStyle.disabled]} />
+      size={ICON.MD} color={color} style={[coloredStyle.container, disabled && commonStyle.disabled]} />
   );
 };
 
 const styles = ({ borderColor }: StylesProps) => StyleSheet.create({
   container: {
-    borderRadius: BORDER_RADIUS.LG,
+    height: BUTTON_HEIGHT,
+    width: BUTTON_HEIGHT,
+    borderRadius: BORDER_RADIUS.MD,
     borderWidth: BORDER_WIDTH,
-    padding: MARGIN.MD,
     borderColor,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
