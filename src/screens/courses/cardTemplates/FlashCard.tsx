@@ -64,7 +64,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
     <>
       <CardHeader />
       <View style={styles.container}>
-        <TouchableOpacity onPress= {flipCard}>
+        <TouchableOpacity style= {styles.contentContainer} onPress= {flipCard}>
           <Animated.View style= {[styles.flipCard, frontAnimatedStyle]}>
             <Text style={styles.question}>{card.text}</Text>
           </Animated.View>
@@ -72,9 +72,15 @@ const FlashCard = ({ card, index }: FlashCard) => {
             <Text style={styles.answer}>{card.backText}</Text>
           </Animated.View>
         </TouchableOpacity>
+<<<<<<< HEAD
         {/* <Animated.View style={[frontAnimatedStyle, styles.shadow]}> */}
         <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
         {/* </Animated.View> */}
+=======
+        <Animated.View style={[frontAnimatedStyle, styles.shadow]}>
+          <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
+        </Animated.View>
+>>>>>>> COM-1503: fix container size
       </View>
       <CardFooter index={index} template={card.template}/>
     </>
@@ -85,25 +91,17 @@ const styles = StyleSheet.create({
   container: {
     margin: MARGIN.LG,
     alignItems: 'center',
-    height: 360,
+    justifyContent: 'center',
   },
   contentContainer: {
-    width: '100%',
-    height: '100%',
-    marginBottom: MARGIN.XXL,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: BORDER_WIDTH,
-    backgroundColor: WHITE,
-    borderColor: GREY['200'],
-    borderRadius: BORDER_RADIUS.MD,
+    height: 360,
+    width: 312,
+    flexGrow: 1,
   },
   flipCard: {
-    width: 330,
-    height: 360,
-    marginBottom: MARGIN.XXL,
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
     borderWidth: BORDER_WIDTH,
     borderColor: GREY['200'],
     borderRadius: BORDER_RADIUS.MD,
