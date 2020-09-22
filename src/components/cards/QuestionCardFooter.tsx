@@ -10,7 +10,7 @@ import Button from '../form/Button';
 
 interface QuestionCardFooterProps {
   index: number,
-  buttonvisible?: boolean,
+  buttonVisible?: boolean,
   arrowColor: string,
   buttonColor: string,
   buttonCaption?: string,
@@ -19,7 +19,7 @@ interface QuestionCardFooterProps {
 
 const QuestionCardFooter = ({
   index,
-  buttonvisible = true,
+  buttonVisible = true,
   arrowColor,
   buttonColor,
   buttonCaption = 'Continuer',
@@ -33,7 +33,7 @@ const QuestionCardFooter = ({
       {arrowButtonVisible &&
         <ArrowButton color={arrowColor} direction={LEFT}
           onPress={() => navigate(`card-${index - 1}`)} />}
-      {buttonvisible &&
+      {buttonVisible &&
         <View style={style.button}>
           <Button bgColor={buttonColor} color={WHITE} borderColor={buttonColor} disabled={buttonDisabled}
             caption={buttonCaption} onPress={() => navigate(`card-${index + 1}`)} />
@@ -53,7 +53,6 @@ const styles = (arrowButtonVisible: boolean) => StyleSheet.create({
     marginHorizontal: MARGIN.LG,
   },
   button: {
-    display: 'flex',
     flexGrow: 1,
     marginLeft: arrowButtonVisible ? MARGIN.LG : 0,
   },
