@@ -23,21 +23,25 @@ const SurveyCard = ({ card, index }: SurveyCard) => {
   if (!card || card.template !== SURVEY) return null;
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <CardHeader />
       <View style={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
         <View style={styles.surveyScoreContainer}>
           <SurveyScoreSelector onPressScore={score => setSelectedScore(score)} selectedScore={selectedScore} />
-          <View style={styles.labels}>
-            {card.label?.left && <Text>{card.label.left}</Text>}
-            {card.label?.right && <Text>{card.label.right}</Text>}
+          <View style={styles.labelContainer}>
+            {card.label?.left && card.label?.right && (
+              <>
+                <Text>{card.label.left}</Text>
+                <Text>{card.label.right}</Text>
+              </>
+            )}
           </View>
         </View>
       </View>
       <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK['500'] : GREY['300']}
         arrowColor={PINK['500']} buttonCaption='Valider' buttonDisabled={!selectedScore} />
-    </View>
+    </>
   );
 };
 
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
     color: GREY['800'],
     justifyContent: 'flex-start',
   },
-  labels: {
+  labelContainer: {
     marginTop: MARGIN.XL,
     flexDirection: 'row',
     justifyContent: 'space-between',

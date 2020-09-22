@@ -13,13 +13,13 @@ const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelecto
   const scores = Array.from({ length: 5 }, (_, i) => i + 1);
 
   const scoreItem = (score: number) => (
-    <View key={score.toString()} style={styles.buttonContainer}>
-      <TouchableOpacity onPress={() => onPressScore(score)} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-        style={styles.button}>
+    <TouchableOpacity key={score.toString()} style={styles.buttonContainer} onPress={() => onPressScore(score)}
+      hitSlop={{ top: 20, bottom: 40, left: 20, right: 20 }}>
+      <View style={styles.button}>
         <View style={ score === selectedScore ? styles.selectedCircle : styles.circle} />
-      </TouchableOpacity>
+      </View>
       <Text style={ score === selectedScore ? styles.selectedText : styles.text}>{score}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   line: {
     borderWidth: BORDER_WIDTH,
     position: 'relative',
-    top: 17, // = button's size / 2 + border's size
+    top: ICON.XL / 2 + BORDER_WIDTH,
     borderColor: GREY[200],
   },
   container: {
