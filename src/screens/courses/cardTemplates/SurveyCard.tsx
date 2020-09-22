@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   labels: {
+    marginTop: MARGIN.XL,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
