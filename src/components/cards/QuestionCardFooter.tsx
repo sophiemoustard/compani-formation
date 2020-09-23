@@ -30,7 +30,7 @@ const QuestionCardFooter = ({
   const arrowButtonVisible = !(index === 0);
   const style = styles(arrowButtonVisible);
 
-  const onPressRight = () => {
+  const onPressButton = () => {
     if (validateCard) validateCard();
     navigate(`card-${index + 1}`);
   };
@@ -43,7 +43,7 @@ const QuestionCardFooter = ({
       {buttonVisible &&
         <View style={style.button}>
           <Button bgColor={buttonColor} color={WHITE} borderColor={buttonColor} disabled={buttonDisabled}
-            caption={buttonCaption} onPress={onPressRight} />
+            caption={buttonCaption} onPress={onPressButton} />
         </View>
       }
     </View>

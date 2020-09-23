@@ -18,9 +18,11 @@ const initialState: ActivityStateType = {
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
   const indexOfQuestionnaireAnswer = state.allQuestionnaireAnswers.findIndex((qa => qa.id === questionnaireAnswer.id));
-  if (indexOfQuestionnaireAnswer > -1) {
+
+  if (indexOfQuestionnaireAnswer !== -1) {
     const newAllQuestionnaireAnswers = [...state.allQuestionnaireAnswers];
     newAllQuestionnaireAnswers[indexOfQuestionnaireAnswer] = questionnaireAnswer;
+
     return { ...state, allQuestionnaireAnswers: newAllQuestionnaireAnswers };
   }
 

@@ -13,7 +13,7 @@ const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelecto
   const scores = Array.from({ length: 5 }, (_, i) => `${i + 1}`);
 
   const scoreItem = (score: string) => (
-    <TouchableOpacity key={score.toString()} style={styles.buttonContainer} onPress={() => onPressScore(score)}
+    <TouchableOpacity key={score} style={styles.buttonContainer} onPress={() => onPressScore(score)}
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} activeOpacity={1}>
       <View style={styles.button}>
         <View style={ score === selectedScore ? styles.selectedCircle : styles.circle} />

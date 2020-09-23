@@ -23,6 +23,7 @@ interface SurveyCard {
 
 const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: SurveyCard) => {
   const [selectedScore, setSelectedScore] = useState<string | null>(null);
+
   useEffect(() => {
     if (questionnaireAnswer) setSelectedScore(questionnaireAnswer.answer);
     else setSelectedScore(null);
@@ -49,7 +50,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }
       </View>
       <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK['500'] : GREY['300']}
         arrowColor={PINK['500']} buttonCaption='Valider' buttonDisabled={!selectedScore}
-        validateCard={() => addQuestionnaireAnswer({ id: card._id, answer: selectedScore })}/>
+        validateCard={() => addQuestionnaireAnswer({ id: card._id, answer: selectedScore })} />
     </>
   );
 };
