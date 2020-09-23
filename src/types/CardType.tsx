@@ -35,3 +35,10 @@ export interface TextMediaType {
   },
   text: string,
 }
+
+export interface SurveyType {
+  _id: string,
+  template: string,
+  question: string,
+  label?: { left: string, right: string},
+}

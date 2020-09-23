@@ -7,7 +7,7 @@ import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
-import { GREY, GREEN, ORANGE } from '../../../styles/colors';
+import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import SingleChoiceQuestionAnswer from '../../../components/cards/SingleChoiceQuestionAnswer';
@@ -15,7 +15,7 @@ import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
   card: SingleChoiceQuestionType,
-  index: number
+  index: number,
 }
 
 const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
@@ -59,7 +59,8 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
       </ScrollView>
       <View style={style.footerContainer}>
         {isPressed && <Text style={style.explanation}>{card.explanation}</Text>}
-        <QuestionCardFooter expectedColor={expectedColors.button} index={index} isPressed={isPressed} />
+        <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK['500']}
+          buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY['300']} />
       </View>
     </>
   );

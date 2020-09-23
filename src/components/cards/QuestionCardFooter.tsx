@@ -3,37 +3,47 @@ import { View, StyleSheet } from 'react-native';
 import ArrowButton from '../ArrowButton';
 import { navigate } from '../../navigationRef';
 import { LEFT } from '../../core/data/constants';
-import { WHITE, PINK, GREY } from '../../styles/colors';
+import { WHITE } from '../../styles/colors';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 import { MARGIN } from '../../styles/metrics';
 import Button from '../form/Button';
 
 interface QuestionCardFooterProps {
   index: number,
-  expectedColor: string,
-  isPressed: boolean,
+  buttonVisible?: boolean,
+  arrowColor: string,
+  buttonColor: string,
+  buttonCaption?: string,
+  buttonDisabled?: boolean,
 }
 
-const QuestionCardFooter = ({ index, expectedColor, isPressed }: QuestionCardFooterProps) => {
-  const leftRemoved = index === 0;
-  const style = styles(index);
+const QuestionCardFooter = ({
+  index,
+  buttonVisible = true,
+  arrowColor,
+  buttonColor,
+  buttonCaption = 'Continuer',
+  buttonDisabled = false,
+}: QuestionCardFooterProps) => {
+  const arrowButtonVisible = !(index === 0);
+  const style = styles(arrowButtonVisible);
 
   return (
     <View style={style.container}>
-      {!leftRemoved && <ArrowButton color={isPressed ? expectedColor : PINK['500']} direction={LEFT}
-        onPress={() => navigate(`card-${index - 1}`)} />}
-      {isPressed &&
-      <View style={style.button}>
-        <Button bgColor={isPressed ? expectedColor : GREY['300']}
-          color={WHITE} borderColor={isPressed ? expectedColor : GREY['300']}
-          caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
-      </View>
+      {arrowButtonVisible &&
+        <ArrowButton color={arrowColor} direction={LEFT}
+          onPress={() => navigate(`card-${index - 1}`)} />}
+      {buttonVisible &&
+        <View style={style.button}>
+          <Button bgColor={buttonColor} color={WHITE} borderColor={buttonColor} disabled={buttonDisabled}
+            caption={buttonCaption} onPress={() => navigate(`card-${index + 1}`)} />
+        </View>
       }
     </View>
   );
 };
 
-const styles = (index: number) => StyleSheet.create({
+const styles = (arrowButtonVisible: boolean) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -44,7 +54,7 @@ const styles = (index: number) => StyleSheet.create({
   },
   button: {
     flexGrow: 1,
-    marginLeft: index > 0 ? MARGIN.LG : 0,
+    marginLeft: arrowButtonVisible ? MARGIN.LG : 0,
   },
   text: {
     ...FIRA_SANS_MEDIUM.LG,
