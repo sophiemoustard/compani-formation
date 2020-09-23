@@ -57,9 +57,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        {isPressed &&
-        <Text style={style.explanation}>{card.explanation}</Text>
-        }
+        {isPressed && <Text style={style.explanation}>{card.explanation}</Text>}
         <QuestionCardFooter expectedColor={expectedColors.button} index={index} isPressed={isPressed} />
       </View>
     </>

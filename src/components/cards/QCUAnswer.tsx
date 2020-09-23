@@ -11,25 +11,23 @@ interface QCUAnswerProps {
   isGoodAnswer: boolean,
   index: number,
   isPressed: boolean,
-  onPress: (index: number) => void,
   isSelected: boolean,
+  onPress: (index: number) => void,
 }
 
 const QCUAnswer = ({
   item,
   isGoodAnswer,
-  isPressed = false,
-  onPress,
   index,
+  isPressed = false,
   isSelected,
+  onPress,
 }: QCUAnswerProps) => {
   const [color, setColor] = useState(GREY['200']);
 
   useEffect(() => {
-    if (isSelected) {
-      if (isGoodAnswer) return setColor(GREEN['600']);
-      return setColor(ORANGE['600']);
-    }
+    if (isSelected && isGoodAnswer) return setColor(GREEN['600']);
+    if (isSelected) return setColor(ORANGE['600']);
     return setColor(GREY['500']);
   }, [isGoodAnswer, isSelected]);
 
@@ -46,9 +44,9 @@ const QCUAnswer = ({
         <View style={style.textContainer}>
           <Text style={style.text}>{item}</Text>
         </View>
-        { isMarkerVisible &&
-        <View style={style.iconContainer}>
-          <Feather style={style.icon} name={isGoodAnswer && isPressed ? 'check-circle' : 'x-circle'}/>
+        {isMarkerVisible &&
+        <View style={style.markerContainer}>
+          <Feather style={style.marker} name={isGoodAnswer && isPressed ? 'check-circle' : 'x-circle'}/>
         </View>
         }
       </TouchableOpacity>
@@ -70,13 +68,13 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isPre
     alignItems: 'center',
 
   },
-  iconContainer: {
+  markerContainer: {
     marginHorizontal: MARGIN.SM,
     position: 'absolute',
     right: 0,
 
   },
-  icon: {
+  marker: {
     color: isGoodAnswer ? GREEN['600'] : ORANGE['600'],
     fontSize: ICON.MD,
     alignSelf: 'center',

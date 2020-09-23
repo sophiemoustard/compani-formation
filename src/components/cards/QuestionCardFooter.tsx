@@ -22,7 +22,7 @@ const QuestionCardFooter = ({ index, expectedColor, isPressed }: QuestionCardFoo
     <View style={style.container}>
       {!leftRemoved && <ArrowButton color={isPressed ? expectedColor : PINK['500']} direction={LEFT}
         onPress={() => navigate(`card-${index - 1}`)} />}
-      { isPressed &&
+      {isPressed &&
       <View style={style.button}>
         <Button bgColor={isPressed ? expectedColor : GREY['300']}
           color={WHITE} borderColor={isPressed ? expectedColor : GREY['300']}
