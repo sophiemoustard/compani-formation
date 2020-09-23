@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { GREY, PINK } from '../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../styles/fonts';
-import { BORDER_WIDTH, ICON } from '../../styles/metrics';
+import { BORDER_WIDTH, ICON, PADDING } from '../../styles/metrics';
 
 interface SurveyScoreSelectorProps {
   onPressScore: (score: number) => void,
@@ -14,7 +14,7 @@ const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelecto
 
   const scoreItem = (score: number) => (
     <TouchableOpacity key={score.toString()} style={styles.buttonContainer} onPress={() => onPressScore(score)}
-      hitSlop={{ top: 20, bottom: 40, left: 20, right: 20 }}>
+      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} activeOpacity={1}>
       <View style={styles.button}>
         <View style={ score === selectedScore ? styles.selectedCircle : styles.circle} />
       </View>
@@ -23,28 +23,36 @@ const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelecto
   );
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.line} />
-      <View style={styles.container}>
+      <View style={styles.scoreContainer}>
         {scores.map(score => scoreItem(score))}
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  line: {
-    borderWidth: BORDER_WIDTH,
-    position: 'relative',
-    top: ICON.XL / 2 + BORDER_WIDTH,
-    borderColor: GREY[200],
-  },
   container: {
+    paddingHorizontal: 16,
+  },
+  line: {
+    position: 'relative',
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY[200],
+    top: ICON.XL / 2 + BORDER_WIDTH,
+    marginRight: ICON.XL / 2,
+    marginLeft: ICON.XL / 2,
+  },
+  scoreContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   buttonContainer: {
+    width: ICON.XL,
     height: ICON.XL,
+    alignItems: 'center',
+    marginBottom: PADDING.XL,
   },
   button: {
     justifyContent: 'center',

@@ -5,7 +5,7 @@ import { SurveyType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, PINK } from '../../../styles/colors';
-import { MARGIN } from '../../../styles/metrics';
+import { MARGIN, PADDING } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
@@ -32,8 +32,8 @@ const SurveyCard = ({ card, index }: SurveyCard) => {
           <View style={styles.labelContainer}>
             {card.label?.left && card.label?.right && (
               <>
-                <Text>{card.label.left}</Text>
-                <Text>{card.label.right}</Text>
+                <Text style={styles.text}>{card.label.left}</Text>
+                <Text style={styles.text}>{card.label.right}</Text>
               </>
             )}
           </View>
@@ -60,9 +60,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   labelContainer: {
-    marginTop: MARGIN.XL,
+    paddingTop: PADDING.XL,
+    paddingHorizontal: PADDING.LG,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  text: {
+    width: 88,
+    color: PINK[500],
   },
 });
 
