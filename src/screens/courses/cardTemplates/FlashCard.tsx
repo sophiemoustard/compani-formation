@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
@@ -24,7 +24,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
   let rotationValue = 0;
 
   animatedValue.addListener(({ value }) => { rotationValue = value; });
-  React.useEffect(() => {
+  useEffect(() => {
     if (isPressed === true) {
       if (rotationValue >= 90) {
         Animated.spring(animatedValue, {
