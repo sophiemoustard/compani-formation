@@ -8,7 +8,7 @@ import {
   SetExitConfirmationModalType,
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
-  QuestionnaireAnswer,
+  QuestionnaireAnswerType,
   AddQuestionnaireAnswerType,
 } from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
@@ -17,7 +17,7 @@ const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_AC
 const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
 const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfirmationModalType =>
   ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
-const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswer): AddQuestionnaireAnswerType =>
+const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
 const resetActivityReducer = (): ResetType => ({ type: RESET_ACTIVITY_REDUCER });
 

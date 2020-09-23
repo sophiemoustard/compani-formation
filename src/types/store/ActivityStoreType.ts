@@ -22,7 +22,7 @@ export interface SetExitConfirmationModalType {
 
 export interface AddQuestionnaireAnswerType {
   type: typeof ADD_QUESTIONNAIRE_ANSWER,
-  payload: QuestionnaireAnswer,
+  payload: QuestionnaireAnswerType,
 }
 export interface ResetActivityReducer {
   type: typeof RESET_ACTIVITY_REDUCER,
@@ -31,14 +31,14 @@ export interface ResetActivityReducer {
 export type ActivityActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType
 | AddQuestionnaireAnswerType;
 
-export interface QuestionnaireAnswer {
+export interface QuestionnaireAnswerType {
   id: string,
-  answer: string,
+  answer: string | null,
 }
 
 export interface ActivityStateType {
   activity: ActivityType | null,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
-  allQuestionnaireAnswers: Array<QuestionnaireAnswer>,
+  allQuestionnaireAnswers: Array<QuestionnaireAnswerType>,
 }
