@@ -5,7 +5,8 @@ TitleTextMediaType |
 TextMediaType |
 SurveyType |
 TitleTextType |
-MultipleChoiceQuestionType;
+MultipleChoiceQuestionType |
+FlashType;
 
 export interface TransitionType {
   _id: string,
