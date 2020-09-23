@@ -42,3 +42,10 @@ export interface SurveyType {
   question: string,
   label?: { left: string, right: string},
 }
+
+export interface TitleTextType {
+  _id: string,
+  template: string,
+  title: string,
+  text: string,
+}
