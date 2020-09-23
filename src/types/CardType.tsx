@@ -1,4 +1,10 @@
-export type CardType = SingleChoiceQuestionType | TransitionType | TitleTextMediaType;
+export type CardType =
+SingleChoiceQuestionType |
+TransitionType |
+TitleTextMediaType |
+TextMediaType |
+SurveyType |
+TitleTextType;
 
 export interface TransitionType {
   _id: string,
