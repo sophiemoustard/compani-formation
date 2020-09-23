@@ -6,7 +6,7 @@ import { WHITE, GREY, GREEN, ORANGE } from '../../styles/colors';
 import Shadow from '../style/Shadow';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
-interface QCUAnswerProps {
+interface SingleChoiceQuestionAnswerProps {
   item: string,
   isGoodAnswer: boolean,
   index: number,
@@ -15,14 +15,14 @@ interface QCUAnswerProps {
   onPress: (index: number) => void,
 }
 
-const QCUAnswer = ({
+const SingleChoiceQuestionAnswer = ({
   item,
   isGoodAnswer,
   index,
   isPressed = false,
   isSelected,
   onPress,
-}: QCUAnswerProps) => {
+}: SingleChoiceQuestionAnswerProps) => {
   const [color, setColor] = useState(GREY['200']);
 
   useEffect(() => {
@@ -93,4 +93,4 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isPre
   },
 });
 
-export default QCUAnswer;
+export default SingleChoiceQuestionAnswer;
