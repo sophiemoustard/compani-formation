@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import { FlashType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
-import { FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { FIRA_SANS_BOLD, NUNITO_LIGHT } from '../../../styles/fonts';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
 import CardFooter from '../../../components/cards/CardFooter';
 import { FLASHCARD } from '../../../core/data/constants';
-import Shadow from '../../../components/style/Shadow';
+import AnimatedShadow from '../../../components/style/AnimatedShadow';
 
 interface FlashCard {
   card: FlashType,
@@ -18,13 +18,38 @@ interface FlashCard {
 }
 
 const FlashCard = ({ card, index }: FlashCard) => {
-  if (!card || card.template !== FLASHCARD) return null;
+  const [isPressed, setIsPressed] = useState(false);
 
   const animatedValue = new Animated.Value(0);
-  let value1 = 0;
-  animatedValue.addListener(({ value }) => { value1 = value; });
+  let rotationValue = 0;
+
+  animatedValue.addListener(({ value }) => { rotationValue = value; });
+  React.useEffect(() => {
+    if (isPressed === true) {
+      if (rotationValue >= 90) {
+        Animated.spring(animatedValue, {
+          toValue: 0,
+          friction: 8,
+          tension: 10,
+          useNativeDriver: true,
+        }).start();
+      } else {
+        Animated.spring(animatedValue, {
+          toValue: 180,
+          friction: 8,
+          tension: 10,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+  }, [isPressed, animatedValue, rotationValue]);
+
+  if (!card || card.template !== FLASHCARD) return null;
+
   const flipCard = () => {
-    if (value1 >= 90) {
+    if (!isPressed) {
+      setIsPressed(true);
+    } else if (rotationValue >= 90) {
       Animated.spring(animatedValue, {
         toValue: 0,
         friction: 8,
@@ -64,39 +89,35 @@ const FlashCard = ({ card, index }: FlashCard) => {
     <>
       <CardHeader />
       <View style={styles.container}>
-        <TouchableOpacity style= {styles.contentContainer} onPress= {flipCard}>
+        <TouchableOpacity style= {styles.contentContainer}
+          onPress= {flipCard}>
           <Animated.View style= {[styles.flipCard, frontAnimatedStyle]}>
+            <Text style={styles.questionWatermark}>?</Text>
             <Text style={styles.question}>{card.text}</Text>
           </Animated.View>
           <Animated.View style= {[styles.flipCard, styles.flipCardBack, backAnimatedStyle]}>
+            <Text style={styles.answerWatermark}>!</Text>
             <Text style={styles.answer}>{card.backText}</Text>
           </Animated.View>
+          <AnimatedShadow animatedStyle={frontAnimatedStyle} backgroundColor={GREY['200']}
+            borderRadius={BORDER_RADIUS.LG}/>
         </TouchableOpacity>
-<<<<<<< HEAD
-        {/* <Animated.View style={[frontAnimatedStyle, styles.shadow]}> */}
-        <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
-        {/* </Animated.View> */}
-=======
-        <Animated.View style={[frontAnimatedStyle, styles.shadow]}>
-          <Shadow backgroundColor={GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
-        </Animated.View>
->>>>>>> COM-1503: fix container size
       </View>
-      <CardFooter index={index} template={card.template}/>
+      <CardFooter index={index} template={card.template} isRightRemoved={!isPressed}/>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: MARGIN.LG,
+    marginHorizontal: MARGIN.LG,
+    marginVertical: MARGIN.XXL,
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
   },
   contentContainer: {
-    height: 360,
-    width: 312,
-    flexGrow: 1,
+    width: '100%',
   },
   flipCard: {
     width: '100%',
@@ -112,6 +133,14 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_BOLD.LG,
     color: GREY['800'],
     textAlign: 'center',
+    alignSelf: 'center',
+
+  },
+  questionWatermark: {
+    ...NUNITO_LIGHT.XXXL,
+    alignSelf: 'center',
+    position: 'absolute',
+    color: PINK['100'],
   },
   flipCardBack: {
     backgroundColor: PINK['400'],
@@ -119,21 +148,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
   },
-  shadow: {
-    position: 'absolute',
-    top: 0,
-    bottom: -3,
-    left: 0,
-    right: 0,
-    backgroundColor: GREY['200'],
-    zIndex: -1,
-    borderRadius: BORDER_RADIUS.LG,
-
-  },
   answer: {
     ...FIRA_SANS_BOLD.LG,
     color: WHITE,
     textAlign: 'center',
+  },
+  answerWatermark: {
+    ...NUNITO_LIGHT.XXXL,
+    alignSelf: 'center',
+    position: 'absolute',
+    color: PINK['500'],
   },
 
 });
