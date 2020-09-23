@@ -15,7 +15,7 @@ import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
   card: SingleChoiceQuestionType,
-  index: number
+  index: number,
 }
 
 const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
@@ -60,7 +60,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
       <View style={style.footerContainer}>
         {isPressed && <Text style={style.explanation}>{card.explanation}</Text>}
         <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK['500']}
-          buttonvisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY['300']} />
+          buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY['300']} />
       </View>
     </>
   );
