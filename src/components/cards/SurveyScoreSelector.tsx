@@ -5,15 +5,15 @@ import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 import { BORDER_WIDTH, ICON, PADDING } from '../../styles/metrics';
 
 interface SurveyScoreSelectorProps {
-  onPressScore: (score: number) => void,
-  selectedScore: number | null,
+  onPressScore: (score: string) => void,
+  selectedScore: string | null,
 }
 
 const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelectorProps) => {
-  const scores = Array.from({ length: 5 }, (_, i) => i + 1);
+  const scores = Array.from({ length: 5 }, (_, i) => `${i + 1}`);
 
-  const scoreItem = (score: number) => (
-    <TouchableOpacity key={score.toString()} style={styles.buttonContainer} onPress={() => onPressScore(score)}
+  const scoreItem = (score: string) => (
+    <TouchableOpacity key={score} style={styles.buttonContainer} onPress={() => onPressScore(score)}
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }} activeOpacity={1}>
       <View style={styles.button}>
         <View style={ score === selectedScore ? styles.selectedCircle : styles.circle} />

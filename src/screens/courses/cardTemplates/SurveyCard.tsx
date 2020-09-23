@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SurveyType } from '../../../types/CardType';
@@ -7,18 +7,27 @@ import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, PINK } from '../../../styles/colors';
 import { MARGIN, PADDING } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
-import { StateType } from '../../../types/store/StoreType';
-import { getCard } from '../../../store/activities/selectors';
+import { StateType, ActionType } from '../../../types/store/StoreType';
+import { getCard, getQuestionnaireAnswer } from '../../../store/activities/selectors';
+import Actions from '../../../store/activities/actions';
 import SurveyScoreSelector from '../../../components/cards/SurveyScoreSelector';
 import { SURVEY } from '../../../core/data/constants';
+import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 
 interface SurveyCard {
   card: SurveyType,
-  index: number
+  index: number,
+  questionnaireAnswer: QuestionnaireAnswerType,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
 }
 
-const SurveyCard = ({ card, index }: SurveyCard) => {
-  const [selectedScore, setSelectedScore] = useState<number | null>(null);
+const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: SurveyCard) => {
+  const [selectedScore, setSelectedScore] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (questionnaireAnswer) setSelectedScore(questionnaireAnswer.answer);
+    else setSelectedScore(null);
+  }, [questionnaireAnswer]);
 
   if (!card || card.template !== SURVEY) return null;
 
@@ -40,7 +49,8 @@ const SurveyCard = ({ card, index }: SurveyCard) => {
         </View>
       </View>
       <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK['500'] : GREY['300']}
-        arrowColor={PINK['500']} buttonCaption='Valider' buttonDisabled={!selectedScore} />
+        arrowColor={PINK['500']} buttonCaption='Valider' buttonDisabled={!selectedScore}
+        validateCard={() => addQuestionnaireAnswer({ id: card._id, answer: selectedScore })} />
     </>
   );
 };
@@ -77,6 +87,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({
+  card: getCard(state),
+  index: state.activities.cardIndex,
+  questionnaireAnswer: getQuestionnaireAnswer(state),
+});
 
-export default connect(mapStateToProps)(SurveyCard);
+const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyCard);
