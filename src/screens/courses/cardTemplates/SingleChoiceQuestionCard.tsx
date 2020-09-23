@@ -6,11 +6,11 @@ import { SingleChoiceQuestionType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
-import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
-import QCUAnswer from '../../../components/cards/QCUAnswer';
+import SingleChoiceQuestionAnswer from '../../../components/cards/SingleChoiceQuestionAnswer';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
@@ -51,13 +51,14 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
             data={answers}
             keyExtractor={item => item}
             renderItem={({ item, index: answerIndex }) =>
-              <QCUAnswer onPress={onSelectAnswer} isPressed={isPressed} isSelected={selectedAnswerIndex === answerIndex}
-                index={answerIndex} item={item} isGoodAnswerAndPressed={item === card.qcuGoodAnswer && isPressed} />}
+              <SingleChoiceQuestionAnswer onPress={onSelectAnswer} index={answerIndex}
+                isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex}
+                item={item} isPressed={isPressed} />}
           />
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        <Text style={style.explanation}>{card.explanation}</Text>
+        {isPressed && <Text style={style.explanation}>{card.explanation}</Text>}
         <QuestionCardFooter expectedColor={expectedColors.button} index={index} isPressed={isPressed} />
       </View>
     </>
@@ -77,7 +78,7 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
     marginBottom: MARGIN.XL,
   },
   explanation: {
-    display: isPressed ? 'flex' : 'none',
+    ...FIRA_SANS_REGULAR.MD,
     textAlign: 'justify',
     marginHorizontal: MARGIN.LG,
     marginVertical: MARGIN.MD,

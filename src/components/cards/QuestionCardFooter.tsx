@@ -16,22 +16,24 @@ interface QuestionCardFooterProps {
 
 const QuestionCardFooter = ({ index, expectedColor, isPressed }: QuestionCardFooterProps) => {
   const leftRemoved = index === 0;
-  const style = styles(index, isPressed);
+  const style = styles(index);
 
   return (
     <View style={style.container}>
       {!leftRemoved && <ArrowButton color={isPressed ? expectedColor : PINK['500']} direction={LEFT}
         onPress={() => navigate(`card-${index - 1}`)} />}
+      {isPressed &&
       <View style={style.button}>
         <Button bgColor={isPressed ? expectedColor : GREY['300']}
           color={WHITE} borderColor={isPressed ? expectedColor : GREY['300']}
           caption='Continuer' onPress={() => navigate(`card-${index + 1}`)}/>
       </View>
+      }
     </View>
   );
 };
 
-const styles = (index: number, isPressed: boolean) => StyleSheet.create({
+const styles = (index: number) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -41,7 +43,6 @@ const styles = (index: number, isPressed: boolean) => StyleSheet.create({
     marginHorizontal: MARGIN.LG,
   },
   button: {
-    display: isPressed ? 'flex' : 'none',
     flexGrow: 1,
     marginLeft: index > 0 ? MARGIN.LG : 0,
   },
