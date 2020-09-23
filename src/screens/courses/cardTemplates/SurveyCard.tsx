@@ -32,8 +32,8 @@ const SurveyCard = ({ card, index }: SurveyCard) => {
           <View style={styles.labelContainer}>
             {card.label?.left && card.label?.right && (
               <>
-                <Text style={styles.text}>{card.label.left}</Text>
-                <Text style={styles.text}>{card.label.right}</Text>
+                <Text style={{ ...styles.text, ...styles.textLeft }}>{card.label.left}</Text>
+                <Text style={{ ...styles.text, ...styles.textRight }}>{card.label.right}</Text>
               </>
             )}
           </View>
@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
   text: {
     width: 88,
     color: PINK[500],
+  },
+  textLeft: {
+    textAlign: 'left',
+  },
+  textRight: {
+    textAlign: 'right',
   },
 });
 

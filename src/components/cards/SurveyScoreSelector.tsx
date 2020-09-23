@@ -34,7 +34,7 @@ const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelecto
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: PADDING.LG,
   },
   line: {
     position: 'relative',
