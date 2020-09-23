@@ -1,4 +1,10 @@
-export type CardType = SingleChoiceQuestionType | TransitionType | TitleTextMediaType;
+export type CardType =
+SingleChoiceQuestionType |
+TransitionType |
+TitleTextMediaType |
+TextMediaType |
+SurveyType |
+TitleTextType;
 
 export interface TransitionType {
   _id: string,
@@ -41,4 +47,11 @@ export interface SurveyType {
   template: string,
   question: string,
   label?: { left: string, right: string},
+}
+
+export interface TitleTextType {
+  _id: string,
+  template: string,
+  title: string,
+  text: string,
 }
