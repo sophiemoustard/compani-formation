@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated } from 'react-native';
 import { GREY } from '../../styles/colors';
 import { BORDER_RADIUS } from '../../styles/metrics';
-import { shadowStyle } from './style';
+import { shadowCommonStyle } from './shadowCommonStyle';
 
 interface AnimatedShadowProps {
   backgroundColor?: string,
@@ -16,7 +16,7 @@ const AnimatedShadow = ({
   borderRadius = BORDER_RADIUS.SM,
   animatedStyle,
 }: AnimatedShadowProps) => (
-  <Animated.View style={[shadowStyle(backgroundColor, borderRadius).shadow, animatedStyle]} />
+  <Animated.View style={[shadowCommonStyle(backgroundColor, borderRadius).shadow, animatedStyle]} />
 );
 
 export default AnimatedShadow;

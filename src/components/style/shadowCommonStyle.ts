@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const shadowStyle = (backgroundColor:string, borderRadius: number) => StyleSheet.create({
+export const shadowCommonStyle = (backgroundColor:string, borderRadius: number) => StyleSheet.create({
   shadow: {
     position: 'absolute',
     top: 0,
