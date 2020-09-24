@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
@@ -18,15 +18,14 @@ interface FlashCard {
 }
 
 const FlashCard = ({ card, index }: FlashCard) => {
-  const [isPressed, setIsPressed] = useState(0);
+  const [timesHasBeenClicked, setTimesHasBeenClicked] = useState('unclicked');
   const animatedValue = new Animated.Value(0);
+  const hasBeenClicked = useRef(false);
   let rotationValue = 0;
-  let test = false;
-
   animatedValue.addListener(({ value }) => { rotationValue = value; });
 
   useEffect(() => {
-    if (isPressed === 1) {
+    if (timesHasBeenClicked === 'clickedOnce' && !hasBeenClicked.current) {
       if (rotationValue >= 90) {
         Animated.spring(animatedValue, {
           toValue: 0,
@@ -42,15 +41,17 @@ const FlashCard = ({ card, index }: FlashCard) => {
           useNativeDriver: true,
         }).start();
       }
+      hasBeenClicked.current = true;
+    } else if (hasBeenClicked.current) {
+      setTimesHasBeenClicked('clickedMoreThanOnce');
     }
-  }, [isPressed, test, animatedValue, rotationValue]);
+  }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue]);
 
   if (!card || card.template !== FLASHCARD) return null;
 
   const flipCard = () => {
-    if (isPressed === 0) {
-      setIsPressed(1);
-      test = true;
+    if (timesHasBeenClicked === 'unclicked') {
+      setTimesHasBeenClicked('clickedOnce');
     } if (rotationValue >= 90) {
       Animated.spring(animatedValue, {
         toValue: 0,
@@ -67,33 +68,18 @@ const FlashCard = ({ card, index }: FlashCard) => {
       }).start();
     }
   };
-  const frontInterpolate = animatedValue.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['0deg', '180deg'],
-  });
-  const backInterpolate = animatedValue.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['180deg', '360deg'],
-  });
 
-  const frontAnimatedStyle = {
-    transform: [
-      { rotateY: frontInterpolate },
-    ],
-  };
-
-  const backAnimatedStyle = {
-    transform: [
-      { rotateY: backInterpolate },
-    ],
-  };
+  const frontInterpolate = animatedValue.interpolate({ inputRange: [0, 180], outputRange: ['0deg', '180deg'] });
+  const backInterpolate = animatedValue.interpolate({ inputRange: [0, 180], outputRange: ['180deg', '360deg'] });
+  const frontAnimatedStyle = { transform: [{ rotateY: frontInterpolate }] };
+  const backAnimatedStyle = { transform: [{ rotateY: backInterpolate }] };
 
   return (
     <>
       <CardHeader />
       <View style={styles.container}>
-        <TouchableOpacity style={styles.contentContainer} onPress= {flipCard}>
-          <Animated.View style= {[styles.flipCard, frontAnimatedStyle]}>
+        <TouchableOpacity style={styles.contentContainer} onPress={flipCard}>
+          <Animated.View style={[styles.flipCard, frontAnimatedStyle]}>
             <Text style={styles.questionWatermark}>?</Text>
             <Text style={styles.question}>{card.text}</Text>
           </Animated.View>
@@ -102,10 +88,10 @@ const FlashCard = ({ card, index }: FlashCard) => {
             <Text style={styles.answer}>{card.backText}</Text>
           </Animated.View>
           <AnimatedShadow animatedStyle={frontAnimatedStyle} backgroundColor={GREY['200']}
-            borderRadius={BORDER_RADIUS.LG}/>
+            borderRadius={BORDER_RADIUS.LG} />
         </TouchableOpacity>
       </View>
-      <CardFooter index={index} template={card.template} isRightRemoved={!isPressed}/>
+      <CardFooter index={index} template={card.template} removeRight={timesHasBeenClicked === 'unclicked'} />
     </>
   );
 };
