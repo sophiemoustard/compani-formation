@@ -19,9 +19,9 @@ interface SingleChoiceQuestionCard {
 }
 
 const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
-  const [isPressed, setIsPressed] = useState(false);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
-  const [answers, setAnswers] = useState([]);
+  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<string[]>([]);
 
   useEffect(() => {
     if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
@@ -36,7 +36,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
     setSelectedAnswerIndex(selectedIndex);
   };
 
-  const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
+  const expectedColors = selectedAnswerIndex && answers[selectedAnswerIndex] === card.qcuGoodAnswer
     ? { button: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
     : { button: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
   const style = styles(isPressed, expectedColors.background, expectedColors.text);
