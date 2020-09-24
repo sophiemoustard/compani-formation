@@ -20,7 +20,7 @@ interface SingleChoiceQuestionCard {
 
 const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
   const [isPressed, setIsPressed] = useState<boolean>(false);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
     setSelectedAnswerIndex(selectedIndex);
   };
 
-  const expectedColors = selectedAnswerIndex && answers[selectedAnswerIndex] === card.qcuGoodAnswer
+  const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
     ? { button: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
     : { button: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
   const style = styles(isPressed, expectedColors.background, expectedColors.text);

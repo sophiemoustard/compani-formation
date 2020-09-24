@@ -11,8 +11,8 @@ import { GREEN, GREY, ORANGE, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { MULTIPLE_CHOICE_QUESTION } from '../../../core/data/constants';
-import MultipleChoiceQuestionAnswer from '../../../components/cards/MultipleChoiceQuestionAnswer';
 import { navigate } from '../../../navigationRef';
+import SingleChoiceQuestionAnswer from '../../../components/cards/SingleChoiceQuestionAnswer';
 
 interface MultipleChoiceQuestionCard {
   card: MultipleChoiceQuestionType,
@@ -27,14 +27,6 @@ interface footerColorsType {
   buttonsColor: string,
   textColor: string,
 }
-
-export const AnswerState = {
-  Neutral: 'neutral',
-  Selected: 'selected',
-  GoodAndSelected: 'goodAnswerSelected',
-  GoodAndNotSelected: 'goodAnswerNotSelected',
-  FalseAndSelected: 'falseAnswerSelected',
-};
 
 const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionCard) => {
   const [answers, setAnswers] = useState<qcmAnswerType[]>([]);
@@ -67,17 +59,12 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
   };
 
   const onPressFooterButton = () => {
-    if (!isValidated) { return setIsValidated(true); }
+    const isOneAnswerSelected = answers.some(answer => answer.isSelected);
+    if (!isOneAnswerSelected) return null;
+
+    if (!isValidated) { setIsValidated(true); return null; }
 
     return navigate(`card-${cardIndex + 1}`);
-  };
-
-  const getAnswerState = (answer: qcmAnswerType) => {
-    if (isValidated && answer.isSelected && answer.correct) return AnswerState.GoodAndSelected;
-    if (isValidated && answer.isSelected && !answer.correct) return AnswerState.FalseAndSelected;
-    if (isValidated && !answer.isSelected && answer.correct) return AnswerState.GoodAndNotSelected;
-    if (!isValidated && answer.isSelected) return AnswerState.Selected;
-    return AnswerState.Neutral;
   };
 
   const style = styles(footerColors.textColor);
@@ -95,8 +82,9 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
             data={answers}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => (
-              <MultipleChoiceQuestionAnswer answer={item} index={index} answerState={getAnswerState(item)}
-                onPress={() => { if (!isValidated) onSelectAnswer(index); }} />
+              <SingleChoiceQuestionAnswer onPress={onSelectAnswer} index={index}
+                isGoodAnswer={item.correct} isSelected={item.isSelected}
+                item={item.label} isPressed={isValidated} />
             )}
           />
         </View>
@@ -135,7 +123,8 @@ const styles = (textColor: string) => StyleSheet.create({
     color: textColor,
   },
   footerContainer: {
-    backgroundColor: textColor === GREEN[600] ? GREEN[100] : ORANGE[100],
+    // eslint-disable-next-line no-nested-ternary
+    backgroundColor: textColor === GREEN[600] ? GREEN[100] : textColor === ORANGE[600] ? ORANGE[100] : GREY[100],
   },
 });
 

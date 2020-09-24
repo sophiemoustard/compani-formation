@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, ICON, PADDING } from '../../styles/metrics';
-import { WHITE, GREY, GREEN, ORANGE } from '../../styles/colors';
+import { WHITE, GREY, GREEN, ORANGE, PINK } from '../../styles/colors';
 import Shadow from '../style/Shadow';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
@@ -23,19 +23,20 @@ const SingleChoiceQuestionAnswer = ({
   isSelected,
   onPress,
 }: SingleChoiceQuestionAnswerProps) => {
-  const [color, setColor] = useState(GREY['200']);
+  const [color, setColor] = useState<string>(GREY['200']);
 
   useEffect(() => {
-    if (isSelected && isGoodAnswer) return setColor(GREEN['600']);
-    if (isSelected) return setColor(ORANGE['600']);
+    if (isSelected && isGoodAnswer && isPressed) return setColor(GREEN['600']);
+    if (isSelected && isPressed) return setColor(ORANGE['600']);
+    if (isSelected) return setColor(PINK[500]);
     return setColor(GREY['500']);
-  }, [isGoodAnswer, isSelected]);
+  }, [isGoodAnswer, isSelected, isPressed]);
 
   const setColorOnPress = () => {
     if (!isPressed) onPress(index);
   };
 
-  const isMarkerVisible = (isGoodAnswer && isPressed) || isSelected;
+  const isMarkerVisible = (isPressed && isGoodAnswer) || (isSelected && isPressed);
   const style = styles(color, isSelected, isGoodAnswer, isPressed);
 
   return (
