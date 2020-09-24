@@ -32,7 +32,7 @@ export type ActivityActionType = SetActivityType | SetCardIndexType | SetExitCon
 | AddQuestionnaireAnswerType;
 
 export interface QuestionnaireAnswerType {
-  id: string,
+  card: string,
   answer: string | null,
 }
 

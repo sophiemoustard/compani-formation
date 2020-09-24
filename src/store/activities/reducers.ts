@@ -17,7 +17,8 @@ const initialState: ActivityStateType = {
 
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
-  const indexOfQuestionnaireAnswer = state.allQuestionnaireAnswers.findIndex((qa => qa.id === questionnaireAnswer.id));
+  const indexOfQuestionnaireAnswer = state.allQuestionnaireAnswers.findIndex((qa =>
+    qa.card === questionnaireAnswer.card));
 
   if (indexOfQuestionnaireAnswer !== -1) {
     const newAllQuestionnaireAnswers = [...state.allQuestionnaireAnswers];
@@ -43,7 +44,7 @@ export const activities = (
     case ADD_QUESTIONNAIRE_ANSWER:
       return applyAddQuestionnaireAnswer(state, action);
     case RESET_ACTIVITY_REDUCER:
-      return initialState;
+      return state;
     default:
       return state;
   }
