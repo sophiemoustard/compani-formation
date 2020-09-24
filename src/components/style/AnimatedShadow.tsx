@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Animated } from 'react-native';
+import { Animated } from 'react-native';
 import { GREY } from '../../styles/colors';
 import { BORDER_RADIUS } from '../../styles/metrics';
+import { shadowStyle } from './style';
 
 interface AnimatedShadowProps {
   backgroundColor?: string,
@@ -15,20 +16,7 @@ const AnimatedShadow = ({
   borderRadius = BORDER_RADIUS.SM,
   animatedStyle,
 }: AnimatedShadowProps) => (
-  <Animated.View style={[styles(backgroundColor, borderRadius).shadow, animatedStyle]} />
+  <Animated.View style={[shadowStyle(backgroundColor, borderRadius).shadow, animatedStyle]} />
 );
-
-const styles = (backgroundColor, borderRadius) => StyleSheet.create({
-  shadow: {
-    position: 'absolute',
-    top: 0,
-    bottom: -3,
-    left: 0,
-    right: 0,
-    backgroundColor,
-    zIndex: -1,
-    borderRadius,
-  },
-});
 
 export default AnimatedShadow;
