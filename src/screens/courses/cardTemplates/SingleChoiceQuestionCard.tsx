@@ -10,7 +10,7 @@ import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
-import SingleChoiceQuestionAnswer from '../../../components/cards/SingleChoiceQuestionAnswer';
+import ChoicesQuestionAnswer from '../../../components/cards/ChoicesQuestionAnswer';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 
 interface SingleChoiceQuestionCard {
@@ -50,10 +50,11 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
           <FlatList
             data={answers}
             keyExtractor={item => item}
-            renderItem={({ item, index: answerIndex }) =>
-              <SingleChoiceQuestionAnswer onPress={onSelectAnswer} index={answerIndex}
+            renderItem={({ item, index: answerIndex }) => (
+              <ChoicesQuestionAnswer onPress={onSelectAnswer} index={answerIndex}
                 isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex}
-                item={item} isPressed={isPressed} />}
+                item={item} isValidated={isPressed} />
+            )}
           />
         </View>
       </ScrollView>

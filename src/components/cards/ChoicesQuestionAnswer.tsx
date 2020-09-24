@@ -6,38 +6,38 @@ import { WHITE, GREY, GREEN, ORANGE, PINK } from '../../styles/colors';
 import Shadow from '../style/Shadow';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
-interface SingleChoiceQuestionAnswerProps {
+interface ChoicesQuestionAnswerProps {
   item: string,
   isGoodAnswer: boolean,
   index: number,
-  isPressed: boolean,
+  isValidated: boolean,
   isSelected: boolean,
   onPress: (index: number) => void,
 }
 
-const SingleChoiceQuestionAnswer = ({
+const ChoicesQuestionAnswer = ({
   item,
   isGoodAnswer,
   index,
-  isPressed = false,
+  isValidated = false,
   isSelected,
   onPress,
-}: SingleChoiceQuestionAnswerProps) => {
+}: ChoicesQuestionAnswerProps) => {
   const [color, setColor] = useState<string>(GREY['200']);
 
   useEffect(() => {
-    if (isSelected && isGoodAnswer && isPressed) return setColor(GREEN['600']);
-    if (isSelected && isPressed) return setColor(ORANGE['600']);
+    if (isSelected && isGoodAnswer && isValidated) return setColor(GREEN['600']);
+    if (isSelected && isValidated) return setColor(ORANGE['600']);
     if (isSelected) return setColor(PINK[500]);
     return setColor(GREY['500']);
-  }, [isGoodAnswer, isSelected, isPressed]);
+  }, [isGoodAnswer, isSelected, isValidated]);
 
   const setColorOnPress = () => {
-    if (!isPressed) onPress(index);
+    if (!isValidated) onPress(index);
   };
 
-  const isMarkerVisible = (isPressed && isGoodAnswer) || (isSelected && isPressed);
-  const style = styles(color, isSelected, isGoodAnswer, isPressed);
+  const isMarkerVisible = (isValidated && isGoodAnswer) || (isSelected && isValidated);
+  const style = styles(color, isSelected, isGoodAnswer, isValidated);
 
   return (
     <View style={style.answerContainer}>
@@ -47,23 +47,23 @@ const SingleChoiceQuestionAnswer = ({
         </View>
         {isMarkerVisible &&
         <View style={style.markerContainer}>
-          <Feather style={style.marker} name={isGoodAnswer && isPressed ? 'check-circle' : 'x-circle'}/>
+          <Feather style={style.marker} name={isGoodAnswer && isValidated ? 'check-circle' : 'x-circle'} />
         </View>
         }
       </TouchableOpacity>
-      <Shadow backgroundColor={isSelected ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG}/>
+      <Shadow backgroundColor={isSelected ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG} />
     </View>
   );
 };
 
-const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isPressed: boolean) => StyleSheet.create({
+const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isValidated: boolean) => StyleSheet.create({
   answerContainer: {
     marginBottom: MARGIN.SM,
   },
   answer: {
     flexDirection: 'row',
     borderWidth: BORDER_WIDTH,
-    backgroundColor: !isPressed || isSelected || (isPressed && isGoodAnswer) ? WHITE : GREY['100'],
+    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
     borderColor: isSelected ? color : GREY['200'],
     borderRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
@@ -80,7 +80,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isPre
     fontSize: ICON.MD,
     alignSelf: 'center',
     paddingVertical: PADDING.SM,
-    backgroundColor: !isPressed || isSelected || (isPressed && isGoodAnswer) ? WHITE : GREY['100'],
+    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
   },
   textContainer: {
     alignItems: 'center',
@@ -88,10 +88,10 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isPre
   },
   text: {
     ...FIRA_SANS_MEDIUM.MD,
-    color: !isPressed || (!isSelected && isGoodAnswer) ? GREY['800'] : color,
+    color: !isValidated || (!isSelected && isGoodAnswer) ? GREY['800'] : color,
     marginVertical: MARGIN.LG / 2,
     marginHorizontal: MARGIN.MD,
   },
 });
 
-export default SingleChoiceQuestionAnswer;
+export default ChoicesQuestionAnswer;

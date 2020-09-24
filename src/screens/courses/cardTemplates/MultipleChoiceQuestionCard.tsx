@@ -12,7 +12,7 @@ import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { MULTIPLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import { navigate } from '../../../navigationRef';
-import SingleChoiceQuestionAnswer from '../../../components/cards/SingleChoiceQuestionAnswer';
+import ChoicesQuestionAnswer from '../../../components/cards/ChoicesQuestionAnswer';
 
 interface MultipleChoiceQuestionCard {
   card: MultipleChoiceQuestionType,
@@ -26,12 +26,17 @@ export interface qcmAnswerType extends qcmAnswerFromAPIType {
 interface footerColorsType {
   buttonsColor: string,
   textColor: string,
+  backgroundColor: string,
 }
 
 const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionCard) => {
   const [answers, setAnswers] = useState<qcmAnswerType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
-  const [footerColors, setFooterColors] = useState<footerColorsType>({ buttonsColor: PINK[500], textColor: GREY[100] });
+  const [footerColors, setFooterColors] = useState<footerColorsType>({
+    buttonsColor: PINK[500],
+    textColor: GREY[100],
+    backgroundColor: GREY[100],
+  });
 
   useEffect(() => {
     if (card && card.template === MULTIPLE_CHOICE_QUESTION && !isValidated) {
@@ -40,13 +45,17 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
   }, [card, isValidated]);
 
   useEffect(() => {
-    if (!isValidated) return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100] });
+    if (!isValidated) {
+      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+    }
 
     const isAnsweredCorrectly = answers
       .some(answer => (answer.isSelected && !answer.correct) || (!answer.isSelected && answer.correct));
-    if (!isAnsweredCorrectly) return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600] });
+    if (!isAnsweredCorrectly) {
+      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+    }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600] });
+    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
   }, [isValidated, answers]);
 
   const onSelectAnswer = (index: number) => {
@@ -67,7 +76,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
     return navigate(`card-${cardIndex + 1}`);
   };
 
-  const style = styles(footerColors.textColor);
+  const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
   if (!card || card.template !== MULTIPLE_CHOICE_QUESTION) return null;
 
@@ -82,9 +91,9 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
             data={answers}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => (
-              <SingleChoiceQuestionAnswer onPress={onSelectAnswer} index={index}
+              <ChoicesQuestionAnswer onPress={onSelectAnswer} index={index}
                 isGoodAnswer={item.correct} isSelected={item.isSelected}
-                item={item.label} isPressed={isValidated} />
+                item={item.label} isValidated={isValidated} />
             )}
           />
         </View>
@@ -98,7 +107,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
   );
 };
 
-const styles = (textColor: string) => StyleSheet.create({
+const styles = (textColor: string, backgroundColor: string) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
@@ -123,8 +132,7 @@ const styles = (textColor: string) => StyleSheet.create({
     color: textColor,
   },
   footerContainer: {
-    // eslint-disable-next-line no-nested-ternary
-    backgroundColor: textColor === GREEN[600] ? GREEN[100] : textColor === ORANGE[600] ? ORANGE[100] : GREY[100],
+    backgroundColor,
   },
 });
 
