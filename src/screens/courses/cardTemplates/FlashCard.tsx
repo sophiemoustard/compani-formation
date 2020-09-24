@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
-import { FlashType } from '../../../types/CardType';
+import { FlashCardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_BOLD, NUNITO_LIGHT } from '../../../styles/fonts';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
@@ -13,19 +13,20 @@ import { FLASHCARD } from '../../../core/data/constants';
 import AnimatedShadow from '../../../components/style/AnimatedShadow';
 
 interface FlashCard {
-  card: FlashType,
+  card: FlashCardType,
   index: number
 }
 
 const FlashCard = ({ card, index }: FlashCard) => {
-  const [isPressed, setIsPressed] = useState(false);
-
+  const [isPressed, setIsPressed] = useState(0);
   const animatedValue = new Animated.Value(0);
   let rotationValue = 0;
+  let test = false;
 
   animatedValue.addListener(({ value }) => { rotationValue = value; });
+
   useEffect(() => {
-    if (isPressed === true) {
+    if (isPressed === 1) {
       if (rotationValue >= 90) {
         Animated.spring(animatedValue, {
           toValue: 0,
@@ -42,14 +43,15 @@ const FlashCard = ({ card, index }: FlashCard) => {
         }).start();
       }
     }
-  }, [isPressed, animatedValue, rotationValue]);
+  }, [isPressed, test, animatedValue, rotationValue]);
 
   if (!card || card.template !== FLASHCARD) return null;
 
   const flipCard = () => {
-    if (!isPressed) {
-      setIsPressed(true);
-    } else if (rotationValue >= 90) {
+    if (isPressed === 0) {
+      setIsPressed(1);
+      test = true;
+    } if (rotationValue >= 90) {
       Animated.spring(animatedValue, {
         toValue: 0,
         friction: 8,
@@ -85,17 +87,17 @@ const FlashCard = ({ card, index }: FlashCard) => {
       { rotateY: backInterpolate },
     ],
   };
+
   return (
     <>
       <CardHeader />
       <View style={styles.container}>
-        <TouchableOpacity style= {styles.contentContainer}
-          onPress= {flipCard}>
+        <TouchableOpacity style={styles.contentContainer} onPress= {flipCard}>
           <Animated.View style= {[styles.flipCard, frontAnimatedStyle]}>
             <Text style={styles.questionWatermark}>?</Text>
             <Text style={styles.question}>{card.text}</Text>
           </Animated.View>
-          <Animated.View style= {[styles.flipCard, styles.flipCardBack, backAnimatedStyle]}>
+          <Animated.View style={[styles.flipCard, styles.flipCardBack, backAnimatedStyle]}>
             <Text style={styles.answerWatermark}>!</Text>
             <Text style={styles.answer}>{card.backText}</Text>
           </Animated.View>
