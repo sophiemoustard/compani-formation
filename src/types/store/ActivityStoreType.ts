@@ -40,5 +40,5 @@ export interface ActivityStateType {
   activity: ActivityType | null,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
-  allQuestionnaireAnswers: Array<QuestionnaireAnswerType>,
+  questionnaireAnswersList: Array<QuestionnaireAnswerType>,
 }

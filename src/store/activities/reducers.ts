@@ -12,22 +12,22 @@ const initialState: ActivityStateType = {
   activity: null,
   cardIndex: null,
   exitConfirmationModal: false,
-  allQuestionnaireAnswers: [],
+  questionnaireAnswersList: [],
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
-  const indexOfQuestionnaireAnswer = state.allQuestionnaireAnswers.findIndex((qa =>
+  const indexOfQuestionnaireAnswer = state.questionnaireAnswersList.findIndex((qa =>
     qa.card === questionnaireAnswer.card));
 
   if (indexOfQuestionnaireAnswer !== -1) {
-    const newAllQuestionnaireAnswers = [...state.allQuestionnaireAnswers];
-    newAllQuestionnaireAnswers[indexOfQuestionnaireAnswer] = questionnaireAnswer;
+    const newQuestionnaireAnswersList = [...state.questionnaireAnswersList];
+    newQuestionnaireAnswersList[indexOfQuestionnaireAnswer] = questionnaireAnswer;
 
-    return { ...state, allQuestionnaireAnswers: newAllQuestionnaireAnswers };
+    return { ...state, questionnaireAnswersList: newQuestionnaireAnswersList };
   }
 
-  return { ...state, allQuestionnaireAnswers: [...state.allQuestionnaireAnswers, questionnaireAnswer] };
+  return { ...state, questionnaireAnswersList: [...state.questionnaireAnswersList, questionnaireAnswer] };
 };
 
 export const activities = (
@@ -44,7 +44,7 @@ export const activities = (
     case ADD_QUESTIONNAIRE_ANSWER:
       return applyAddQuestionnaireAnswer(state, action);
     case RESET_ACTIVITY_REDUCER:
-      return state;
+      return initialState;
     default:
       return state;
   }
