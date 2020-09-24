@@ -28,7 +28,7 @@ export interface SingleChoiceQuestionType {
   template: string,
   question: string,
   qcuGoodAnswer: string,
-  falsyAnswers: Array<string>,
+  qcuFalsyAnswers: Array<string>,
   explanation: string,
 }
 

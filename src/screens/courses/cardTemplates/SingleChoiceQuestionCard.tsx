@@ -25,7 +25,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
 
   useEffect(() => {
     if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
-      setAnswers(shuffle([...card.falsyAnswers, card.qcuGoodAnswer]));
+      setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
     }
   }, [card, isPressed]);
 
