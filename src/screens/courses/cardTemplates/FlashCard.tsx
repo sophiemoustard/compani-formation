@@ -26,21 +26,12 @@ const FlashCard = ({ card, index }: FlashCard) => {
 
   useEffect(() => {
     if (timesHasBeenClicked === 'clickedOnce' && !hasBeenClicked.current) {
-      if (rotationValue >= 90) {
-        Animated.spring(animatedValue, {
-          toValue: 0,
-          friction: 8,
-          tension: 10,
-          useNativeDriver: true,
-        }).start();
-      } else {
-        Animated.spring(animatedValue, {
-          toValue: 180,
-          friction: 8,
-          tension: 10,
-          useNativeDriver: true,
-        }).start();
-      }
+      Animated.spring(animatedValue, {
+        toValue: 180,
+        friction: 8,
+        tension: 10,
+        useNativeDriver: true,
+      }).start();
       hasBeenClicked.current = true;
     } else if (hasBeenClicked.current) {
       setTimesHasBeenClicked('clickedMoreThanOnce');
