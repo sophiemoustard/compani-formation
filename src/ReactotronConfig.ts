@@ -1,6 +1,6 @@
 import Reactotron from 'reactotron-react-native';
 import { reactotronRedux } from 'reactotron-redux';
-// import asyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 
 declare global {
   interface Console {
@@ -9,10 +9,10 @@ declare global {
 }
 
 const tron = Reactotron
+  .setAsyncStorageHandler(AsyncStorage)
   .configure({ name: 'Alenvi Mobile' })
-  // .setAsyncStorageHandler(asyncStorage)
+  .useReactNative()
   .use(reactotronRedux())
-  .useReactNative({ asyncStorage: false })
   .connect();
 
 tron.clear!();
