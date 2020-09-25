@@ -12,7 +12,7 @@ import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { MULTIPLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import { navigate } from '../../../navigationRef';
-import ChoicesQuestionAnswer from '../../../components/cards/QuizProposition';
+import QuizProposition from '../../../components/cards/QuizProposition';
 import cardsStyle from '../../../styles/cards';
 
 interface MultipleChoiceQuestionCardProps {
@@ -52,12 +52,14 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
 
     const isAnsweredCorrectly = answers.every(answer =>
       (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
-    if (!isAnsweredCorrectly) {
-      return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    if (isAnsweredCorrectly) {
+      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
   }, [isValidated, answers]);
+
+  const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 
   const onSelectAnswer = (index: number) => {
     setAnswers((prevState: qcmAnswerType[]) => {
@@ -69,8 +71,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
   };
 
   const onPressFooterButton = () => {
-    const isOneAnswerSelected = answers.some(answer => answer.isSelected);
-    if (!isOneAnswerSelected) return null;
+    if (!isOneAnswerSelected()) return null;
 
     if (!isValidated) return setIsValidated(true);
 
@@ -92,9 +93,8 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
             data={answers}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => (
-              <ChoicesQuestionAnswer onPress={onSelectAnswer} index={index}
-                isGoodAnswer={item.correct} isSelected={item.isSelected}
-                item={item.label} isValidated={isValidated} />
+              <QuizProposition onPress={onSelectAnswer} index={index} item={item.label} isValidated={isValidated}
+                isGoodAnswer={item.correct} isSelected={item.isSelected} />
             )}
           />
         </View>
@@ -102,7 +102,8 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
       <View style={style.footerContainer}>
         {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} buttonColor={footerColors.buttonsColor} index={cardIndex} />
+          arrowColor={footerColors.buttonsColor} index={cardIndex} buttonDisabled={!isOneAnswerSelected()}
+          buttonColor={isOneAnswerSelected() ? footerColors.buttonsColor : GREY[300]} />
       </View>
     </>
   );

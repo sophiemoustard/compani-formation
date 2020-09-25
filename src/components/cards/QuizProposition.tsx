@@ -6,7 +6,7 @@ import { WHITE, GREY, GREEN, ORANGE, PINK } from '../../styles/colors';
 import Shadow from '../style/Shadow';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
-interface ChoicesQuestionAnswerProps {
+interface QuizPropositionProps {
   item: string,
   isGoodAnswer: boolean,
   index: number,
@@ -15,14 +15,14 @@ interface ChoicesQuestionAnswerProps {
   onPress: (index: number) => void,
 }
 
-const ChoicesQuestionAnswer = ({
+const QuizProposition = ({
   item,
   isGoodAnswer,
   index,
   isValidated = false,
   isSelected,
   onPress,
-}: ChoicesQuestionAnswerProps) => {
+}: QuizPropositionProps) => {
   const [color, setColor] = useState<string>(GREY['200']);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const ChoicesQuestionAnswer = ({
 
   return (
     <View style={style.answerContainer}>
-      <TouchableOpacity style={style.answer} onPress={() => { setColorOnPress(); } }>
+      <TouchableOpacity style={style.answer} onPress={() => { setColorOnPress(); }} disabled={isValidated}>
         <View style={style.textContainer}>
           <Text style={style.text}>{item}</Text>
         </View>
@@ -93,4 +93,4 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
   },
 });
 
-export default ChoicesQuestionAnswer;
+export default QuizProposition;

@@ -9,7 +9,7 @@ import CardHeader from '../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
-import ChoicesQuestionAnswer from '../../../components/cards/QuizProposition';
+import QuizProposition from '../../../components/cards/QuizProposition';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import cardsStyle from '../../../styles/cards';
 
@@ -51,9 +51,8 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps
             data={answers}
             keyExtractor={(_, answerIndex) => answerIndex.toString()}
             renderItem={({ item, index: answerIndex }) => (
-              <ChoicesQuestionAnswer onPress={onSelectAnswer} index={answerIndex}
-                isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex}
-                item={item} isValidated={isPressed} />
+              <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item} isValidated={isPressed}
+                isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex} />
             )}
           />
         </View>
