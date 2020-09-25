@@ -12,6 +12,7 @@ import {
   TEXT_MEDIA,
   SURVEY,
   TITLE_TEXT,
+  MULTIPLE_CHOICE_QUESTION,
 } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
@@ -21,6 +22,7 @@ import Actions from '../../../store/activities/actions';
 import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
 import SurveyCard from './SurveyCard';
 import TitleTextCard from './TitleTextCard';
+import MultipleChoiceQuestionCard from './MultipleChoiceQuestionCard';
 
 interface CardTemplateProps {
   index: number,
@@ -50,6 +52,8 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <SurveyCard />;
     case TITLE_TEXT:
       return <TitleTextCard />;
+    case MULTIPLE_CHOICE_QUESTION:
+      return <MultipleChoiceQuestionCard />;
 
     default:
       return (

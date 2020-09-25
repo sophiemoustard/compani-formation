@@ -6,22 +6,22 @@ import { SingleChoiceQuestionType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
-import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
-import SingleChoiceQuestionAnswer from '../../../components/cards/SingleChoiceQuestionAnswer';
+import QuizProposition from '../../../components/cards/QuizProposition';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
+import cardsStyle from '../../../styles/cards';
 
-interface SingleChoiceQuestionCard {
+interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
   index: number,
 }
 
-const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => {
-  const [isPressed, setIsPressed] = useState(false);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(-1);
-  const [answers, setAnswers] = useState([]);
+const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps) => {
+  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
+  const [answers, setAnswers] = useState<string[]>([]);
 
   useEffect(() => {
     if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
@@ -45,20 +45,20 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCard) => 
     <>
       <CardHeader />
       <ScrollView contentContainerStyle={style.container}>
-        <Text style={style.question}>{card.question}</Text>
+        <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <FlatList
             data={answers}
-            keyExtractor={item => item}
-            renderItem={({ item, index: answerIndex }) =>
-              <SingleChoiceQuestionAnswer onPress={onSelectAnswer} index={answerIndex}
-                isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex}
-                item={item} isPressed={isPressed} />}
+            keyExtractor={(_, answerIndex) => answerIndex.toString()}
+            renderItem={({ item, index: answerIndex }) => (
+              <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item} isValidated={isPressed}
+                isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex} />
+            )}
           />
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        {isPressed && <Text style={style.explanation}>{card.explanation}</Text>}
+        {isPressed && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK['500']}
           buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY['300']} />
       </View>
@@ -73,16 +73,7 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
     justifyContent: 'space-between',
     marginBottom: MARGIN.LG,
   },
-  question: {
-    ...FIRA_SANS_MEDIUM.LG,
-    color: GREY['800'],
-    marginBottom: MARGIN.XL,
-  },
   explanation: {
-    ...FIRA_SANS_REGULAR.MD,
-    textAlign: 'justify',
-    marginHorizontal: MARGIN.LG,
-    marginVertical: MARGIN.MD,
     color: textColor,
   },
   footerContainer: {

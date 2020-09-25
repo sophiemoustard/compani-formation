@@ -4,7 +4,8 @@ TransitionType |
 TitleTextMediaType |
 TextMediaType |
 SurveyType |
-TitleTextType;
+TitleTextType |
+MultipleChoiceQuestionType;
 
 export interface TransitionType {
   _id: string,
@@ -54,4 +55,17 @@ export interface TitleTextType {
   template: string,
   title: string,
   text: string,
+}
+
+export interface qcmAnswerFromAPIType {
+  correct: boolean,
+  label: string,
+}
+
+export interface MultipleChoiceQuestionType {
+  _id: string,
+  template: string,
+  question: string,
+  qcmAnswers: Array<qcmAnswerFromAPIType>,
+  explanation: string,
 }
