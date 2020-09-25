@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     color: GREY['800'],
     textAlign: 'center',
     alignSelf: 'center',
-
   },
   questionWatermark: {
     ...NUNITO_LIGHT.XXXL,
