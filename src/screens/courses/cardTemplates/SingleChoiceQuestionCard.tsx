@@ -23,11 +23,9 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
 
-  console.tron.log('sku sku', card);
-
   useEffect(() => {
     if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
-      //setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
+      setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
     }
   }, [card, isPressed]);
 
