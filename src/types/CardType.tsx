@@ -1,4 +1,10 @@
-export type CardType = SingleChoiceQuestionType | TransitionType | TitleTextMediaType;
+export type CardType =
+SingleChoiceQuestionType |
+TransitionType |
+TitleTextMediaType |
+TextMediaType |
+SurveyType |
+TitleTextType;
 
 export interface TransitionType {
   _id: string,
@@ -22,7 +28,7 @@ export interface SingleChoiceQuestionType {
   template: string,
   question: string,
   qcuGoodAnswer: string,
-  falsyAnswers: Array<string>,
+  qcuFalsyAnswers: Array<string>,
   explanation: string,
 }
 
@@ -33,5 +39,19 @@ export interface TextMediaType {
     link: string,
     publicId: string,
   },
+  text: string,
+}
+
+export interface SurveyType {
+  _id: string,
+  template: string,
+  question: string,
+  label?: { left: string, right: string},
+}
+
+export interface TitleTextType {
+  _id: string,
+  template: string,
+  title: string,
   text: string,
 }

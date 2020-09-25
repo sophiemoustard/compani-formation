@@ -4,6 +4,7 @@ import { ActivityType } from '../ActivityType';
 export const SET_ACTIVITY = 'SET_ACTIVITY';
 export const SET_CARD_INDEX = 'SET_CARD_INDEX';
 export const SET_EXIT_CONFIRMATION_MODAL = 'SET_EXIT_CONFIRMATION_MODAL';
+export const ADD_QUESTIONNAIRE_ANSWER = 'ADD_QUESTIONNAIRE_ANSWER';
 export const RESET_ACTIVITY_REDUCER = 'RESET_ACTIVITY_REDUCER';
 
 export interface SetActivityType {
@@ -18,14 +19,26 @@ export interface SetExitConfirmationModalType {
   type: typeof SET_EXIT_CONFIRMATION_MODAL,
   payload: boolean,
 }
+
+export interface AddQuestionnaireAnswerType {
+  type: typeof ADD_QUESTIONNAIRE_ANSWER,
+  payload: QuestionnaireAnswerType,
+}
 export interface ResetActivityReducer {
   type: typeof RESET_ACTIVITY_REDUCER,
 }
 
-export type ActivityActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType;
+export type ActivityActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType
+| AddQuestionnaireAnswerType;
+
+export interface QuestionnaireAnswerType {
+  id: string,
+  answer: string | null,
+}
 
 export interface ActivityStateType {
   activity: ActivityType | null,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
+  allQuestionnaireAnswers: Array<QuestionnaireAnswerType>,
 }
