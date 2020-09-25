@@ -6,15 +6,16 @@ import { MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../types
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
-import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
+import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREEN, GREY, ORANGE, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { MULTIPLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import { navigate } from '../../../navigationRef';
-import ChoicesQuestionAnswer from '../../../components/cards/ChoicesQuestionAnswer';
+import ChoicesQuestionAnswer from '../../../components/cards/QuizProposition';
+import cardsStyle from '../../../styles/cards';
 
-interface MultipleChoiceQuestionCard {
+interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
   cardIndex: number,
 }
@@ -29,8 +30,8 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionCard) => {
-  const [answers, setAnswers] = useState<qcmAnswerType[]>([]);
+const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionCardProps) => {
+  const [answers, setAnswers] = useState<Array<qcmAnswerType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttonsColor: PINK[500],
@@ -49,13 +50,13 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
       return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
     }
 
-    const isAnsweredCorrectly = answers
-      .some(answer => (answer.isSelected && !answer.correct) || (!answer.isSelected && answer.correct));
+    const isAnsweredCorrectly = answers.every(answer =>
+      (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
     if (!isAnsweredCorrectly) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
   }, [isValidated, answers]);
 
   const onSelectAnswer = (index: number) => {
@@ -71,7 +72,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
     const isOneAnswerSelected = answers.some(answer => answer.isSelected);
     if (!isOneAnswerSelected) return null;
 
-    if (!isValidated) { setIsValidated(true); return null; }
+    if (!isValidated) return setIsValidated(true);
 
     return navigate(`card-${cardIndex + 1}`);
   };
@@ -84,7 +85,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
     <>
       <CardHeader />
       <ScrollView contentContainerStyle={style.container}>
-        <Text style={style.question}>{card.question}</Text>
+        <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <Text style={style.informativeText}>Plusieurs réponses sont possibles</Text>
           <FlatList
@@ -99,7 +100,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        {isValidated && <Text style={style.explanation}>{card.explanation}</Text>}
+        {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
           arrowColor={footerColors.buttonsColor} buttonColor={footerColors.buttonsColor} index={cardIndex} />
       </View>
@@ -119,16 +120,7 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     color: PINK[500],
     marginBottom: MARGIN.SM,
   },
-  question: {
-    ...FIRA_SANS_MEDIUM.LG,
-    color: GREY['800'],
-    marginBottom: MARGIN.XL,
-  },
   explanation: {
-    ...FIRA_SANS_REGULAR.MD,
-    marginHorizontal: MARGIN.LG,
-    marginTop: MARGIN.MD,
-    marginBottom: -MARGIN.SM,
     color: textColor,
   },
   footerContainer: {

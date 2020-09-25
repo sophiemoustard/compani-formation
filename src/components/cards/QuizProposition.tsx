@@ -73,7 +73,6 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     marginHorizontal: MARGIN.SM,
     position: 'absolute',
     right: 0,
-
   },
   marker: {
     color: isGoodAnswer ? GREEN['600'] : ORANGE['600'],
