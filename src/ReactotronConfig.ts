@@ -10,10 +10,11 @@ declare global {
 
 const tron = Reactotron
   .setAsyncStorageHandler(AsyncStorage)
-  .configure({ name: 'Alenvi Mobile' })
+  .configure({ name: 'Alenvi Mobile', host: '192.168.1.102', port: 9090 })
   .useReactNative()
-  .use(reactotronRedux())
-  .connect();
+  .use(reactotronRedux());
+
+if (__DEV__) { tron.connect(); }
 
 tron.clear!();
 
