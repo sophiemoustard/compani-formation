@@ -6,5 +6,5 @@ export const getCard = state => state.activities.activity.cards[state.activities
 export const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | null => {
   const card = getCard(state);
   if (!card || card.template !== SURVEY) return null;
-  return state.activities.allQuestionnaireAnswers.find(qa => qa.id === card._id) || null;
+  return state.activities.questionnaireAnswersList.find(qa => qa.card === card._id) || null;
 };

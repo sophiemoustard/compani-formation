@@ -12,26 +12,36 @@ import { StateType } from '../../../types/store/StoreType';
 import ActivityHistories from '../../../api/activityHistories';
 import { ActivityType } from '../../../types/ActivityType';
 import Actions from '../../../store/activities/actions';
+import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 
 interface EndCardProps {
   courseId: String,
   activity: ActivityType,
+  questionnaireAnswersList: Array<QuestionnaireAnswerType>,
   resetActivityReducer: () => void,
   setCardIndex: (number) => void,
 }
 
-const EndCard = ({ courseId, activity, setCardIndex, resetActivityReducer }: EndCardProps) => {
+const EndCard = ({
+  courseId,
+  activity,
+  questionnaireAnswersList,
+  setCardIndex,
+  resetActivityReducer,
+}: EndCardProps) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
     async function fetchData() {
       const userId = await AsyncStorage.getItem('user_id');
-      await ActivityHistories.createActivityHistories({ user: userId, activity: activity._id });
+      const payload: Record<string, any> = { user: userId, activity: activity._id };
+      if (questionnaireAnswersList?.length) payload.questionnaireAnswersList = questionnaireAnswersList;
+      await ActivityHistories.createActivityHistories(payload);
       setCardIndex(null);
     }
 
     if (isFocused) fetchData();
-  }, [isFocused, activity, setCardIndex]);
+  }, [isFocused, activity, questionnaireAnswersList, setCardIndex]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
@@ -80,6 +90,7 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
+  questionnaireAnswersList: state.activities.questionnaireAnswersList,
 });
 
 const mapDispatchToProps = dispatch => ({
