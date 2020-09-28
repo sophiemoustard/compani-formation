@@ -12,11 +12,11 @@ import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 interface AnswerQuestionProps {
   answer: string,
-  onChangeText,
-  onSelect,
+  onChangeText: (string) => void,
+  onSelect: (boolean) => void,
 }
 
-const AnswerField = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) => {
+const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) => {
   const [isSelected, setIsSelected] = useState(false);
   const [placeholder, setPlaceHolder] = useState('Votre réponse...');
   const focusFieldSize = { top: -3, bottom: -3, right: -3, left: -3 };
@@ -51,7 +51,7 @@ const AnswerField = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) =>
         onBlur={() => { actionOnField('unselect'); }}
       />
       <Shadow backgroundColor = {isSelected ? TRANSPARENT_PINK : GREY[200]}
-        size = {isSelected ? focusFieldSize : undefined} />
+        relativePosition = {isSelected ? focusFieldSize : undefined} />
     </View>
   );
 };
@@ -76,4 +76,4 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
 });
 
-export default AnswerField;
+export default AnswerTextArea;

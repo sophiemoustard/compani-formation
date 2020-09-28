@@ -10,7 +10,7 @@ import { GREY, PINK } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { OPEN_QUESTION } from '../../../core/data/constants';
-import AnswerField from './AnswerField';
+import AnswerTextArea from './AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 import Actions from '../../../store/activities/actions';
 
@@ -40,7 +40,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
       <ScrollView contentContainerStyle={style.container}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
-          <AnswerField onChangeText={(text: string) => setAnswer(text) }
+          <AnswerTextArea onChangeText={(text: string) => setAnswer(text) }
             onSelect={(selected: boolean) => setIsSelected(selected)} answer={answer}/>
         </View>
       </ScrollView>

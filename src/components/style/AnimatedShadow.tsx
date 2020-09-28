@@ -7,7 +7,12 @@ import { shadowCommonStyle } from './shadowCommonStyle';
 interface AnimatedShadowProps {
   backgroundColor?: string,
   borderRadius?: number,
-  size: any,
+  relativePosition?: {
+    top: number,
+    bottom: number,
+    left: number,
+    right: number,
+  },
   animatedStyle,
 }
 
@@ -15,15 +20,10 @@ interface AnimatedShadowProps {
 const AnimatedShadow = ({
   backgroundColor = GREY[200],
   borderRadius = BORDER_RADIUS.SM,
-  size = {
-    top: 0,
-    bottom: -3,
-    left: 0,
-    right: 0,
-  },
+  relativePosition = { top: 0, bottom: -3, left: 0, right: 0 },
   animatedStyle,
 }: AnimatedShadowProps) => (
-  <Animated.View style={[shadowCommonStyle(backgroundColor, borderRadius, size).shadow, animatedStyle]} />
+  <Animated.View style={[shadowCommonStyle(backgroundColor, borderRadius, relativePosition).shadow, animatedStyle]} />
 );
 
 export default AnimatedShadow;

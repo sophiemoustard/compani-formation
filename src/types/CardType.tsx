@@ -81,5 +81,5 @@ export interface OpenQuestionType {
   _id: string,
   template: string,
   question: string,
-  answer: string,
+  answer?: string,
 }
