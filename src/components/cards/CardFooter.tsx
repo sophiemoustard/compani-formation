@@ -10,16 +10,17 @@ interface CardFooterProps {
   index: number,
   template: string,
   color?: string,
+  removeRight?: boolean
 }
 
 interface StylesProps {
   justifyContent: 'flex-end' | 'space-between' | 'flex-start',
 }
 
-const CardFooter = ({ index, template, color }: CardFooterProps) => {
+const CardFooter = ({ index, template, color, removeRight }: CardFooterProps) => {
   const cardTemplate = CARD_TEMPLATES.find(card => card.value === template);
   const leftRemoved = index === 0;
-  const rightRemoved = cardTemplate?.type === QUIZ;
+  const rightRemoved = cardTemplate?.type === QUIZ || removeRight;
 
   let justifyContent;
   if (leftRemoved) justifyContent = 'flex-end';

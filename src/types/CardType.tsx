@@ -5,7 +5,8 @@ TitleTextMediaType |
 TextMediaType |
 SurveyType |
 TitleTextType |
-MultipleChoiceQuestionType;
+MultipleChoiceQuestionType |
+FlashCardType;
 
 export interface TransitionType {
   _id: string,
@@ -68,4 +69,11 @@ export interface MultipleChoiceQuestionType {
   question: string,
   qcmAnswers: Array<qcmAnswerFromAPIType>,
   explanation: string,
+}
+
+export interface FlashCardType {
+  _id: string,
+  template: string,
+  text: string,
+  backText: string,
 }
