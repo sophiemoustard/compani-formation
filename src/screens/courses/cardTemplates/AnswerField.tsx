@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import Shadow from '../../../components/style/Shadow';
 import { GREY, PINK, TRANSPARENT_PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 interface AnswerQuestionProps {
@@ -19,16 +19,9 @@ interface AnswerQuestionProps {
 const AnswerField = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) => {
   const [isSelected, setIsSelected] = useState(false);
   const [placeholder, setPlaceHolder] = useState('Votre réponse...');
-  const focusFieldSize = {
-    top: -3,
-    bottom: -3,
-    right: -3,
-    left: -3,
-  };
+  const focusFieldSize = { top: -3, bottom: -3, right: -3, left: -3 };
 
-  const keyboardDidHide = () => {
-    Keyboard.dismiss();
-  };
+  const keyboardDidHide = () => { Keyboard.dismiss(); };
 
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
@@ -74,10 +67,10 @@ const styles = (isSelected: boolean) => StyleSheet.create({
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.SM,
     borderWidth: BORDER_WIDTH,
-    borderColor: isSelected ? PINK['500'] : GREY[200],
-    paddingHorizontal: 16,
+    borderColor: isSelected ? PINK[500] : GREY[200],
+    paddingHorizontal: PADDING.LG,
     ...FIRA_SANS_MEDIUM.MD,
-    color: GREY['900'],
+    color: GREY[900],
     textAlignVertical: 'top',
     flexGrow: 1,
   },

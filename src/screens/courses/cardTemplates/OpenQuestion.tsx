@@ -35,32 +35,33 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
   if (!card || card.template !== OPEN_QUESTION) return null;
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }} >
-      { !isSelected &&
-        <CardHeader />
-      }
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView} >
+      {!isSelected && <CardHeader />}
       <ScrollView contentContainerStyle={style.container}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
-          <AnswerField onChangeText={(text) => { setAnswer(text); } }
-            onSelect={(selected) => { setIsSelected(selected); }} answer={answer}/>
+          <AnswerField onChangeText={(text: string) => setAnswer(text) }
+            onSelect={(selected: boolean) => setIsSelected(selected)} answer={answer}/>
         </View>
       </ScrollView>
-      <QuestionCardFooter index={index} buttonColor={answer ? PINK['500'] : GREY['300']}
-        arrowColor={PINK['500']} buttonCaption='Valider' buttonDisabled={!answer}
+      <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer}
         validateCard={() => addQuestionnaireAnswer({ card: card._id, answer })} />
     </KeyboardAvoidingView>
   );
 };
 
 const styles = (isSelected: boolean) => StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   container: {
     flexGrow: 1,
     marginBottom: MARGIN.LG,
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,
-    color: GREY['800'],
+    color: GREY[800],
     marginHorizontal: MARGIN.LG,
     marginBottom: MARGIN.XL,
     marginTop: isSelected ? MARGIN.MD : 0,

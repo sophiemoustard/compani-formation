@@ -7,17 +7,19 @@ import { shadowCommonStyle } from './shadowCommonStyle';
 interface ShadowProps {
   backgroundColor?: string,
   borderRadius?: number,
-  size: any,
+  size?: {
+    top: number,
+    bottom: number,
+    left: number,
+    right: number,
+  },
 }
 
-const Shadow = ({ backgroundColor = GREY[200],
+const Shadow = ({
+  backgroundColor = GREY[200],
   borderRadius = BORDER_RADIUS.SM,
-  size = {
-    top: 0,
-    bottom: -3,
-    left: 0,
-    right: 0,
-  } }: ShadowProps) => (
+  size = { top: 0, bottom: -3, left: 0, right: 0 },
+}: ShadowProps) => (
   <View style={shadowCommonStyle(backgroundColor, borderRadius, size).shadow} />
 );
 
