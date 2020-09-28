@@ -8,7 +8,6 @@ TitleTextType |
 MultipleChoiceQuestionType |
 FlashCardType;
 
-
 export interface TransitionType {
   _id: string,
   template: string,
