@@ -7,11 +7,18 @@ import { shadowCommonStyle } from './shadowCommonStyle';
 interface ShadowProps {
   backgroundColor?: string,
   borderRadius?: number,
+  size: any,
 }
 
-// You should add relative position on parent container
-const Shadow = ({ backgroundColor = GREY[200], borderRadius = BORDER_RADIUS.SM }: ShadowProps) => (
-  <View style={shadowCommonStyle(backgroundColor, borderRadius).shadow} />
+const Shadow = ({ backgroundColor = GREY[200],
+  borderRadius = BORDER_RADIUS.SM,
+  size = {
+    top: 0,
+    bottom: -3,
+    left: 0,
+    right: 0,
+  } }: ShadowProps) => (
+  <View style={shadowCommonStyle(backgroundColor, borderRadius, size).shadow} />
 );
 
 export default Shadow;

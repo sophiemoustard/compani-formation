@@ -7,17 +7,24 @@ import {
 } from 'react-native';
 import Shadow from '../../../components/style/Shadow';
 import { GREY, PINK, TRANSPARENT_PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 interface AnswerQuestionProps {
+  answer: string,
   onChangeText,
-  onSelect
+  onSelect,
 }
 
-const AnswerField = ({ onChangeText, onSelect }: AnswerQuestionProps) => {
+const AnswerField = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) => {
   const [isSelected, setIsSelected] = useState(false);
   const [placeholder, setPlaceHolder] = useState('Votre réponse...');
+  const focusFieldSize = {
+    top: -3,
+    bottom: -3,
+    right: -3,
+    left: -3,
+  };
 
   const keyboardDidHide = () => {
     Keyboard.dismiss();
@@ -40,28 +47,29 @@ const AnswerField = ({ onChangeText, onSelect }: AnswerQuestionProps) => {
   };
 
   return (
-    <>
+    <View style={style.container}>
       <TextInput
         style={style.input}
         placeholder={placeholder}
         onChangeText={(text) => { onChangeText(text); }}
+        value={answer}
         multiline={true}
         onTouchStart={() => { actionOnField('select'); }}
         onBlur={() => { actionOnField('unselect'); }}
       />
-      {!isSelected &&
-      <Shadow />
-      }
-      {isSelected &&
-      <View style={style.shadow}>
-        <Shadow backgroundColor = {TRANSPARENT_PINK} />
-      </View>
-      }
-    </>
+      <Shadow backgroundColor = {isSelected ? TRANSPARENT_PINK : GREY[200]}
+        size = {isSelected ? focusFieldSize : undefined} />
+    </View>
   );
 };
 
 const styles = (isSelected: boolean) => StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    maxHeight: isSelected ? 192 : undefined,
+    marginBottom: MARGIN.MD,
+  },
+
   input: {
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.SM,
@@ -72,9 +80,6 @@ const styles = (isSelected: boolean) => StyleSheet.create({
     color: GREY['900'],
     textAlignVertical: 'top',
     flexGrow: 1,
-    maxHeight: isSelected ? 192 : null,
-  },
-  shadow: {
   },
 });
 

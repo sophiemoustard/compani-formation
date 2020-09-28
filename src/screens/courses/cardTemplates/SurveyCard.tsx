@@ -22,11 +22,11 @@ interface SurveyCard {
 }
 
 const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: SurveyCard) => {
-  const [selectedScore, setSelectedScore] = useState<string | null>(null);
+  const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
     if (questionnaireAnswer) setSelectedScore(questionnaireAnswer.answer);
-    else setSelectedScore(null);
+    else setSelectedScore('');
   }, [questionnaireAnswer]);
 
   if (!card || card.template !== SURVEY) return null;

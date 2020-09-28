@@ -6,7 +6,7 @@ import { BORDER_WIDTH, ICON, PADDING } from '../../styles/metrics';
 
 interface SurveyScoreSelectorProps {
   onPressScore: (score: string) => void,
-  selectedScore: string | null,
+  selectedScore: string,
 }
 
 const SurveyScoreSelector = ({ onPressScore, selectedScore }: SurveyScoreSelectorProps) => {
