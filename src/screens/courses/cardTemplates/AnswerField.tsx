@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import {
+  Keyboard,
   StyleSheet,
   TextInput,
+  View,
 } from 'react-native';
 import Shadow from '../../../components/style/Shadow';
 import { GREY, PINK, TRANSPARENT_PINK, WHITE } from '../../../styles/colors';
@@ -16,6 +18,12 @@ interface AnswerQuestionProps {
 const AnswerField = ({ onChangeText, onSelect }: AnswerQuestionProps) => {
   const [isSelected, setIsSelected] = useState(false);
   const [placeholder, setPlaceHolder] = useState('Votre réponse...');
+
+  const keyboardDidHide = () => {
+    Keyboard.dismiss();
+  };
+
+  Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
   const style = styles(isSelected);
 
@@ -33,7 +41,6 @@ const AnswerField = ({ onChangeText, onSelect }: AnswerQuestionProps) => {
 
   return (
     <>
-      {/* <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }} > */}
       <TextInput
         style={style.input}
         placeholder={placeholder}
@@ -45,7 +52,11 @@ const AnswerField = ({ onChangeText, onSelect }: AnswerQuestionProps) => {
       {!isSelected &&
       <Shadow />
       }
-      {/* </KeyboardAvoidingView> */}
+      {isSelected &&
+      <View style={style.shadow}>
+        <Shadow backgroundColor = {TRANSPARENT_PINK} />
+      </View>
+      }
     </>
   );
 };
@@ -62,6 +73,8 @@ const styles = (isSelected: boolean) => StyleSheet.create({
     textAlignVertical: 'top',
     flexGrow: 1,
     maxHeight: isSelected ? 192 : null,
+  },
+  shadow: {
   },
 });
 
