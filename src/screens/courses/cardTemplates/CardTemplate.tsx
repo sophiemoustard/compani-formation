@@ -5,15 +5,17 @@ import { connect } from 'react-redux';
 import { StateType, ActionType } from '../../../types/store/StoreType';
 import Transition from './Transition';
 import CardFooter from '../../../components/cards/CardFooter';
-import { TRANSITION,
+import {
+  TRANSITION,
   TITLE_TEXT_MEDIA,
   SINGLE_CHOICE_QUESTION,
   TEXT_MEDIA,
   SURVEY,
   TITLE_TEXT,
   MULTIPLE_CHOICE_QUESTION,
-  FLASHCARD }
-  from '../../../core/data/constants';
+  FLASHCARD,
+  OPEN_QUESTION,
+} from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
 import TextMediaCard from './TextMediaCard';
@@ -24,6 +26,7 @@ import SurveyCard from './SurveyCard';
 import TitleTextCard from './TitleTextCard';
 import MultipleChoiceQuestionCard from './MultipleChoiceQuestionCard';
 import FlashCard from './FlashCard';
+import OpenQuestion from './OpenQuestion';
 
 interface CardTemplateProps {
   index: number,
@@ -57,6 +60,8 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <MultipleChoiceQuestionCard />;
     case FLASHCARD:
       return <FlashCard />;
+    case OPEN_QUESTION:
+      return <OpenQuestion />;
 
     default:
       return (
