@@ -11,8 +11,9 @@ import ConfirmModal from './src/components/modal/ConfirmModal';
 import AppContainer from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
 import reducers from './src/store/index';
+import tron from './src/ReactotronConfig';
 
-const store = createStore(reducers);
+const store = createStore(reducers, tron.createEnhancer());
 
 const fetchFonts = () => Font.loadAsync({
   'fira-sans-black': require('./assets/fonts/FiraSans-Black.ttf'),
