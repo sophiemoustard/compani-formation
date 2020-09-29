@@ -40,8 +40,8 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
       <ScrollView contentContainerStyle={style.container}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
-          <AnswerTextArea onChangeText={(text: string) => setAnswer(text) }
-            onSelect={(selected: boolean) => setIsSelected(selected)} answer={answer}/>
+          <AnswerTextArea onChangeText={setAnswer}
+            onSelect={setIsSelected} answer={answer}/>
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}

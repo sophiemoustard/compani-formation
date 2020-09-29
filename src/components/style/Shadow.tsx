@@ -7,12 +7,7 @@ import { shadowCommonStyle } from './shadowCommonStyle';
 interface ShadowProps {
   backgroundColor?: string,
   borderRadius?: number,
-  relativePosition?: {
-    top: number,
-    bottom: number,
-    left: number,
-    right: number,
-  },
+  relativePosition?: { top: number, bottom: number, left: number, right: number},
 }
 
 const Shadow = ({

@@ -7,16 +7,10 @@ import { shadowCommonStyle } from './shadowCommonStyle';
 interface AnimatedShadowProps {
   backgroundColor?: string,
   borderRadius?: number,
-  relativePosition?: {
-    top: number,
-    bottom: number,
-    left: number,
-    right: number,
-  },
+  relativePosition?: {top: number, bottom: number, left: number, right: number},
   animatedStyle,
 }
 
-// You should add relative position on parent container
 const AnimatedShadow = ({
   backgroundColor = GREY[200],
   borderRadius = BORDER_RADIUS.SM,
