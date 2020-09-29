@@ -12,21 +12,22 @@ const initialState: ActivityStateType = {
   activity: null,
   cardIndex: null,
   exitConfirmationModal: false,
-  allQuestionnaireAnswers: [],
+  questionnaireAnswersList: [],
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
-  const indexOfQuestionnaireAnswer = state.allQuestionnaireAnswers.findIndex((qa => qa.id === questionnaireAnswer.id));
+  const indexOfQuestionnaireAnswer = state.questionnaireAnswersList.findIndex((qa =>
+    qa.card === questionnaireAnswer.card));
 
   if (indexOfQuestionnaireAnswer !== -1) {
-    const newAllQuestionnaireAnswers = [...state.allQuestionnaireAnswers];
-    newAllQuestionnaireAnswers[indexOfQuestionnaireAnswer] = questionnaireAnswer;
+    const newQuestionnaireAnswersList = [...state.questionnaireAnswersList];
+    newQuestionnaireAnswersList[indexOfQuestionnaireAnswer] = questionnaireAnswer;
 
-    return { ...state, allQuestionnaireAnswers: newAllQuestionnaireAnswers };
+    return { ...state, questionnaireAnswersList: newQuestionnaireAnswersList };
   }
 
-  return { ...state, allQuestionnaireAnswers: [...state.allQuestionnaireAnswers, questionnaireAnswer] };
+  return { ...state, questionnaireAnswersList: [...state.questionnaireAnswersList, questionnaireAnswer] };
 };
 
 export const activities = (

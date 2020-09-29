@@ -19,6 +19,6 @@
     // Added options
     "typeRoots": ["./node_modules/@types"],
   },
-  "include": ["src/**/*", "App.tsx", "assets/icons/*"],
+  "include": ["src/**/*", "assets/icons/*"],
   "exclude": ["node_modules"],
 }
