@@ -11,6 +11,7 @@ interface AnimatedShadowProps {
   animatedStyle,
 }
 
+// You should add relative position on parent container
 const AnimatedShadow = ({
   backgroundColor = GREY[200],
   borderRadius = BORDER_RADIUS.SM,

@@ -10,6 +10,7 @@ interface ShadowProps {
   relativePosition?: { top: number, bottom: number, left: number, right: number},
 }
 
+// You should add relative position on parent container
 const Shadow = ({
   backgroundColor = GREY[200],
   borderRadius = BORDER_RADIUS.SM,

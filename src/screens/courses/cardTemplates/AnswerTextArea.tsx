@@ -17,8 +17,8 @@ interface AnswerQuestionProps {
 }
 
 const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) => {
-  const [isSelected, setIsSelected] = useState(false);
-  const focusFieldSize = { top: -3, bottom: -3, right: -3, left: -3 };
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const focusFieldRelativePosition = { top: -3, bottom: -3, right: -3, left: -3 };
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -36,19 +36,14 @@ const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps)
     onSelect(false);
   };
 
-  const actionOnField = (action: string) => {
-    if (action === 'select') onTouchStart();
-    else onBlur();
-  };
-
   return (
     <View style={style.container}>
       <TextInput style={style.input} placeholder={'Votre réponse...'} value={answer} multiline={true}
-        onChangeText={text => onChangeText(text)} onTouchStart={() => actionOnField('select')}
-        onBlur={() => actionOnField('unselect')}
+        onChangeText={text => onChangeText(text)} onTouchStart={onTouchStart}
+        onBlur={onBlur}
       />
       <Shadow backgroundColor={isSelected ? TRANSPARENT_PINK : GREY[200]}
-        relativePosition={isSelected ? focusFieldSize : undefined} />
+        relativePosition={isSelected ? focusFieldRelativePosition : undefined} />
     </View>
   );
 };
