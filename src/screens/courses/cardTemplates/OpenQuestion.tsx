@@ -34,7 +34,8 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
   if (!card || card.template !== OPEN_QUESTION) return null;
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView} >
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
+      keyboardVerticalOffset={MARGIN.SM} >
       {!isSelected && <CardHeader />}
       <ScrollView contentContainerStyle={style.container}>
         <Text style={style.question}>{card.question}</Text>
