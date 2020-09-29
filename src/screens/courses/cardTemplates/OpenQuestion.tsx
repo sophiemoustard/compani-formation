@@ -7,7 +7,7 @@ import { getCard, getQuestionnaireAnswer } from '../../../store/activities/selec
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, PINK } from '../../../styles/colors';
-import { MARGIN } from '../../../styles/metrics';
+import { MARGIN, SCREEN_HEIGHT } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { OPEN_QUESTION } from '../../../core/data/constants';
 import AnswerTextArea from './AnswerTextArea';
@@ -35,7 +35,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
-      keyboardVerticalOffset={MARGIN.SM} >
+      keyboardVerticalOffset={SCREEN_HEIGHT > 568 ? MARGIN.MD : MARGIN.XS} >
       {!isSelected && <CardHeader />}
       <ScrollView contentContainerStyle={style.container}>
         <Text style={style.question}>{card.question}</Text>
