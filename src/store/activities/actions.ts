@@ -10,6 +10,8 @@ import {
   RESET_ACTIVITY_REDUCER,
   QuestionnaireAnswerType,
   AddQuestionnaireAnswerType,
+  SetQuestionnaireAnswersListType,
+  SET_QUESTIONNAIRE_ANSWERS_LIST,
 } from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
 
@@ -20,6 +22,9 @@ const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfir
 const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
 const resetActivityReducer = (): ResetType => ({ type: RESET_ACTIVITY_REDUCER });
+const setQuestionnaireAnswersList =
+  (questionnaireAnswersList: Array<QuestionnaireAnswerType>): SetQuestionnaireAnswersListType =>
+    ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
 
 export default {
   setActivity,
@@ -27,4 +32,5 @@ export default {
   setExitConfirmationModal,
   addQuestionnaireAnswer,
   resetActivityReducer,
+  setQuestionnaireAnswersList,
 };

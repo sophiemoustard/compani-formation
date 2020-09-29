@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
@@ -8,15 +8,39 @@ import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import CardHeader from '../../../components/cards/CardHeader';
 import Actions from '../../../store/activities/actions';
-import { ResetType } from '../../../types/store/StoreType';
+import ActivityHistories from '../../../api/activityHistories';
+import { ActivityType } from '../../../types/ActivityType';
+import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 
 interface StartCardProps {
   title: string,
   courseId: string,
   resetActivityReducer: () => void,
+  activity: ActivityType,
+  setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
 }
 
-const StartCard = ({ title, courseId, resetActivityReducer }: StartCardProps) => {
+const StartCard = ({
+  title,
+  courseId,
+  resetActivityReducer,
+  activity,
+  setQuestionnaireAnswersList,
+}: StartCardProps) => {
+  const getActivityHistory = async () => {
+    const fetchedActivityHistory = await ActivityHistories.getActivityHistories(activity._id);
+
+    setQuestionnaireAnswersList(fetchedActivityHistory?.questionnaireAnswersList
+      ? fetchedActivityHistory?.questionnaireAnswersList
+      : []);
+  };
+
+  useEffect(() => {
+    async function fetchData() { await getActivityHistory(); }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const goBack = () => {
     resetActivityReducer();
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
@@ -74,8 +98,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (dispatch: ({ type }: ResetType) => void) => ({
-  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+const mapStateToProps = state => ({
+  activity: state.activities.activity,
 });
 
-export default connect(null, mapDispatchToProps)(StartCard);
+const mapDispatchToProps = dispatch => ({
+  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+  setQuestionnaireAnswersList: questionnaireAnswersList =>
+    dispatch(Actions.setQuestionnaireAnswersList(questionnaireAnswersList)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartCard);

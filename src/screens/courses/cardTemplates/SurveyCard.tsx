@@ -25,8 +25,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
-    if (questionnaireAnswer) setSelectedScore(questionnaireAnswer.answer);
-    else setSelectedScore('');
+    setSelectedScore(questionnaireAnswer ? questionnaireAnswer.answer : '');
   }, [questionnaireAnswer]);
 
   if (!card || card.template !== SURVEY) return null;
@@ -37,7 +36,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }
       <View style={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
         <View style={styles.surveyScoreContainer}>
-          <SurveyScoreSelector onPressScore={score => setSelectedScore(score)} selectedScore={selectedScore} />
+          <SurveyScoreSelector onPressScore={setSelectedScore} selectedScore={selectedScore} />
           <View style={styles.labelContainer}>
             {card.label?.left && card.label?.right && (
               <>
