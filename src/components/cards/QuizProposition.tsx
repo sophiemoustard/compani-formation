@@ -79,6 +79,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     fontSize: ICON.MD,
     alignSelf: 'center',
     paddingVertical: PADDING.SM,
+    paddingHorizontal: PADDING.MD,
     backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
   },
   textContainer: {
