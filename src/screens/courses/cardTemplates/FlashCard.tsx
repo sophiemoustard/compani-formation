@@ -7,7 +7,7 @@ import { FlashCardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_BOLD, NUNITO_LIGHT } from '../../../styles/fonts';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, SCREEN_HEIGHT } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import CardFooter from '../../../components/cards/CardFooter';
 import { FLASHCARD } from '../../../core/data/constants';
 import AnimatedShadow from '../../../components/style/AnimatedShadow';
@@ -90,7 +90,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
-    marginVertical: SCREEN_HEIGHT > 568 ? MARGIN.XXL : MARGIN.MD,
+    marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.MD,
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
