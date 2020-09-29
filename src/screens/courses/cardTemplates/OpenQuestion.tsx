@@ -28,8 +28,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
   const style = styles(isSelected);
 
   useEffect(() => {
-    if (questionnaireAnswer) setAnswer(questionnaireAnswer.answer);
-    else setAnswer('');
+    setAnswer(questionnaireAnswer?.answer ? questionnaireAnswer.answer : '');
   }, [questionnaireAnswer]);
 
   if (!card || card.template !== OPEN_QUESTION) return null;
@@ -57,7 +56,6 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   container: {
     flexGrow: 1,
-    marginBottom: MARGIN.LG,
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,

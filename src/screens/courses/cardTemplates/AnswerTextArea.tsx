@@ -39,7 +39,7 @@ const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps)
   return (
     <View style={style.container}>
       <TextInput style={style.input} placeholder={'Votre réponse...'} value={answer} multiline={true}
-        onChangeText={text => onChangeText(text)} onTouchStart={onTouchStart}
+        onChangeText={onChangeText} onTouchStart={onTouchStart}
         onBlur={onBlur}
       />
       <Shadow backgroundColor={isSelected ? TRANSPARENT_PINK : GREY[200]}
@@ -52,7 +52,7 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   container: {
     flexGrow: 1,
     maxHeight: isSelected ? TEXT_AREA_HEIGHT : undefined,
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.XS,
   },
   input: {
     backgroundColor: WHITE,
