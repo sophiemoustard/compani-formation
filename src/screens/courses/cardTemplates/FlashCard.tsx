@@ -7,7 +7,7 @@ import { FlashCardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_BOLD, NUNITO_LIGHT } from '../../../styles/fonts';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import CardFooter from '../../../components/cards/CardFooter';
 import { FLASHCARD } from '../../../core/data/constants';
 import AnimatedShadow from '../../../components/style/AnimatedShadow';
@@ -90,17 +90,17 @@ const FlashCard = ({ card, index }: FlashCard) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
-    marginVertical: MARGIN.XXL,
+    marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.MD,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    flexGrow: 1,
   },
   contentContainer: {
     width: '100%',
+    flexGrow: 1,
   },
   flipCard: {
-    width: '100%',
-    height: '100%',
+    flexGrow: 1,
     justifyContent: 'center',
     borderWidth: BORDER_WIDTH,
     borderColor: GREY['200'],
@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
     borderColor: PINK['500'],
     position: 'absolute',
     top: 0,
+    height: '100%',
+    width: '100%',
   },
   answer: {
     ...FIRA_SANS_BOLD.LG,
