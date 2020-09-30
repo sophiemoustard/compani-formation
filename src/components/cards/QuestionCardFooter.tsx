@@ -15,6 +15,7 @@ interface QuestionCardFooterProps {
   buttonColor: string,
   buttonCaption?: string,
   buttonDisabled?: boolean,
+  onPressArrow?: () => void,
   validateCard?: () => void,
   onPressButton?: () => void,
 }
@@ -26,6 +27,7 @@ const QuestionCardFooter = ({
   buttonColor,
   buttonCaption = 'Continuer',
   buttonDisabled = false,
+  onPressArrow,
   validateCard,
   onPressButton,
 }: QuestionCardFooterProps) => {
@@ -40,11 +42,16 @@ const QuestionCardFooter = ({
     }
   };
 
+  const goBack = () => {
+    if (onPressArrow) onPressArrow();
+    navigate(`card-${index - 1}`);
+  };
+
   return (
     <View style={style.container}>
       {arrowButtonVisible &&
         <ArrowButton color={arrowColor} direction={LEFT}
-          onPress={() => navigate(`card-${index - 1}`)} />}
+          onPress={goBack} />}
       {buttonVisible &&
         <View style={style.button}>
           <Button bgColor={buttonColor} color={WHITE} borderColor={buttonColor} disabled={buttonDisabled}
