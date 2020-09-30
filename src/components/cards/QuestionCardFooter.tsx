@@ -5,7 +5,7 @@ import { navigate } from '../../navigationRef';
 import { LEFT } from '../../core/data/constants';
 import { WHITE } from '../../styles/colors';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
-import { MARGIN } from '../../styles/metrics';
+import { BUTTON_HEIGHT, MARGIN } from '../../styles/metrics';
 import Button from '../form/Button';
 
 interface QuestionCardFooterProps {
@@ -64,6 +64,7 @@ const QuestionCardFooter = ({
 
 const styles = (arrowButtonVisible: boolean) => StyleSheet.create({
   container: {
+    minHeight: BUTTON_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
