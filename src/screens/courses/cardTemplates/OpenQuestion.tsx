@@ -36,8 +36,6 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     addQuestionnaireAnswer({ card: id, answer: text });
   };
 
-  const onPressArrow = () => { Keyboard.dismiss(); };
-
   if (!card || card.template !== OPEN_QUESTION) return null;
 
   return (
@@ -52,7 +50,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={onPressArrow}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={Keyboard.dismiss}
         validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
     </KeyboardAvoidingView>
   );
