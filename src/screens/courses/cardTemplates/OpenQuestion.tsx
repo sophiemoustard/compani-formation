@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../types/CardType';
 import { ActionType, StateType } from '../../../types/store/StoreType';
@@ -31,6 +31,15 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     setAnswer(questionnaireAnswer?.answer ? questionnaireAnswer.answer : '');
   }, [questionnaireAnswer]);
 
+  const validateQuestionnaireAnswer = (id: string, text: string) => {
+    Keyboard.dismiss();
+    addQuestionnaireAnswer({ card: id, answer: text });
+  };
+
+  const onPressArrow = () => {
+    Keyboard.dismiss();
+  };
+
   if (!card || card.template !== OPEN_QUESTION) return null;
 
   return (
@@ -45,8 +54,8 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer}
-        validateCard={() => addQuestionnaireAnswer({ card: card._id, answer })} />
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={onPressArrow}
+        validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
     </KeyboardAvoidingView>
   );
 };
