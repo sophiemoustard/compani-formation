@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import ArrowButton from '../ArrowButton';
 import { navigate } from '../../navigationRef';
-import { MARGIN } from '../../styles/metrics';
+import { BUTTON_HEIGHT, MARGIN } from '../../styles/metrics';
 
 import { CARD_TEMPLATES, QUIZ, LEFT, RIGHT } from '../../core/data/constants';
 
@@ -37,6 +37,7 @@ const CardFooter = ({ index, template, color, removeRight }: CardFooterProps) =>
 
 const styles = ({ justifyContent }: StylesProps) => StyleSheet.create({
   container: {
+    minHeight: BUTTON_HEIGHT,
     display: 'flex',
     flexDirection: 'row',
     justifyContent,
