@@ -36,9 +36,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     addQuestionnaireAnswer({ card: id, answer: text });
   };
 
-  const onPressArrow = () => {
-    Keyboard.dismiss();
-  };
+  const onPressArrow = () => { Keyboard.dismiss(); };
 
   if (!card || card.template !== OPEN_QUESTION) return null;
 
