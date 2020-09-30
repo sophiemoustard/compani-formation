@@ -8,9 +8,9 @@ import { MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import CardHeader from '../../../components/cards/CardHeader';
 import Actions from '../../../store/activities/actions';
-import ActivityHistories from '../../../api/activityHistories';
 import { ActivityType } from '../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
+import Activities from '../../../api/activities';
 
 interface StartCardProps {
   title: string,
@@ -28,11 +28,11 @@ const StartCard = ({
   setQuestionnaireAnswersList,
 }: StartCardProps) => {
   const getActivityHistory = async () => {
-    const fetchedActivityHistory = await ActivityHistories.getActivityHistories(activity._id);
+    const fetchedActivityHistory = await Activities.getActivityHistory(activity._id);
 
-    setQuestionnaireAnswersList(fetchedActivityHistory?.questionnaireAnswersList
-      ? fetchedActivityHistory?.questionnaireAnswersList
-      : []);
+    if (fetchedActivityHistory?.questionnaireAnswersList) {
+      setQuestionnaireAnswersList(fetchedActivityHistory.questionnaireAnswersList);
+    }
   };
 
   useEffect(() => {

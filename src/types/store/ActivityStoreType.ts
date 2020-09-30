@@ -34,8 +34,12 @@ export interface SetQuestionnaireAnswersListType {
   payload: Array<QuestionnaireAnswerType>,
 }
 
-export type ActivityActionType = SetActivityType | SetCardIndexType | SetExitConfirmationModalType
-| AddQuestionnaireAnswerType | SetQuestionnaireAnswersListType;
+export type ActivityActionType =
+SetActivityType |
+SetCardIndexType |
+SetExitConfirmationModalType |
+AddQuestionnaireAnswerType |
+SetQuestionnaireAnswersListType;
 
 export interface QuestionnaireAnswerType {
   _id?: string,
