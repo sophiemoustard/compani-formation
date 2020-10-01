@@ -82,5 +82,6 @@ export const GREY = {
 export const WHITE = 'white';
 export const TRANSPARENT_GREY = 'rgba(31, 20, 27, 0.2)';
 export const TRANSPARENT_PINK = 'rgba(193, 40, 98, 0.2)';
+export const TRANSPARENT_GRADIENT = '#FFFFFF00';
 export const MODAL_BACKDROP_GREY = '#00000040';
 export const RED = '#FF0000';

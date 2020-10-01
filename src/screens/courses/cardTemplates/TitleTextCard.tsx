@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: MARGIN.MD,
+    marginBottom: MARGIN.LG,
   },
 });
 

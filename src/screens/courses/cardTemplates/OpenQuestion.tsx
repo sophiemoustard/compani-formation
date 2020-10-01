@@ -62,6 +62,7 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   container: {
     flexGrow: 1,
+    marginBottom: MARGIN.LG,
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,

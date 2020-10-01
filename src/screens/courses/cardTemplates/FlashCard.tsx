@@ -92,7 +92,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
-    marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.MD,
+    marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.LG,
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
