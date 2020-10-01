@@ -78,7 +78,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     color: isGoodAnswer ? GREEN['600'] : ORANGE['600'],
     fontSize: ICON.MD,
     alignSelf: 'center',
-    paddingVertical: PADDING.SM,
+    paddingVertical: PADDING.LG,
     paddingHorizontal: PADDING.MD,
     backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
   },
