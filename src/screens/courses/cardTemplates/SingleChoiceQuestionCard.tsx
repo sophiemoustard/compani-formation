@@ -7,7 +7,7 @@ import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
-import { BUTTON_HEIGHT, INPUT_HEIGHT, MARGIN } from '../../../styles/metrics';
+import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT, MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import QuizProposition from '../../../components/cards/QuizProposition';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
@@ -81,7 +81,7 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
     position: 'absolute',
     right: 0,
     left: 0,
-    bottom: BUTTON_HEIGHT + MARGIN.XL,
+    bottom: ABSOLUTE_BOTTOM_POSITION,
     backgroundColor,
   },
   footerContainer: {

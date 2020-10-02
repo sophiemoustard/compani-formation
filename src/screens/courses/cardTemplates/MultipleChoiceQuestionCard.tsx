@@ -8,7 +8,7 @@ import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREEN, GREY, ORANGE, PINK } from '../../../styles/colors';
-import { BUTTON_HEIGHT, INPUT_HEIGHT, MARGIN } from '../../../styles/metrics';
+import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT, MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { MULTIPLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import { navigate } from '../../../navigationRef';
@@ -129,7 +129,7 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     position: 'absolute',
     right: 0,
     left: 0,
-    bottom: BUTTON_HEIGHT + MARGIN.XL,
+    bottom: ABSOLUTE_BOTTOM_POSITION,
     backgroundColor,
   },
   footerContainer: {
