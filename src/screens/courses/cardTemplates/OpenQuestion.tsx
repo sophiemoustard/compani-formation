@@ -38,14 +38,14 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
 
   const scrollRef = useRef<ScrollView>(null);
 
-  const focusOnTextInput = (contentHeight) => {
+  const onFocusTextInput = (contentHeight) => {
     scrollRef.current?.scrollTo({
       y: contentHeight,
       animated: true,
     });
   };
 
-  const quitTextInput = () => {
+  const onBlurTextInput = () => {
     setIsSelected(false);
     Keyboard.dismiss();
   };
@@ -59,12 +59,12 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
       <ScrollView contentContainerStyle={style.container} ref={scrollRef}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
-          <AnswerTextArea onChangeText={setAnswer} scrollTo={focusOnTextInput}
+          <AnswerTextArea onChangeText={setAnswer} scrollTo={onFocusTextInput}
             onSelect={setIsSelected} answer={answer}/>
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={quitTextInput}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={onBlurTextInput}
         validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
     </KeyboardAvoidingView>
   );
