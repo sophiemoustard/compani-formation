@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from './colors';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BLACK, FIRA_SANS_MEDIUM } from './fonts';
-import { BORDER_RADIUS, MARGIN } from './metrics';
+import { BORDER_RADIUS, MARGIN, PADDING } from './metrics';
 
 export default StyleSheet.create({
   title: {
@@ -24,8 +24,7 @@ export default StyleSheet.create({
   explanation: {
     ...FIRA_SANS_REGULAR.MD,
     textAlign: 'justify',
-    marginHorizontal: MARGIN.LG,
-    marginTop: MARGIN.MD,
-    marginBottom: -MARGIN.SM,
+    paddingHorizontal: PADDING.XL,
+    paddingVertical: PADDING.LG,
   },
 });

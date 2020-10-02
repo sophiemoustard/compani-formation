@@ -69,7 +69,6 @@ const styles = (arrowButtonVisible: boolean) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: MARGIN.XL,
-    marginTop: MARGIN.LG,
     marginHorizontal: MARGIN.LG,
   },
   button: {

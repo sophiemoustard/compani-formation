@@ -10,7 +10,7 @@ import { GREY, PINK } from '../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { OPEN_QUESTION } from '../../../core/data/constants';
-import AnswerTextArea from './AnswerTextArea';
+import AnswerTextArea from '../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 import Actions from '../../../store/activities/actions';
 
@@ -62,6 +62,7 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   container: {
     flexGrow: 1,
+    marginBottom: MARGIN.LG,
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,
