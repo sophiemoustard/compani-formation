@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View, StyleSheet, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../components/form/Button';
@@ -11,6 +11,7 @@ import Actions from '../../../store/activities/actions';
 import { ActivityType } from '../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 import Activities from '../../../api/activities';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 interface StartCardProps {
   title: string,
@@ -27,11 +28,18 @@ const StartCard = ({
   activity,
   setQuestionnaireAnswersList,
 }: StartCardProps) => {
-  const getActivityHistory = async () => {
-    const fetchedActivityHistory = await Activities.getActivityHistory(activity._id);
+  const { signOut } = useContext(AuthContext);
 
-    if (fetchedActivityHistory?.questionnaireAnswersList) {
-      setQuestionnaireAnswersList(fetchedActivityHistory.questionnaireAnswersList);
+  const getActivityHistory = async () => {
+    try {
+      const fetchedActivityHistory = await Activities.getActivityHistory(activity._id);
+
+      if (fetchedActivityHistory?.questionnaireAnswersList) {
+        setQuestionnaireAnswersList(fetchedActivityHistory.questionnaireAnswersList);
+      }
+    } catch (e) {
+      if (e.status === 401) signOut();
+      setQuestionnaireAnswersList([]);
     }
   };
 
