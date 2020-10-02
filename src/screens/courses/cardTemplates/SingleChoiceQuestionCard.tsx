@@ -7,11 +7,12 @@ import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
-import { MARGIN } from '../../../styles/metrics';
+import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import QuizProposition from '../../../components/cards/QuizProposition';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import cardsStyle from '../../../styles/cards';
+import FooterGradient from '../../../components/style/FooterGradient';
 
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
@@ -58,6 +59,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
+        {!isPressed && <FooterGradient /> }
         {isPressed && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK['500']}
           buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY['300']} />
@@ -71,10 +73,16 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
     justifyContent: 'space-between',
-    marginBottom: MARGIN.LG,
+    paddingBottom: PADDING.XL,
   },
   explanation: {
     color: textColor,
+    minHeight: INPUT_HEIGHT,
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: ABSOLUTE_BOTTOM_POSITION,
+    backgroundColor,
   },
   footerContainer: {
     backgroundColor: isPressed ? backgroundColor : GREY['100'],

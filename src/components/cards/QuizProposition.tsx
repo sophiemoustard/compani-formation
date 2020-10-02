@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, ICON, PADDING } from '../../styles/metrics';
+import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, ICON, PADDING, BUTTON_HEIGHT } from '../../styles/metrics';
 import { WHITE, GREY, GREEN, ORANGE, PINK } from '../../styles/colors';
 import Shadow from '../style/Shadow';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
@@ -62,6 +62,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
   },
   answer: {
     flexDirection: 'row',
+    minHeight: BUTTON_HEIGHT,
     borderWidth: BORDER_WIDTH,
     backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
     borderColor: isSelected ? color : GREY['200'],
@@ -78,8 +79,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     color: isGoodAnswer ? GREEN['600'] : ORANGE['600'],
     fontSize: ICON.MD,
     alignSelf: 'center',
-    paddingVertical: PADDING.SM,
-    paddingHorizontal: PADDING.MD,
+    padding: PADDING.MD,
     backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
   },
   textContainer: {

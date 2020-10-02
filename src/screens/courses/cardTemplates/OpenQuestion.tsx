@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../types/CardType';
 import { ActionType, StateType } from '../../../types/store/StoreType';
@@ -10,7 +10,7 @@ import { GREY, PINK } from '../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { OPEN_QUESTION } from '../../../core/data/constants';
-import AnswerTextArea from './AnswerTextArea';
+import AnswerTextArea from '../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 import Actions from '../../../store/activities/actions';
 
@@ -31,6 +31,11 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     setAnswer(questionnaireAnswer?.answer ? questionnaireAnswer.answer : '');
   }, [questionnaireAnswer]);
 
+  const validateQuestionnaireAnswer = (id: string, text: string) => {
+    Keyboard.dismiss();
+    addQuestionnaireAnswer({ card: id, answer: text });
+  };
+
   if (!card || card.template !== OPEN_QUESTION) return null;
 
   return (
@@ -45,8 +50,8 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer}
-        validateCard={() => addQuestionnaireAnswer({ card: card._id, answer })} />
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={Keyboard.dismiss}
+        validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
     </KeyboardAvoidingView>
   );
 };
@@ -57,6 +62,7 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   container: {
     flexGrow: 1,
+    marginBottom: MARGIN.LG,
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,

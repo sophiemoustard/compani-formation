@@ -6,6 +6,7 @@ import {
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
   ADD_QUESTIONNAIRE_ANSWER,
+  SET_QUESTIONNAIRE_ANSWERS_LIST,
 } from '../../types/store/ActivityStoreType';
 
 const initialState: ActivityStateType = {
@@ -45,6 +46,8 @@ export const activities = (
       return applyAddQuestionnaireAnswer(state, action);
     case RESET_ACTIVITY_REDUCER:
       return initialState;
+    case SET_QUESTIONNAIRE_ANSWERS_LIST:
+      return { ...state, questionnaireAnswersList: action.payload };
     default:
       return state;
   }

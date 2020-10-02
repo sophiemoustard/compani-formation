@@ -5,10 +5,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Shadow from '../../../components/style/Shadow';
-import { GREY, PINK, TRANSPARENT_PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING, TEXT_AREA_HEIGHT } from '../../../styles/metrics';
-import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import Shadow from '../style/Shadow';
+import { GREY, PINK, TRANSPARENT_PINK, WHITE } from '../../styles/colors';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING, TEXT_AREA_HEIGHT } from '../../styles/metrics';
+import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 interface AnswerQuestionProps {
   answer: string,
@@ -38,10 +38,9 @@ const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps)
 
   return (
     <View style={style.container}>
-      <TextInput style={style.input} placeholder={'Votre réponse...'} value={answer} multiline={true}
-        onChangeText={onChangeText} onTouchStart={onTouchStart}
-        onBlur={onBlur}
-      />
+      <TextInput style={!answer.length ? [style.input, style.placeholder] : style.input}
+        placeholder={'Votre réponse...'} placeholderTextColor={GREY[300]} value={answer} multiline={true}
+        onChangeText={onChangeText} onTouchStart={onTouchStart} onBlur={onBlur} />
       <Shadow backgroundColor={isSelected ? TRANSPARENT_PINK : GREY[200]}
         relativePosition={isSelected ? focusFieldRelativePosition : undefined} />
     </View>
@@ -59,11 +58,14 @@ const styles = (isSelected: boolean) => StyleSheet.create({
     borderRadius: BORDER_RADIUS.SM,
     borderWidth: BORDER_WIDTH,
     borderColor: isSelected ? PINK[500] : GREY[200],
-    paddingHorizontal: PADDING.LG,
+    padding: PADDING.LG,
     ...FIRA_SANS_MEDIUM.MD,
     color: GREY[900],
     textAlignVertical: 'top',
     flexGrow: 1,
+  },
+  placeholder: {
+    ...FIRA_SANS_REGULAR.MD,
   },
 });
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
@@ -7,7 +8,7 @@ import { FlashCardType } from '../../../types/CardType';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_BOLD, NUNITO_LIGHT } from '../../../styles/fonts';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN, PADDING } from '../../../styles/metrics';
 import CardFooter from '../../../components/cards/CardFooter';
 import { FLASHCARD } from '../../../core/data/constants';
 import AnimatedShadow from '../../../components/style/AnimatedShadow';
@@ -19,6 +20,7 @@ interface FlashCard {
 
 const FlashCard = ({ card, index }: FlashCard) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState('unclicked');
+  const isFocused = useIsFocused();
   const animatedValue = new Animated.Value(0);
   const hasBeenClicked = useRef(false);
   let rotationValue = 0;
@@ -38,7 +40,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
     }
   }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue]);
 
-  if (!card || card.template !== FLASHCARD) return null;
+  if (!card || card.template !== FLASHCARD || !isFocused) return null;
 
   const flipCard = () => {
     if (timesHasBeenClicked === 'unclicked') {
@@ -90,7 +92,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
-    marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.MD,
+    marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.LG,
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
   flipCard: {
     flexGrow: 1,
     justifyContent: 'center',
+    padding: PADDING.LG,
     borderWidth: BORDER_WIDTH,
     borderColor: GREY['200'],
     borderRadius: BORDER_RADIUS.MD,

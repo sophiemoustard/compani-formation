@@ -50,6 +50,7 @@ const styles = (imgHeight: number) => StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: MARGIN.MD,
+    marginBottom: MARGIN.LG,
   },
   image: {
     ...cardsStyle.media,

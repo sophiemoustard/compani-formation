@@ -35,6 +35,7 @@ const EndCard = ({
     async function fetchData() {
       const userId = await AsyncStorage.getItem('user_id');
       const payload: Record<string, any> = { user: userId, activity: activity._id };
+
       if (questionnaireAnswersList?.length) payload.questionnaireAnswersList = questionnaireAnswersList;
       await ActivityHistories.createActivityHistories(payload);
       setCardIndex(null);
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.XL,
   },
 });
+
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   questionnaireAnswersList: state.activities.questionnaireAnswersList,
