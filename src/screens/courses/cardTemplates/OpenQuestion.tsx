@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../types/CardType';
@@ -7,7 +7,7 @@ import { getCard, getQuestionnaireAnswer } from '../../../store/activities/selec
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREY, PINK } from '../../../styles/colors';
-import { IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
+import { IS_LARGE_SCREEN, MARGIN, PADDING } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { OPEN_QUESTION } from '../../../core/data/constants';
 import AnswerTextArea from '../../../components/cards/AnswerTextArea';
@@ -36,21 +36,35 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     addQuestionnaireAnswer({ card: id, answer: text });
   };
 
+  const scrollRef = useRef<ScrollView>(null);
+
+  const focusOnTextInput = (contentHeight) => {
+    scrollRef.current?.scrollTo({
+      y: contentHeight,
+      animated: true,
+    });
+  };
+
+  const quitTextInput = () => {
+    setIsSelected(false);
+    Keyboard.dismiss();
+  };
+
   if (!card || card.template !== OPEN_QUESTION) return null;
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       {!isSelected && <CardHeader />}
-      <ScrollView contentContainerStyle={style.container}>
+      <ScrollView contentContainerStyle={style.container} ref={scrollRef}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
-          <AnswerTextArea onChangeText={setAnswer}
+          <AnswerTextArea onChangeText={setAnswer} scrollTo={focusOnTextInput}
             onSelect={setIsSelected} answer={answer}/>
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={Keyboard.dismiss}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={quitTextInput}
         validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
     </KeyboardAvoidingView>
   );
@@ -62,7 +76,6 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   container: {
     flexGrow: 1,
-    marginBottom: MARGIN.LG,
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,
@@ -74,6 +87,7 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   inputContainer: {
     flexGrow: 1,
     marginHorizontal: MARGIN.MD,
+    paddingBottom: PADDING.XL,
   },
 });
 
