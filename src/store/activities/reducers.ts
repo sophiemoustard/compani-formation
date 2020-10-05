@@ -8,12 +8,27 @@ import {
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
 } from '../../types/store/ActivityStoreType';
+import { CARD_TEMPLATES, QUIZ } from '../../core/data/constants';
 
 const initialState: ActivityStateType = {
   activity: null,
   cardIndex: null,
   exitConfirmationModal: false,
   questionnaireAnswersList: [],
+  score: {
+    goodAnswersCount: 0,
+    quizCount: 0,
+  },
+};
+
+const applySetActivities = (state, action) => {
+  const activity = action.payload;
+  const count = activity?.cards?.filter((card) => {
+    const template = CARD_TEMPLATES.find(t => card.template === t.value);
+    if (template?.type === QUIZ) return true;
+    return false;
+  }).length;
+  return { ...state, activity, score: { ...state.score, quizCount: count || 0 } };
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
@@ -37,7 +52,7 @@ export const activities = (
 ): ActivityStateType => {
   switch (action.type) {
     case SET_ACTIVITY:
-      return { ...state, activity: action.payload };
+      return applySetActivities(state, action);
     case SET_CARD_INDEX:
       return { ...state, cardIndex: action.payload };
     case SET_EXIT_CONFIRMATION_MODAL:
