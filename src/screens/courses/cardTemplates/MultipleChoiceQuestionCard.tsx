@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
+import { ActivityActionType } from '../../../types/store/ActivityStoreType';
 import { getCard } from '../../../store/activities/selectors';
+import Actions from '../../../store/activities/actions';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREEN, GREY, ORANGE, PINK } from '../../../styles/colors';
@@ -19,6 +21,7 @@ import FooterGradient from '../../../components/style/FooterGradient';
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
   cardIndex: number,
+  incGoodAnswersCount: () => void,
 }
 
 export interface qcmAnswerType extends qcmAnswerFromAPIType {
@@ -31,9 +34,10 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionCardProps) => {
+const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: MultipleChoiceQuestionCardProps) => {
   const [answers, setAnswers] = useState<Array<qcmAnswerType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
+  const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttonsColor: PINK[500],
     textColor: GREY[100],
@@ -51,14 +55,12 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
       return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
     }
 
-    const isAnsweredCorrectly = answers.every(answer =>
-      (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
     if (isAnsweredCorrectly) {
       return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
     }
 
     return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
-  }, [isValidated, answers]);
+  }, [isValidated, answers, isAnsweredCorrectly]);
 
   const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 
@@ -74,7 +76,13 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
   const onPressFooterButton = () => {
     if (!isOneAnswerSelected()) return null;
 
-    if (!isValidated) return setIsValidated(true);
+    if (!isValidated) {
+      const areAnswersCorrect = answers.every(answer =>
+        (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+      setIsAnsweredCorrectly(areAnswersCorrect);
+      if (areAnswersCorrect) incGoodAnswersCount();
+      return setIsValidated(true);
+    }
 
     return navigate(`card-${cardIndex + 1}`);
   };
@@ -138,5 +146,8 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
 });
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), cardIndex: state.activities.cardIndex });
+const mapDispatchToProps = (dispatch: ({ type }: ActivityActionType) => void) => ({
+  incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
+});
 
-export default connect(mapStateToProps)(MultipleChoiceQuestionCard);
+export default connect(mapStateToProps, mapDispatchToProps)(MultipleChoiceQuestionCard);
