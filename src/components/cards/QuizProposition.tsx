@@ -42,9 +42,7 @@ const QuizProposition = ({
   return (
     <View style={style.answerContainer}>
       <TouchableOpacity style={style.answer} onPress={() => { setColorOnPress(); }} disabled={isValidated}>
-        <View style={style.textContainer}>
-          <Text style={style.text}>{item}</Text>
-        </View>
+        <Text style={style.text}>{item}</Text>
         {isMarkerVisible &&
         <View style={style.markerContainer}>
           <Feather style={style.marker} name={isGoodAnswer && isValidated ? 'check-circle' : 'x-circle'} />
@@ -85,10 +83,6 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     alignSelf: 'center',
     padding: PADDING.MD,
     backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
-  },
-  textContainer: {
-    alignItems: 'center',
-    flex: 1,
   },
   text: {
     ...FIRA_SANS_MEDIUM.MD,
