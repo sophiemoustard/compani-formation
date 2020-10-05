@@ -57,8 +57,5 @@ export interface ActivityStateType {
   cardIndex: number | null,
   exitConfirmationModal: boolean,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
-  score: {
-    goodAnswersCount: number,
-    quizCount: number,
-  }
+  score: number
 }
