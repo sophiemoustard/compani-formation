@@ -14,9 +14,10 @@ interface AnswerQuestionProps {
   answer: string,
   onChangeText: (string) => void,
   onSelect: (boolean) => void,
+  scrollTo: (number) => void,
 }
 
-const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps) => {
+const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQuestionProps) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const focusFieldRelativePosition = { top: -3, bottom: -3, right: -3, left: -3 };
 
@@ -40,7 +41,8 @@ const AnswerTextArea = ({ onChangeText, onSelect, answer }: AnswerQuestionProps)
     <View style={style.container}>
       <TextInput style={!answer.length ? [style.input, style.placeholder] : style.input}
         placeholder={'Votre réponse...'} placeholderTextColor={GREY[300]} value={answer} multiline={true}
-        onChangeText={onChangeText} onTouchStart={onTouchStart} onBlur={onBlur} />
+        onChangeText={onChangeText} onTouchStart={onTouchStart} onBlur={onBlur}
+        onContentSizeChange={(event) => { scrollTo(event.nativeEvent.contentSize.height); }}/>
       <Shadow backgroundColor={isSelected ? TRANSPARENT_PINK : GREY[200]}
         relativePosition={isSelected ? focusFieldRelativePosition : undefined} />
     </View>
