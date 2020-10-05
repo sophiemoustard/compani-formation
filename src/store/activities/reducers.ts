@@ -7,6 +7,7 @@ import {
   RESET_ACTIVITY_REDUCER,
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
+  INC_GOOD_ANSWERS_COUNT,
 } from '../../types/store/ActivityStoreType';
 import { CARD_TEMPLATES, QUIZ } from '../../core/data/constants';
 
@@ -63,6 +64,8 @@ export const activities = (
       return initialState;
     case SET_QUESTIONNAIRE_ANSWERS_LIST:
       return { ...state, questionnaireAnswersList: action.payload };
+    case INC_GOOD_ANSWERS_COUNT:
+      return { ...state, score: { ...state.score, goodAnswersCount: state.score.goodAnswersCount + 1 } };
     default:
       return state;
   }

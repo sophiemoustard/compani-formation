@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { SingleChoiceQuestionType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
+import { ActivityActionType } from '../../../types/store/ActivityStoreType';
 import { getCard } from '../../../store/activities/selectors';
+import Actions from '../../../store/activities/actions';
 import CardHeader from '../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
 import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
@@ -17,9 +19,10 @@ import FooterGradient from '../../../components/style/FooterGradient';
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
   index: number,
+  incGoodAnswersCount: () => void,
 }
 
-const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps) => {
+const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleChoiceQuestionCardProps) => {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -35,6 +38,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps
   const onSelectAnswer = (selectedIndex) => {
     setIsPressed(true);
     setSelectedAnswerIndex(selectedIndex);
+    if (answers[selectedIndex] === card.qcuGoodAnswer) incGoodAnswersCount();
   };
 
   const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
@@ -91,4 +95,8 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
 
-export default connect(mapStateToProps)(SingleChoiceQuestionCard);
+const mapDispatchToProps = (dispatch: ({ type }: ActivityActionType) => void) => ({
+  incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleChoiceQuestionCard);
