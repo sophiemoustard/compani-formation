@@ -91,6 +91,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     flex: 1,
   },
   text: {
+    textAlign: 'center',
     ...FIRA_SANS_MEDIUM.MD,
     color: !isValidated || (!isSelected && isGoodAnswer) ? GREY['800'] : color,
     marginVertical: MARGIN.LG / 2,

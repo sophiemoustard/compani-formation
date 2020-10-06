@@ -21,6 +21,7 @@ interface FlashCard {
 const FlashCard = ({ card, index }: FlashCard) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState('unclicked');
   const isFocused = useIsFocused();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
   const hasBeenClicked = useRef(false);
   let rotationValue = 0;

@@ -5,11 +5,11 @@ import {
   Text,
   ImageBackground,
   FlatList,
-  YellowBox,
   TouchableOpacity,
   ScrollView,
   StyleProp,
   ViewStyle,
+  LogBox,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -27,7 +27,7 @@ import commonStyles from '../../styles/common';
 import { FIRA_SANS_BLACK } from '../../styles/fonts';
 import { CourseType } from '../../types/CourseType';
 
-YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
   route: { params: { courseId: string } },
