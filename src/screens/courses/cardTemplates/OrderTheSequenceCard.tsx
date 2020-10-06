@@ -24,10 +24,11 @@ import OrderProposition from '../../../components/cards/OrderProposition';
 
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
-  cardIndex: number,
+  index: number,
 }
 
 export interface answerPositionType extends orderTheSequenceFromAPIType {
+  goodPosition: number,
   tempPosition: number,
 }
 
@@ -37,7 +38,7 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const OrderTheSequenceCard = ({ card, cardIndex }: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({ card, index }: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
@@ -48,8 +49,9 @@ const OrderTheSequenceCard = ({ card, cardIndex }: OrderTheSequenceCardProps) =>
 
   useEffect(() => {
     if (card && card.template === ORDER_THE_SEQUENCE && !isValidated) {
-      const shuffledCards = shuffle(card.orderedAnswers.map((ans, index) => ({ label: ans, position: index })));
-      setAnswers(shuffledCards.map((ans, index) => ({ ...ans, tempPosition: index })));
+      const shuffledCards = shuffle(card.orderedAnswers
+        .map((ans, answerIndex) => ({ label: ans, goodPosition: answerIndex })));
+      setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
   }, [card, isValidated]);
 
@@ -58,7 +60,7 @@ const OrderTheSequenceCard = ({ card, cardIndex }: OrderTheSequenceCardProps) =>
       return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
     }
 
-    const isAnsweredCorrectly = answers.every(answer => (answer.position === answer.tempPosition));
+    const isAnsweredCorrectly = answers.every(answer => (answer.goodPosition === answer.tempPosition));
     if (isAnsweredCorrectly) {
       return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
     }
@@ -68,16 +70,20 @@ const OrderTheSequenceCard = ({ card, cardIndex }: OrderTheSequenceCardProps) =>
 
   const onPressFooterButton = () => {
     if (!isValidated) return setIsValidated(true);
-    return navigate(`card-${cardIndex + 1}`);
+    return navigate(`card-${index + 1}`);
   };
-
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
   if (!card || card.template !== ORDER_THE_SEQUENCE) return null;
 
-  const setArray = (data) => {
-    setAnswers(data.map((ans, index) => ({ label: ans.label, position: ans.position, tempPosition: index })));
+  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+
+  const setAnswersArray = ({ data }) => {
+    setAnswers(data
+      .map((ans, answerIndex) => ({ label: ans.label, goodPosition: ans.goodPosition, tempPosition: answerIndex })));
   };
+
+  const renderItem = ({ item, drag }) =>
+    <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   return (
     <>
@@ -85,20 +91,14 @@ const OrderTheSequenceCard = ({ card, cardIndex }: OrderTheSequenceCardProps) =>
       <View style={style.container}>
         <DraggableFlatList
           ListHeaderComponent={<Text style={[cardsStyle.question, style.question]}>{card.question}</Text>}
-          showsVerticalScrollIndicator={false}
-          data={answers}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item, drag }) => (
-            <OrderProposition item={item} isValidated={isValidated}
-              isGoodPosition={item.position === item.tempPosition} drag={drag} />
-          )}
-          onDragEnd={({ data }) => setArray(data)} />
+          showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
+          renderItem={renderItem} onDragEnd={setAnswersArray} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={cardIndex} buttonDisabled={false}
+          arrowColor={footerColors.buttonsColor} index={index} buttonDisabled={false}
           buttonColor={footerColors.buttonsColor} />
       </View>
     </>
@@ -128,6 +128,6 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), cardIndex: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
 
 export default connect(mapStateToProps)(OrderTheSequenceCard);

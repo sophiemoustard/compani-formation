@@ -8,22 +8,21 @@ import { FIRA_SANS_MEDIUM, NUNITO_BLACK } from '../../styles/fonts';
 interface OrderPropositionProps {
   item: {
     label: string,
-    position: number,
+    goodPosition: number,
     tempPosition: number
   },
-  isGoodPosition: boolean,
   isValidated: boolean,
   drag: () => void,
 }
 
 const OrderProposition = ({
   item,
-  isGoodPosition,
   isValidated = false,
   drag,
 }: OrderPropositionProps) => {
   const [color, setColor] = useState<string>(GREY['200']);
   const [answerHeight, setAnswerHeight] = useState<number>(0);
+  const isGoodPosition = item.goodPosition === item.tempPosition;
 
   useEffect(() => {
     if (isGoodPosition && isValidated) return setColor(GREEN['600']);
@@ -39,26 +38,18 @@ const OrderProposition = ({
         onLongPress={drag} >
         <View style= {style.indexContainer}>
           <View style={style.index}>
-            <View style={style.textContainer}>
-              <Text style={style.indexText}>{item.tempPosition + 1}</Text>
-            </View>
-          </View>
-          <Shadow
-            backgroundColor={isValidated ? color : GREY['200']}
-            borderRadius={0}
-            borderBottomLeftRadius={BORDER_RADIUS.LG}
-            borderTopRightRadius={BORDER_RADIUS.LG}
-            borderTopLeftRadius={BORDER_RADIUS.LG}
-          />
-        </View>
-        <View style={style.answerContainer}>
-          <View style={style.answer} onLayout={(event) => { setAnswerHeight(event.nativeEvent.layout.height); }}>
-            <View style={style.textContainer}>
-              <Text style={style.answerText}>{item.label}</Text>
-            </View>
+            <Text style={style.indexText}>{item.tempPosition + 1}</Text>
           </View>
           <Shadow backgroundColor={isValidated ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG}
-            borderBottomLeftRadius={answerHeight > BUTTON_HEIGHT ? BORDER_RADIUS.MD : 0} />
+            borderBottomRightRadius={0} />
+        </View>
+        <View style={style.answerContainer}>
+          <View style={style.answer}>
+            <Text style={style.answerText}
+              onLayout={(event) => { setAnswerHeight(event.nativeEvent.layout.height); }}>{item.label} </Text>
+          </View>
+          <Shadow backgroundColor={isValidated ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG}
+            borderBottomLeftRadius={answerHeight > 25 ? BORDER_RADIUS.MD : 0} />
         </View>
       </TouchableOpacity>
     </View>
@@ -87,24 +78,17 @@ const styles = (color: string, isValidated: boolean, answerHeight: number) => St
     borderTopLeftRadius: BORDER_RADIUS.MD,
     borderBottomLeftRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
-
+    justifyContent: 'center',
   },
   answer: {
-    minHeight: BUTTON_HEIGHT,
+    height: answerHeight > 19 && answerHeight < 25 ? BUTTON_HEIGHT : undefined,
     borderWidth: BORDER_WIDTH,
     backgroundColor: WHITE,
     borderColor: isValidated ? color : GREY['200'],
-    borderBottomLeftRadius: answerHeight > BUTTON_HEIGHT ? BORDER_RADIUS.MD : 0,
+    borderBottomLeftRadius: answerHeight > 25 ? BORDER_RADIUS.MD : 0,
     borderTopRightRadius: BORDER_RADIUS.MD,
     borderBottomRightRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
-    flex: 1,
-
-  },
-  textContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
   },
   answerText: {
     ...FIRA_SANS_MEDIUM.MD,

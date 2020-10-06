@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { OpenQuestionType } from '../../../types/CardType';
+import { OpenQuestionCardType } from '../../../types/CardType';
 import { ActionType, StateType } from '../../../types/store/StoreType';
 import { getCard, getQuestionnaireAnswer } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
@@ -14,14 +14,14 @@ import AnswerTextArea from '../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 import Actions from '../../../store/activities/actions';
 
-interface OpenQuestionProps {
-  card: OpenQuestionType,
+interface OpenQuestionCardProps {
+  card: OpenQuestionCardType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
 }
 
-const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: OpenQuestionProps) => {
+const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const isIOS = Platform.OS === 'ios';
@@ -101,4 +101,4 @@ const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestionCard);

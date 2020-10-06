@@ -77,7 +77,7 @@ export interface FlashCardType {
   text: string,
   backText: string,
 }
-export interface OpenQuestionType {
+export interface OpenQuestionCardType {
   _id: string,
   template: string,
   question: string,
@@ -85,7 +85,6 @@ export interface OpenQuestionType {
 }
 
 export interface orderTheSequenceFromAPIType {
-  position: number,
   label: string,
 }
 
