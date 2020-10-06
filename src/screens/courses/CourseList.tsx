@@ -11,7 +11,7 @@ import CourseCell from '../../components/CourseCell';
 import { Context as AuthContext } from '../../context/AuthContext';
 import moment from '../../core/helpers/moment';
 import { getLoggedUserId } from '../../store/main/selectors';
-import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
+import { MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
 import commonStyles from '../../styles/common';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
@@ -89,8 +89,8 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextStep.length > 0 &&
-        <View style={styles.sectionContainer}>
-          <View style={styles.contentTitle}>
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.contentTitle}>
             <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
               <Text style={styles.coursesCount}>{nextStep.length}</Text>
@@ -107,11 +107,11 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
           />
         </View>
       }
-      <View style={styles.sectionContainer}>
-        <View style={styles.contentTitle}>
+      <View style={commonStyles.sectionContainer}>
+        <View style={commonStyles.contentTitle}>
           <Text style={commonStyles.sectionTitle}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-            <Text style={styles.nextEventsCount}>{courses.length}</Text>
+            <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
         </View>
         <FlatList
@@ -135,24 +135,19 @@ const styles = StyleSheet.create({
   separator: {
     marginRight: 8,
   },
-  contentTitle: {
-    flexDirection: 'row',
-    marginBottom: MARGIN.MD,
-  },
-  sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   coursesCountContainer: {
     backgroundColor: YELLOW[200],
   },
   coursesCount: {
     ...FIRA_SANS_BOLD.MD,
-    color: YELLOW[800],
+    color: PINK[600],
   },
   nextEventsCountContainer: {
     backgroundColor: PINK[100],
   },
   nextEventsCount: {
     ...FIRA_SANS_BOLD.MD,
-    color: PINK[600],
+    color: YELLOW[800],
   },
 });
 

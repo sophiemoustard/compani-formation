@@ -24,4 +24,12 @@ export default StyleSheet.create({
     marginLeft: MARGIN.SM,
     borderRadius: BORDER_RADIUS.XS,
   },
+  contentTitle: {
+    flexDirection: 'row',
+    marginBottom: MARGIN.MD,
+  },
+  sectionContainer: {
+    position: 'relative',
+    marginBottom: MARGIN.XXXL,
+  },
 });
