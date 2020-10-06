@@ -83,3 +83,16 @@ export interface OpenQuestionType {
   question: string,
   answer?: string,
 }
+
+export interface orderTheSequenceFromAPIType {
+  position: number,
+  label: string,
+}
+
+export interface OrderTheSequenceType {
+  _id: string,
+  template: string,
+  question: string,
+  orderedAnswers: Array<orderTheSequenceFromAPIType>,
+  explanation: string,
+}

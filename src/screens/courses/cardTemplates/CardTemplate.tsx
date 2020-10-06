@@ -15,6 +15,7 @@ import {
   MULTIPLE_CHOICE_QUESTION,
   FLASHCARD,
   OPEN_QUESTION,
+  ORDER_THE_SEQUENCE,
 } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
@@ -27,6 +28,7 @@ import TitleTextCard from './TitleTextCard';
 import MultipleChoiceQuestionCard from './MultipleChoiceQuestionCard';
 import FlashCard from './FlashCard';
 import OpenQuestion from './OpenQuestion';
+import OrderTheSequenceCard from './OrderTheSequenceCard';
 
 interface CardTemplateProps {
   index: number,
@@ -62,6 +64,8 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <FlashCard />;
     case OPEN_QUESTION:
       return <OpenQuestion />;
+    case ORDER_THE_SEQUENCE:
+      return <OrderTheSequenceCard />;
 
     default:
       return (
