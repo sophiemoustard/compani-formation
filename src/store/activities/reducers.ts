@@ -8,8 +8,8 @@ import {
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   INC_GOOD_ANSWERS_COUNT,
+  IncGoodAnswersCountType,
 } from '../../types/store/ActivityStoreType';
-import { CARD_TEMPLATES, QUIZ } from '../../core/data/constants';
 
 const initialState: ActivityStateType = {
   activity: null,
@@ -36,7 +36,7 @@ const applyAddQuestionnaireAnswer = (state, action) => {
 
 export const activities = (
   state: ActivityStateType = initialState,
-  action: ActionType | ResetType
+  action: ActionType | ResetType | IncGoodAnswersCountType
 ): ActivityStateType => {
   switch (action.type) {
     case SET_ACTIVITY:

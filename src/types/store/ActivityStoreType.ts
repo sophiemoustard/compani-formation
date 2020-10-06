@@ -43,8 +43,7 @@ SetActivityType |
 SetCardIndexType |
 SetExitConfirmationModalType |
 AddQuestionnaireAnswerType |
-SetQuestionnaireAnswersListType |
-IncGoodAnswersCountType;
+SetQuestionnaireAnswersListType;
 
 export interface QuestionnaireAnswerType {
   _id?: string,

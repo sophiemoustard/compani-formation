@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
-import { ActivityActionType } from '../../../types/store/ActivityStoreType';
+import { IncGoodAnswersCountType } from '../../../types/store/ActivityStoreType';
 import { getCard } from '../../../store/activities/selectors';
 import Actions from '../../../store/activities/actions';
 import CardHeader from '../../../components/cards/CardHeader';
@@ -146,7 +146,7 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
 });
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), cardIndex: state.activities.cardIndex });
-const mapDispatchToProps = (dispatch: ({ type }: ActivityActionType) => void) => ({
+const mapDispatchToProps = (dispatch: ({ type }: IncGoodAnswersCountType) => void) => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 
