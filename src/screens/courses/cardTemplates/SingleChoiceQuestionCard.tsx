@@ -45,7 +45,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps
   return (
     <>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <FlatList

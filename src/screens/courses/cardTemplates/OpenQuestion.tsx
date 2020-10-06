@@ -56,7 +56,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       {!isSelected && <CardHeader />}
-      <ScrollView contentContainerStyle={style.container} ref={scrollRef}>
+      <ScrollView contentContainerStyle={style.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
           <AnswerTextArea onChangeText={setAnswer} scrollTo={onFocusTextInput}

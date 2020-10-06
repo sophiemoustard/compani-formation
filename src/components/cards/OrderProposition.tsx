@@ -23,6 +23,7 @@ const OrderProposition = ({
   drag,
 }: OrderPropositionProps) => {
   const [color, setColor] = useState<string>(GREY['200']);
+  const [answerHeight, setAnswerHeight] = useState<number>(0);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) return setColor(GREEN['600']);
@@ -30,7 +31,7 @@ const OrderProposition = ({
     return setColor(GREY['500']);
   }, [isGoodPosition, isValidated]);
 
-  const style = styles(color, isValidated);
+  const style = styles(color, isValidated, answerHeight);
 
   return (
     <View style={style.container}>
@@ -39,7 +40,7 @@ const OrderProposition = ({
         <View style= {style.indexContainer}>
           <View style={style.index}>
             <View style={style.textContainer}>
-              <Text style={style.indexText}>{item.tempPosition}</Text>
+              <Text style={style.indexText}>{item.tempPosition + 1}</Text>
             </View>
           </View>
           <Shadow
@@ -51,19 +52,20 @@ const OrderProposition = ({
           />
         </View>
         <View style={style.answerContainer}>
-          <View style={style.answer}>
+          <View style={style.answer} onLayout={(event) => { setAnswerHeight(event.nativeEvent.layout.height); }}>
             <View style={style.textContainer}>
               <Text style={style.answerText}>{item.label}</Text>
             </View>
           </View>
-          <Shadow backgroundColor={isValidated ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG} />
+          <Shadow backgroundColor={isValidated ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG}
+            borderBottomLeftRadius={answerHeight > BUTTON_HEIGHT ? BORDER_RADIUS.MD : 0} />
         </View>
       </TouchableOpacity>
     </View>
   );
 };
 
-const styles = (color: string, isValidated: boolean) => StyleSheet.create({
+const styles = (color: string, isValidated: boolean, answerHeight: number) => StyleSheet.create({
   container: {
     marginBottom: MARGIN.MD,
   },
@@ -92,7 +94,7 @@ const styles = (color: string, isValidated: boolean) => StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     backgroundColor: WHITE,
     borderColor: isValidated ? color : GREY['200'],
-    borderBottomLeftRadius: BORDER_RADIUS.MD,
+    borderBottomLeftRadius: answerHeight > BUTTON_HEIGHT ? BORDER_RADIUS.MD : 0,
     borderTopRightRadius: BORDER_RADIUS.MD,
     borderBottomRightRadius: BORDER_RADIUS.MD,
     alignItems: 'center',

@@ -55,7 +55,8 @@ const StartCard = ({
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}>
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
       <View style={styles.wrapper}>
         <View>
