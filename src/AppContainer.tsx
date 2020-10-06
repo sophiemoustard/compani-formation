@@ -19,7 +19,7 @@ import CardContainer from './screens/courses/CardContainer';
 import MainActions from './store/main/actions';
 import Actions from './store/actions';
 import { PINK } from './styles/colors';
-import { ActionType, ResetType } from './types/store/StoreType';
+import { ActionType, ActionWithoutPayloadType } from './types/store/StoreType';
 import Users from './api/users';
 import { UserType } from './types/UserType';
 
@@ -107,7 +107,7 @@ const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) =>
   );
 };
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ResetType) => void) => ({
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
   resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });

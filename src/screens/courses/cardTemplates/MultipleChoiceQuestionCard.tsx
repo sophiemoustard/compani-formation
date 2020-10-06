@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
-import { IncGoodAnswersCountType } from '../../../types/store/ActivityStoreType';
 import { getCard } from '../../../store/activities/selectors';
 import Actions from '../../../store/activities/actions';
 import CardHeader from '../../../components/cards/CardHeader';

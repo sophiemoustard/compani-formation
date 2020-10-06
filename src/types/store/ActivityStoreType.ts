@@ -26,14 +26,16 @@ export interface AddQuestionnaireAnswerType {
   type: typeof ADD_QUESTIONNAIRE_ANSWER,
   payload: QuestionnaireAnswerType,
 }
-export interface ResetActivityReducer {
-  type: typeof RESET_ACTIVITY_REDUCER,
-}
 
 export interface SetQuestionnaireAnswersListType {
   type: typeof SET_QUESTIONNAIRE_ANSWERS_LIST,
   payload: Array<QuestionnaireAnswerType>,
 }
+
+export interface ResetActivityReducer {
+  type: typeof RESET_ACTIVITY_REDUCER,
+}
+
 export interface IncGoodAnswersCountType {
   type: typeof INC_GOOD_ANSWERS_COUNT,
 }
@@ -44,6 +46,8 @@ SetCardIndexType |
 SetExitConfirmationModalType |
 AddQuestionnaireAnswerType |
 SetQuestionnaireAnswersListType;
+
+export type ActivityActionWithoutPayloadType = ResetActivityReducer | IncGoodAnswersCountType;
 
 export interface QuestionnaireAnswerType {
   _id?: string,

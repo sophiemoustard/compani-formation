@@ -1,4 +1,4 @@
-import { ResetType } from '../../types/store/StoreType';
+import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import {
   SET_ACTIVITY,
   SET_CARD_INDEX,
@@ -23,7 +23,7 @@ const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfir
   ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
 const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
-const resetActivityReducer = (): ResetType => ({ type: RESET_ACTIVITY_REDUCER });
+const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
 const setQuestionnaireAnswersList =
   (questionnaireAnswersList: Array<QuestionnaireAnswerType>): SetQuestionnaireAnswersListType =>
     ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });

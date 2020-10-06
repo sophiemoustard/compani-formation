@@ -1,4 +1,3 @@
-import { ActionType, ResetType } from '../../types/store/StoreType';
 import {
   ActivityStateType,
   SET_ACTIVITY,
@@ -8,7 +7,8 @@ import {
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   INC_GOOD_ANSWERS_COUNT,
-  IncGoodAnswersCountType,
+  ActivityActionType,
+  ActivityActionWithoutPayloadType,
 } from '../../types/store/ActivityStoreType';
 
 const initialState: ActivityStateType = {
@@ -36,7 +36,7 @@ const applyAddQuestionnaireAnswer = (state, action) => {
 
 export const activities = (
   state: ActivityStateType = initialState,
-  action: ActionType | ResetType | IncGoodAnswersCountType
+  action: ActivityActionType | ActivityActionWithoutPayloadType
 ): ActivityStateType => {
   switch (action.type) {
     case SET_ACTIVITY:
