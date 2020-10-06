@@ -81,6 +81,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: Mu
         (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
+
       return setIsValidated(true);
     }
 
@@ -146,7 +147,7 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
 });
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), cardIndex: state.activities.cardIndex });
-const mapDispatchToProps = (dispatch: ({ type }: IncGoodAnswersCountType) => void) => ({
+const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 

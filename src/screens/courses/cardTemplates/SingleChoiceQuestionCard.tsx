@@ -95,7 +95,7 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
 
-const mapDispatchToProps = (dispatch: ({ type }: IncGoodAnswersCountType) => void) => ({
+const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 
