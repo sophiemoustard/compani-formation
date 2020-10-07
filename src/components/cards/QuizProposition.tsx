@@ -37,7 +37,8 @@ const QuizProposition = ({
   };
 
   const isMarkerVisible = (isValidated && isGoodAnswer) || (isSelected && isValidated);
-  const style = styles(color, isSelected, isGoodAnswer, isValidated);
+  const isBadAnswerAndNotSelected = !isValidated || isSelected || (isValidated && isGoodAnswer);
+  const style = styles(color, isSelected, isGoodAnswer, isValidated, isBadAnswerAndNotSelected);
 
   return (
     <View style={style.answerContainer}>
@@ -56,7 +57,13 @@ const QuizProposition = ({
   );
 };
 
-const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isValidated: boolean) => StyleSheet.create({
+const styles = (
+  color: string,
+  isSelected: boolean,
+  isGoodAnswer: boolean,
+  isValidated: boolean,
+  isBadAnswerAndNotSelected: boolean
+) => StyleSheet.create({
   answerContainer: {
     marginBottom: MARGIN.SM,
   },
@@ -64,7 +71,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     flexDirection: 'row',
     minHeight: BUTTON_HEIGHT,
     borderWidth: BORDER_WIDTH,
-    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY[100],
+    backgroundColor: isBadAnswerAndNotSelected ? WHITE : GREY[100],
     borderColor: isSelected ? color : GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
@@ -84,7 +91,7 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     fontSize: ICON.MD,
     alignSelf: 'center',
     padding: PADDING.MD,
-    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY[100],
+    backgroundColor: isBadAnswerAndNotSelected ? WHITE : GREY[100],
   },
   textContainer: {
     alignItems: 'center',
