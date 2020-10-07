@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { NavigationType } from '../types/NavigationType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
-import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH, BORDER_WIDTH } from '../styles/metrics';
+import { BORDER_RADIUS, PADDING, PROGRAM_CELL_WIDTH, BORDER_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
 
-interface CourseCellProps {
+interface ProgramCellProps {
   courseId?: string,
   navigation?: NavigationType,
   programImage: string,
@@ -13,13 +13,13 @@ interface CourseCellProps {
   disableNavigation?: boolean,
 }
 
-const CourseCell = ({
+const ProgramCell = ({
   courseId,
   navigation,
   programImage,
   programName,
   disableNavigation = false,
-}: CourseCellProps) => {
+}: ProgramCellProps) => {
   const source = programImage
     ? { uri: programImage }
     : require('../../assets/images/authentication_background_image.jpg');
@@ -45,7 +45,7 @@ const imageHeight = 100;
 const styles = StyleSheet.create({
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
-    width: COURSE_CELL_WIDTH,
+    width: PROGRAM_CELL_WIDTH,
     borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
     overflow: 'hidden',
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseCell;
+export default ProgramCell;

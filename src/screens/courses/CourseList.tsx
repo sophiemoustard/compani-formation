@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../api/courses';
 import NextStepCell from '../../components/steps/NextStepCell';
-import CourseCell from '../../components/CourseCell';
+import ProgramCell from '../../components/ProgramCell';
 import { Context as AuthContext } from '../../context/AuthContext';
 import moment from '../../core/helpers/moment';
 import { getLoggedUserId } from '../../store/main/selectors';
@@ -87,7 +87,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
     const programImage = get(course, 'subProgram.program.image.link') || '';
     const programName = get(course, 'subProgram.program.name') || '';
 
-    return <CourseCell programImage={programImage} programName={programName} navigation={navigation}
+    return <ProgramCell programImage={programImage} programName={programName} navigation={navigation}
       courseId={course._id} />;
   };
 

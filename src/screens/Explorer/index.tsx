@@ -7,7 +7,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import commonStyles from '../../styles/common';
 import { getLoggedUserId } from '../../store/main/selectors';
 import { STRICTLY_E_LEARNING } from '../../core/data/constants';
-import CourseCell from '../../components/CourseCell';
+import ProgramCell from '../../components/ProgramCell';
 import styles from './styles';
 
 interface ExplorerProps {
@@ -40,7 +40,7 @@ const Explorer = ({ loggedUserId }: ExplorerProps) => {
   const renderItem = (program) => {
     const programName = program.name || '';
     const programImage = get(program, 'image.link') || '';
-    return <CourseCell programName={programName} programImage={programImage} disableNavigation={true} />;
+    return <ProgramCell programName={programName} programImage={programImage} disableNavigation={true} />;
   };
 
   return (
