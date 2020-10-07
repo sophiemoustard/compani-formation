@@ -12,7 +12,6 @@ import {
   AddQuestionnaireAnswerType,
   SetQuestionnaireAnswersListType,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
-  IncGoodAnswersCountType,
   INC_GOOD_ANSWERS_COUNT,
 } from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
@@ -27,7 +26,7 @@ const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTI
 const setQuestionnaireAnswersList =
   (questionnaireAnswersList: Array<QuestionnaireAnswerType>): SetQuestionnaireAnswersListType =>
     ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
-const incGoodAnswersCount = (): IncGoodAnswersCountType => ({ type: INC_GOOD_ANSWERS_COUNT });
+const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 
 export default {
   setActivity,
