@@ -40,7 +40,7 @@ const ActivityIcon = ({ activity, disabled, isCompleted }: ActivityIconProps) =>
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>
-      <Shadow backgroundColor={buttonBorderColor} borderRadius={BORDER_RADIUS.MD} />
+      <Shadow customStyle={coloredStyle.shadow} borderRadius={BORDER_RADIUS.MD} />
     </View>
   );
 };
@@ -60,6 +60,9 @@ const styles = ({ buttonBorderColor, isCompleted }: StylesProps) => StyleSheet.c
   },
   icon: {
     alignSelf: 'center',
+  },
+  shadow: {
+    backgroundColor: buttonBorderColor,
   },
 });
 

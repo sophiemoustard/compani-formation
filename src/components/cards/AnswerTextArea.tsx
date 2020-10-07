@@ -43,8 +43,7 @@ const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQues
         placeholder={'Votre réponse...'} placeholderTextColor={GREY[300]} value={answer} multiline={true}
         onChangeText={onChangeText} onTouchStart={onTouchStart} onBlur={onBlur}
         onContentSizeChange={(event) => { scrollTo(event.nativeEvent.contentSize.height); }}/>
-      <Shadow backgroundColor={isSelected ? TRANSPARENT_PINK : GREY[200]}
-        relativePosition={isSelected ? focusFieldRelativePosition : undefined} />
+      <Shadow customStyle={style.shadow} relativePosition={isSelected ? focusFieldRelativePosition : undefined} />
     </View>
   );
 };
@@ -68,6 +67,9 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   placeholder: {
     ...FIRA_SANS_REGULAR.MD,
+  },
+  shadow: {
+    backgroundColor: isSelected ? TRANSPARENT_PINK : GREY[200],
   },
 });
 

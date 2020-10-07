@@ -81,7 +81,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
             <Text style={styles.answerWatermark}>!</Text>
             <Text style={styles.answer}>{card.backText}</Text>
           </Animated.View>
-          <AnimatedShadow animatedStyle={frontAnimatedStyle} backgroundColor={GREY['200']}
+          <AnimatedShadow animatedStyle={frontAnimatedStyle} customStyle={styles.shadow}
             borderRadius={BORDER_RADIUS.LG} />
         </TouchableOpacity>
       </View>
@@ -142,6 +142,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     color: PINK['500'],
+  },
+  shadow: {
+    backgroundColor: GREY[200],
   },
 
 });

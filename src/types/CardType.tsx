@@ -84,7 +84,7 @@ export interface OpenQuestionCardType {
   answer?: string,
 }
 
-export interface orderTheSequenceFromAPIType {
+export interface OrderedAnswersType {
   label: string,
 }
 
@@ -92,6 +92,6 @@ export interface OrderTheSequenceType {
   _id: string,
   template: string,
   question: string,
-  orderedAnswers: Array<orderTheSequenceFromAPIType>,
+  orderedAnswers: Array<OrderedAnswersType>,
   explanation: string,
 }

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import { orderTheSequenceFromAPIType, OrderTheSequenceType } from '../../../types/CardType';
+import { OrderedAnswersType, OrderTheSequenceType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
@@ -27,7 +27,7 @@ interface OrderTheSequenceCardProps {
   index: number,
 }
 
-export interface answerPositionType extends orderTheSequenceFromAPIType {
+export interface answerPositionType extends OrderedAnswersType {
   goodPosition: number,
   tempPosition: number,
 }
@@ -78,18 +78,20 @@ const OrderTheSequenceCard = ({ card, index }: OrderTheSequenceCardProps) => {
   const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
   const setAnswersArray = ({ data }) => {
-    setAnswers(data
-      .map((ans, answerIndex) => ({ label: ans.label, goodPosition: ans.goodPosition, tempPosition: answerIndex })));
+    setAnswers(data.map((ans, answerIndex) => ({
+      label: ans.label, goodPosition: ans.goodPosition, tempPosition: answerIndex,
+    })));
   };
 
-  const renderItem = ({ item, drag }) =>
-    <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
+  const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   return (
     <>
       <CardHeader />
       <View style={style.container}>
         <DraggableFlatList
+          contentContainerStyle={style.draggableContainer}
+          ListHeaderComponentStyle={style.questionContainer}
           ListHeaderComponent={<Text style={[cardsStyle.question, style.question]}>{card.question}</Text>}
           showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
           renderItem={renderItem} onDragEnd={setAnswersArray} />
@@ -110,6 +112,13 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
     paddingBottom: PADDING.XL,
+  },
+  draggableContainer: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  questionContainer: {
+    flexGrow: 1,
   },
   question: {
     ...FIRA_SANS_REGULAR.MD,

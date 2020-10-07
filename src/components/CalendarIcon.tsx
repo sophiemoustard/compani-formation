@@ -52,7 +52,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
           : <Text style={styles.toPlan}>?</Text>
         }
       </View>
-      <Shadow backgroundColor={GREY[200]} borderRadius={BORDER_RADIUS.SM} />
+      <Shadow customStyle={styles.shadow} borderRadius={BORDER_RADIUS.SM} />
     </View>
   );
 };
@@ -101,6 +101,9 @@ const styles = StyleSheet.create({
   toPlan: {
     ...NUNITO_REGULAR.XL,
     height: 40,
+  },
+  shadow: {
+    backgroundColor: GREY[200],
   },
 });
 

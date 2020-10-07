@@ -51,7 +51,7 @@ const QuizProposition = ({
         </View>
         }
       </TouchableOpacity>
-      <Shadow backgroundColor={isSelected ? color : GREY['200']} borderRadius={BORDER_RADIUS.LG} />
+      <Shadow customStyle={style.shadow} borderRadius={BORDER_RADIUS.LG} />
     </View>
   );
 };
@@ -95,6 +95,9 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     color: !isValidated || (!isSelected && isGoodAnswer) ? GREY['800'] : color,
     marginVertical: MARGIN.LG / 2,
     marginHorizontal: MARGIN.MD,
+  },
+  shadow: {
+    backgroundColor: isSelected ? color : GREY['200'],
   },
 });
 
