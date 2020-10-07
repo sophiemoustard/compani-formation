@@ -41,14 +41,14 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleCh
   };
 
   const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
-    ? { button: GREEN['600'], background: GREEN['100'], text: GREEN['800'] }
-    : { button: ORANGE['600'], background: ORANGE['100'], text: ORANGE['800'] };
+    ? { button: GREEN[600], background: GREEN[100], text: GREEN[800] }
+    : { button: ORANGE[600], background: ORANGE[100], text: ORANGE[800] };
   const style = styles(isPressed, expectedColors.background, expectedColors.text);
 
   return (
     <>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <FlatList
@@ -64,8 +64,8 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleCh
       <View style={style.footerContainer}>
         {!isPressed && <FooterGradient /> }
         {isPressed && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
-        <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK['500']}
-          buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY['300']} />
+        <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK[500]}
+          buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY[300]} />
       </View>
     </>
   );
@@ -88,7 +88,7 @@ const styles = (isPressed: boolean, backgroundColor: string, textColor: string) 
     backgroundColor,
   },
   footerContainer: {
-    backgroundColor: isPressed ? backgroundColor : GREY['100'],
+    backgroundColor: isPressed ? backgroundColor : GREY[100],
   },
 });
 

@@ -19,8 +19,6 @@ interface AnswerQuestionProps {
 
 const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQuestionProps) => {
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  const focusFieldRelativePosition = { top: -3, bottom: -3, right: -3, left: -3 };
-
   const keyboardDidHide = () => Keyboard.dismiss();
 
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -43,8 +41,7 @@ const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQues
         placeholder={'Votre réponse...'} placeholderTextColor={GREY[300]} value={answer} multiline={true}
         onChangeText={onChangeText} onTouchStart={onTouchStart} onBlur={onBlur}
         onContentSizeChange={(event) => { scrollTo(event.nativeEvent.contentSize.height); }}/>
-      <Shadow backgroundColor={isSelected ? TRANSPARENT_PINK : GREY[200]}
-        relativePosition={isSelected ? focusFieldRelativePosition : undefined} />
+      <Shadow customStyle={style.shadow} />
     </View>
   );
 };
@@ -68,6 +65,14 @@ const styles = (isSelected: boolean) => StyleSheet.create({
   },
   placeholder: {
     ...FIRA_SANS_REGULAR.MD,
+  },
+  shadow: {
+    backgroundColor: isSelected ? TRANSPARENT_PINK : GREY[200],
+    top: isSelected ? -3 : 0,
+    bottom: -3,
+    right: isSelected ? -3 : 0,
+    left: isSelected ? -3 : 0,
+    borderRadius: BORDER_RADIUS.SM,
   },
 });
 

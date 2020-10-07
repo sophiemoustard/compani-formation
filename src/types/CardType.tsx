@@ -6,7 +6,9 @@ TextMediaType |
 SurveyType |
 TitleTextType |
 MultipleChoiceQuestionType |
-FlashCardType;
+FlashCardType |
+OpenQuestionType |
+OrderTheSequenceType;
 
 export interface TransitionType {
   _id: string,
@@ -82,4 +84,16 @@ export interface OpenQuestionType {
   template: string,
   question: string,
   answer?: string,
+}
+
+export interface OrderedAnswerType {
+  label: string,
+}
+
+export interface OrderTheSequenceType {
+  _id: string,
+  template: string,
+  question: string,
+  orderedAnswers: Array<OrderedAnswerType>,
+  explanation: string,
 }

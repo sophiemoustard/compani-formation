@@ -81,8 +81,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
             <Text style={styles.answerWatermark}>!</Text>
             <Text style={styles.answer}>{card.backText}</Text>
           </Animated.View>
-          <AnimatedShadow animatedStyle={frontAnimatedStyle} backgroundColor={GREY['200']}
-            borderRadius={BORDER_RADIUS.LG} />
+          <AnimatedShadow customStyle={[styles.shadow, frontAnimatedStyle]} />
         </TouchableOpacity>
       </View>
       <CardFooter index={index} template={card.template} removeRight={timesHasBeenClicked === 'unclicked'} />
@@ -107,14 +106,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: PADDING.LG,
     borderWidth: BORDER_WIDTH,
-    borderColor: GREY['200'],
+    borderColor: GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     backgroundColor: WHITE,
     backfaceVisibility: 'hidden',
   },
   question: {
     ...FIRA_SANS_BOLD.LG,
-    color: GREY['800'],
+    color: GREY[800],
     textAlign: 'center',
     alignSelf: 'center',
   },
@@ -122,11 +121,11 @@ const styles = StyleSheet.create({
     ...NUNITO_LIGHT.XXXL,
     alignSelf: 'center',
     position: 'absolute',
-    color: PINK['100'],
+    color: PINK[100],
   },
   flipCardBack: {
-    backgroundColor: PINK['400'],
-    borderColor: PINK['500'],
+    backgroundColor: PINK[400],
+    borderColor: PINK[500],
     position: 'absolute',
     top: 0,
     height: '100%',
@@ -141,7 +140,11 @@ const styles = StyleSheet.create({
     ...NUNITO_LIGHT.XXXL,
     alignSelf: 'center',
     position: 'absolute',
-    color: PINK['500'],
+    color: PINK[500],
+  },
+  shadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.LG,
   },
 
 });

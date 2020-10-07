@@ -55,7 +55,8 @@ const StartCard = ({
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}>
       <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
       <View style={styles.wrapper}>
         <View>
@@ -65,7 +66,7 @@ const StartCard = ({
           </ImageBackground>
           <Text style={styles.text}>{title}</Text>
         </View>
-        <Button style={styles.button} bgColor={WHITE} color={PINK['500']} caption="Démarrer"
+        <Button style={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
           onPress={() => navigate('card-0')} />
       </View>
     </ScrollView>
@@ -74,7 +75,7 @@ const StartCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: PINK['500'],
+    backgroundColor: PINK[500],
   },
   contentContainer: {
     flexGrow: 1,

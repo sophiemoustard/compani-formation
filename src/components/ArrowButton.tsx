@@ -17,7 +17,7 @@ interface StylesProps {
   borderColor: string,
 }
 
-const ArrowButton = ({ direction, onPress, disabled = false, color = PINK['500'] }: ArrowButtonProps) => {
+const ArrowButton = ({ direction, onPress, disabled = false, color = PINK[500] }: ArrowButtonProps) => {
   const coloredStyle = styles({ borderColor: color });
 
   return (

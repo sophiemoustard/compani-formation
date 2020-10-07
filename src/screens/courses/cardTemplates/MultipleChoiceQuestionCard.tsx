@@ -94,7 +94,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: Mu
   return (
     <>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <Text style={style.informativeText}>Plusieurs réponses sont possibles</Text>
