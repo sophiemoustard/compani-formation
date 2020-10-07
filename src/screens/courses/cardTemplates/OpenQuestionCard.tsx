@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, StyleSheet, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { OpenQuestionCardType } from '../../../types/CardType';
+import { OpenQuestionType } from '../../../types/CardType';
 import { ActionType, StateType } from '../../../types/store/StoreType';
 import { getCard, getQuestionnaireAnswer } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
@@ -15,7 +15,7 @@ import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType'
 import Actions from '../../../store/activities/actions';
 
 interface OpenQuestionCardProps {
-  card: OpenQuestionCardType,
+  card: OpenQuestionType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,

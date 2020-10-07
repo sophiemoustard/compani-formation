@@ -3,18 +3,13 @@ import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import { OrderedAnswersType, OrderTheSequenceType } from '../../../types/CardType';
+import { OrderedAnswerType, OrderTheSequenceType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREEN, GREY, ORANGE, PINK } from '../../../styles/colors';
-import {
-  ABSOLUTE_BOTTOM_POSITION,
-  INPUT_HEIGHT,
-  MARGIN,
-  PADDING,
-} from '../../../styles/metrics';
+import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
 import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { ORDER_THE_SEQUENCE } from '../../../core/data/constants';
 import { navigate } from '../../../navigationRef';
@@ -27,7 +22,7 @@ interface OrderTheSequenceCardProps {
   index: number,
 }
 
-export interface answerPositionType extends OrderedAnswersType {
+export interface answerPositionType extends OrderedAnswerType {
   goodPosition: number,
   tempPosition: number,
 }
@@ -73,10 +68,6 @@ const OrderTheSequenceCard = ({ card, index }: OrderTheSequenceCardProps) => {
     return navigate(`card-${index + 1}`);
   };
 
-  if (!card || card.template !== ORDER_THE_SEQUENCE) return null;
-
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
-
   const setAnswersArray = ({ data }) => {
     setAnswers(data.map((ans, answerIndex) => ({
       label: ans.label, goodPosition: ans.goodPosition, tempPosition: answerIndex,
@@ -84,6 +75,10 @@ const OrderTheSequenceCard = ({ card, index }: OrderTheSequenceCardProps) => {
   };
 
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
+
+  if (!card || card.template !== ORDER_THE_SEQUENCE) return null;
+
+  const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
   return (
     <>

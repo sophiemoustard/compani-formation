@@ -23,13 +23,13 @@ const QuizProposition = ({
   isSelected,
   onPress,
 }: QuizPropositionProps) => {
-  const [color, setColor] = useState<string>(GREY['200']);
+  const [color, setColor] = useState<string>(GREY[200]);
 
   useEffect(() => {
-    if (isSelected && isGoodAnswer && isValidated) return setColor(GREEN['600']);
-    if (isSelected && isValidated) return setColor(ORANGE['600']);
+    if (isSelected && isGoodAnswer && isValidated) return setColor(GREEN[600]);
+    if (isSelected && isValidated) return setColor(ORANGE[600]);
     if (isSelected) return setColor(PINK[500]);
-    return setColor(GREY['500']);
+    return setColor(GREY[500]);
   }, [isGoodAnswer, isSelected, isValidated]);
 
   const setColorOnPress = () => {
@@ -51,7 +51,7 @@ const QuizProposition = ({
         </View>
         }
       </TouchableOpacity>
-      <Shadow customStyle={style.shadow} borderRadius={BORDER_RADIUS.LG} />
+      <Shadow customStyle={style.shadow} />
     </View>
   );
 };
@@ -64,8 +64,8 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     flexDirection: 'row',
     minHeight: BUTTON_HEIGHT,
     borderWidth: BORDER_WIDTH,
-    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
-    borderColor: isSelected ? color : GREY['200'],
+    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY[100],
+    borderColor: isSelected ? color : GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
 
@@ -80,11 +80,11 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     justifyContent: 'center',
   },
   marker: {
-    color: isGoodAnswer ? GREEN['600'] : ORANGE['600'],
+    color: isGoodAnswer ? GREEN[600] : ORANGE[600],
     fontSize: ICON.MD,
     alignSelf: 'center',
     padding: PADDING.MD,
-    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY['100'],
+    backgroundColor: !isValidated || isSelected || (isValidated && isGoodAnswer) ? WHITE : GREY[100],
   },
   textContainer: {
     alignItems: 'center',
@@ -92,12 +92,13 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
   },
   text: {
     ...FIRA_SANS_MEDIUM.MD,
-    color: !isValidated || (!isSelected && isGoodAnswer) ? GREY['800'] : color,
+    color: !isValidated || (!isSelected && isGoodAnswer) ? GREY[800] : color,
     marginVertical: MARGIN.LG / 2,
     marginHorizontal: MARGIN.MD,
   },
   shadow: {
-    backgroundColor: isSelected ? color : GREY['200'],
+    backgroundColor: isSelected ? color : GREY[200],
+    borderRadius: BORDER_RADIUS.LG,
   },
 });
 

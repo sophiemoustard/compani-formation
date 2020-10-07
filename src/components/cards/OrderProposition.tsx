@@ -34,13 +34,13 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
           <View style={style.index}>
             <Text style={style.indexText}>{item.tempPosition + 1}</Text>
           </View>
-          <Shadow borderRadius={BORDER_RADIUS.LG} customStyle={style.indexShadow} />
+          <Shadow customStyle={style.indexShadow} />
         </View>
         <View style={style.answerContainer}>
           <View style={style.answer}>
             <Text style={style.answerText}>{item.label}</Text>
           </View>
-          <Shadow borderRadius={BORDER_RADIUS.LG} customStyle={style.answerShadow} />
+          <Shadow customStyle={style.answerShadow} />
         </View>
       </TouchableOpacity>
     </View>
@@ -95,11 +95,13 @@ const styles = (color: string, isValidated: boolean) => StyleSheet.create({
   },
   answerShadow: {
     backgroundColor: isValidated ? color : GREY[200],
-    borderBottomLeftRadius: BORDER_RADIUS.MD,
+    borderRadius: BORDER_RADIUS.LG,
   },
   indexShadow: {
     backgroundColor: isValidated ? color : GREY[200],
     borderBottomRightRadius: 0,
+    borderBottomLeftRadius: BORDER_RADIUS.LG,
+    borderTopLeftRadius: BORDER_RADIUS.LG,
   },
 });
 

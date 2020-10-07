@@ -52,7 +52,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
           : <Text style={styles.toPlan}>?</Text>
         }
       </View>
-      <Shadow customStyle={styles.shadow} borderRadius={BORDER_RADIUS.SM} />
+      <Shadow customStyle={styles.shadow} />
     </View>
   );
 };
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   },
   shadow: {
     backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
   },
 });
 

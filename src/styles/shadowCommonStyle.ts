@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
 
 export const shadowCommonStyle = (
-  borderRadius: number,
+  customStyle: any,
   relativePosition: {top: number, bottom: number, left: number, right: number}
 ) => StyleSheet.create({
   shadow: {
     position: 'absolute',
-    top: relativePosition.top,
-    bottom: relativePosition.bottom,
-    left: relativePosition.left,
-    right: relativePosition.right,
-    borderRadius,
+    top: customStyle.top ? customStyle.top : relativePosition.top,
+    bottom: customStyle.bottom ? customStyle.bottom : relativePosition.bottom,
+    left: customStyle.left ? customStyle.left : relativePosition.left,
+    right: customStyle.right ? customStyle.right : relativePosition.right,
     zIndex: -1,
   },
 });

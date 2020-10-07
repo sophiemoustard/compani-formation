@@ -62,7 +62,7 @@ const EndCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: YELLOW['100'],
+    backgroundColor: YELLOW[100],
   },
   contentContainer: {
     flexGrow: 1,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   text: {
     ...FIRA_SANS_BLACK.XL,
-    color: GREY['800'],
+    color: GREY[800],
     marginVertical: MARGIN.XXL,
   },
   image: {

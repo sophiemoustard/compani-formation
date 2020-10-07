@@ -14,7 +14,7 @@ interface CardHeaderProps {
   setExitConfirmationModal: (boolean) => void,
 }
 
-const CardHeader = ({ color = GREY['600'], icon = 'x-circle', setExitConfirmationModal, onPress }: CardHeaderProps) => {
+const CardHeader = ({ color = GREY[600], icon = 'x-circle', setExitConfirmationModal, onPress }: CardHeaderProps) => {
   const iconButtonOnPress = onPress || (() => setExitConfirmationModal(true));
   return (
     <View style={styles.container}>
