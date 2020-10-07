@@ -7,6 +7,7 @@ export const SET_EXIT_CONFIRMATION_MODAL = 'SET_EXIT_CONFIRMATION_MODAL';
 export const ADD_QUESTIONNAIRE_ANSWER = 'ADD_QUESTIONNAIRE_ANSWER';
 export const RESET_ACTIVITY_REDUCER = 'RESET_ACTIVITY_REDUCER';
 export const SET_QUESTIONNAIRE_ANSWERS_LIST = 'SET_QUESTIONNAIRE_ANSWERS_LIST';
+export const INC_GOOD_ANSWERS_COUNT = 'INC_GOOD_ANSWERS_COUNT';
 
 export interface SetActivityType {
   type: typeof SET_ACTIVITY,
@@ -25,13 +26,18 @@ export interface AddQuestionnaireAnswerType {
   type: typeof ADD_QUESTIONNAIRE_ANSWER,
   payload: QuestionnaireAnswerType,
 }
-export interface ResetActivityReducer {
-  type: typeof RESET_ACTIVITY_REDUCER,
-}
 
 export interface SetQuestionnaireAnswersListType {
   type: typeof SET_QUESTIONNAIRE_ANSWERS_LIST,
   payload: Array<QuestionnaireAnswerType>,
+}
+
+export interface ResetActivityReducer {
+  type: typeof RESET_ACTIVITY_REDUCER,
+}
+
+export interface IncGoodAnswersCountType {
+  type: typeof INC_GOOD_ANSWERS_COUNT,
 }
 
 export type ActivityActionType =
@@ -40,6 +46,8 @@ SetCardIndexType |
 SetExitConfirmationModalType |
 AddQuestionnaireAnswerType |
 SetQuestionnaireAnswersListType;
+
+export type ActivityActionWithoutPayloadType = ResetActivityReducer | IncGoodAnswersCountType;
 
 export interface QuestionnaireAnswerType {
   _id?: string,
@@ -52,4 +60,5 @@ export interface ActivityStateType {
   cardIndex: number | null,
   exitConfirmationModal: boolean,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
+  score: number
 }
