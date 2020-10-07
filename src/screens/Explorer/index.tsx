@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, ScrollView, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import Courses from '../../api/courses';
+import get from 'lodash/get';
+import Programs from '../../api/programs';
 import { Context as AuthContext } from '../../context/AuthContext';
 import commonStyles from '../../styles/common';
 import { getLoggedUserId } from '../../store/main/selectors';
@@ -10,17 +11,16 @@ import CourseCell from '../../components/CourseCell';
 import styles from './styles';
 
 interface ExplorerProps {
-  navigation: NavigationType,
   loggedUserId: string | null,
 }
 
-const Explorer = ({ navigation, loggedUserId }: ExplorerProps) => {
+const Explorer = ({ loggedUserId }: ExplorerProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
     try {
-      const fetchedCourses = await Courses.getCourses({ format: STRICTLY_E_LEARNING });
+      const fetchedCourses = await Programs.getPrograms({ format: STRICTLY_E_LEARNING });
       setCourses(fetchedCourses);
     } catch (e) {
       if (e.status === 401) signOut();
@@ -36,6 +36,12 @@ const Explorer = ({ navigation, loggedUserId }: ExplorerProps) => {
   }, [loggedUserId]);
 
   const renderSeparator = () => <View style={styles.separator} />;
+
+  const renderItem = (program) => {
+    const programName = program.name || '';
+    const programImage = get(program, 'image.link') || '';
+    return <CourseCell programName={programName} programImage={programImage} disableNavigation={true} />;
+  };
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -53,7 +59,7 @@ const Explorer = ({ navigation, loggedUserId }: ExplorerProps) => {
               horizontal
               data={courses}
               keyExtractor={item => item._id}
-              renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
+              renderItem={({ item }) => renderItem(item)}
               contentContainerStyle={styles.courseContainer}
               showsHorizontalScrollIndicator={false}
               ItemSeparatorComponent={renderSeparator} />

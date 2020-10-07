@@ -60,7 +60,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
 
   const getCourses = async () => {
     try {
-      const fetchedCourses = await Courses.getUserCourses({ trainees: loggedUserId });
+      const fetchedCourses = await Courses.getUserCourses();
       setCourses(fetchedCourses);
     } catch (e) {
       if (e.status === 401) signOut();
@@ -83,6 +83,14 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
+  const renderItem = (course) => {
+    const programImage = get(course, 'subProgram.program.image.link') || '';
+    const programName = get(course, 'subProgram.program.name') || '';
+
+    return <CourseCell programImage={programImage} programName={programName} navigation={navigation}
+      courseId={course._id} />;
+  };
+
   const nextStep = formatNextSteps(courses);
 
   return (
@@ -118,7 +126,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
           horizontal
           data={courses}
           keyExtractor={item => item._id}
-          renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
+          renderItem={({ item }) => renderItem(item)}
           contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false}
           ItemSeparatorComponent={renderSeparator}

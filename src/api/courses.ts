@@ -8,9 +8,9 @@ export default {
     const response = await alenviAxios.get(`${baseURL}/courses`, { params });
     return response.data.data.courses;
   },
-  getUserCourses: async (params): Promise<[CourseType]> => {
+  getUserCourses: async (): Promise<[CourseType]> => {
     const { baseURL } = getEnvVars();
-    const response = await alenviAxios.get(`${baseURL}/courses/user`, { params });
+    const response = await alenviAxios.get(`${baseURL}/courses/user`);
     return response.data.data.courses;
   },
   getCourse: async (courseId): Promise<CourseType> => {

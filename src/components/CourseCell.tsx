@@ -1,30 +1,31 @@
 import React from 'react';
-import get from 'lodash/get';
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { connect } from 'react-redux';
-import { CourseType } from '../types/CourseType';
 import { NavigationType } from '../types/NavigationType';
-import { getLoggedUserId } from '../store/main/selectors';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, COURSE_CELL_WIDTH, BORDER_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
 
 interface CourseCellProps {
-  course: CourseType,
-  navigation: NavigationType,
-  loggedUserId: string | null,
+  courseId?: string,
+  navigation?: NavigationType,
+  programImage: string,
+  programName: string,
+  disableNavigation?: boolean,
 }
 
-const CourseCell = ({ course, navigation, loggedUserId }: CourseCellProps) => {
-  const programImage = get(course, 'subProgram.program.image.link') || '';
-  const programName = get(course, 'subProgram.program.name') || '';
-  const disableNavigation = !(loggedUserId && course?.trainees?.includes(loggedUserId));
+const CourseCell = ({
+  courseId,
+  navigation,
+  programImage,
+  programName,
+  disableNavigation = false,
+}: CourseCellProps) => {
   const source = programImage
     ? { uri: programImage }
     : require('../../assets/images/authentication_background_image.jpg');
-  const goToCourse = () => navigation.navigate(
+  const goToCourse = () => navigation?.navigate(
     'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: course._id } } }
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
   );
 
   return (
@@ -64,6 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
-
-export default connect(mapStateToProps)(CourseCell);
+export default CourseCell;
