@@ -17,13 +17,17 @@ interface OrderPropositionProps {
 
 const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionProps) => {
   const [color, setColor] = useState<string>(GREY[200]);
-  const isGoodPosition = item.goodPosition === item.tempPosition;
+  const [isGoodPosition, setIsGoodPosition] = useState<boolean>(item.goodPosition === item.tempPosition);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) return setColor(GREEN[600]);
     if (!isGoodPosition && isValidated) return setColor(ORANGE[600]);
     return setColor(GREY[500]);
   }, [isGoodPosition, isValidated]);
+
+  useEffect(() => {
+    setIsGoodPosition(item.goodPosition === item.tempPosition);
+  }, [item]);
 
   const style = styles(color, isValidated);
 
