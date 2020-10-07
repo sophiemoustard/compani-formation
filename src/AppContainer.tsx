@@ -12,7 +12,7 @@ import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
 import Authentication from './screens/Authentication';
 import ForgotPassword from './screens/ForgotPassword';
-import ProgramList from './screens/ProgramList';
+import Explorer from './screens/Explorer';
 import CourseList from './screens/courses/CourseList';
 import CourseProfile from './screens/courses/CourseProfile';
 import CardContainer from './screens/courses/CardContainer';
@@ -40,7 +40,7 @@ const Courses = () => (
 const Tab = createBottomTabNavigator();
 
 const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
-  const icons = { Courses: 'book', ProgramList: 'search', Profile: 'person-outline' };
+  const icons = { Courses: 'book', Explorer: 'search', Profile: 'person-outline' };
 
   return (
     <MaterialIcons name={icons[route.name]} color={color} size={size} />
@@ -56,7 +56,7 @@ const Home = () => {
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="ProgramList" component={ProgramList} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="Explorer" component={Explorer} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
       <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>

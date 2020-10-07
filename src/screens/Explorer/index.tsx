@@ -1,22 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, ScrollView, View, StyleSheet, FlatList } from 'react-native';
+import { Text, ScrollView, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import Courses from '../api/courses';
-import { Context as AuthContext } from '../context/AuthContext';
-import commonStyles from '../styles/common';
-import { FIRA_SANS_BOLD } from '../styles/fonts';
-import { MAIN_MARGIN_LEFT } from '../styles/metrics';
-import { YELLOW } from '../styles/colors';
-import { getLoggedUserId } from '../store/main/selectors';
-import { STRICTLY_E_LEARNING } from '../core/data/constants';
-import CourseCell from '../components/CourseCell';
+import Courses from '../../api/courses';
+import { Context as AuthContext } from '../../context/AuthContext';
+import commonStyles from '../../styles/common';
+import { getLoggedUserId } from '../../store/main/selectors';
+import { STRICTLY_E_LEARNING } from '../../core/data/constants';
+import CourseCell from '../../components/CourseCell';
+import styles from './styles';
 
-interface ProgramListProps {
+interface ExplorerProps {
   navigation: NavigationType,
   loggedUserId: string | null,
 }
 
-const ProgramList = ({ navigation, loggedUserId }: ProgramListProps) => {
+const Explorer = ({ navigation, loggedUserId }: ExplorerProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
@@ -66,22 +64,6 @@ const ProgramList = ({ navigation, loggedUserId }: ProgramListProps) => {
   );
 };
 
-const styles = StyleSheet.create({
-  coursesCount: {
-    ...FIRA_SANS_BOLD.MD,
-    color: YELLOW[800],
-  },
-  coursesCountContainer: {
-    backgroundColor: YELLOW[200],
-  },
-  courseContainer: {
-    paddingHorizontal: MAIN_MARGIN_LEFT,
-  },
-  separator: {
-    marginRight: 8,
-  },
-});
-
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(ProgramList);
+export default connect(mapStateToProps)(Explorer);
