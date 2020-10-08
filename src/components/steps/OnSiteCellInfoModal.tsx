@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
-import NiModal from '../modal';
+import NiModal from '../Modal';
 import IconButton from '../IconButton';
 import { BORDER_WIDTH, MARGIN, ICON } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';

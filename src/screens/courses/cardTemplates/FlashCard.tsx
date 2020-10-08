@@ -11,7 +11,7 @@ import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN, PADDING } from '../../../styles/metrics';
 import CardFooter from '../../../components/cards/CardFooter';
 import { FLASHCARD } from '../../../core/data/constants';
-import AnimatedShadow from '../../../components/style/AnimatedShadow';
+import AnimatedShadow from '../../../components/design/AnimatedShadow';
 
 interface FlashCard {
   card: FlashCardType,

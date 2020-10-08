@@ -5,7 +5,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Shadow from '../style/Shadow';
+import Shadow from '../design/Shadow';
 import { GREY, PINK, TRANSPARENT_PINK, WHITE } from '../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING, TEXT_AREA_HEIGHT } from '../../styles/metrics';
 import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../styles/fonts';

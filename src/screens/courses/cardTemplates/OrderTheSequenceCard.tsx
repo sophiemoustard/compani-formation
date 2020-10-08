@@ -15,7 +15,7 @@ import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import { ORDER_THE_SEQUENCE } from '../../../core/data/constants';
 import { navigate } from '../../../navigationRef';
 import cardsStyle from '../../../styles/cards';
-import FooterGradient from '../../../components/style/FooterGradient';
+import FooterGradient from '../../../components/design/FooterGradient';
 import OrderProposition from '../../../components/cards/OrderProposition';
 
 interface OrderTheSequenceCardProps {

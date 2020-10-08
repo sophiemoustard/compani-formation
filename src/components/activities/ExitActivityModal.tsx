@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import NiModal from '../modal';
+import NiModal from '../Modal';
 import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';

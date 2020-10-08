@@ -13,7 +13,7 @@ import QuestionCardFooter from '../../../components/cards/QuestionCardFooter';
 import QuizProposition from '../../../components/cards/QuizProposition';
 import { SINGLE_CHOICE_QUESTION } from '../../../core/data/constants';
 import cardsStyle from '../../../styles/cards';
-import FooterGradient from '../../../components/style/FooterGradient';
+import FooterGradient from '../../../components/design/FooterGradient';
 
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,

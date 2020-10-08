@@ -11,7 +11,7 @@ import AppContainer from './src/AppContainer';
 import { WHITE } from './src/styles/colors';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
-import NiModal from './src/components/modal';
+import NiModal from './src/components/Modal';
 import NiButton from './src/components/form/Button';
 import { MARGIN } from './src/styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from './src/styles/fonts';
