@@ -70,6 +70,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequ
       const isOrderCorrect = answers.every(answer => (answer.goodPosition === answer.tempPosition));
       setIsOrderedCorrectly(isOrderCorrect);
       if (isOrderCorrect) incGoodAnswersCount();
+
       return setIsValidated(true);
     }
     return navigate(`card-${index + 1}`);
