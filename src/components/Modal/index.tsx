@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Modal } from 'react-native';
-import styles from './style';
+import styles from './styles';
 
 interface NiModalProps {
   visible: boolean,

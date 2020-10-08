@@ -3,7 +3,7 @@ import { View, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import { CourseSlotType } from '../../../types/CourseSlotType';
 import moment from '../../../core/helpers/moment';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
-import styles from './style';
+import styles from './styles';
 
 interface OnSiteInfoItemProps {
   info: { slots: Array<CourseSlotType> },

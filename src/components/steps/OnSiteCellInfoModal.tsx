@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
@@ -29,8 +29,6 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     return Object.keys(formattedSlots).map(key => ({ startDate: key, slots: formattedSlots[key] }));
   };
 
-  const [formattedStepSlots] = useState(formatStepSlotsForFlatList(stepSlots));
-
   return (
     <NiModal visible={visible}>
       <View style={styles.header}>
@@ -38,9 +36,9 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
         <IconButton name='x-circle' onPress={onRequestClose} size={ICON.LG}
           color={GREY[500]} style={styles.closeButton}/>
       </View>
-      <FlatList ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)} data={formattedStepSlots}
-        renderItem={({ item }) => <OnSiteInfoItem info={item} />} keyExtractor={item => item.startDate}
-        scrollEnabled={formattedStepSlots.length > 3} />
+      <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={true}
+        data={formatStepSlotsForFlatList(stepSlots)} renderItem={({ item }) => <OnSiteInfoItem info={item} />}
+        keyExtractor={item => item.startDate} />
     </NiModal>
   );
 };
