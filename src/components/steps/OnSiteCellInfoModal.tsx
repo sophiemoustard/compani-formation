@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
-import InfoModal from './InfoModal';
-import { BORDER_WIDTH, MARGIN } from '../../styles/metrics';
+import NiModal from '../modal';
+import IconButton from '../IconButton';
+import { BORDER_WIDTH, MARGIN, ICON } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
-import { NUNITO_SEMI, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { NUNITO_SEMI, FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 interface OnSiteCellInfoModalProps {
   visible: boolean,
@@ -28,20 +29,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     return Object.keys(formattedSlots).map(key => ({ startDate: key, slots: formattedSlots[key] }));
   };
 
-  const infoModalContent = () => {
-    const formattedStepSlots = formatStepSlotsForFlatList(stepSlots);
-    return (
-      <View>
-        <FlatList
-          ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)}
-          data={formattedStepSlots}
-          renderItem={({ item }) => stepInfoItem(item)}
-          keyExtractor={item => item.startDate}
-          scrollEnabled={formattedStepSlots.length > 3}
-        />
-      </View>
-    );
-  };
+  const [formattedStepSlots] = useState(formatStepSlotsForFlatList(stepSlots));
 
   const openMaps = async address => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${address}`);
 
@@ -71,7 +59,16 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
   );
 
   return (
-    <InfoModal visible={visible} title={title} content={infoModalContent()} onRequestClose={onRequestClose} />
+    <NiModal visible={visible}>
+      <View style={styles.header}>
+        <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={3}>{title}</Text>
+        <IconButton name='x-circle' onPress={onRequestClose} size={ICON.LG}
+          color={GREY[500]} style={styles.closeButton}/>
+      </View>
+      <FlatList ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)} data={formattedStepSlots}
+        renderItem={({ item }) => stepInfoItem(item)} keyExtractor={item => item.startDate}
+        scrollEnabled={formattedStepSlots.length > 3} />
+    </NiModal>
   );
 };
 
@@ -95,6 +92,19 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[600],
     textDecorationLine: 'underline',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: MARGIN.XL,
+  },
+  title: {
+    ...FIRA_SANS_BOLD.MD,
+    flex: 1,
+  },
+  closeButton: {
+    alignItems: 'flex-end',
   },
 });
 

@@ -7,7 +7,7 @@ import CalendarIcon from '../CalendarIcon';
 import { PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import StepCellTitle from './StepCellTitle';
-import OnSiteCellInfoModal from '../modal/OnSiteCellInfoModal';
+import OnSiteCellInfoModal from './OnSiteCellInfoModal';
 import IconButton from '../IconButton';
 
 interface OnSiteCellProps {
