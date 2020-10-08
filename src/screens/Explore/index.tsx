@@ -10,11 +10,11 @@ import ProgramCell from '../../components/ProgramCell';
 import styles from './styles';
 import { ProgramType } from '../../types/ProgramType';
 
-interface ExplorerProps {
+interface ExploreProps {
   loggedUserId: string | null,
 }
 
-const Explorer = ({ loggedUserId }: ExplorerProps) => {
+const Explore = ({ loggedUserId }: ExploreProps) => {
   const [programs, setPrograms] = useState<Array<ProgramType>>([]);
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
@@ -45,7 +45,7 @@ const Explorer = ({ loggedUserId }: ExplorerProps) => {
 
   return (
     <ScrollView style={commonStyles.container}>
-      <Text style={commonStyles.title}>Explorer</Text>
+      <Text style={commonStyles.title}>Explore</Text>
       {programs.length > 0 &&
         <>
           <View style={commonStyles.sectionContainer}>
@@ -67,4 +67,4 @@ const Explorer = ({ loggedUserId }: ExplorerProps) => {
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(Explorer);
+export default connect(mapStateToProps)(Explore);
