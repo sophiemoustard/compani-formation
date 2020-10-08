@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
+import { WHITE } from '../../../styles/colors';
+import { BORDER_RADIUS } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,6 +12,17 @@ const styles = StyleSheet.create({
   activityName: {
     ...FIRA_SANS_REGULAR.MD,
     textAlign: 'center',
+  },
+  iconContainer: {
+    position: 'relative',
+  },
+  icon: {
+    position: 'absolute',
+    bottom: 0,
+    right: -12,
+    backgroundColor: WHITE,
+    borderRadius: BORDER_RADIUS.XL,
+    paddingHorizontal: 3,
   },
 });
 
