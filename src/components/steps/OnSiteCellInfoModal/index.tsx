@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList } from 'react-native';
-import { CourseSlotType } from '../../types/CourseSlotType';
-import moment from '../../core/helpers/moment';
-import NiModal from '../Modal';
-import IconButton from '../IconButton';
-import { BORDER_WIDTH, MARGIN, ICON } from '../../styles/metrics';
-import { GREY, PINK } from '../../styles/colors';
-import OnSiteInfoItem from './OnSiteInfoItem';
-import { NUNITO_SEMI, FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
+import { View, Text, FlatList } from 'react-native';
+import { CourseSlotType } from '../../../types/CourseSlotType';
+import moment from '../../../core/helpers/moment';
+import NiModal from '../../Modal';
+import IconButton from '../../IconButton';
+import { ICON } from '../../../styles/metrics';
+import { GREY } from '../../../styles/colors';
+import OnSiteInfoItem from '../OnSiteInfoItem';
+import styles from './styles';
 
 interface OnSiteCellInfoModalProps {
   visible: boolean,
@@ -42,41 +42,5 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     </NiModal>
   );
 };
-
-const styles = StyleSheet.create({
-  stepInfoSeparator: {
-    marginBottom: MARGIN.MD,
-  },
-  separator: {
-    height: 16,
-    borderLeftWidth: BORDER_WIDTH,
-    borderLeftColor: GREY[300],
-    marginHorizontal: MARGIN.SM,
-    alignSelf: 'center',
-  },
-  date: {
-    ...NUNITO_SEMI.XS,
-    color: GREY[600],
-    textTransform: 'uppercase',
-  },
-  address: {
-    ...FIRA_SANS_REGULAR.MD,
-    color: PINK[600],
-    textDecorationLine: 'underline',
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: MARGIN.XL,
-  },
-  title: {
-    ...FIRA_SANS_BOLD.MD,
-    flex: 1,
-  },
-  closeButton: {
-    alignItems: 'flex-end',
-  },
-});
 
 export default OnSiteCellInfoModal;
