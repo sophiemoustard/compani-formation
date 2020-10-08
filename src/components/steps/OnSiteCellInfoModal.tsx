@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, FlatList } from 'react-native';
 import { CourseSlotType } from '../../types/CourseSlotType';
 import moment from '../../core/helpers/moment';
 import NiModal from '../modal';
 import IconButton from '../IconButton';
 import { BORDER_WIDTH, MARGIN, ICON } from '../../styles/metrics';
 import { GREY, PINK } from '../../styles/colors';
-import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
+import OnSiteInfoItem from './OnSiteInfoItem';
 import { NUNITO_SEMI, FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 interface OnSiteCellInfoModalProps {
@@ -31,33 +31,6 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
 
   const [formattedStepSlots] = useState(formatStepSlotsForFlatList(stepSlots));
 
-  const openMaps = async address => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${address}`);
-
-  const stepInfoItem = (stepSlot) => {
-    const address = stepSlot?.slots[0]?.address?.fullAddress;
-
-    return (
-      <View>
-        <Text style={styles.date}>{moment(stepSlot.slots[0].startDate).format('dddd Do MMMM')}</Text>
-        <FlatList
-          horizontal
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          data={stepSlot.slots}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => onSiteHoursDisplayItem(item)}
-        />
-        {address && (
-          <TouchableOpacity onPress={() => openMaps(address)}>
-            <Text style={styles.address}>{address}</Text>
-          </TouchableOpacity>)}
-      </View>
-    );
-  };
-
-  const onSiteHoursDisplayItem = stepSlot => (
-    <OnSiteHoursDisplay startDate={stepSlot.startDate} endDate={stepSlot.endDate} />
-  );
-
   return (
     <NiModal visible={visible}>
       <View style={styles.header}>
@@ -66,7 +39,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
           color={GREY[500]} style={styles.closeButton}/>
       </View>
       <FlatList ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)} data={formattedStepSlots}
-        renderItem={({ item }) => stepInfoItem(item)} keyExtractor={item => item.startDate}
+        renderItem={({ item }) => <OnSiteInfoItem info={item} />} keyExtractor={item => item.startDate}
         scrollEnabled={formattedStepSlots.length > 3} />
     </NiModal>
   );

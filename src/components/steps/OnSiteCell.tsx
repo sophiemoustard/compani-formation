@@ -29,8 +29,8 @@ const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
 
   return (
     <>
-      <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible} onRequestClose={closeModal}
-      />
+      <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
+        onRequestClose={closeModal} />
       <View style={styles.container}>
         <TouchableOpacity onPress={openModal}>
           <CalendarIcon dates={dates} />
