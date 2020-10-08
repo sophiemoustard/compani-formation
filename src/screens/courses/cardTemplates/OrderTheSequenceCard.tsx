@@ -6,6 +6,7 @@ import DraggableFlatList from 'react-native-draggable-flatlist';
 import { OrderedAnswerType, OrderTheSequenceType } from '../../../types/CardType';
 import { StateType } from '../../../types/store/StoreType';
 import { getCard } from '../../../store/activities/selectors';
+import Actions from '../../../store/activities/actions';
 import CardHeader from '../../../components/cards/CardHeader';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { GREEN, GREY, ORANGE, PINK } from '../../../styles/colors';
@@ -20,6 +21,7 @@ import OrderProposition from '../../../components/cards/OrderProposition';
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
   index: number,
+  incGoodAnswersCount: () => void,
 }
 
 export interface answerPositionType extends OrderedAnswerType {
@@ -33,9 +35,10 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const OrderTheSequenceCard = ({ card, index }: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
+  const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttonsColor: PINK[500],
     textColor: GREY[100],
@@ -55,16 +58,21 @@ const OrderTheSequenceCard = ({ card, index }: OrderTheSequenceCardProps) => {
       return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
     }
 
-    const isAnsweredCorrectly = answers.every(answer => (answer.goodPosition === answer.tempPosition));
-    if (isAnsweredCorrectly) {
+    if (isOrderedCorrectly) {
       return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
     }
 
     return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
-  }, [isValidated, answers]);
+  }, [isValidated, answers, isOrderedCorrectly]);
 
   const onPressFooterButton = () => {
-    if (!isValidated) return setIsValidated(true);
+    if (!isValidated) {
+      const isOrderCorrect = answers.every(answer => (answer.goodPosition === answer.tempPosition));
+      setIsOrderedCorrectly(isOrderCorrect);
+      if (isOrderCorrect) incGoodAnswersCount();
+
+      return setIsValidated(true);
+    }
     return navigate(`card-${index + 1}`);
   };
 
@@ -133,5 +141,8 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
 });
 
 const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
+const mapDispatchToProps = dispatch => ({
+  incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
+});
 
-export default connect(mapStateToProps)(OrderTheSequenceCard);
+export default connect(mapStateToProps, mapDispatchToProps)(OrderTheSequenceCard);
