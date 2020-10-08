@@ -79,9 +79,11 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
     return navigate(`card-${cardIndex + 1}`);
   };
 
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+  const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.label}
+    isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
 
   if (!card || card.template !== MULTIPLE_CHOICE_QUESTION) return null;
+  const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
   return (
     <>
@@ -90,14 +92,8 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex }: MultipleChoiceQuestionC
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <Text style={style.informativeText}>Plusieurs réponses sont possibles</Text>
-          <FlatList
-            data={answers}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item, index }) => (
-              <QuizProposition onPress={onSelectAnswer} index={index} item={item.label} isValidated={isValidated}
-                isGoodAnswer={item.correct} isSelected={item.isSelected} />
-            )}
-          />
+          <FlatList data={answers} keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item, index }) => renderItem(item, index)} />
         </View>
       </ScrollView>
       <View style={style.footerContainer}>

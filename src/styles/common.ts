@@ -13,7 +13,7 @@ export default StyleSheet.create({
     marginVertical: MARGIN.XL,
     ...FIRA_SANS_BLACK.XL,
   },
-  sectionTitle: {
+  sectionTitleText: {
     ...FIRA_SANS_BOLD.LG,
     marginLeft: MAIN_MARGIN_LEFT,
   },
@@ -24,7 +24,7 @@ export default StyleSheet.create({
     marginLeft: MARGIN.SM,
     borderRadius: BORDER_RADIUS.XS,
   },
-  contentTitle: {
+  sectionTitle: {
     flexDirection: 'row',
     marginBottom: MARGIN.MD,
   },

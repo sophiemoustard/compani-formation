@@ -9,13 +9,14 @@ import { getLoggedUserId } from '../../store/main/selectors';
 import { STRICTLY_E_LEARNING } from '../../core/data/constants';
 import ProgramCell from '../../components/ProgramCell';
 import styles from './styles';
+import { CourseType } from '../../types/CourseType';
 
 interface ExplorerProps {
   loggedUserId: string | null,
 }
 
 const Explorer = ({ loggedUserId }: ExplorerProps) => {
-  const [courses, setCourses] = useState(new Array(0));
+  const [courses, setCourses] = useState<Array<CourseType>>([]);
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
@@ -37,11 +38,7 @@ const Explorer = ({ loggedUserId }: ExplorerProps) => {
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  const renderItem = (program) => {
-    const programName = program.name || '';
-    const programImage = get(program, 'image.link') || '';
-    return <ProgramCell programName={programName} programImage={programImage} disableNavigation={true} />;
-  };
+  const renderItem = program => <ProgramCell program={program} disableNavigation={true} />;
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -49,20 +46,15 @@ const Explorer = ({ loggedUserId }: ExplorerProps) => {
       {courses.length > 0 &&
         <>
           <View style={commonStyles.sectionContainer}>
-            <View style={commonStyles.contentTitle}>
-              <Text style={commonStyles.sectionTitle}>Formations e-learning</Text>
+            <View style={commonStyles.sectionTitle}>
+              <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
               <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
                 <Text style={styles.coursesCount}>{courses.length}</Text>
               </View>
             </View>
-            <FlatList
-              horizontal
-              data={courses}
-              keyExtractor={item => item._id}
-              renderItem={({ item }) => renderItem(item)}
-              contentContainerStyle={styles.courseContainer}
-              showsHorizontalScrollIndicator={false}
-              ItemSeparatorComponent={renderSeparator} />
+            <FlatList horizontal data={courses} keyExtractor={item => item._id}
+              renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.courseContainer}
+              showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
           </View>
         </>
       }

@@ -1,25 +1,23 @@
 import React from 'react';
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import get from 'lodash/get';
 import { NavigationType } from '../types/NavigationType';
 import { WHITE, TRANSPARENT_GREY } from '../styles/colors';
 import { BORDER_RADIUS, PADDING, PROGRAM_CELL_WIDTH, BORDER_WIDTH } from '../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../styles/fonts';
+import { ProgramType } from '../types/ProgramType';
 
 interface ProgramCellProps {
   courseId?: string,
   navigation?: NavigationType,
-  programImage: string,
-  programName: string,
+  program: ProgramType,
   disableNavigation?: boolean,
 }
 
-const ProgramCell = ({
-  courseId,
-  navigation,
-  programImage,
-  programName,
-  disableNavigation = false,
-}: ProgramCellProps) => {
+const ProgramCell = ({ courseId, navigation, program, disableNavigation = false }: ProgramCellProps) => {
+  const programName = program.name || '';
+  const programImage = get(program, 'image.link') || '';
+
   const source = programImage
     ? { uri: programImage }
     : require('../../assets/images/authentication_background_image.jpg');

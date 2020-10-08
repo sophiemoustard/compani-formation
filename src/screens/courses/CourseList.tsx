@@ -83,13 +83,8 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
-  const renderItem = (course) => {
-    const programImage = get(course, 'subProgram.program.image.link') || '';
-    const programName = get(course, 'subProgram.program.name') || '';
-
-    return <ProgramCell programImage={programImage} programName={programName} navigation={navigation}
-      courseId={course._id} />;
-  };
+  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} navigation={navigation}
+    courseId={course._id} />;
 
   const nextStep = formatNextSteps(courses);
 
@@ -98,39 +93,27 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextStep.length > 0 &&
         <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.contentTitle}>
-            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Prochains évènements</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.coursesCount}>{nextStep.length}</Text>
+              <Text style={styles.nextEventsCount}>{nextStep.length}</Text>
             </View>
           </View>
-          <FlatList
-            horizontal
-            data={nextStep}
-            keyExtractor={item => item._id}
-            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
-            contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={renderSeparator}
-          />
+          <FlatList horizontal data={nextStep} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
+            contentContainerStyle={styles.courseContainer} />
         </View>
       }
       <View style={commonStyles.sectionContainer}>
-        <View style={commonStyles.contentTitle}>
-          <Text style={commonStyles.sectionTitle}>Formations en cours</Text>
+        <View style={commonStyles.sectionTitle}>
+          <Text style={commonStyles.sectionTitleText}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
             <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
         </View>
-        <FlatList
-          horizontal
-          data={courses}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => renderItem(item)}
-          contentContainerStyle={styles.courseContainer}
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={renderSeparator}
-        />
+        <FlatList horizontal data={courses} keyExtractor={item => item._id} renderItem={({ item }) => renderItem(item)}
+          contentContainerStyle={styles.courseContainer} showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={renderSeparator} />
       </View>
     </ScrollView>
   );
@@ -148,14 +131,14 @@ const styles = StyleSheet.create({
   },
   coursesCount: {
     ...FIRA_SANS_BOLD.MD,
-    color: PINK[600],
+    color: YELLOW[800],
   },
   nextEventsCountContainer: {
     backgroundColor: PINK[100],
   },
   nextEventsCount: {
     ...FIRA_SANS_BOLD.MD,
-    color: YELLOW[800],
+    color: PINK[600],
   },
 });
 

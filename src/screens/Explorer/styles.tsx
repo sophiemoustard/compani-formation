@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
-import { MAIN_MARGIN_LEFT } from '../../styles/metrics';
+import { MAIN_MARGIN_LEFT, MARGIN } from '../../styles/metrics';
 import { YELLOW } from '../../styles/colors';
 
 export default StyleSheet.create({
@@ -15,6 +15,6 @@ export default StyleSheet.create({
     paddingHorizontal: MAIN_MARGIN_LEFT,
   },
   separator: {
-    marginRight: 8,
+    marginRight: MARGIN.SM,
   },
 });
