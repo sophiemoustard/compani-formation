@@ -23,7 +23,7 @@ const ProgressBar = ({ maxProgress, progress }: ProgressBar) => {
       <View style={style.container}>
         <View style={style.content} />
       </View>
-      <Text style={style.text} >{progress}/{maxProgress}</Text>
+      <Text style={style.text}>{progress}/{maxProgress}</Text>
     </>
   );
 };
