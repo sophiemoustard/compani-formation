@@ -5,6 +5,7 @@ import ActivityIcon from '../ActivityIcon';
 import { ActivityType } from '../../../types/ActivityType';
 import { GREEN, WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
+import { QUIZ } from '../../../core/data/constants';
 import styles from './styles';
 
 interface ActivityCellProps {
@@ -15,14 +16,23 @@ interface ActivityCellProps {
 const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
+  const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
+  const isQuiz = activity.type === QUIZ;
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress} disabled={disabled}>
         <View style={styles.iconContainer}>
           <ActivityIcon activity={activity} disabled={disabled} isCompleted={isCompleted} />
-          {isCompleted && <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={styles.icon}
-            backgroundColor={WHITE} />}
+          {isCompleted && !isQuiz &&
+            <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={styles.icon}
+              backgroundColor={WHITE} />
+          }
+          {isCompleted && isQuiz &&
+            <View style={styles.scoreContainer}>
+              <Text style={styles.score}>{lastScore}/{activity.quizCount}</Text>
+            </View>
+          }
         </View>
       </TouchableOpacity>
       <Text style={styles.activityName} lineBreakMode={'tail'} numberOfLines={2}>

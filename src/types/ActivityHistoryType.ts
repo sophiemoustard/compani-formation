@@ -6,4 +6,5 @@ export interface ActivityHistoryType {
   activity: string,
   questionnaireAnswersList?: Array<QuestionnaireAnswerType>,
   date: Date,
+  score: number,
 }

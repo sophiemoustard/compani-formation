@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
-import { WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS } from '../../../styles/metrics';
+import { FIRA_SANS_REGULAR, NUNITO_BOLD } from '../../../styles/fonts';
+import { WHITE, GREEN } from '../../../styles/colors';
+import { BORDER_RADIUS, PADDING } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +23,20 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.XL,
     paddingHorizontal: 3,
+  },
+  scoreContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: '70%',
+    backgroundColor: GREEN[500],
+    borderRadius: BORDER_RADIUS.MD,
+    borderWidth: 2,
+    borderColor: WHITE,
+  },
+  score: {
+    ...NUNITO_BOLD.MD,
+    color: WHITE,
+    paddingHorizontal: PADDING.SM,
   },
 });
 
