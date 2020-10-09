@@ -2,31 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
-import { getIndexCard, getTotalCards } from '../../../store/activities/selectors';
-import styles from './styles';
+import Selectors from '../../../store/activities/selectors';
+import styles from './style';
 
 interface ProgressBar {
-  totalCards: number,
-  index: number,
+  maxProgress: number,
+  progress: number,
 }
 
-const ProgressBar = ({ totalCards, index }: ProgressBar) => {
-  const [progress, setProgress] = useState<number>(50);
+const ProgressBar = ({ maxProgress, progress }: ProgressBar) => {
+  const [progressPercentage, setProgressPercentage] = useState<number>(0);
+  const style = styles(progressPercentage);
 
   useEffect(() => {
-    setProgress((index / totalCards) * 100);
-  }, [index, totalCards]);
+    setProgressPercentage((progress / maxProgress) * 100);
+  }, [progress, maxProgress]);
 
   return (
     <>
-      <View style={styles(progress).container}>
-        <View style={styles(progress).content} />
+      <View style={style.container}>
+        <View style={style.content} />
       </View>
-      <Text style={styles(progress).text} >{index}/{totalCards}</Text>
+      <Text style={style.text} >{progress}/{maxProgress}</Text>
     </>
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ totalCards: getTotalCards(state), index: getIndexCard(state) });
+const mapStateToProps = (state: StateType) => ({
+  maxProgress: Selectors.getMaxProgress(state),
+  progress: Selectors.getProgress(state),
+});
 
 export default connect(mapStateToProps)(ProgressBar);
