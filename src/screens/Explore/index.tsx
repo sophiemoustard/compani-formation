@@ -45,7 +45,7 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
 
   return (
     <ScrollView style={commonStyles.container}>
-      <Text style={commonStyles.title}>Explore</Text>
+      <Text style={commonStyles.title}>Explorer</Text>
       {programs.length > 0 &&
         <>
           <View style={commonStyles.sectionContainer}>

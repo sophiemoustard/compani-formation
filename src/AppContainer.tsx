@@ -56,7 +56,7 @@ const Home = () => {
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explore' }} />
+      <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
       <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
