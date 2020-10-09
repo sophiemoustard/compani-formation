@@ -10,7 +10,7 @@ interface NiModalProps {
 const NiModal = ({ visible, children }: NiModalProps) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
-      <View style={styles.modalContent} >
+      <View style={styles.modalContent}>
         {children}
       </View>
     </View>

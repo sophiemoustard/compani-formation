@@ -15,9 +15,9 @@ const UpdateAppModal = ({ visible }: UpdateAppModalProps) => {
 
   return (
     <NiModal visible={visible}>
-      <Text style={styles.title}>Nouvelle version de l'app disponible !</Text>
+      <Text style={styles.title}>Nouvelle version de l&apos;app disponible !</Text>
       <Text style={styles.contentText}>
-          Merci de mettre votre application à jour pour pouvoir continuer d'utiliser l'application :)
+        Merci de mettre à jour votre application pour pouvoir continuer à l&apos;utiliser :)
       </Text>
       <NiButton style={styles.button} caption="Mettre à jour" onPress={() => { Linking.openURL(appUrl); }} />
     </NiModal>

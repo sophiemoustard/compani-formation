@@ -22,6 +22,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
       const startDate = moment(slot.startDate).format('DD/MM/YYYY');
       if (acc[startDate]) acc[startDate].push(slot);
       else acc[startDate] = [slot];
+
       return acc;
     },
     {});
@@ -33,8 +34,8 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     <NiModal visible={visible}>
       <View style={styles.header}>
         <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={3}>{title}</Text>
-        <IconButton name='x-circle' onPress={onRequestClose} size={ICON.LG}
-          color={GREY[500]} style={styles.closeButton}/>
+        <IconButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[500]}
+          style={styles.closeButton} />
       </View>
       <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={true}
         data={formatStepSlotsForFlatList(stepSlots)} renderItem={({ item }) => <OnSiteInfoItem info={item} />}

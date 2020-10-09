@@ -13,7 +13,7 @@ export default StyleSheet.create({
   modalContent: {
     display: 'flex',
     backgroundColor: WHITE,
-    borderRadius: BORDER_RADIUS.XL,
+    borderRadius: BORDER_RADIUS.MD,
     width: '90%',
     padding: PADDING.LG,
   },
