@@ -32,6 +32,10 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleCh
     }
   }, [card, isPressed]);
 
+  const renderItem = (item, answerIndex) => <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item}
+    isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer}
+    isSelected={selectedAnswerIndex === answerIndex} />;
+
   if (!card || card.template !== SINGLE_CHOICE_QUESTION) return null;
 
   const onSelectAnswer = (selectedIndex) => {
@@ -51,14 +55,8 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleCh
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
-          <FlatList
-            data={answers}
-            keyExtractor={(_, answerIndex) => answerIndex.toString()}
-            renderItem={({ item, index: answerIndex }) => (
-              <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item} isValidated={isPressed}
-                isGoodAnswer={item === card.qcuGoodAnswer} isSelected={selectedAnswerIndex === answerIndex} />
-            )}
-          />
+          <FlatList data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
+            renderItem={({ item, index: answerIndex }) => renderItem(item, answerIndex)} />
         </View>
       </ScrollView>
       <View style={style.footerContainer}>

@@ -7,11 +7,11 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../api/courses';
 import NextStepCell from '../../components/steps/NextStepCell';
-import CourseCell from '../../components/CourseCell';
+import ProgramCell from '../../components/ProgramCell';
 import { Context as AuthContext } from '../../context/AuthContext';
 import moment from '../../core/helpers/moment';
 import { getLoggedUserId } from '../../store/main/selectors';
-import { MARGIN, MAIN_MARGIN_LEFT } from '../../styles/metrics';
+import { MAIN_MARGIN_LEFT } from '../../styles/metrics';
 import { PINK, YELLOW } from '../../styles/colors';
 import commonStyles from '../../styles/common';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
@@ -60,7 +60,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
 
   const getCourses = async () => {
     try {
-      const fetchedCourses = await Courses.getUserCourses({ trainees: loggedUserId });
+      const fetchedCourses = await Courses.getUserCourses();
       setCourses(fetchedCourses);
     } catch (e) {
       if (e.status === 401) signOut();
@@ -83,46 +83,37 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   }, [isFocused]);
 
   const renderSeparator = () => <View style={styles.separator} />;
+  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} navigation={navigation}
+    courseId={course._id} />;
+
   const nextStep = formatNextSteps(courses);
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextStep.length > 0 &&
-        <View style={styles.sectionContainer}>
-          <View style={styles.contentTitle}>
-            <Text style={commonStyles.sectionTitle}>Prochains évènements</Text>
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Prochains évènements</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.coursesCount}>{nextStep.length}</Text>
+              <Text style={styles.nextEventsCount}>{nextStep.length}</Text>
             </View>
           </View>
-          <FlatList
-            horizontal
-            data={nextStep}
-            keyExtractor={item => item._id}
-            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />}
-            contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={renderSeparator}
-          />
+          <FlatList horizontal data={nextStep} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
+            contentContainerStyle={styles.courseContainer} />
         </View>
       }
-      <View style={styles.sectionContainer}>
-        <View style={styles.contentTitle}>
-          <Text style={commonStyles.sectionTitle}>Formations en cours</Text>
+      <View style={commonStyles.sectionContainer}>
+        <View style={commonStyles.sectionTitle}>
+          <Text style={commonStyles.sectionTitleText}>Formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-            <Text style={styles.nextEventsCount}>{courses.length}</Text>
+            <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
         </View>
-        <FlatList
-          horizontal
-          data={courses}
-          keyExtractor={item => item._id}
-          renderItem={({ item }) => <CourseCell course={item} navigation={navigation} />}
-          contentContainerStyle={styles.courseContainer}
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={renderSeparator}
-        />
+        <FlatList horizontal data={courses} keyExtractor={item => item._id} renderItem={({ item }) => renderItem(item)}
+          contentContainerStyle={styles.courseContainer} showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={renderSeparator} />
       </View>
     </ScrollView>
   );
@@ -135,11 +126,6 @@ const styles = StyleSheet.create({
   separator: {
     marginRight: 8,
   },
-  contentTitle: {
-    flexDirection: 'row',
-    marginBottom: MARGIN.MD,
-  },
-  sectionContainer: { position: 'relative', marginBottom: MARGIN.XXXL },
   coursesCountContainer: {
     backgroundColor: YELLOW[200],
   },
