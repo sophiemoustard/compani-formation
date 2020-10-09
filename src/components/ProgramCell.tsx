@@ -11,10 +11,9 @@ interface ProgramCellProps {
   courseId?: string,
   navigation?: NavigationType,
   program: ProgramType,
-  disableNavigation?: boolean,
 }
 
-const ProgramCell = ({ courseId, navigation, program, disableNavigation = false }: ProgramCellProps) => {
+const ProgramCell = ({ courseId, navigation, program }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
 
@@ -27,7 +26,7 @@ const ProgramCell = ({ courseId, navigation, program, disableNavigation = false 
   );
 
   return (
-    <TouchableOpacity style={styles.courseContainer} disabled={disableNavigation} onPress={goToCourse}>
+    <TouchableOpacity style={styles.courseContainer} disabled={!navigation} onPress={goToCourse}>
       <View style={styles.imageContainer}>
         <ImageBackground source={source} imageStyle={styles.image}
           style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>} />

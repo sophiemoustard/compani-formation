@@ -32,9 +32,13 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     const formattedStepSlots = formatStepSlotsForFlatList(stepSlots);
     return (
       <View>
-        <FlatList ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)} data={formattedStepSlots}
-          renderItem={({ item }) => stepInfoItem(item)} keyExtractor={item => item.startDate}
-          scrollEnabled={formattedStepSlots.length > 3} />
+        <FlatList
+          ItemSeparatorComponent={() => (<View style={styles.stepInfoSeparator} />)}
+          data={formattedStepSlots}
+          renderItem={({ item }) => stepInfoItem(item)}
+          keyExtractor={item => item.startDate}
+          scrollEnabled={formattedStepSlots.length > 3}
+        />
       </View>
     );
   };
@@ -47,8 +51,13 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     return (
       <View>
         <Text style={styles.date}>{moment(stepSlot.slots[0].startDate).format('dddd Do MMMM')}</Text>
-        <FlatList horizontal ItemSeparatorComponent={() => <View style={styles.separator} />} data={stepSlot.slots}
-          keyExtractor={item => item._id} renderItem={({ item }) => onSiteHoursDisplayItem(item)} />
+        <FlatList
+          horizontal
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          data={stepSlot.slots}
+          keyExtractor={item => item._id}
+          renderItem={({ item }) => onSiteHoursDisplayItem(item)}
+        />
         {address && (
           <TouchableOpacity onPress={() => openMaps(address)}>
             <Text style={styles.address}>{address}</Text>

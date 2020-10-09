@@ -19,10 +19,10 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
 
-  const getCourses = async () => {
+  const getPrograms = async () => {
     try {
-      const fetchedCourses = await Programs.getELearningPrograms();
-      setPrograms(fetchedCourses);
+      const fetchedPrograms = await Programs.getELearningPrograms();
+      setPrograms(fetchedPrograms);
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
@@ -31,7 +31,7 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
   };
 
   useEffect(() => {
-    async function fetchData() { getCourses(); }
+    async function fetchData() { getPrograms(); }
     if (loggedUserId || isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
@@ -40,7 +40,7 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
 
   const renderItem = (program) => {
     const courseId = program.subPrograms[0].courses[0]._id;
-    return <ProgramCell program={program} courseId={courseId} disableNavigation={true} />;
+    return <ProgramCell program={program} courseId={courseId} />;
   };
 
   return (
@@ -51,12 +51,12 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
           <View style={commonStyles.sectionContainer}>
             <View style={commonStyles.sectionTitle}>
               <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
-              <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-                <Text style={styles.coursesCount}>{programs.length}</Text>
+              <View style={{ ...styles.programsCountContainer, ...commonStyles.countContainer }}>
+                <Text style={styles.programsCount}>{programs.length}</Text>
               </View>
             </View>
             <FlatList horizontal data={programs} keyExtractor={item => item._id}
-              renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.courseContainer}
+              renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.programContainer}
               showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
           </View>
         </>

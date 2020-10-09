@@ -4,14 +4,14 @@ import { MAIN_MARGIN_LEFT, MARGIN } from '../../styles/metrics';
 import { YELLOW } from '../../styles/colors';
 
 export default StyleSheet.create({
-  coursesCount: {
+  programsCount: {
     ...FIRA_SANS_BOLD.MD,
     color: YELLOW[800],
   },
-  coursesCountContainer: {
+  programsCountContainer: {
     backgroundColor: YELLOW[200],
   },
-  courseContainer: {
+  programContainer: {
     paddingHorizontal: MAIN_MARGIN_LEFT,
   },
   separator: {
