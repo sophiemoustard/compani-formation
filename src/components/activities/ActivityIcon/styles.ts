@@ -2,20 +2,20 @@ import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, BORDER_WIDTH, PADDING, MARGIN } from '../../../styles/metrics';
 
 interface StylesProps {
-  buttonBorderColor: string,
-  buttonBackgroundColor: string,
+  borderColor: string,
+  backgroundColor: string,
 }
 
-const styles = ({ buttonBorderColor, buttonBackgroundColor }: StylesProps) => StyleSheet.create({
+const styles = ({ borderColor, backgroundColor }: StylesProps) => StyleSheet.create({
   container: {
     position: 'relative',
     alignSelf: 'center',
     marginBottom: MARGIN.SM,
   },
   button: {
-    backgroundColor: buttonBackgroundColor,
+    backgroundColor,
     borderRadius: BORDER_RADIUS.MD,
-    borderColor: buttonBorderColor,
+    borderColor,
     borderWidth: BORDER_WIDTH,
     padding: PADDING.LG,
   },
@@ -23,7 +23,7 @@ const styles = ({ buttonBorderColor, buttonBackgroundColor }: StylesProps) => St
     alignSelf: 'center',
   },
   shadow: {
-    backgroundColor: buttonBorderColor,
+    backgroundColor: borderColor,
     borderRadius: BORDER_RADIUS.MD,
   },
 });

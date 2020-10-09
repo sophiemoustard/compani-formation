@@ -43,8 +43,8 @@ const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
     <View style={styleColored.container}>
       <TouchableOpacity onPress={onPress} disabled={disabled}>
         <View style={styleColored.iconContainer}>
-          <ActivityIcon activity={activity} disabled={disabled} buttonBackgroundColor={buttonBackgroundColor}
-            buttonBorderColor={buttonBorderColor} />
+          <ActivityIcon activity={activity} disabled={disabled} backgroundColor={buttonBackgroundColor}
+            borderColor={buttonBorderColor} />
           {isCompleted && !isQuiz &&
             <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={styleColored.icon}
               backgroundColor={WHITE} />

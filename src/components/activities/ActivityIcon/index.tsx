@@ -13,17 +13,17 @@ import styles from './styles';
 interface ActivityIconProps {
   activity: ActivityType,
   disabled: Boolean,
-  buttonBorderColor: string,
-  buttonBackgroundColor: string,
+  borderColor: string,
+  backgroundColor: string,
 }
 
 interface StylesProps {
-  buttonBorderColor: string,
-  buttonBackgroundColor: string,
+  borderColor: string,
+  backgroundColor: string,
 }
 
-const ActivityIcon = ({ activity, disabled, buttonBorderColor, buttonBackgroundColor }: ActivityIconProps) => {
-  const getColors = () => ({ buttonBorderColor, buttonBackgroundColor });
+const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: ActivityIconProps) => {
+  const getColors = () => ({ borderColor, backgroundColor });
   const coloredStyle = styles(getColors());
 
   const getIcon = () => {
