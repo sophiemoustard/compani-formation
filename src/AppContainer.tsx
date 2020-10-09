@@ -12,14 +12,14 @@ import { Context as AuthContext } from './context/AuthContext';
 import { navigationRef } from './navigationRef';
 import Authentication from './screens/Authentication';
 import ForgotPassword from './screens/ForgotPassword';
-import ProgramList from './screens/ProgramList';
+import Explore from './screens/Explore';
 import CourseList from './screens/courses/CourseList';
 import CourseProfile from './screens/courses/CourseProfile';
 import CardContainer from './screens/courses/CardContainer';
 import MainActions from './store/main/actions';
 import Actions from './store/actions';
 import { PINK } from './styles/colors';
-import { ActionType, ResetType } from './types/store/StoreType';
+import { ActionType, ActionWithoutPayloadType } from './types/store/StoreType';
 import Users from './api/users';
 import { UserType } from './types/UserType';
 
@@ -40,7 +40,7 @@ const Courses = () => (
 const Tab = createBottomTabNavigator();
 
 const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
-  const icons = { Courses: 'book', ProgramList: 'search', Profile: 'person-outline' };
+  const icons = { Courses: 'book', Explore: 'search', Profile: 'person-outline' };
 
   return (
     <MaterialIcons name={icons[route.name]} color={color} size={size} />
@@ -56,7 +56,7 @@ const Home = () => {
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="ProgramList" component={ProgramList} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
       <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
@@ -107,7 +107,7 @@ const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) =>
   );
 };
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ResetType) => void) => ({
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
   resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });

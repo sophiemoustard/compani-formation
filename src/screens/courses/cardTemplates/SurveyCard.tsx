@@ -47,8 +47,8 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }
           </View>
         </View>
       </View>
-      <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK['500'] : GREY['300']}
-        arrowColor={PINK['500']} buttonCaption='Valider' buttonDisabled={!selectedScore}
+      <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK[500] : GREY[300]}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!selectedScore}
         validateCard={() => addQuestionnaireAnswer({ card: card._id, answer: selectedScore })} />
     </>
   );
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   question: {
     ...FIRA_SANS_REGULAR.LG,
-    color: GREY['800'],
+    color: GREY[800],
     justifyContent: 'flex-start',
   },
   labelContainer: {

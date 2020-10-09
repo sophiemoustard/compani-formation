@@ -1,3 +1,6 @@
+// COURSES
+export const STRICTLY_E_LEARNING = 'strictly_e_learning';
+
 // STEPS
 export const ON_SITE = 'on_site';
 export const E_LEARNING = 'e_learning';

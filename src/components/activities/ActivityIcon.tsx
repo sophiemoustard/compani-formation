@@ -23,7 +23,7 @@ interface StylesProps {
 }
 
 const ActivityIcon = ({ activity, disabled, isCompleted }: ActivityIconProps) => {
-  const buttonBorderColor = isCompleted ? GREEN['600'] : YELLOW[500];
+  const buttonBorderColor = isCompleted ? GREEN[600] : YELLOW[500];
   const getColors = () => ({ buttonBorderColor, isCompleted });
   const coloredStyle = styles(getColors());
 
@@ -40,7 +40,7 @@ const ActivityIcon = ({ activity, disabled, isCompleted }: ActivityIconProps) =>
       <View style={coloredStyle.button}>
         {getIcon()}
       </View>
-      <Shadow backgroundColor={buttonBorderColor} borderRadius={BORDER_RADIUS.MD} />
+      <Shadow customStyle={coloredStyle.shadow} />
     </View>
   );
 };
@@ -52,7 +52,7 @@ const styles = ({ buttonBorderColor, isCompleted }: StylesProps) => StyleSheet.c
     marginBottom: MARGIN.SM,
   },
   button: {
-    backgroundColor: isCompleted ? GREEN['300'] : YELLOW[300],
+    backgroundColor: isCompleted ? GREEN[300] : YELLOW[300],
     borderRadius: BORDER_RADIUS.MD,
     borderColor: buttonBorderColor,
     borderWidth: BORDER_WIDTH,
@@ -60,6 +60,10 @@ const styles = ({ buttonBorderColor, isCompleted }: StylesProps) => StyleSheet.c
   },
   icon: {
     alignSelf: 'center',
+  },
+  shadow: {
+    backgroundColor: buttonBorderColor,
+    borderRadius: BORDER_RADIUS.MD,
   },
 });
 

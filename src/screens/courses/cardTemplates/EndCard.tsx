@@ -18,6 +18,7 @@ interface EndCardProps {
   courseId: String,
   activity: ActivityType,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
+  score: number,
   resetActivityReducer: () => void,
   setCardIndex: (number) => void,
 }
@@ -26,6 +27,7 @@ const EndCard = ({
   courseId,
   activity,
   questionnaireAnswersList,
+  score,
   setCardIndex,
   resetActivityReducer,
 }: EndCardProps) => {
@@ -34,7 +36,7 @@ const EndCard = ({
   useEffect(() => {
     async function fetchData() {
       const userId = await AsyncStorage.getItem('user_id');
-      const payload: Record<string, any> = { user: userId, activity: activity._id };
+      const payload: Record<string, any> = { user: userId, activity: activity._id, score };
 
       if (questionnaireAnswersList?.length) payload.questionnaireAnswersList = questionnaireAnswersList;
       await ActivityHistories.createActivityHistories(payload);
@@ -42,7 +44,7 @@ const EndCard = ({
     }
 
     if (isFocused) fetchData();
-  }, [isFocused, activity, questionnaireAnswersList, setCardIndex]);
+  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
@@ -62,7 +64,7 @@ const EndCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: YELLOW['100'],
+    backgroundColor: YELLOW[100],
   },
   contentContainer: {
     flexGrow: 1,
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   },
   text: {
     ...FIRA_SANS_BLACK.XL,
-    color: GREY['800'],
+    color: GREY[800],
     marginVertical: MARGIN.XXL,
   },
   image: {
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   questionnaireAnswersList: state.activities.questionnaireAnswersList,
+  score: state.activities.score,
 });
 
 const mapDispatchToProps = dispatch => ({

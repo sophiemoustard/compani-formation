@@ -1,4 +1,3 @@
-import { ActionType, ResetType } from '../../types/store/StoreType';
 import {
   ActivityStateType,
   SET_ACTIVITY,
@@ -7,6 +6,9 @@ import {
   RESET_ACTIVITY_REDUCER,
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
+  INC_GOOD_ANSWERS_COUNT,
+  ActivityActionType,
+  ActivityActionWithoutPayloadType,
 } from '../../types/store/ActivityStoreType';
 
 const initialState: ActivityStateType = {
@@ -14,6 +16,7 @@ const initialState: ActivityStateType = {
   cardIndex: null,
   exitConfirmationModal: false,
   questionnaireAnswersList: [],
+  score: 0,
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
@@ -33,7 +36,7 @@ const applyAddQuestionnaireAnswer = (state, action) => {
 
 export const activities = (
   state: ActivityStateType = initialState,
-  action: ActionType | ResetType
+  action: ActivityActionType | ActivityActionWithoutPayloadType
 ): ActivityStateType => {
   switch (action.type) {
     case SET_ACTIVITY:
@@ -48,6 +51,8 @@ export const activities = (
       return initialState;
     case SET_QUESTIONNAIRE_ANSWERS_LIST:
       return { ...state, questionnaireAnswersList: action.payload };
+    case INC_GOOD_ANSWERS_COUNT:
+      return { ...state, score: state.score + 1 };
     default:
       return state;
   }

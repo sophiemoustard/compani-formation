@@ -18,7 +18,7 @@ export default StyleSheet.create({
   },
   question: {
     ...FIRA_SANS_MEDIUM.LG,
-    color: GREY['800'],
+    color: GREY[800],
     marginBottom: MARGIN.XL,
   },
   explanation: {

@@ -1,5 +1,5 @@
-import { LOG_OUT, ResetType } from '../types/store/StoreType';
+import { LOG_OUT, ActionWithoutPayloadType } from '../types/store/StoreType';
 
-const resetAllReducers = (): ResetType => ({ type: LOG_OUT });
+const resetAllReducers = (): ActionWithoutPayloadType => ({ type: LOG_OUT });
 
 export default { resetAllReducers };

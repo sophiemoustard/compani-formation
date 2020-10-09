@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.MD,
   },
   flatList: {
-    marginBottom: MARGIN.MD,
+    marginVertical: MARGIN.MD,
   },
 });
 

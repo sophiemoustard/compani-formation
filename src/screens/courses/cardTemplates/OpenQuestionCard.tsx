@@ -14,14 +14,14 @@ import AnswerTextArea from '../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../types/store/ActivityStoreType';
 import Actions from '../../../store/activities/actions';
 
-interface OpenQuestionProps {
+interface OpenQuestionCardProps {
   card: OpenQuestionType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
 }
 
-const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: OpenQuestionProps) => {
+const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const isIOS = Platform.OS === 'ios';
@@ -56,7 +56,7 @@ const OpenQuestion = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       {!isSelected && <CardHeader />}
-      <ScrollView contentContainerStyle={style.container} ref={scrollRef}>
+      <ScrollView contentContainerStyle={style.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={style.question}>{card.question}</Text>
         <View style={style.inputContainer}>
           <AnswerTextArea onChangeText={setAnswer} scrollTo={onFocusTextInput}
@@ -101,4 +101,4 @@ const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestionCard);

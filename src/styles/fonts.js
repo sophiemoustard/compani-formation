@@ -127,3 +127,10 @@ export const NUNITO_LIGHT = StyleSheet.create({
     fontFamily: 'nunito-light',
   },
 });
+
+export const NUNITO_BLACK = StyleSheet.create({
+  XL: {
+    fontSize: 24,
+    fontFamily: 'nunito-black',
+  },
+});
