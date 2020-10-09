@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { SingleChoiceQuestionType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
-import { getCard } from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
@@ -69,7 +69,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleCh
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
 
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),

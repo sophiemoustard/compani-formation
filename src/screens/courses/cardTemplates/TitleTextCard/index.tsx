@@ -3,7 +3,7 @@ import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
-import { getCard } from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { TitleTextType } from '../../../../types/CardType';
 import { TITLE_TEXT } from '../../../../core/data/constants';
@@ -30,6 +30,6 @@ const TitleTextCard = ({ card, index }: TitleTextCardProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
 
 export default connect(mapStateToProps)(TitleTextCard);

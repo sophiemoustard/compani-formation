@@ -3,7 +3,7 @@ import { ScrollView, View, Text, KeyboardAvoidingView, Platform, Keyboard } from
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
-import { getCard, getQuestionnaireAnswer } from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/activities/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
@@ -71,9 +71,9 @@ const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAn
 };
 
 const mapStateToProps = (state: StateType) => ({
-  card: getCard(state),
+  card: Selectors.getCard(state),
   index: state.activities.cardIndex,
-  questionnaireAnswer: getQuestionnaireAnswer(state),
+  questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
