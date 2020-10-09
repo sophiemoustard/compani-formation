@@ -9,16 +9,14 @@ export const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | null =>
   return state.activities.questionnaireAnswersList.find(qa => qa.card === card._id) || null;
 };
 
-export const getTotalCards = state =>
+export const getCardsCount = state =>
   state.activities.activity.cards.filter(card => card.template !== TRANSITION).length;
 
-export const getIndexCard = (state) => {
-  const transitionsIndexes = state.activities.activity.cards.map((card, index) => ({ template: card.template, index }))
-    .filter(card => card.template === TRANSITION);
-  let transitionBeforeCardCounter = 0;
-  transitionsIndexes.forEach(({ index }) => {
-    if (index < state.activities.cardIndex) transitionBeforeCardCounter += 1;
-  });
+export const getProgress = (state) => {
+  const transitionBeforeCardCounter = state.activities.activity.cards.slice(0, state.activities.cardIndex)
+    .filter(card => card.template === TRANSITION).length;
 
   return state.activities.cardIndex - transitionBeforeCardCounter + 1;
 };
+
+export const displayProgressBar = state => getCard(state) !== undefined && getCard(state)?.template !== TRANSITION;
