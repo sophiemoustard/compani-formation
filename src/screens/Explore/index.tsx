@@ -32,7 +32,7 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
 
   useEffect(() => {
     async function fetchData() { getCourses(); }
-    if (loggedUserId) fetchData();
+    if (loggedUserId || isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
