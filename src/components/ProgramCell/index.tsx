@@ -17,7 +17,7 @@ const ProgramCell = ({ courseId, navigation, program }: ProgramCellProps) => {
 
   const source = programImage
     ? { uri: programImage }
-    : require('../../assets/images/authentication_background_image.jpg');
+    : require('../../../assets/images/authentication_background_image.jpg');
   const goToCourse = () => navigation?.navigate(
     'Home',
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }

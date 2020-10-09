@@ -64,7 +64,7 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   const programName = get(course, 'subProgram.program.name') || '';
   const source = programImage
     ? { uri: programImage }
-    : require('../../../assets/images/authentication_background_image.jpg');
+    : require('../../../../assets/images/authentication_background_image.jpg');
   const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
 
   const renderCells = ({ item, index }) => {

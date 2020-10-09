@@ -60,8 +60,8 @@ const StartCard = ({
       <View style={styles.wrapper}>
         <View>
           <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.imageBackground}
-            source={require('../../../../assets/images/start_card_background.png')}>
-            <Image source={require('../../../../assets/images/doct_liste.png')} style={styles.image} />
+            source={require('../../../../../assets/images/start_card_background.png')}>
+            <Image source={require('../../../../../assets/images/doct_liste.png')} style={styles.image} />
           </ImageBackground>
           <Text style={styles.text}>{title}</Text>
         </View>
