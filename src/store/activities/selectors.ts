@@ -14,7 +14,8 @@ export const getCardsCount = state =>
 
 export const getProgress = (state) => {
   const transitionBeforeCardCounter = state.activities.activity.cards.slice(0, state.activities.cardIndex)
-    .filter(card => card.template === TRANSITION).length;
+    .filter(card => card.template === TRANSITION)
+    .length;
 
   return state.activities.cardIndex - transitionBeforeCardCounter + 1;
 };

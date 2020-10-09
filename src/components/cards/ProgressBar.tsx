@@ -8,29 +8,29 @@ import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../styles/metrics';
 import { getProgress, getCardsCount } from '../../store/activities/selectors';
 
 interface ProgressBar {
-  totalCards: number,
-  index: number,
+  cardsCount: number,
+  progress: number,
 }
 
-const ProgressBar = ({ totalCards, index }: ProgressBar) => {
-  const [progress, setProgress] = useState<number>(0);
-  const style = styles(progress);
+const ProgressBar = ({ cardsCount, progress }: ProgressBar) => {
+  const [progressPercentage, setProgressPercentage] = useState<number>(0);
+  const style = styles(progressPercentage);
 
   useEffect(() => {
-    setProgress((index / totalCards) * 100);
-  }, [index, totalCards]);
+    setProgressPercentage((progress / cardsCount) * 100);
+  }, [progress, cardsCount]);
 
   return (
     <>
       <View style={style.container}>
         <View style={style.content} />
       </View>
-      <Text style={style.text} >{index}/{totalCards}</Text>
+      <Text style={style.text} >{progress}/{cardsCount}</Text>
     </>
   );
 };
 
-const styles = (progress: number) => StyleSheet.create({
+const styles = (progressPercentage: number) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.MD,
     display: 'flex',
@@ -45,7 +45,7 @@ const styles = (progress: number) => StyleSheet.create({
     display: 'flex',
     backgroundColor: YELLOW[500],
     borderRadius: BORDER_RADIUS.XL,
-    width: `${progress}%`,
+    width: `${progressPercentage}%`,
     height: '100%',
     borderRightWidth: BORDER_WIDTH,
     borderColor: GREY[100],
@@ -56,6 +56,6 @@ const styles = (progress: number) => StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: StateType) => ({ totalCards: getCardsCount(state), index: getProgress(state) });
+const mapStateToProps = (state: StateType) => ({ cardsCount: getCardsCount(state), progress: getProgress(state) });
 
 export default connect(mapStateToProps)(ProgressBar);
