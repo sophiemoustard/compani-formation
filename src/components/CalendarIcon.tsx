@@ -5,7 +5,7 @@ import { capitalize } from '../core/helpers/utils';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../styles/metrics';
 import { PINK, WHITE, GREY } from '../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../styles/fonts';
-import Shadow from './style/Shadow';
+import Shadow from './design/Shadow';
 
 interface CalendarIconProps {
   dates: Array<Date>,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, StyleSheet, AppState, Linking, Platform } from 'react-native';
+import { StatusBar, View, StyleSheet, AppState, Platform } from 'react-native';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { AppLoading } from 'expo';
@@ -7,8 +7,8 @@ import * as Font from 'expo-font';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import getEnvVars from './environment';
 import Version from './src/api/version';
-import ConfirmModal from './src/components/modal/ConfirmModal';
 import AppContainer from './src/AppContainer';
+import UpdateAppModal from './src/components/UpdateAppModal';
 import { WHITE } from './src/styles/colors';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
@@ -30,9 +30,6 @@ const fetchFonts = () => Font.loadAsync({
 
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const appUrl = Platform.OS === 'ios'
-    ? 'https://apps.apple.com/app/id1447513534'
-    : 'market://details?id=com.alenvi.compani';
   const [modalOpened, setModalOpened] = useState(false);
 
   const checkUpdate = async (nextState) => {
@@ -53,14 +50,7 @@ const App = () => {
 
   return (
     <>
-      <ConfirmModal
-        visible={modalOpened}
-        title="Nouvelle version de l'app disponible !"
-        contentText="Merci de mettre votre application à jour pour pouvoir continuer d'utiliser l'application :)"
-        buttonCaption="Mettre à jour"
-        onPress={() => { Linking.openURL(appUrl); }}
-        onRequestClose={() => setModalOpened(false)}
-      />
+      <UpdateAppModal visible={modalOpened} />
       <AuthProvider>
         <ReduxProvider store={store}>
           <View style={styles.statusBar}>
@@ -78,9 +68,6 @@ export default App;
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   statusBar: {
     backgroundColor: WHITE,
     height: STATUSBAR_HEIGHT,

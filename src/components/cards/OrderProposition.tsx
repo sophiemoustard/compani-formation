@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, BUTTON_HEIGHT, ORDERED_ANSWER_MIN_HEIGHT } from '../../styles/metrics';
 import { WHITE, GREY, GREEN, ORANGE } from '../../styles/colors';
-import Shadow from '../style/Shadow';
+import Shadow from '../design/Shadow';
 import { FIRA_SANS_MEDIUM, NUNITO_BLACK } from '../../styles/fonts';
 
 interface OrderPropositionProps {
