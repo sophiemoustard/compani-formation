@@ -32,7 +32,7 @@ const SingleChoiceQuestionCard = ({ card, index }: SingleChoiceQuestionCardProps
 
   const renderItem = (item, answerIndex) => <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item}
     isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer}
-    isSelected={selectedAnswerIndex === answerIndex} />
+    isSelected={selectedAnswerIndex === answerIndex} />;
 
   if (!card || card.template !== SINGLE_CHOICE_QUESTION) return null;
 
