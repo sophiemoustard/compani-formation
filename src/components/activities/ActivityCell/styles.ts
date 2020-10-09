@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR, NUNITO_BOLD } from '../../../styles/fonts';
-import { WHITE, GREEN } from '../../../styles/colors';
+import { WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, PADDING } from '../../../styles/metrics';
 
-const styles = StyleSheet.create({
+const styles = checkBackgroundColor => StyleSheet.create({
   container: {
     display: 'flex',
     width: 128,
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: '70%',
-    backgroundColor: GREEN[500],
+    backgroundColor: checkBackgroundColor,
     borderRadius: BORDER_RADIUS.MD,
     borderWidth: 2,
     borderColor: WHITE,
