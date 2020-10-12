@@ -23,6 +23,7 @@ const styles = checkBackgroundColor => StyleSheet.create({
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.MD,
     paddingHorizontal: PADDING.XS,
+    overflow: 'hidden',
   },
   scoreContainer: {
     position: 'absolute',
