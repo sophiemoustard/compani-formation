@@ -47,13 +47,11 @@ const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
             borderColor={buttonBorderColor} />
           {isCompleted && !isQuiz &&
             <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={styleColored.icon}
-              backgroundColor={WHITE} />
-          }
+              backgroundColor={WHITE} />}
           {isCompleted && isQuiz &&
             <View style={styleColored.scoreContainer}>
               <Text style={styleColored.score}>{lastScore}/{quizCount}</Text>
-            </View>
-          }
+            </View>}
         </View>
       </TouchableOpacity>
       <Text style={styleColored.activityName} lineBreakMode={'tail'} numberOfLines={2}>

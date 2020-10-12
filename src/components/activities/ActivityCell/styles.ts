@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { FIRA_SANS_REGULAR, NUNITO_BOLD } from '../../../styles/fonts';
+import { FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
 import { WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, PADDING } from '../../../styles/metrics';
 
@@ -34,7 +34,7 @@ const styles = checkBackgroundColor => StyleSheet.create({
     borderColor: WHITE,
   },
   score: {
-    ...NUNITO_BOLD.MD,
+    ...NUNITO_SEMI.SM,
     color: WHITE,
     paddingHorizontal: PADDING.SM,
   },

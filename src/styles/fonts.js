@@ -134,10 +134,3 @@ export const NUNITO_BLACK = StyleSheet.create({
     fontFamily: 'nunito-black',
   },
 });
-
-export const NUNITO_BOLD = StyleSheet.create({
-  MD: {
-    fontSize: 14,
-    fontFamily: 'nunito-bold',
-  },
-});
