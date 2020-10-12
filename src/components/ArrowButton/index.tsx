@@ -4,7 +4,7 @@ import commonStyle from '../../styles/common';
 import IconButton from '../IconButton';
 import { PINK } from '../../styles/colors';
 import { LEFT, RIGHT } from '../../core/data/constants';
-import styles from './style';
+import styles from './styles';
 
 interface ArrowButtonProps {
   direction: typeof LEFT | typeof RIGHT,

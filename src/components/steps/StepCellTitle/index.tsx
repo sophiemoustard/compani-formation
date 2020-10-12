@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { StepType } from '../../../types/StepType';
 import { stepTypeOptions } from '../../../core/data/constants';
-import styles from './style';
+import styles from './styles';
 
 interface StepCellTitleProps {
   step: StepType,

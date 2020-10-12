@@ -8,7 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { TitleTextMediaType } from '../../../../types/CardType';
 import { TITLE_TEXT_MEDIA } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
-import styles from './style';
+import styles from './styles';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,

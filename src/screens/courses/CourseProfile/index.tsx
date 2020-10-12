@@ -24,7 +24,7 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import { CourseType } from '../../../types/CourseType';
-import styles from './style';
+import styles from './styles';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 

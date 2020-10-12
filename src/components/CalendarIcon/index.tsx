@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import moment from '../../core/helpers/moment';
 import { capitalize } from '../../core/helpers/utils';
 import Shadow from '../design/Shadow';
-import styles from './style';
+import styles from './styles';
 
 interface CalendarIconProps {
   dates: Array<Date>,

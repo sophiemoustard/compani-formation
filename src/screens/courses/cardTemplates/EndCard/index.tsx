@@ -10,7 +10,7 @@ import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
 import Actions from '../../../../store/activities/actions';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
-import styles from './style';
+import styles from './styles';
 
 interface EndCardProps {
   courseId: String,

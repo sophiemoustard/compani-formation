@@ -11,7 +11,7 @@ import Actions from '../../../../store/activities/actions';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
 import { SURVEY } from '../../../../core/data/constants';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
-import styles from './style';
+import styles from './styles';
 
 interface SurveyCard {
   card: SurveyType,

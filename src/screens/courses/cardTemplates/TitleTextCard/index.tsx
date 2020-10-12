@@ -8,7 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { TitleTextType } from '../../../../types/CardType';
 import { TITLE_TEXT } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
-import styles from './style';
+import styles from './styles';
 
 interface TitleTextCardProps {
   card: TitleTextType,

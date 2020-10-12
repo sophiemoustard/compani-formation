@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import commonStyle from '../../../styles/common';
 import { PINK, WHITE } from '../../../styles/colors';
-import styles from './style';
+import styles from './styles';
 
 interface ButtonProps {
   style?: Object,

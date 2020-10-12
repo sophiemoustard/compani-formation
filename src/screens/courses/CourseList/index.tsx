@@ -13,7 +13,7 @@ import moment from '../../../core/helpers/moment';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
-import styles from './style';
+import styles from './styles';
 
 interface CourseListProps {
   navigation: NavigationType,

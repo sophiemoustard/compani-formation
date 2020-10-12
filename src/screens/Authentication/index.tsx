@@ -13,7 +13,7 @@ import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import NiErrorMessage from '../../components/ErrorMessage';
 import { Context as AuthContext } from '../../context/AuthContext';
-import styles from './style';
+import styles from './styles';
 
 interface AuthenticationProps {
   navigation: NavigationType,

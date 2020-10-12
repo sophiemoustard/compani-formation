@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Keyboard, TextInput, View } from 'react-native';
 import Shadow from '../../design/Shadow';
 import { GREY } from '../../../styles/colors';
-import styles from './style';
+import styles from './styles';
 
 interface AnswerQuestionProps {
   answer: string,

@@ -7,7 +7,7 @@ import NiButton from '../../components/form/Button';
 import NiErrorMessage from '../../components/ErrorMessage';
 import commonStyles from '../../styles/common';
 import { WHITE, PINK } from '../../styles/colors';
-import styles from './style';
+import styles from './styles';
 
 interface ForgotPasswordProps {
   navigation: NavigationType,

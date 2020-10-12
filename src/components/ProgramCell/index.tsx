@@ -3,7 +3,7 @@ import { Text, View, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } f
 import get from 'lodash/get';
 import { NavigationType } from '../../types/NavigationType';
 import { ProgramType } from '../../types/ProgramType';
-import styles from './style';
+import styles from './styles';
 
 interface ProgramCellProps {
   courseId?: string,

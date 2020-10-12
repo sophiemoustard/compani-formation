@@ -9,7 +9,7 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import { FLASHCARD } from '../../../../core/data/constants';
 import AnimatedShadow from '../../../../components/design/AnimatedShadow';
-import styles from './style';
+import styles from './styles';
 
 interface FlashCard {
   card: FlashCardType,

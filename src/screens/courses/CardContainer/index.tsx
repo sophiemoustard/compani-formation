@@ -11,7 +11,7 @@ import EndCard from '../cardTemplates/EndCard';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import Actions from '../../../store/activities/actions';
-import styles from './style';
+import styles from './styles';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },

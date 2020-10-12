@@ -9,7 +9,7 @@ import { YELLOW, GREEN } from '../../../styles/colors';
 import { ActivityType } from '../../../types/ActivityType';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../../../core/data/constants';
 import Shadow from '../../design/Shadow';
-import styles from './style';
+import styles from './styles';
 
 interface ActivityIconProps {
   activity: ActivityType,

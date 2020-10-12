@@ -6,7 +6,7 @@ import Actions from '../../../store/activities/actions';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import { ActionType, StateType } from '../../../types/store/StoreType';
-import styles from './style';
+import styles from './styles';
 import ProgressBar from '../ProgressBar';
 import Selectors from '../../../store/activities/selectors';
 

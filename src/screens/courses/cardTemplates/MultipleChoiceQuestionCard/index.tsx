@@ -14,7 +14,7 @@ import { navigate } from '../../../../navigationRef';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import styles from './style';
+import styles from './styles';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
