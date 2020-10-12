@@ -94,7 +94,14 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequ
         <DraggableFlatList
           contentContainerStyle={style.draggableContainer}
           ListHeaderComponentStyle={style.questionContainer}
-          ListHeaderComponent={<Text style={[cardsStyle.question, style.question]}>{card.question}</Text>}
+          ListHeaderComponent={
+            <>
+              <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+              <Text style={style.informativeText}>
+                Classez les réponses dans le bon ordre : de la meilleure à la moins bonnes
+              </Text>
+            </>
+          }
           showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
           renderItem={renderItem} onDragEnd={setAnswersArray} />
       </View>
