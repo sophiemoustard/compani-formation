@@ -9,10 +9,10 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   },
   draggableContainer: {
     flexGrow: 1,
-    justifyContent: 'space-between',
     paddingBottom: PADDING.XL,
   },
   questionContainer: {
+    justifyContent: 'space-between',
     flexGrow: 1,
   },
   question: {
