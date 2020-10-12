@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../../types/store/StoreType';
-import { getCard } from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/activities/selectors';
 import { FlashCardType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
@@ -87,6 +87,6 @@ const FlashCard = ({ card, index }: FlashCard) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
 
 export default connect(mapStateToProps)(FlashCard);

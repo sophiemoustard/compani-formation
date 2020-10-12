@@ -6,7 +6,7 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import { StateType, ActionType } from '../../../../types/store/StoreType';
-import { getCard, getQuestionnaireAnswer } from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
 import { SURVEY } from '../../../../core/data/constants';
@@ -54,9 +54,9 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }
 };
 
 const mapStateToProps = (state: StateType) => ({
-  card: getCard(state),
+  card: Selectors.getCard(state),
   index: state.activities.cardIndex,
-  questionnaireAnswer: getQuestionnaireAnswer(state),
+  questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({

@@ -5,7 +5,9 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: MARGIN.XL,
     marginTop: MARGIN.MD,
-    marginLeft: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   closeButton: {
     width: ICON.LG,
