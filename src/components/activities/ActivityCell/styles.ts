@@ -21,8 +21,8 @@ const styles = checkBackgroundColor => StyleSheet.create({
     bottom: 0,
     right: -12,
     backgroundColor: WHITE,
-    borderRadius: BORDER_RADIUS.XL,
-    paddingHorizontal: 3,
+    borderRadius: BORDER_RADIUS.MD,
+    paddingHorizontal: PADDING.XS,
   },
   scoreContainer: {
     position: 'absolute',
