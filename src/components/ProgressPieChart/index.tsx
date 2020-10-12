@@ -13,8 +13,8 @@ interface ProgressPieChartProps {
 
 const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
   const [progressPercentage, setProgressPercentage] = useState<number>(0);
-  const progress = step.activities?.filter(activity => activity.activityHistories.length > 0).length;
-  const maxProgress = step.activities?.length;
+  const progress = step.activities?.filter(activity => activity.activityHistories.length > 0).length || 0;
+  const maxProgress = step.activities?.length || 0;
 
   useEffect(() => {
     if (maxProgress && progress) setProgressPercentage(progress / maxProgress);
@@ -23,7 +23,7 @@ const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
   return (
     <>
       {!progressPercentage && <View style={styles.unstartedContainer}>
-        <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
+        <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
       </View>}
       {!!progressPercentage && progressPercentage < 1 && <View style={styles.inProgressContainer}>
         <ProgressCircle style={{ height: ICON.XS, width: ICON.XS }} progress={progressPercentage}

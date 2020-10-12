@@ -21,11 +21,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: PADDING.MD,
     flexDirection: 'row',
   },
-  featherContainer: {
-    width: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
   textContainer: {
     flex: 1,
   },
