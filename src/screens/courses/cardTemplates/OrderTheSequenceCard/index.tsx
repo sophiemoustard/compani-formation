@@ -97,8 +97,8 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequ
           ListHeaderComponent={
             <>
               <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-              <Text style={style.informativeText}>
-                Classez les réponses dans le bon ordre : de la meilleure à la moins bonnes
+              <Text style={cardsStyle.informativeText}>
+                Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
               </Text>
             </>
           }

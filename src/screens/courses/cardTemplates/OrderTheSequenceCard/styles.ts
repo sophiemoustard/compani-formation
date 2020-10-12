@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { PINK } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT, MARGIN, PADDING } from '../../../../styles/metrics';
 
@@ -18,11 +17,6 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   },
   question: {
     ...FIRA_SANS_REGULAR.MD,
-  },
-  informativeText: {
-    ...FIRA_SANS_REGULAR.SM,
-    color: PINK[500],
-    marginBottom: MARGIN.SM,
   },
   explanation: {
     color: textColor,
