@@ -3,6 +3,10 @@ import { GREEN, GREY } from '../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
+  container: {
+    width: ICON.XL,
+    alignSelf: 'center',
+  },
   unstartedContainer: {
     width: ICON.MD,
     alignSelf: 'center',

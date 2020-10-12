@@ -21,7 +21,7 @@ const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
   }, [progress, maxProgress]);
 
   return (
-    <>
+    <View style={styles.container}>
       {!progressPercentage && <View style={styles.unstartedContainer}>
         <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
       </View>}
@@ -32,7 +32,7 @@ const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
       {progressPercentage === 1 && <View style={styles.finishedContainer}>
         <Feather name='check' size={ICON.XS} color={WHITE} />
       </View>}
-    </>
+    </View>
   );
 };
 
