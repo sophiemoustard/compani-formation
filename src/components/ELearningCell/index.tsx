@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { StepType } from '../../types/StepType';
 import { ICON } from '../../styles/metrics';
-import { GREY, PINK } from '../../styles/colors';
+import { GREY } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from '../steps/StepCellTitle';
 import ActivityCell from '../activities/ActivityCell';
 import styles from './styles';
+import ProgressPieChart from '../ProgressPieChart';
 
 interface ELearningCellProps {
   step: StepType,
@@ -33,9 +33,7 @@ const ELearningCell = ({ step, index, navigation, courseId }: ELearningCellProps
     <View style={[styles.container, isOpen && styles.openedContainer]}>
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
-          <View style={styles.featherContainer}>
-            <Feather name='play-circle' size={ICON.LG} color={PINK[500]} />
-          </View>
+          <ProgressPieChart step={step} />
           <StepCellTitle index={index} step={step} />
           <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
             color={GREY[500]} style={iconButtonStyle} />
