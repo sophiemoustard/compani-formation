@@ -8,7 +8,7 @@ import Selectors from '../../../../store/activities/selectors';
 import { TransitionType } from '../../../../types/CardType';
 import { TRANSITION } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
-import styles from './style';
+import styles from './styles';
 
 interface TransitionProps {
   index: number,

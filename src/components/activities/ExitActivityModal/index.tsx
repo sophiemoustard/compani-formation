@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import NiModal from '../../Modal';
-import styles from './style';
+import styles from './styles';
 
 interface ExitActivityModalProps {
   visible: boolean,

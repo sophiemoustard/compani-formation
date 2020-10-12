@@ -10,7 +10,7 @@ import { ActivityType } from '../../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import Activities from '../../../../api/activities';
 import { Context as AuthContext } from '../../../../context/AuthContext';
-import styles from './style';
+import styles from './styles';
 
 interface StartCardProps {
   title: string,

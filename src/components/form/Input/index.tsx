@@ -3,7 +3,7 @@ import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
-import styles from './style';
+import styles from './styles';
 
 interface InputProps {
   style?: object,

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import ArrowButton from '../../ArrowButton';
 import { navigate } from '../../../navigationRef';
 import { CARD_TEMPLATES, QUIZ, LEFT, RIGHT } from '../../../core/data/constants';
-import styles from './style';
+import styles from './styles';
 
 interface CardFooterProps {
   index: number,

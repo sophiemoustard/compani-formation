@@ -9,7 +9,7 @@ import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
 import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
 import IconButton from '../../IconButton';
-import styles from './style';
+import styles from './styles';
 
 interface OnSiteCellProps {
   step: StepType,

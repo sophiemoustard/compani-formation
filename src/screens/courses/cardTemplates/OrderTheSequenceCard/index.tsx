@@ -15,7 +15,7 @@ import { navigate } from '../../../../navigationRef';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
-import styles from './style';
+import styles from './styles';
 
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,

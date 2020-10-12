@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType } from '../../../types/ActivityType';
-import styles from './style';
+import styles from './styles';
 
 interface ActivityCellProps {
   activity: ActivityType,

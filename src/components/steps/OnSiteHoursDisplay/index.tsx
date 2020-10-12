@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import moment from '../../../core/helpers/moment';
-import styles from './style';
+import styles from './styles';
 
 interface OnSiteHoursDisplayProps {
   startDate: Date,

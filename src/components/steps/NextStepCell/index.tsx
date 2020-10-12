@@ -4,7 +4,7 @@ import { CourseSlotType } from '../../../types/CourseSlotType';
 import moment from '../../../core/helpers/moment';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
-import styles from './style';
+import styles from './styles';
 
 interface NextStepCellProps {
   nextSlotsStep: NextSlotsStepType,

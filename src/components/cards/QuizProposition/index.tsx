@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
-import styles from './style';
+import styles from './styles';
 
 interface QuizPropositionProps {
   item: string,

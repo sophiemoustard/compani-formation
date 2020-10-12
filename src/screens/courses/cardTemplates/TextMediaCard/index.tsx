@@ -8,7 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import { TEXT_MEDIA } from '../../../../core/data/constants';
-import styles from './style';
+import styles from './styles';
 
 interface TextMediaCardProps {
   card: TextMediaType,

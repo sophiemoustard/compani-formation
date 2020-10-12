@@ -5,7 +5,7 @@ import { navigate } from '../../../navigationRef';
 import { LEFT } from '../../../core/data/constants';
 import { WHITE } from '../../../styles/colors';
 import Button from '../../form/Button';
-import styles from './style';
+import styles from './styles';
 
 interface QuestionCardFooterProps {
   index: number,

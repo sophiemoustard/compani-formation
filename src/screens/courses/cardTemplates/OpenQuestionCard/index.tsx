@@ -12,7 +12,7 @@ import { OPEN_QUESTION } from '../../../../core/data/constants';
 import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import Actions from '../../../../store/activities/actions';
-import styles from './style';
+import styles from './styles';
 
 interface OpenQuestionCardProps {
   card: OpenQuestionType,

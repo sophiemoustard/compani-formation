@@ -7,7 +7,7 @@ import { GREY, PINK } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from '../steps/StepCellTitle';
 import ActivityCell from '../activities/ActivityCell';
-import styles from './style';
+import styles from './styles';
 
 interface ELearningCellProps {
   step: StepType,
