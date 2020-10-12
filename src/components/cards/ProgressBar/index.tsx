@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
 import Selectors from '../../../store/activities/selectors';
-import styles from './style';
+import styles from './styles';
 
 interface ProgressBar {
   maxProgress: number,

@@ -1,16 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_BOLD } from '../../../styles/fonts';
 import { GREY, YELLOW } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PROGRESS_BAR_HEIGHT } from '../../../styles/metrics';
 
-const styles = (progress: number) => StyleSheet.create({
+const styles = (progressPercentage: number) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.MD,
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.SM,
-    height: 6,
+    height: PROGRESS_BAR_HEIGHT,
     flex: 1,
     justifyContent: 'flex-start',
   },
@@ -18,8 +18,7 @@ const styles = (progress: number) => StyleSheet.create({
     display: 'flex',
     backgroundColor: YELLOW[500],
     borderRadius: BORDER_RADIUS.XL,
-    width: `${progress}%`,
-    height: '100%',
+    width: `${progressPercentage}%`,
     borderRightWidth: BORDER_WIDTH,
     borderColor: GREY[100],
   },
