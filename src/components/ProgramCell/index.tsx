@@ -16,7 +16,6 @@ const ProgramCell = ({ program, onPress }: ProgramCellProps) => {
   const source = programImage
     ? { uri: programImage }
     : require('../../../assets/images/authentication_background_image.jpg');
-
   return (
     <TouchableOpacity style={styles.courseContainer} onPress={onPress}>
       <View style={styles.imageContainer}>

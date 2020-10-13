@@ -14,6 +14,7 @@ import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
 import ForgotPassword from '../screens/ForgotPassword';
 import Catalog from '../screens/explore/Catalog';
+import About from '../screens/explore/About';
 import CourseList from '../screens/courses/CourseList';
 import CourseProfile from '../screens/courses/CourseProfile';
 import CardContainer from '../screens/courses/CardContainer';
