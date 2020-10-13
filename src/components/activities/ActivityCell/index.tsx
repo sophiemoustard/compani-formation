@@ -23,7 +23,6 @@ const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
 
   type colorsType = { border: string, background: string, check?: string }
   let colors: colorsType = { border: YELLOW[600], background: YELLOW[300] };
-
   if (isCompleted && isAboveAverage) colors = { border: GREEN[600], background: GREEN[300], check: GREEN[500] };
   else if (isCompleted) colors = { border: ORANGE[600], background: ORANGE[300], check: ORANGE[500] };
 

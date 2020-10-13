@@ -23,8 +23,7 @@ interface StylesProps {
 }
 
 const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: ActivityIconProps) => {
-  const getColors = () => ({ borderColor, backgroundColor });
-  const coloredStyle = styles(getColors());
+  const coloredStyle = styles({ borderColor, backgroundColor });
 
   const getIcon = () => {
     if (activity.type === SHARING_EXPERIENCE) return <SharingExperienceIcon style={coloredStyle.icon}/>;
