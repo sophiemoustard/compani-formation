@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, View, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { ScrollView, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
@@ -8,7 +8,6 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import { OPEN_QUESTION } from '../../../../core/data/constants';
 import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import Actions from '../../../../store/activities/actions';
@@ -19,9 +18,16 @@ interface OpenQuestionCardProps {
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  isFocused: boolean,
 }
 
-const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: OpenQuestionCardProps) => {
+const OpenQuestionCard = ({
+  card,
+  index,
+  questionnaireAnswer,
+  addQuestionnaireAnswer,
+  isFocused,
+}: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const isIOS = Platform.OS === 'ios';
@@ -32,8 +38,8 @@ const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAn
   }, [questionnaireAnswer]);
 
   const validateQuestionnaireAnswer = (id: string, text: string) => {
-    Keyboard.dismiss();
     addQuestionnaireAnswer({ card: id, answer: text });
+    setIsSelected(false);
   };
 
   const scrollRef = useRef<ScrollView>(null);
@@ -45,12 +51,7 @@ const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAn
     });
   };
 
-  const onBlurTextInput = () => {
-    setIsSelected(false);
-    Keyboard.dismiss();
-  };
-
-  if (!card || card.template !== OPEN_QUESTION) return null;
+  if (!isFocused) return null;
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
@@ -64,7 +65,8 @@ const OpenQuestionCard = ({ card, index, questionnaireAnswer, addQuestionnaireAn
         </View>
       </ScrollView>
       <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer} onPressArrow={onBlurTextInput}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer}
+        onPressArrow={() => setIsSelected(false)}
         validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
     </KeyboardAvoidingView>
   );

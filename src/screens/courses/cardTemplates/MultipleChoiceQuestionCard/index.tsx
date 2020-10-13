@@ -9,7 +9,6 @@ import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import { MULTIPLE_CHOICE_QUESTION } from '../../../../core/data/constants';
 import { navigate } from '../../../../navigationRef';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
@@ -20,6 +19,7 @@ interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
   cardIndex: number,
   incGoodAnswersCount: () => void,
+  isFocused: boolean,
 }
 
 export interface qcmAnswerType extends qcmAnswerFromAPIType {
@@ -32,7 +32,12 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: MultipleChoiceQuestionCardProps) => {
+const MultipleChoiceQuestionCard = ({
+  card,
+  cardIndex,
+  incGoodAnswersCount,
+  isFocused,
+}: MultipleChoiceQuestionCardProps) => {
   const [answers, setAnswers] = useState<Array<qcmAnswerType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
@@ -43,10 +48,10 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: Mu
   });
 
   useEffect(() => {
-    if (card && card.template === MULTIPLE_CHOICE_QUESTION && !isValidated) {
+    if (isFocused && !isValidated) {
       setAnswers(shuffle(card.qcmAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
-  }, [card, isValidated]);
+  }, [card, isFocused, isValidated]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -59,6 +64,8 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: Mu
 
     return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
   }, [isValidated, answers, isAnsweredCorrectly]);
+
+  if (!isFocused) return null;
 
   const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 
@@ -89,7 +96,6 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: Mu
   const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.label}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
 
-  if (!card || card.template !== MULTIPLE_CHOICE_QUESTION) return null;
   const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
   return (

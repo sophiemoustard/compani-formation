@@ -6,16 +6,16 @@ import CardFooter from '../../../../components/cards/CardFooter';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { TitleTextMediaType } from '../../../../types/CardType';
-import { TITLE_TEXT_MEDIA } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
   index: number,
+  isFocused: boolean,
 }
 
-const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
+const TitleTextMediaCard = ({ card, index, isFocused }: TitleTextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const TitleTextMediaCard = ({ card, index }: TitleTextMediaCardProps) => {
     }
   }, [card]);
 
-  if (!card || card.template !== TITLE_TEXT_MEDIA) return null;
+  if (!isFocused) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles(imgHeight);

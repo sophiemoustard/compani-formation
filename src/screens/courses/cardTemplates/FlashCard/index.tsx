@@ -1,24 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import { FlashCardType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
-import { FLASHCARD } from '../../../../core/data/constants';
 import AnimatedShadow from '../../../../components/design/AnimatedShadow';
 import styles from './styles';
 
 interface FlashCard {
   card: FlashCardType,
-  index: number
+  index: number,
+  isFocused: boolean,
 }
 
-const FlashCard = ({ card, index }: FlashCard) => {
+const FlashCard = ({ card, index, isFocused }: FlashCard) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState('unclicked');
-  const isFocused = useIsFocused();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
   const hasBeenClicked = useRef(false);
@@ -39,7 +37,7 @@ const FlashCard = ({ card, index }: FlashCard) => {
     }
   }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue]);
 
-  if (!card || card.template !== FLASHCARD || !isFocused) return null;
+  if (!isFocused) return null;
 
   const flipCard = () => {
     if (timesHasBeenClicked === 'unclicked') {

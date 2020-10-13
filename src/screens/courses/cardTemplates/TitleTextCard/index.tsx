@@ -6,17 +6,17 @@ import CardFooter from '../../../../components/cards/CardFooter';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { TitleTextType } from '../../../../types/CardType';
-import { TITLE_TEXT } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
 
 interface TitleTextCardProps {
   card: TitleTextType,
   index: number,
+  isFocused: boolean,
 }
 
-const TitleTextCard = ({ card, index }: TitleTextCardProps) => {
-  if (!card || card.template !== TITLE_TEXT) return null;
+const TitleTextCard = ({ card, index, isFocused }: TitleTextCardProps) => {
+  if (!isFocused) return null;
 
   return (
     <>
