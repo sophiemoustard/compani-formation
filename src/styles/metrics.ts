@@ -52,6 +52,7 @@ export const IS_SMALL_SCREEN = Platform.select({
 export const INPUT_HEIGHT = 40;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
+export const PROGRESS_BAR_HEIGHT = 8;
 export const ABSOLUTE_BOTTOM_POSITION = BUTTON_HEIGHT + MARGIN.XL;
 export const PROGRAM_CELL_WIDTH = IS_SMALL_SCREEN ? 228 : 248;
 export const SMALL_SCREEN_MAX_HEIGHT = 568;

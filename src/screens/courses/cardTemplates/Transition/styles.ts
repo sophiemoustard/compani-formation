@@ -1,0 +1,27 @@
+import { StyleSheet } from 'react-native';
+import { PINK, WHITE } from '../../../../styles/colors';
+import { MARGIN } from '../../../../styles/metrics';
+import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../../styles/fonts';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: PINK[500],
+  },
+  closeButton: {
+    margin: MARGIN.MD,
+  },
+  titleContainer: {
+    marginTop: MARGIN.XL,
+    justifyContent: 'center',
+    flex: 1,
+  },
+  title: {
+    ...NUNITO_REGULAR_BOLD_ITALIC.XL,
+    textAlign: 'center',
+    color: WHITE,
+    marginHorizontal: MARGIN.MD,
+  },
+});
+
+export default styles;

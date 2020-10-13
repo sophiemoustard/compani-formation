@@ -48,6 +48,7 @@ module.exports = {
     'arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
     '@typescript-eslint/no-unused-vars': 'error', // eslint ne gère pas les types, typescript les gère à sa place
     'no-unused-vars': 'off', // Pour ne pas avoir l'erreur en doublon
+    'prefer-destructuring': ['error', { VariableDeclarator: { object: true, array: false } }],
   },
   globals: {
     __DEV__: true,
