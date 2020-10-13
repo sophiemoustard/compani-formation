@@ -6,17 +6,15 @@ const styles = StyleSheet.create({
   container: {
     width: ICON.XL,
     alignSelf: 'center',
+    alignItems: 'center',
   },
   unstartedContainer: {
     width: ICON.MD,
-    alignSelf: 'center',
     alignItems: 'center',
   },
   inProgressContainer: {
     width: ICON.MD,
     height: ICON.MD,
-    alignSelf: 'center',
-    backgroundColor: GREY[100],
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
@@ -26,7 +24,6 @@ const styles = StyleSheet.create({
   finishedContainer: {
     width: ICON.XL,
     height: ICON.XL,
-    alignSelf: 'center',
     backgroundColor: GREEN[600],
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: 4 * BORDER_WIDTH,
