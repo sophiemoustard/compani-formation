@@ -9,9 +9,14 @@ interface ProgramCellProps {
   courseId?: string,
   navigation?: NavigationType,
   program: ProgramType,
+  path?: {
+    navigation: string,
+    screen: string,
+  }
 }
 
-const ProgramCell = ({ courseId, navigation, program }: ProgramCellProps) => {
+const ProgramCell = ({ courseId, navigation, program,
+  path = ({ navigation: 'Courses', screen: 'CourseProfile' }) }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
 
@@ -19,10 +24,9 @@ const ProgramCell = ({ courseId, navigation, program }: ProgramCellProps) => {
     ? { uri: programImage }
     : require('../../../assets/images/authentication_background_image.jpg');
   const goToCourse = () => navigation?.navigate(
-    'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
-  );
-
+        'Home',
+        { screen: path?.navigation, params: { screen: path?.screen, params: { courseId } } }
+      );
   return (
     <TouchableOpacity style={styles.courseContainer} disabled={!navigation} onPress={goToCourse}>
       <View style={styles.imageContainer}>

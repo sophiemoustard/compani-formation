@@ -2,22 +2,25 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Text, ScrollView, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import Programs from '../../api/programs';
-import { Context as AuthContext } from '../../context/AuthContext';
-import commonStyles from '../../styles/common';
-import { getLoggedUserId } from '../../store/main/selectors';
-import ProgramCell from '../../components/ProgramCell';
+import Programs from '../../../api/programs';
+import { Context as AuthContext } from '../../../context/AuthContext';
+import commonStyles from '../../../styles/common';
+import { getLoggedUserId } from '../../../store/main/selectors';
+import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
-import { ProgramType } from '../../types/ProgramType';
+import { ProgramType } from '../../../types/ProgramType';
+import { NavigationType } from '../../../types/NavigationType';
 
-interface ExploreProps {
+interface CatalogProps {
   loggedUserId: string | null,
+  navigation: NavigationType,
 }
 
-const Explore = ({ loggedUserId }: ExploreProps) => {
+const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programs, setPrograms] = useState<Array<ProgramType>>([]);
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
+  const path = { navigation: 'Explore', screen: 'About' };
 
   const getPrograms = async () => {
     try {
@@ -40,7 +43,7 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
 
   const renderItem = (program) => {
     const courseId = program.subPrograms[0].courses[0]._id;
-    return <ProgramCell program={program} courseId={courseId} />;
+    return <ProgramCell program={program} courseId={courseId} navigation={navigation} path={path} />;
   };
 
   return (
@@ -67,4 +70,4 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(Explore);
+export default connect(mapStateToProps)(Catalog);
