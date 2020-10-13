@@ -6,13 +6,13 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
-    paddingBottom: PADDING.XL,
   },
   draggableContainer: {
     flexGrow: 1,
-    justifyContent: 'space-between',
+    paddingBottom: PADDING.XL,
   },
   questionContainer: {
+    justifyContent: 'space-between',
     flexGrow: 1,
   },
   question: {

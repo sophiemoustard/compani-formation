@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY } from './colors';
+import { GREY, PINK } from './colors';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BLACK, FIRA_SANS_MEDIUM } from './fonts';
 import { BORDER_RADIUS, MARGIN, PADDING } from './metrics';
 
@@ -26,5 +26,10 @@ export default StyleSheet.create({
     textAlign: 'justify',
     paddingHorizontal: PADDING.XL,
     paddingVertical: PADDING.LG,
+  },
+  informativeText: {
+    ...FIRA_SANS_REGULAR.SM,
+    color: PINK[500],
+    marginBottom: MARGIN.SM,
   },
 });

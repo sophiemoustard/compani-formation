@@ -98,7 +98,7 @@ const MultipleChoiceQuestionCard = ({ card, cardIndex, incGoodAnswersCount }: Mu
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
-          <Text style={style.informativeText}>Plusieurs réponses sont possibles</Text>
+          <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
           <FlatList data={answers} keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => renderItem(item, index)} />
         </View>
