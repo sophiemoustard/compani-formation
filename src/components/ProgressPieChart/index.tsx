@@ -23,18 +23,18 @@ const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
   return (
     <View style={styles.container}>
       {!progressPercentage &&
-      <View style={styles.unstartedContainer}>
-        <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
-      </View>}
+        <View style={styles.unstartedContainer}>
+          <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
+        </View>}
       {!!progressPercentage && progressPercentage < 1 &&
-      <View style={styles.inProgressContainer}>
-        <ProgressCircle style={{ height: ICON.XS, width: ICON.XS }} progress={progressPercentage}
-          progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
-      </View>}
+        <View style={styles.inProgressContainer}>
+          <ProgressCircle style={{ height: ICON.XS, width: ICON.XS }} progress={progressPercentage}
+            progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
+        </View>}
       {progressPercentage === 1 &&
-      <View style={styles.finishedContainer}>
-        <Feather name='check' size={ICON.XS} color={WHITE} />
-      </View>}
+        <View style={styles.finishedContainer}>
+          <Feather name='check' size={ICON.XS} color={WHITE} />
+        </View>}
     </View>
   );
 };
