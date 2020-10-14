@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,8 +19,8 @@ import CourseProfile from './screens/courses/CourseProfile';
 import CardContainer from './screens/courses/CardContainer';
 import MainActions from './store/main/actions';
 import Actions from './store/actions';
-import { PINK } from './styles/colors';
-import { ActionType, ActionWithoutPayloadType } from './types/store/StoreType';
+import { PINK, WHITE } from './styles/colors';
+import { ActionType, ActionWithoutPayloadType, StateType } from './types/store/StoreType';
 import Users from './api/users';
 import { UserType } from './types/UserType';
 
@@ -66,11 +67,12 @@ const Home = () => {
 const MainStack = createStackNavigator();
 
 interface AppContainerProps {
-  setLoggedUser: (user: UserType) => void;
-  resetAllReducers: () => void;
+  setLoggedUser: (user: UserType) => void,
+  resetAllReducers: () => void,
+  statusBarVisible: boolean,
 }
 
-const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,8 +91,13 @@ const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
+  const styles = style(statusBarVisible);
+
   return (
     <NavigationContainer ref={navigationRef}>
+      <View style={styles.statusBar}>
+        <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
+      </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
         {alenviToken === null
           ? <>
@@ -107,9 +114,23 @@ const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) =>
   );
 };
 
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
+
+const style = (statusBarVisible: boolean) => StyleSheet.create({
+  statusBar: {
+    display: statusBarVisible ? 'flex' : 'none',
+    backgroundColor: WHITE,
+    height: STATUSBAR_HEIGHT,
+  },
+});
+
+const mapStateToProps = (state: StateType) => ({
+  statusBarVisible: state.main.statusBarVisible,
+});
+
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
   resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });
 
-export default connect(null, mapDispatchToProps)(AppContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

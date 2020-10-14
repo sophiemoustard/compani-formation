@@ -10,6 +10,7 @@ import {
   ViewStyle,
   LogBox,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { Feather } from '@expo/vector-icons';
@@ -25,15 +26,17 @@ import { ON_SITE, E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import { CourseType } from '../../../types/CourseType';
 import styles from './styles';
+import MainActions from '../../../store/main/actions';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
   route: { params: { courseId: string } },
   navigation: NavigationType,
+  setStatusBarVisible: (boolean) => void,
 }
 
-const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
+const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const { signOut } = useContext(AuthContext);
 
@@ -56,7 +59,10 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     async function fetchData() { await getCourse(); }
-    if (isFocused) fetchData();
+    if (isFocused) {
+      setStatusBarVisible(true);
+      fetchData();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
@@ -98,4 +104,8 @@ const CourseProfile = ({ route, navigation }: CourseProfileProps) => {
   );
 };
 
-export default CourseProfile;
+const mapDispatchToProps = dispatch => ({
+  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+});
+
+export default connect(null, mapDispatchToProps)(CourseProfile);

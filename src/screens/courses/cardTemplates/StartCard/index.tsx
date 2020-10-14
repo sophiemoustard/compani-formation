@@ -5,12 +5,13 @@ import Button from '../../../../components/form/Button';
 import { navigate } from '../../../../navigationRef';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
-import Actions from '../../../../store/activities/actions';
+import ActivitiesActions from '../../../../store/activities/actions';
 import { ActivityType } from '../../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import Activities from '../../../../api/activities';
 import { Context as AuthContext } from '../../../../context/AuthContext';
 import styles from './styles';
+import MainActions from '../../../../store/main/actions';
 
 interface StartCardProps {
   title: string,
@@ -18,6 +19,7 @@ interface StartCardProps {
   resetActivityReducer: () => void,
   activity: ActivityType,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
+  setStatusBarVisible: (boolean) => void,
 }
 
 const StartCard = ({
@@ -26,6 +28,7 @@ const StartCard = ({
   resetActivityReducer,
   activity,
   setQuestionnaireAnswersList,
+  setStatusBarVisible,
 }: StartCardProps) => {
   const { signOut } = useContext(AuthContext);
 
@@ -45,6 +48,7 @@ const StartCard = ({
   useEffect(() => {
     async function fetchData() { await getActivityHistory(); }
     fetchData();
+    setStatusBarVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -77,9 +81,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+  resetActivityReducer: () => dispatch(ActivitiesActions.resetActivityReducer()),
   setQuestionnaireAnswersList: questionnaireAnswersList =>
-    dispatch(Actions.setQuestionnaireAnswersList(questionnaireAnswersList)),
+    dispatch(ActivitiesActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
+  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartCard);
