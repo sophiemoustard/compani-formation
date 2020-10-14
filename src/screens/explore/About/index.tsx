@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -7,8 +7,9 @@ import { navigate } from '../../../navigationRef';
 import Courses from '../../../api/courses';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
-import { WHITE } from '../../../styles/colors';
+import { PINK, WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
+import Button from '../../../components/form/Button';
 
 interface AboutProps {
   route: { params: { courseId: string } },
@@ -27,7 +28,6 @@ const About = ({ route } : AboutProps) => {
     }
   };
 
-
   useEffect(() => {
     async function fetchData() { await getCourse(); }
     fetchData();
@@ -41,7 +41,6 @@ const About = ({ route } : AboutProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
-
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
   const source = programImage
@@ -51,21 +50,36 @@ const About = ({ route } : AboutProps) => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog', params: { courseId: route.params.courseId } } });
   };
 
+  const onPress = () => {
+    navigate('Home',
+      { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } });
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.arrow} onPress={goBack}>
+    <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+      <View style={styles.header}></View>
+      <View style={styles.content}>
+        <TouchableOpacity onPress={goBack}>
           <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <Text style={styles.subTitle}>{'A propos'.toUpperCase()}</Text>
-          <Text style={styles.title}>{programName}</Text>
+          <Text style={styles.aboutTitle}>{'A propos'.toUpperCase()}</Text>
+          <Text style={styles.stepTitle}>{programName}</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={source} />
+        </View>
+        <View style={styles.description}>
+          <Text>Lorem ipsum fugiat excepteur magna nulla proident laboris dolore.
+            Ex id ipsum ea non nisi qui elit minim. Eu excepteur fugiat cupidatat
+            ullamco veniam irure non elit ex excepteur occaecat esse nisi.</Text>
         </View>
       </View>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={source} />
+      <View style={styles.button}>
+        <Button bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]}
+          caption={'Commencer la formation'} onPress={onPress} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
