@@ -1,45 +1,52 @@
 import { StyleSheet } from 'react-native';
-import { PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK, NUNITO_SEMI } from '../../../styles/fonts';
+import { BLACK, PINK, WHITE } from '../../../styles/colors';
+import { BORDER_RADIUS, MARGIN } from '../../../styles/metrics';
+import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
+  contentContainer: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
+  },
+  content: {
+    margin: MARGIN.MD,
   },
   header: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    zIndex: -1,
     backgroundColor: PINK[600],
     height: 200,
-    width: '100%',
-    position: 'absolute',
-  },
-  arrow: {
-    margin: MAIN_MARGIN_LEFT,
   },
   titleContainer: {
-    marginHorizontal: MAIN_MARGIN_LEFT,
+    marginTop: MARGIN.LG,
   },
-  subTitle: {
+  aboutTitle: {
     ...NUNITO_SEMI.MD,
     color: PINK[200],
   },
-  title: {
+  stepTitle: {
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
   },
   imageContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: MARGIN.MD,
-    width: '100%',
+    marginVertical: MARGIN.MD,
+    height: 160,
   },
   image: {
-    height: 160,
+    height: '100%',
     width: '100%',
     borderRadius: BORDER_RADIUS.MD,
-    borderWidth: BORDER_WIDTH,
+  },
+  description: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: BLACK,
+  },
+  button: {
+    marginHorizontal: MARGIN.XL,
+    marginBottom: MARGIN.LG,
   },
 });
 

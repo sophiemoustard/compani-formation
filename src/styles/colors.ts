@@ -85,3 +85,4 @@ export const TRANSPARENT_PINK = 'rgba(193, 40, 98, 0.2)';
 export const TRANSPARENT_GRADIENT = '#FFFFFF00';
 export const MODAL_BACKDROP_GREY = '#00000020';
 export const RED = '#FF0000';
+export const BLACK = '#2C2C3A';
