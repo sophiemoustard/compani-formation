@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import Courses from '../../../api/courses';
@@ -10,36 +9,28 @@ import styles from './styles';
 import { PINK, WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import Button from '../../../components/form/Button';
+import { CourseType } from '../../../types/CourseType';
 
 interface AboutProps {
   route: { params: { courseId: string } },
 }
 
 const About = ({ route } : AboutProps) => {
-  const [course, setCourse] = useState<any | null>(null);
+  const [course, setCourse] = useState<CourseType | null>(null);
   const { signOut } = useContext(AuthContext);
-  const getCourse = async () => {
-    try {
-      const fetchedCourse = await Courses.getCourse(route.params.courseId);
-      setCourse(fetchedCourse);
-    } catch (e) {
-      if (e.status === 401) signOut();
-      setCourse(null);
+
+  useEffect(() => {
+    async function getCourse() {
+      try {
+        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        setCourse(fetchedCourse);
+      } catch (e) {
+        if (e.status === 401) signOut();
+        setCourse(null);
+      }
     }
-  };
-
-  useEffect(() => {
-    async function fetchData() { await getCourse(); }
-    fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    async function fetchData() { await getCourse(); }
-    if (isFocused) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+    getCourse();
+  }, [route.params.courseId, signOut]);
 
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
