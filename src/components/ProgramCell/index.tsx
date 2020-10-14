@@ -9,10 +9,7 @@ interface ProgramCellProps {
   courseId?: string,
   navigation?: NavigationType,
   program: ProgramType,
-  path?: {
-    navigation: string,
-    screen: string,
-  }
+  path?: { navigation: string, screen: string }
 }
 
 const ProgramCell = ({
