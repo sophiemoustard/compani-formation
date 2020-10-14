@@ -15,7 +15,7 @@ interface AboutProps {
   route: { params: { courseId: string } },
 }
 
-const About = ({ route } : AboutProps) => {
+const About = ({ route }: AboutProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const { signOut } = useContext(AuthContext);
 
@@ -48,13 +48,13 @@ const About = ({ route } : AboutProps) => {
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}></View>
+      <View style={styles.header} />
       <View style={styles.content}>
         <TouchableOpacity onPress={goBack}>
           <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <Text style={styles.aboutTitle}>{'A propos'.toUpperCase()}</Text>
+          <Text style={styles.aboutTitle}>{'A PROPOS'}</Text>
           <Text style={styles.stepTitle}>{programName}</Text>
         </View>
         <View style={styles.imageContainer}>
