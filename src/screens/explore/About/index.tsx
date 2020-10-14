@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import styles from './styles';
-import { PINK, WHITE } from '../../../styles/colors';
+import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { ProgramType } from '../../../types/ProgramType';
 
