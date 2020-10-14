@@ -97,3 +97,11 @@ export interface OrderTheSequenceType {
   orderedAnswers: Array<OrderedAnswerType>,
   explanation: string,
 }
+
+export interface FillTheGapType {
+  _id: string,
+  template: string,
+  gappedText: string,
+  falsyGapAnswers: Array<string>,
+  explanation: string,
+}
