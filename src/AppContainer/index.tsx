@@ -1,28 +1,29 @@
 import React, { useEffect, useContext } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import pick from 'lodash/pick';
-import './ReactotronConfig';
-import asyncStorage from './core/helpers/asyncStorage';
-import Profile from './screens/Profile';
-import { Context as AuthContext } from './context/AuthContext';
-import { navigationRef } from './navigationRef';
-import Authentication from './screens/Authentication';
-import ForgotPassword from './screens/ForgotPassword';
-import Explore from './screens/Explore';
-import CourseList from './screens/courses/CourseList';
-import CourseProfile from './screens/courses/CourseProfile';
-import CardContainer from './screens/courses/CardContainer';
-import MainActions from './store/main/actions';
-import Actions from './store/actions';
-import { PINK, WHITE } from './styles/colors';
-import { ActionType, ActionWithoutPayloadType, StateType } from './types/store/StoreType';
-import Users from './api/users';
-import { UserType } from './types/UserType';
+import '../ReactotronConfig';
+import asyncStorage from '../core/helpers/asyncStorage';
+import Profile from '../screens/Profile';
+import { Context as AuthContext } from '../context/AuthContext';
+import { navigationRef } from '../navigationRef';
+import Authentication from '../screens/Authentication';
+import ForgotPassword from '../screens/ForgotPassword';
+import Explore from '../screens/Explore';
+import CourseList from '../screens/courses/CourseList';
+import CourseProfile from '../screens/courses/CourseProfile';
+import CardContainer from '../screens/courses/CardContainer';
+import MainActions from '../store/main/actions';
+import Actions from '../store/actions';
+import { PINK, WHITE } from '../styles/colors';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
+import Users from '../api/users';
+import { UserType } from '../types/UserType';
+import styles from './styles';
 
 interface TabBarIconProps {
   color: string,
@@ -91,11 +92,11 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
 
   if (!appIsReady) return null;
 
-  const styles = style(statusBarVisible);
+  const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <View style={styles.statusBar}>
+      <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
@@ -113,16 +114,6 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
     </NavigationContainer>
   );
 };
-
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
-
-const style = (statusBarVisible: boolean) => StyleSheet.create({
-  statusBar: {
-    display: statusBarVisible ? 'flex' : 'none',
-    backgroundColor: WHITE,
-    height: STATUSBAR_HEIGHT,
-  },
-});
 
 const mapStateToProps = (state: StateType) => ({
   statusBarVisible: state.main.statusBarVisible,
