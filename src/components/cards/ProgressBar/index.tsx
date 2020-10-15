@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../types/store/StoreType';
 import Selectors from '../../../store/activities/selectors';
@@ -23,7 +23,6 @@ const ProgressBar = ({ maxProgress, progress }: ProgressBar) => {
       <View style={style.container}>
         <View style={style.content} />
       </View>
-      <Text style={style.text}>{progress}/{maxProgress}</Text>
     </>
   );
 };
