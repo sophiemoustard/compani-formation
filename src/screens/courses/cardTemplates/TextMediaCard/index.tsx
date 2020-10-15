@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView, Dimensions } from 'react-native';
+import { Text, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
@@ -8,6 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
+import { CARD_MEDIA_HEIGHT } from '../../../../styles/metrics';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -20,12 +21,7 @@ const TextMediaCard = ({ card, index, isFocused }: TextMediaCardProps) => {
 
   useEffect(() => {
     if (card?.media?.link) {
-      Image.getSize(card.media?.link || '', (width, height) => {
-        const screenWidth = Dimensions.get('window').width;
-        const scaleFactor = width / screenWidth;
-        const imageHeight = height / scaleFactor;
-        setImgHeight(imageHeight);
-      });
+      Image.getSize(card.media?.link || '', (width, height) => { setImgHeight(Math.min(height, CARD_MEDIA_HEIGHT)); });
     }
   }, [card]);
 
