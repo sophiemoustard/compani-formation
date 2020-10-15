@@ -7,15 +7,15 @@ import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
-import { TEXT_MEDIA } from '../../../../core/data/constants';
 import styles from './styles';
 
 interface TextMediaCardProps {
   card: TextMediaType,
   index: number,
+  isFocused: boolean,
 }
 
-const TextMediaCard = ({ card, index }: TextMediaCardProps) => {
+const TextMediaCard = ({ card, index, isFocused }: TextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const TextMediaCard = ({ card, index }: TextMediaCardProps) => {
     }
   }, [card]);
 
-  if (!card || card.template !== TEXT_MEDIA) return null;
+  if (!isFocused) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles(imgHeight);

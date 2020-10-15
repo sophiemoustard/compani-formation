@@ -1,27 +1,29 @@
 import React, { useEffect, useContext } from 'react';
+import { StatusBar, View } from 'react-native';
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import pick from 'lodash/pick';
-import './ReactotronConfig';
-import asyncStorage from './core/helpers/asyncStorage';
-import Profile from './screens/Profile';
-import { Context as AuthContext } from './context/AuthContext';
-import { navigationRef } from './navigationRef';
-import Authentication from './screens/Authentication';
-import ForgotPassword from './screens/ForgotPassword';
-import Explore from './screens/Explore';
-import CourseList from './screens/courses/CourseList';
-import CourseProfile from './screens/courses/CourseProfile';
-import CardContainer from './screens/courses/CardContainer';
-import MainActions from './store/main/actions';
-import Actions from './store/actions';
-import { PINK } from './styles/colors';
-import { ActionType, ActionWithoutPayloadType } from './types/store/StoreType';
-import Users from './api/users';
-import { UserType } from './types/UserType';
+import '../ReactotronConfig';
+import asyncStorage from '../core/helpers/asyncStorage';
+import Profile from '../screens/Profile';
+import { Context as AuthContext } from '../context/AuthContext';
+import { navigationRef } from '../navigationRef';
+import Authentication from '../screens/Authentication';
+import ForgotPassword from '../screens/ForgotPassword';
+import Explore from '../screens/Explore';
+import CourseList from '../screens/courses/CourseList';
+import CourseProfile from '../screens/courses/CourseProfile';
+import CardContainer from '../screens/courses/CardContainer';
+import MainActions from '../store/main/actions';
+import Actions from '../store/actions';
+import { PINK, WHITE } from '../styles/colors';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
+import Users from '../api/users';
+import { UserType } from '../types/UserType';
+import styles from './styles';
 
 interface TabBarIconProps {
   color: string,
@@ -66,11 +68,12 @@ const Home = () => {
 const MainStack = createStackNavigator();
 
 interface AppContainerProps {
-  setLoggedUser: (user: UserType) => void;
-  resetAllReducers: () => void;
+  setLoggedUser: (user: UserType) => void,
+  resetAllReducers: () => void,
+  statusBarVisible: boolean,
 }
 
-const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,8 +92,13 @@ const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
+  const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
+
   return (
     <NavigationContainer ref={navigationRef}>
+      <View style={style.statusBar}>
+        <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
+      </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
         {alenviToken === null
           ? <>
@@ -107,9 +115,13 @@ const AppContainer = ({ setLoggedUser, resetAllReducers }: AppContainerProps) =>
   );
 };
 
+const mapStateToProps = (state: StateType) => ({
+  statusBarVisible: state.main.statusBarVisible,
+});
+
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
   resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });
 
-export default connect(null, mapDispatchToProps)(AppContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

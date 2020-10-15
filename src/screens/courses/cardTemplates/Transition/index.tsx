@@ -6,17 +6,17 @@ import CardFooter from '../../../../components/cards/CardFooter';
 import CardHeader from '../../../../components/cards/CardHeader';
 import Selectors from '../../../../store/activities/selectors';
 import { TransitionType } from '../../../../types/CardType';
-import { TRANSITION } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
 
 interface TransitionProps {
   index: number,
   card: TransitionType,
+  isFocused: boolean,
 }
 
-const Transition = ({ index, card }: TransitionProps) => {
-  if (!card || card.template !== TRANSITION) return null;
+const Transition = ({ index, card, isFocused }: TransitionProps) => {
+  if (!isFocused) return null;
 
   return (
     <View style={styles.container}>

@@ -10,7 +10,6 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
-import { SINGLE_CHOICE_QUESTION } from '../../../../core/data/constants';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
@@ -19,24 +18,25 @@ interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
   index: number,
   incGoodAnswersCount: () => void,
+  isFocused: boolean,
 }
 
-const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount }: SingleChoiceQuestionCardProps) => {
+const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isFocused }: SingleChoiceQuestionCardProps) => {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
 
   useEffect(() => {
-    if (card && card.template === SINGLE_CHOICE_QUESTION && !isPressed) {
+    if (isFocused && !isPressed) {
       setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
     }
-  }, [card, isPressed]);
+  }, [isFocused, card, isPressed]);
+
+  if (!isFocused) return null;
 
   const renderItem = (item, answerIndex) => <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item}
     isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer}
     isSelected={selectedAnswerIndex === answerIndex} />;
-
-  if (!card || card.template !== SINGLE_CHOICE_QUESTION) return null;
 
   const onSelectAnswer = (selectedIndex) => {
     setIsPressed(true);
