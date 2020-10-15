@@ -13,7 +13,7 @@ export default StyleSheet.create({
     marginBottom: MARGIN.MD,
   },
   media: {
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     borderRadius: BORDER_RADIUS.MD,
   },
   question: {

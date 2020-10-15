@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, View, StyleSheet, AppState, Platform } from 'react-native';
+import { AppState } from 'react-native';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import { AppLoading } from 'expo';
@@ -9,7 +9,6 @@ import getEnvVars from './environment';
 import Version from './src/api/version';
 import AppContainer from './src/AppContainer';
 import UpdateAppModal from './src/components/UpdateAppModal';
-import { WHITE } from './src/styles/colors';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
 
@@ -53,9 +52,6 @@ const App = () => {
       <UpdateAppModal visible={modalOpened} />
       <AuthProvider>
         <ReduxProvider store={store}>
-          <View style={styles.statusBar}>
-            <StatusBar translucent barStyle="dark-content" backgroundColor={WHITE} />
-          </View>
           <AppContainer />
         </ReduxProvider>
       </AuthProvider>
@@ -64,12 +60,3 @@ const App = () => {
 };
 
 export default App;
-
-const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
-
-const styles = StyleSheet.create({
-  statusBar: {
-    backgroundColor: WHITE,
-    height: STATUSBAR_HEIGHT,
-  },
-});

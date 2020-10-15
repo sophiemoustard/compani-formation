@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -37,35 +37,38 @@ interface CardTemplateProps {
 }
 
 const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     async function fetchData() { setCardIndex(index); }
-    if (isFocused) fetchData();
-  }, [isFocused, setCardIndex, index]);
+    if (isFocused) fetchData().then(() => setIsLoading(false));
+  }, [isFocused, setCardIndex, index, setIsLoading]);
+
+  if (isLoading) return null;
 
   const card = activity.cards[index];
   switch (card.template) {
     case TRANSITION:
-      return <Transition />;
+      return <Transition isFocused={isFocused} />;
     case TITLE_TEXT_MEDIA:
-      return <TitleTextMediaCard />;
+      return <TitleTextMediaCard isFocused={isFocused} />;
     case SINGLE_CHOICE_QUESTION:
-      return <SingleChoiceQuestionCard />;
+      return <SingleChoiceQuestionCard isFocused={isFocused} />;
     case TEXT_MEDIA:
-      return <TextMediaCard />;
+      return <TextMediaCard isFocused={isFocused} />;
     case SURVEY:
-      return <SurveyCard />;
+      return <SurveyCard isFocused={isFocused} />;
     case TITLE_TEXT:
-      return <TitleTextCard />;
+      return <TitleTextCard isFocused={isFocused} />;
     case MULTIPLE_CHOICE_QUESTION:
-      return <MultipleChoiceQuestionCard />;
+      return <MultipleChoiceQuestionCard isFocused={isFocused} />;
     case FLASHCARD:
-      return <FlashCard />;
+      return <FlashCard isFocused={isFocused} />;
     case OPEN_QUESTION:
-      return <OpenQuestionCard />;
+      return <OpenQuestionCard isFocused={isFocused} />;
     case ORDER_THE_SEQUENCE:
-      return <OrderTheSequenceCard />;
+      return <OrderTheSequenceCard isFocused={isFocused} />;
 
     default:
       return (

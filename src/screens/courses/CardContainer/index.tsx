@@ -19,9 +19,9 @@ interface CardContainerProps {
   activity: ActivityType,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
-  setActivity: (ActivityType) => void;
-  setExitConfirmationModal: (boolean) => void;
-  resetActivityReducer: () => void;
+  setActivity: (ActivityType) => void,
+  setExitConfirmationModal: (boolean) => void,
+  resetActivityReducer: () => void,
 }
 
 const CardContainer = ({

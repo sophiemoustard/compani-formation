@@ -10,7 +10,6 @@ import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import { ORDER_THE_SEQUENCE } from '../../../../core/data/constants';
 import { navigate } from '../../../../navigationRef';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
@@ -21,6 +20,7 @@ interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
   index: number,
   incGoodAnswersCount: () => void,
+  isFocused: boolean,
 }
 
 export interface answerPositionType extends OrderedAnswerType {
@@ -34,7 +34,7 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isFocused }: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
@@ -45,12 +45,12 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequ
   });
 
   useEffect(() => {
-    if (card && card.template === ORDER_THE_SEQUENCE && !isValidated) {
+    if (isFocused && !isValidated) {
       const shuffledCards = shuffle(card.orderedAnswers
         .map((ans, answerIndex) => ({ label: ans, goodPosition: answerIndex })));
       setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
-  }, [card, isValidated]);
+  }, [card, isValidated, isFocused]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -83,7 +83,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount }: OrderTheSequ
 
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
-  if (!card || card.template !== ORDER_THE_SEQUENCE) return null;
+  if (!isFocused) return null;
 
   const style = styles(footerColors.textColor, footerColors.backgroundColor);
 

@@ -9,7 +9,6 @@ import { StateType, ActionType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
-import { SURVEY } from '../../../../core/data/constants';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
 
@@ -18,16 +17,17 @@ interface SurveyCard {
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  isFocused: boolean,
 }
 
-const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer }: SurveyCard) => {
+const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isFocused }: SurveyCard) => {
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
     setSelectedScore(questionnaireAnswer ? questionnaireAnswer.answer : '');
   }, [questionnaireAnswer]);
 
-  if (!card || card.template !== SURVEY) return null;
+  if (!isFocused) return null;
 
   return (
     <>
