@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView, Dimensions } from 'react-native';
+import { Text, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
@@ -8,6 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { TitleTextMediaType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
+import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
@@ -21,10 +22,7 @@ const TitleTextMediaCard = ({ card, index, isFocused }: TitleTextMediaCardProps)
   useEffect(() => {
     if (card?.media?.link) {
       Image.getSize(card.media?.link || '', (width, height) => {
-        const screenWidth = Dimensions.get('window').width;
-        const scaleFactor = width / screenWidth;
-        const imageHeight = height / scaleFactor;
-        setImgHeight(imageHeight);
+        setImgHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
       });
     }
   }, [card]);
