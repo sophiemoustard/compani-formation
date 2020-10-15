@@ -20,7 +20,6 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programs, setPrograms] = useState<Array<ProgramType>>([]);
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
-  const path = { navigation: 'Explore', screen: 'About' };
 
   const getPrograms = async () => {
     try {
@@ -39,11 +38,16 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
+  const goToCourse = id => navigation?.navigate(
+    'Home',
+    { screen: 'Explore', params: { screen: 'About', params: { courseId: id } } }
+  );
+
   const renderSeparator = () => <View style={styles.separator} />;
 
   const renderItem = (program) => {
     const courseId = program.subPrograms[0].courses[0]._id;
-    return <ProgramCell program={program} courseId={courseId} navigation={navigation} path={path} />;
+    return <ProgramCell program={program} navigation={navigation} onPress={() => goToCourse(courseId)} />;
   };
 
   return (
