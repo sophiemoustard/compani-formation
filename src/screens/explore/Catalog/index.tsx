@@ -38,17 +38,14 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToCourse = id => navigation?.navigate(
+  const goToProgram = program => navigation.navigate(
     'Home',
-    { screen: 'Explore', params: { screen: 'About', params: { courseId: id } } }
+    { screen: 'Explore', params: { screen: 'About', params: { program } } }
   );
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  const renderItem = (program) => {
-    const courseId = program.subPrograms[0].courses[0]._id;
-    return <ProgramCell program={program} navigation={navigation} onPress={() => goToCourse(courseId)} />;
-  };
+  const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 
   return (
     <ScrollView style={commonStyles.container}>

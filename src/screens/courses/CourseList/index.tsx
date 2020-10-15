@@ -86,7 +86,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   );
 
   const renderSeparator = () => <View style={styles.separator} />;
-  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} navigation={navigation}
+  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
     onPress={() => goToCourse(course._id)} />;
 
   const nextStep = formatNextSteps(courses);
