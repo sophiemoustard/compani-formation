@@ -6,30 +6,21 @@ import { ProgramType } from '../../types/ProgramType';
 import styles from './styles';
 
 interface ProgramCellProps {
-  courseId?: string,
   navigation?: NavigationType,
   program: ProgramType,
-  path?: { navigation: string, screen: string }
+  onPress: () => void;
 }
 
-const ProgramCell = ({
-  courseId,
-  navigation,
-  program,
-  path = ({ navigation: 'Courses', screen: 'CourseProfile' }),
-}: ProgramCellProps) => {
+const ProgramCell = ({ navigation, program, onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
 
   const source = programImage
     ? { uri: programImage }
     : require('../../../assets/images/authentication_background_image.jpg');
-  const goToCourse = () => navigation?.navigate(
-    'Home',
-    { screen: path?.navigation, params: { screen: path?.screen, params: { courseId } } }
-  );
+
   return (
-    <TouchableOpacity style={styles.courseContainer} disabled={!navigation} onPress={goToCourse}>
+    <TouchableOpacity style={styles.courseContainer} disabled={!navigation} onPress={onPress}>
       <View style={styles.imageContainer}>
         <ImageBackground source={source} imageStyle={styles.image}
           style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>} />

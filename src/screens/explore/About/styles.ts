@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BLACK, PINK, WHITE } from '../../../styles/colors';
+import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
 
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     ...NUNITO_SEMI.MD,
     color: PINK[200],
   },
-  stepTitle: {
+  programTitle: {
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
   },
@@ -42,11 +42,7 @@ const styles = StyleSheet.create({
   },
   description: {
     ...FIRA_SANS_REGULAR.MD,
-    color: BLACK,
-  },
-  button: {
-    marginHorizontal: MARGIN.XL,
-    marginBottom: MARGIN.LG,
+    color: GREY[800],
   },
 });
 
