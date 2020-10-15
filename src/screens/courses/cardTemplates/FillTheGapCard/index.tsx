@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, FlatList } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
+import shuffle from 'lodash/shuffle';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import { FillTheGapType } from '../../../../types/CardType';
@@ -19,29 +20,37 @@ const FillTheGap = ({ card, index }: FillTheGap) => {
   if (!card || card.template !== FILL_THE_GAPS) return null;
 
   const goodAnswers = card.gappedText?.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) || [];
-  const answers = card.falsyGapAnswers.concat(goodAnswers);
+  const answers = shuffle([...card.falsyGapAnswers, ...goodAnswers]);
 
-  const renderItem = item => <Text>{item}</Text>;
+  const renderAnswers = () => <View style={styles.answersContainer}>
+    {answers.map((txt, idx) => <Text style={styles.answer} key={`answer${idx}`}>{txt}</Text>)}
+  </View>;
 
   const renderQuestion = (text) => {
     const splittedText = text.split(/<trou>[^<]*<\/trou>/g);
-
-    return <> {
-      splittedText.map((txt, idx) => {
-        if (txt === '') return <Text>TROU</Text>;
-        return <Text key={idx}>{txt}</Text>;
-      })
-    }
-    </>;
+    return <View style={[cardsStyle.question, styles.questionContainer]}>
+      {
+        splittedText.map((txt, idx) => {
+          if (idx === 0 && txt === '') return <View style={styles.gapContainer} key={`gap${idx}`} />;
+          if (idx === splittedText.length - 1 && txt === '') return null;
+          if (idx < splittedText.length - 1) {
+            return <>
+              <Text style={styles.question} key={`text${idx}`}>{txt}</Text>
+              <View style={styles.gapContainer} key={`gap${idx}`} />
+            </>;
+          }
+          return <Text style={styles.question} key={`text${idx}`}>{txt}</Text>;
+        })
+      }
+    </View>;
   };
 
   return (
     <>
       <CardHeader />
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={cardsStyle.question}>{renderQuestion(card.gappedText)}</Text>
-        <FlatList data={answers} keyExtractor={(_, idx) => idx.toString()}
-          renderItem={({ item }) => renderItem(item)} />
+        {renderQuestion(card.gappedText)}
+        {renderAnswers()}
       </ScrollView>
       <QuestionCardFooter index={index} />
     </>
