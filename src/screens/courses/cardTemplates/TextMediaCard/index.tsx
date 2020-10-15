@@ -8,7 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
-import { CARD_MEDIA_HEIGHT } from '../../../../styles/metrics';
+import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -21,7 +21,9 @@ const TextMediaCard = ({ card, index, isFocused }: TextMediaCardProps) => {
 
   useEffect(() => {
     if (card?.media?.link) {
-      Image.getSize(card.media?.link || '', (width, height) => { setImgHeight(Math.min(height, CARD_MEDIA_HEIGHT)); });
+      Image.getSize(card.media?.link || '', (width, height) => {
+        setImgHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
+      });
     }
   }, [card]);
 

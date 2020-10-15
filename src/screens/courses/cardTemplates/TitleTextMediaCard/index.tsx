@@ -8,7 +8,7 @@ import cardsStyle from '../../../../styles/cards';
 import { TitleTextMediaType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
-import { CARD_MEDIA_HEIGHT } from '../../../../styles/metrics';
+import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
@@ -21,7 +21,9 @@ const TitleTextMediaCard = ({ card, index, isFocused }: TitleTextMediaCardProps)
 
   useEffect(() => {
     if (card?.media?.link) {
-      Image.getSize(card.media?.link || '', (width, height) => { setImgHeight(Math.min(height, CARD_MEDIA_HEIGHT)); });
+      Image.getSize(card.media?.link || '', (width, height) => {
+        setImgHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
+      });
     }
   }, [card]);
 
