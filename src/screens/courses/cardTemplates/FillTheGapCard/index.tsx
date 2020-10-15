@@ -10,13 +10,14 @@ import { FILL_THE_GAPS } from '../../../../core/data/constants';
 import cardsStyle from '../../../../styles/cards';
 import styles from './styles';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
+import { PINK } from '../../../../styles/colors';
 
 interface FillTheGap {
   card: FillTheGapType,
   index: number
 }
 
-const FillTheGap = ({ card, index }: FillTheGap) => {
+const FillTheGapCard = ({ card, index }: FillTheGap) => {
   if (!card || card.template !== FILL_THE_GAPS) return null;
 
   const goodAnswers = card.gappedText?.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) || [];
@@ -49,14 +50,15 @@ const FillTheGap = ({ card, index }: FillTheGap) => {
     <>
       <CardHeader />
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        {renderQuestion(card.gappedText)}
-        {renderAnswers()}
+        {/* {renderQuestion(card.gappedText)}
+        {renderAnswers()} */}
+        <Text>testesteteste</Text>
       </ScrollView>
-      <QuestionCardFooter index={index} />
+      <QuestionCardFooter index={index} arrowColor={PINK[500]} buttonColor={PINK[500]} />
     </>
   );
 };
 
 const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
 
-export default connect(mapStateToProps)(FillTheGap);
+export default connect(mapStateToProps)(FillTheGapCard);
