@@ -80,9 +80,14 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
+  const goToCourse = id => navigation?.navigate(
+    'Home',
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
+  );
+
   const renderSeparator = () => <View style={styles.separator} />;
-  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} navigation={navigation}
-    courseId={course._id} />;
+  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
+    onPress={() => goToCourse(course._id)} />;
 
   const nextStep = formatNextSteps(courses);
 

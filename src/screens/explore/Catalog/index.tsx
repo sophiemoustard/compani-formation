@@ -2,19 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Text, ScrollView, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import Programs from '../../api/programs';
-import { Context as AuthContext } from '../../context/AuthContext';
-import commonStyles from '../../styles/common';
-import { getLoggedUserId } from '../../store/main/selectors';
-import ProgramCell from '../../components/ProgramCell';
+import Programs from '../../../api/programs';
+import { Context as AuthContext } from '../../../context/AuthContext';
+import commonStyles from '../../../styles/common';
+import { getLoggedUserId } from '../../../store/main/selectors';
+import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
-import { ProgramType } from '../../types/ProgramType';
+import { ProgramType } from '../../../types/ProgramType';
+import { NavigationType } from '../../../types/NavigationType';
 
-interface ExploreProps {
+interface CatalogProps {
   loggedUserId: string | null,
+  navigation: NavigationType,
 }
 
-const Explore = ({ loggedUserId }: ExploreProps) => {
+const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programs, setPrograms] = useState<Array<ProgramType>>([]);
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
@@ -36,12 +38,14 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
+  const goToProgram = program => navigation.navigate(
+    'Home',
+    { screen: 'Explore', params: { screen: 'About', params: { program } } }
+  );
+
   const renderSeparator = () => <View style={styles.separator} />;
 
-  const renderItem = (program) => {
-    const courseId = program.subPrograms[0].courses[0]._id;
-    return <ProgramCell program={program} courseId={courseId} />;
-  };
+  const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -67,4 +71,4 @@ const Explore = ({ loggedUserId }: ExploreProps) => {
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(Explore);
+export default connect(mapStateToProps)(Catalog);

@@ -13,7 +13,8 @@ import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
 import ForgotPassword from '../screens/ForgotPassword';
-import Explore from '../screens/Explore';
+import Catalog from '../screens/explore/Catalog';
+import About from '../screens/explore/About';
 import CourseList from '../screens/courses/CourseList';
 import CourseProfile from '../screens/courses/CourseProfile';
 import CardContainer from '../screens/courses/CardContainer';
@@ -31,12 +32,20 @@ interface TabBarIconProps {
 }
 
 const CourseStack = createStackNavigator();
+const ExploreStack = createStackNavigator();
 
 const Courses = () => (
   <CourseStack.Navigator headerMode="none">
     <CourseStack.Screen name="CourseList" component={CourseList} />
     <CourseStack.Screen name="CourseProfile" component={CourseProfile} />
   </CourseStack.Navigator>
+);
+
+const Explore = () => (
+  <ExploreStack.Navigator headerMode="none">
+    <ExploreStack.Screen name="Catalog" component={Catalog} />
+    <ExploreStack.Screen name="About" component={About} />
+  </ExploreStack.Navigator>
 );
 
 const Tab = createBottomTabNavigator();
