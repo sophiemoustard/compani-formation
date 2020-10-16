@@ -43,6 +43,7 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchData() { setCardIndex(index); }
     if (isFocused) fetchData().then(() => setIsLoading(false));
   }, [isFocused, setCardIndex, index, setIsLoading]);

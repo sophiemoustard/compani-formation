@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, ScrollView, View, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
@@ -11,9 +11,9 @@ import cardsStyle from '../../../../styles/cards';
 import styles from './styles';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import Shadow from '../../../../components/design/Shadow';
 import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
+import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -31,7 +31,7 @@ interface footerColorsType {
 const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillTheGap) => {
   const goodAnswers = useRef<Array<string>>([]);
   const [propositions, setPropositions] = useState<Array<any>>([]);
-  const [received, setReceived] = useState<Array<any>>([]);
+  const [answers, setAnswers] = useState<Array<string>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
@@ -41,12 +41,12 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   });
 
   useEffect(() => {
-    if (card && isFocused) {
+    if (isFocused && !isValidated) {
       goodAnswers.current = card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) ||
     [];
       setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current]));
     }
-  }, [card, isFocused]);
+  }, [card, isFocused, isValidated]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -70,13 +70,12 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
         <DraxView
           style={style.answerContainer}
           draggingStyle={{ opacity: 0 }}
-          // dragReleasedStyle={{ opacity: 0 }}
           dragPayload={txt}
           longPressDelay={0}>
-          <View style={txt ? style.textContainer : { opacity: 0 }}>
-            <Text style={style.answer}>{txt}</Text>
-          </View>
-          <Shadow customStyle={style.shadow} />
+          <FillTheGapProposition key={`answer${idx}`} answers={answers} isGap={false}
+            item={txt} isValidated={isValidated}
+            isGoodAnswer={goodAnswers.current.includes(txt)}
+            isSelected={answers.includes(txt)} />
         </DraxView>
       </View>)}
   </View>;
@@ -91,29 +90,22 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
           if (idx < splittedText.length - 1) {
             return <>
               <Text style={style.question} key={`text${idx}`}>{txt}</Text>
-              {/* <View style={styles.gapContainer} key={`gap${idx}`} /> */}
               <DraxView
-                style={!received[idx] ? style.gapContainer : style.answerContainer}
-                // receivingStyle={styles.receiving}
-                renderContent={() => received[idx] &&
-                  <>
-                    <View style={style.textContainer}>
-                      <Text style={style.answer}>{received[idx]}</Text>
-                    </View>
-                    <Shadow customStyle={style.shadow} />
-                  </>
+                style={!answers[idx] ? style.gapContainer : style.answerContainer}
+                renderContent={() => answers[idx] &&
+                    <FillTheGapProposition key={`answer${idx}`}
+                      item={answers[idx]} answers={answers} isValidated={isValidated} isGap={true}
+                      isGoodAnswer={answers[idx] === goodAnswers.current[idx]}
+                      isSelected={true} />
                 }
                 onReceiveDragDrop={(event) => {
-                  const tempArray = [...received];
-                  const tempArray2 = [...propositions];
-                  if (tempArray[idx]) {
-                    tempArray2[tempArray2.indexOf(event.dragged.payload)] = tempArray[idx];
-                  } else {
-                    tempArray2[tempArray2.indexOf(event.dragged.payload)] = '';
-                  }
-                  tempArray[idx] = event.dragged.payload;
-                  setReceived(tempArray);
-                  setPropositions(tempArray2);
+                  const { payload } = event.dragged;
+                  const tempAnswers = [...answers];
+                  const tempPropositions = [...propositions];
+                  if (tempAnswers[idx]) tempPropositions[tempPropositions.indexOf(payload)] = tempAnswers[idx];
+                  tempAnswers[idx] = event.dragged.payload;
+                  setAnswers(tempAnswers);
+                  setPropositions(tempPropositions);
                 }}
               />
             </>;
@@ -126,7 +118,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
 
   const onPressFooterButton = () => {
     if (!isValidated) {
-      const areAnswersCorrect = received.every((receive, idx) => (receive === goodAnswers.current[idx]));
+      const areAnswersCorrect = answers.every((answer, idx) => (answer === goodAnswers.current[idx]));
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
 
@@ -140,8 +132,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
       <CardHeader />
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
-        {console.log('afficher question', isFocused, card)}
-          {isFocused && card.gappedText && renderQuestion(card.gappedText)}
+          {renderQuestion(card.gappedText)}
           {renderAnswers()}
         </DraxProvider>
       </ScrollView>
@@ -149,8 +140,8 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
         {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
           arrowColor={footerColors.buttonsColor} index={index}
-          buttonDisabled={!(received.length === goodAnswers.current.length)}
-          buttonColor={(received.length === goodAnswers.current.length) ? footerColors.buttonsColor : GREY[300]} />
+          buttonDisabled={!(answers.length === goodAnswers.current.length)}
+          buttonColor={(answers.length === goodAnswers.current.length) ? footerColors.buttonsColor : GREY[300]} />
       </View>
     </>
   );

@@ -1,6 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { GREY, TRANSPARENT_LIGHT_GREY, WHITE } from '../../../../styles/colors';
-import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, GAP_WIDTH, BORDER_WIDTH, PADDING, ABSOLUTE_BOTTOM_POSITION } from '../../../../styles/metrics';
+import { GREY, TRANSPARENT_LIGHT_GREY } from '../../../../styles/colors';
+import {
+  BORDER_RADIUS,
+  INPUT_HEIGHT,
+  MARGIN,
+  GAP_WIDTH,
+  PADDING,
+  ABSOLUTE_BOTTOM_POSITION,
+} from '../../../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 
 const styles = (textColor: string, backgroundColor: string) => StyleSheet.create({
@@ -35,32 +42,13 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     marginHorizontal: MARGIN.XS,
     marginVertical: MARGIN.XS,
   },
-  shadow: {
-    backgroundColor: GREY[200],
-    borderRadius: BORDER_RADIUS.MD,
-  },
   answersContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   answerContainer: {
-    // marginHorizontal: MARGIN.MD,
-    // marginBottom: MARGIN.MD,
     height: 40,
-  },
-  textContainer: {
-    backgroundColor: WHITE,
-    borderWidth: BORDER_WIDTH,
-    borderColor: GREY[200],
-    borderRadius: BORDER_RADIUS.MD,
-    flex: 1,
-  },
-  answer: {
-    ...FIRA_SANS_MEDIUM.MD,
-    padding: PADDING.MD,
-    textAlign: 'center',
-    color: GREY[800],
   },
   empty: {
     backgroundColor: GREY[200],
