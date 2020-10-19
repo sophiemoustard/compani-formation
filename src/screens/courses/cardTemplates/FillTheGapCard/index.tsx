@@ -71,7 +71,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   const setPropositionsToAnswers = (event, idx) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    const i = tempPropositions.map(answer => answer.text).indexOf(payload);
+    const i = tempPropositions.map(prop => prop.text).indexOf(payload);
     tempPropositions[i].visible = false;
     if (selectedAnswers[idx]) {
       tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[idx])].visible = true;
@@ -86,7 +86,8 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   const setAnswersToPropositions = (event) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    tempPropositions[tempPropositions.map(prop => prop.text).indexOf(payload)].visible = true;
+    const i = tempPropositions.map(prop => prop.text).indexOf(payload);
+    tempPropositions[i].visible = true;
 
     setSelectedAnswers(array => Object.assign([], array, { [array.indexOf(payload)]: '' }));
     setPropositions(tempPropositions);
