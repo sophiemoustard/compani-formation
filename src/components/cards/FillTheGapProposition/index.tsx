@@ -3,11 +3,11 @@ import { View, Text } from 'react-native';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
 import styles from './styles';
+import { FillTheGapAnswers } from '../../../screens/courses/cardTemplates/FillTheGapCard';
 
 interface FillTheGapPropositionProps {
-  item: string,
+  item: FillTheGapAnswers,
   isGoodAnswer: boolean,
-  answers: Array<string>,
   isValidated: boolean,
   isSelected: boolean,
   isGap: boolean,
@@ -16,8 +16,7 @@ interface FillTheGapPropositionProps {
 const FillTheGapProposition = ({
   item,
   isGoodAnswer,
-  answers,
-  isValidated = false,
+  isValidated,
   isSelected,
   isGap,
 }: FillTheGapPropositionProps) => {
@@ -29,12 +28,12 @@ const FillTheGapProposition = ({
     return undefined;
   }, [isGoodAnswer, isSelected, isValidated]);
 
-  const style = styles(color, isGoodAnswer, isSelected, isValidated, isGap);
+  const style = styles({ color, isGoodAnswer, isSelected, isValidated, isGap });
 
   return (
     <>
-      <View style={!answers.includes(item) || isGap ? style.textContainer : { opacity: 0 }}>
-        <Text style={style.answer}>{item}</Text>
+      <View style={item.visible || isGap ? style.textContainer : { opacity: 0 }}>
+        <Text style={style.text}>{item.text}</Text>
       </View>
       <Shadow customStyle={style.shadow} />
     </>

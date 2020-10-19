@@ -23,91 +23,100 @@ interface FillTheGap {
 }
 
 interface footerColorsType {
-  buttonsColor: string,
-  textColor: string,
-  backgroundColor: string,
+  buttons: string,
+  text: string,
+  background: string,
+}
+
+export interface FillTheGapAnswers {
+  text: string
+  visible: boolean,
 }
 
 const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillTheGap) => {
   const goodAnswers = useRef<Array<string>>([]);
-  const [propositions, setPropositions] = useState<Array<any>>([]);
-  const [answers, setAnswers] = useState<Array<string>>([]);
+  const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
+  const areGapsFilled = (selectedAnswers.length === goodAnswers.current.length);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
   });
 
   useEffect(() => {
     if (isFocused && !isValidated) {
       goodAnswers.current = card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) ||
-    [];
-      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current]));
+        [];
+      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current])
+        .map(proposition => ({ text: proposition, visible: true })));
     }
   }, [card, isFocused, isValidated]);
 
   useEffect(() => {
     if (!isValidated) {
-      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
     if (isAnsweredCorrectly) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, isAnsweredCorrectly]);
 
   if (!isFocused) return null;
 
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+  const style = styles(footerColors.text, footerColors.background);
 
-  const renderAnswers = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
-    {propositions.map((txt, idx) =>
-      <View style={style.empty} key={`answer${idx}`}>
-        <DraxView
-          style={style.answerContainer}
-          draggingStyle={{ opacity: 0 }}
-          dragPayload={txt}
-          longPressDelay={0}>
-          <FillTheGapProposition key={`answer${idx}`} answers={answers} isGap={false}
-            item={txt} isValidated={isValidated}
-            isGoodAnswer={goodAnswers.current.includes(txt)}
-            isSelected={answers.includes(txt)} />
+  const renderPropositions = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
+    {propositions.map((proposition, idx) =>
+      <View style={style.gap} key={`proposition${idx}`}>
+        { proposition.visible &&
+        <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }}
+          dragPayload={proposition.text} longPressDelay={0}>
+          <FillTheGapProposition isGap={false} item={proposition} isValidated={isValidated}
+            isGoodAnswer={goodAnswers.current.includes(proposition.text)}
+            isSelected={selectedAnswers.includes(proposition.text)} />
         </DraxView>
-      </View>)}
+        }
+      </View>)
+    }
   </View>;
+
+  const renderAnswers = (event, idx) => {
+    const { payload } = event.dragged;
+    const tempAnswers = [...selectedAnswers] || [];
+    const tempPropositions = [...propositions];
+    tempPropositions[tempPropositions.map(answer => answer.text).indexOf(payload)].visible = false;
+    if (tempAnswers[idx]) {
+      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(tempAnswers[idx])] =
+      { text: tempAnswers[idx], visible: true };
+    }
+    tempAnswers[idx] = event.dragged.payload;
+    setSelectedAnswers(tempAnswers);
+    setPropositions(tempPropositions);
+  };
+
+  const renderGap = idx => <DraxView style={!selectedAnswers[idx] ? style.gapContainer : style.answerContainer}
+    renderContent={() => selectedAnswers[idx] &&
+      <FillTheGapProposition item={{ text: selectedAnswers[idx], visible: true }} isValidated={isValidated}
+        isGap={true} isGoodAnswer={selectedAnswers[idx] === goodAnswers.current[idx]} isSelected={true} />
+    } onReceiveDragDrop={event => renderAnswers(event, idx)} />;
 
   const renderQuestion = (text) => {
     const splittedText = text.split(/<trou>[^<]*<\/trou>/g);
     return <View style={[cardsStyle.question, style.questionContainer]}>
       {
         splittedText.map((txt, idx) => {
-          if (idx === 0 && txt === '') return <View style={style.gapContainer} key={`gap${idx}`} />;
+          if (idx === 0 && txt === '') return renderGap(idx);
           if (idx === splittedText.length - 1 && txt === '') return null;
           if (idx < splittedText.length - 1) {
             return <>
               <Text style={style.question} key={`text${idx}`}>{txt}</Text>
-              <DraxView
-                style={!answers[idx] ? style.gapContainer : style.answerContainer}
-                renderContent={() => answers[idx] &&
-                    <FillTheGapProposition key={`answer${idx}`}
-                      item={answers[idx]} answers={answers} isValidated={isValidated} isGap={true}
-                      isGoodAnswer={answers[idx] === goodAnswers.current[idx]}
-                      isSelected={true} />
-                }
-                onReceiveDragDrop={(event) => {
-                  const { payload } = event.dragged;
-                  const tempAnswers = [...answers];
-                  const tempPropositions = [...propositions];
-                  if (tempAnswers[idx]) tempPropositions[tempPropositions.indexOf(payload)] = tempAnswers[idx];
-                  tempAnswers[idx] = event.dragged.payload;
-                  setAnswers(tempAnswers);
-                  setPropositions(tempPropositions);
-                }}
-              />
+              {renderGap(idx)}
             </>;
           }
           return <Text style={style.question} key={`text${idx}`}>{txt}</Text>;
@@ -118,7 +127,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
 
   const onPressFooterButton = () => {
     if (!isValidated) {
-      const areAnswersCorrect = answers.every((answer, idx) => (answer === goodAnswers.current[idx]));
+      const areAnswersCorrect = selectedAnswers.every((text, idx) => (text === goodAnswers.current[idx]));
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
 
@@ -133,15 +142,15 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
           {renderQuestion(card.gappedText)}
-          {renderAnswers()}
+          {renderPropositions()}
         </DraxProvider>
       </ScrollView>
       <View style={style.footerContainer}>
         {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={index}
-          buttonDisabled={!(answers.length === goodAnswers.current.length)}
-          buttonColor={(answers.length === goodAnswers.current.length) ? footerColors.buttonsColor : GREY[300]} />
+          arrowColor={footerColors.buttons} index={index}
+          buttonDisabled={!areGapsFilled}
+          buttonColor={(selectedAnswers.length === goodAnswers.current.length) ? footerColors.buttons : GREY[300]} />
       </View>
     </>
   );

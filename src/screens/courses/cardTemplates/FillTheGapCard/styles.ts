@@ -17,21 +17,17 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   },
   questionContainer: {
     ...FIRA_SANS_MEDIUM.MD,
-    // marginHorizontal: MARGIN.LG,
-    width: '100%',
     flexWrap: 'wrap',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: PADDING.XXL,
-    paddingBottom: PADDING.XL,
+    paddingVertical: PADDING.XL,
     paddingHorizontal: PADDING.LG,
     marginBottom: MARGIN.MD,
     backgroundColor: TRANSPARENT_LIGHT_GREY,
   },
   question: {
     ...FIRA_SANS_MEDIUM.MD,
-    lineHeight: 40,
+    lineHeight: INPUT_HEIGHT,
     color: GREY[800],
   },
   gapContainer: {
@@ -42,21 +38,22 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     marginHorizontal: MARGIN.XS,
     marginVertical: MARGIN.XS,
   },
-  answersContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  answerContainer: {
-    height: 40,
-  },
-  empty: {
+  gap: {
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     marginHorizontal: MARGIN.SM,
     marginBottom: MARGIN.SM,
-    height: 40,
-    minWidth: 100,
+    height: INPUT_HEIGHT,
+    width: GAP_WIDTH,
+  },
+  answersContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  answerContainer: {
+    height: INPUT_HEIGHT,
+    width: GAP_WIDTH,
   },
   explanation: {
     color: textColor,
