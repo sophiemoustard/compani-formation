@@ -31,14 +31,6 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     color: GREY[800],
   },
   gapContainer: {
-    width: GAP_WIDTH,
-    height: INPUT_HEIGHT,
-    borderRadius: BORDER_RADIUS.MD,
-    backgroundColor: GREY[200],
-    marginHorizontal: MARGIN.XS,
-    marginVertical: MARGIN.XS,
-  },
-  gap: {
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     marginHorizontal: MARGIN.SM,
@@ -49,7 +41,7 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   answersContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   answerContainer: {
     height: INPUT_HEIGHT,

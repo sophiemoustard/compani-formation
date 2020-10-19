@@ -10,7 +10,6 @@ interface FillTheGapPropositionProps {
   isGoodAnswer: boolean,
   isValidated: boolean,
   isSelected: boolean,
-  isGap: boolean,
 }
 
 const FillTheGapProposition = ({
@@ -18,7 +17,6 @@ const FillTheGapProposition = ({
   isGoodAnswer,
   isValidated,
   isSelected,
-  isGap,
 }: FillTheGapPropositionProps) => {
   const [color, setColor] = useState<string>(GREY[200]);
 
@@ -28,11 +26,11 @@ const FillTheGapProposition = ({
     return undefined;
   }, [isGoodAnswer, isSelected, isValidated]);
 
-  const style = styles({ color, isGoodAnswer, isSelected, isValidated, isGap });
+  const style = styles({ color, isGoodAnswer, isSelected, isValidated });
 
   return (
     <>
-      <View style={item.visible || isGap ? style.textContainer : { opacity: 0 }}>
+      <View style={item.visible ? style.textContainer : { opacity: 0 }}>
         <Text style={style.text}>{item.text}</Text>
       </View>
       <Shadow customStyle={style.shadow} />

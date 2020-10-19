@@ -7,17 +7,16 @@ import {
 } from '../../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
-interface ComponentProps {
+interface StylesProps {
   color: string,
   isGoodAnswer: boolean,
   isSelected: boolean,
-  isValidated: boolean,
-  isGap: boolean
+  isValidated: boolean
 }
 
-const styles = ({ color, isGoodAnswer, isSelected, isValidated, isGap }: ComponentProps) => StyleSheet.create({
+const styles = ({ color, isGoodAnswer, isSelected, isValidated }: StylesProps) => StyleSheet.create({
   shadow: {
-    backgroundColor: (isValidated && isGap) && (isSelected || isGoodAnswer) ? color : GREY[200],
+    backgroundColor: isValidated && (isSelected || isGoodAnswer) ? color : GREY[200],
     borderRadius: BORDER_RADIUS.MD,
   },
   textContainer: {

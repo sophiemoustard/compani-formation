@@ -39,7 +39,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
-  const areGapsFilled = (selectedAnswers.length === goodAnswers.current.length);
+  const areGapsFilled = (!selectedAnswers.filter(answer => answer === '').length);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -52,17 +52,14 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
         [];
       setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current])
         .map(proposition => ({ text: proposition, visible: true })));
+      setSelectedAnswers(goodAnswers.current.map(() => ''));
     }
   }, [card, isFocused, isValidated]);
 
   useEffect(() => {
-    if (!isValidated) {
-      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
-    }
+    if (!isValidated) return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
 
-    if (isAnsweredCorrectly) {
-      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
-    }
+    if (isAnsweredCorrectly) return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
 
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, isAnsweredCorrectly]);
@@ -71,44 +68,54 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
 
   const style = styles(footerColors.text, footerColors.background);
 
-  const renderPropositions = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
-    {propositions.map((proposition, idx) =>
-      <View style={style.gap} key={`proposition${idx}`}>
-        { proposition.visible &&
-        <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }}
-          dragPayload={proposition.text} longPressDelay={0}>
-          <FillTheGapProposition isGap={false} item={proposition} isValidated={isValidated}
-            isGoodAnswer={goodAnswers.current.includes(proposition.text)}
-            isSelected={selectedAnswers.includes(proposition.text)} />
-        </DraxView>
-        }
-      </View>)
-    }
-  </View>;
-
-  const renderAnswers = (event, idx) => {
+  const setPropositionsToAnswers = (event, idx) => {
     const { payload } = event.dragged;
-    const tempAnswers = [...selectedAnswers] || [];
     const tempPropositions = [...propositions];
-    tempPropositions[tempPropositions.map(answer => answer.text).indexOf(payload)].visible = false;
-    if (tempAnswers[idx]) {
-      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(tempAnswers[idx])] =
-      { text: tempAnswers[idx], visible: true };
+    const i = tempPropositions.map(answer => answer.text).indexOf(payload);
+    tempPropositions[i].visible = false;
+    if (selectedAnswers[idx]) {
+      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[idx])].visible = true;
     }
-    tempAnswers[idx] = event.dragged.payload;
-    setSelectedAnswers(tempAnswers);
+
+    setSelectedAnswers(array => Object.assign([], array, { [idx]: event.dragged.payload }));
     setPropositions(tempPropositions);
   };
 
-  const renderGap = idx => <DraxView style={!selectedAnswers[idx] ? style.gapContainer : style.answerContainer}
-    renderContent={() => selectedAnswers[idx] &&
-      <FillTheGapProposition item={{ text: selectedAnswers[idx], visible: true }} isValidated={isValidated}
-        isGap={true} isGoodAnswer={selectedAnswers[idx] === goodAnswers.current[idx]} isSelected={true} />
-    } onReceiveDragDrop={event => renderAnswers(event, idx)} />;
+  const setAnswersToPropositions = (event) => {
+    const { payload } = event.dragged;
+    const tempPropositions = [...propositions];
+    tempPropositions[tempPropositions.map(prop => prop.text).indexOf(payload)].visible = true;
+
+    setSelectedAnswers(array => Object.assign([], array, { [array.indexOf(payload)]: '' }));
+    setPropositions(tempPropositions);
+  };
+
+  const renderContent = (isVisible, item, text, idx?) => isVisible &&
+  <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text}
+    longPressDelay={0}>
+    <FillTheGapProposition isGap={false} item={item} isValidated={isValidated}
+      isGoodAnswer={Number.isInteger(idx)
+        ? goodAnswers.current.indexOf(text) === idx
+        : goodAnswers.current.includes(text)}
+      isSelected={selectedAnswers.includes(text)} />
+  </DraxView>;
+
+  const renderPropositions = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
+    {propositions.map((proposition, idx) =>
+      <DraxView style={style.gapContainer} key={`proposition${idx}`}
+        onReceiveDragDrop={event => setAnswersToPropositions(event)} renderContent={() =>
+          renderContent(proposition.visible, proposition, proposition.text)} />)}
+  </View>;
+
+  const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
+    onReceiveDragDrop={event => setPropositionsToAnswers(event, idx)} renderContent={() =>
+      renderContent(
+        !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
+      )} />;
 
   const renderQuestion = (text) => {
     const splittedText = text.split(/<trou>[^<]*<\/trou>/g);
-    return <View style={[cardsStyle.question, style.questionContainer]}>
+    return <View style={[cardsStyle.question, style.questionContainer]} pointerEvents={isValidated ? 'none' : 'auto'}>
       {
         splittedText.map((txt, idx) => {
           if (idx === 0 && txt === '') return renderGap(idx);
@@ -150,7 +157,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
           arrowColor={footerColors.buttons} index={index}
           buttonDisabled={!areGapsFilled}
-          buttonColor={(selectedAnswers.length === goodAnswers.current.length) ? footerColors.buttons : GREY[300]} />
+          buttonColor={areGapsFilled ? footerColors.buttons : GREY[300]} />
       </View>
     </>
   );
