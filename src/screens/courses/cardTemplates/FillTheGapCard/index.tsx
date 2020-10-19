@@ -76,8 +76,10 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
     if (selectedAnswers[idx]) {
       tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[idx])].visible = true;
     }
-
-    setSelectedAnswers(array => Object.assign([], array, { [idx]: event.dragged.payload }));
+    if (selectedAnswers.includes(payload)) {
+      setSelectedAnswers(array => Object.assign([], array, { [array.indexOf(payload)]: '' }));
+    }
+    setSelectedAnswers(array => Object.assign([], array, { [idx]: payload }));
     setPropositions(tempPropositions);
   };
 
@@ -93,7 +95,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
   <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text}
     longPressDelay={0}>
-    <FillTheGapProposition isGap={false} item={item} isValidated={isValidated}
+    <FillTheGapProposition item={item} isValidated={isValidated}
       isGoodAnswer={Number.isInteger(idx)
         ? goodAnswers.current.indexOf(text) === idx
         : goodAnswers.current.includes(text)}
