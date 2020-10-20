@@ -105,3 +105,10 @@ export interface FillTheGapType {
   falsyGapAnswers: Array<string>,
   explanation: string,
 }
+
+export interface QuestionAnswerType {
+  _id: string,
+  isQuestionAnswerMultipleChoiced: boolean,
+  question: string,
+  questionAnswers: Array<string>,
+}
