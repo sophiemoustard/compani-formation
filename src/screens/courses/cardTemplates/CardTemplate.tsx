@@ -16,6 +16,7 @@ import {
   FLASHCARD,
   OPEN_QUESTION,
   ORDER_THE_SEQUENCE,
+  FILL_THE_GAPS,
 } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
@@ -29,6 +30,7 @@ import MultipleChoiceQuestionCard from './MultipleChoiceQuestionCard';
 import FlashCard from './FlashCard';
 import OpenQuestionCard from './OpenQuestionCard';
 import OrderTheSequenceCard from './OrderTheSequenceCard';
+import FillTheGapCard from './FillTheGapCard';
 
 interface CardTemplateProps {
   index: number,
@@ -41,6 +43,7 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchData() { setCardIndex(index); }
     if (isFocused) fetchData().then(() => setIsLoading(false));
   }, [isFocused, setCardIndex, index, setIsLoading]);
@@ -69,6 +72,8 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <OpenQuestionCard isFocused={isFocused} />;
     case ORDER_THE_SEQUENCE:
       return <OrderTheSequenceCard isFocused={isFocused} />;
+    case FILL_THE_GAPS:
+      return <FillTheGapCard isFocused={isFocused} />;
 
     default:
       return (
