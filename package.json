@@ -57,6 +57,7 @@
     "react-native-draggable-flatlist": "^2.4.0",
     "react-native-drax": "^0.7.2",
     "react-native-gesture-handler": "~1.7.0",
+    "react-native-markdown-display": "^7.0.0-alpha",
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",

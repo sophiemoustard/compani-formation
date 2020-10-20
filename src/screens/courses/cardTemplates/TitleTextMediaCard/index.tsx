@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView } from 'react-native';
+import { Image, ScrollView } from 'react-native';
+import Markdown from 'react-native-markdown-display';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
@@ -36,8 +37,8 @@ const TitleTextMediaCard = ({ card, index, isFocused }: TitleTextMediaCardProps)
     <>
       <CardHeader />
       <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
-        <Text style={cardsStyle.title}>{card.title}</Text>
-        <Text style={cardsStyle.text}>{card.text}</Text>
+        <Markdown style={cardsStyle.title}>{card.title}</Markdown>
+        <Markdown style={cardsStyle.text}>{card.text}</Markdown>
         {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
       <CardFooter index={index} template={card.template}/>
