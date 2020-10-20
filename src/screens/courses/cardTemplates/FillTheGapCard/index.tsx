@@ -123,10 +123,10 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
           if (idx === 0 && txt === '') return renderGap(idx);
           if (idx === splittedText.length - 1 && txt === '') return null;
           if (idx < splittedText.length - 1) {
-            return <>
-              <Text style={style.question} key={`text${idx}`}>{txt}</Text>
+            return <View key={`text${idx}`} style={style.textAndGapContainer}>
+              <Text style={style.question} >{txt}</Text>
               {renderGap(idx)}
-            </>;
+            </View>;
           }
           return <Text style={style.question} key={`text${idx}`}>{txt}</Text>;
         })

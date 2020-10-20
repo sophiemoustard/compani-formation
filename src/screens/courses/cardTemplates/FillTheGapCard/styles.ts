@@ -25,6 +25,11 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     marginBottom: MARGIN.MD,
     backgroundColor: TRANSPARENT_LIGHT_GREY,
   },
+
+  textAndGapContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   question: {
     ...FIRA_SANS_MEDIUM.MD,
     lineHeight: INPUT_HEIGHT,
