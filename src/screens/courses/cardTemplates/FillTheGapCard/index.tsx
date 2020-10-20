@@ -49,7 +49,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   useEffect(() => {
     if (isFocused && !isValidated) {
       goodAnswers.current = card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) ||
-        [];
+      [];
       setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current])
         .map(proposition => ({ text: proposition, visible: true })));
       setSelectedAnswers(goodAnswers.current.map(() => ''));
@@ -76,9 +76,8 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
     if (selectedAnswers[gapIndex]) {
       tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[gapIndex])].visible = true;
     }
-    if (selectedAnswers.includes(payload)) {
-      setSelectedAnswers(array => Object.assign([], array, { [array.indexOf(payload)]: '' }));
-    }
+    const payloadIdx = selectedAnswers.indexOf(payload);
+    if (payloadIdx > -1) setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
     setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
     setPropositions(tempPropositions);
   };
