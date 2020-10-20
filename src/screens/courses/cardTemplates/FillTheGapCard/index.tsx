@@ -39,7 +39,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
-  const areGapsFilled = (!selectedAnswers.filter(answer => answer === '').length);
+  const areGapsFilled = !selectedAnswers.filter(answer => answer === '').length;
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -68,18 +68,18 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
 
   const style = styles(footerColors.text, footerColors.background);
 
-  const setPropositionsToAnswers = (event, idx) => {
+  const setPropositionsToAnswers = (event, gapIndex) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    const i = tempPropositions.map(prop => prop.text).indexOf(payload);
-    tempPropositions[i].visible = false;
-    if (selectedAnswers[idx]) {
-      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[idx])].visible = true;
+    const propIndex = tempPropositions.map(prop => prop.text).indexOf(payload);
+    tempPropositions[propIndex].visible = false;
+    if (selectedAnswers[gapIndex]) {
+      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[gapIndex])].visible = true;
     }
     if (selectedAnswers.includes(payload)) {
       setSelectedAnswers(array => Object.assign([], array, { [array.indexOf(payload)]: '' }));
     }
-    setSelectedAnswers(array => Object.assign([], array, { [idx]: payload }));
+    setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
     setPropositions(tempPropositions);
   };
 
@@ -94,14 +94,14 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   };
 
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
-  <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text}
-    longPressDelay={0}>
-    <FillTheGapProposition item={item} isValidated={isValidated}
-      isGoodAnswer={Number.isInteger(idx)
-        ? goodAnswers.current.indexOf(text) === idx
-        : goodAnswers.current.includes(text)}
-      isSelected={selectedAnswers.includes(text)} />
-  </DraxView>;
+    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text}
+      longPressDelay={0}>
+      <FillTheGapProposition item={item} isValidated={isValidated}
+        isGoodAnswer={Number.isInteger(idx)
+          ? goodAnswers.current.indexOf(text) === idx
+          : goodAnswers.current.includes(text)}
+        isSelected={selectedAnswers.includes(text)} />
+    </DraxView>;
 
   const renderPropositions = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
     {propositions.map((proposition, idx) =>
