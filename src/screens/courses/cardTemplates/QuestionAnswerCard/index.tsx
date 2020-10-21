@@ -2,33 +2,45 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
-import { StateType } from '../../../../types/store/StoreType';
+import { ActionType, StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import { navigate } from '../../../../navigationRef';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import QuestionAnswerProposition from '../../../../components/cards/QuestionAnswerProposition';
+import Actions from '../../../../store/activities/actions';
+import { QuestionnaireAnswerArrayType, QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
   cardIndex: number,
   isFocused: boolean,
+  questionnaireAnswer: QuestionnaireAnswerArrayType,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType | QuestionnaireAnswerArrayType) => void,
 }
 
 export interface answerType extends answerFromAPIType {
   isSelected: boolean,
 }
 
-const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardProps) => {
+const QuestionAnswerCard = ({
+  card,
+  cardIndex,
+  isFocused,
+  questionnaireAnswer,
+  addQuestionnaireAnswer,
+}: QuestionAnswerCardProps) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
 
   useEffect(() => {
-    if (isFocused) setSelectedAnswers(card.questionAnswers.map(answer => ({ ...answer, isSelected: false })));
-  }, [card, isFocused]);
+    if (isFocused) {
+      setSelectedAnswers(card.questionAnswers.map(answer =>
+        ({ ...answer, isSelected: questionnaireAnswer?.answer.includes(answer._id) })));
+    }
+  }, [card, isFocused, questionnaireAnswer]);
 
   if (!isFocused) return null;
 
@@ -42,10 +54,8 @@ const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardPr
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
-  const onPressFooterButton = () => {
-    if (!isAnswerSelected()) return null;
-
-    return navigate(`card-${cardIndex + 1}`);
+  const validateQuestionnaireAnswer = (id: string, answer: Array<string>) => {
+    addQuestionnaireAnswer({ card: id, answer });
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
@@ -67,9 +77,11 @@ const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardPr
       </ScrollView>
       <View style={styles.footerContainer}>
         <FooterGradient />
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={'Valider'}
+        <QuestionCardFooter buttonCaption={'Valider'}
           arrowColor={PINK[500]} index={cardIndex} buttonDisabled={!isAnswerSelected()}
-          buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]} />
+          buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]}
+          validateCard={() => validateQuestionnaireAnswer(card._id,
+            selectedAnswers.filter(answer => answer.isSelected).map(answer => answer._id))}/>
       </View>
     </>
   );
@@ -78,6 +90,12 @@ const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardPr
 const mapStateToProps = (state: StateType) => ({
   card: Selectors.getCard(state),
   cardIndex: state.activities.cardIndex,
+  questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
 });
 
-export default connect(mapStateToProps)(QuestionAnswerCard);
+const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType | QuestionnaireAnswerArrayType) =>
+    dispatch(Actions.addQuestionnaireAnswer(qa)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionAnswerCard);

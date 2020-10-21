@@ -24,12 +24,12 @@ export interface SetExitConfirmationModalType {
 
 export interface AddQuestionnaireAnswerType {
   type: typeof ADD_QUESTIONNAIRE_ANSWER,
-  payload: QuestionnaireAnswerType,
+  payload: QuestionnaireAnswerType | QuestionnaireAnswerArrayType,
 }
 
 export interface SetQuestionnaireAnswersListType {
   type: typeof SET_QUESTIONNAIRE_ANSWERS_LIST,
-  payload: Array<QuestionnaireAnswerType>,
+  payload: Array<QuestionnaireAnswerType | QuestionnaireAnswerArrayType>,
 }
 
 export interface ResetActivityReducer {
@@ -55,10 +55,16 @@ export interface QuestionnaireAnswerType {
   answer: string,
 }
 
+export interface QuestionnaireAnswerArrayType {
+  _id?: string,
+  card: string,
+  answer: Array<string>,
+}
+
 export interface ActivityStateType {
   activity: ActivityType | null,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
-  questionnaireAnswersList: Array<QuestionnaireAnswerType>,
+  questionnaireAnswersList: Array<QuestionnaireAnswerType | QuestionnaireAnswerArrayType>,
   score: number
 }
