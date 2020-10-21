@@ -1,9 +1,9 @@
 import { OPEN_QUESTION, QUESTION_ANSWER, SURVEY, TRANSITION } from '../../core/data/constants';
-import { QuestionnaireAnswerArrayType, QuestionnaireAnswerType } from '../../types/store/ActivityStoreType';
+import { QuestionnaireAnswerType } from '../../types/store/ActivityStoreType';
 
 const getCard = state => state.activities.activity.cards[state.activities.cardIndex];
 
-const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | QuestionnaireAnswerArrayType | null => {
+const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | null => {
   const card = getCard(state);
   if (!card || (![SURVEY, OPEN_QUESTION, QUESTION_ANSWER].includes(card.template))) return null;
   return state.activities.questionnaireAnswersList.find(qa => qa.card === card._id) || null;

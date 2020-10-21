@@ -12,14 +12,14 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import QuestionAnswerProposition from '../../../../components/cards/QuestionAnswerProposition';
 import Actions from '../../../../store/activities/actions';
-import { QuestionnaireAnswerArrayType, QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
   cardIndex: number,
   isFocused: boolean,
-  questionnaireAnswer: QuestionnaireAnswerArrayType,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType | QuestionnaireAnswerArrayType) => void,
+  questionnaireAnswer: QuestionnaireAnswerType,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
 }
 
 export interface answerType extends answerFromAPIType {
@@ -93,7 +93,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType | QuestionnaireAnswerArrayType) =>
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) =>
     dispatch(Actions.addQuestionnaireAnswer(qa)),
 });
 
