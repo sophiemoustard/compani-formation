@@ -24,7 +24,7 @@ const TitleTextCard = ({ card, index, isFocused }: TitleTextCardProps) => {
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
-        <Markdown style={cardsStyle.text}>{card.text}</Markdown>
+        <Markdown style={{ body: cardsStyle.text }}>{card.text}</Markdown>
       </ScrollView>
       <CardFooter index={index} template={card.template}/>
     </>

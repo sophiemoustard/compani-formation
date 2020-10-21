@@ -37,7 +37,7 @@ const TextMediaCard = ({ card, index, isFocused }: TextMediaCardProps) => {
     <>
       <CardHeader />
       <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
-        <Markdown style={cardsStyle.text}>{card.text}</Markdown>
+        <Markdown style={{ body: cardsStyle.text }}>{card.text}</Markdown>
         {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
       <CardFooter index={index} template={card.template}/>
