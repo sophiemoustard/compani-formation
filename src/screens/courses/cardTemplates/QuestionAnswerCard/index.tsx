@@ -54,7 +54,8 @@ const QuestionAnswerCard = ({
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
-  const validateQuestionnaireAnswer = (id: string, answer: Array<string>) => {
+  const validateQuestionnaireAnswer = (id: string) => {
+    const answer = selectedAnswers.filter(sa => sa.isSelected).map(sa => sa._id);
     addQuestionnaireAnswer({ card: id, answer });
   };
 
@@ -77,11 +78,9 @@ const QuestionAnswerCard = ({
       </ScrollView>
       <View style={styles.footerContainer}>
         <FooterGradient />
-        <QuestionCardFooter buttonCaption={'Valider'}
-          arrowColor={PINK[500]} index={cardIndex} buttonDisabled={!isAnswerSelected()}
-          buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]}
-          validateCard={() => validateQuestionnaireAnswer(card._id,
-            selectedAnswers.filter(answer => answer.isSelected).map(answer => answer._id))}/>
+        <QuestionCardFooter buttonCaption={'Valider'} arrowColor={PINK[500]} index={cardIndex}
+          buttonDisabled={!isAnswerSelected()} buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]}
+          validateCard={() => validateQuestionnaireAnswer(card._id)}/>
       </View>
     </>
   );
