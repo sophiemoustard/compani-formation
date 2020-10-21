@@ -12,16 +12,16 @@ interface CardFooterProps {
 }
 
 const CardFooter = ({ index, color, removeRight }: CardFooterProps) => {
-  const leftRemoved = index === 0;
+  const removeLeft = index === 0;
 
   let justifyContent;
-  if (leftRemoved) justifyContent = 'flex-end';
+  if (removeLeft) justifyContent = 'flex-end';
   else if (removeRight) justifyContent = 'flex-start';
   else justifyContent = 'space-between';
 
   return (
     <View style={styles({ justifyContent }).container}>
-      {!leftRemoved && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
+      {!removeLeft && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
       {!removeRight && <ArrowButton color={color} direction={RIGHT} onPress={() => navigate(`card-${index + 1}`)} />}
     </View>
   );

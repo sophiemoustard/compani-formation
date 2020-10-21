@@ -24,23 +24,21 @@ export interface answerType extends answerFromAPIType {
 }
 
 const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardProps) => {
-  const [answers, setAnswers] = useState<Array<answerType>>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
 
   useEffect(() => {
-    if (isFocused) {
-      setAnswers(card.questionAnswers.map(answer => ({ ...answer, isSelected: false })));
-    }
+    if (isFocused) setSelectedAnswers(card.questionAnswers.map(answer => ({ ...answer, isSelected: false })));
   }, [card, isFocused]);
 
   if (!isFocused) return null;
 
-  const isAnswerSelected = () => answers.some(answer => answer.isSelected);
+  const isAnswerSelected = () => selectedAnswers.some(answer => answer.isSelected);
 
   const onSelectAnswer = (index: number) => {
     if (!card.isQuestionAnswerMultipleChoiced) {
-      setAnswers(array => array.map(el => Object.assign([], el, { isSelected: false })));
+      setSelectedAnswers(array => array.map(answer => Object.assign([], answer, { isSelected: false })));
     }
-    setAnswers(array => Object.assign([], array,
+    setSelectedAnswers(array => Object.assign([], array,
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
@@ -63,7 +61,7 @@ const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardPr
             ? <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
             : <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
           }
-          <FlatList data={answers} keyExtractor={(_, index) => index.toString()}
+          <FlatList data={selectedAnswers} keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => renderItem(item, index)} />
         </View>
       </ScrollView>
