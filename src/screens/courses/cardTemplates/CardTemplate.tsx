@@ -84,7 +84,7 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
         <View>
           <CardHeader />
           <Text>{card.template}</Text>
-          <CardFooter template={card.template} index={index} />
+          <CardFooter index={index} />
         </View>
       );
   }

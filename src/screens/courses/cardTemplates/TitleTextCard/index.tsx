@@ -25,7 +25,7 @@ const TitleTextCard = ({ card, index, isFocused }: TitleTextCardProps) => {
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Text style={cardsStyle.text}>{card.text}</Text>
       </ScrollView>
-      <CardFooter index={index} template={card.template}/>
+      <CardFooter index={index} />
     </>
   );
 };

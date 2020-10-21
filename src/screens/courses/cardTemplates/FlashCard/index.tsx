@@ -80,7 +80,7 @@ const FlashCard = ({ card, index, isFocused }: FlashCard) => {
           <AnimatedShadow customStyle={[styles.shadow, frontAnimatedStyle]} />
         </TouchableOpacity>
       </View>
-      <CardFooter index={index} template={card.template} removeRight={timesHasBeenClicked === 'unclicked'} />
+      <CardFooter index={index} removeRight={timesHasBeenClicked === 'unclicked'} />
     </>
   );
 };
