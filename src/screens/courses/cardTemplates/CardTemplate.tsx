@@ -17,6 +17,7 @@ import {
   OPEN_QUESTION,
   ORDER_THE_SEQUENCE,
   FILL_THE_GAPS,
+  QUESTION_ANSWER,
 } from '../../../core/data/constants';
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
@@ -31,6 +32,7 @@ import FlashCard from './FlashCard';
 import OpenQuestionCard from './OpenQuestionCard';
 import OrderTheSequenceCard from './OrderTheSequenceCard';
 import FillTheGapCard from './FillTheGapCard';
+import QuestionAnswerCard from './QuestionAnswerCard';
 
 interface CardTemplateProps {
   index: number,
@@ -74,13 +76,15 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
       return <OrderTheSequenceCard isFocused={isFocused} />;
     case FILL_THE_GAPS:
       return <FillTheGapCard isFocused={isFocused} />;
+    case QUESTION_ANSWER:
+      return <QuestionAnswerCard isFocused={isFocused} />;
 
     default:
       return (
         <View>
           <CardHeader />
           <Text>{card.template}</Text>
-          <CardFooter template={card.template} index={index} />
+          <CardFooter index={index} />
         </View>
       );
   }

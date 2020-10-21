@@ -15,8 +15,14 @@ interface FlashCard {
   isFocused: boolean,
 }
 
+export enum ClickOnCard {
+  UNCLICKED_CARD = 'unclicked',
+  CLICKED_ONCE_CARD = 'clickedOnce',
+  CLICKED_MORE_THAN_ONCE_CARD = 'clickedMoreThanOnce',
+}
+
 const FlashCard = ({ card, index, isFocused }: FlashCard) => {
-  const [timesHasBeenClicked, setTimesHasBeenClicked] = useState('unclicked');
+  const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
   const hasBeenClicked = useRef(false);
@@ -24,7 +30,7 @@ const FlashCard = ({ card, index, isFocused }: FlashCard) => {
   animatedValue.addListener(({ value }) => { rotationValue = value; });
 
   useEffect(() => {
-    if (timesHasBeenClicked === 'clickedOnce' && !hasBeenClicked.current) {
+    if (timesHasBeenClicked === ClickOnCard.CLICKED_ONCE_CARD && !hasBeenClicked.current) {
       Animated.spring(animatedValue, {
         toValue: 180,
         friction: 8,
@@ -33,15 +39,15 @@ const FlashCard = ({ card, index, isFocused }: FlashCard) => {
       }).start();
       hasBeenClicked.current = true;
     } else if (hasBeenClicked.current) {
-      setTimesHasBeenClicked('clickedMoreThanOnce');
+      setTimesHasBeenClicked(ClickOnCard.CLICKED_MORE_THAN_ONCE_CARD);
     }
   }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue]);
 
   if (!isFocused) return null;
 
   const flipCard = () => {
-    if (timesHasBeenClicked === 'unclicked') {
-      setTimesHasBeenClicked('clickedOnce');
+    if (timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD) {
+      setTimesHasBeenClicked(ClickOnCard.CLICKED_ONCE_CARD);
     } if (rotationValue >= 90) {
       Animated.spring(animatedValue, {
         toValue: 0,
@@ -80,7 +86,7 @@ const FlashCard = ({ card, index, isFocused }: FlashCard) => {
           <AnimatedShadow customStyle={[styles.shadow, frontAnimatedStyle]} />
         </TouchableOpacity>
       </View>
-      <CardFooter index={index} template={card.template} removeRight={timesHasBeenClicked === 'unclicked'} />
+      <CardFooter index={index} removeRight={timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD} />
     </>
   );
 };
