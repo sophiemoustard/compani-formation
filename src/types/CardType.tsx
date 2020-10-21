@@ -106,7 +106,7 @@ export interface FillTheGapType {
   explanation: string,
 }
 
-export interface answerType {
+export interface answerFromAPIType {
   _id: string,
   text: string,
 }
@@ -115,5 +115,5 @@ export interface QuestionAnswerType {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
-  questionAnswers: Array<answerType>,
+  questionAnswers: Array<answerFromAPIType>,
 }

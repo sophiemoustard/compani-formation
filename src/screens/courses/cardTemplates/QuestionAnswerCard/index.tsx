@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { answerType, QuestionAnswerType } from '../../../../types/CardType';
+import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -19,12 +19,12 @@ interface QuestionAnswerCardProps {
   isFocused: boolean,
 }
 
-export interface answer extends answerType {
+export interface answerType extends answerFromAPIType {
   isSelected: boolean,
 }
 
 const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardProps) => {
-  const [answers, setAnswers] = useState<Array<answer>>([]);
+  const [answers, setAnswers] = useState<Array<answerType>>([]);
 
   useEffect(() => {
     if (isFocused) {
