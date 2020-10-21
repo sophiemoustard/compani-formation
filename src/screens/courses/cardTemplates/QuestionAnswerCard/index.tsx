@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { QuestionAnswerType } from '../../../../types/CardType';
+import { answerType, QuestionAnswerType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -19,74 +19,59 @@ interface QuestionAnswerCardProps {
   isFocused: boolean,
 }
 
-export interface answerType {
-  answer: string,
+export interface answer extends answerType {
   isSelected: boolean,
 }
 
-const QuestionAnswerCard = ({
-  card,
-  cardIndex,
-  isFocused,
-}: QuestionAnswerCardProps) => {
-  const [answers, setAnswers] = useState<Array<answerType>>(
-    card.questionAnswers.map(answer => ({ answer, isSelected: false }))
-  );
-  const [isValidated, setIsValidated] = useState<boolean>(false);
-  const footerColors = {
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
-  };
+const QuestionAnswerCard = ({ card, cardIndex, isFocused }: QuestionAnswerCardProps) => {
+  const [answers, setAnswers] = useState<Array<answer>>([]);
+
+  useEffect(() => {
+    if (isFocused) {
+      setAnswers(card.questionAnswers.map(answer => ({ ...answer, isSelected: false })));
+    }
+  }, [card, isFocused]);
 
   if (!isFocused) return null;
 
-  const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
+  const isAnswerSelected = () => answers.some(answer => answer.isSelected);
 
   const onSelectAnswer = (index: number) => {
-    setAnswers((prevState: answerType[]) => {
-      const newState = [...prevState];
-      newState[index].isSelected = !newState[index].isSelected;
-      return newState;
-    });
+    if (!card.isQuestionAnswerMultipleChoiced) {
+      setAnswers(array => array.map(el => Object.assign([], el, { isSelected: false })));
+    }
+    setAnswers(array => Object.assign([], array,
+      { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
   const onPressFooterButton = () => {
-    if (!isOneAnswerSelected()) return null;
-
-    if (!isValidated) return setIsValidated(true);
+    if (!isAnswerSelected()) return null;
 
     return navigate(`card-${cardIndex + 1}`);
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
-    item={item.answer} isValidated={isValidated} isSelected={item.isSelected}
-    disabled={isValidated || (!card.isQuestionAnswerMultipleChoiced &&
-      answers.some(answer => answer.isSelected) && !item.isSelected)} />;
-
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+    item={item.text} isSelected={item.isSelected} />;
 
   return (
     <>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
-          {card.isQuestionAnswerMultipleChoiced &&
-          <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
-          }
-          {!card.isQuestionAnswerMultipleChoiced &&
-          <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
+          {card.isQuestionAnswerMultipleChoiced
+            ? <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
+            : <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
           }
           <FlatList data={answers} keyExtractor={(_, index) => index.toString()}
             renderItem={({ item, index }) => renderItem(item, index)} />
         </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        {!isValidated && <FooterGradient /> }
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={cardIndex} buttonDisabled={!isOneAnswerSelected()}
-          buttonColor={isOneAnswerSelected() ? footerColors.buttonsColor : GREY[300]} />
+      <View style={styles.footerContainer}>
+        <FooterGradient />
+        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={'Valider'}
+          arrowColor={PINK[500]} index={cardIndex} buttonDisabled={!isAnswerSelected()}
+          buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]} />
       </View>
     </>
   );

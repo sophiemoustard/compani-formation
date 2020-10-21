@@ -106,9 +106,14 @@ export interface FillTheGapType {
   explanation: string,
 }
 
+export interface answerType {
+  _id: string,
+  text: string,
+}
+
 export interface QuestionAnswerType {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
-  questionAnswers: Array<string>,
+  questionAnswers: Array<answerType>,
 }

@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, BUTTON_HEIGHT } from '../../../styles/metrics';
-import { WHITE, GREY } from '../../../styles/colors';
+import { WHITE, GREY, PINK } from '../../../styles/colors';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
-const styles = (color: string, isSelected: boolean, isValidated: boolean) => StyleSheet.create({
+const styles = (isSelected: boolean) => StyleSheet.create({
   answerContainer: {
     marginBottom: MARGIN.SM,
   },
@@ -11,8 +11,8 @@ const styles = (color: string, isSelected: boolean, isValidated: boolean) => Sty
     flexDirection: 'row',
     minHeight: BUTTON_HEIGHT,
     borderWidth: BORDER_WIDTH,
-    backgroundColor: !isValidated || isSelected ? WHITE : GREY[100],
-    borderColor: isSelected ? color : GREY[200],
+    backgroundColor: WHITE,
+    borderColor: isSelected ? PINK[500] : GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
 
@@ -29,7 +29,7 @@ const styles = (color: string, isSelected: boolean, isValidated: boolean) => Sty
     marginHorizontal: MARGIN.MD,
   },
   shadow: {
-    backgroundColor: isSelected ? color : GREY[200],
+    backgroundColor: isSelected ? PINK[500] : GREY[200],
     borderRadius: BORDER_RADIUS.LG,
   },
 });

@@ -48,5 +48,4 @@ export const CARD_TEMPLATES = [
   { label: 'Mettre dans l\'ordre', value: ORDER_THE_SEQUENCE, type: QUIZ },
   { label: 'Question ouverte', value: OPEN_QUESTION, type: QUESTIONNAIRE },
   { label: 'Sondage', value: SURVEY, type: QUESTIONNAIRE },
-  { label: 'Question\t&\tRéponse', value: QUESTION_ANSWER, type: QUESTIONNAIRE },
 ];
