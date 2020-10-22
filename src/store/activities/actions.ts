@@ -23,8 +23,9 @@ const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfir
 const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
 const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
-const setQuestionnaireAnswersList = (questionnaireAnswersList: Array<QuestionnaireAnswerType>)
-: SetQuestionnaireAnswersListType => ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
+const setQuestionnaireAnswersList =
+(questionnaireAnswersList: Array<QuestionnaireAnswerType>) : SetQuestionnaireAnswersListType =>
+  ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
 const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 
 export default {
