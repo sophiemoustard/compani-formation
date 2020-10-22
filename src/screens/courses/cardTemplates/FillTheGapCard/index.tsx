@@ -14,6 +14,8 @@ import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
+import RenderQuestion from '../../../../components/cards/RenderQuestion';
+import RenderPropositions from '../../../../components/cards/RenderPropositions';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -102,37 +104,11 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
         isSelected={selectedAnswers.includes(text)} />
     </DraxView>;
 
-  const renderPropositions = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
-    {propositions.map((proposition, idx) =>
-      <DraxView style={style.gapContainer} key={`proposition${idx}`}
-        onReceiveDragDrop={event => setAnswersToPropositions(event)} renderContent={() =>
-          renderContent(proposition.visible, proposition, proposition.text)} />)}
-  </View>;
-
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
     onReceiveDragDrop={event => setPropositionsToAnswers(event, idx)} renderContent={() =>
       renderContent(
         !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
       )} />;
-
-  const renderQuestion = (text) => {
-    const splittedText = text.split(/<trou>[^<]*<\/trou>/g);
-    return <View style={[cardsStyle.question, style.questionContainer]} pointerEvents={isValidated ? 'none' : 'auto'}>
-      {
-        splittedText.map((txt, idx) => {
-          if (idx === 0 && txt === '') return renderGap(idx);
-          if (idx === splittedText.length - 1 && txt === '') return null;
-          if (idx < splittedText.length - 1) {
-            return <View key={`text${idx}`} style={style.textAndGapContainer}>
-              <Text style={style.question} >{txt}</Text>
-              {renderGap(idx)}
-            </View>;
-          }
-          return <Text style={style.question} key={`text${idx}`}>{txt}</Text>;
-        })
-      }
-    </View>;
-  };
 
   const onPressFooterButton = () => {
     if (!isValidated) {
@@ -150,8 +126,9 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
       <CardHeader />
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
-          {renderQuestion(card.gappedText)}
-          {renderPropositions()}
+          <RenderQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
+          <RenderPropositions isValidated={isValidated} propositions={propositions}
+            setAnswersToPropositions={setAnswersToPropositions} renderContent={renderContent} />
         </DraxProvider>
       </ScrollView>
       <View style={style.footerContainer}>
