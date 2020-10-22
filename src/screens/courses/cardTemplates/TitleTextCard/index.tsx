@@ -12,11 +12,11 @@ import styles from './styles';
 interface TitleTextCardProps {
   card: TitleTextType,
   index: number,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
-const TitleTextCard = ({ card, index, isFocused }: TitleTextCardProps) => {
-  if (!isFocused) return null;
+const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
+  if (isLoading) return null;
 
   return (
     <>

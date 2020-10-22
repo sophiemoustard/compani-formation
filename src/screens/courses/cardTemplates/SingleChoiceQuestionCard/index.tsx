@@ -18,21 +18,21 @@ interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
   index: number,
   incGoodAnswersCount: () => void,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
-const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isFocused }: SingleChoiceQuestionCardProps) => {
+const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading }: SingleChoiceQuestionCardProps) => {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
 
   useEffect(() => {
-    if (isFocused && !isPressed) {
+    if (!isLoading && !isPressed) {
       setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
     }
-  }, [isFocused, card, isPressed]);
+  }, [isLoading, card, isPressed]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const renderItem = (item, answerIndex) => <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item}
     isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer}

@@ -18,7 +18,7 @@ import FillTheGapProposition from '../../../../components/cards/FillTheGapPropos
 interface FillTheGap {
   card: FillTheGapType,
   index: number,
-  isFocused: boolean,
+  isLoading: boolean,
   incGoodAnswersCount: () => void,
 }
 
@@ -33,7 +33,7 @@ export interface FillTheGapAnswers {
   visible: boolean,
 }
 
-const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillTheGap) => {
+const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillTheGap) => {
   const goodAnswers = useRef<Array<string>>([]);
   const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
@@ -47,14 +47,14 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   });
 
   useEffect(() => {
-    if (isFocused && !isValidated) {
+    if (!isLoading && !isValidated) {
       goodAnswers.current = card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) ||
       [];
       setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current])
         .map(proposition => ({ text: proposition, visible: true })));
       setSelectedAnswers(goodAnswers.current.map(() => ''));
     }
-  }, [card, isFocused, isValidated]);
+  }, [card, isLoading, isValidated]);
 
   useEffect(() => {
     if (!isValidated) return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
@@ -64,7 +64,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, isAnsweredCorrectly]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const style = styles(footerColors.text, footerColors.background);
 

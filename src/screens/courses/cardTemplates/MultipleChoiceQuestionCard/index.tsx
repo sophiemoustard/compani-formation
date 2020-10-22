@@ -19,7 +19,7 @@ interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
   cardIndex: number,
   incGoodAnswersCount: () => void,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
 export interface qcmAnswerType extends qcmAnswerFromAPIType {
@@ -36,7 +36,7 @@ const MultipleChoiceQuestionCard = ({
   card,
   cardIndex,
   incGoodAnswersCount,
-  isFocused,
+  isLoading,
 }: MultipleChoiceQuestionCardProps) => {
   const [answers, setAnswers] = useState<Array<qcmAnswerType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
@@ -48,10 +48,10 @@ const MultipleChoiceQuestionCard = ({
   });
 
   useEffect(() => {
-    if (isFocused && !isValidated) {
+    if (!isLoading && !isValidated) {
       setAnswers(shuffle(card.qcmAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
-  }, [card, isFocused, isValidated]);
+  }, [card, isLoading, isValidated]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -65,7 +65,7 @@ const MultipleChoiceQuestionCard = ({
     return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
   }, [isValidated, answers, isAnsweredCorrectly]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 

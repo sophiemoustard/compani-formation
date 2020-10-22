@@ -17,17 +17,17 @@ interface SurveyCard {
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
-const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isFocused }: SurveyCard) => {
+const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isLoading }: SurveyCard) => {
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
     setSelectedScore(questionnaireAnswer ? questionnaireAnswer.answerList[0] : '');
   }, [questionnaireAnswer]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   return (
     <>
