@@ -24,7 +24,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
-    setSelectedScore(questionnaireAnswer ? questionnaireAnswer.answer[0] : '');
+    setSelectedScore(questionnaireAnswer ? questionnaireAnswer.answerList[0] : '');
   }, [questionnaireAnswer]);
 
   if (!isFocused) return null;
@@ -48,7 +48,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
       </View>
       <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK[500] : GREY[300]}
         arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!selectedScore}
-        validateCard={() => addQuestionnaireAnswer({ card: card._id, answer: [selectedScore] })} />
+        validateCard={() => addQuestionnaireAnswer({ card: card._id, answerList: [selectedScore] })} />
     </>
   );
 };

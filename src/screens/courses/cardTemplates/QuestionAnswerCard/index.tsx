@@ -38,7 +38,7 @@ const QuestionAnswerCard = ({
   useEffect(() => {
     if (isFocused) {
       setSelectedAnswers(card.questionAnswers.map(answer =>
-        ({ ...answer, isSelected: questionnaireAnswer?.answer.includes(answer._id) })));
+        ({ ...answer, isSelected: questionnaireAnswer?.answerList.includes(answer._id) })));
     }
   }, [card, isFocused, questionnaireAnswer]);
 
@@ -56,7 +56,7 @@ const QuestionAnswerCard = ({
 
   const validateQuestionnaireAnswer = (id: string) => {
     const answer = selectedAnswers.filter(sa => sa.isSelected).map(sa => sa._id);
-    addQuestionnaireAnswer({ card: id, answer });
+    addQuestionnaireAnswer({ card: id, answerList: answer });
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
@@ -93,8 +93,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) =>
-    dispatch(Actions.addQuestionnaireAnswer(qa)),
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionAnswerCard);

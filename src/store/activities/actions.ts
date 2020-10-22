@@ -20,15 +20,11 @@ const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_AC
 const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
 const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfirmationModalType =>
   ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
-const addQuestionnaireAnswer = (
-  questionnaireAnswer: QuestionnaireAnswerType
-): AddQuestionnaireAnswerType =>
+const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
 const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
-const setQuestionnaireAnswersList =
-  (questionnaireAnswersList: Array<QuestionnaireAnswerType>)
-  : SetQuestionnaireAnswersListType =>
-    ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
+const setQuestionnaireAnswersList = (questionnaireAnswersList: Array<QuestionnaireAnswerType>)
+: SetQuestionnaireAnswersListType => ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
 const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 
 export default {

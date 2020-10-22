@@ -52,7 +52,7 @@ export type ActivityActionWithoutPayloadType = ResetActivityReducer | IncGoodAns
 export interface QuestionnaireAnswerType {
   _id?: string,
   card: string,
-  answer: Array<string>,
+  answerList: Array<string>,
 }
 
 export interface ActivityStateType {
