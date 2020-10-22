@@ -7,19 +7,19 @@ import styles from './styles';
 interface renderPropositionsProps {
   isValidated: boolean,
   propositions: Array<FillTheGapAnswers>
-  setAnswersToPropositions: (event: any) => void,
+  setAnswersAndPropositions: (event: any) => void,
   renderContent: (isVisible, item, text) => JSX.Element,
 }
 
 const RenderPropositions = ({
   isValidated,
   propositions,
-  setAnswersToPropositions,
+  setAnswersAndPropositions,
   renderContent,
 }: renderPropositionsProps) => <View style={styles.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
   {propositions.map((proposition, idx) =>
     <DraxView style={styles.gapContainer} key={`proposition${idx}`}
-      onReceiveDragDrop={event => setAnswersToPropositions(event)} renderContent={() =>
+      onReceiveDragDrop={event => setAnswersAndPropositions(event)} renderContent={() =>
         renderContent(proposition.visible, proposition, proposition.text)} />)}
 </View>;
 
