@@ -48,9 +48,7 @@ const MultipleChoiceQuestionCard = ({
   });
 
   useEffect(() => {
-    if (!isLoading && !isValidated) {
-      setAnswers(shuffle(card.qcmAnswers.map(ans => ({ ...ans, isSelected: false }))));
-    }
+    if (!isLoading && !isValidated) setAnswers(shuffle(card.qcmAnswers.map(ans => ({ ...ans, isSelected: false }))));
   }, [card, isLoading, isValidated]);
 
   useEffect(() => {
