@@ -14,8 +14,8 @@ import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
-import RenderQuestion from '../../../../components/cards/RenderQuestion';
-import RenderPropositions from '../../../../components/cards/RenderPropositions';
+import RenderQuestion from '../../../../components/cards/FillTheGapQuestion';
+import RenderPropositions from '../../../../components/cards/FillTheGapPropositions';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -73,32 +73,32 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    const propIndex = tempPropositions.map(prop => prop.text).indexOf(payload);
-    tempPropositions[propIndex].visible = !(Number.isInteger(gapIndex));
-    if (Number.isInteger(gapIndex) && selectedAnswers[gapIndex]) {
-      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[gapIndex])].visible = true;
+    const dropTargetIsGap = Number.isInteger(gapIndex);
+    const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
+    tempPropositions[selectedPropIdx].visible = !dropTargetIsGap;
+    if (dropTargetIsGap && selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload) {
+      const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
+      tempPropositions[previousAnswerIdx].visible = true;
     }
     const payloadIdx = selectedAnswers.indexOf(payload);
     if (payloadIdx > -1) setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
-    if (Number.isInteger(gapIndex)) setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
+    if (dropTargetIsGap) setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
     setPropositions(tempPropositions);
   };
 
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
-    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text}
-      longPressDelay={0}>
-      <FillTheGapProposition item={item} isValidated={isValidated}
+    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
+      <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
         isGoodAnswer={Number.isInteger(idx)
           ? goodAnswers.current.indexOf(text) === idx
-          : goodAnswers.current.includes(text)}
-        isSelected={selectedAnswers.includes(text)} />
+          : goodAnswers.current.includes(text)} />
     </DraxView>;
 
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
-    onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)} renderContent={() =>
-      renderContent(
-        !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
-      )} />;
+    onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
+    renderContent={() => renderContent(
+      !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
+    )} />;
 
   const onPressFooterButton = () => {
     if (!isValidated) {
@@ -118,7 +118,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
         <DraxProvider>
           <RenderQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
           <RenderPropositions isValidated={isValidated} propositions={propositions}
-            setAnswersAndPropositions={setAnswersAndPropositions} renderContent={renderContent} />
+            setProposition={setAnswersAndPropositions} renderContent={renderContent} />
         </DraxProvider>
       </ScrollView>
       <View style={style.footerContainer}>
