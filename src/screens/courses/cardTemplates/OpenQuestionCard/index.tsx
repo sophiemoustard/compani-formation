@@ -18,7 +18,7 @@ interface OpenQuestionCardProps {
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
 const OpenQuestionCard = ({
@@ -26,7 +26,7 @@ const OpenQuestionCard = ({
   index,
   questionnaireAnswer,
   addQuestionnaireAnswer,
-  isFocused,
+  isLoading,
 }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -51,7 +51,7 @@ const OpenQuestionCard = ({
     });
   };
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}

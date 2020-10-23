@@ -50,34 +50,32 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
     if (isFocused) fetchData().then(() => setIsLoading(false));
   }, [isFocused, setCardIndex, index, setIsLoading]);
 
-  if (isLoading) return null;
-
   const card = activity.cards[index];
   switch (card.template) {
     case TRANSITION:
-      return <Transition isFocused={isFocused} />;
+      return <Transition isLoading={isLoading} />;
     case TITLE_TEXT_MEDIA:
-      return <TitleTextMediaCard isFocused={isFocused} />;
+      return <TitleTextMediaCard isLoading={isLoading} />;
     case SINGLE_CHOICE_QUESTION:
-      return <SingleChoiceQuestionCard isFocused={isFocused} />;
+      return <SingleChoiceQuestionCard isLoading={isLoading} />;
     case TEXT_MEDIA:
-      return <TextMediaCard isFocused={isFocused} />;
+      return <TextMediaCard isLoading={isLoading} />;
     case SURVEY:
-      return <SurveyCard isFocused={isFocused} />;
+      return <SurveyCard isLoading={isLoading} />;
     case TITLE_TEXT:
-      return <TitleTextCard isFocused={isFocused} />;
+      return <TitleTextCard isLoading={isLoading} />;
     case MULTIPLE_CHOICE_QUESTION:
-      return <MultipleChoiceQuestionCard isFocused={isFocused} />;
+      return <MultipleChoiceQuestionCard isLoading={isLoading} />;
     case FLASHCARD:
-      return <FlashCard isFocused={isFocused} />;
+      return <FlashCard isLoading={isLoading} />;
     case OPEN_QUESTION:
-      return <OpenQuestionCard isFocused={isFocused} />;
+      return <OpenQuestionCard isLoading={isLoading} />;
     case ORDER_THE_SEQUENCE:
-      return <OrderTheSequenceCard isFocused={isFocused} />;
+      return <OrderTheSequenceCard isLoading={isLoading} />;
     case FILL_THE_GAPS:
-      return <FillTheGapCard isFocused={isFocused} />;
+      return <FillTheGapCard isLoading={isLoading} />;
     case QUESTION_ANSWER:
-      return <QuestionAnswerCard isFocused={isFocused} />;
+      return <QuestionAnswerCard isLoading={isLoading} />;
 
     default:
       return (

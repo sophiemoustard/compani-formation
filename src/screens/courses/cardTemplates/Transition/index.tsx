@@ -12,11 +12,11 @@ import styles from './styles';
 interface TransitionProps {
   index: number,
   card: TransitionType,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
-const Transition = ({ index, card, isFocused }: TransitionProps) => {
-  if (!isFocused) return null;
+const Transition = ({ index, card, isLoading }: TransitionProps) => {
+  if (isLoading) return null;
 
   return (
     <View style={styles.container}>

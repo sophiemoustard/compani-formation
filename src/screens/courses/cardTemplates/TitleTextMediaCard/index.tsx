@@ -13,10 +13,10 @@ import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
   index: number,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
-const TitleTextMediaCard = ({ card, index, isFocused }: TitleTextMediaCardProps) => {
+const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps) => {
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const TitleTextMediaCard = ({ card, index, isFocused }: TitleTextMediaCardProps)
     }
   }, [card]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const imageSource = card.media?.link ? { uri: card.media.link } : '';
   const styleWithImgHeight = styles(imgHeight);

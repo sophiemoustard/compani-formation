@@ -17,9 +17,9 @@ import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreTy
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
   cardIndex: number,
-  isFocused: boolean,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  isLoading: boolean,
 }
 
 export interface answerType extends answerFromAPIType {
@@ -29,20 +29,20 @@ export interface answerType extends answerFromAPIType {
 const QuestionAnswerCard = ({
   card,
   cardIndex,
-  isFocused,
+  isLoading,
   questionnaireAnswer,
   addQuestionnaireAnswer,
 }: QuestionAnswerCardProps) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
 
   useEffect(() => {
-    if (isFocused) {
+    if (!isLoading) {
       setSelectedAnswers(card.questionAnswers.map(answer =>
         ({ ...answer, isSelected: questionnaireAnswer?.answerList.includes(answer._id) })));
     }
-  }, [card, isFocused, questionnaireAnswer]);
+  }, [card, isLoading, questionnaireAnswer]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const isAnswerSelected = () => selectedAnswers.some(answer => answer.isSelected);
 
