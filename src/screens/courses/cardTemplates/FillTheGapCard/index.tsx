@@ -14,8 +14,8 @@ import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
-import RenderQuestion from '../../../../components/cards/FillTheGapQuestion';
-import RenderPropositions from '../../../../components/cards/FillTheGapPropositions';
+import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
+import FillTheGapPropositions from '../../../../components/cards/FillTheGapPropositions';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -75,14 +75,19 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
     const tempPropositions = [...propositions];
     const dropTargetIsGap = Number.isInteger(gapIndex);
     const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
+    const payloadIdx = selectedAnswers.indexOf(payload);
+
     tempPropositions[selectedPropIdx].visible = !dropTargetIsGap;
+
     if (dropTargetIsGap && selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload) {
       const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
       tempPropositions[previousAnswerIdx].visible = true;
     }
-    const payloadIdx = selectedAnswers.indexOf(payload);
+
     if (payloadIdx > -1) setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
+
     if (dropTargetIsGap) setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
+
     setPropositions(tempPropositions);
   };
 
@@ -116,8 +121,8 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
       <CardHeader />
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
-          <RenderQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
-          <RenderPropositions isValidated={isValidated} propositions={propositions}
+          <FillTheGapQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
+          <FillTheGapPropositions isValidated={isValidated} propositions={propositions}
             setProposition={setAnswersAndPropositions} renderContent={renderContent} />
         </DraxProvider>
       </ScrollView>
