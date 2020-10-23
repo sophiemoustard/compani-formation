@@ -55,6 +55,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isFocused 
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
+          <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
           <FlatList data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
             renderItem={({ item, index: answerIndex }) => renderItem(item, answerIndex)} />
         </View>

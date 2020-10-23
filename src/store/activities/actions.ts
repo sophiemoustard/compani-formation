@@ -24,8 +24,8 @@ const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): A
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
 const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
 const setQuestionnaireAnswersList =
-  (questionnaireAnswersList: Array<QuestionnaireAnswerType>): SetQuestionnaireAnswersListType =>
-    ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
+(questionnaireAnswersList: Array<QuestionnaireAnswerType>) : SetQuestionnaireAnswersListType =>
+  ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
 const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 
 export default {

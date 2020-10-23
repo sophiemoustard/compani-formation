@@ -97,7 +97,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
       {nextStep.length > 0 &&
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
-            <Text style={commonStyles.sectionTitleText}>Prochains évènements</Text>
+            <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
               <Text style={styles.nextEventsCount}>{nextStep.length}</Text>
             </View>
@@ -109,7 +109,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
       }
       <View style={commonStyles.sectionContainer}>
         <View style={commonStyles.sectionTitle}>
-          <Text style={commonStyles.sectionTitleText}>Formations en cours</Text>
+          <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
           <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
             <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>

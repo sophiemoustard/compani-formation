@@ -39,7 +39,7 @@ const TextMediaCard = ({ card, index, isFocused }: TextMediaCardProps) => {
         <Text style={cardsStyle.text}>{card.text}</Text>
         {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
-      <CardFooter index={index} template={card.template}/>
+      <CardFooter index={index} />
     </>
   );
 };

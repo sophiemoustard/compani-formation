@@ -24,7 +24,7 @@ const Transition = ({ index, card, isFocused }: TransitionProps) => {
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{card.title}</Text>
       </View>
-      <CardFooter index={index} template={card.template} color={WHITE} />
+      <CardFooter index={index} color={WHITE} />
     </View>
   );
 };

@@ -34,11 +34,11 @@ const OpenQuestionCard = ({
   const style = styles(isSelected);
 
   useEffect(() => {
-    setAnswer(questionnaireAnswer?.answer ? questionnaireAnswer.answer : '');
+    setAnswer(questionnaireAnswer?.answerList ? questionnaireAnswer.answerList[0] : '');
   }, [questionnaireAnswer]);
 
   const validateQuestionnaireAnswer = (id: string, text: string) => {
-    addQuestionnaireAnswer({ card: id, answer: text });
+    addQuestionnaireAnswer({ card: id, answerList: [text] });
     setIsSelected(false);
   };
 

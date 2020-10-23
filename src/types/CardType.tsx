@@ -97,3 +97,23 @@ export interface OrderTheSequenceType {
   orderedAnswers: Array<OrderedAnswerType>,
   explanation: string,
 }
+
+export interface FillTheGapType {
+  _id: string,
+  template: string,
+  gappedText: string,
+  falsyGapAnswers: Array<string>,
+  explanation: string,
+}
+
+export interface answerFromAPIType {
+  _id: string,
+  text: string,
+}
+
+export interface QuestionAnswerType {
+  _id: string,
+  isQuestionAnswerMultipleChoiced: boolean,
+  question: string,
+  questionAnswers: Array<answerFromAPIType>,
+}

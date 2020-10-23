@@ -50,6 +50,7 @@ export const IS_SMALL_SCREEN = Platform.select({
 });
 
 export const INPUT_HEIGHT = 40;
+export const GAP_WIDTH = 128;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
 export const PROGRESS_BAR_HEIGHT = 8;
@@ -58,4 +59,4 @@ export const PROGRAM_CELL_WIDTH = IS_SMALL_SCREEN ? 228 : 248;
 export const SMALL_SCREEN_MAX_HEIGHT = 568;
 export const IS_LARGE_SCREEN = SCREEN_HEIGHT > SMALL_SCREEN_MAX_HEIGHT;
 export const TEXT_AREA_HEIGHT = IS_LARGE_SCREEN ? 192 : 80;
-export const CARD_MEDIA_MAX_HEIGHT = 96;
+export const CARD_MEDIA_MAX_HEIGHT = 152;
