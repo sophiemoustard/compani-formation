@@ -35,13 +35,8 @@ export interface FillTheGapAnswers {
   visible: boolean,
 }
 
-<<<<<<< HEAD
 const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillTheGap) => {
-  const goodAnswers = useRef<Array<string>>([]);
-=======
-const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillTheGap) => {
   const [goodAnswers, setGoodAnswers] = useState<Array<string>>([]);
->>>>>>> COM-1519-refacto - Change from useRef to useState for goodAnswers
   const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
@@ -54,25 +49,18 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   });
 
   useEffect(() => {
-<<<<<<< HEAD
     if (!isLoading && !isValidated) {
-      goodAnswers.current = card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) ||
-      [];
-      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current])
-        .map(proposition => ({ text: proposition, visible: true })));
-      setSelectedAnswers(goodAnswers.current.map(() => ''));
-=======
-    if (isFocused && !isValidated) {
       setGoodAnswers(card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) || []);
->>>>>>> COM-1519-refacto - Change from useRef to useState for goodAnswers
     }
   }, [card, isLoading, isValidated]);
 
   useEffect(() => {
-    setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers])
-      .map(proposition => ({ text: proposition, visible: true })));
-    setSelectedAnswers(goodAnswers.map(() => ''));
-  }, [card, goodAnswers]);
+    if (!isLoading && !isValidated) {
+      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers])
+        .map(proposition => ({ text: proposition, visible: true })));
+      setSelectedAnswers(goodAnswers.map(() => ''));
+    }
+  }, [card, goodAnswers, isLoading, isValidated]);
 
   useEffect(() => {
     if (!isValidated) return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
