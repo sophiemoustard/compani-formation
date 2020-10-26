@@ -15,7 +15,7 @@ import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
-import FillTheGapPropositions from '../../../../components/cards/FillTheGapPropositions';
+import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -124,7 +124,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
           <FillTheGapQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
-          <FillTheGapPropositions isValidated={isValidated} propositions={propositions}
+          <FillTheGapPropositionList isValidated={isValidated} propositions={propositions}
             setProposition={setAnswersAndPropositions} renderContent={renderContent} />
         </DraxProvider>
       </ScrollView>

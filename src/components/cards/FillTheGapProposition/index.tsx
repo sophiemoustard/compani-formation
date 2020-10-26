@@ -12,12 +12,7 @@ interface FillTheGapPropositionProps {
   isSelected: boolean,
 }
 
-const FillTheGapProposition = ({
-  item,
-  isGoodAnswer,
-  isValidated,
-  isSelected,
-}: FillTheGapPropositionProps) => {
+const FillTheGapProposition = ({ item, isGoodAnswer, isValidated, isSelected }: FillTheGapPropositionProps) => {
   const [color, setColor] = useState<string>(GREY[200]);
 
   useEffect(() => {

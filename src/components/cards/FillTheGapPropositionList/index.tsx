@@ -4,19 +4,18 @@ import { DraxView } from 'react-native-drax';
 import { FillTheGapAnswers } from '../../../screens/courses/cardTemplates/FillTheGapCard';
 import styles from './styles';
 
-interface FillTheGapPropositionsProps {
+interface FillTheGapPropositionListProps {
   isValidated: boolean,
   propositions: Array<FillTheGapAnswers>
   setProposition: (event: any) => void,
   renderContent: (isVisible, item, text) => JSX.Element,
 }
 
-const FillTheGapPropositions = ({
-  isValidated,
-  propositions,
+const FillTheGapPropositionList = ({
+  isValidated, propositions,
   setProposition,
   renderContent,
-}: FillTheGapPropositionsProps) => (
+}: FillTheGapPropositionListProps) => (
   <View style={styles.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
     {propositions.map((proposition, idx) =>
       <DraxView style={styles.gapContainer} key={`proposition${idx}`}
@@ -25,4 +24,4 @@ const FillTheGapPropositions = ({
   </View>
 );
 
-export default FillTheGapPropositions;
+export default FillTheGapPropositionList;
