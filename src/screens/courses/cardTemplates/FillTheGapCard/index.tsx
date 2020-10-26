@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -110,9 +110,7 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
     <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
       <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
-        isGoodAnswer={Number.isInteger(idx)
-          ? goodAnswers.indexOf(text) === idx
-          : goodAnswers.includes(text)} />
+        isGoodAnswer={Number.isInteger(idx) ? goodAnswers.indexOf(text) === idx : goodAnswers.includes(text)} />
     </DraxView>;
 
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
