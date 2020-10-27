@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
+import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
@@ -21,6 +22,7 @@ interface AboutProps {
 
 const About = ({ route, navigation, loggedUserId }: AboutProps) => {
   const { program } = route.params;
+  const { signOut } = useContext(AuthContext);
 
   const programImage = get(program, 'image.link') || '';
   const programName = get(program, 'name') || '';
@@ -42,8 +44,12 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
   );
 
   const subscribeAndGoToCourseProfile = async () => {
-    if (!hasAlreadySubscribed) await Courses.addELearningCourseTrainee(course._id);
-    goToCourse(course._id);
+    try {
+      if (!hasAlreadySubscribed) await Courses.addELearningCourseTrainee(course._id);
+      goToCourse(course._id);
+    } catch (e) {
+      if (e.status === 401) signOut();
+    }
   };
 
   const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
