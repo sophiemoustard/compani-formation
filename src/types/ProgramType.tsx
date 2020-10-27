@@ -1,4 +1,4 @@
-import { SubProgramType } from "./SubProgramType";
+import { SubProgramType } from './SubProgramType';
 
 export interface ProgramType {
   _id: string,
