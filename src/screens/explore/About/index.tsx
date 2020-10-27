@@ -7,6 +7,8 @@ import styles from './styles';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { ProgramType } from '../../../types/ProgramType';
+import Button from '../../../components/form/Button';
+import Courses from '../../../api/courses';
 
 interface AboutProps {
   route: { params: { program: ProgramType } },
@@ -23,6 +25,12 @@ const About = ({ route }: AboutProps) => {
     : require('../../../../assets/images/authentication_background_image.jpg');
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
+  };
+
+  const subscribe = async () => {
+    const subProgram = program.subPrograms ? program.subPrograms[0] : null;
+    const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+    await Courses.addELearningCourseTrainee(course._id);
   };
 
   return (
@@ -43,6 +51,7 @@ const About = ({ route }: AboutProps) => {
           <Text>{programDescription}</Text>
         </View>
       </View>
+      <Button style={styles.footer} caption="Commencer" onPress={subscribe} />
     </ScrollView>
   );
 };
