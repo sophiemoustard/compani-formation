@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import styles from './styles';
@@ -10,13 +11,15 @@ import { NavigationType } from '../../../types/NavigationType';
 import { ProgramType } from '../../../types/ProgramType';
 import Button from '../../../components/form/Button';
 import Courses from '../../../api/courses';
+import { getLoggedUserId } from '../../../store/main/selectors';
 
 interface AboutProps {
   route: { params: { program: ProgramType } },
   navigation: NavigationType,
+  loggedUserId: string,
 }
 
-const About = ({ route, navigation }: AboutProps) => {
+const About = ({ route, navigation, loggedUserId }: AboutProps) => {
   const { program } = route.params;
 
   const programImage = get(program, 'image.link') || '';
@@ -25,6 +28,10 @@ const About = ({ route, navigation }: AboutProps) => {
   const source = programImage
     ? { uri: programImage }
     : require('../../../../assets/images/authentication_background_image.jpg');
+  const subProgram = program.subPrograms ? program.subPrograms[0] : null;
+  const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+  const hasAlreadySubscribed = course.trainees.map(t => t._id).includes(loggedUserId);
+
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
   };
@@ -35,11 +42,11 @@ const About = ({ route, navigation }: AboutProps) => {
   );
 
   const subscribeAndGoToCourseProfile = async () => {
-    const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-    const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-    await Courses.addELearningCourseTrainee(course._id);
+    if (!hasAlreadySubscribed) await Courses.addELearningCourseTrainee(course._id);
     goToCourse(course._id);
   };
+
+  const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
@@ -59,9 +66,11 @@ const About = ({ route, navigation }: AboutProps) => {
           <Text>{programDescription}</Text>
         </View>
       </View>
-      <Button style={styles.footer} caption="Commencer" onPress={subscribeAndGoToCourseProfile} />
+      <Button style={styles.footer} caption={buttonCaption} onPress={subscribeAndGoToCourseProfile} />
     </ScrollView>
   );
 };
 
-export default About;
+const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+
+export default connect(mapStateToProps)(About);
