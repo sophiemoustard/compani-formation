@@ -38,7 +38,7 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
   };
 
-  const goToCourse = id => navigation?.navigate(
+  const goToCourse = id => navigation.navigate(
     'Home',
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
   );
