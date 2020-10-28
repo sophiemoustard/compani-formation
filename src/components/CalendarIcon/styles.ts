@@ -59,6 +59,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: PINK[500],
   },
+  datesLengthContainer: {
+    position: 'absolute',
+    bottom: '-10%',
+    left: '75%',
+    borderRadius: BORDER_RADIUS.MD,
+    borderWidth: BORDER_WIDTH,
+    borderColor: PINK[500],
+    backgroundColor: WHITE,
+  },
+  datesLength: {
+    ...NUNITO_REGULAR.SM,
+    color: PINK[500],
+    paddingHorizontal: 5,
+  },
 });
 
 export default styles;
