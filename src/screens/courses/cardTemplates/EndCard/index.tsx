@@ -14,6 +14,7 @@ import styles from './styles';
 
 interface EndCardProps {
   courseId: String,
+  isCourse: boolean,
   activity: ActivityType,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
   score: number,
@@ -23,6 +24,7 @@ interface EndCardProps {
 
 const EndCard = ({
   courseId,
+  isCourse,
   activity,
   questionnaireAnswersList,
   score,
@@ -41,8 +43,8 @@ const EndCard = ({
       setCardIndex(null);
     }
 
-    if (isFocused) fetchData();
-  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score]);
+    if (isFocused && isCourse) fetchData();
+  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });

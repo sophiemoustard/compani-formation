@@ -76,9 +76,9 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
-
-  const programImage = get(course, 'subProgram.program.image.link') || '';
-  const programName = get(course, 'subProgram.program.name') || '';
+  const data = route.params.isCourse ? course?.subProgram : subProgram;
+  const programImage = get(data, 'program.image.link') || '';
+  const programName = get(data, 'program.name') || '';
   const source = programImage
     ? { uri: programImage }
     : require('../../../../assets/images/authentication_background_image.jpg');
@@ -89,7 +89,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
 
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} navigation={navigation}
-        courseId={route.params.courseId} />;
+        courseId={route.params.courseId} isCourse={route.params.isCourse} />;
     }
 
     return null;
@@ -109,13 +109,12 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
-      {course &&
-      <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
-        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
-      }
-      {subProgram &&
-      <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
-        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      {course
+        ? <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+
+        : <FlatList style={styles.flatList} data={subProgram?.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
       }
     </ScrollView>
   );

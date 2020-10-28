@@ -16,6 +16,7 @@ import MainActions from '../../../../store/main/actions';
 interface StartCardProps {
   title: string,
   courseId: string,
+  isCourse: boolean,
   resetActivityReducer: () => void,
   activity: ActivityType,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
@@ -25,6 +26,7 @@ interface StartCardProps {
 const StartCard = ({
   title,
   courseId,
+  isCourse,
   resetActivityReducer,
   activity,
   setQuestionnaireAnswersList,
@@ -47,10 +49,10 @@ const StartCard = ({
 
   useEffect(() => {
     async function fetchData() { await getActivityHistory(); }
-    fetchData();
+    if (isCourse) fetchData();
     setStatusBarVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isCourse]);
 
   const goBack = () => {
     resetActivityReducer();

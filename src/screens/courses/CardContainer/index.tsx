@@ -92,11 +92,12 @@ const CardContainer = ({
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard title={activity.name} courseId={route.params.courseId}/>}
+            {() => <StartCard title={activity.name} courseId={route.params.courseId}
+              isCourse={route.params.isCourse} />}
           </Tab.Screen>
           {activity.cards.map((card, index) => renderCardScreen(index))}
           <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
-            {() => <EndCard courseId={route.params.courseId} />}
+            {() => <EndCard courseId={route.params.courseId} isCourse={route.params.isCourse} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>

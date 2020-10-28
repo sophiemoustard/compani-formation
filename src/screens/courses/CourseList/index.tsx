@@ -124,10 +124,16 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   );
 
   const renderSeparator = () => <View style={styles.separator} />;
+
   const renderItem = (course, isCourse) => <ProgramCell program={get(course, 'subProgram.program') || {}}
     onPress={() => goToCourse(course._id, isCourse)} />;
 
+<<<<<<< HEAD
   const nextSteps = formatNextSteps(courses);
+=======
+  const nextStep = formatNextSteps(courses);
+  const formatedSubPrograms = formatElearningDraftSubPrograms(elearningDraftSubPrograms);
+>>>>>>> COM-1598: can visualize test subprograms
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -164,7 +170,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
               <Text style={styles.coursesCount}>{courses.length}</Text>
             </View>
           </View>
-          <FlatList horizontal data={formatElearningDraftSubPrograms(elearningDraftSubPrograms)}
+          <FlatList horizontal data={formatedSubPrograms}
             keyExtractor={item => item._id}
             renderItem={({ item }) => renderItem(item, false)} contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
