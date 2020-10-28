@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   dateContainer: {
-    height: 60,
+    height: 72,
     // Do not merge the borderWidths params, avoid an unwanted line in android
     borderTopWidth: BORDER_WIDTH,
     borderBottomWidth: BORDER_WIDTH,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: PADDING.MD,
     justifyContent: 'center',
-    height: 15,
+    height: 20,
   },
   dayOfWeek: {
     ...NUNITO_SEMI.XS,
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   dayOfMonth: {
-    ...NUNITO_REGULAR.MD,
-    height: 22,
+    ...NUNITO_REGULAR.XL,
+    height: 29,
     paddingHorizontal: PADDING.SM,
   },
   month: {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   datesLength: {
     ...NUNITO_REGULAR.SM,
     color: PINK[500],
-    paddingHorizontal: 5,
+    paddingHorizontal: 6,
   },
   finishedContainer: {
     position: 'absolute',
