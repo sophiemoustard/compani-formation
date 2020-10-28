@@ -32,7 +32,7 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
     : require('../../../../assets/images/authentication_background_image.jpg');
   const subProgram = program.subPrograms ? program.subPrograms[0] : null;
   const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-  const hasAlreadySubscribed = course.trainees.map(t => t._id).includes(loggedUserId);
+  const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
 
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
@@ -45,7 +45,7 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      if (!hasAlreadySubscribed) await Courses.addELearningCourseTrainee(course._id);
+      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(course._id);
       goToCourse(course._id);
     } catch (e) {
       if (e.status === 401) signOut();
