@@ -1,4 +1,5 @@
 import Users from '../api/authentication';
+import User from '../api/users';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
@@ -30,6 +31,12 @@ const authReducer = (state: StateType, actions): StateType => {
   }
 };
 
+async function setUserRole() {
+  const userId = await asyncStorage.getUserId();
+  const user = await User.getById(userId);
+  await asyncStorage.setUserRole(user.role.vendor.name);
+}
+
 const signIn = dispatch => async ({ email, password }) => {
   try {
     if (!email || !password) return;
@@ -40,6 +47,7 @@ const signIn = dispatch => async ({ email, password }) => {
     await asyncStorage.setAlenviToken(authentication.token);
     await asyncStorage.setRefreshToken(authentication.refreshToken);
     await asyncStorage.setUserId(authentication.user._id);
+    setUserRole();
 
     dispatch({ type: 'signin', payload: authentication.token });
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });

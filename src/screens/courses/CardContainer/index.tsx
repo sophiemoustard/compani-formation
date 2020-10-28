@@ -14,7 +14,7 @@ import Actions from '../../../store/activities/actions';
 import styles from './styles';
 
 interface CardContainerProps {
-  route: { params: { activityId: string, courseId: string } },
+  route: { params: { activityId: string, courseId: string, isCourse: boolean } },
   navigation: { navigate: (path: string, params: object) => {} },
   activity: ActivityType,
   cardIndex: number | null,

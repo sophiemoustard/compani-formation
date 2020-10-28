@@ -17,6 +17,7 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
+import SubPrograms from '../../../api/subPrograms';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import OnSiteCell from '../../../components/steps/OnSiteCell';
@@ -27,26 +28,36 @@ import commonStyles from '../../../styles/common';
 import { CourseType } from '../../../types/CourseType';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
+import { SubProgramType } from '../../../types/SubProgramType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
-  route: { params: { courseId: string } },
+  route: { params: { courseId: string, isCourse: boolean} },
   navigation: NavigationType,
   setStatusBarVisible: (boolean) => void,
 }
 
 const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
+  const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
     try {
-      const fetchedCourse = await Courses.getCourse(route.params.courseId);
-      setCourse(fetchedCourse);
+      if (route.params.isCourse) {
+        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        setCourse(fetchedCourse);
+        setSubProgram(null);
+      } else {
+        const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.courseId);
+        setSubProgram(fetchedSubProgram);
+        setCourse(null);
+      }
     } catch (e) {
       if (e.status === 401) signOut();
       setCourse(null);
+      setSubProgram(null);
     }
   };
 
@@ -86,7 +97,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  return course && (
+  return (course || subProgram) && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>}>
@@ -98,8 +109,14 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
+      {course &&
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      }
+      {subProgram &&
+      <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
+        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      }
     </ScrollView>
   );
 };

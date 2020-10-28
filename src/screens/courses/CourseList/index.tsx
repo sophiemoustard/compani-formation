@@ -7,6 +7,7 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../../api/courses';
 import NextStepCell from '../../../components/steps/NextStepCell';
+import asyncStorage from '../../../core/helpers/asyncStorage';
 import ProgramCell from '../../../components/ProgramCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
@@ -14,6 +15,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
 import styles from './styles';
+import subPrograms from '../../../api/subPrograms';
 
 interface CourseListProps {
   navigation: NavigationType,
@@ -48,8 +50,14 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .filter(step => step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
+const formatElearningDraftSubPrograms = subprograms => subprograms.map(subProgram => ({
+  _id: subProgram._id, subProgram,
+}));
+
 const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
+  const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
+  const [userRole, setUserRole] = useState<string>('');
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
@@ -60,6 +68,28 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
       if (e.status === 401) signOut();
       console.error(e);
       setCourses(() => []);
+    }
+  };
+
+  const getElearningDraftSubPrograms = async () => {
+    try {
+      const fetchedSubPrograms = await subPrograms.getELearningDraftSubPrograms();
+      setElearningDraftSubPrograms(fetchedSubPrograms);
+    } catch (e) {
+      if (e.status === 401) signOut();
+      console.error(e);
+      setElearningDraftSubPrograms(() => []);
+    }
+  };
+
+  const getRole = async () => {
+    try {
+      const fetchedRole = await asyncStorage.getUserRole();
+      setUserRole(fetchedRole);
+    } catch (e) {
+      if (e.status === 401) signOut();
+      console.error(e);
+      setUserRole(() => '');
     }
   };
 
@@ -76,14 +106,26 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
-  const goToCourse = id => navigation?.navigate(
+  useEffect(() => {
+    async function fetchData() { getElearningDraftSubPrograms(); }
+    if (loggedUserId || isFocused) fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedUserId, isFocused]);
+
+  useEffect(() => {
+    async function fetchData() { getRole(); }
+    if (loggedUserId) fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedUserId]);
+
+  const goToCourse = (id, isCourse) => navigation?.navigate(
     'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id, isCourse } } }
   );
 
   const renderSeparator = () => <View style={styles.separator} />;
-  const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => goToCourse(course._id)} />;
+  const renderItem = (course, isCourse) => <ProgramCell program={get(course, 'subProgram.program') || {}}
+    onPress={() => goToCourse(course._id, isCourse)} />;
 
   const nextSteps = formatNextSteps(courses);
 
@@ -110,10 +152,24 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
             <Text style={styles.coursesCount}>{courses.length}</Text>
           </View>
         </View>
-        <FlatList horizontal data={courses} keyExtractor={item => item._id} renderItem={({ item }) => renderItem(item)}
-          contentContainerStyle={styles.courseContainer} showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={renderSeparator} />
+        <FlatList horizontal data={courses} keyExtractor={item => item._id}
+          renderItem={({ item }) => renderItem(item, true)} contentContainerStyle={styles.courseContainer}
+          showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
       </View>
+      {(userRole === 'vendor_admin' || userRole === 'training_organisation_manager') &&
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
+            <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
+              <Text style={styles.coursesCount}>{courses.length}</Text>
+            </View>
+          </View>
+          <FlatList horizontal data={formatElearningDraftSubPrograms(elearningDraftSubPrograms)}
+            keyExtractor={item => item._id}
+            renderItem={({ item }) => renderItem(item, false)} contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+        </View>
+      }
     </ScrollView>
   );
 };
