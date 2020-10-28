@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../../styles/metrics';
-import { PINK, WHITE, GREY } from '../../styles/colors';
+import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
+import { PINK, WHITE, GREY, GREEN } from '../../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -72,6 +72,32 @@ const styles = StyleSheet.create({
     ...NUNITO_REGULAR.SM,
     color: PINK[500],
     paddingHorizontal: 5,
+  },
+  finishedContainer: {
+    position: 'absolute',
+    bottom: '-10%',
+    left: '75%',
+    width: ICON.XL,
+    height: ICON.XL,
+    backgroundColor: GREEN[600],
+    borderRadius: BORDER_RADIUS.LG,
+    borderWidth: 4 * BORDER_WIDTH,
+    borderColor: GREEN[200],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inProgressContainer: {
+    position: 'absolute',
+    bottom: '-10%',
+    left: '75%',
+    width: ICON.MD,
+    height: ICON.MD,
+    backgroundColor: WHITE,
+    borderRadius: BORDER_RADIUS.LG,
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY[200],
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
