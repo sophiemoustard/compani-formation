@@ -10,47 +10,37 @@ interface CalendarIconProps {
 }
 
 const CalendarIcon = ({ dates }: CalendarIconProps) => {
-  let daysOfWeek;
-  let daysOfMonth;
-  let months;
+  let dayOfWeek;
+  let dayOfMonth;
+  let month;
   const dateFormat = 'DD/MM/YYY';
   if (dates.length) {
     const datesFormatted = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
 
-    daysOfWeek = capitalize(moment(datesFormatted[0], dateFormat).format('ddd'));
-    daysOfMonth = capitalize(moment(datesFormatted[0], dateFormat).format('D'));
-    months = capitalize(moment(datesFormatted[0], dateFormat).format('MMM'));
-
-    if (datesFormatted.length > 1) {
-      daysOfWeek += `, ${capitalize(moment(datesFormatted[1], dateFormat).format('ddd'))}`;
-      daysOfMonth += `, ${capitalize(moment(datesFormatted[1], dateFormat).format('D'))}`;
-      const month = capitalize(moment(datesFormatted[1], dateFormat).format('MMM'));
-      if (!months.match(month)) months += `, ${month}`;
-    }
-
-    if (datesFormatted.length > 2) {
-      daysOfWeek += '...';
-      daysOfMonth += '...';
-      const monthsSet = [...new Set(datesFormatted.map(date => capitalize(moment(date, dateFormat).format('MMM'))))];
-      if (monthsSet.length > 2) months += '...';
-    }
+    dayOfWeek = capitalize(moment(datesFormatted[0], dateFormat).format('ddd'));
+    dayOfMonth = capitalize(moment(datesFormatted[0], dateFormat).format('D'));
+    month = capitalize(moment(datesFormatted[0], dateFormat).format('MMM'));
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.dateContainer}>
-        <View style={styles.dayOfWeekContainer}>
-          <Text style={styles.dayOfWeek}>{dates.length ? daysOfWeek : '' }</Text>
-        </View>
         {dates.length
           ? <>
-            <Text style={styles.dayOfMonth}>{daysOfMonth}</Text>
-            <Text style={styles.month}>{months}</Text>
+            <View style={styles.dayOfWeekContainer}>
+              <Text style={styles.dayOfWeek}>{dayOfWeek}</Text>
+            </View>
+            <Text style={styles.dayOfMonth}>{dayOfMonth}</Text>
+            <Text style={styles.month}>{month}</Text>
           </>
-          : <Text style={styles.toPlan}>?</Text>
-        }
+          : <>
+            <View style={styles.dayOfWeekContainer} />
+            <Text style={styles.toPlan}>?</Text>
+          </> }
       </View>
-      <Shadow customStyle={styles.shadow} />
+      {dates.length > 1
+        ? <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
+        : <Shadow customStyle={styles.shadow} />}
     </View>
   );
 };

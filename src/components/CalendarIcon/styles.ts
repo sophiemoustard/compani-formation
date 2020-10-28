@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: PADDING.MD,
     justifyContent: 'center',
+    height: 15,
   },
   dayOfWeek: {
     ...NUNITO_SEMI.XS,
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   month: {
     ...NUNITO_SEMI.SM,
     color: PINK[500],
-    height: 18,
+    height: 23,
     paddingHorizontal: PADDING.SM,
   },
   toPlan: {
@@ -51,6 +52,12 @@ const styles = StyleSheet.create({
   shadow: {
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.SM,
+  },
+  manyDatesShadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
+    borderWidth: 1,
+    borderColor: PINK[500],
   },
 });
 
