@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  inProgressContainer: {
+  progressContainer: {
     position: 'absolute',
     bottom: '-10%',
     left: '75%',
@@ -98,6 +98,10 @@ const styles = StyleSheet.create({
     borderColor: GREY[200],
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  progress: {
+    width: ICON.XS,
+    height: ICON.XS,
   },
 });
 

@@ -31,7 +31,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
     month = capitalize(moment(date, dateFormat).format('MMM'));
   }
 
-  const renderInfo = () => {
+  const renderProgress = () => {
     if (!progress && dates.length > 1) {
       return <View style={styles.datesLengthContainer}>
         <Text style={styles.datesLength}>{dates.length}</Text>
@@ -39,8 +39,8 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
     }
     if (!progress) return null;
     if (progress < 1) {
-      return <View style={styles.inProgressContainer}>
-        <ProgressCircle style={{ height: ICON.XS, widht: ICON.XS }} progress={progress} progressColor={YELLOW[500]}
+      return <View style={styles.progressContainer}>
+        <ProgressCircle style={styles.progress} progress={progress} progressColor={YELLOW[500]}
           strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
       </View>;
     }
@@ -70,7 +70,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
           <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
         </>
         : <Shadow customStyle={styles.shadow} />}
-      {renderInfo()}
+      {renderProgress()}
     </View>
   );
 };

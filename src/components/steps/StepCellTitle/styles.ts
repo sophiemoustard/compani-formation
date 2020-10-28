@@ -6,7 +6,7 @@ import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
-    marginLeft: MARGIN.MD,
+    marginLeft: MARGIN.LG,
   },
   stepType: {
     ...NUNITO_SEMI.XS,
