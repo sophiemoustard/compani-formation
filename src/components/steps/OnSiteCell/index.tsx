@@ -34,7 +34,7 @@ const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
         onRequestClose={closeModal} />
       <View style={styles.container}>
         <TouchableOpacity onPress={openModal}>
-          <CalendarIcon dates={dates} />
+          <CalendarIcon slots={dates} />
         </TouchableOpacity>
         <StepCellTitle index={index} step={step} />
         <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}

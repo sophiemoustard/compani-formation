@@ -10,21 +10,22 @@ import { ICON, BORDER_RADIUS } from '../../styles/metrics';
 import { YELLOW, WHITE } from '../../styles/colors';
 
 interface CalendarIconProps {
-  dates: Array<Date>,
+  slots: Array<Date>,
 }
 
-const CalendarIcon = ({ dates }: CalendarIconProps) => {
+const CalendarIcon = ({ slots }: CalendarIconProps) => {
   let dayOfWeek;
   let dayOfMonth;
   let month;
   const dateFormat = 'DD/MM/YYY';
   let progress = 0;
-  if (dates.length) {
-    const datesFormatted = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
-    const nextDates = datesFormatted.filter(date => moment().isSameOrBefore(moment(date, dateFormat), 'day'));
-    const date = nextDates.length ? nextDates[0] : datesFormatted[0];
 
-    progress = 1 - nextDates.length / datesFormatted.length;
+  if (slots.length) {
+    const dates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
+    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot, 'day'));
+    const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : dates[0];
+
+    progress = 1 - nextSlots.length / slots.length;
 
     dayOfWeek = capitalize(moment(date, dateFormat).format('ddd'));
     dayOfMonth = capitalize(moment(date, dateFormat).format('D'));
@@ -32,9 +33,9 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
   }
 
   const renderProgress = () => {
-    if (!progress && dates.length > 1) {
+    if (!progress && slots.length > 1) {
       return <View style={styles.datesLengthContainer}>
-        <Text style={styles.datesLength}>{dates.length}</Text>
+        <Text style={styles.datesLength}>{slots.length}</Text>
       </View>;
     }
     if (!progress) return null;
@@ -52,7 +53,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.dateContainer}>
-        {dates.length
+        {slots.length
           ? <>
             <View style={styles.dayOfWeekContainer}>
               <Text style={styles.dayOfWeek}>{dayOfWeek}</Text>
@@ -65,7 +66,7 @@ const CalendarIcon = ({ dates }: CalendarIconProps) => {
             <Text style={styles.toPlan}>?</Text>
           </> }
       </View>
-      {dates.length > 1
+      {slots.length > 1
         ? <>
           <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
         </>

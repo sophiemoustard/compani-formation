@@ -24,7 +24,7 @@ const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
 
   return (
     <View style={styles.container}>
-      <CalendarIcon dates={dates} />
+      <CalendarIcon slots={dates} />
       <StepCellTitle index={stepIndex} step={nextSlotsStep} />
     </View>
   );
