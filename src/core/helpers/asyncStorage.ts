@@ -50,10 +50,6 @@ const setUserId = async (id: string): Promise<void> => AsyncStorage.setItem('use
 
 const removeUserId = async (): Promise<void> => AsyncStorage.removeItem('user_id');
 
-const setUserRole = async (role: string): Promise<void> => AsyncStorage.setItem('role', role);
-
-const getUserRole = async (): Promise<any | null> => AsyncStorage.getItem('role');
-
 export default {
   isTokenValid,
   getAlenviToken,
@@ -65,6 +61,4 @@ export default {
   getUserId,
   setUserId,
   removeUserId,
-  setUserRole,
-  getUserRole,
 };

@@ -7,19 +7,20 @@ import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../../api/courses';
 import NextStepCell from '../../../components/steps/NextStepCell';
-import asyncStorage from '../../../core/helpers/asyncStorage';
 import ProgramCell from '../../../components/ProgramCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
-import { getLoggedUserId } from '../../../store/main/selectors';
+import { getLoggedUserId, getUserRole } from '../../../store/main/selectors';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
 import styles from './styles';
 import subPrograms from '../../../api/subPrograms';
+import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 
 interface CourseListProps {
   navigation: NavigationType,
   loggedUserId: string | null,
+  userRole: string | null,
 }
 
 const formatFutureSlot = (slotsSorted, nextSlots) => ({
@@ -54,10 +55,9 @@ const formatElearningDraftSubPrograms = subprograms => subprograms.map(subProgra
   _id: subProgram._id, subProgram,
 }));
 
-const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
+const CourseList = ({ navigation, loggedUserId, userRole }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
-  const [userRole, setUserRole] = useState<string>('');
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
@@ -82,17 +82,6 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
     }
   };
 
-  const getRole = async () => {
-    try {
-      const fetchedRole = await asyncStorage.getUserRole();
-      setUserRole(fetchedRole);
-    } catch (e) {
-      if (e.status === 401) signOut();
-      console.error(e);
-      setUserRole(() => '');
-    }
-  };
-
   useEffect(() => {
     async function fetchData() { getCourses(); }
     if (loggedUserId) fetchData();
@@ -108,15 +97,9 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
 
   useEffect(() => {
     async function fetchData() { getElearningDraftSubPrograms(); }
-    if (loggedUserId || isFocused) fetchData();
+    if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
-
-  useEffect(() => {
-    async function fetchData() { getRole(); }
-    if (loggedUserId) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId]);
 
   const goToCourse = (id, isCourse) => navigation?.navigate(
     'Home',
@@ -162,7 +145,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
           renderItem={({ item }) => renderItem(item, true)} contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
       </View>
-      {(userRole === 'vendor_admin' || userRole === 'training_organisation_manager') &&
+      {(userRole === VENDOR_ADMIN || userRole === TRAINING_ORGANISATION_MANAGER) &&
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
             <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
@@ -170,8 +153,7 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
               <Text style={styles.coursesCount}>{courses.length}</Text>
             </View>
           </View>
-          <FlatList horizontal data={formatedSubPrograms}
-            keyExtractor={item => item._id}
+          <FlatList horizontal data={formatedSubPrograms} keyExtractor={item => item._id}
             renderItem={({ item }) => renderItem(item, false)} contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
         </View>
@@ -180,6 +162,6 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userRole: getUserRole(state) });
 
 export default connect(mapStateToProps)(CourseList);
