@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
   },
+  footer: {
+    margin: MARGIN.XL,
+  },
 });
 
 export default styles;

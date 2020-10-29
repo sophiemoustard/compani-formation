@@ -13,4 +13,8 @@ export default {
     const response = await alenviAxios.get(`${baseURL}/courses/${courseId}/user`);
     return response.data.data.course;
   },
+  registerToELearningCourse: async (courseId) => {
+    const { baseURL } = getEnvVars();
+    await alenviAxios.post(`${baseURL}/courses/${courseId}/register-e-learning`);
+  },
 };
