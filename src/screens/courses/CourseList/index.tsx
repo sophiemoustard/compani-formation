@@ -11,13 +11,16 @@ import ProgramCell from '../../../components/ProgramCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
 import { getLoggedUserId, getUserRole } from '../../../store/main/selectors';
+import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
 import styles from './styles';
 import subPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
+import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface CourseListProps {
+  setIsCourse: (value: boolean) => void,
   navigation: NavigationType,
   loggedUserId: string | null,
   userRole: string | null,
@@ -55,7 +58,7 @@ const formatElearningDraftSubPrograms = subprograms => subprograms.map(subProgra
   _id: subProgram._id, subProgram,
 }));
 
-const CourseList = ({ navigation, loggedUserId, userRole }: CourseListProps) => {
+const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
@@ -101,15 +104,20 @@ const CourseList = ({ navigation, loggedUserId, userRole }: CourseListProps) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToCourse = (id, isCourse) => navigation?.navigate(
+  const goToCourse = id => navigation?.navigate(
     'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id, isCourse } } }
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
   );
 
   const renderSeparator = () => <View style={styles.separator} />;
 
+  const onPressProgramCell = (isCourse, courseId) => {
+    setIsCourse(isCourse);
+    goToCourse(courseId);
+  };
+
   const renderItem = (course, isCourse) => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => goToCourse(course._id, isCourse)} />;
+    onPress={() => onPressProgramCell(isCourse, course._id)} />;
 
 <<<<<<< HEAD
   const nextSteps = formatNextSteps(courses);
@@ -164,4 +172,10 @@ const CourseList = ({ navigation, loggedUserId, userRole }: CourseListProps) => 
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userRole: getUserRole(state) });
 
-export default connect(mapStateToProps)(CourseList);
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
+  setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
+  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseList);

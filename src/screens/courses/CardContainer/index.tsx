@@ -14,7 +14,7 @@ import Actions from '../../../store/activities/actions';
 import styles from './styles';
 
 interface CardContainerProps {
-  route: { params: { activityId: string, courseId: string, isCourse: boolean } },
+  route: { params: { activityId: string, courseId: string } },
   navigation: { navigate: (path: string, params: object) => {} },
   activity: ActivityType,
   cardIndex: number | null,
@@ -92,12 +92,11 @@ const CardContainer = ({
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard title={activity.name} courseId={route.params.courseId}
-              isCourse={route.params.isCourse} />}
+            {() => <StartCard title={activity.name} courseId={route.params.courseId} />}
           </Tab.Screen>
           {activity.cards.map((card, index) => renderCardScreen(index))}
           <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
-            {() => <EndCard courseId={route.params.courseId} isCourse={route.params.isCourse} />}
+            {() => <EndCard courseId={route.params.courseId} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>

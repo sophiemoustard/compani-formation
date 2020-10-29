@@ -28,24 +28,34 @@ import commonStyles from '../../../styles/common';
 import { CourseType } from '../../../types/CourseType';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
+import CoursesActions from '../../../store/courses/actions';
+import { getIsCourse } from '../../../store/courses/selectors';
 import { SubProgramType } from '../../../types/SubProgramType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
-  route: { params: { courseId: string, isCourse: boolean} },
+  route: { params: { courseId: string } },
   navigation: NavigationType,
+  isCourse: boolean,
   setStatusBarVisible: (boolean) => void,
+  resetCourseReducer: () => void,
 }
 
-const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfileProps) => {
+const CourseProfile = ({
+  route,
+  navigation,
+  isCourse,
+  setStatusBarVisible,
+  resetCourseReducer,
+}: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
     try {
-      if (route.params.isCourse) {
+      if (isCourse) {
         const fetchedCourse = await Courses.getCourse(route.params.courseId);
         setCourse(fetchedCourse);
         setSubProgram(null);
@@ -76,20 +86,23 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
-  const data = route.params.isCourse ? course?.subProgram : subProgram;
+  const data = isCourse ? course?.subProgram : subProgram;
   const programImage = get(data, 'program.image.link') || '';
   const programName = get(data, 'program.name') || '';
   const source = programImage
     ? { uri: programImage }
     : require('../../../../assets/images/authentication_background_image.jpg');
-  const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+  const goBack = () => {
+    resetCourseReducer();
+    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+  };
 
   const renderCells = ({ item, index }) => {
     if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course?.slots} index={index} />;
 
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} navigation={navigation}
-        courseId={route.params.courseId} isCourse={route.params.isCourse} />;
+        courseId={route.params.courseId} />;
     }
 
     return null;
@@ -122,6 +135,9 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  resetActivityReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
-export default connect(null, mapDispatchToProps)(CourseProfile);
+const mapStateToProps = state => ({ isCourse: getIsCourse(state) });
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseProfile);

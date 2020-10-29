@@ -11,6 +11,7 @@ import { ActivityType } from '../../../../types/ActivityType';
 import Actions from '../../../../store/activities/actions';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
+import { getIsCourse } from '../../../../store/courses/selectors';
 
 interface EndCardProps {
   courseId: String,
@@ -66,6 +67,7 @@ const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   questionnaireAnswersList: state.activities.questionnaireAnswersList,
   score: state.activities.score,
+  isCourse: getIsCourse(state),
 });
 
 const mapDispatchToProps = dispatch => ({
