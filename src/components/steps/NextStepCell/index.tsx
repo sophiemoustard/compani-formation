@@ -1,7 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import { CourseSlotType } from '../../../types/CourseSlotType';
-import moment from '../../../core/helpers/moment';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
 import styles from './styles';
