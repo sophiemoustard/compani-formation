@@ -20,11 +20,11 @@ interface CourseListProps {
   loggedUserId: string | null,
 }
 
-const formatFutureSlot = nextSlots => ({
+const formatFutureSlot = (slotsSorted, nextSlots) => ({
   firstSlot: nextSlots[0].startDate,
   type: nextSlots[0].step.type,
-  slots: nextSlots.map(s => s.startDate),
-  _id: nextSlots[0]._id,
+  slots: slotsSorted.map(s => s.startDate),
+  _id: slotsSorted[0]._id,
 });
 
 const formatCourseStep = (course) => {
@@ -35,18 +35,17 @@ const formatCourseStep = (course) => {
   return Object.keys(stepSlots)
     .map((stepId) => {
       const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.startDate, 'days'));
-
       const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
 
       return nextSlots.length
-        ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFutureSlot(slotsSorted) }
+        ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFutureSlot(slotsSorted, nextSlots) }
         : null;
     })
     .filter(step => !!step);
 };
 
 const formatNextSteps = courses => courses.map(formatCourseStep).flat()
-  .filter(step => Object.keys(step.slots).length)
+  .filter(step => step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
