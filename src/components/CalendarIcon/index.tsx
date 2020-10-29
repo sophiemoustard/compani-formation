@@ -22,7 +22,7 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
 
   if (slots.length) {
     const dates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
-    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot, 'day'));
+    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
     const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : dates[0];
 
     progress = 1 - nextSlots.length / slots.length;
