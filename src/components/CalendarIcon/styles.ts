@@ -32,11 +32,10 @@ const styles = StyleSheet.create({
   },
   dayOfMonth: {
     ...NUNITO_REGULAR.XL,
-    height: 29,
+    height: 32,
     paddingHorizontal: PADDING.SM,
   },
   toPlan: {
-    height: 52,
     ...NUNITO_REGULAR.XXL,
   },
   month: {
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
   datesLength: {
     ...NUNITO_REGULAR.SM,
     color: PINK[500],
-    paddingHorizontal: 5,
+    paddingHorizontal: PADDING.SM,
   },
   finishedContainer: {
     position: 'absolute',

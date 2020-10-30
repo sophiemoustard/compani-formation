@@ -34,7 +34,7 @@ const formatCourseStep = (course) => {
 
   return Object.keys(stepSlots)
     .map((stepId) => {
-      const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate, 'days'));
+      const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate));
       const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
 
       return nextSlots.length
