@@ -17,6 +17,7 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
+import SubPrograms from '../../../api/subPrograms';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import OnSiteCell from '../../../components/steps/OnSiteCell';
@@ -27,26 +28,46 @@ import commonStyles from '../../../styles/common';
 import { CourseType } from '../../../types/CourseType';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
+import CoursesActions from '../../../store/courses/actions';
+import { getIsCourse } from '../../../store/courses/selectors';
+import { SubProgramType } from '../../../types/SubProgramType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
   route: { params: { courseId: string } },
   navigation: NavigationType,
+  isCourse: boolean,
   setStatusBarVisible: (boolean) => void,
+  resetCourseReducer: () => void,
 }
 
-const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfileProps) => {
+const CourseProfile = ({
+  route,
+  navigation,
+  isCourse,
+  setStatusBarVisible,
+  resetCourseReducer,
+}: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
+  const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
     try {
-      const fetchedCourse = await Courses.getCourse(route.params.courseId);
-      setCourse(fetchedCourse);
+      if (isCourse) {
+        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        setCourse(fetchedCourse);
+        setSubProgram(null);
+      } else {
+        const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.courseId);
+        setSubProgram(fetchedSubProgram);
+        setCourse(null);
+      }
     } catch (e) {
       if (e.status === 401) signOut();
       setCourse(null);
+      setSubProgram(null);
     }
   };
 
@@ -65,13 +86,16 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
-
-  const programImage = get(course, 'subProgram.program.image.link') || '';
-  const programName = get(course, 'subProgram.program.name') || '';
+  const data = isCourse ? course?.subProgram : subProgram;
+  const programImage = get(data, 'program.image.link') || '';
+  const programName = get(data, 'program.name') || '';
   const source = programImage
     ? { uri: programImage }
     : require('../../../../assets/images/authentication_background_image.jpg');
-  const goBack = () => navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+  const goBack = () => {
+    resetCourseReducer();
+    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+  };
 
   const renderCells = ({ item, index }) => {
     if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course?.slots} index={index} />;
@@ -86,7 +110,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  return course && (
+  return (course || subProgram) && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>}>
@@ -98,14 +122,22 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible }: CourseProfile
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
-      <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
-        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      {course
+        ? <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+
+        : <FlatList style={styles.flatList} data={subProgram?.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      }
     </ScrollView>
   );
 };
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
-export default connect(null, mapDispatchToProps)(CourseProfile);
+const mapStateToProps = state => ({ isCourse: getIsCourse(state) });
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseProfile);

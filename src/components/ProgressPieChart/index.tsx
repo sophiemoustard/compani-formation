@@ -15,7 +15,7 @@ const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
   const [progressPercentage, setProgressPercentage] = useState<number>(0);
 
   useEffect(() => {
-    const progress = step.activities?.filter(activity => activity.activityHistories.length > 0).length || 0;
+    const progress = step.activities?.filter(activity => activity.activityHistories?.length > 0).length || 0;
     const maxProgress = step.activities?.length || 0;
     if (maxProgress && progress) setProgressPercentage(progress / maxProgress);
   }, [step]);

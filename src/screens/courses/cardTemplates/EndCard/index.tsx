@@ -11,9 +11,11 @@ import { ActivityType } from '../../../../types/ActivityType';
 import Actions from '../../../../store/activities/actions';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
+import { getIsCourse } from '../../../../store/courses/selectors';
 
 interface EndCardProps {
   courseId: String,
+  isCourse: boolean,
   activity: ActivityType,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
   score: number,
@@ -23,6 +25,7 @@ interface EndCardProps {
 
 const EndCard = ({
   courseId,
+  isCourse,
   activity,
   questionnaireAnswersList,
   score,
@@ -41,8 +44,8 @@ const EndCard = ({
       setCardIndex(null);
     }
 
-    if (isFocused) fetchData();
-  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score]);
+    if (isFocused && isCourse) fetchData();
+  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
@@ -64,6 +67,7 @@ const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   questionnaireAnswersList: state.activities.questionnaireAnswersList,
   score: state.activities.score,
+  isCourse: getIsCourse(state),
 });
 
 const mapDispatchToProps = dispatch => ({
