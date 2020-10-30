@@ -17,7 +17,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import styles from './styles';
 import subPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
-import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface CourseListProps {
   setIsCourse: (value: boolean) => void,
@@ -172,7 +172,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userRole: getUserRole(state) });
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
+const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
   setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
 });
 
