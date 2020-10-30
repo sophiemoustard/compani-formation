@@ -15,7 +15,7 @@ import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
 import styles from './styles';
-import subPrograms from '../../../api/subPrograms';
+import SubPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
@@ -76,7 +76,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
 
   const getElearningDraftSubPrograms = async () => {
     try {
-      const fetchedSubPrograms = await subPrograms.getELearningDraftSubPrograms();
+      const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
       setElearningDraftSubPrograms(fetchedSubPrograms);
     } catch (e) {
       if (e.status === 401) signOut();

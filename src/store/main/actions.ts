@@ -1,6 +1,9 @@
 import {
-  SET_LOGGED_USER, SET_USER_ROLE,
-  SetLoggedUserType, SetUserRoleType, RESET_MAIN_REDUCER,
+  SET_LOGGED_USER,
+  SET_USER_ROLE,
+  SetLoggedUserType,
+  SetUserRoleType,
+  RESET_MAIN_REDUCER,
   SET_STATUS_BAR_VISIBLE,
   SetStatusBarVisibleType,
 } from '../../types/store/MainStoreType';
