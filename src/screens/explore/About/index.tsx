@@ -17,7 +17,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 
 interface AboutProps {
   route: { params: { programId: string } },
-  navigation: NavigationType,
+  navigation: { navigate: (path: string, activityId: any) => {} },
   loggedUserId: string,
 }
 
@@ -28,7 +28,8 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
   const [source, setSource] = useState<ImageSourcePropType>(defaultImg);
   const [programName, setProgramName] = useState<string>('');
   const [programDescription, setProgramDescription] = useState<string>('');
-  const [course, setCourse] = useState<CourseType | null>(null);
+  const [courseId, setCourseId] = useState<string>('');
+  const [firstActivityId, setFirstActivityId] = useState<string>('');
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState<Boolean>(false);
 
   const getProgram = async () => {
@@ -41,9 +42,12 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
       if (programImage) setSource({ uri: programImage });
 
       const subProgram = fetchedProgram.subPrograms ? fetchedProgram.subPrograms[0] : null;
+      if (subProgram.steps.length && subProgram.steps[0].activities?.length) {
+        setFirstActivityId(subProgram.steps[0].activities[0]);
+      }
       const fetchedCourse = subProgram && subProgram.courses ? subProgram.courses[0] : {};
 
-      setCourse(fetchedCourse);
+      setCourseId(fetchedCourse._id);
       setHasAlreadySubscribed(fetchedCourse.trainees.includes(loggedUserId));
     } catch (e) {
       if (e.status === 401) signOut();
@@ -51,7 +55,8 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
       setProgramName('');
       setProgramDescription('');
       setSource(defaultImg);
-      setCourse(null);
+      setCourseId('');
+      setFirstActivityId('');
       setHasAlreadySubscribed(false);
     }
   };
@@ -66,18 +71,20 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
   };
 
-  const goToCourse = id => navigation.navigate(
+  const goToCourse = () => navigation.navigate(
     'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
   );
+
+  const goToFirstActivityId = () => navigation.navigate('CardContainer', { activityId: firstActivityId, courseId });
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
       if (!hasAlreadySubscribed) {
-        await Courses.registerToELearningCourse(course?._id);
+        await Courses.registerToELearningCourse(courseId);
         await getProgram();
-      }
-      goToCourse(course?._id);
+        goToFirstActivityId();
+      } else goToCourse();
     } catch (e) {
       if (e.status === 401) signOut();
     }
