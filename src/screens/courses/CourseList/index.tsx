@@ -21,9 +21,9 @@ interface CourseListProps {
 }
 
 const formatFutureSlot = (slotsSorted, nextSlots) => ({
-  firstSlot: nextSlots[0].startDate,
+  firstSlot: nextSlots[0].endDate,
   type: nextSlots[0].step.type,
-  slots: slotsSorted.map(s => s.startDate),
+  slots: slotsSorted.map(s => s.endDate),
   _id: slotsSorted[0]._id,
 });
 
@@ -34,8 +34,8 @@ const formatCourseStep = (course) => {
 
   return Object.keys(stepSlots)
     .map((stepId) => {
-      const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.startDate, 'days'));
-      const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
+      const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate, 'days'));
+      const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
 
       return nextSlots.length
         ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFutureSlot(slotsSorted, nextSlots) }

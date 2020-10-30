@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ProgressCircle } from 'react-native-svg-charts';
 import { Feather } from '@expo/vector-icons';
@@ -14,40 +14,51 @@ interface CalendarIconProps {
 }
 
 const CalendarIcon = ({ slots }: CalendarIconProps) => {
-  let dayOfWeek;
-  let dayOfMonth;
-  let month;
+  const [dayOfWeek, setDayOfWeek] = useState<string>('');
+  const [dayOfMonth, setDayOfMonth] = useState<string>('');
+  const [month, setMonth] = useState<string>('');
+  const [progress, setProgress] = useState<number>(0);
   const dateFormat = 'DD/MM/YYY';
-  let progress = 0;
 
-  if (slots.length) {
-    const dates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
-    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
-    const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : dates[0];
+  useEffect(() => {
+    if (slots.length) {
+      const dates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
+      const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
+      const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : dates[0];
 
-    progress = 1 - nextSlots.length / slots.length;
+      setProgress(1 - nextSlots.length / slots.length);
 
-    dayOfWeek = capitalize(moment(date, dateFormat).format('ddd'));
-    dayOfMonth = capitalize(moment(date, dateFormat).format('D'));
-    month = capitalize(moment(date, dateFormat).format('MMM'));
-  }
+      setDayOfWeek(capitalize(moment(date, dateFormat).format('ddd')));
+      setDayOfMonth(capitalize(moment(date, dateFormat).format('D')));
+      setMonth(capitalize(moment(date, dateFormat).format('MMM')));
+    }
+  }, [slots]);
 
   const renderProgress = () => {
-    if (!progress && slots.length > 1) {
-      return <View style={styles.datesLengthContainer}>
-        <Text style={styles.datesLength}>{slots.length}</Text>
-      </View>;
+    if (!progress && slots.length <= 1) return null;
+
+    if (!progress) {
+      return (
+        <View style={styles.datesLengthContainer}>
+          <Text style={styles.datesLength}>{slots.length}</Text>
+        </View>
+      );
     }
-    if (!progress) return null;
+
     if (progress < 1) {
-      return <View style={styles.progressContainer}>
-        <ProgressCircle style={styles.progress} progress={progress} progressColor={YELLOW[500]}
-          strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
-      </View>;
+      return (
+        <View style={styles.progressContainer}>
+          <ProgressCircle style={styles.progress} progress={progress} progressColor={YELLOW[500]}
+            strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
+        </View>
+      );
     }
-    return <View style={styles.finishedContainer}>
-      <Feather name='check' size={ICON.XS} color={WHITE} />
-    </View>;
+
+    return (
+      <View style={styles.finishedContainer}>
+        <Feather name='check' size={ICON.XS} color={WHITE} />
+      </View>
+    );
   };
 
   return (
@@ -55,21 +66,17 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
       <View style={styles.dateContainer}>
         {slots.length
           ? <>
-            <View style={styles.dayOfWeekContainer}>
-              <Text style={styles.dayOfWeek}>{dayOfWeek}</Text>
-            </View>
+            <Text style={styles.dayOfWeek}>{dayOfWeek}</Text>
             <Text style={styles.dayOfMonth}>{dayOfMonth}</Text>
             <Text style={styles.month}>{month}</Text>
           </>
           : <>
-            <View style={styles.dayOfWeekContainer} />
+            <View style={styles.dayOfWeek} />
             <Text style={styles.toPlan}>?</Text>
           </> }
       </View>
       {slots.length > 1
-        ? <>
-          <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
-        </>
+        ? <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
         : <Shadow customStyle={styles.shadow} />}
       {renderProgress()}
     </View>

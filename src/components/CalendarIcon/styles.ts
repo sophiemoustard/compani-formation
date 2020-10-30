@@ -22,14 +22,10 @@ const styles = StyleSheet.create({
     paddingBottom: PADDING.SM,
     overflow: 'hidden',
   },
-  dayOfWeekContainer: {
+  dayOfWeek: {
     backgroundColor: PINK[500],
     width: '100%',
-    paddingHorizontal: PADDING.MD,
-    justifyContent: 'center',
-    height: 20,
-  },
-  dayOfWeek: {
+    height: 16,
     ...NUNITO_SEMI.XS,
     color: WHITE,
     textAlign: 'center',
@@ -39,15 +35,14 @@ const styles = StyleSheet.create({
     height: 29,
     paddingHorizontal: PADDING.SM,
   },
+  toPlan: {
+    height: 52,
+    ...NUNITO_REGULAR.XXL,
+  },
   month: {
     ...NUNITO_SEMI.SM,
     color: PINK[500],
-    height: 23,
     paddingHorizontal: PADDING.SM,
-  },
-  toPlan: {
-    ...NUNITO_REGULAR.XL,
-    height: 40,
   },
   shadow: {
     backgroundColor: GREY[200],
@@ -56,13 +51,13 @@ const styles = StyleSheet.create({
   manyDatesShadow: {
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.SM,
-    borderWidth: 1,
+    borderWidth: BORDER_WIDTH,
     borderColor: PINK[500],
   },
   datesLengthContainer: {
     position: 'absolute',
-    bottom: '-10%',
-    left: '75%',
+    bottom: -6,
+    right: -10,
     borderRadius: BORDER_RADIUS.MD,
     borderWidth: BORDER_WIDTH,
     borderColor: PINK[500],
@@ -71,14 +66,14 @@ const styles = StyleSheet.create({
   datesLength: {
     ...NUNITO_REGULAR.SM,
     color: PINK[500],
-    paddingHorizontal: 6,
+    paddingHorizontal: 5,
   },
   finishedContainer: {
     position: 'absolute',
-    bottom: '-10%',
-    left: '75%',
-    width: ICON.XL,
-    height: ICON.XL,
+    bottom: -8,
+    right: -12,
+    width: ICON.MD,
+    height: ICON.MD,
     backgroundColor: GREEN[600],
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: 4 * BORDER_WIDTH,
@@ -88,8 +83,8 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     position: 'absolute',
-    bottom: '-10%',
-    left: '75%',
+    bottom: -8,
+    right: -12,
     width: ICON.MD,
     height: ICON.MD,
     backgroundColor: WHITE,
