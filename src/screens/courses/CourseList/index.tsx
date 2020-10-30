@@ -174,7 +174,6 @@ const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userRo
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CourseList);
