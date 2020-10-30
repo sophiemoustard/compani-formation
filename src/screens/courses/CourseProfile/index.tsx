@@ -38,12 +38,7 @@ interface CourseProfileProps {
   resetCourseReducer: () => void,
 }
 
-const CourseProfile = ({
-  route,
-  navigation,
-  setStatusBarVisible,
-  resetCourseReducer,
-}: CourseProfileProps) => {
+const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const { signOut } = useContext(AuthContext);
 
@@ -88,7 +83,7 @@ const CourseProfile = ({
 
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} navigation={navigation}
-        courseId={route.params.courseId} />;
+        id={route.params.courseId} />;
     }
 
     return null;

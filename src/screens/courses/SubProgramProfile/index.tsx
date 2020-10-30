@@ -37,12 +37,7 @@ interface SubProgramProfileProps {
   resetCourseReducer: () => void,
 }
 
-const SubProgramProfile = ({
-  route,
-  navigation,
-  setStatusBarVisible,
-  resetCourseReducer,
-}: SubProgramProfileProps) => {
+const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const { signOut } = useContext(AuthContext);
 
@@ -85,7 +80,7 @@ const SubProgramProfile = ({
   const renderCells = ({ item, index }) => {
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} navigation={navigation}
-        courseId={route.params.subProgramId} />;
+        id={route.params.subProgramId} />;
     }
 
     return null;

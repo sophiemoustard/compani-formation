@@ -13,15 +13,15 @@ interface ELearningCellProps {
   step: StepType,
   index: number,
   navigation: { navigate: (path: string, activityId: any) => {} },
-  courseId: string,
+  id: string,
 }
 
-const ELearningCell = ({ step, index, navigation, courseId }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
   const renderActivityCell = activity => <ActivityCell activity={activity}
-    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id, courseId })}/>;
+    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id, courseId: id })}/>;
 
   const renderSeparator = () => <View style={styles.separator} />;
 
