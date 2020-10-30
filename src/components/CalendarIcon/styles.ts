@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
   },
   finishedContainer: {
     position: 'absolute',
-    bottom: -8,
-    right: -12,
-    width: ICON.MD,
-    height: ICON.MD,
+    bottom: -6,
+    right: -16,
+    width: ICON.XL,
+    height: ICON.XL,
     backgroundColor: GREEN[600],
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: 4 * BORDER_WIDTH,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -6,
     right: -12,
     width: ICON.MD,
     height: ICON.MD,
