@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -9,30 +9,58 @@ import styles from './styles';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { NavigationType } from '../../../types/NavigationType';
-import { ProgramType } from '../../../types/ProgramType';
+import { CourseType } from '../../../types/CourseType';
 import Button from '../../../components/form/Button';
 import Courses from '../../../api/courses';
+import Programs from '../../../api/programs';
 import { getLoggedUserId } from '../../../store/main/selectors';
 
 interface AboutProps {
-  route: { params: { program: ProgramType } },
+  route: { params: { programId: string } },
   navigation: NavigationType,
   loggedUserId: string,
 }
 
 const About = ({ route, navigation, loggedUserId }: AboutProps) => {
-  const { program } = route.params;
+  const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
+  const { programId } = route.params;
   const { signOut } = useContext(AuthContext);
+  const [source, setSource] = useState<ImageSourcePropType>(defaultImg);
+  const [programName, setProgramName] = useState<string>('');
+  const [programDescription, setProgramDescription] = useState<string>('');
+  const [course, setCourse] = useState<CourseType | null>(null);
+  const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState<Boolean>(false);
 
-  const programImage = get(program, 'image.link') || '';
-  const programName = get(program, 'name') || '';
-  const programDescription = get(program, 'description') || '';
-  const source = programImage
-    ? { uri: programImage }
-    : require('../../../../assets/images/authentication_background_image.jpg');
-  const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-  const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-  const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
+  const getProgram = async () => {
+    try {
+      const fetchedProgram = await Programs.getProgramForUser(programId);
+      const programImage = get(fetchedProgram, 'image.link') || '';
+      setProgramName(fetchedProgram.name || '');
+      setProgramDescription(fetchedProgram.description || '');
+
+      if (programImage) setSource({ uri: programImage });
+
+      const subProgram = fetchedProgram.subPrograms ? fetchedProgram.subPrograms[0] : null;
+      const fetchedCourse = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+
+      setCourse(fetchedCourse);
+      setHasAlreadySubscribed(fetchedCourse.trainees.includes(loggedUserId));
+    } catch (e) {
+      if (e.status === 401) signOut();
+      console.error(e);
+      setProgramName('');
+      setProgramDescription('');
+      setSource(defaultImg);
+      setCourse(null);
+      setHasAlreadySubscribed(false);
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() { getProgram(); }
+    if (loggedUserId) fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedUserId]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
@@ -45,8 +73,11 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(course._id);
-      goToCourse(course._id);
+      if (!hasAlreadySubscribed) {
+        await Courses.registerToELearningCourse(course?._id);
+        await getProgram();
+      }
+      goToCourse(course?._id);
     } catch (e) {
       if (e.status === 401) signOut();
     }

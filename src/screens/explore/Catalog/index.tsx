@@ -40,7 +40,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = program => navigation.navigate(
     'Home',
-    { screen: 'Explore', params: { screen: 'About', params: { program } } }
+    { screen: 'Explore', params: { screen: 'About', params: { programId: program._id } } }
   );
 
   const renderSeparator = () => <View style={styles.separator} />;
