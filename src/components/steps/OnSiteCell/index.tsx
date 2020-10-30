@@ -21,7 +21,7 @@ const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const stepSlots = slots.filter(slot => slot.step === step._id);
   const dates = stepSlots.length
-    ? stepSlots.map(stepSlot => stepSlot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
+    ? stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => moment(a).diff(b, 'days'))
     : [];
   const modalTitle = `Etape ${index + 1} - ${step.name}`;
 
@@ -34,7 +34,7 @@ const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
         onRequestClose={closeModal} />
       <View style={styles.container}>
         <TouchableOpacity onPress={openModal}>
-          <CalendarIcon dates={dates} />
+          <CalendarIcon slots={dates} />
         </TouchableOpacity>
         <StepCellTitle index={index} step={step} />
         <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}

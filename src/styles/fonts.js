@@ -108,6 +108,10 @@ export const NUNITO_SEMI = StyleSheet.create({
 });
 
 export const NUNITO_REGULAR = StyleSheet.create({
+  XXL: {
+    fontSize: 36,
+    fontFamily: 'nunito-regular',
+  },
   XL: {
     fontSize: 24,
     fontFamily: 'nunito-regular',

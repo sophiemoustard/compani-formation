@@ -27,8 +27,8 @@ const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
           <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
         </View>}
       {!!progressPercentage && progressPercentage < 1 &&
-        <View style={styles.inProgressContainer}>
-          <ProgressCircle style={{ height: ICON.XS, width: ICON.XS }} progress={progressPercentage}
+        <View style={styles.progressContainer}>
+          <ProgressCircle style={styles.progress} progress={progressPercentage}
             progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
         </View>}
       {progressPercentage === 1 &&

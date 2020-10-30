@@ -20,36 +20,32 @@ interface CourseListProps {
   loggedUserId: string | null,
 }
 
-const formatFuturSlot = nextSlots => ({
-  firstSlot: nextSlots[0].startDate,
+const formatFutureSlot = (slotsSorted, nextSlots) => ({
+  firstSlot: nextSlots[0].endDate,
   type: nextSlots[0].step.type,
-  slots: groupBy(nextSlots, s => moment(s.startDate).format('DD/MM/YYYY')),
-  _id: nextSlots[0]._id,
+  slots: slotsSorted.map(s => s.endDate),
+  _id: slotsSorted[0]._id,
 });
 
 const formatCourseStep = (course) => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const stepSlots = groupBy(
-    course.slots.filter(s => get(s, 'step._id')),
-    s => s.step._id
-  );
+  const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
   const programName = get(course, 'subProgram.program.name');
 
   return Object.keys(stepSlots)
     .map((stepId) => {
-      const nextSlots = stepSlots[stepId]
-        .filter(slot => moment().isSameOrBefore(slot.startDate, 'days'))
-        .sort((a, b) => moment(a.startDate).diff(b.startDate, 'days'));
+      const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate));
+      const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
 
       return nextSlots.length
-        ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFuturSlot(nextSlots) }
+        ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFutureSlot(slotsSorted, nextSlots) }
         : null;
     })
     .filter(step => !!step);
 };
 
 const formatNextSteps = courses => courses.map(formatCourseStep).flat()
-  .filter(step => Object.keys(step.slots).length)
+  .filter(step => step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
@@ -89,20 +85,20 @@ const CourseList = ({ navigation, loggedUserId }: CourseListProps) => {
   const renderItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
     onPress={() => goToCourse(course._id)} />;
 
-  const nextStep = formatNextSteps(courses);
+  const nextSteps = formatNextSteps(courses);
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      {nextStep.length > 0 &&
+      {nextSteps.length > 0 &&
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
             <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
             <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.nextEventsCount}>{nextStep.length}</Text>
+              <Text style={styles.nextEventsCount}>{nextSteps.length}</Text>
             </View>
           </View>
-          <FlatList horizontal data={nextStep} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
+          <FlatList horizontal data={nextSteps} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
             contentContainerStyle={styles.courseContainer} />
         </View>
