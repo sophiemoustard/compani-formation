@@ -17,6 +17,7 @@ import Catalog from '../screens/explore/Catalog';
 import About from '../screens/explore/About';
 import CourseList from '../screens/courses/CourseList';
 import CourseProfile from '../screens/courses/CourseProfile';
+import SubProgramProfile from '../screens/courses/SubProgramProfile';
 import CardContainer from '../screens/courses/CardContainer';
 import MainActions from '../store/main/actions';
 import Actions from '../store/actions';
@@ -38,6 +39,7 @@ const Courses = () => (
   <CourseStack.Navigator headerMode="none">
     <CourseStack.Screen name="CourseList" component={CourseList} />
     <CourseStack.Screen name="CourseProfile" component={CourseProfile} />
+    <CourseStack.Screen name="SubProgramProfile" component={SubProgramProfile} />
   </CourseStack.Navigator>
 );
 

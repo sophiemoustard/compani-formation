@@ -48,7 +48,13 @@ const EndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    if (isCourse) navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    else {
+      navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: courseId } } }
+      );
+    }
     resetActivityReducer();
   };
 

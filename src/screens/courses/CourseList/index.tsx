@@ -54,10 +54,6 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .filter(step => step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
-const formatElearningDraftSubPrograms = subprograms => subprograms.map(subProgram => ({
-  _id: subProgram._id, subProgram,
-}));
-
 const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
@@ -85,18 +81,13 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
     }
   };
 
-  useEffect(() => {
-    async function fetchData() { getCourses(); }
-    if (loggedUserId) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId]);
-
   const isFocused = useIsFocused();
+
   useEffect(() => {
     async function fetchData() { getCourses(); }
-    if (isFocused) fetchData();
+    if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, [loggedUserId, isFocused]);
 
   useEffect(() => {
     async function fetchData() { getElearningDraftSubPrograms(); }
@@ -104,23 +95,34 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToCourse = id => navigation?.navigate(
-    'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
-  );
+  const goToCourse = (id, isCourse) => {
+    if (isCourse) {
+      navigation?.navigate(
+      'Home',
+      { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
+    );
+    } else {
+      navigation?.navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: id } } }
+      );
+    }
+  };
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  const onPressProgramCell = (isCourse, courseId) => {
+  const onPressProgramCell = (isCourse, id) => {
     setIsCourse(isCourse);
-    goToCourse(courseId);
+    goToCourse(id, isCourse);
   };
 
-  const renderItem = (course, isCourse) => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(isCourse, course._id)} />;
+  const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
+    onPress={() => onPressProgramCell(true, course._id)} />;
+
+  const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
+    onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
   const nextSteps = formatNextSteps(courses);
-  const formatedSubPrograms = formatElearningDraftSubPrograms(elearningDraftSubPrograms);
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -146,7 +148,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
           </View>
         </View>
         <FlatList horizontal data={courses} keyExtractor={item => item._id}
-          renderItem={({ item }) => renderItem(item, true)} contentContainerStyle={styles.courseContainer}
+          renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
       </View>
       {(userRole === VENDOR_ADMIN || userRole === TRAINING_ORGANISATION_MANAGER) &&
@@ -157,8 +159,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
               <Text style={styles.coursesCount}>{courses.length}</Text>
             </View>
           </View>
-          <FlatList horizontal data={formatedSubPrograms} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderItem(item, false)} contentContainerStyle={styles.courseContainer}
+          <FlatList horizontal data={elearningDraftSubPrograms} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderSubProgramItem(item)} contentContainerStyle={styles.courseContainer}
             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
         </View>
       }
