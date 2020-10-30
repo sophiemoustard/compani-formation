@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.SM,
     borderWidth: BORDER_WIDTH,
     borderColor: PINK[500],
+    opacity: 0.6,
+    zIndex: -2,
   },
   datesLengthContainer: {
     position: 'absolute',
@@ -96,6 +98,20 @@ const styles = StyleSheet.create({
   progress: {
     width: ICON.XS,
     height: ICON.XS,
+  },
+  shadowHeader: {
+    backgroundColor: PINK[500],
+    opacity: 0.6,
+    width: '100%',
+    height: 16,
+    position: 'absolute',
+    top: 3,
+    left: 3,
+    right: -3,
+    bottom: -3,
+    borderTopLeftRadius: BORDER_RADIUS.SM,
+    borderTopRightRadius: BORDER_RADIUS.SM,
+    zIndex: -1,
   },
 });
 
