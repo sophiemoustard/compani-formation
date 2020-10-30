@@ -119,12 +119,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
   const renderItem = (course, isCourse) => <ProgramCell program={get(course, 'subProgram.program') || {}}
     onPress={() => onPressProgramCell(isCourse, course._id)} />;
 
-<<<<<<< HEAD
   const nextSteps = formatNextSteps(courses);
-=======
-  const nextStep = formatNextSteps(courses);
   const formatedSubPrograms = formatElearningDraftSubPrograms(elearningDraftSubPrograms);
->>>>>>> COM-1598: can visualize test subprograms
 
   return (
     <ScrollView style={commonStyles.container}>
