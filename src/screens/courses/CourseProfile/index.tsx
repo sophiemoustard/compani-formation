@@ -135,7 +135,7 @@ const CourseProfile = ({
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-  resetActivityReducer: () => dispatch(CoursesActions.resetCourseReducer()),
+  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 const mapStateToProps = state => ({ isCourse: getIsCourse(state) });
