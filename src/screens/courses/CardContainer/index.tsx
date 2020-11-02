@@ -12,12 +12,14 @@ import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import Actions from '../../../store/activities/actions';
 import styles from './styles';
+import { getIsCourse } from '../../../store/courses/selectors';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
   navigation: { navigate: (path: string, params: object) => {} },
   activity: ActivityType,
   cardIndex: number | null,
+  isCourse: boolean,
   exitConfirmationModal: boolean,
   setActivity: (ActivityType) => void,
   setExitConfirmationModal: (boolean) => void,
@@ -29,6 +31,7 @@ const CardContainer = ({
   navigation,
   activity,
   cardIndex,
+  isCourse,
   exitConfirmationModal,
   setActivity,
   setExitConfirmationModal,
@@ -49,10 +52,17 @@ const CardContainer = ({
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
-    navigation.navigate(
-      'Home',
-      { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
-    );
+    if (isCourse) {
+      navigation.navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
+      );
+    } else {
+      navigation.navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: route.params.courseId } } }
+      );
+    }
   };
 
   useEffect(() => {
@@ -94,7 +104,7 @@ const CardContainer = ({
           <Tab.Screen key={0} name={'startCard'} >
             {() => <StartCard title={activity.name} courseId={route.params.courseId} />}
           </Tab.Screen>
-          {activity.cards.map((card, index) => renderCardScreen(index))}
+          {activity.cards.map((_, index) => renderCardScreen(index))}
           <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
             {() => <EndCard courseId={route.params.courseId} />}
           </Tab.Screen>
@@ -107,6 +117,7 @@ const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   cardIndex: state.activities.cardIndex,
   exitConfirmationModal: state.activities.exitConfirmationModal,
+  isCourse: getIsCourse(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -57,7 +57,13 @@ const StartCard = ({
 
   const goBack = () => {
     resetActivityReducer();
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    if (isCourse) navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    else {
+      navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgram: courseId } } }
+      );
+    }
   };
 
   return (
