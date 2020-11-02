@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON, CALENDAR_HEADER_HEIGHT } from '../../styles/metrics';
+import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
 import { PINK, WHITE, GREY, GREEN } from '../../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../../styles/fonts';
+
+export const CALENDAR_HEADER_HEIGHT = 16;
 
 const styles = StyleSheet.create({
   container: {
@@ -102,9 +104,7 @@ const styles = StyleSheet.create({
   shadowHeader: {
     backgroundColor: PINK[500],
     opacity: 0.6,
-    width: '100%',
     height: CALENDAR_HEADER_HEIGHT,
-    position: 'absolute',
     borderTopLeftRadius: BORDER_RADIUS.SM,
     borderTopRightRadius: BORDER_RADIUS.SM,
   },
