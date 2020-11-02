@@ -43,14 +43,13 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
       if (programImage) setSource({ uri: programImage });
 
       const subProgram = fetchedProgram.subPrograms ? fetchedProgram.subPrograms[0] : null;
-      if (subProgram.steps.length && subProgram.steps[0].activities?.length) {
-        const stepsWithActivitiesNotDone = subProgram.steps.map(st =>
+      if (subProgram?.steps?.length && subProgram.steps[0].activities?.length) {
+        const incompleteSteps = subProgram.steps.map(st =>
           ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
           .filter(st => st.activities.length);
 
-        if (stepsWithActivitiesNotDone.length) {
-          setNextActivityId(stepsWithActivitiesNotDone[0].activities[0]._id);
-        } else setNextActivityId('');
+        if (incompleteSteps.length) setNextActivityId(incompleteSteps[0].activities[0]._id);
+        else setNextActivityId('');
       }
       const fetchedCourse = subProgram && subProgram.courses ? subProgram.courses[0] : {};
 
@@ -87,10 +86,7 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      if (!hasAlreadySubscribed) {
-        await Courses.registerToELearningCourse(courseId);
-        await getProgram();
-      }
+      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
       if (nextActivityId) goToNextActivity();
       else goToCourse();
     } catch (e) {
