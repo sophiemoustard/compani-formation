@@ -76,7 +76,10 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
           </> }
       </View>
       {slots.length > 1
-        ? <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
+        ? <>
+          <Shadow customStyle={styles.shadowHeader} relativePosition={{ top: 3, left: 3, right: -3, bottom: 0 }}/>
+          <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
+        </>
         : <Shadow customStyle={styles.shadow} />}
       {renderProgress()}
     </View>

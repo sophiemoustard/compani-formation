@@ -3,6 +3,8 @@ import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics
 import { PINK, WHITE, GREY, GREEN } from '../../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../../styles/fonts';
 
+export const CALENDAR_HEADER_HEIGHT = 16;
+
 const styles = StyleSheet.create({
   container: {
     minWidth: 50,
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
   dayOfWeek: {
     backgroundColor: PINK[500],
     width: '100%',
-    height: 16,
+    height: CALENDAR_HEADER_HEIGHT,
     ...NUNITO_SEMI.XS,
     color: WHITE,
     textAlign: 'center',
@@ -35,23 +37,13 @@ const styles = StyleSheet.create({
     height: 32,
     paddingHorizontal: PADDING.SM,
   },
-  toPlan: {
-    ...NUNITO_REGULAR.XXL,
-  },
   month: {
     ...NUNITO_SEMI.SM,
     color: PINK[500],
     paddingHorizontal: PADDING.SM,
   },
-  shadow: {
-    backgroundColor: GREY[200],
-    borderRadius: BORDER_RADIUS.SM,
-  },
-  manyDatesShadow: {
-    backgroundColor: GREY[200],
-    borderRadius: BORDER_RADIUS.SM,
-    borderWidth: BORDER_WIDTH,
-    borderColor: PINK[500],
+  toPlan: {
+    ...NUNITO_REGULAR.XXL,
   },
   datesLengthContainer: {
     position: 'absolute',
@@ -69,10 +61,10 @@ const styles = StyleSheet.create({
   },
   finishedContainer: {
     position: 'absolute',
-    bottom: -8,
-    right: -12,
-    width: ICON.MD,
-    height: ICON.MD,
+    bottom: -6,
+    right: -16,
+    width: ICON.XL,
+    height: ICON.XL,
     backgroundColor: GREEN[600],
     borderRadius: BORDER_RADIUS.LG,
     borderWidth: 4 * BORDER_WIDTH,
@@ -82,7 +74,7 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     position: 'absolute',
-    bottom: -8,
+    bottom: -6,
     right: -12,
     width: ICON.MD,
     height: ICON.MD,
@@ -96,6 +88,25 @@ const styles = StyleSheet.create({
   progress: {
     width: ICON.XS,
     height: ICON.XS,
+  },
+  shadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
+  },
+  manyDatesShadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
+    borderWidth: BORDER_WIDTH,
+    borderColor: PINK[500],
+    opacity: 0.6,
+    zIndex: -2,
+  },
+  shadowHeader: {
+    backgroundColor: PINK[500],
+    opacity: 0.6,
+    height: CALENDAR_HEADER_HEIGHT,
+    borderTopLeftRadius: BORDER_RADIUS.SM,
+    borderTopRightRadius: BORDER_RADIUS.SM,
   },
 });
 
