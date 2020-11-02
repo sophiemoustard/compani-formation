@@ -4,7 +4,6 @@ import {
   Text,
   ImageBackground,
   FlatList,
-  TouchableOpacity,
   ScrollView,
   StyleProp,
   ViewStyle,
@@ -13,7 +12,6 @@ import {
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
-import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationType } from '../../../types/NavigationType';
 import SubPrograms from '../../../api/subPrograms';
@@ -27,6 +25,7 @@ import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import { SubProgramType } from '../../../types/SubProgramType';
+import IconButton from '../../../components/IconButton';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -90,12 +89,10 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   return subProgram && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
-        style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>}>
+        style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
         <View style={styles.header}>
-          <TouchableOpacity style={styles.arrow} onPress={goBack}>
-            <Feather name="arrow-left" color={WHITE} size={ICON.MD} />
-          </TouchableOpacity>
+          <IconButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>

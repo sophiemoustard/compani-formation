@@ -84,25 +84,22 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    async function fetchData() { getCourses(); }
-    if (loggedUserId && isFocused) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId, isFocused]);
-
-  useEffect(() => {
-    async function fetchData() { getElearningDraftSubPrograms(); }
+    async function fetchData() {
+      getCourses();
+      getElearningDraftSubPrograms();
+    }
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
   const goToCourse = (id, isCourse) => {
     if (isCourse) {
-      navigation?.navigate(
-      'Home',
-      { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
-    );
+      navigation.navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
+      );
     } else {
-      navigation?.navigate(
+      navigation.navigate(
         'Home',
         { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: id } } }
       );
