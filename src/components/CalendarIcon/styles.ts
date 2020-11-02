@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
+import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON, CALENDAR_HEADER_HEIGHT } from '../../styles/metrics';
 import { PINK, WHITE, GREY, GREEN } from '../../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../../styles/fonts';
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   dayOfWeek: {
     backgroundColor: PINK[500],
     width: '100%',
-    height: 16,
+    height: CALENDAR_HEADER_HEIGHT,
     ...NUNITO_SEMI.XS,
     color: WHITE,
     textAlign: 'center',
@@ -35,25 +35,13 @@ const styles = StyleSheet.create({
     height: 32,
     paddingHorizontal: PADDING.SM,
   },
-  toPlan: {
-    ...NUNITO_REGULAR.XXL,
-  },
   month: {
     ...NUNITO_SEMI.SM,
     color: PINK[500],
     paddingHorizontal: PADDING.SM,
   },
-  shadow: {
-    backgroundColor: GREY[200],
-    borderRadius: BORDER_RADIUS.SM,
-  },
-  manyDatesShadow: {
-    backgroundColor: GREY[200],
-    borderRadius: BORDER_RADIUS.SM,
-    borderWidth: BORDER_WIDTH,
-    borderColor: PINK[500],
-    opacity: 0.6,
-    zIndex: -2,
+  toPlan: {
+    ...NUNITO_REGULAR.XXL,
   },
   datesLengthContainer: {
     position: 'absolute',
@@ -99,19 +87,26 @@ const styles = StyleSheet.create({
     width: ICON.XS,
     height: ICON.XS,
   },
+  shadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
+  },
+  manyDatesShadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
+    borderWidth: BORDER_WIDTH,
+    borderColor: PINK[500],
+    opacity: 0.6,
+    zIndex: -2,
+  },
   shadowHeader: {
     backgroundColor: PINK[500],
     opacity: 0.6,
     width: '100%',
-    height: 16,
+    height: CALENDAR_HEADER_HEIGHT,
     position: 'absolute',
-    top: 3,
-    left: 3,
-    right: -3,
-    bottom: -3,
     borderTopLeftRadius: BORDER_RADIUS.SM,
     borderTopRightRadius: BORDER_RADIUS.SM,
-    zIndex: -1,
   },
 });
 
