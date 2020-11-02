@@ -13,7 +13,6 @@ import Button from '../../../components/form/Button';
 import Courses from '../../../api/courses';
 import Programs from '../../../api/programs';
 import { getLoggedUserId } from '../../../store/main/selectors';
-import activityHistories from '../../../api/activityHistories';
 
 interface AboutProps {
   route: { params: { programId: string } },
@@ -48,7 +47,7 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
         const stepsWithActivitiesNotDone = subProgram.steps.map(st =>
           ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
           .filter(st => st.activities.length);
-        console.log('stepsWithActivitiesNotDone', stepsWithActivitiesNotDone);
+
         if (stepsWithActivitiesNotDone.length) {
           setNextActivityId(stepsWithActivitiesNotDone[0].activities[0]._id);
         } else setNextActivityId('');
