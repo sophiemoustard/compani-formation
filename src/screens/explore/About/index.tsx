@@ -2,18 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
-import { NavigationType } from '../../../types/NavigationType';
-import { CourseType } from '../../../types/CourseType';
 import Button from '../../../components/form/Button';
 import Courses from '../../../api/courses';
 import Programs from '../../../api/programs';
 import { getLoggedUserId } from '../../../store/main/selectors';
+import activityHistories from '../../../api/activityHistories';
 
 interface AboutProps {
   route: { params: { programId: string } },
@@ -29,8 +29,10 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
   const [programName, setProgramName] = useState<string>('');
   const [programDescription, setProgramDescription] = useState<string>('');
   const [courseId, setCourseId] = useState<string>('');
-  const [firstActivityId, setFirstActivityId] = useState<string>('');
+  const [nextActivityId, setNextActivityId] = useState<string>('');
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState<Boolean>(false);
+
+  const isFocused = useIsFocused();
 
   const getProgram = async () => {
     try {
@@ -43,7 +45,13 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
 
       const subProgram = fetchedProgram.subPrograms ? fetchedProgram.subPrograms[0] : null;
       if (subProgram.steps.length && subProgram.steps[0].activities?.length) {
-        setFirstActivityId(subProgram.steps[0].activities[0]);
+        const stepsWithActivitiesNotDone = subProgram.steps.map(st =>
+          ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
+          .filter(st => st.activities.length);
+        console.log('stepsWithActivitiesNotDone', stepsWithActivitiesNotDone);
+        if (stepsWithActivitiesNotDone.length) {
+          setNextActivityId(stepsWithActivitiesNotDone[0].activities[0]._id);
+        } else setNextActivityId('');
       }
       const fetchedCourse = subProgram && subProgram.courses ? subProgram.courses[0] : {};
 
@@ -56,16 +64,16 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
       setProgramDescription('');
       setSource(defaultImg);
       setCourseId('');
-      setFirstActivityId('');
+      setNextActivityId('');
       setHasAlreadySubscribed(false);
     }
   };
 
   useEffect(() => {
     async function fetchData() { getProgram(); }
-    if (loggedUserId) fetchData();
+    if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId]);
+  }, [loggedUserId, isFocused]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
@@ -76,15 +84,16 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
   );
 
-  const goToFirstActivityId = () => navigation.navigate('CardContainer', { activityId: firstActivityId, courseId });
+  const goToNextActivity = () => navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
       if (!hasAlreadySubscribed) {
         await Courses.registerToELearningCourse(courseId);
         await getProgram();
-        goToFirstActivityId();
-      } else goToCourse();
+      }
+      if (nextActivityId) goToNextActivity();
+      else goToCourse();
     } catch (e) {
       if (e.status === 401) signOut();
     }
