@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   text: {
     ...FIRA_SANS_REGULAR.MD,
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.XL,
   },
   media: {
     resizeMode: 'contain',

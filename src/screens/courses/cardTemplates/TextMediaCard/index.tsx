@@ -9,6 +9,7 @@ import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
+import FooterGradient from '../../../../components/design/FooterGradient';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -39,6 +40,7 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
         <Text style={cardsStyle.text}>{card.text}</Text>
         {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
       </ScrollView>
+      <FooterGradient />
       <CardFooter index={index} />
     </>
   );
