@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
-import { StateType } from '../../../types/store/StoreType';
-import Selectors from '../../../store/activities/selectors';
 import styles from './styles';
 
 interface ProgressBar {
-  maxProgress: number,
   progress: number,
 }
 
-const ProgressBar = ({ maxProgress, progress }: ProgressBar) => {
-  const [progressPercentage, setProgressPercentage] = useState<number>(0);
-  const style = styles(progressPercentage);
-
-  useEffect(() => {
-    setProgressPercentage((progress / maxProgress) * 100);
-  }, [progress, maxProgress]);
+const ProgressBar = ({ progress }: ProgressBar) => {
+  const style = styles(progress);
 
   return (
     <>
@@ -27,9 +18,4 @@ const ProgressBar = ({ maxProgress, progress }: ProgressBar) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  maxProgress: Selectors.getMaxProgress(state),
-  progress: Selectors.getProgress(state),
-});
-
-export default connect(mapStateToProps)(ProgressBar);
+export default ProgressBar;

@@ -14,6 +14,7 @@ const getMaxProgress = state =>
 
 const getProgress = (state) => {
   const { activity, cardIndex } = state.activities;
+  if (!Number.isInteger(cardIndex)) return 0;
 
   return 1 + activity.cards.filter(c => c.template !== TRANSITION)
     .map(c => c._id)

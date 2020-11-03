@@ -27,6 +27,8 @@ import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import IconButton from '../../../components/IconButton';
+import moment from '../../../core/helpers/moment';
+import ProgressBar from '../../../components/cards/ProgressBar';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -39,6 +41,7 @@ interface CourseProfileProps {
 
 const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
+  const [totalProgress, setTotalProgress] = useState<number>(0);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
@@ -49,6 +52,20 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
       if (e.status === 401) signOut();
       setCourse(null);
     }
+  };
+
+  const elearningStepProgress = (step) => {
+    const relativeProgress = step.activities.filter(activity => activity.activityHistories.length > 0).length;
+    const absoluteProgress = step.activities.length;
+    return relativeProgress / absoluteProgress;
+  };
+
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+  const onSiteSlotsProgress = (slots) => {
+    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
+
+    return (1 - nextSlots.length / slots.length);
   };
 
   useEffect(() => {
@@ -66,6 +83,21 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
+
+  useEffect(() => {
+    if (isFocused && course) {
+      const eLearningAchievedSteps = steps => steps.map(step => elearningStepProgress(step)).reduce(reducer);
+      const onSiteAchievedSteps = steps => onSiteSlotsProgress(course.slots) * steps
+        .filter(step => step.type === 'on_site').length;
+
+      const achievedSteps = (
+        (eLearningAchievedSteps(course.subProgram.steps.filter(step => step.type === 'e_learning'))
+        + onSiteAchievedSteps(course.subProgram.steps))
+      );
+
+      setTotalProgress((achievedSteps / course.subProgram.steps.length) * 100);
+    }
+  }, [course, isFocused]);
 
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
@@ -99,6 +131,11 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
+      <View style={styles.progressBarContainer}>
+        <Text style={styles.progressBarText}>ÉTAPES</Text>
+        <ProgressBar progress={totalProgress} />
+        <Text style={styles.progressBarText}>{totalProgress}%</Text>
+      </View>
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
     </ScrollView>
