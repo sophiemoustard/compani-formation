@@ -1,52 +1,94 @@
-import React, { useContext } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
-import { NavigationType } from '../../../types/NavigationType';
-import { ProgramType } from '../../../types/ProgramType';
 import Button from '../../../components/form/Button';
 import Courses from '../../../api/courses';
+import Programs from '../../../api/programs';
 import { getLoggedUserId } from '../../../store/main/selectors';
 
 interface AboutProps {
-  route: { params: { program: ProgramType } },
-  navigation: NavigationType,
+  route: { params: { programId: string } },
+  navigation: { navigate: (path: string, activityId: any) => {} },
   loggedUserId: string,
 }
 
 const About = ({ route, navigation, loggedUserId }: AboutProps) => {
-  const { program } = route.params;
+  const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
+  const { programId } = route.params;
   const { signOut } = useContext(AuthContext);
+  const [source, setSource] = useState<ImageSourcePropType>(defaultImg);
+  const [programName, setProgramName] = useState<string>('');
+  const [programDescription, setProgramDescription] = useState<string>('');
+  const [courseId, setCourseId] = useState<string>('');
+  const [nextActivityId, setNextActivityId] = useState<string>('');
+  const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState<Boolean>(false);
 
-  const programImage = get(program, 'image.link') || '';
-  const programName = get(program, 'name') || '';
-  const programDescription = get(program, 'description') || '';
-  const source = programImage
-    ? { uri: programImage }
-    : require('../../../../assets/images/authentication_background_image.jpg');
-  const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-  const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-  const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
+  const isFocused = useIsFocused();
+
+  const getProgram = async () => {
+    try {
+      const fetchedProgram = await Programs.getProgramForUser(programId);
+      const programImage = get(fetchedProgram, 'image.link') || '';
+      setProgramName(fetchedProgram.name || '');
+      setProgramDescription(fetchedProgram.description || '');
+
+      if (programImage) setSource({ uri: programImage });
+
+      const subProgram = fetchedProgram.subPrograms ? fetchedProgram.subPrograms[0] : null;
+      if (subProgram?.steps?.length && subProgram.steps[0].activities?.length) {
+        const incompleteSteps = subProgram.steps.map(st =>
+          ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
+          .filter(st => st.activities.length);
+
+        if (incompleteSteps.length) setNextActivityId(incompleteSteps[0].activities[0]._id);
+        else setNextActivityId('');
+      }
+      const fetchedCourse = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+
+      setCourseId(fetchedCourse._id);
+      setHasAlreadySubscribed(fetchedCourse.trainees.includes(loggedUserId));
+    } catch (e) {
+      if (e.status === 401) signOut();
+      console.error(e);
+      setProgramName('');
+      setProgramDescription('');
+      setSource(defaultImg);
+      setCourseId('');
+      setNextActivityId('');
+      setHasAlreadySubscribed(false);
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() { getProgram(); }
+    if (loggedUserId && isFocused) fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedUserId, isFocused]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
   };
 
-  const goToCourse = id => navigation.navigate(
+  const goToCourse = () => navigation.navigate(
     'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
+    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
   );
+
+  const goToNextActivity = () => navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(course._id);
-      goToCourse(course._id);
+      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
+      if (nextActivityId) goToNextActivity();
+      else goToCourse();
     } catch (e) {
       if (e.status === 401) signOut();
     }
