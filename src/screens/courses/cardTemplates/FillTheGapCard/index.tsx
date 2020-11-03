@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -14,11 +14,13 @@ import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
+import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
+import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
 
 interface FillTheGap {
   card: FillTheGapType,
   index: number,
-  isFocused: boolean,
+  isLoading: boolean,
   incGoodAnswersCount: () => void,
 }
 
@@ -33,8 +35,8 @@ export interface FillTheGapAnswers {
   visible: boolean,
 }
 
-const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillTheGap) => {
-  const goodAnswers = useRef<Array<string>>([]);
+const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillTheGap) => {
+  const [goodAnswers, setGoodAnswers] = useState<Array<string>>([]);
   const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
@@ -47,14 +49,18 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
   });
 
   useEffect(() => {
-    if (isFocused && !isValidated) {
-      goodAnswers.current = card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) ||
-      [];
-      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers.current])
-        .map(proposition => ({ text: proposition, visible: true })));
-      setSelectedAnswers(goodAnswers.current.map(() => ''));
+    if (!isLoading && !isValidated) {
+      setGoodAnswers(card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) || []);
     }
-  }, [card, isFocused, isValidated]);
+  }, [card, isLoading, isValidated]);
+
+  useEffect(() => {
+    if (!isLoading && !isValidated) {
+      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers])
+        .map(proposition => ({ text: proposition, visible: true })));
+      setSelectedAnswers(goodAnswers.map(() => ''));
+    }
+  }, [card, goodAnswers, isLoading, isValidated]);
 
   useEffect(() => {
     if (!isValidated) return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
@@ -64,79 +70,46 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, isAnsweredCorrectly]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const style = styles(footerColors.text, footerColors.background);
 
-  const setPropositionsToAnswers = (event, gapIndex) => {
+  const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    const propIndex = tempPropositions.map(prop => prop.text).indexOf(payload);
-    tempPropositions[propIndex].visible = false;
-    if (selectedAnswers[gapIndex]) {
-      tempPropositions[tempPropositions.map(answer => answer.text).indexOf(selectedAnswers[gapIndex])].visible = true;
-    }
+    const dropTargetIsGap = Number.isInteger(gapIndex);
+    const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
     const payloadIdx = selectedAnswers.indexOf(payload);
+
+    tempPropositions[selectedPropIdx].visible = !dropTargetIsGap;
+
+    if (dropTargetIsGap && selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload) {
+      const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
+      tempPropositions[previousAnswerIdx].visible = true;
+    }
+
     if (payloadIdx > -1) setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
-    setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
-    setPropositions(tempPropositions);
-  };
 
-  const setAnswersToPropositions = (event) => {
-    const { payload } = event.dragged;
-    const tempPropositions = [...propositions];
-    const i = tempPropositions.map(prop => prop.text).indexOf(payload);
-    tempPropositions[i].visible = true;
+    if (dropTargetIsGap) setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
 
-    setSelectedAnswers(array => Object.assign([], array, { [array.indexOf(payload)]: '' }));
     setPropositions(tempPropositions);
   };
 
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
-    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text}
-      longPressDelay={0}>
-      <FillTheGapProposition item={item} isValidated={isValidated}
-        isGoodAnswer={Number.isInteger(idx)
-          ? goodAnswers.current.indexOf(text) === idx
-          : goodAnswers.current.includes(text)}
-        isSelected={selectedAnswers.includes(text)} />
+    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
+      <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
+        isGoodAnswer={Number.isInteger(idx) ? goodAnswers.indexOf(text) === idx : goodAnswers.includes(text)} />
     </DraxView>;
 
-  const renderPropositions = () => <View style={style.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
-    {propositions.map((proposition, idx) =>
-      <DraxView style={style.gapContainer} key={`proposition${idx}`}
-        onReceiveDragDrop={event => setAnswersToPropositions(event)} renderContent={() =>
-          renderContent(proposition.visible, proposition, proposition.text)} />)}
-  </View>;
-
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
-    onReceiveDragDrop={event => setPropositionsToAnswers(event, idx)} renderContent={() =>
-      renderContent(
-        !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
-      )} />;
-
-  const renderQuestion = (text) => {
-    const splittedText = text.split(/<trou>[^<]*<\/trou>/g);
-    return <View style={[cardsStyle.question, style.questionContainer]} pointerEvents={isValidated ? 'none' : 'auto'}>
-      {
-        splittedText.map((txt, idx) => {
-          if (idx === 0 && txt === '') return renderGap(idx);
-          if (idx === splittedText.length - 1 && txt === '') return null;
-          if (idx < splittedText.length - 1) {
-            return <View key={`text${idx}`} style={style.textAndGapContainer}>
-              <Text style={style.question} >{txt}</Text>
-              {renderGap(idx)}
-            </View>;
-          }
-          return <Text style={style.question} key={`text${idx}`}>{txt}</Text>;
-        })
-      }
-    </View>;
-  };
+    onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
+    renderContent={() => renderContent(
+      !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
+    )} />;
 
   const onPressFooterButton = () => {
     if (!isValidated) {
-      const areAnswersCorrect = selectedAnswers.every((text, idx) => (text === goodAnswers.current[idx]));
+      const areAnswersCorrect = selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
 
@@ -150,8 +123,9 @@ const FillTheGapCard = ({ card, index, isFocused, incGoodAnswersCount }: FillThe
       <CardHeader />
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
-          {renderQuestion(card.gappedText)}
-          {renderPropositions()}
+          <FillTheGapQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
+          <FillTheGapPropositionList isValidated={isValidated} propositions={propositions}
+            setProposition={setAnswersAndPropositions} renderContent={renderContent} />
         </DraxProvider>
       </ScrollView>
       <View style={style.footerContainer}>

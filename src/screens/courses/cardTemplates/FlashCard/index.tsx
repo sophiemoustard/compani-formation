@@ -12,7 +12,7 @@ import styles from './styles';
 interface FlashCard {
   card: FlashCardType,
   index: number,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
 export enum ClickOnCard {
@@ -21,7 +21,7 @@ export enum ClickOnCard {
   CLICKED_MORE_THAN_ONCE_CARD = 'clickedMoreThanOnce',
 }
 
-const FlashCard = ({ card, index, isFocused }: FlashCard) => {
+const FlashCard = ({ card, index, isLoading }: FlashCard) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
@@ -43,7 +43,7 @@ const FlashCard = ({ card, index, isFocused }: FlashCard) => {
     }
   }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue]);
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const flipCard = () => {
     if (timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD) {

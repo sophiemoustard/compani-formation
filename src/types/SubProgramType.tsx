@@ -6,4 +6,5 @@ export interface SubProgramType {
   steps: Array<StepType>,
   name: string,
   program: ProgramType,
+  courses?: Array<any>,
 }

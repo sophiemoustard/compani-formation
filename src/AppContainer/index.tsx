@@ -17,6 +17,7 @@ import Catalog from '../screens/explore/Catalog';
 import About from '../screens/explore/About';
 import CourseList from '../screens/courses/CourseList';
 import CourseProfile from '../screens/courses/CourseProfile';
+import SubProgramProfile from '../screens/courses/SubProgramProfile';
 import CardContainer from '../screens/courses/CardContainer';
 import MainActions from '../store/main/actions';
 import Actions from '../store/actions';
@@ -38,6 +39,7 @@ const Courses = () => (
   <CourseStack.Navigator headerMode="none">
     <CourseStack.Screen name="CourseList" component={CourseList} />
     <CourseStack.Screen name="CourseProfile" component={CourseProfile} />
+    <CourseStack.Screen name="SubProgramProfile" component={SubProgramProfile} />
   </CourseStack.Navigator>
 );
 
@@ -78,11 +80,12 @@ const MainStack = createStackNavigator();
 
 interface AppContainerProps {
   setLoggedUser: (user: UserType) => void,
+  setUserRole: (role: string) => void,
   resetAllReducers: () => void,
   statusBarVisible: boolean,
 }
 
-const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, setUserRole, resetAllReducers, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,6 +96,7 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
       const userId = await asyncStorage.getUserId();
       const user = await Users.getById(userId);
       setLoggedUser(pick(user, ['_id', 'identity.firstname', 'identity.lastname', 'local.email']));
+      setUserRole(user.role.vendor.name);
     }
     if (alenviToken) setUser();
     else resetAllReducers();
@@ -130,6 +134,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+  setUserRole: (role: string) => dispatch(MainActions.setUserRole(role)),
   resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });
 

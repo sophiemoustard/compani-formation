@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, PADDING, BORDER_WIDTH } from '../../styles/metrics';
-import { PINK, WHITE, GREY } from '../../styles/colors';
+import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
+import { PINK, WHITE, GREY, GREEN } from '../../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../../styles/fonts';
+
+export const CALENDAR_HEADER_HEIGHT = 16;
 
 const styles = StyleSheet.create({
   container: {
@@ -9,7 +11,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   dateContainer: {
-    height: 60,
+    height: 72,
     // Do not merge the borderWidths params, avoid an unwanted line in android
     borderTopWidth: BORDER_WIDTH,
     borderBottomWidth: BORDER_WIDTH,
@@ -22,35 +24,89 @@ const styles = StyleSheet.create({
     paddingBottom: PADDING.SM,
     overflow: 'hidden',
   },
-  dayOfWeekContainer: {
+  dayOfWeek: {
     backgroundColor: PINK[500],
     width: '100%',
-    paddingHorizontal: PADDING.MD,
-    justifyContent: 'center',
-  },
-  dayOfWeek: {
+    height: CALENDAR_HEADER_HEIGHT,
     ...NUNITO_SEMI.XS,
     color: WHITE,
     textAlign: 'center',
   },
   dayOfMonth: {
-    ...NUNITO_REGULAR.MD,
-    height: 22,
+    ...NUNITO_REGULAR.XL,
+    height: 32,
     paddingHorizontal: PADDING.SM,
   },
   month: {
     ...NUNITO_SEMI.SM,
     color: PINK[500],
-    height: 18,
     paddingHorizontal: PADDING.SM,
   },
   toPlan: {
-    ...NUNITO_REGULAR.XL,
-    height: 40,
+    ...NUNITO_REGULAR.XXL,
+  },
+  datesLengthContainer: {
+    position: 'absolute',
+    bottom: -6,
+    right: -10,
+    borderRadius: BORDER_RADIUS.MD,
+    borderWidth: BORDER_WIDTH,
+    borderColor: PINK[500],
+    backgroundColor: WHITE,
+  },
+  datesLength: {
+    ...NUNITO_REGULAR.SM,
+    color: PINK[500],
+    paddingHorizontal: PADDING.SM,
+  },
+  finishedContainer: {
+    position: 'absolute',
+    bottom: -6,
+    right: -16,
+    width: ICON.XL,
+    height: ICON.XL,
+    backgroundColor: GREEN[600],
+    borderRadius: BORDER_RADIUS.LG,
+    borderWidth: 4 * BORDER_WIDTH,
+    borderColor: GREEN[200],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progressContainer: {
+    position: 'absolute',
+    bottom: -6,
+    right: -12,
+    width: ICON.MD,
+    height: ICON.MD,
+    backgroundColor: WHITE,
+    borderRadius: BORDER_RADIUS.LG,
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY[200],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  progress: {
+    width: ICON.XS,
+    height: ICON.XS,
   },
   shadow: {
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.SM,
+  },
+  manyDatesShadow: {
+    backgroundColor: GREY[200],
+    borderRadius: BORDER_RADIUS.SM,
+    borderWidth: BORDER_WIDTH,
+    borderColor: PINK[500],
+    opacity: 0.6,
+    zIndex: -2,
+  },
+  shadowHeader: {
+    backgroundColor: PINK[500],
+    opacity: 0.6,
+    height: CALENDAR_HEADER_HEIGHT,
+    borderTopLeftRadius: BORDER_RADIUS.SM,
+    borderTopRightRadius: BORDER_RADIUS.SM,
   },
 });
 

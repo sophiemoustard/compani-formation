@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     width: ICON.MD,
     alignItems: 'center',
   },
-  inProgressContainer: {
+  progressContainer: {
     width: ICON.MD,
     height: ICON.MD,
     borderRadius: BORDER_RADIUS.LG,
@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
     borderColor: GREY[200],
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  progress: {
+    width: ICON.XS,
+    height: ICON.XS,
   },
   finishedContainer: {
     width: ICON.XL,

@@ -8,6 +8,7 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import ActivitiesActions from '../../../../store/activities/actions';
 import { ActivityType } from '../../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import { getIsCourse } from '../../../../store/courses/selectors';
 import Activities from '../../../../api/activities';
 import { Context as AuthContext } from '../../../../context/AuthContext';
 import styles from './styles';
@@ -16,6 +17,7 @@ import MainActions from '../../../../store/main/actions';
 interface StartCardProps {
   title: string,
   courseId: string,
+  isCourse: boolean,
   resetActivityReducer: () => void,
   activity: ActivityType,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
@@ -25,6 +27,7 @@ interface StartCardProps {
 const StartCard = ({
   title,
   courseId,
+  isCourse,
   resetActivityReducer,
   activity,
   setQuestionnaireAnswersList,
@@ -47,14 +50,20 @@ const StartCard = ({
 
   useEffect(() => {
     async function fetchData() { await getActivityHistory(); }
-    fetchData();
+    if (isCourse) fetchData();
     setStatusBarVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isCourse]);
 
   const goBack = () => {
     resetActivityReducer();
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    if (isCourse) navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    else {
+      navigate(
+        'Home',
+        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgram: courseId } } }
+      );
+    }
   };
 
   return (
@@ -78,6 +87,7 @@ const StartCard = ({
 
 const mapStateToProps = state => ({
   activity: state.activities.activity,
+  isCourse: getIsCourse(state),
 });
 
 const mapDispatchToProps = dispatch => ({

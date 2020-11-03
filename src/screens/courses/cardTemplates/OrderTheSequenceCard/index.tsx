@@ -20,7 +20,7 @@ interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
   index: number,
   incGoodAnswersCount: () => void,
-  isFocused: boolean,
+  isLoading: boolean,
 }
 
 export interface answerPositionType extends OrderedAnswerType {
@@ -34,7 +34,7 @@ interface footerColorsType {
   backgroundColor: string,
 }
 
-const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isFocused }: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
@@ -45,12 +45,12 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isFocused }: O
   });
 
   useEffect(() => {
-    if (isFocused && !isValidated) {
+    if (!isLoading && !isValidated) {
       const shuffledCards = shuffle(card.orderedAnswers
         .map((ans, answerIndex) => ({ label: ans, goodPosition: answerIndex })));
       setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
-  }, [card, isValidated, isFocused]);
+  }, [card, isValidated, isLoading]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -83,7 +83,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isFocused }: O
 
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
-  if (!isFocused) return null;
+  if (isLoading) return null;
 
   const style = styles(footerColors.textColor, footerColors.backgroundColor);
 
