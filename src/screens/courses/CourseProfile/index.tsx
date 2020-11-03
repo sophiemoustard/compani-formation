@@ -12,6 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
+import groupBy from 'lodash/groupBy';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
@@ -29,6 +30,7 @@ import CoursesActions from '../../../store/courses/actions';
 import IconButton from '../../../components/IconButton';
 import moment from '../../../core/helpers/moment';
 import ProgressBar from '../../../components/cards/ProgressBar';
+import { CourseSlotType } from '../../../types/CourseSlotType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -87,13 +89,11 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   useEffect(() => {
     if (isFocused && course) {
       const eLearningAchievedSteps = steps => steps.map(step => elearningStepProgress(step)).reduce(reducer);
-      const onSiteAchievedSteps = steps => onSiteSlotsProgress(course.slots) * steps
-        .filter(step => step.type === 'on_site').length;
-
-      const achievedSteps = (
-        (eLearningAchievedSteps(course.subProgram.steps.filter(step => step.type === 'e_learning'))
-        + onSiteAchievedSteps(course.subProgram.steps))
-      );
+      const slotsByStep: Array<CourseSlotType[]> = groupBy(course.slots.filter(s => get(s, 'step')), s => s.step);
+      const slotsList = Object.values(slotsByStep).map(slot => slot.map(s => s.endDate));
+      const onSiteAchievedSteps = slotsList.map(slot => onSiteSlotsProgress(slot)).reduce(reducer);
+      const achievedSteps = eLearningAchievedSteps(course.subProgram.steps.filter(step => step.type === 'e_learning'))
+      + onSiteAchievedSteps;
 
       setTotalProgress((achievedSteps / course.subProgram.steps.length) * 100);
     }
@@ -134,7 +134,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
       <View style={styles.progressBarContainer}>
         <Text style={styles.progressBarText}>ÉTAPES</Text>
         <ProgressBar progress={totalProgress} />
-        <Text style={styles.progressBarText}>{totalProgress}%</Text>
+        <Text style={styles.progressBarText}>{totalProgress.toFixed(0)}%</Text>
       </View>
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
