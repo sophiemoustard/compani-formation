@@ -153,7 +153,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
           <View style={commonStyles.sectionTitle}>
             <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
             <View style={{ ...styles.coursesCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.coursesCount}>{courses.length}</Text>
+              <Text style={styles.coursesCount}>{elearningDraftSubPrograms.length}</Text>
             </View>
           </View>
           <FlatList horizontal data={elearningDraftSubPrograms} keyExtractor={item => item._id}
