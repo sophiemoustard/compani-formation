@@ -33,7 +33,7 @@ const CardHeader = ({
   const [progressPercentage, setProgressPercentage] = useState<number>(0);
 
   useEffect(() => {
-    setProgressPercentage((progress / maxProgress) * 100);
+    setProgressPercentage(maxProgress ? (progress / maxProgress) * 100 : 0);
   }, [progress, maxProgress]);
 
   return (
