@@ -66,7 +66,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   const onSiteSlotsProgress = (slots) => {
     const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot.endDate));
 
-    return slots.length ? (1 - nextSlots.length / slots.length) : 0;
+    return slots.length ? 1 - nextSlots.length / slots.length : 0;
   };
 
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
