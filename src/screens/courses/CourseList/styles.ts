@@ -10,19 +10,15 @@ const styles = StyleSheet.create({
   separator: {
     marginRight: 8,
   },
-  coursesCountContainer: {
-    backgroundColor: YELLOW[200],
-  },
-  subProgramsCountContainer: {
-    backgroundColor: PURPLE[200],
-  },
   coursesCount: {
     ...FIRA_SANS_BOLD.MD,
     color: YELLOW[800],
+    backgroundColor: YELLOW[200],
   },
   subProgramsCount: {
     ...FIRA_SANS_BOLD.MD,
     color: PURPLE[800],
+    backgroundColor: PURPLE[200],
   },
   nextEventsCountContainer: {
     backgroundColor: PINK[100],
