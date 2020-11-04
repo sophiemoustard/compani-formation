@@ -8,7 +8,6 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import ActivitiesActions from '../../../../store/activities/actions';
 import { ActivityType } from '../../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
-import { getIsCourse } from '../../../../store/courses/selectors';
 import Activities from '../../../../api/activities';
 import { Context as AuthContext } from '../../../../context/AuthContext';
 import styles from './styles';
@@ -87,7 +86,7 @@ const StartCard = ({
 
 const mapStateToProps = state => ({
   activity: state.activities.activity,
-  isCourse: getIsCourse(state),
+  isCourse: state.courses.isCourse,
 });
 
 const mapDispatchToProps = dispatch => ({
