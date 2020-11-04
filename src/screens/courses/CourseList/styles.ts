@@ -20,12 +20,10 @@ const styles = StyleSheet.create({
     color: PURPLE[800],
     backgroundColor: PURPLE[200],
   },
-  nextEventsCountContainer: {
-    backgroundColor: PINK[100],
-  },
   nextEventsCount: {
     ...FIRA_SANS_BOLD.MD,
     color: PINK[600],
+    backgroundColor: PINK[100],
   },
 });
 

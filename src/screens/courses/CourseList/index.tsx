@@ -128,9 +128,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
             <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
-            <View style={{ ...styles.nextEventsCountContainer, ...commonStyles.countContainer }}>
-              <Text style={styles.nextEventsCount}>{nextSteps.length}</Text>
-            </View>
+            <Text style={[styles.nextEventsCount, commonStyles.countContainer]}>{nextSteps.length}</Text>
           </View>
           <FlatList horizontal data={nextSteps} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
