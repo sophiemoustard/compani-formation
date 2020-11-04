@@ -50,10 +50,12 @@ export const GREEN = {
 // Purple
 export const PURPLE = {
   '100': '#EBE9FB',
+  '200': '#CEC9F7',
   '300': '#A8A0EC',
   '400': '#847ADC',
   '500': '#5042C6',
   '600': '#3527AC',
+  '800': '#2E2673',
 };
 
 // AltPink
