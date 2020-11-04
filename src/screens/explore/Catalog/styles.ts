@@ -7,8 +7,6 @@ export default StyleSheet.create({
   programsCount: {
     ...FIRA_SANS_BOLD.MD,
     color: YELLOW[800],
-  },
-  programsCountContainer: {
     backgroundColor: YELLOW[200],
   },
   programContainer: {

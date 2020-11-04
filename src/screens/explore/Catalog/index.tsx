@@ -55,9 +55,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
           <View style={commonStyles.sectionContainer}>
             <View style={commonStyles.sectionTitle}>
               <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
-              <View style={{ ...styles.programsCountContainer, ...commonStyles.countContainer }}>
-                <Text style={styles.programsCount}>{programs.length}</Text>
-              </View>
+              <Text style={[styles.programsCount, commonStyles.countContainer]}>{programs.length}</Text>
             </View>
             <FlatList horizontal data={programs} keyExtractor={item => item._id}
               renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.programContainer}
