@@ -12,7 +12,6 @@ import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import Actions from '../../../store/activities/actions';
 import styles from './styles';
-import { getIsCourse } from '../../../store/courses/selectors';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
@@ -117,7 +116,7 @@ const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   cardIndex: state.activities.cardIndex,
   exitConfirmationModal: state.activities.exitConfirmationModal,
-  isCourse: getIsCourse(state),
+  isCourse: state.courses.isCourse,
 });
 
 const mapDispatchToProps = dispatch => ({
