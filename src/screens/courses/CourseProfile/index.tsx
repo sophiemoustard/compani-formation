@@ -59,13 +59,14 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   const elearningStepProgress = (step) => {
     const progress = step.activities.filter(activity => activity.activityHistories.length > 0).length;
     const maxProgress = step.activities.length;
+
     return maxProgress ? progress / maxProgress : 0;
   };
 
   const onSiteSlotsProgress = (slots) => {
-    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
+    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot.endDate));
 
-    return slots ? (1 - nextSlots.length / slots.length) : 0;
+    return slots.length ? (1 - nextSlots.length / slots.length) : 0;
   };
 
   const reducer = (accumulator, currentValue) => accumulator + currentValue;
@@ -89,14 +90,14 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   useEffect(() => {
     if (isFocused && course) {
       const { steps } = course.subProgram;
-      const eLearningSteps = steps.filter(step => step.type === E_LEARNING);
-      const eLearningAchievedSteps = eLearningSteps.map(step => elearningStepProgress(step)).reduce(reducer, 0);
+      const eLearningAchievedSteps = steps
+        .filter(step => step.type === E_LEARNING)
+        .map(step => elearningStepProgress(step)).reduce(reducer, 0);
       const slotsByStep: Array<CourseSlotType[]> = groupBy(course.slots.filter(s => get(s, 'step')), s => s.step);
-      const slotsList = Object.values(slotsByStep).map(slot => slot.map(s => s.endDate));
-      const onSiteAchievedSteps = slotsList.map(slot => onSiteSlotsProgress(slot)).reduce(reducer, 0);
+      const onSiteAchievedSteps = Object.values(slotsByStep).map(slot => onSiteSlotsProgress(slot)).reduce(reducer, 0);
       const achievedSteps = eLearningAchievedSteps + onSiteAchievedSteps;
 
-      setTotalProgress(steps ? (achievedSteps / steps.length) * 100 : 0);
+      setTotalProgress(steps.length ? (achievedSteps / steps.length) * 100 : 0);
     }
   }, [course, isFocused]);
 
