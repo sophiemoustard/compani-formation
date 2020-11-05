@@ -17,20 +17,22 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
+  const [dates, setDates] = useState<Array<string>>([]);
   const [progress, setProgress] = useState<number>(0);
   const dateFormat = 'DD/MM/YYY';
 
   useEffect(() => {
     if (slots.length) {
-      const dates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
+      const slotsDates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
       const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
-      const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : dates[0];
+      const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : slotsDates[0];
 
       setProgress(1 - nextSlots.length / slots.length);
 
       setDayOfWeek(capitalize(moment(date, dateFormat).format('ddd')));
       setDayOfMonth(capitalize(moment(date, dateFormat).format('D')));
       setMonth(capitalize(moment(date, dateFormat).format('MMM')));
+      setDates(slotsDates);
     }
   }, [slots]);
 
@@ -40,7 +42,7 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
     if (!progress) {
       return (
         <View style={styles.datesLengthContainer}>
-          <Text style={styles.datesLength}>{slots.length}</Text>
+          <Text style={styles.datesLength}>{dates.length}</Text>
         </View>
       );
     }
@@ -64,7 +66,7 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.dateContainer}>
-        {slots.length
+        {dates.length
           ? <>
             <Text style={styles.dayOfWeek}>{dayOfWeek}</Text>
             <Text style={styles.dayOfMonth}>{dayOfMonth}</Text>
@@ -75,7 +77,7 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
             <Text style={styles.toPlan}>?</Text>
           </> }
       </View>
-      {slots.length > 1
+      {dates.length > 1
         ? <>
           <Shadow customStyle={styles.shadowHeader} relativePosition={{ top: 3, left: 3, right: -3, bottom: 0 }}/>
           <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
