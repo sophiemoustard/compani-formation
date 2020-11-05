@@ -13,14 +13,17 @@ import Button from '../../../components/form/Button';
 import Courses from '../../../api/courses';
 import Programs from '../../../api/programs';
 import { getLoggedUserId } from '../../../store/main/selectors';
+import CoursesActions from '../../../store/courses/actions';
+import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
   route: { params: { programId: string } },
   navigation: { navigate: (path: string, activityId: any) => {} },
   loggedUserId: string,
+  setIsCourse: (value: boolean) => void,
 }
 
-const About = ({ route, navigation, loggedUserId }: AboutProps) => {
+const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => {
   const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
   const { programId } = route.params;
   const { signOut } = useContext(AuthContext);
@@ -87,6 +90,7 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
   const subscribeAndGoToCourseProfile = async () => {
     try {
       if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
+      setIsCourse(true);
       if (nextActivityId) goToNextActivity();
       else goToCourse();
     } catch (e) {
@@ -121,4 +125,8 @@ const About = ({ route, navigation, loggedUserId }: AboutProps) => {
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(About);
+const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
+  setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(About);

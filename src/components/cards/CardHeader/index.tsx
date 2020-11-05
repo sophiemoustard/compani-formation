@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import IconButton from '../../IconButton';
@@ -14,6 +14,8 @@ interface CardHeaderProps {
   color?: string,
   icon?: string,
   displayProgressBar: boolean,
+  maxProgress: number,
+  progress: number,
   onPress?: () => void,
   setExitConfirmationModal: (boolean) => void,
 }
@@ -22,22 +24,32 @@ const CardHeader = ({
   color = GREY[600],
   icon = 'x-circle',
   displayProgressBar,
+  maxProgress,
+  progress,
   setExitConfirmationModal,
   onPress,
 }: CardHeaderProps) => {
   const iconButtonOnPress = onPress || (() => setExitConfirmationModal(true));
+  const [progressPercentage, setProgressPercentage] = useState<number>(0);
+
+  useEffect(() => {
+    setProgressPercentage(maxProgress ? (progress / maxProgress) * 100 : 0);
+  }, [progress, maxProgress]);
 
   return (
     <View style={styles.container}>
       <IconButton name={icon} onPress={iconButtonOnPress} size={ICON.LG} color={color}
         style={styles.closeButton} />
-      {displayProgressBar && <ProgressBar />}
+      {displayProgressBar && <ProgressBar progress={progressPercentage} />}
     </View>
   );
 };
 
-const mapStateToProps = (state: StateType) => (
-  { displayProgressBar: Selectors.displayProgressBar(state) }
+const mapStateToProps = (state: StateType) => ({
+  displayProgressBar: Selectors.displayProgressBar(state),
+  maxProgress: Selectors.getMaxProgress(state),
+  progress: Selectors.getProgress(state),
+}
 );
 
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
