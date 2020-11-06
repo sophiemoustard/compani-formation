@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { ProgressCircle } from 'react-native-svg-charts';
@@ -11,30 +11,22 @@ interface ProgressPieChartProps {
   step: StepType,
 }
 
-const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
-  const [progress, setProgress] = useState<number>(0);
-
-  useEffect(() => {
-    setProgress(step.progress || 0);
-  }, [step]);
-
-  return (
-    <View style={styles.container}>
-      {!progress &&
+const ProgressPieChart = ({ step }: ProgressPieChartProps) => (
+  <View style={styles.container}>
+    {!step.progress &&
         <View style={styles.unstartedContainer}>
           <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
         </View>}
-      {!!progress && progress < 1 &&
+    {!!step.progress && step.progress < 1 &&
         <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progress} progress={progress}
+          <ProgressCircle style={styles.progress} progress={step.progress}
             progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
         </View>}
-      {progress === 1 &&
+    {step.progress === 1 &&
         <View style={styles.finishedContainer}>
           <Feather name='check' size={ICON.XS} color={WHITE} />
         </View>}
-    </View>
-  );
-};
+  </View>
+);
 
 export default ProgressPieChart;

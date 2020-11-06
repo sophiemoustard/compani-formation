@@ -71,13 +71,15 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
   };
 
   const getElearningDraftSubPrograms = async () => {
-    try {
-      const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
-      setElearningDraftSubPrograms(fetchedSubPrograms);
-    } catch (e) {
-      if (e.status === 401) signOut();
-      console.error(e);
-      setElearningDraftSubPrograms(() => []);
+    if (userRole === VENDOR_ADMIN || userRole === TRAINING_ORGANISATION_MANAGER) {
+      try {
+        const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
+        setElearningDraftSubPrograms(fetchedSubPrograms);
+      } catch (e) {
+        if (e.status === 401) signOut();
+        console.error(e);
+        setElearningDraftSubPrograms(() => []);
+      }
     }
   };
 

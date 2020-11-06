@@ -69,11 +69,10 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
   useEffect(() => {
     if (isFocused && course) {
       const { steps } = course.subProgram;
-      const progressSum = steps.map(step => step.progress).reduce(reducer, 0);
+      const progressSum = steps.map(step => step.progress).reduce((acc, value) => acc + value, 0);
 
       setTotalProgress(steps.length ? (progressSum / steps.length) * 100 : 0);
     }
