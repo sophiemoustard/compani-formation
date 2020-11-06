@@ -5,4 +5,5 @@ export interface StepType {
   activities?: Array<ActivityType>,
   name: string,
   type: string,
+  progress: number,
 }

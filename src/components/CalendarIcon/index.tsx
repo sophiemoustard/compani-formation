@@ -11,14 +11,14 @@ import { YELLOW, WHITE } from '../../styles/colors';
 
 interface CalendarIconProps {
   slots: Array<Date>,
+  progress: number,
 }
 
-const CalendarIcon = ({ slots }: CalendarIconProps) => {
+const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<Array<string>>([]);
-  const [progress, setProgress] = useState<number>(0);
   const dateFormat = 'DD/MM/YYY';
 
   useEffect(() => {
@@ -26,8 +26,6 @@ const CalendarIcon = ({ slots }: CalendarIconProps) => {
       const slotsDates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
       const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
       const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : slotsDates[0];
-
-      setProgress(1 - nextSlots.length / slots.length);
 
       setDayOfWeek(capitalize(moment(date, dateFormat).format('ddd')));
       setDayOfMonth(capitalize(moment(date, dateFormat).format('D')));

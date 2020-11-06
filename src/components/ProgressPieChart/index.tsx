@@ -12,26 +12,24 @@ interface ProgressPieChartProps {
 }
 
 const ProgressPieChart = ({ step }: ProgressPieChartProps) => {
-  const [progressPercentage, setProgressPercentage] = useState<number>(0);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
-    const progress = step.activities?.filter(activity => activity.activityHistories?.length > 0).length || 0;
-    const maxProgress = step.activities?.length || 0;
-    if (maxProgress && progress) setProgressPercentage(progress / maxProgress);
+    setProgress(step.progress || 0);
   }, [step]);
 
   return (
     <View style={styles.container}>
-      {!progressPercentage &&
+      {!progress &&
         <View style={styles.unstartedContainer}>
           <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
         </View>}
-      {!!progressPercentage && progressPercentage < 1 &&
+      {!!progress && progress < 1 &&
         <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progress} progress={progressPercentage}
+          <ProgressCircle style={styles.progress} progress={progress}
             progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
         </View>}
-      {progressPercentage === 1 &&
+      {progress === 1 &&
         <View style={styles.finishedContainer}>
           <Feather name='check' size={ICON.XS} color={WHITE} />
         </View>}

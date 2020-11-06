@@ -12,7 +12,6 @@ import {
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
-import groupBy from 'lodash/groupBy';
 import { LinearGradient } from 'expo-linear-gradient';
 import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
@@ -28,9 +27,7 @@ import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import IconButton from '../../../components/IconButton';
-import moment from '../../../core/helpers/moment';
 import ProgressBar from '../../../components/cards/ProgressBar';
-import { CourseSlotType } from '../../../types/CourseSlotType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -56,21 +53,6 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     }
   };
 
-  const elearningStepProgress = (step) => {
-    const progress = step.activities.filter(activity => activity.activityHistories.length > 0).length;
-    const maxProgress = step.activities.length;
-
-    return maxProgress ? progress / maxProgress : 0;
-  };
-
-  const onSiteSlotsProgress = (slots) => {
-    const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot.endDate));
-
-    return slots.length ? 1 - nextSlots.length / slots.length : 0;
-  };
-
-  const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
   useEffect(() => {
     async function fetchData() { await getCourse(); }
     fetchData();
@@ -87,17 +69,13 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
   useEffect(() => {
     if (isFocused && course) {
       const { steps } = course.subProgram;
-      const eLearningAchievedSteps = steps
-        .filter(step => step.type === E_LEARNING)
-        .map(step => elearningStepProgress(step)).reduce(reducer, 0);
-      const slotsByStep: Array<CourseSlotType[]> = groupBy(course.slots.filter(s => get(s, 'step')), s => s.step);
-      const onSiteAchievedSteps = Object.values(slotsByStep).map(slot => onSiteSlotsProgress(slot)).reduce(reducer, 0);
-      const achievedSteps = eLearningAchievedSteps + onSiteAchievedSteps;
+      const progressSum = steps.map(step => step.progress).reduce(reducer, 0);
 
-      setTotalProgress(steps.length ? (achievedSteps / steps.length) * 100 : 0);
+      setTotalProgress(steps.length ? (progressSum / steps.length) * 100 : 0);
     }
   }, [course, isFocused]);
 
