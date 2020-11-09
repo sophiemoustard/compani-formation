@@ -26,13 +26,6 @@ interface CourseListProps {
   userRole: string | null,
 }
 
-const formatFutureSlot = (slotsSorted, nextSlots) => ({
-  firstSlot: nextSlots[0].endDate,
-  type: nextSlots[0].step.type,
-  slots: slotsSorted.map(s => s.endDate),
-  _id: slotsSorted[0]._id,
-});
-
 const formatCourseStep = (course) => {
   const courseSteps = get(course, 'subProgram.steps') || [];
   const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
@@ -42,10 +35,19 @@ const formatCourseStep = (course) => {
     .map((stepId) => {
       const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate));
       const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
+      const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
-      return nextSlots.length
-        ? { name: programName, stepIndex: courseSteps.indexOf(stepId), ...formatFutureSlot(slotsSorted, nextSlots) }
-        : null;
+      if (!nextSlots.length) return null;
+
+      return {
+        name: programName,
+        stepIndex,
+        firstSlot: nextSlots[0].endDate,
+        type: nextSlots[0].step.type,
+        slots: slotsSorted.map(s => s.endDate),
+        _id: slotsSorted[0]._id,
+        progress: courseSteps[stepIndex].progress,
+      };
     })
     .filter(step => !!step);
 };
@@ -115,8 +117,14 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
     goToCourse(id, isCourse);
   };
 
+  const getCourseProgress = (steps) => {
+    const progressSum = steps.map(step => step.progress).reduce((acc, value) => acc + value, 0);
+
+    return steps.length ? (progressSum / steps.length) : 0;
+  };
+
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} />;
+    onPress={() => onPressProgramCell(true, course._id)} progress={getCourseProgress(course.subProgram.steps)}/>;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
