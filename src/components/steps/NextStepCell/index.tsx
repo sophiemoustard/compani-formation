@@ -14,14 +14,15 @@ interface NextSlotsStepType {
   slots: Array<Date>,
   type: string,
   stepIndex: number,
+  progress: number,
 }
 
 const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
-  const { stepIndex, slots } = nextSlotsStep;
+  const { stepIndex, slots, progress } = nextSlotsStep;
 
   return (
     <View style={styles.container}>
-      <CalendarIcon slots={slots} />
+      <CalendarIcon slots={slots} progress={progress}/>
       <StepCellTitle index={stepIndex} step={nextSlotsStep} />
     </View>
   );
