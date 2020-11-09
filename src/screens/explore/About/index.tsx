@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { useIsFocused, CommonActions } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -18,7 +18,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
   route: { params: { programId: string } },
-  navigation: { navigate: (path: string, activityId: any) => {}, dispatch: (action: CommonActions.Action) => {}},
+  navigation: { navigate: (path: string, activityId: any) => {} },
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }
@@ -75,11 +75,6 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
-
-  useEffect(() => {
-    if (!isFocused) navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
 
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
