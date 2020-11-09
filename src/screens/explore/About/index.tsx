@@ -77,16 +77,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   }, [loggedUserId, isFocused]);
 
   useEffect(() => {
-    if (!isFocused) {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            { name: 'Catalog' },
-          ],
-        })
-      );
-    }
+    if (!isFocused) navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
 
