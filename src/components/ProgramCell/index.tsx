@@ -28,20 +28,25 @@ const ProgramCell = ({ program, progress = undefined, onPress }: ProgramCellProp
           <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
         </View>
       );
-    } if (progress && progress < 1) {
+    }
+
+    if (progress && progress < 1) {
       return (
         <View style={styles.progressContainer}>
           <ProgressCircle style={styles.progress} progress={progress} progressColor={YELLOW[500]}
             strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
         </View>
       );
-    } if (progress === 1) {
+    }
+
+    if (progress === 1) {
       return (
         <View style={styles.finishedContainer}>
           <Feather name='check' size={ICON.XS} color={WHITE} />
         </View>
       );
     }
+
     return null;
   };
 
