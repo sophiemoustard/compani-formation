@@ -35,7 +35,7 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
   }, [slots]);
 
   const renderProgress = () => {
-    if (!progress && slots.length <= 1) return null;
+    if (!progress && dates.length <= 1) return null;
 
     if (!progress) {
       return (
