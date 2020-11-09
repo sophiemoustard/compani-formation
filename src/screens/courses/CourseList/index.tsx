@@ -26,13 +26,6 @@ interface CourseListProps {
   userRole: string | null,
 }
 
-const formatFutureSlot = (slotsSorted, nextSlots) => ({
-  firstSlot: nextSlots[0].endDate,
-  type: nextSlots[0].step.type,
-  slots: slotsSorted.map(s => s.endDate),
-  _id: slotsSorted[0]._id,
-});
-
 const formatCourseStep = (course) => {
   const courseSteps = get(course, 'subProgram.steps') || [];
   const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
@@ -44,14 +37,17 @@ const formatCourseStep = (course) => {
       const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
       const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
-      return nextSlots.length
-        ? {
-          name: programName,
-          stepIndex,
-          ...formatFutureSlot(slotsSorted, nextSlots),
-          progress: courseSteps[stepIndex].progress,
-        }
-        : null;
+      if (!nextSlots.length) return null;
+
+      return {
+        name: programName,
+        stepIndex,
+        firstSlot: nextSlots[0].endDate,
+        type: nextSlots[0].step.type,
+        slots: slotsSorted.map(s => s.endDate),
+        _id: slotsSorted[0]._id,
+        progress: courseSteps[stepIndex].progress,
+      };
     })
     .filter(step => !!step);
 };

@@ -10,11 +10,11 @@ import { PINK, WHITE, YELLOW } from '../../styles/colors';
 
 interface ProgramCellProps {
   program: ProgramType,
-  progress?: number | undefined;
+  progress?: number | null;
   onPress: () => void;
 }
 
-const ProgramCell = ({ program, progress = undefined, onPress }: ProgramCellProps) => {
+const ProgramCell = ({ program, progress = null, onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
   const source = programImage
@@ -30,24 +30,22 @@ const ProgramCell = ({ program, progress = undefined, onPress }: ProgramCellProp
       );
     }
 
-    if (progress && progress < 1) {
+    if (!progress) return null;
+
+    if (progress < 1) {
       return (
         <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progress} progress={progress} progressColor={YELLOW[500]}
+          <ProgressCircle style={styles.progressCircle} progress={progress} progressColor={YELLOW[500]}
             strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
         </View>
       );
     }
 
-    if (progress === 1) {
-      return (
-        <View style={styles.finishedContainer}>
-          <Feather name='check' size={ICON.XS} color={WHITE} />
-        </View>
-      );
-    }
-
-    return null;
+    return (
+      <View style={styles.finishedContainer}>
+        <Feather name='check' size={ICON.XS} color={WHITE} />
+      </View>
+    );
   };
 
   return (

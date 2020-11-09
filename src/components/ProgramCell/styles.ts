@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  progress: {
+  progressCircle: {
     width: ICON.XS,
     height: ICON.XS,
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     margin: MARGIN.SM,
     width: ICON.MD,
     backgroundColor: WHITE,
-    borderRadius: BORDER_RADIUS.XL,
+    borderRadius: BORDER_RADIUS.LG,
   },
 });
 
