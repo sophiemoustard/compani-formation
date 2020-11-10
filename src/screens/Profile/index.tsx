@@ -1,56 +1,43 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, ScrollView, Image, ImageSourcePropType, View, ImageBackground } from 'react-native';
+import { Text, ScrollView, Image, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import NiButton from '../../components/form/Button';
 import commonStyles from '../../styles/common';
 import { Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
-import User from '../../api/users';
 import Course from '../../api/courses';
-import { getLoggedUserId } from '../../store/main/selectors';
 import { CourseType } from '../../types/CourseType';
 import { GREY } from '../../styles/colors';
+import { UserType } from '../../types/UserType';
 
 interface ProfileProps {
-  loggedUserId: string,
+  loggedUser: UserType,
 }
 
-const Profile = ({ loggedUserId } :ProfileProps) => {
+const Profile = ({ loggedUser } :ProfileProps) => {
   const { signOut } = useContext(AuthContext);
-  const defaultImg = require('../../../assets/images/authentication_background_image.jpg');
-  const [user, setUser] = useState<any>(null);
   const [courses, setCourses] = useState<Array<CourseType>>([]);
-  const [source, setSource] = useState<ImageSourcePropType>(defaultImg);
+  const source = loggedUser.picture.link
+    ? { uri: loggedUser.picture.link }
+    : require('../../../assets/images/default_avatar.png');
 
-  const getProfile = async () => {
-    try {
-      const fetchedUser = await User.getById(loggedUserId);
-      setUser(fetchedUser);
-      setSource(fetchedUser.picture.link
-        ? { uri: fetchedUser.picture.link }
-        : require('../../../assets/images/default_avatar.png'));
-    } catch (e) {
-      if (e.status === 401) signOut();
-      setUser(null);
-    }
-  };
   const getUserCourses = async () => {
     try {
       const fetchedCourses = await Course.getUserCourses();
       setCourses(fetchedCourses);
     } catch (e) {
       if (e.status === 401) signOut();
-      setUser(null);
+      setCourses([]);
     }
   };
 
   useEffect(() => {
-    async function fetchData() { await getProfile(); await getUserCourses(); }
+    async function fetchData() { await getUserCourses(); }
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return user && (
+  return (
     <ScrollView style={commonStyles.container}>
       <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
       <View style={styles.identityContainer}>
@@ -60,8 +47,8 @@ const Profile = ({ loggedUserId } :ProfileProps) => {
             <Image style={styles.profileImage} source={source} />
           </View>
           <View>
-            <Text style={styles.name}>{user.identity.firstname || ''} {user.identity.lastname}</Text>
-            <Text style={styles.company}>{user.company.name}</Text>
+            <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
+            <Text style={styles.company}>{loggedUser.company.name}</Text>
           </View>
           <Text style={styles.courses}>FORMATIONS EN COURS</Text>
           <Text style={styles.numberOfCourses}>{courses.length}</Text>
@@ -71,9 +58,9 @@ const Profile = ({ loggedUserId } :ProfileProps) => {
       <View style={styles.contactsContainer}>
         <Text style={styles.contact}>Contact</Text>
         <Text style={styles.subTitle}>Téléphone</Text>
-        <Text style={styles.infos}>{user.contact.phone || 'Non renseigné'}</Text>
+        <Text style={styles.infos}>{loggedUser.contact.phone || 'Non renseigné'}</Text>
         <Text style={styles.subTitle}>E-mail</Text>
-        <Text style={styles.infos}>{user.local.email}</Text>
+        <Text style={styles.infos}>{loggedUser.local.email}</Text>
       </View>
       <View style={styles.sectionDelimiter} />
       <NiButton style={styles.logOutButton} caption="Se déconnecter" onPress={signOut}
@@ -86,6 +73,6 @@ const Profile = ({ loggedUserId } :ProfileProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
 export default connect(mapStateToProps)(Profile);

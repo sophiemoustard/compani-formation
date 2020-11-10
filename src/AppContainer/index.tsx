@@ -102,7 +102,15 @@ const AppContainer = ({ setLoggedUser, setUserRole, resetAllReducers, statusBarV
     async function setUser() {
       const userId = await asyncStorage.getUserId();
       const user = await Users.getById(userId);
-      setLoggedUser(pick(user, ['_id', 'identity.firstname', 'identity.lastname', 'local.email']));
+      setLoggedUser(pick(user, [
+        '_id',
+        'identity.firstname',
+        'identity.lastname',
+        'local.email',
+        'picture.link',
+        'company',
+        'contact.phone',
+      ]));
       setUserRole(user.role.vendor.name);
     }
     if (alenviToken) setUser();
