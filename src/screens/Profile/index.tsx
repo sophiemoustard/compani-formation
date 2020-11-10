@@ -28,8 +28,7 @@ const Profile = ({ loggedUserId } :ProfileProps) => {
       setUser(fetchedUser);
       setSource(fetchedUser.picture.link
         ? { uri: fetchedUser.picture.link }
-        // eslint-disable-next-line max-len
-        : { uri: 'https://res.cloudinary.com/alenvi/image/upload/c_scale,h_400,q_auto,w_400/v1513764284/images/users/default_avatar.png' });
+        : require('../../../assets/images/default_avatar.png'));
     } catch (e) {
       if (e.status === 401) signOut();
       setUser(null);
