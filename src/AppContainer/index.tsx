@@ -108,7 +108,7 @@ const AppContainer = ({ setLoggedUser, setUserRole, resetAllReducers, statusBarV
         'identity.lastname',
         'local.email',
         'picture.link',
-        'company',
+        'company.name',
         'contact.phone',
       ]));
       setUserRole(user.role.vendor.name);
