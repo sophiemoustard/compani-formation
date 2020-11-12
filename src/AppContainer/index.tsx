@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import pick from 'lodash/pick';
 import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
-import Profile from '../screens/Profile';
+import ProfileDetails from '../screens/Profile';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
@@ -34,6 +34,7 @@ interface TabBarIconProps {
 
 const CourseStack = createStackNavigator();
 const ExploreStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const Courses = () => (
   <CourseStack.Navigator headerMode="none">
@@ -48,6 +49,12 @@ const Explore = () => (
     <ExploreStack.Screen name="Catalog" component={Catalog} />
     <ExploreStack.Screen name="About" component={About} />
   </ExploreStack.Navigator>
+);
+
+const Profile = () => (
+  <ProfileStack.Navigator headerMode="none">
+    <ProfileStack.Screen name="Profile" component={ProfileDetails} />
+  </ProfileStack.Navigator>
 );
 
 const Tab = createBottomTabNavigator();
@@ -95,7 +102,15 @@ const AppContainer = ({ setLoggedUser, setUserRole, resetAllReducers, statusBarV
     async function setUser() {
       const userId = await asyncStorage.getUserId();
       const user = await Users.getById(userId);
-      setLoggedUser(pick(user, ['_id', 'identity.firstname', 'identity.lastname', 'local.email']));
+      setLoggedUser(pick(user, [
+        '_id',
+        'identity.firstname',
+        'identity.lastname',
+        'local.email',
+        'picture.link',
+        'company.name',
+        'contact.phone',
+      ]));
       setUserRole(user.role.vendor.name);
     }
     if (alenviToken) setUser();

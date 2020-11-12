@@ -130,6 +130,10 @@ export const NUNITO_REGULAR_BOLD_ITALIC = StyleSheet.create({
 });
 
 export const NUNITO_LIGHT = StyleSheet.create({
+  XL: {
+    fontSize: 48,
+    fontFamily: 'nunito-light',
+  },
   XXXL: {
     fontSize: 348,
     fontFamily: 'nunito-light',
