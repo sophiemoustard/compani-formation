@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
+import { formatPhone } from '../../core/helpers/utils';
 import NiButton from '../../components/form/Button';
 import commonStyles from '../../styles/common';
 import { Context as AuthContext } from '../../context/AuthContext';
@@ -29,14 +30,6 @@ const Profile = ({ loggedUser }: ProfileProps) => {
     }
   };
 
-  const formatePhoneNumber = (phoneNumber) => {
-    let formatedPhoneNumber = '';
-    for (let i = 0; i < phoneNumber.length; i += 2) {
-      formatedPhoneNumber += `${phoneNumber[i]}${phoneNumber[i + 1]} `;
-    }
-    return formatedPhoneNumber;
-  };
-
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
     fetchData();
@@ -56,7 +49,6 @@ const Profile = ({ loggedUser }: ProfileProps) => {
           <Image style={styles.profileImage} source={source} />
           <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
           <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
-
           <Text style={styles.courses}>FORMATIONS EN COURS</Text>
           <Text style={styles.numberOfCourses}>{courses.length}</Text>
         </ImageBackground>
@@ -66,7 +58,7 @@ const Profile = ({ loggedUser }: ProfileProps) => {
         <Text style={styles.contact}>Contact</Text>
         <Text style={styles.subTitle}>Téléphone</Text>
         <Text style={styles.infos}>{loggedUser.contact?.phone
-          ? formatePhoneNumber(loggedUser.contact?.phone)
+          ? formatPhone(loggedUser.contact?.phone)
           : 'Non renseigné'}</Text>
         <Text style={styles.subTitle}>E-mail</Text>
         <Text style={styles.infos}>{loggedUser.local.email}</Text>
