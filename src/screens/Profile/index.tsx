@@ -14,12 +14,10 @@ interface ProfileProps {
   loggedUser: UserType,
 }
 
-const Profile = ({ loggedUser } :ProfileProps) => {
+const Profile = ({ loggedUser }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const [courses, setCourses] = useState<Array<CourseType>>([]);
-  const source = loggedUser.picture.link
-    ? { uri: loggedUser.picture.link }
-    : require('../../../assets/images/default_avatar.png');
+  const [source, setSource] = useState(require('../../../assets/images/default_avatar.png'));
 
   const getUserCourses = async () => {
     try {
@@ -31,25 +29,34 @@ const Profile = ({ loggedUser } :ProfileProps) => {
     }
   };
 
+  const formatePhoneNumber = (phoneNumber) => {
+    let formatedPhoneNumber = '';
+    for (let i = 0; i < phoneNumber.length; i += 2) {
+      formatedPhoneNumber += `${phoneNumber[i]}${phoneNumber[i + 1]} `;
+    }
+    return formatedPhoneNumber;
+  };
+
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
+  useEffect(() => {
+    if (loggedUser && loggedUser.picture?.link) setSource({ uri: loggedUser.picture.link });
+  }, [loggedUser]);
+
+  return loggedUser && (
     <ScrollView style={commonStyles.container}>
       <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
       <View style={styles.identityContainer}>
         <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
           source={require('../../../assets/images/profile_background.png')}>
-          <View style={styles.imageContainer}>
-            <Image style={styles.profileImage} source={source} />
-          </View>
-          <View>
-            <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
-            <Text style={styles.company}>{loggedUser.company.name}</Text>
-          </View>
+          <Image style={styles.profileImage} source={source} />
+          <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
+          <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
+
           <Text style={styles.courses}>FORMATIONS EN COURS</Text>
           <Text style={styles.numberOfCourses}>{courses.length}</Text>
         </ImageBackground>
@@ -58,7 +65,9 @@ const Profile = ({ loggedUser } :ProfileProps) => {
       <View style={styles.contactsContainer}>
         <Text style={styles.contact}>Contact</Text>
         <Text style={styles.subTitle}>Téléphone</Text>
-        <Text style={styles.infos}>{loggedUser.contact.phone || 'Non renseigné'}</Text>
+        <Text style={styles.infos}>{loggedUser.contact?.phone
+          ? formatePhoneNumber(loggedUser.contact?.phone)
+          : 'Non renseigné'}</Text>
         <Text style={styles.subTitle}>E-mail</Text>
         <Text style={styles.infos}>{loggedUser.local.email}</Text>
       </View>
