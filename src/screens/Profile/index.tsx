@@ -57,9 +57,9 @@ const Profile = ({ loggedUser }: ProfileProps) => {
       <View style={styles.contactsContainer}>
         <Text style={styles.contact}>Contact</Text>
         <Text style={styles.subTitle}>Téléphone</Text>
-        <Text style={styles.infos}>{loggedUser.contact?.phone
-          ? formatPhone(loggedUser.contact?.phone)
-          : 'Non renseigné'}</Text>
+        <Text style={styles.infos}>
+          {loggedUser.contact?.phone ? formatPhone(loggedUser.contact?.phone) : 'Non renseigné'}
+        </Text>
         <Text style={styles.subTitle}>E-mail</Text>
         <Text style={styles.infos}>{loggedUser.local.email}</Text>
       </View>
