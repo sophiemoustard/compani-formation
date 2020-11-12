@@ -40,7 +40,7 @@ const Profile = ({ loggedUser }: ProfileProps) => {
     if (loggedUser && loggedUser.picture?.link) setSource({ uri: loggedUser.picture.link });
   }, [loggedUser]);
 
-  return loggedUser && (
+  return !!loggedUser && (
     <ScrollView style={commonStyles.container}>
       <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
       <View style={styles.identityContainer}>
@@ -58,7 +58,7 @@ const Profile = ({ loggedUser }: ProfileProps) => {
         <Text style={styles.contact}>Contact</Text>
         <Text style={styles.subTitle}>Téléphone</Text>
         <Text style={styles.infos}>
-          {loggedUser.contact?.phone ? formatPhone(loggedUser.contact?.phone) : 'Non renseigné'}
+          {loggedUser.contact?.phone ? formatPhone(loggedUser.contact.phone) : 'Non renseigné'}
         </Text>
         <Text style={styles.subTitle}>E-mail</Text>
         <Text style={styles.infos}>{loggedUser.local.email}</Text>
