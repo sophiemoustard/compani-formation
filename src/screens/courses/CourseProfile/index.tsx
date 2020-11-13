@@ -107,7 +107,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
         <View style={styles.header}>
           <IconButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
-          <Text style={styles.title}>{programName}</Text>
+          <Text style={styles.title}>{programName}{course.misc ? ` - ${course.misc}` : ''}</Text>
         </View>
       </ImageBackground>
       <View style={styles.progressBarContainer}>

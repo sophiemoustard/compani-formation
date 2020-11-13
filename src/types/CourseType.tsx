@@ -10,6 +10,7 @@ export interface CourseType {
   type: string,
   trainer: string,
   slots: Array<CourseSlotType>
+  misc: string,
 }
 
 export interface ContactType {

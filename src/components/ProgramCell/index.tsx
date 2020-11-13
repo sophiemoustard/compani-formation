@@ -10,11 +10,12 @@ import { PINK, WHITE, YELLOW } from '../../styles/colors';
 
 interface ProgramCellProps {
   program: ProgramType,
-  progress?: number | null;
-  onPress: () => void;
+  progress?: number | null,
+  misc?: string | null,
+  onPress: () => void,
 }
 
-const ProgramCell = ({ program, progress = null, onPress }: ProgramCellProps) => {
+const ProgramCell = ({ program, progress = null, misc = null, onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
   const source = programImage
@@ -57,7 +58,7 @@ const ProgramCell = ({ program, progress = null, onPress }: ProgramCellProps) =>
         </ImageBackground>
       </View>
       <View style={styles.title}>
-        <Text lineBreakMode={'tail'} numberOfLines={2}>{programName}</Text>
+        <Text lineBreakMode={'tail'} numberOfLines={2}>{programName}{misc ? ` - ${misc}` : ''}</Text>
       </View>
     </TouchableOpacity>
   );
