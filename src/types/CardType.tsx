@@ -42,6 +42,7 @@ export interface TextMediaType {
   media: {
     link: string,
     publicId: string,
+    type: string,
   },
   text: string,
 }

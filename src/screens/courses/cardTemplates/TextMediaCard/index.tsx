@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, Image, ScrollView } from 'react-native';
+import { Video } from 'expo-av';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
@@ -10,6 +11,7 @@ import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 import FooterGradient from '../../../../components/design/FooterGradient';
+import { IMAGE, VIDEO } from '../../../../core/data/constants';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -18,27 +20,31 @@ interface TextMediaCardProps {
 }
 
 const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
-  const [imgHeight, setImgHeight] = useState(0);
+  const [mediaHeight, setMediaHeight] = useState(CARD_MEDIA_MAX_HEIGHT);
 
   useEffect(() => {
-    if (card?.media?.link) {
+    if (!isLoading && card?.media?.link && card?.media?.type === IMAGE) {
       Image.getSize(card.media?.link || '', (width, height) => {
-        setImgHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
+        setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
       });
     }
-  }, [card]);
+  }, [card, isLoading]);
 
   if (isLoading) return null;
 
-  const imageSource = card.media?.link ? { uri: card.media.link } : '';
-  const styleWithImgHeight = styles(imgHeight);
+  const mediaSource = card.media?.link ? { uri: card.media.link } : '';
+  const cardType = card?.media?.type;
+  const styleWithHeight = styles(mediaHeight);
 
   return (
     <>
       <CardHeader />
-      <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.text}>{card.text}</Text>
-        {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
+        {cardType === IMAGE && !!mediaSource &&
+          <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
+        {cardType === VIDEO && !!mediaSource &&
+            <Video useNativeControls resizeMode='cover' source={mediaSource} style={styleWithHeight.media} />}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
