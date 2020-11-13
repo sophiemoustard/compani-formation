@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Text, Image, ScrollView, View } from 'react-native';
+import { Text, Image, ScrollView } from 'react-native';
 import { Video } from 'expo-av';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -62,7 +62,7 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
               {playVisible &&
                 <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullScreen}
                   color={GREY[100]} style={styleWithHeight.play} />}
-              <Video ref={videoRef} useNativeControls resizeMode='cover' source={mediaSource}
+              <Video ref={videoRef} useNativeControls resizeMode='contain' source={mediaSource}
                 style={styleWithHeight.media} onPlaybackStatusUpdate={onPlaybackStatusUpdate} />
             </>}
       </ScrollView>
