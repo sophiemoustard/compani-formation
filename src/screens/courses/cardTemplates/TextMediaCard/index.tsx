@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { Text, Image, ScrollView, View } from 'react-native';
 import { Video } from 'expo-av';
 import { connect } from 'react-redux';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -9,9 +9,11 @@ import cardsStyle from '../../../../styles/cards';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
-import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
+import { CARD_MEDIA_MAX_HEIGHT, ICON } from '../../../../styles/metrics';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import { IMAGE, VIDEO } from '../../../../core/data/constants';
+import IconButton from '../../../../components/IconButton';
+import { GREY } from '../../../../styles/colors';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -20,7 +22,9 @@ interface TextMediaCardProps {
 }
 
 const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
-  const [mediaHeight, setMediaHeight] = useState(CARD_MEDIA_MAX_HEIGHT);
+  const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
+  const [playVisible, setPlayVisible] = useState<Boolean>(true);
+  const videoRef = useRef<Video>(null);
 
   useEffect(() => {
     if (!isLoading && card?.media?.link && card?.media?.type === IMAGE) {
@@ -36,6 +40,16 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
   const cardType = card?.media?.type;
   const styleWithHeight = styles(mediaHeight);
 
+  const displayFullScreen = () => {
+    videoRef.current?.presentFullscreenPlayer();
+    videoRef.current?.playAsync();
+  };
+
+  const onPlaybackStatusUpdate = (playbackStatus) => {
+    if (playbackStatus.isPlaying) setPlayVisible(false);
+    else setPlayVisible(true);
+  };
+
   return (
     <>
       <CardHeader />
@@ -44,7 +58,12 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
         {cardType === IMAGE && !!mediaSource &&
           <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
         {cardType === VIDEO && !!mediaSource &&
-            <Video useNativeControls resizeMode='cover' source={mediaSource} style={styleWithHeight.media} />}
+            <>
+              {playVisible && <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullScreen}
+                color={GREY[100]} style={styleWithHeight.play} />}
+              <Video ref={videoRef} useNativeControls resizeMode='cover' source={mediaSource}
+                style={styleWithHeight.media} onPlaybackStatusUpdate={onPlaybackStatusUpdate} />
+            </>}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />

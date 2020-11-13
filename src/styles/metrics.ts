@@ -40,6 +40,7 @@ export const ICON = {
   MD: 24,
   LG: 26,
   XL: 32,
+  XXL: 64,
 };
 
 export const IOS_WIDTH_THRESHOLD = 375;
