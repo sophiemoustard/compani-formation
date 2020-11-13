@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { ICON, MARGIN, CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
+import { ICON, MARGIN, CARD_MEDIA_MAX_HEIGHT, BORDER_RADIUS } from '../../../../styles/metrics';
 
 const styles = (imgHeight: number) => StyleSheet.create({
   container: {
@@ -15,6 +15,8 @@ const styles = (imgHeight: number) => StyleSheet.create({
     alignSelf: 'center',
     top: (CARD_MEDIA_MAX_HEIGHT + ICON.XXL) / 2,
     zIndex: 1,
+    backgroundColor: '#00000066',
+    borderRadius: BORDER_RADIUS.XXL,
   },
 });
 

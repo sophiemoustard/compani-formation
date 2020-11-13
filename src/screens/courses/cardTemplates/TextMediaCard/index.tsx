@@ -59,8 +59,9 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
           <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
         {cardType === VIDEO && !!mediaSource &&
             <>
-              {playVisible && <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullScreen}
-                color={GREY[100]} style={styleWithHeight.play} />}
+              {playVisible &&
+                <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullScreen}
+                  color={GREY[100]} style={styleWithHeight.play} />}
               <Video ref={videoRef} useNativeControls resizeMode='cover' source={mediaSource}
                 style={styleWithHeight.media} onPlaybackStatusUpdate={onPlaybackStatusUpdate} />
             </>}
