@@ -4,6 +4,7 @@ const { width, height } = Dimensions.get('window');
 
 export const MAIN_MARGIN_LEFT = 16;
 export const MARGIN = {
+  XXS: 2,
   XS: 4,
   SM: 8,
   MD: 16,

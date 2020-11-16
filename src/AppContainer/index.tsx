@@ -72,6 +72,18 @@ const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
 const Home = () => {
   const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
+  const getTabBarVisibility = (route) => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    if (routeName === 'EditProfile') {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
@@ -80,7 +92,10 @@ const Home = () => {
     >
       <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
+      <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
+        tabBarLabel: 'Profil',
+        tabBarVisible: getTabBarVisibility(route),
+      })} />
     </Tab.Navigator>
   );
 };

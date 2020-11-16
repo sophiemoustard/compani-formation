@@ -35,10 +35,16 @@ const styles = StyleSheet.create({
     color: PINK[500],
   },
   cancelButton: {
-    marginRight: MARGIN.XL,
+    width: 80,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   closeButton: {
-    marginRight: MARGIN.SM,
+    width: 80,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

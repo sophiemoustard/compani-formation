@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   unvalid: {
     ...FIRA_SANS_ITALIC.SM,
     color: ORANGE[600],
-    marginTop: 2,
+    marginTop: MARGIN.XXS,
   },
   input: {
     marginBottom: MARGIN.MD,

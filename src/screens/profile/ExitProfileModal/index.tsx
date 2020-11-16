@@ -9,11 +9,7 @@ interface ExitProfileModalProps {
   onPressConfirmButton: () => void,
 }
 
-const ExitProfileModal = ({
-  visible,
-  onPressCancelButton,
-  onPressConfirmButton,
-}: ExitProfileModalProps) => (
+const ExitProfileModal = ({ visible, onPressCancelButton, onPressConfirmButton }: ExitProfileModalProps) => (
   <NiModal visible={visible}>
     <Text style={styles.title}>Es-tu sûr de cela ?</Text>
     <Text style={styles.contentText}>Tes modifications ne seront pas enregistrées.</Text>

@@ -35,8 +35,10 @@ interface EditProfileProps {
 const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps) => {
   const isIOS = Platform.OS === 'ios';
   const { signOut } = useContext(AuthContext);
+  const inputStyle = { borderColor: GREY[600] };
+
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
-  const [answer, setAnswer] = useState<any>({
+  const [editedUser, setEditedUser] = useState<any>({
     identity: {
       firstname: loggedUser.identity.firstname,
       lastname: loggedUser.identity.lastname,
@@ -48,18 +50,10 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
       email: loggedUser.local.email,
     },
   });
-  const [unvalid, setUnvalid] = useState({
-    lastName: true,
-    phone: true,
-    email: true,
-  });
+  const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
+
   const keyboardDidHide = () => Keyboard.dismiss();
-
-  const inputStyle = {
-    borderColor: GREY[600],
-  };
-
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
   const hardwareBackPress = () => {
@@ -70,32 +64,22 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
   useEffect(() => {
-    const parent = navigation.dangerouslyGetParent();
-    parent.setOptions({
-      tabBarVisible: false,
-    });
-    return () =>
-      parent.setOptions({
-        tabBarVisible: true,
-      });
-  }, [navigation]);
-
-  useEffect(() => {
     setUnvalid({
-      lastName: answer.identity.lastname === '',
-      phone: !answer.contact.phone.match(/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/) &&
-        answer.contact.phone.length > 0,
-      email: !answer.local.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/),
+      lastName: editedUser.identity.lastname === '',
+      phone: !editedUser.contact.phone.match(/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/) &&
+      editedUser.contact.phone.length > 0,
+      email: !editedUser.local.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/) && editedUser.local.email.length > 0,
+      emptyEmail: editedUser.local.email === '',
     });
-  }, [answer]);
+  }, [editedUser]);
 
   useEffect(() => {
-    const { lastName, phone, email } = unvalid;
-    if (lastName || phone || email ||
-    (answer.identity.firstname === loggedUser.identity.firstname &&
-      answer.identity.lastname === loggedUser.identity.lastname &&
-      answer.contact.phone === loggedUser.contact?.phone &&
-      answer.local.email === loggedUser.local.email)) {
+    const { lastName, phone, email, emptyEmail } = unvalid;
+    if (lastName || phone || email || emptyEmail ||
+      (editedUser.identity.firstname === loggedUser.identity.firstname &&
+        editedUser.identity.lastname === loggedUser.identity.lastname &&
+        editedUser.contact.phone === loggedUser.contact?.phone &&
+        editedUser.local.email === loggedUser.local.email)) {
       setIsValid(false);
     } else setIsValid(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,7 +94,7 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
 
   const saveData = async () => {
     try {
-      if (isValid) await Users.updateById(loggedUser._id, answer);
+      if (isValid) await Users.updateById(loggedUser._id, editedUser);
       const userId = await asyncStorage.getUserId();
       const user = await Users.getById(userId);
       setLoggedUser(pick(user, [
@@ -139,37 +123,32 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
           onPressCancelButton={() => setExitConfirmationModal(false)} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <View>
           <Text style={styles.title}>Modifier mes informations</Text>
+        <View style={styles.input}>
+          <NiInput caption="Prénom" value={editedUser.identity.firstname} customStyle={inputStyle} type="firstname" darkMode={false}
+            onChangeText={text => setEditedUser({
+              ...editedUser,
+              identity: { firstname: text, lastname: editedUser.identity.lastname },
+            })} />
         </View>
         <View style={styles.input}>
-          <NiInput caption="Prénom" value={answer.identity.firstname} customStyle={inputStyle}
-            onChangeText={text => setAnswer({
-              ...answer,
-              identity: { firstname: text, lastname: answer.identity.lastname },
-            })} type="email"
-            darkMode={false} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Nom" value={answer.identity.lastname} customStyle={inputStyle}
-            onChangeText={text => setAnswer({
-              ...answer,
-              identity: { firstname: answer.identity.firstname, lastname: text },
-            })} type="email"
-            darkMode={false} />
+          <NiInput caption="Nom" value={editedUser.identity.lastname} customStyle={inputStyle} type="lastname" darkMode={false}
+            onChangeText={text => setEditedUser({
+              ...editedUser,
+              identity: { firstname: editedUser.identity.firstname, lastname: text },
+            })} />
           <Text style={styles.unvalid}>{unvalid.lastName && 'Ce champ est obligatoire'}</Text>
         </View>
         <View style={styles.input}>
-          <NiInput caption="Téléphone" value={answer.contact.phone} customStyle={inputStyle}
-            onChangeText={text => setAnswer({ ...answer, contact: { phone: text } })} type="email"
-            darkMode={false} />
+          <NiInput caption="Téléphone" value={editedUser.contact.phone} customStyle={inputStyle} type="phone" darkMode={false}
+            onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })} />
           <Text style={styles.unvalid}>{unvalid.phone && 'Ton numéro de téléphone n\'est pas valide'}</Text>
         </View>
         <View style={styles.input}>
-          <NiInput caption="E-mail" value={answer.local.email} customStyle={inputStyle}
-            onChangeText={text => setAnswer({ ...answer, local: { email: text } })} type="email"
-            darkMode={false} />
+          <NiInput caption="E-mail" value={editedUser.local.email} customStyle={inputStyle}  type="email" darkMode={false}
+            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
           <Text style={styles.unvalid}>{unvalid.email && 'Ton adresse e-mail n\'est pas valide'}</Text>
+          <Text style={styles.unvalid}>{unvalid.emptyEmail && 'Ce champ est obligatoire'}</Text>
         </View>
         <View style={styles.validate}>
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid}
