@@ -8,7 +8,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import pick from 'lodash/pick';
 import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
-import ProfileDetails from '../screens/Profile';
+import ProfileDetails from '../screens/profile/Profile';
+import EditProfile from '../screens/profile/EditProfile';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
@@ -54,6 +55,7 @@ const Explore = () => (
 const Profile = () => (
   <ProfileStack.Navigator headerMode="none">
     <ProfileStack.Screen name="Profile" component={ProfileDetails} />
+    <ProfileStack.Screen name="EditProfile" component={EditProfile} />
   </ProfileStack.Navigator>
 );
 

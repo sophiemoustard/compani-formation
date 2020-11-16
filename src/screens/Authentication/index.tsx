@@ -41,10 +41,10 @@ const Authentication = ({ navigation }: AuthenticationProps) => {
           <Text style={styles.title}>
             Identifiez-vous pour{'\n'}accéder aux informations
           </Text>
-          <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email"
-            darkMode={true} />
-          <NiInput style={styles.input} caption="Mot de passe" value={password} onChangeText={setPasssword}
-            type="password" darkMode={true} />
+          <NiInput customStyle={{ container: styles.input }} caption="Email" value={email} onChangeText={setEmail}
+            type="email" darkMode={true} />
+          <NiInput customStyle={{ container: styles.input }} caption="Mot de passe" value={password}
+            onChangeText={setPasssword} type="password" darkMode={true} />
           <TouchableOpacity style={styles.forgotPassword} onPress={forgotPassword}>
             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>
