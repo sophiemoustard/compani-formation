@@ -123,30 +123,30 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
           onPressCancelButton={() => setExitConfirmationModal(false)} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>Modifier mes informations</Text>
+        <Text style={styles.title}>Modifier mes informations</Text>
         <View style={styles.input}>
-          <NiInput caption="Prénom" value={editedUser.identity.firstname} customStyle={inputStyle} type="firstname" darkMode={false}
-            onChangeText={text => setEditedUser({
+          <NiInput caption="Prénom" value={editedUser.identity.firstname} customStyle={inputStyle}
+            type="firstname" darkMode={false} onChangeText={text => setEditedUser({
               ...editedUser,
               identity: { firstname: text, lastname: editedUser.identity.lastname },
             })} />
         </View>
         <View style={styles.input}>
-          <NiInput caption="Nom" value={editedUser.identity.lastname} customStyle={inputStyle} type="lastname" darkMode={false}
-            onChangeText={text => setEditedUser({
+          <NiInput caption="Nom" value={editedUser.identity.lastname} customStyle={inputStyle}
+            type="lastname" darkMode={false} onChangeText={text => setEditedUser({
               ...editedUser,
               identity: { firstname: editedUser.identity.firstname, lastname: text },
             })} />
           <Text style={styles.unvalid}>{unvalid.lastName && 'Ce champ est obligatoire'}</Text>
         </View>
         <View style={styles.input}>
-          <NiInput caption="Téléphone" value={editedUser.contact.phone} customStyle={inputStyle} type="phone" darkMode={false}
-            onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })} />
+          <NiInput caption="Téléphone" value={editedUser.contact.phone} customStyle={inputStyle} type="phone"
+            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })} />
           <Text style={styles.unvalid}>{unvalid.phone && 'Ton numéro de téléphone n\'est pas valide'}</Text>
         </View>
         <View style={styles.input}>
-          <NiInput caption="E-mail" value={editedUser.local.email} customStyle={inputStyle}  type="email" darkMode={false}
-            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
+          <NiInput caption="E-mail" value={editedUser.local.email} customStyle={inputStyle} type="email"
+            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
           <Text style={styles.unvalid}>{unvalid.email && 'Ton adresse e-mail n\'est pas valide'}</Text>
           <Text style={styles.unvalid}>{unvalid.emptyEmail && 'Ce champ est obligatoire'}</Text>
         </View>
