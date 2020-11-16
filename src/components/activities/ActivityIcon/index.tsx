@@ -18,21 +18,24 @@ interface ActivityIconProps {
   backgroundColor: string,
 }
 
-interface StylesProps {
-  borderColor: string,
-  backgroundColor: string,
-}
-
 const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: ActivityIconProps) => {
   const coloredStyle = styles({ borderColor, backgroundColor });
 
   const getIcon = () => {
-    if (activity.type === SHARING_EXPERIENCE) return <SharingExperienceIcon style={coloredStyle.icon} />;
-    if (activity.type === LESSON) return <LessonIcon style={coloredStyle.icon} />;
-    if (activity.type === QUIZ) return <QuizIcon style={coloredStyle.icon} />;
-    if (activity.type === VIDEO) return <VideoIcon style={coloredStyle.icon} />;
-    if (activity.type === QUESTIONNAIRE) return <QuestionnaireIcon style={coloredStyle.icon} />;
-    return null;
+    switch (activity.type) {
+      case SHARING_EXPERIENCE:
+        return <SharingExperienceIcon style={coloredStyle.icon} />;
+      case LESSON:
+        return <LessonIcon style={coloredStyle.icon} />;
+      case QUIZ:
+        return <QuizIcon style={coloredStyle.icon} />;
+      case VIDEO:
+        return <VideoIcon style={coloredStyle.icon} />;
+      case QUESTIONNAIRE:
+        return <QuestionnaireIcon style={coloredStyle.icon} />;
+      default:
+        return null;
+    }
   };
 
   return (
