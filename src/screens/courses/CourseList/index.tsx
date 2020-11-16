@@ -125,7 +125,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
 
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
     onPress={() => onPressProgramCell(true, course._id)} progress={getCourseProgress(course.subProgram.steps)}
-    misc={course.misc || ''} />;
+    misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;

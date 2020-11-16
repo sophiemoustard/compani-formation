@@ -15,7 +15,7 @@ interface ProgramCellProps {
   onPress: () => void,
 }
 
-const ProgramCell = ({ program, progress = null, misc = null, onPress }: ProgramCellProps) => {
+const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
   const source = programImage
