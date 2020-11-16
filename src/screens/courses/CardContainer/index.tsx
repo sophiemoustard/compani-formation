@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
-import ExitActivityModal from '../../../components/activities/ExitActivityModal';
+import ExitModal from '../../../components/ExitModal';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import EndCard from '../cardTemplates/EndCard';
@@ -82,12 +82,16 @@ const CardContainer = ({
     [cardIndex]
   );
 
+  const modalTitle = 'Es-tu sûr de cela ?';
+  const modalContentText = 'Tous tes progrès dans la leçon seront perdus.';
+
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
         <View style={styles.cardScreen}>
-          <ExitActivityModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-            onPressCancelButton={() => setExitConfirmationModal(false)} />
+          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
+            title={modalTitle} contentText={modalContentText} />
           <CardTemplate index={index} />
         </View>
       )}

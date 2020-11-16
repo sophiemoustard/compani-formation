@@ -39,3 +39,7 @@ export const QUESTION_ANSWER = 'question_answer';
 // ROLE
 export const VENDOR_ADMIN = 'vendor_admin';
 export const TRAINING_ORGANISATION_MANAGER = 'training_organisation_manager';
+
+// REGEX
+export const PHONE_REGEX = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/;
+export const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;

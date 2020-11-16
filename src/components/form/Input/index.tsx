@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { GREY, WHITE } from '../../../styles/colors';
+import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import styles from './styles';
 import Shadow from '../../design/Shadow';
 
 interface InputProps {
-  customStyle?: any,
   value: string,
   onChangeText: (string) => void,
   caption: string,
   type: string,
   darkMode?: boolean,
+  validationMessage?: string,
 }
 
-const Input = ({ customStyle, value, onChangeText, caption, type, darkMode }: InputProps) => {
+const Input = ({ value, onChangeText, caption, type, darkMode, validationMessage }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const isPassword = type === 'password';
@@ -24,19 +24,14 @@ const Input = ({ customStyle, value, onChangeText, caption, type, darkMode }: In
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
   const togglePassword = () => { setShowPassword(previousShowPassword => !previousShowPassword); };
-  const style = styles(isSelected, customStyle?.borderColor || GREY[200]);
-  const textStyle = { ...style.text };
-  const inputStyle = { ...style.input };
-  if (darkMode) {
-    inputStyle.backgroundColor = WHITE;
-    textStyle.color = WHITE;
-  }
+  const style = styles(isSelected);
+  const textStyle = darkMode ? { ...style.text, color: WHITE } : { ...style.text };
 
   return (
     <>
       <Text style={textStyle}>{caption}</Text>
-      <View style={customStyle?.container}>
-        <View style={inputStyle}>
+      <View style={style.container}>
+        <View style={style.input}>
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
             style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
@@ -47,6 +42,7 @@ const Input = ({ customStyle, value, onChangeText, caption, type, darkMode }: In
         </View>
         {isSelected && <Shadow customStyle={style.shadow} /> }
       </View>
+      <Text style={style.unvalid}>{validationMessage}</Text>
     </>
   );
 };

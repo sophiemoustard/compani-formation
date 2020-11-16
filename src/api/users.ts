@@ -9,7 +9,6 @@ export default {
   },
   updateById: async (userId, data) => {
     const { baseURL } = getEnvVars();
-    const updatedUser = await alenviAxios.put(`${baseURL}/users/${userId}`, data);
-    return updatedUser;
+    await alenviAxios.put(`${baseURL}/users/${userId}`, data);
   },
 };

@@ -20,22 +20,22 @@ import { UserType } from '../../../types/UserType';
 import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { NavigationType } from '../../../types/NavigationType';
-import ExitProfileModal from '../ExitProfileModal';
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import { Context as AuthContext } from '../../../context/AuthContext';
+import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
+import ExitModal from '../../../components/ExitModal';
 
-interface EditProfileProps {
+interface ProfileEditionProps {
   loggedUser: UserType,
   navigation: NavigationType,
   setLoggedUser: (user: UserType) => void,
 }
 
-const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps) => {
+const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
   const isIOS = Platform.OS === 'ios';
   const { signOut } = useContext(AuthContext);
-  const inputStyle = { borderColor: GREY[600] };
 
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
@@ -43,12 +43,8 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
       firstname: loggedUser.identity.firstname,
       lastname: loggedUser.identity.lastname,
     },
-    contact: {
-      phone: loggedUser.contact?.phone || '',
-    },
-    local: {
-      email: loggedUser.local.email,
-    },
+    contact: { phone: loggedUser.contact?.phone || '' },
+    local: { email: loggedUser.local.email },
   });
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -66,9 +62,8 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
   useEffect(() => {
     setUnvalid({
       lastName: editedUser.identity.lastname === '',
-      phone: !editedUser.contact.phone.match(/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/) &&
-      editedUser.contact.phone.length > 0,
-      email: !editedUser.local.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/) && editedUser.local.email.length > 0,
+      phone: !editedUser.contact.phone.match(PHONE_REGEX) && editedUser.contact.phone.length > 0,
+      email: !editedUser.local.email.match(EMAIL_REGEX) && editedUser.local.email.length > 0,
       emptyEmail: editedUser.local.email === '',
     });
   }, [editedUser]);
@@ -112,6 +107,27 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
     }
   };
 
+  const onChangeIdentity = (key, text) => {
+    if (key === 'firstname') {
+      setEditedUser({
+        ...editedUser,
+        identity: { firstname: text, lastname: editedUser.identity.lastname },
+      });
+    } else {
+      setEditedUser({
+        ...editedUser,
+        identity: { firstname: editedUser.identity.firstname, lastname: text },
+      });
+    }
+  };
+
+  const emailValidation = () => {
+    if (unvalid.email) return 'Ton adresse e-mail n\'est pas valide';
+    if (unvalid.emptyEmail) return 'Ce champ est obligatoire';
+
+    return '';
+  };
+
   return !!loggedUser && (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
@@ -119,36 +135,30 @@ const EditProfile = ({ loggedUser, navigation, setLoggedUser }: EditProfileProps
         <TouchableOpacity>
           <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
         </TouchableOpacity>
-        <ExitProfileModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-          onPressCancelButton={() => setExitConfirmationModal(false)} />
+        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+          onPressCancelButton={() => setExitConfirmationModal(false)}
+          title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mes informations</Text>
         <View style={styles.input}>
-          <NiInput caption="Prénom" value={editedUser.identity.firstname} customStyle={inputStyle}
-            type="firstname" darkMode={false} onChangeText={text => setEditedUser({
-              ...editedUser,
-              identity: { firstname: text, lastname: editedUser.identity.lastname },
-            })} />
+          <NiInput caption="Prénom" value={editedUser.identity.firstname}
+            type="firstname" darkMode={false} onChangeText={text => onChangeIdentity('firstname', text)} />
         </View>
         <View style={styles.input}>
-          <NiInput caption="Nom" value={editedUser.identity.lastname} customStyle={inputStyle}
-            type="lastname" darkMode={false} onChangeText={text => setEditedUser({
-              ...editedUser,
-              identity: { firstname: editedUser.identity.firstname, lastname: text },
-            })} />
-          <Text style={styles.unvalid}>{unvalid.lastName && 'Ce champ est obligatoire'}</Text>
+          <NiInput caption="Nom" value={editedUser.identity.lastname}
+            type="lastname" darkMode={false} onChangeText={text => onChangeIdentity('lastname', text)}
+            validationMessage={unvalid.lastName ? 'Ce champ est obligatoire' : ''}/>
         </View>
         <View style={styles.input}>
-          <NiInput caption="Téléphone" value={editedUser.contact.phone} customStyle={inputStyle} type="phone"
-            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })} />
-          <Text style={styles.unvalid}>{unvalid.phone && 'Ton numéro de téléphone n\'est pas valide'}</Text>
+          <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
+            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
+            validationMessage={unvalid.phone ? 'Ton numéro de téléphone n\'est pas valide' : ''}/>
         </View>
         <View style={styles.input}>
-          <NiInput caption="E-mail" value={editedUser.local.email} customStyle={inputStyle} type="email"
-            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
-          <Text style={styles.unvalid}>{unvalid.email && 'Ton adresse e-mail n\'est pas valide'}</Text>
-          <Text style={styles.unvalid}>{unvalid.emptyEmail && 'Ce champ est obligatoire'}</Text>
+          <NiInput caption="E-mail" value={editedUser.local.email} type="email"
+            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })}
+            validationMessage={emailValidation()}/>
         </View>
         <View style={styles.validate}>
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid}
@@ -165,4 +175,4 @@ const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPaylo
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdition);

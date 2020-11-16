@@ -33,7 +33,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   };
 
   const EditProfile = () => {
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'EditProfile' } });
+    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'ProfileEdition' } });
   };
 
   useEffect(() => {

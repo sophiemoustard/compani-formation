@@ -9,7 +9,7 @@ import pick from 'lodash/pick';
 import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
-import EditProfile from '../screens/profile/EditProfile';
+import ProfileEdition from '../screens/profile/ProfileEdition';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
@@ -55,7 +55,7 @@ const Explore = () => (
 const Profile = () => (
   <ProfileStack.Navigator headerMode="none">
     <ProfileStack.Screen name="Profile" component={ProfileDetails} />
-    <ProfileStack.Screen name="EditProfile" component={EditProfile} />
+    <ProfileStack.Screen name="ProfileEdition" component={ProfileEdition} />
   </ProfileStack.Navigator>
 );
 
@@ -77,11 +77,7 @@ const Home = () => {
       ? route.state.routes[route.state.index].name
       : '';
 
-    if (routeName === 'EditProfile') {
-      return false;
-    }
-
-    return true;
+    return routeName !== 'ProfileEdition';
   };
 
   return (
