@@ -73,11 +73,12 @@ const Home = () => {
   const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
   const getTabBarVisibility = (route) => {
+    const screenWithoutTabBarList = ['About', 'ProfileEdition'];
     const routeName = route.state
       ? route.state.routes[route.state.index].name
       : '';
 
-    return routeName !== 'ProfileEdition';
+    return !screenWithoutTabBarList.includes(routeName);
   };
 
   return (
@@ -86,7 +87,10 @@ const Home = () => {
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="Explore" component={Explore} options={({ route }) => ({
+        tabBarLabel: 'Explorer',
+        tabBarVisible: getTabBarVisibility(route),
+      })} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
       <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
         tabBarLabel: 'Profil',
