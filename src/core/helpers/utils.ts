@@ -6,3 +6,7 @@ export const capitalize = (s) => {
 export const formatPhone = phoneNumber => (phoneNumber
   ? phoneNumber.replace(/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/, '$1 $2 $3 $4 $5')
   : '');
+
+export const formatPhoneForPayload = phoneNumber => (phoneNumber
+  ? phoneNumber.replace(/[\s\-.]/g, '')
+  : '');

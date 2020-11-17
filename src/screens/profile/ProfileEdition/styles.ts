@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     marginHorizontal: MARGIN.LG,
-
   },
   goBack: {
     margin: MARGIN.MD,

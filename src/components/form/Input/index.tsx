@@ -15,7 +15,7 @@ interface InputProps {
   validationMessage?: string,
 }
 
-const Input = ({ value, onChangeText, caption, type, darkMode, validationMessage }: InputProps) => {
+const Input = ({ value, onChangeText, caption, type, darkMode, validationMessage = '' }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const isPassword = type === 'password';

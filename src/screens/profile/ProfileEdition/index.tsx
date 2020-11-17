@@ -26,6 +26,7 @@ import MainActions from '../../../store/main/actions';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
+import { formatPhoneForPayload } from '../../../core/helpers/utils';
 
 interface ProfileEditionProps {
   loggedUser: UserType,
@@ -48,6 +49,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   });
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -89,7 +91,13 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   const saveData = async () => {
     try {
-      if (isValid) await Users.updateById(loggedUser._id, editedUser);
+      setIsLoading(true);
+      if (isValid) {
+        await Users.updateById(loggedUser._id, {
+          ...editedUser,
+          contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
+        });
+      }
       const userId = await asyncStorage.getUserId();
       const user = await Users.getById(userId);
       setLoggedUser(pick(user, [
@@ -108,17 +116,10 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   };
 
   const onChangeIdentity = (key, text) => {
-    if (key === 'firstname') {
-      setEditedUser({
-        ...editedUser,
-        identity: { firstname: text, lastname: editedUser.identity.lastname },
-      });
-    } else {
-      setEditedUser({
-        ...editedUser,
-        identity: { firstname: editedUser.identity.firstname, lastname: text },
-      });
-    }
+    setEditedUser({
+      ...editedUser,
+      identity: { ...editedUser.identity, [key]: text },
+    });
   };
 
   const emailValidation = () => {
@@ -161,7 +162,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             validationMessage={emailValidation()}/>
         </View>
         <View style={styles.validate}>
-          <NiButton caption="Valider" onPress={saveData} disabled={!isValid}
+          <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
       </ScrollView>

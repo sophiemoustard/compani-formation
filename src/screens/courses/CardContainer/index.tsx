@@ -82,16 +82,13 @@ const CardContainer = ({
     [cardIndex]
   );
 
-  const modalTitle = 'Es-tu sûr de cela ?';
-  const modalContentText = 'Tous tes progrès dans la leçon seront perdus.';
-
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
         <View style={styles.cardScreen}>
           <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
             onPressCancelButton={() => setExitConfirmationModal(false)}
-            title={modalTitle} contentText={modalContentText} />
+            title='Es-tu sûr de cela ?' contentText='Tous tes progrès dans la leçon seront perdus.' />
           <CardTemplate index={index} />
         </View>
       )}

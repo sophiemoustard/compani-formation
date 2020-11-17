@@ -8,7 +8,7 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
 import { CourseType } from '../../../types/CourseType';
-import { GREY, PINK, WHITE } from '../../../styles/colors';
+import { GREY } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 
@@ -69,11 +69,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         <Text style={styles.subTitle}>E-mail</Text>
         <Text style={styles.infos}>{loggedUser.local.email}</Text>
         <NiButton caption="Modifier mes informations" onPress={EditProfile}
-          bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+          bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
       </View>
       <View style={styles.sectionDelimiter} />
       <NiButton style={styles.logOutButton} caption="Se déconnecter" onPress={signOut}
-        bgColor={GREY[200]} color={GREY[800]} borderColor={GREY[200]} />
+        bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
