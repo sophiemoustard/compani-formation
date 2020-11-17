@@ -83,11 +83,11 @@ export const FIRA_SANS_REGULAR = StyleSheet.create({
 export const FIRA_SANS_ITALIC = StyleSheet.create({
   MD: {
     fontSize: 16,
-    fontFamily: 'fira-sans-regular',
+    fontFamily: 'fira-sans-italic',
   },
   SM: {
     fontSize: 14,
-    fontFamily: 'fira-sans-regular',
+    fontFamily: 'fira-sans-italic',
   },
 });
 

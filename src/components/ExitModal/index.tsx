@@ -1,22 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import NiModal from '../../Modal';
+import NiModal from '../Modal';
 import styles from './styles';
 
-interface ExitActivityModalProps {
+interface ExitModalProps {
   visible: boolean,
+  title: string,
+  contentText: string,
   onPressCancelButton: () => void,
   onPressConfirmButton: () => void,
 }
 
-const ExitActivityModal = ({
+const ExitModal = ({
   visible,
+  title,
+  contentText,
   onPressCancelButton,
   onPressConfirmButton,
-}: ExitActivityModalProps) => (
+}: ExitModalProps) => (
   <NiModal visible={visible}>
-    <Text style={styles.title}>Es-tu sûr de cela ?</Text>
-    <Text style={styles.contentText}>Tous tes progrès dans la leçon seront perdus.</Text>
+    <Text style={styles.title}>{title}</Text>
+    <Text style={styles.contentText}>{contentText}</Text>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles.cancelButton} onPress={onPressCancelButton}>
         <Text style={styles.buttonText}>Annuler</Text>
@@ -28,4 +32,4 @@ const ExitActivityModal = ({
   </NiModal>
 );
 
-export default ExitActivityModal;
+export default ExitModal;

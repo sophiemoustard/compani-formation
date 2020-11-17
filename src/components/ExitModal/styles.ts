@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../../styles/colors';
-import { BORDER_RADIUS, PADDING, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../../styles/fonts';
+import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../styles/colors';
+import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
+import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -35,10 +35,16 @@ const styles = StyleSheet.create({
     color: PINK[500],
   },
   cancelButton: {
-    marginRight: MARGIN.XL,
+    width: 80,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   closeButton: {
-    marginRight: MARGIN.SM,
+    width: 80,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

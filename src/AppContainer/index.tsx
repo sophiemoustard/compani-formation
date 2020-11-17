@@ -8,7 +8,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import pick from 'lodash/pick';
 import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
-import ProfileDetails from '../screens/Profile';
+import ProfileDetails from '../screens/profile/Profile';
+import ProfileEdition from '../screens/profile/ProfileEdition';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
@@ -54,6 +55,7 @@ const Explore = () => (
 const Profile = () => (
   <ProfileStack.Navigator headerMode="none">
     <ProfileStack.Screen name="Profile" component={ProfileDetails} />
+    <ProfileStack.Screen name="ProfileEdition" component={ProfileEdition} />
   </ProfileStack.Navigator>
 );
 
@@ -70,6 +72,14 @@ const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
 const Home = () => {
   const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
+  const getTabBarVisibility = (route) => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    return routeName !== 'ProfileEdition';
+  };
+
   return (
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
@@ -78,7 +88,10 @@ const Home = () => {
     >
       <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
+      <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
+        tabBarLabel: 'Profil',
+        tabBarVisible: getTabBarVisibility(route),
+      })} />
     </Tab.Navigator>
   );
 };
