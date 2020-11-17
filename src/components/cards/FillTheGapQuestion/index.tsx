@@ -10,21 +10,27 @@ interface FillTheGapQuestionProps {
 }
 
 const FillTheGapQuestion = ({ text, isValidated, renderGap }: FillTheGapQuestionProps) => {
-  const splittedText = text.split(/<trou>[^<]*<\/trou>/g);
+  const splittedText = text.replace(/<trou>[^<]*<\/trou>/g, '<trou>').split(' ');
+
+  const formatText = (words) => {
+    let i = 0;
+    return words.map((word, idx) => {
+      if (word === '<trou>') {
+        const gapIndex = `<trou${i}>`;
+        i += 1;
+        return gapIndex;
+      }
+      if (words[idx - 1] === '<trou>') return ` ${word}`;
+      return word;
+    });
+  };
 
   return <View style={[cardsStyle.question, styles.questionContainer]} pointerEvents={isValidated ? 'none' : 'auto'}>
-    {splittedText.map((txt, index) => {
-      if (index === 0 && txt === '') return renderGap(index);
-      if (index === splittedText.length - 1 && txt === '') return null;
-      if (index < splittedText.length - 1) {
-        return (
-          <View key={`text${index}`} style={styles.textAndGapContainer}>
-            <Text style={styles.question}>{txt}</Text>
-            {renderGap(index)}
-          </View>
-        );
+    {formatText(splittedText).map((txt, index) => {
+      for (let j = 0; j < 2; j += 1) {
+        if (txt === `<trou${j}>`) return renderGap(j);
       }
-      return <Text style={styles.question} key={`text${index}`}>{txt}</Text>;
+      return <Text style={styles.question} key={`text${index}`}>{`${txt} `}</Text>;
     })
     }
   </View>;
