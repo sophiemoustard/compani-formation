@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.LG,
   },
   play: {
-    position: 'relative',
+    position: 'absolute',
     alignSelf: 'center',
-    top: (CARD_MEDIA_MAX_HEIGHT + ICON.XXL) / 2,
+    top: (CARD_MEDIA_MAX_HEIGHT + ICON.XXL / 2) / 2,
     zIndex: 1,
     backgroundColor: TRANSPARENT_DARK_GREY,
     borderRadius: BORDER_RADIUS.XXL,
