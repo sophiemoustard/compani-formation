@@ -22,6 +22,7 @@ interface TextMediaCardProps {
 const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
+  const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
 
   useEffect(() => {
     if (!isLoading) {
@@ -31,12 +32,12 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
         });
       }
       setMediaType(card?.media?.type);
+      setMediaSource(card.media?.link ? { uri: card.media.link } : undefined);
     }
   }, [card, isLoading]);
 
   if (isLoading) return null;
 
-  const mediaSource = card.media?.link ? { uri: card.media.link } : undefined;
   const styleWithHeight = styles(mediaHeight);
 
   return (

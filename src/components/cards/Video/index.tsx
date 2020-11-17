@@ -34,5 +34,4 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   );
 };
 
-
 export default NiVideo;
