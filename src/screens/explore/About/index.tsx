@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -18,7 +18,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
   route: { params: { programId: string } },
-  navigation: { navigate: (path: string, activityId: any) => {} },
+  navigation: { navigate: (path: string, activityId: any) => {}, dispatch: (action: CommonActions.Action) => {}},
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }
@@ -93,6 +93,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
       setIsCourse(true);
       if (nextActivityId) goToNextActivity();
       else goToCourse();
+      navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
     } catch (e) {
       if (e.status === 401) signOut();
     }
