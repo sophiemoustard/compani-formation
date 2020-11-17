@@ -46,32 +46,36 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
     if (loggedUser && loggedUser.picture?.link) setSource({ uri: loggedUser.picture.link });
   }, [loggedUser]);
 
-  return !!loggedUser && (
+  return (
     <ScrollView style={commonStyles.container}>
-      <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
-      <View style={styles.identityContainer}>
-        <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
-          source={require('../../../../assets/images/profile_background.png')}>
-          <Image style={styles.profileImage} source={source} />
-          <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
-          <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
-          <Text style={styles.courses}>FORMATIONS EN COURS</Text>
-          <Text style={styles.numberOfCourses}>{courses.length}</Text>
-        </ImageBackground>
-      </View>
-      <View style={styles.sectionDelimiter} />
-      <View style={styles.contactsContainer}>
-        <Text style={styles.contact}>Contact</Text>
-        <Text style={styles.subTitle}>Téléphone</Text>
-        <Text style={styles.infos}>
-          {loggedUser.contact?.phone ? formatPhone(loggedUser.contact.phone) : 'Non renseigné'}
-        </Text>
-        <Text style={styles.subTitle}>E-mail</Text>
-        <Text style={styles.infos}>{loggedUser.local.email}</Text>
-        <NiButton caption="Modifier mes informations" onPress={EditProfile}
-          bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
-      </View>
-      <View style={styles.sectionDelimiter} />
+      {!!loggedUser &&
+        <>
+          <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
+          <View style={styles.identityContainer}>
+            <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
+              source={require('../../../../assets/images/profile_background.png')}>
+              <Image style={styles.profileImage} source={source} />
+              <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
+              <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
+              <Text style={styles.courses}>FORMATIONS EN COURS</Text>
+              <Text style={styles.numberOfCourses}>{courses.length}</Text>
+            </ImageBackground>
+          </View>
+          <View style={styles.sectionDelimiter} />
+          <View style={styles.contactsContainer}>
+            <Text style={styles.contact}>Contact</Text>
+            <Text style={styles.subTitle}>Téléphone</Text>
+            <Text style={styles.infos}>
+              {loggedUser.contact?.phone ? formatPhone(loggedUser.contact.phone) : 'Non renseigné'}
+            </Text>
+            <Text style={styles.subTitle}>E-mail</Text>
+            <Text style={styles.infos}>{loggedUser.local.email}</Text>
+            <NiButton caption="Modifier mes informations" onPress={EditProfile}
+              bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
+          </View>
+          <View style={styles.sectionDelimiter} />
+        </>
+      }
       <NiButton style={styles.logOutButton} caption="Se déconnecter" onPress={signOut}
         bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
       <View style={styles.footer}>
