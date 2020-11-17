@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Platform } from 'react-native';
 import { Video } from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
@@ -12,9 +13,12 @@ interface NiVideoProps {
 const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const [playVisible, setPlayVisible] = useState<Boolean>(true);
   const videoRef = useRef<Video>(null);
+  const isIos = Platform.OS === 'ios';
+  let iosVersion;
+  if (isIos) iosVersion = Platform.Version;
 
   const displayFullScreen = () => {
-    videoRef.current?.presentFullscreenPlayer();
+    if (!isIos) videoRef.current?.presentFullscreenPlayer();
     videoRef.current?.playAsync();
   };
 
@@ -25,7 +29,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
 
   return (
     <>
-      {playVisible &&
+      {playVisible && (!isIos || (isIos && iosVersion === '14.1')) &&
         <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullScreen} color={GREY[100]}
           style={styles.play} />}
       <Video ref={videoRef} useNativeControls resizeMode='contain' source={mediaSource} style={styles.media}
