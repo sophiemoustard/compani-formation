@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType, BackHandler } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { CommonActions, useIsFocused } from '@react-navigation/native';
@@ -75,6 +75,13 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
+
+  const hardwareBackPress = () => {
+    goBack();
+    return true;
+  };
+
+  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
