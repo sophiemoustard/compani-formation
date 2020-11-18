@@ -51,7 +51,7 @@ export const IS_SMALL_SCREEN = Platform.select({
 });
 
 export const INPUT_HEIGHT = 40;
-export const GAP_WIDTH = 142;
+export const GAP_WIDTH = 144;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
 export const PROGRESS_BAR_HEIGHT = 8;
