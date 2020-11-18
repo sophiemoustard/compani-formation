@@ -21,7 +21,6 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const videoRef = useRef<Video>(null);
 
   const displayFullscreen = () => {
-    videoRef.current?.presentFullscreenPlayer();
     videoRef.current?.playAsync();
   };
 
