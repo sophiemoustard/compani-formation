@@ -99,7 +99,7 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
             type="password" darkMode={false} onChangeText={text => setPasswordField(text, 'newPassword')}
             validationMessage={unvalid.newPassword && isTouch.newPassword
-              ? 'Ton nouveau mot de passe doit faire au moins 6 caractères'
+              ? 'Le mot de passe doit comporter au minimum 6 caractères'
               : ''} />
         </View>
         <View style={styles.input}>
