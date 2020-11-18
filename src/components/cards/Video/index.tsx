@@ -49,6 +49,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   };
 
   return (
+    // The View is needed to center the play button
     <View>
       {isIosVersionWithPlayButton && playVisible &&
         <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
