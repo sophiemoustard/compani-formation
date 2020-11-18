@@ -3,6 +3,7 @@ import { GREY, WHITE } from '../../../styles/colors';
 import {
   BORDER_RADIUS,
   BORDER_WIDTH,
+  GAP_WIDTH,
   PADDING,
 } from '../../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
@@ -30,6 +31,7 @@ const styles = ({ color, isGoodAnswer, isSelected, isValidated }: StylesProps) =
     ...FIRA_SANS_MEDIUM.MD,
     padding: PADDING.MD,
     textAlign: 'center',
+    width: GAP_WIDTH,
     color: isValidated && (isSelected || isGoodAnswer) ? color : GREY[800],
   },
 });
