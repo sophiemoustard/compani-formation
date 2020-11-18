@@ -104,12 +104,11 @@ const MainStack = createStackNavigator();
 
 interface AppContainerProps {
   setLoggedUser: (user: UserType) => void,
-  setUserRole: (role: string) => void,
   resetAllReducers: () => void,
   statusBarVisible: boolean,
 }
 
-const AppContainer = ({ setLoggedUser, setUserRole, resetAllReducers, statusBarVisible }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,8 +126,8 @@ const AppContainer = ({ setLoggedUser, setUserRole, resetAllReducers, statusBarV
         'picture.link',
         'company.name',
         'contact.phone',
+        'role',
       ]));
-      setUserRole(user.role.vendor.name);
     }
     if (alenviToken) setUser();
     else resetAllReducers();
@@ -166,7 +165,6 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-  setUserRole: (role: string) => dispatch(MainActions.setUserRole(role)),
   resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });
 

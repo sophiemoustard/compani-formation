@@ -10,7 +10,7 @@ import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
-import { getLoggedUserId, getUserRole } from '../../../store/main/selectors';
+import { getLoggedUserId, getUserVendorRole } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
@@ -23,7 +23,7 @@ interface CourseListProps {
   setIsCourse: (value: boolean) => void,
   navigation: NavigationType,
   loggedUserId: string | null,
-  userRole: string | null,
+  userVendorRole: string,
 }
 
 const formatCourseStep = (course) => {
@@ -56,7 +56,7 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .filter(step => step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
-const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseListProps) => {
+const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: CourseListProps) => {
   const [courses, setCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
@@ -73,7 +73,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
   };
 
   const getElearningDraftSubPrograms = async () => {
-    if (userRole === VENDOR_ADMIN || userRole === TRAINING_ORGANISATION_MANAGER) {
+    if ([VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole)) {
       try {
         const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
         setElearningDraftSubPrograms(fetchedSubPrograms);
@@ -155,7 +155,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
           renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
       </View>
-      {(userRole === VENDOR_ADMIN || userRole === TRAINING_ORGANISATION_MANAGER) &&
+      {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
             <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
@@ -172,7 +172,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userRole }: CourseL
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userRole: getUserRole(state) });
+const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userVendorRole: getUserVendorRole(state) });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
   setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
