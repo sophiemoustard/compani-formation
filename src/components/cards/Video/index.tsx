@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Video } from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
@@ -49,14 +49,15 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   };
 
   return (
-    <>
+    // The View is needed to center the play button
+    <View>
       {isIosVersionWithPlayButton && playVisible &&
         <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
           style={styles.play} />}
       <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
         onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate} style={styles.media}
         onReadyForDisplay={onReadyForDisplay} />
-    </>
+    </View>
   );
 };
 
