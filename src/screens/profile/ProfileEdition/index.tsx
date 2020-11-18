@@ -131,7 +131,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   return !!loggedUser && (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
+      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
       <View style={styles.goBack}>
         <TouchableOpacity>
           <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
@@ -149,19 +149,19 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         <View style={styles.input}>
           <NiInput caption="Nom" value={editedUser.identity.lastname}
             type="lastname" darkMode={false} onChangeText={text => onChangeIdentity('lastname', text)}
-            validationMessage={unvalid.lastName ? 'Ce champ est obligatoire' : ''}/>
+            validationMessage={unvalid.lastName ? 'Ce champ est obligatoire' : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
             darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
-            validationMessage={unvalid.phone ? 'Ton numéro de téléphone n\'est pas valide' : ''}/>
+            validationMessage={unvalid.phone ? 'Ton numéro de téléphone n\'est pas valide' : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="E-mail" value={editedUser.local.email} type="email"
             darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })}
-            validationMessage={emailValidation()}/>
+            validationMessage={emailValidation()} />
         </View>
-        <View style={styles.validate}>
+        <View style={styles.footer}>
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
