@@ -23,6 +23,7 @@ export interface TitleTextMediaType {
   media: {
     link: string,
     publicId: string,
+    type: string,
   },
   text: string,
 }
