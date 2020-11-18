@@ -5,6 +5,7 @@ import { FIRA_SANS_BOLD } from '../../../styles/fonts';
 const styles = StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
+    marginVertical: MARGIN.LG,
   },
   keyboardAvoidingView: {
     flex: 1,
@@ -17,10 +18,12 @@ const styles = StyleSheet.create({
     margin: MARGIN.MD,
   },
   input: {
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.SM,
   },
-  validate: {
-    marginVertical: MARGIN.MD,
+  footer: {
+    marginBottom: MARGIN.XL,
+    justifyContent: 'flex-end',
+    flex: 1,
   },
 });
 
