@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     margin: MARGIN.MD,
   },
   input: {
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.SM,
   },
   footer: {
     marginBottom: MARGIN.XL,
