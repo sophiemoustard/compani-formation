@@ -20,7 +20,8 @@
     "assetBundlePatterns": ["assets/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.6"
+      "buildNumber": "1.0.6",
+      "requireFullScreen": true
     },
     "android": {
       "package": "com.alenvi.compani",
