@@ -21,12 +21,12 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
   const [imgHeight, setImgHeight] = useState(0);
 
   useEffect(() => {
-    if (card?.media?.link) {
+    if (!isLoading && card?.media?.link) {
       Image.getSize(card.media?.link || '', (width, height) => {
         setImgHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
       });
     }
-  }, [card]);
+  }, [card, isLoading]);
 
   if (isLoading) return null;
 
