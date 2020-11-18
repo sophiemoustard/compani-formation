@@ -11,4 +11,8 @@ export default {
     const { baseURL } = getEnvVars();
     await alenviAxios.put(`${baseURL}/users/${userId}`, data);
   },
+  updatePassword: async (userId, data) => {
+    const { baseURL } = getEnvVars();
+    await alenviAxios.put(`${baseURL}/users/${userId}/password`, data);
+  },
 };
