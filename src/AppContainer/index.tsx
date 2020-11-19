@@ -27,6 +27,7 @@ import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/
 import Users from '../api/users';
 import { UserType } from '../types/UserType';
 import styles from './styles';
+import PasswordEdition from '../screens/profile/PasswordEdition';
 
 interface TabBarIconProps {
   color: string,
@@ -56,6 +57,7 @@ const Profile = () => (
   <ProfileStack.Navigator headerMode="none">
     <ProfileStack.Screen name="Profile" component={ProfileDetails} />
     <ProfileStack.Screen name="ProfileEdition" component={ProfileEdition} />
+    <ProfileStack.Screen name="PasswordEdition" component={PasswordEdition} />
   </ProfileStack.Navigator>
 );
 
@@ -73,7 +75,7 @@ const Home = () => {
   const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
   const getTabBarVisibility = (route) => {
-    const screenWithoutTabBarList = ['About', 'ProfileEdition'];
+    const screenWithoutTabBarList = ['About', 'ProfileEdition', 'PasswordEdition'];
     const routeName = route.state
       ? route.state.routes[route.state.index].name
       : '';

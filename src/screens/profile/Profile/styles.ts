@@ -64,6 +64,9 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.MD,
     marginHorizontal: MARGIN.XL,
   },
+  passwordButton: {
+    marginTop: MARGIN.SM,
+  },
   elipse: {
     width: '100%',
     position: 'absolute',
