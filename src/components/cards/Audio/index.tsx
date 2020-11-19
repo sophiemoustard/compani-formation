@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Audio } from 'expo-av';
 import { useIsFocused } from '@react-navigation/native';
 import { ICON } from '../../../styles/metrics';
@@ -11,7 +11,7 @@ interface NiAudioProps {
 
 const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const isFocused = useIsFocused();
-  const [soundObject, setSoundObject] = useState(new Audio.Sound());
+  const soundObject = new Audio.Sound();
 
   useEffect(() => {
     async function loadAudio() {
