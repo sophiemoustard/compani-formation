@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType, BackHandler } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { CommonActions, useIsFocused } from '@react-navigation/native';
+import { CommonActions, StackActions, StackActionType, useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -18,7 +18,9 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
   route: { params: { programId: string } },
-  navigation: { navigate: (path: string, activityId: any) => {}, dispatch: (action: CommonActions.Action) => {}},
+  navigation: {
+    navigate: (path: string, activityId: any) => {},
+    dispatch: (action: CommonActions.Action | StackActionType) => {}},
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }
@@ -93,17 +95,19 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   );
 
   const goToNextActivity = () => {
-    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    navigation.dispatch(StackActions.push('CourseProfile', { courseId }));
     navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
   };
+
+  const resetExploreStack = () => navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
       if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
       setIsCourse(true);
-      if (nextActivityId) await goToNextActivity();
-      else await goToCourse();
-      navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
+      if (nextActivityId) goToNextActivity();
+      else goToCourse();
+      setTimeout(resetExploreStack, 100);
     } catch (e) {
       if (e.status === 401) signOut();
     }
