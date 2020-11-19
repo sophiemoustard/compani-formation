@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Audio } from 'expo-av';
-import { useIsFocused } from '@react-navigation/native';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../../components/IconButton';
 import { PINK } from '../../../styles/colors';
@@ -10,24 +9,31 @@ interface NiAudioProps {
 }
 
 const NiAudio = ({ mediaSource }: NiAudioProps) => {
-  const isFocused = useIsFocused();
-  const soundObject = new Audio.Sound();
+  const [soundObject, setSoundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
 
   useEffect(() => {
     async function loadAudio() {
-      const status = await soundObject.getStatusAsync();
-      if (mediaSource && !status.isLoaded) await soundObject.loadAsync(mediaSource);
+      try {
+        const status = await soundObject.getStatusAsync();
+        if (mediaSource && !status.isLoaded) await soundObject.loadAsync(mediaSource);
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     async function unloadAudio() {
-      const status = await soundObject.getStatusAsync();
-      if (status.isLoaded) await soundObject.unloadAsync();
+      try {
+        const status = await soundObject.getStatusAsync();
+        if (status.isLoaded) await soundObject.unloadAsync();
+      } catch (e) {
+        console.error(e);
+      }
     }
 
-    if (isFocused) loadAudio();
-    else unloadAudio();
+    loadAudio();
+    return () => { unloadAudio(); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, []);
 
   const playAudio = async () => {
     try {
