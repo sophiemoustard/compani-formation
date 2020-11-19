@@ -9,7 +9,7 @@ interface NiAudioProps {
 }
 
 const NiAudio = ({ mediaSource }: NiAudioProps) => {
-  const [soundObject, setSoundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
+  const [soundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
 
   useEffect(() => {
     async function loadAudio() {
