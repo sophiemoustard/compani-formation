@@ -1,5 +1,6 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Audio } from 'expo-av';
+import { useIsFocused } from '@react-navigation/native';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../../components/IconButton';
 import { PINK } from '../../../styles/colors';
@@ -9,8 +10,32 @@ interface NiAudioProps {
 }
 
 const NiAudio = ({ mediaSource }: NiAudioProps) => {
-  const playAudio = () => {
+  const isFocused = useIsFocused();
+  const [soundObject, setSoundObject] = useState(new Audio.Sound());
 
+  useEffect(() => {
+    async function loadAudio() {
+      const status = await soundObject.getStatusAsync();
+      if (mediaSource && !status.isLoaded) await soundObject.loadAsync(mediaSource);
+    }
+
+    async function unloadAudio() {
+      const status = await soundObject.getStatusAsync();
+      if (status.isLoaded) await soundObject.unloadAsync();
+    }
+
+    if (isFocused) loadAudio();
+    else unloadAudio();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused]);
+
+  const playAudio = async () => {
+    try {
+      const status = await soundObject.getStatusAsync();
+      if (mediaSource && status.isLoaded) await soundObject.playFromPositionAsync(0);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
