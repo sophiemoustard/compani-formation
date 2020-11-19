@@ -10,8 +10,9 @@ import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import { IMAGE, VIDEO } from '../../../../core/data/constants';
+import { IMAGE, VIDEO, AUDIO } from '../../../../core/data/constants';
 import NiVideo from '../../../../components/cards/Video';
+import NiAudio from '../../../../components/cards/Audio';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -48,6 +49,7 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
         {mediaType === IMAGE && !!mediaSource &&
           <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
+        {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource} />}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
