@@ -92,14 +92,17 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
   );
 
-  const goToNextActivity = () => navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
+  const goToNextActivity = () => {
+    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
+    navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
+  };
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
       if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
       setIsCourse(true);
-      if (nextActivityId) goToNextActivity();
-      else goToCourse();
+      if (nextActivityId) await goToNextActivity();
+      else await goToCourse();
       navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
     } catch (e) {
       if (e.status === 401) signOut();
