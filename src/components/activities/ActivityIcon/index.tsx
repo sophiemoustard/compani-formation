@@ -32,7 +32,7 @@ const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: Acti
       case VIDEO:
         return <VideoIcon style={coloredStyle.icon} />;
       case QUESTIONNAIRE:
-        return <QuestionnaireIcon style={coloredStyle.icon} size={36} />;
+        return <QuestionnaireIcon style={coloredStyle.icon} />;
       default:
         return null;
     }
@@ -40,7 +40,7 @@ const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: Acti
 
   return (
     <View style={[coloredStyle.container, disabled && commonStyle.disabled]}>
-      <View style={[coloredStyle.button, activity.type === QUESTIONNAIRE && coloredStyle.questionnaireButton]}>
+      <View style={coloredStyle.button}>
         {getIcon()}
       </View>
       <Shadow customStyle={coloredStyle.shadow} />
