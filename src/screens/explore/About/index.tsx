@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType } from 'react-native';
+import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType, BackHandler } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { CommonActions, useIsFocused } from '@react-navigation/native';
+import { CommonActions, StackActions, StackActionType, useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -18,7 +18,9 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
   route: { params: { programId: string } },
-  navigation: { navigate: (path: string, activityId: any) => {}, dispatch: (action: CommonActions.Action) => {}},
+  navigation: {
+    navigate: (path: string, activityId: any) => {},
+    dispatch: (action: CommonActions.Action | StackActionType) => {}},
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }
@@ -76,6 +78,13 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
+  const hardwareBackPress = () => {
+    goBack();
+    return true;
+  };
+
+  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+
   const goBack = () => {
     navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
   };
@@ -85,7 +94,12 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
     { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
   );
 
-  const goToNextActivity = () => navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
+  const goToNextActivity = () => {
+    navigation.dispatch(StackActions.push('CourseProfile', { courseId }));
+    navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
+  };
+
+  const resetExploreStack = () => navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
@@ -93,7 +107,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
       setIsCourse(true);
       if (nextActivityId) goToNextActivity();
       else goToCourse();
-      navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
+      setTimeout(resetExploreStack, 100);
     } catch (e) {
       if (e.status === 401) signOut();
     }
