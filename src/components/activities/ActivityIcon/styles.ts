@@ -19,6 +19,10 @@ const styles = ({ borderColor, backgroundColor }: StylesProps) => StyleSheet.cre
     borderWidth: BORDER_WIDTH,
     padding: PADDING.LG,
   },
+  questionnaireButton: {
+    paddingHorizontal: PADDING.LG - 2,
+    paddingVertical: PADDING.LG - 2,
+  },
   icon: {
     alignSelf: 'center',
   },
