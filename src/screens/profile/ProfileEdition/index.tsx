@@ -10,7 +10,6 @@ import {
   BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
-import pick from 'lodash/pick';
 import IconButton from '../../../components/IconButton';
 import NiButton from '../../../components/form/Button';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
@@ -99,16 +98,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       }
       const userId = loggedUser._id;
       const user = await Users.getById(userId);
-      setLoggedUser(pick(user, [
-        '_id',
-        'identity.firstname',
-        'identity.lastname',
-        'local.email',
-        'picture.link',
-        'company.name',
-        'contact.phone',
-        'role',
-      ]));
+      setLoggedUser(user);
       goBack();
     } catch (e) {
       if (e.status === 401) signOut();

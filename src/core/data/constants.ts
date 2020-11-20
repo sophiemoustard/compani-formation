@@ -41,9 +41,21 @@ export const VENDOR_ADMIN = 'vendor_admin';
 export const TRAINING_ORGANISATION_MANAGER = 'training_organisation_manager';
 
 // REGEX
-export const PHONE_REGEX = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}(?:[\s.-]*)$/;
+export const PHONE_REGEX = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}(?:[\s]*)$/;
 export const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 // MEDIA TYPES
 export const IMAGE = 'image';
 export const AUDIO = 'audio';
+
+// STORE
+export const LOGGED_USER = [
+  '_id',
+  'identity.firstname',
+  'identity.lastname',
+  'local.email',
+  'picture.link',
+  'company.name',
+  'contact.phone',
+  'role',
+];
