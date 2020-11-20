@@ -5,7 +5,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import pick from 'lodash/pick';
 import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
@@ -120,16 +119,7 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
     async function setUser() {
       const userId = await asyncStorage.getUserId();
       const user = await Users.getById(userId);
-      setLoggedUser(pick(user, [
-        '_id',
-        'identity.firstname',
-        'identity.lastname',
-        'local.email',
-        'picture.link',
-        'company.name',
-        'contact.phone',
-        'role',
-      ]));
+      setLoggedUser(user);
     }
     if (alenviToken) setUser();
     else resetAllReducers();

@@ -10,10 +10,8 @@ import {
   BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
-import pick from 'lodash/pick';
 import IconButton from '../../../components/IconButton';
 import NiButton from '../../../components/form/Button';
-import asyncStorage from '../../../core/helpers/asyncStorage';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import { UserType } from '../../../types/UserType';
@@ -98,17 +96,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
         });
       }
-      const userId = await asyncStorage.getUserId();
+      const userId = loggedUser._id;
       const user = await Users.getById(userId);
-      setLoggedUser(pick(user, [
-        '_id',
-        'identity.firstname',
-        'identity.lastname',
-        'local.email',
-        'picture.link',
-        'company.name',
-        'contact.phone',
-      ]));
+      setLoggedUser(user);
       goBack();
     } catch (e) {
       if (e.status === 401) signOut();
