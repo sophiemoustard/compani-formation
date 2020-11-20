@@ -4,7 +4,7 @@ import Slider from '@react-native-community/slider';
 import { Audio, AVPlaybackStatus } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../IconButton';
-import { GREY } from '../../../styles/colors';
+import { GREY, PINK } from '../../../styles/colors';
 import styles from './styles';
 import { IONICONS } from '../../../core/data/constants';
 
@@ -20,32 +20,35 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
 
   useEffect(() => {
-    async function loadAudio() {
+    const loadAudio = async () => {
       try {
         let status = await soundObject.getStatusAsync();
         if (mediaSource && !status.isLoaded) {
           status = await soundObject.loadAsync(mediaSource);
-          if (status.isLoaded) setDuration(status.durationMillis || 0);
+          if (status.isLoaded) {
+            setDuration(status.durationMillis || 0);
+          }
         }
       } catch (e) {
         console.error(e);
       }
-    }
+    };
 
-    async function unloadAudio() {
+    const unloadAudio = async () => {
       try {
         const status = await soundObject.getStatusAsync();
         if (status.isLoaded) await soundObject.unloadAsync();
       } catch (e) {
         console.error(e);
       }
-    }
+    };
 
     const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
       setIsPlaying(playbackStatus.isLoaded ? playbackStatus.isPlaying : false);
       setIsLoaded(playbackStatus.isLoaded);
       setTimeElapsed(playbackStatus.isLoaded ? playbackStatus.positionMillis : 0);
     };
+
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
     loadAudio();
@@ -75,11 +78,14 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
 
   return (
     <View style={styles.container}>
-      <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
-        color={GREY[800]} iconFamily={IONICONS} style={styles.icon} disabled={!isLoaded} />
-      <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor="#93A8B3" value={timeElapsed}
-        style={styles.track} />
-      <Text>{millisToMinutesAndSeconds(timeElapsed)}</Text>
+      <View style={styles.player}>
+        <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
+          color={GREY[800]} iconFamily={IONICONS} style={styles.icon} disabled={!isLoaded} />
+        <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
+        <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} value={timeElapsed}
+          style={styles.track} />
+        <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
+      </View>
     </View>
   );
 };
