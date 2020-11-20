@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../IconButton';
 import { GREY } from '../../../styles/colors';
@@ -22,10 +22,10 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   useEffect(() => {
     async function loadAudio() {
       try {
-        const status = await soundObject.getStatusAsync();
+        let status = await soundObject.getStatusAsync();
         if (mediaSource && !status.isLoaded) {
-          const { durationMillis } = await soundObject.loadAsync(mediaSource);
-          setDuration(durationMillis);
+          status = await soundObject.loadAsync(mediaSource);
+          if (status.isLoaded) setDuration(status.durationMillis || 0);
         }
       } catch (e) {
         console.error(e);
@@ -41,10 +41,10 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
       }
     }
 
-    const onPlaybackStatusUpdate = (playbackStatus) => {
-      setIsPlaying(playbackStatus?.isPlaying || false);
-      setIsLoaded(playbackStatus?.isLoaded || false);
-      setTimeElapsed(playbackStatus?.positionMillis || 0);
+    const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+      setIsPlaying(playbackStatus.isLoaded ? playbackStatus.isPlaying : false);
+      setIsLoaded(playbackStatus.isLoaded);
+      setTimeElapsed(playbackStatus.isLoaded ? playbackStatus.positionMillis : 0);
     };
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
