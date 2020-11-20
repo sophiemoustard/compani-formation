@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Audio, AVPlaybackStatus } from 'expo-av';
@@ -16,39 +16,38 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const [soundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const isUserMovingSlider = useRef(false);
   const [duration, setDuration] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
 
+  const loadAudio = async () => {
+    try {
+      let status = await soundObject.getStatusAsync();
+      if (mediaSource && !status.isLoaded) {
+        status = await soundObject.loadAsync(mediaSource);
+        if (status.isLoaded) setDuration(status.durationMillis || 0);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const unloadAudio = async () => {
+    try {
+      const status = await soundObject.getStatusAsync();
+      if (status.isLoaded) await soundObject.unloadAsync();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
+    setIsPlaying(playbackStatus.isLoaded ? playbackStatus.isPlaying : false);
+    setIsLoaded(playbackStatus.isLoaded);
+    if (!isUserMovingSlider.current) setTimeElapsed(playbackStatus.isLoaded ? playbackStatus.positionMillis : 0);
+  };
+
   useEffect(() => {
-    const loadAudio = async () => {
-      try {
-        let status = await soundObject.getStatusAsync();
-        if (mediaSource && !status.isLoaded) {
-          status = await soundObject.loadAsync(mediaSource);
-          if (status.isLoaded) {
-            setDuration(status.durationMillis || 0);
-          }
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    const unloadAudio = async () => {
-      try {
-        const status = await soundObject.getStatusAsync();
-        if (status.isLoaded) await soundObject.unloadAsync();
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
-      setIsPlaying(playbackStatus.isLoaded ? playbackStatus.isPlaying : false);
-      setIsLoaded(playbackStatus.isLoaded);
-      setTimeElapsed(playbackStatus.isLoaded ? playbackStatus.positionMillis : 0);
-    };
-
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
     loadAudio();
@@ -60,14 +59,18 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     try {
       const status = await soundObject.getStatusAsync();
       if (mediaSource && status.isLoaded && !status.isPlaying) {
-        const { positionMillis, durationMillis } = status;
-        const position = !positionMillis || positionMillis === durationMillis ? 0 : positionMillis;
-        await soundObject.playFromPositionAsync(position);
+        await soundObject.playFromPositionAsync(timeElapsed);
       }
       if (mediaSource && status.isLoaded && status.isPlaying) await soundObject.pauseAsync();
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const playFromPosition = async (ms) => {
+    if (isPlaying) await soundObject.playFromPositionAsync(ms);
+    else setTimeElapsed(ms);
+    isUserMovingSlider.current = false;
   };
 
   const millisToMinutesAndSeconds = (millis) => {
@@ -83,7 +86,8 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
           color={GREY[800]} iconFamily={IONICONS} style={styles.icon} disabled={!isLoaded} />
         <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
         <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} value={timeElapsed}
-          style={styles.track} />
+          onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed}
+          onSlidingStart={() => { isUserMovingSlider.current = true; }} />
         <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
       </View>
     </View>
