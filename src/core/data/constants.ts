@@ -47,15 +47,3 @@ export const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 // MEDIA TYPES
 export const IMAGE = 'image';
 export const AUDIO = 'audio';
-
-// STORE
-export const LOGGED_USER = [
-  '_id',
-  'identity.firstname',
-  'identity.lastname',
-  'local.email',
-  'picture.link',
-  'company.name',
-  'contact.phone',
-  'role',
-];
