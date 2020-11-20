@@ -11,6 +11,7 @@ export const stepTypeOptions = {
 
 // ICON FAMILY
 export const FEATHER = 'Feather';
+export const IONICONS = 'Ionicons';
 
 // ARROWS DIRECTION
 export const LEFT = 'left';

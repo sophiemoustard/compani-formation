@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { Audio } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
-import IconButton from '../../../components/IconButton';
-import { PINK } from '../../../styles/colors';
+import IconButton from '../../IconButton';
+import { GREY } from '../../../styles/colors';
+import styles from './styles';
+import { IONICONS } from '../../../core/data/constants';
 
 interface NiAudioProps {
   mediaSource: { uri: string } | undefined,
@@ -45,8 +48,9 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   };
 
   return (
-    <IconButton name='play-circle' size={ICON.XXL} onPress={playAudio} color={PINK[500]}
-      style={{ borderWhidth: 1, borderColor: 'red' }} />
+    <View style={styles.container}>
+      <IconButton name='ios-play' size={ICON.MD} onPress={playAudio} color={GREY[800]} iconFamily={IONICONS} />
+    </View>
   );
 };
 
