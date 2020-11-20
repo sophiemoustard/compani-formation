@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Audio } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../IconButton';
@@ -15,6 +15,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const [soundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [timeElapsed, setTimeElapsed] = useState<number>(0);
 
   useEffect(() => {
     async function loadAudio() {
@@ -35,9 +36,10 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
       }
     }
 
-    const onPlaybackStatusUpdate = async (playbackStatus) => {
+    const onPlaybackStatusUpdate = (playbackStatus) => {
       setIsPlaying(playbackStatus?.isPlaying || false);
       setIsLoaded(playbackStatus?.isLoaded || false);
+      setTimeElapsed(playbackStatus?.positionMillis || 0);
     };
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
@@ -60,10 +62,17 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     }
   };
 
+  const millisToMinutesAndSeconds = (millis) => {
+    const minutes = Math.floor(millis / 60000);
+    const seconds = Number(((millis % 60000) / 1000).toFixed(0));
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
   return (
     <View style={styles.container}>
       <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
         color={GREY[800]} iconFamily={IONICONS} style={styles.icon} disabled={!isLoaded} />
+      <Text>{millisToMinutesAndSeconds(timeElapsed)}</Text>
     </View>
   );
 };
