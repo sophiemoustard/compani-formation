@@ -32,13 +32,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
     }
   };
 
-  const EditProfile = () => {
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'ProfileEdition' } });
-  };
+  const EditProfile = () => navigation.navigate('ProfileEdition');
 
-  const EditPassword = () => {
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'PasswordEdition' } });
-  };
+  const EditPassword = () => navigation.navigate('PasswordEdition');
 
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }

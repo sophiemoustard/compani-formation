@@ -38,10 +38,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = program => navigation.navigate(
-    'Home',
-    { screen: 'Explore', params: { screen: 'About', params: { programId: program._id } } }
-  );
+  const goToProgram = program => navigation.navigate('About', { programId: program._id });
 
   const renderSeparator = () => <View style={styles.separator} />;
 

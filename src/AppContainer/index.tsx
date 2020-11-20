@@ -48,15 +48,12 @@ const Courses = () => (
 const Explore = () => (
   <ExploreStack.Navigator headerMode="none">
     <ExploreStack.Screen name="Catalog" component={Catalog} />
-    <ExploreStack.Screen name="About" component={About} />
   </ExploreStack.Navigator>
 );
 
 const Profile = () => (
   <ProfileStack.Navigator headerMode="none">
     <ProfileStack.Screen name="Profile" component={ProfileDetails} />
-    <ProfileStack.Screen name="ProfileEdition" component={ProfileEdition} />
-    <ProfileStack.Screen name="PasswordEdition" component={PasswordEdition} />
   </ProfileStack.Navigator>
 );
 
@@ -73,30 +70,15 @@ const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
 const Home = () => {
   const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
-  const getTabBarVisibility = (route) => {
-    const screenWithoutTabBarList = ['About', 'ProfileEdition', 'PasswordEdition'];
-    const routeName = route.state
-      ? route.state.routes[route.state.index].name
-      : '';
-
-    return !screenWithoutTabBarList.includes(routeName);
-  };
-
   return (
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="Explore" component={Explore} options={({ route }) => ({
-        tabBarLabel: 'Explorer',
-        tabBarVisible: getTabBarVisibility(route),
-      })} />
+      <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
-        tabBarLabel: 'Profil',
-        tabBarVisible: getTabBarVisibility(route),
-      })} />
+      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
 };
@@ -144,6 +126,9 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
           : <>
             <MainStack.Screen name="Home" component={Home} />
             <MainStack.Screen name="CardContainer" component={CardContainer} options={{ gestureEnabled: false }} />
+            <MainStack.Screen name="About" component={About} />
+            <MainStack.Screen name="ProfileEdition" component={ProfileEdition} />
+            <MainStack.Screen name="PasswordEdition" component={PasswordEdition} />
           </>
         }
       </MainStack.Navigator>
