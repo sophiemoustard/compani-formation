@@ -34,8 +34,13 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
       }
     }
 
+    const onPlaybackStatusUpdate = async (playbackStatus) => {
+      setIsPlaying(playbackStatus?.isPlaying || false);
+    };
+    soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+
     loadAudio();
-    return () => { unloadAudio(); };
+    return () => { unloadAudio(); soundObject.setOnPlaybackStatusUpdate(() => {}); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,12 +57,6 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
       console.error(e);
     }
   };
-
-  const onPlaybackStatusUpdate = async (playbackStatus) => {
-    setIsPlaying(playbackStatus?.isPlaying || false);
-  };
-
-  soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
   return (
     <View style={styles.container}>
