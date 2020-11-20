@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../IconButton';
@@ -15,13 +16,17 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const [soundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
 
   useEffect(() => {
     async function loadAudio() {
       try {
         const status = await soundObject.getStatusAsync();
-        if (mediaSource && !status.isLoaded) await soundObject.loadAsync(mediaSource);
+        if (mediaSource && !status.isLoaded) {
+          const { durationMillis } = await soundObject.loadAsync(mediaSource);
+          setDuration(durationMillis);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -72,6 +77,8 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     <View style={styles.container}>
       <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
         color={GREY[800]} iconFamily={IONICONS} style={styles.icon} disabled={!isLoaded} />
+      <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor="#93A8B3" value={timeElapsed}
+        style={styles.track} />
       <Text>{millisToMinutesAndSeconds(timeElapsed)}</Text>
     </View>
   );

@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
   icon: {
     width: ICON.MD,
   },
+  track: {
+    width: '100%',
+  },
 });
 
 export default styles;
