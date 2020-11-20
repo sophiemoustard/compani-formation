@@ -14,6 +14,7 @@ interface NiAudioProps {
 const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const [soundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadAudio() {
@@ -36,6 +37,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
 
     const onPlaybackStatusUpdate = async (playbackStatus) => {
       setIsPlaying(playbackStatus?.isPlaying || false);
+      setIsLoaded(playbackStatus?.isLoaded || false);
     };
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
@@ -61,7 +63,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   return (
     <View style={styles.container}>
       <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
-        color={GREY[800]} iconFamily={IONICONS} />
+        color={GREY[800]} iconFamily={IONICONS} style={styles.icon} disabled={!isLoaded} />
     </View>
   );
 };
