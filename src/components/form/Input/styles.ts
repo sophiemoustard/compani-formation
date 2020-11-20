@@ -6,6 +6,7 @@ import { FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM, FIRA_SANS_ITALIC } from '../../../
 const styles = (isSelected: boolean) => StyleSheet.create({
   container: {
     position: 'relative',
+    marginHorizontal: MARGIN.XS,
   },
   input: {
     borderWidth: BORDER_WIDTH,
