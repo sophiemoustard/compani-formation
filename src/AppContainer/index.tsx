@@ -34,8 +34,6 @@ interface TabBarIconProps {
 }
 
 const CourseStack = createStackNavigator();
-const ExploreStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
 
 const Courses = () => (
   <CourseStack.Navigator headerMode="none">
@@ -45,22 +43,10 @@ const Courses = () => (
   </CourseStack.Navigator>
 );
 
-const Explore = () => (
-  <ExploreStack.Navigator headerMode="none">
-    <ExploreStack.Screen name="Catalog" component={Catalog} />
-  </ExploreStack.Navigator>
-);
-
-const Profile = () => (
-  <ProfileStack.Navigator headerMode="none">
-    <ProfileStack.Screen name="Profile" component={ProfileDetails} />
-  </ProfileStack.Navigator>
-);
-
 const Tab = createBottomTabNavigator();
 
 const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
-  const icons = { Courses: 'book', Explore: 'search', Profile: 'person-outline' };
+  const icons = { Courses: 'book', Catalog: 'search', Profile: 'person-outline' };
 
   return (
     <MaterialIcons name={icons[route.name]} color={color} size={size} />
@@ -76,9 +62,9 @@ const Home = () => {
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="Explore" component={Explore} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarLabel: 'Explorer' }} />
       <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={Profile} options={{ tabBarLabel: 'Profil' }} />
+      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
 };
