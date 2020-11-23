@@ -51,7 +51,11 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
     loadAudio();
-    return () => { unloadAudio(); soundObject.setOnPlaybackStatusUpdate(() => {}); };
+
+    return () => {
+      unloadAudio();
+      soundObject.setOnPlaybackStatusUpdate(() => {});
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
