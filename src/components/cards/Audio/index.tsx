@@ -61,11 +61,10 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
 
   const playOrPauseAudio = async () => {
     try {
-      const status = await soundObject.getStatusAsync();
-      if (mediaSource && status.isLoaded && !status.isPlaying) {
+      if (mediaSource && isLoaded && !isPlaying) {
         await soundObject.playFromPositionAsync(timeElapsed);
       }
-      if (mediaSource && status.isLoaded && status.isPlaying) await soundObject.pauseAsync();
+      if (mediaSource && isLoaded && isPlaying) await soundObject.pauseAsync();
     } catch (e) {
       console.error(e);
     }
@@ -80,7 +79,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const millisToMinutesAndSeconds = (millis) => {
     const minutes = Math.floor(millis / 60000);
     const seconds = Number(((millis % 60000) / 1000).toFixed(0));
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
   return (
