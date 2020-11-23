@@ -6,10 +6,21 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: GREY[200],
     paddingVertical: PADDING.MD,
-    paddingLeft: PADDING.LG,
+    paddingHorizontal: PADDING.LG,
   },
   icon: {
     width: ICON.MD,
+    alignSelf: 'center',
+  },
+  player: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timer: {
+    paddingHorizontal: PADDING.SM,
+  },
+  track: {
+    flex: 1,
   },
 });
 

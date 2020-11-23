@@ -9,9 +9,10 @@ import { TitleTextMediaType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
-import { IMAGE, VIDEO } from '../../../../core/data/constants';
+import { AUDIO, IMAGE, VIDEO } from '../../../../core/data/constants';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import NiVideo from '../../../../components/cards/Video';
+import NiAudio from '../../../../components/cards/Audio';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
@@ -49,6 +50,7 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
         {mediaType === IMAGE && !!mediaSource &&
           <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
+        {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource}/>}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
