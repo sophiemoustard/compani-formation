@@ -89,7 +89,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
         {isLoaded
           ? <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
             color={GREY[800]} iconFamily={IONICONS} style={styles.icon} />
-          : <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />}
+          : <ActivityIndicator style={[commonStyle.disabled, styles.icon]} color={GREY[800]} size={ICON.MD} />}
         <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
         <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} value={timeElapsed}
           onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed}
