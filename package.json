@@ -72,12 +72,12 @@
     "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.7",
+    "@babel/core": "^7.12.8",
     "@types/expo": "^33.0.1",
     "@types/jest": "^26.0.15",
-    "@types/react": "^16.14.1",
+    "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
-    "@types/react-native": "^0.63.36",
+    "@types/react-native": "^0.63.37",
     "@types/react-test-renderer": "^16.9.4",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
