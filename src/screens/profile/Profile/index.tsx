@@ -32,13 +32,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
     }
   };
 
-  const EditProfile = () => {
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'ProfileEdition' } });
-  };
+  const editProfile = () => navigation.navigate('ProfileEdition');
 
-  const EditPassword = () => {
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'PasswordEdition' } });
-  };
+  const editPassword = () => navigation.navigate('PasswordEdition');
 
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
@@ -74,9 +70,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
             </Text>
             <Text style={styles.subTitle}>E-mail</Text>
             <Text style={styles.infos}>{loggedUser.local.email}</Text>
-            <NiButton caption="Modifier mes informations" onPress={EditProfile}
+            <NiButton caption="Modifier mes informations" onPress={editProfile}
               bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
-            <NiButton style={styles.passwordButton} caption="Modifier mon mot de passe" onPress={EditPassword}
+            <NiButton style={styles.passwordButton} caption="Modifier mon mot de passe" onPress={editPassword}
               bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
           </View>
           <View style={styles.sectionDelimiter} />

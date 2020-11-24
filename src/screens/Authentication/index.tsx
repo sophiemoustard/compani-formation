@@ -21,7 +21,7 @@ interface AuthenticationProps {
 
 const Authentication = ({ navigation }: AuthenticationProps) => {
   const [email, setEmail] = useState('');
-  const [password, setPasssword] = useState('');
+  const [password, setPassword] = useState('');
   const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
   const isIOS = Platform.OS === 'ios';
 
@@ -43,7 +43,7 @@ const Authentication = ({ navigation }: AuthenticationProps) => {
           </Text>
           <NiInput caption="Email" value={email} onChangeText={setEmail} type="email" darkMode={true} />
           <NiInput caption="Mot de passe" value={password}
-            onChangeText={setPasssword} type="password" darkMode={true} />
+            onChangeText={setPassword} type="password" darkMode={true} />
           <TouchableOpacity style={styles.forgotPassword} onPress={forgotPassword}>
             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>

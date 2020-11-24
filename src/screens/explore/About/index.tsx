@@ -4,7 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { CommonActions, StackActions, StackActionType, useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
-import { navigate } from '../../../navigationRef';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import { WHITE } from '../../../styles/colors';
@@ -19,7 +18,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 interface AboutProps {
   route: { params: { programId: string } },
   navigation: {
-    navigate: (path: string, activityId: any) => {},
+    navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {}},
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
@@ -85,21 +84,14 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
-  const goBack = () => {
-    navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
-  };
+  const goBack = () => navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
 
-  const goToCourse = () => navigation.navigate(
-    'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
-  );
+  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
   const goToNextActivity = () => {
     navigation.dispatch(StackActions.push('CourseProfile', { courseId }));
     navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
   };
-
-  const resetExploreStack = () => navigation.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Catalog' }] }));
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
@@ -107,7 +99,6 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
       setIsCourse(true);
       if (nextActivityId) goToNextActivity();
       else goToCourse();
-      setTimeout(resetExploreStack, 100);
     } catch (e) {
       if (e.status === 401) signOut();
     }

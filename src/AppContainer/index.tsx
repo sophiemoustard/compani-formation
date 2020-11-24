@@ -33,37 +33,10 @@ interface TabBarIconProps {
   size: number,
 }
 
-const CourseStack = createStackNavigator();
-const ExploreStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
-
-const Courses = () => (
-  <CourseStack.Navigator headerMode="none">
-    <CourseStack.Screen name="CourseList" component={CourseList} />
-    <CourseStack.Screen name="CourseProfile" component={CourseProfile} />
-    <CourseStack.Screen name="SubProgramProfile" component={SubProgramProfile} />
-  </CourseStack.Navigator>
-);
-
-const Explore = () => (
-  <ExploreStack.Navigator headerMode="none">
-    <ExploreStack.Screen name="Catalog" component={Catalog} />
-    <ExploreStack.Screen name="About" component={About} />
-  </ExploreStack.Navigator>
-);
-
-const Profile = () => (
-  <ProfileStack.Navigator headerMode="none">
-    <ProfileStack.Screen name="Profile" component={ProfileDetails} />
-    <ProfileStack.Screen name="ProfileEdition" component={ProfileEdition} />
-    <ProfileStack.Screen name="PasswordEdition" component={PasswordEdition} />
-  </ProfileStack.Navigator>
-);
-
 const Tab = createBottomTabNavigator();
 
 const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
-  const icons = { Courses: 'book', Explore: 'search', Profile: 'person-outline' };
+  const icons = { Courses: 'book', Catalog: 'search', Profile: 'person-outline' };
 
   return (
     <MaterialIcons name={icons[route.name]} color={color} size={size} />
@@ -73,30 +46,15 @@ const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
 const Home = () => {
   const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
 
-  const getTabBarVisibility = (route) => {
-    const screenWithoutTabBarList = ['About', 'ProfileEdition', 'PasswordEdition'];
-    const routeName = route.state
-      ? route.state.routes[route.state.index].name
-      : '';
-
-    return !screenWithoutTabBarList.includes(routeName);
-  };
-
   return (
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="Explore" component={Explore} options={({ route }) => ({
-        tabBarLabel: 'Explorer',
-        tabBarVisible: getTabBarVisibility(route),
-      })} />
-      <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={Profile} options={({ route }) => ({
-        tabBarLabel: 'Profil',
-        tabBarVisible: getTabBarVisibility(route),
-      })} />
+      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="Courses" component={CourseList} options={{ tabBarLabel: 'Mes formations' }} />
+      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
 };
@@ -130,22 +88,20 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
+  const authScreens = { Authentication, ForgotPassword };
+
+  const Profile = { ProfileEdition, PasswordEdition };
+  const Courses = { CourseProfile, SubProgramProfile };
+  const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
+
   return (
     <NavigationContainer ref={navigationRef}>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {alenviToken === null
-          ? <>
-            <MainStack.Screen name="Authentication" component={Authentication} />
-            <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
-          </>
-          : <>
-            <MainStack.Screen name="Home" component={Home} />
-            <MainStack.Screen name="CardContainer" component={CardContainer} options={{ gestureEnabled: false }} />
-          </>
-        }
+        {Object.entries(alenviToken ? userScreens : authScreens)
+          .map(([name, component]) => (<MainStack.Screen key={name} name={name} component={component} />))}
       </MainStack.Navigator>
     </NavigationContainer>
   );

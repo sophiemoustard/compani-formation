@@ -13,8 +13,8 @@ import moment from '../../../core/helpers/moment';
 import { getLoggedUserId, getUserVendorRole } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
-import { NavigationType } from '../../../types/NavigationType';
 import styles from './styles';
+import { NavigationType } from '../../../types/NavigationType';
 import SubPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
@@ -97,17 +97,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   }, [loggedUserId, isFocused]);
 
   const goToCourse = (id, isCourse) => {
-    if (isCourse) {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
-      );
-    } else {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: id } } }
-      );
-    }
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: id });
+    else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
   const renderSeparator = () => <View style={styles.separator} />;

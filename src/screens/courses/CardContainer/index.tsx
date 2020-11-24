@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
+import { NavigationType } from '../../../types/NavigationType';
 import ExitModal from '../../../components/ExitModal';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
@@ -15,7 +16,7 @@ import styles from './styles';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
-  navigation: { navigate: (path: string, params: object) => {} },
+  navigation: NavigationType,
   activity: ActivityType,
   cardIndex: number | null,
   isCourse: boolean,
@@ -51,17 +52,8 @@ const CardContainer = ({
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
-    if (isCourse) {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
-      );
-    } else {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: route.params.courseId } } }
-      );
-    }
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: route.params.courseId });
+    else navigation.navigate('SubProgramProfile', { subProgramId: route.params.courseId });
   };
 
   useEffect(() => {
