@@ -1,3 +1,3 @@
 export interface NavigationType {
-  navigate: (path: string, option?: { screen: string, params: object }) => {},
+  navigate: (path: string, params?: object) => {},
 }

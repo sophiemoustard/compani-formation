@@ -18,7 +18,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 interface AboutProps {
   route: { params: { programId: string } },
   navigation: {
-    navigate: (path: string, params: { screen?: string, params?: any, activityId?: string, courseId?: string }) => {},
+    navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {}},
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
