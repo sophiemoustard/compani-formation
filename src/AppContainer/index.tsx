@@ -13,6 +13,7 @@ import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
 import ForgotPassword from '../screens/ForgotPassword';
+import FirstConnection from '../screens/FirstConnection';
 import Catalog from '../screens/explore/Catalog';
 import About from '../screens/explore/About';
 import CourseList from '../screens/courses/CourseList';
@@ -88,7 +89,7 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
-  const authScreens = { Authentication, ForgotPassword };
+  const authScreens = { Authentication, ForgotPassword, FirstConnection };
 
   const Profile = { ProfileEdition, PasswordEdition };
   const Courses = { CourseProfile, SubProgramProfile };

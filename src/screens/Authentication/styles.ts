@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: MARGIN.XL,
+    marginBottom: MARGIN.SM,
   },
 });
 

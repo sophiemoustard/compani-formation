@@ -14,6 +14,7 @@ import NiButton from '../../components/form/Button';
 import NiErrorMessage from '../../components/ErrorMessage';
 import { Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
+import { GREY } from '../../styles/colors';
 
 interface AuthenticationProps {
   navigation: NavigationType,
@@ -30,6 +31,8 @@ const Authentication = ({ navigation }: AuthenticationProps) => {
     resetError();
     navigation.navigate('ForgotPassword');
   };
+
+  const firstConnection = () => navigation.navigate('FirstConnection');
 
   return (
     <ImageBackground
@@ -49,6 +52,8 @@ const Authentication = ({ navigation }: AuthenticationProps) => {
           </TouchableOpacity>
           <NiErrorMessage message={errorMessage} show={error} />
           <NiButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
+          <NiButton caption="C'est ma première connection" onPress={firstConnection}
+            bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
