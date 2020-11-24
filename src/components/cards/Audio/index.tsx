@@ -91,8 +91,8 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
             color={GREY[800]} iconFamily={IONICONS} style={styles.icon} />
           : <ActivityIndicator style={[commonStyle.disabled, styles.icon]} color={GREY[800]} size={ICON.MD} />}
         <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
-        <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} value={timeElapsed}
-          onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed}
+        <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} thumbTintColor={PINK[500]}
+          onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed} value={timeElapsed}
           onSlidingStart={() => { isUserMovingSlider.current = true; }} />
         <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
       </View>
