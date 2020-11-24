@@ -86,10 +86,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
 
   const goBack = () => navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
 
-  const goToCourse = () => navigation.navigate(
-    'Home',
-    { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } }
-  );
+  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
   const goToNextActivity = () => {
     navigation.dispatch(StackActions.push('CourseProfile', { courseId }));

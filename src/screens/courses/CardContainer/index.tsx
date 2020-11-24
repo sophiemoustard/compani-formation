@@ -51,17 +51,8 @@ const CardContainer = ({
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
-    if (isCourse) {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
-      );
-    } else {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: route.params.courseId } } }
-      );
-    }
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: route.params.courseId });
+    else navigation.navigate('SubProgramProfile', { subProgramId: route.params.courseId });
   };
 
   useEffect(() => {

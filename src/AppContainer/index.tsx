@@ -33,16 +33,6 @@ interface TabBarIconProps {
   size: number,
 }
 
-const CourseStack = createStackNavigator();
-
-const Courses = () => (
-  <CourseStack.Navigator headerMode="none">
-    <CourseStack.Screen name="CourseList" component={CourseList} />
-    <CourseStack.Screen name="CourseProfile" component={CourseProfile} />
-    <CourseStack.Screen name="SubProgramProfile" component={SubProgramProfile} />
-  </CourseStack.Navigator>
-);
-
 const Tab = createBottomTabNavigator();
 
 const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
@@ -63,7 +53,7 @@ const Home = () => {
       initialRouteName="Courses"
     >
       <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarLabel: 'Explorer' }} />
-      <Tab.Screen name="Courses" component={Courses} options={{ tabBarLabel: 'Mes formations' }} />
+      <Tab.Screen name="Courses" component={CourseList} options={{ tabBarLabel: 'Mes formations' }} />
       <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
   );
@@ -115,6 +105,8 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
             <MainStack.Screen name="About" component={About} />
             <MainStack.Screen name="ProfileEdition" component={ProfileEdition} />
             <MainStack.Screen name="PasswordEdition" component={PasswordEdition} />
+            <MainStack.Screen name="CourseProfile" component={CourseProfile} />
+            <MainStack.Screen name="SubProgramProfile" component={SubProgramProfile} />
           </>
         }
       </MainStack.Navigator>

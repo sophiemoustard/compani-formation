@@ -17,8 +17,8 @@ interface StartCardProps {
   title: string,
   courseId: string,
   isCourse: boolean,
-  resetActivityReducer: () => void,
   activity: ActivityType,
+  resetActivityReducer: () => void,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
   setStatusBarVisible: (boolean) => void,
 }
@@ -27,8 +27,8 @@ const StartCard = ({
   title,
   courseId,
   isCourse,
-  resetActivityReducer,
   activity,
+  resetActivityReducer,
   setQuestionnaireAnswersList,
   setStatusBarVisible,
 }: StartCardProps) => {
@@ -56,13 +56,8 @@ const StartCard = ({
 
   const goBack = () => {
     resetActivityReducer();
-    if (isCourse) navigate('Home', { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId } } });
-    else {
-      navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgram: courseId } } }
-      );
-    }
+    if (isCourse) navigate('CourseProfile', { courseId });
+    else navigate('SubProgramProfile', { subProgram: courseId });
   };
 
   return (

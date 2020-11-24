@@ -97,17 +97,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   }, [loggedUserId, isFocused]);
 
   const goToCourse = (id, isCourse) => {
-    if (isCourse) {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: id } } }
-      );
-    } else {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: id } } }
-      );
-    }
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: id });
+    else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
   const renderSeparator = () => <View style={styles.separator} />;
