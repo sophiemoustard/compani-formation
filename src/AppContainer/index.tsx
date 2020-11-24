@@ -88,27 +88,20 @@ const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: App
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
+  const authScreens = { Authentication, ForgotPassword };
+
+  const Profile = { ProfileEdition, PasswordEdition };
+  const Courses = { CourseProfile, SubProgramProfile };
+  const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
+
   return (
     <NavigationContainer ref={navigationRef}>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {alenviToken === null
-          ? <>
-            <MainStack.Screen name="Authentication" component={Authentication} />
-            <MainStack.Screen name="ForgotPassword" component={ForgotPassword} />
-          </>
-          : <>
-            <MainStack.Screen name="Home" component={Home} />
-            <MainStack.Screen name="CardContainer" component={CardContainer} options={{ gestureEnabled: false }} />
-            <MainStack.Screen name="About" component={About} />
-            <MainStack.Screen name="ProfileEdition" component={ProfileEdition} />
-            <MainStack.Screen name="PasswordEdition" component={PasswordEdition} />
-            <MainStack.Screen name="CourseProfile" component={CourseProfile} />
-            <MainStack.Screen name="SubProgramProfile" component={SubProgramProfile} />
-          </>
-        }
+        {Object.entries(alenviToken ? userScreens : authScreens)
+          .map(([name, component]) => (<MainStack.Screen key={name} name={name} component={component} />))}
       </MainStack.Navigator>
     </NavigationContainer>
   );
