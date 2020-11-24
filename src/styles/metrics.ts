@@ -4,6 +4,7 @@ const { width, height } = Dimensions.get('window');
 
 export const MAIN_MARGIN_LEFT = 16;
 export const MARGIN = {
+  XXS: 2,
   XS: 4,
   SM: 8,
   MD: 16,
@@ -30,6 +31,7 @@ export const BORDER_RADIUS = {
   MD: 15,
   LG: 20,
   XL: 25,
+  XXL: 45,
 };
 
 export const ICON = {
@@ -38,6 +40,7 @@ export const ICON = {
   MD: 24,
   LG: 26,
   XL: 32,
+  XXL: 64,
 };
 
 export const IOS_WIDTH_THRESHOLD = 375;
@@ -50,7 +53,7 @@ export const IS_SMALL_SCREEN = Platform.select({
 });
 
 export const INPUT_HEIGHT = 40;
-export const GAP_WIDTH = 128;
+export const GAP_WIDTH = 144;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
 export const PROGRESS_BAR_HEIGHT = 8;

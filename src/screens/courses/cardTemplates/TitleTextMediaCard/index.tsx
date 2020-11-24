@@ -9,7 +9,10 @@ import { TitleTextMediaType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
+import { AUDIO, IMAGE, VIDEO } from '../../../../core/data/constants';
 import FooterGradient from '../../../../components/design/FooterGradient';
+import NiVideo from '../../../../components/cards/Video';
+import NiAudio from '../../../../components/cards/Audio';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
@@ -18,28 +21,36 @@ interface TitleTextMediaCardProps {
 }
 
 const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps) => {
-  const [imgHeight, setImgHeight] = useState(0);
+  const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
+  const [mediaType, setMediaType] = useState<string>('');
+  const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
 
   useEffect(() => {
-    if (card?.media?.link) {
-      Image.getSize(card.media?.link || '', (width, height) => {
-        setImgHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
-      });
+    if (!isLoading) {
+      if (card?.media?.link && card?.media?.type === IMAGE) {
+        Image.getSize(card.media?.link || '', (width, height) => {
+          setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
+        });
+      }
+      setMediaType(card?.media?.type);
+      setMediaSource(card.media?.link ? { uri: card.media.link } : undefined);
     }
-  }, [card]);
+  }, [card, isLoading]);
 
   if (isLoading) return null;
 
-  const imageSource = card.media?.link ? { uri: card.media.link } : '';
-  const styleWithImgHeight = styles(imgHeight);
+  const styleWithHeight = styles(mediaHeight);
 
   return (
     <>
       <CardHeader />
-      <ScrollView style={styleWithImgHeight.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Text style={cardsStyle.text}>{card.text}</Text>
-        {!!imageSource && <Image source={imageSource} style={styleWithImgHeight.image} />}
+        {mediaType === IMAGE && !!mediaSource &&
+          <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
+        {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
+        {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource}/>}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />

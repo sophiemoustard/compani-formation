@@ -49,7 +49,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
           <Image style={styles.image} source={ require('../../../assets/images/compani_logo.png') } />
         </View>
         <Text>Entrez votre email pour réinitialiser votre mot de passe.</Text>
-        <NiInput style={styles.input} caption="Email" value={email} onChangeText={setEmail} type="email" />
+        <NiInput caption="Email" value={email} onChangeText={setEmail} type="email" />
         <NiErrorMessage message={errorMessage} show={error} />
         {successMessage !== '' && <Text style={styles.success}>{successMessage}</Text>}
         <View style={styles.buttonContainer}>

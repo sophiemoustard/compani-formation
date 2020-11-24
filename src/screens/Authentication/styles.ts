@@ -19,9 +19,6 @@ const styles = StyleSheet.create({
     color: WHITE,
     marginBottom: MARGIN.XL,
   },
-  input: {
-    marginVertical: MARGIN.SM,
-  },
   forgotPassword: {
     alignSelf: 'flex-end',
     marginBottom: MARGIN.SM,

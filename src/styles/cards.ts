@@ -23,7 +23,6 @@ export default StyleSheet.create({
   },
   explanation: {
     ...FIRA_SANS_REGULAR.MD,
-    textAlign: 'justify',
     paddingHorizontal: PADDING.XL,
     paddingVertical: PADDING.LG,
   },

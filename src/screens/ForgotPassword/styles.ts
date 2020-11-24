@@ -17,9 +17,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: PADDING.XL,
     justifyContent: 'center',
   },
-  input: {
-    marginVertical: MARGIN.SM,
-  },
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',

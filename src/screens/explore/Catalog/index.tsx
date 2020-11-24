@@ -9,11 +9,10 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import { ProgramType } from '../../../types/ProgramType';
-import { NavigationType } from '../../../types/NavigationType';
 
 interface CatalogProps {
   loggedUserId: string | null,
-  navigation: NavigationType,
+  navigation: { navigate: (path: string, params: { programId: string }) => {} },
 }
 
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
@@ -38,10 +37,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = program => navigation.navigate(
-    'Home',
-    { screen: 'Explore', params: { screen: 'About', params: { programId: program._id } } }
-  );
+  const goToProgram = program => navigation.navigate('About', { programId: program._id });
 
   const renderSeparator = () => <View style={styles.separator} />;
 

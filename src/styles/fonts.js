@@ -83,11 +83,11 @@ export const FIRA_SANS_REGULAR = StyleSheet.create({
 export const FIRA_SANS_ITALIC = StyleSheet.create({
   MD: {
     fontSize: 16,
-    fontFamily: 'fira-sans-regular',
+    fontFamily: 'fira-sans-italic',
   },
   SM: {
     fontSize: 14,
-    fontFamily: 'fira-sans-regular',
+    fontFamily: 'fira-sans-italic',
   },
 });
 
@@ -130,6 +130,10 @@ export const NUNITO_REGULAR_BOLD_ITALIC = StyleSheet.create({
 });
 
 export const NUNITO_LIGHT = StyleSheet.create({
+  XL: {
+    fontSize: 48,
+    fontFamily: 'nunito-light',
+  },
   XXXL: {
     fontSize: 348,
     fontFamily: 'nunito-light',

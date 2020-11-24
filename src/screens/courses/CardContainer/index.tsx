@@ -4,7 +4,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
-import ExitActivityModal from '../../../components/activities/ExitActivityModal';
+import { NavigationType } from '../../../types/NavigationType';
+import ExitModal from '../../../components/ExitModal';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import EndCard from '../cardTemplates/EndCard';
@@ -15,7 +16,7 @@ import styles from './styles';
 
 interface CardContainerProps {
   route: { params: { activityId: string, courseId: string } },
-  navigation: { navigate: (path: string, params: object) => {} },
+  navigation: NavigationType,
   activity: ActivityType,
   cardIndex: number | null,
   isCourse: boolean,
@@ -51,17 +52,8 @@ const CardContainer = ({
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
-    if (isCourse) {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'CourseProfile', params: { courseId: route.params.courseId } } }
-      );
-    } else {
-      navigation.navigate(
-        'Home',
-        { screen: 'Courses', params: { screen: 'SubProgramProfile', params: { subProgramId: route.params.courseId } } }
-      );
-    }
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: route.params.courseId });
+    else navigation.navigate('SubProgramProfile', { subProgramId: route.params.courseId });
   };
 
   useEffect(() => {
@@ -86,8 +78,9 @@ const CardContainer = ({
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
         <View style={styles.cardScreen}>
-          <ExitActivityModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-            onPressCancelButton={() => setExitConfirmationModal(false)} />
+          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
+            title='Es-tu sûr de cela ?' contentText='Tous tes progrès dans la leçon seront perdus.' />
           <CardTemplate index={index} />
         </View>
       )}
