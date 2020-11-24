@@ -3,7 +3,6 @@ import {
   Text,
   ScrollView,
   View,
-  TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -19,7 +18,9 @@ import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
-import BottomModal from '../../components/BottomModal';
+import BottomPopUp from '../../components/BottomPopUp';
+import Users from '../../api/users';
+import Authentication from '../../api/authentication';
 
 interface FirstConnectionProps {
   navigation: NavigationType,
@@ -34,7 +35,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isTouch, setIsTouch] = useState<boolean>(false);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -50,12 +51,23 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
 
   useEffect(() => { setIsValid(!unvalidEmail); }, [unvalidEmail]);
 
+  const sendEmail = async () => {
+    try {
+      await Authentication.forgotPassword({ email });
+      setIsBottomPopUpVisible(true);
+      setIsLoading(false);
+    } catch (e) {
+      if (e.status === 401) signOut();
+    }
+  };
+
   const saveEmail = async () => {
     try {
       setIsLoading(true);
       if (isValid) {
-        // futur appel au back pour vérifier que l'email existe : await Users.exists({ email });
-        setIsVisible(true);
+        const isExistingUser = await Users.exists({ email });
+        if (isExistingUser) sendEmail();
+        else goBack();
       }
     } catch (e) {
       if (e.status === 401) signOut();
@@ -74,9 +86,9 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     setIsTouch(true);
   };
 
-  const leaveModal = () => {
+  const confirm = () => {
     goBack();
-    setIsVisible(false);
+    setIsBottomPopUpVisible(false);
   };
 
   const renderContentText = () =>
@@ -87,12 +99,10 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={styles.goBack}>
-        <TouchableOpacity>
-          <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
-        </TouchableOpacity>
+        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />
+          title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Quelle est ton adresse email ?</Text>
@@ -105,7 +115,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
           <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
-        <BottomModal onPressConfirmButton={leaveModal} visible={isVisible}
+        <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />
       </ScrollView>
     </KeyboardAvoidingView>

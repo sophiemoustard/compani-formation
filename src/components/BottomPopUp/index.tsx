@@ -1,17 +1,17 @@
 import React from 'react';
 import { Text, Modal, View } from 'react-native';
-import NiButton from '../../components/form/Button';
+import NiButton from '../form/Button';
 import { PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
 
-interface BottomModalProps {
+interface BottomPopUpProps {
   visible: boolean,
   title: string,
   contentText: () => JSX.Element,
   onPressConfirmButton: () => void,
 }
 
-const BottomModal = ({ visible, title, contentText, onPressConfirmButton }: BottomModalProps) => (
+const BottomPopUp = ({ visible, title, contentText, onPressConfirmButton }: BottomPopUpProps) => (
   <Modal visible={visible} transparent={true}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
@@ -24,4 +24,4 @@ const BottomModal = ({ visible, title, contentText, onPressConfirmButton }: Bott
   </Modal>
 );
 
-export default BottomModal;
+export default BottomPopUp;
