@@ -19,7 +19,7 @@ import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
-import Users from '../../api/users';
+import BottomModal from '../../components/BottomModal';
 
 interface FirstConnectionProps {
   navigation: NavigationType,
@@ -34,6 +34,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isTouch, setIsTouch] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -53,13 +54,9 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     try {
       setIsLoading(true);
       if (isValid) {
-        const test = await Users.list();
-        console.log(test);
+        // futur appel au back pour vérifier que l'email existe : await Users.exists({ email });
+        setIsVisible(true);
       }
-      // const userId = loggedUser._id;
-      // const user = await Users.getById(userId);
-      // setLoggedUser(user);
-      // goBack();
     } catch (e) {
       if (e.status === 401) signOut();
     }
@@ -76,6 +73,15 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     setEmail(text);
     setIsTouch(true);
   };
+
+  const leaveModal = () => {
+    goBack();
+    setIsVisible(false);
+  };
+
+  const renderContentText = () =>
+    <Text style={styles.contentText}>Nous avons envoyé un e-mail à<Text style={styles.email}>{` ${email}`}</Text>
+    . Si tu ne l’as pas reçu, vérifie ton Courrier indésirable, ou réessaie.</Text>;
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
@@ -99,6 +105,8 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
           <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
+        <BottomModal onPressConfirmButton={leaveModal} visible={isVisible}
+          title='Vérifie tes e-mails !' contentText={renderContentText} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
