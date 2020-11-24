@@ -17,7 +17,8 @@ export default {
   },
   list: async (params = null) => {
     const { baseURL } = getEnvVars();
-    const usersRaw = await alenviAxios.get(`${baseURL}/`, { params });
+    const usersRaw = await alenviAxios.get(`${baseURL}/users/`, { params });
+    console.log('trstse');
     return usersRaw.data.data.users;
   },
 };

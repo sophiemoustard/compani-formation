@@ -53,7 +53,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     try {
       setIsLoading(true);
       if (isValid) {
-        const test = await Users.list;
+        const test = await Users.list();
         console.log(test);
       }
       // const userId = loggedUser._id;
