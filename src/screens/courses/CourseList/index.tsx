@@ -57,18 +57,21 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: CourseListProps) => {
-  const [courses, setCourses] = useState(new Array(0));
+  const [onGoingCourses, setOnGoingCourses] = useState(new Array(0));
+  const [achievedCourses, setAchievedCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
-      setCourses(fetchedCourses);
+      setOnGoingCourses(fetchedCourses.filter(course => getCourseProgress(course.subProgram.steps) < 1));
+      setAchievedCourses(fetchedCourses.filter(course => getCourseProgress(course.subProgram.steps) === 1));
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setCourses(() => []);
+      setOnGoingCourses(() => []);
+      setAchievedCourses(() => []);
     }
   };
 
@@ -121,7 +124,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const nextSteps = formatNextSteps(courses);
+  const nextSteps = formatNextSteps(onGoingCourses);
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -140,9 +143,18 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
       <View style={commonStyles.sectionContainer}>
         <View style={commonStyles.sectionTitle}>
           <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
-          <Text style={[styles.coursesCount, commonStyles.countContainer]}>{courses.length}</Text>
+          <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>{onGoingCourses.length}</Text>
         </View>
-        <FlatList horizontal data={courses} keyExtractor={item => item._id}
+        <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
+          renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+          showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+      </View>
+      <View style={commonStyles.sectionContainer}>
+        <View style={commonStyles.sectionTitle}>
+          <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
+          <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>{achievedCourses.length}</Text>
+        </View>
+        <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
           renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
           showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
       </View>
