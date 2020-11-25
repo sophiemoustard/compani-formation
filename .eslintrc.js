@@ -12,6 +12,11 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: 'module',
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
@@ -53,5 +58,6 @@ module.exports = {
   globals: {
     __DEV__: true,
     Platform: true,
+    JSX: true,
   },
 };

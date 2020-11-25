@@ -12,7 +12,7 @@ import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelecto
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
 
-interface SurveyCard {
+interface SurveyCardProps {
   card: SurveyType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
@@ -20,7 +20,7 @@ interface SurveyCard {
   isLoading: boolean,
 }
 
-const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isLoading }: SurveyCard) => {
+const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isLoading }: SurveyCardProps) => {
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
