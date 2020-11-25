@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Text,
   ScrollView,
@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import ExitModal from '../../components/ExitModal';
 import IconButton from '../../components/IconButton';
-import { Context as AuthContext } from '../../context/AuthContext';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
@@ -28,7 +27,6 @@ interface FirstConnectionProps {
 
 const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   const isIOS = Platform.OS === 'ios';
-  const { signOut } = useContext(AuthContext);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [unvalidEmail, setUnvalidEmail] = useState<boolean>(false);
@@ -57,7 +55,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
       setIsBottomPopUpVisible(true);
       setIsLoading(false);
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.status === 401) goBack();
     }
   };
 
@@ -66,11 +64,11 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
       setIsLoading(true);
       if (isValid) {
         const isExistingUser = await Users.exists({ email });
-        if (isExistingUser) sendEmail();
+        if (isExistingUser) await sendEmail();
         else goBack();
       }
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.status === 401) goBack();
     }
   };
 
