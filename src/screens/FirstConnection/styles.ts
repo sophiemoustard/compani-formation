@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
   email: {
     ...FIRA_SANS_MEDIUM.MD,
   },
+  errorMessage: {
+    marginVertical: MARGIN.SM,
+  },
 });
 
 export default styles;

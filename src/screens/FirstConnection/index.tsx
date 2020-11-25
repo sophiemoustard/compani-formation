@@ -14,6 +14,7 @@ import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
+import NiErrorMessage from '../../components/ErrorMessage';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
@@ -34,6 +35,8 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isTouch, setIsTouch] = useState<boolean>(false);
   const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -55,7 +58,9 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
       setIsBottomPopUpVisible(true);
       setIsLoading(false);
     } catch (e) {
-      if (e.status === 401) goBack();
+      setIsLoading(false);
+      setError(true);
+      setErrorMessage('Erreur lors de la transmission de votre adresse email.');
     }
   };
 
@@ -68,7 +73,9 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
         else goBack();
       }
     } catch (e) {
-      if (e.status === 401) goBack();
+      setIsLoading(false);
+      setError(true);
+      setErrorMessage('Erreur lors de la transmission de votre adresse email.');
     }
   };
 
@@ -112,6 +119,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
         <View style={styles.footer}>
           <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
+          <NiErrorMessage style={styles.errorMessage} message={errorMessage} show={error} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />
