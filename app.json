@@ -17,7 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["assets/*"],
+    "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
       "buildNumber": "1.0.14",
@@ -26,7 +26,7 @@
     "android": {
       "package": "com.alenvi.compani",
       "permissions": [],
-      "versionCode": 32
+      "versionCode": 36
     }
   }
 }
