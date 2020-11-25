@@ -21,7 +21,7 @@ interface CardContainerProps {
   cardIndex: number | null,
   isCourse: boolean,
   exitConfirmationModal: boolean,
-  setActivity: (ActivityType) => void,
+  setActivity: (activity: ActivityType | null) => void,
   setExitConfirmationModal: (boolean) => void,
   resetActivityReducer: () => void,
 }

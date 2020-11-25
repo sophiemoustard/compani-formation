@@ -53,5 +53,6 @@ module.exports = {
   globals: {
     __DEV__: true,
     Platform: true,
+    JSX: true,
   },
 };

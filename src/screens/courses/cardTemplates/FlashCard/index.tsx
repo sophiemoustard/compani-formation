@@ -9,19 +9,20 @@ import CardFooter from '../../../../components/cards/CardFooter';
 import AnimatedShadow from '../../../../components/design/AnimatedShadow';
 import styles from './styles';
 
-interface FlashCard {
+interface FlashCardProps {
   card: FlashCardType,
   index: number,
   isLoading: boolean,
 }
 
+// eslint-disable-next-line no-shadow
 export enum ClickOnCard {
   UNCLICKED_CARD = 'unclicked',
   CLICKED_ONCE_CARD = 'clickedOnce',
   CLICKED_MORE_THAN_ONCE_CARD = 'clickedMoreThanOnce',
 }
 
-const FlashCard = ({ card, index, isLoading }: FlashCard) => {
+const FlashCard = ({ card, index, isLoading }: FlashCardProps) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
