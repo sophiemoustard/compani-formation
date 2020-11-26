@@ -10,17 +10,18 @@ interface FillTheGapQuestionProps {
 }
 
 const FillTheGapQuestion = ({ text, isValidated, renderGap }: FillTheGapQuestionProps) => {
-  const splittedText = text.replace(/<trou>[^<]*<\/trou>/g, '<trou>').split(' ');
+  // DON'T remove the spaces around '<trou>' in replace. They are needed for the display.
+  const splittedText = text.replace(/<trou>[^<]*<\/trou>/g, ' <trou> ').split(/\s+/);
 
   const formatText = (words) => {
     let i = 0;
-    return words.map((word, idx) => {
+    return words.map((word) => {
       if (word === '<trou>') {
         const gapIndex = `<trou${i}>`;
         i += 1;
         return gapIndex;
       }
-      if (words[idx - 1] === '<trou>') return ` ${word}`;
+
       return word;
     });
   };
