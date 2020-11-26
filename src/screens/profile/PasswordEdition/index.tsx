@@ -74,6 +74,8 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
       goBack();
     } catch (e) {
       if (e.status === 401) signOut();
+    } finally {
+      setIsLoading(false);
     }
   };
 
