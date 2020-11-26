@@ -65,8 +65,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const getCourses = async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
-      setOnGoingCourses(fetchedCourses.filter(course => getCourseProgress(course.subProgram.steps) < 1));
-      setAchievedCourses(fetchedCourses.filter(course => getCourseProgress(course.subProgram.steps) === 1));
+      setOnGoingCourses(fetchedCourses.filter(course => course.subProgram.progress < 1));
+      setAchievedCourses(fetchedCourses.filter(course => course.subProgram.progress === 1));
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
@@ -111,14 +111,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     goToCourse(id, isCourse);
   };
 
-  const getCourseProgress = (steps) => {
-    const progressSum = steps.map(step => step.progress).reduce((acc, value) => acc + value, 0);
-
-    return steps.length ? (progressSum / steps.length) : 0;
-  };
-
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} progress={getCourseProgress(course.subProgram.steps)}
+    onPress={() => onPressProgramCell(true, course._id)} progress={course.subProgram.progress}
     misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
@@ -140,24 +134,28 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
             contentContainerStyle={styles.courseContainer} />
         </View>
       }
-      <View style={commonStyles.sectionContainer}>
-        <View style={commonStyles.sectionTitle}>
-          <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
-          <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>{onGoingCourses.length}</Text>
+      {onGoingCourses.length > 0 &&
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
+            <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>{onGoingCourses.length}</Text>
+          </View>
+          <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
         </View>
-        <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
-          renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-          showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-      </View>
-      <View style={commonStyles.sectionContainer}>
-        <View style={commonStyles.sectionTitle}>
-          <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
-          <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>{achievedCourses.length}</Text>
+      }
+      {achievedCourses.length > 0 &&
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
+            <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>{achievedCourses.length}</Text>
+          </View>
+          <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
         </View>
-        <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
-          renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-          showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-      </View>
+      }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
