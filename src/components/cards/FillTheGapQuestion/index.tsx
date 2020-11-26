@@ -15,13 +15,13 @@ const FillTheGapQuestion = ({ text, isValidated, renderGap }: FillTheGapQuestion
 
   const formatText = (words) => {
     let i = 0;
-    return words.map((word, idx) => {
+    return words.map((word) => {
       if (word === '<trou>') {
         const gapIndex = `<trou${i}>`;
         i += 1;
         return gapIndex;
       }
-      if (words[idx - 1] === '<trou>') return word;
+
       return word;
     });
   };
