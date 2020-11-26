@@ -58,9 +58,10 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
       setIsBottomPopUpVisible(true);
       setIsLoading(false);
     } catch (e) {
-      setIsLoading(false);
       setError(true);
-      setErrorMessage('Erreur lors de la transmission de votre adresse email.');
+      setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,7 +76,9 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     } catch (e) {
       setIsLoading(false);
       setError(true);
-      setErrorMessage('Erreur lors de la transmission de votre adresse email.');
+      setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
