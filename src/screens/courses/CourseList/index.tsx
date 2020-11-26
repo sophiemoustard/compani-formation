@@ -65,8 +65,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const getCourses = async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
-      setOnGoingCourses(fetchedCourses.filter(course => course.subProgram.progress < 1));
-      setAchievedCourses(fetchedCourses.filter(course => course.subProgram.progress === 1));
+      setOnGoingCourses(fetchedCourses.filter(course => course.progress < 1));
+      setAchievedCourses(fetchedCourses.filter(course => course.progress === 1));
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
@@ -112,7 +112,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   };
 
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} progress={course.subProgram.progress}
+    onPress={() => onPressProgramCell(true, course._id)} progress={course.progress}
     misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}

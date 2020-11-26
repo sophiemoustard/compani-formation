@@ -7,5 +7,4 @@ export interface SubProgramType {
   name: string,
   program: ProgramType,
   courses?: Array<any>,
-  progress: number,
 }
