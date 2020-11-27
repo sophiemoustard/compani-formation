@@ -21,6 +21,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import Users from '../../../api/users';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import ExitModal from '../../../components/ExitModal';
+import NiErrorMessage from '../../../components/ErrorMessage';
 
 interface PasswordEditionProps {
   loggedUser: UserType,
@@ -36,6 +37,8 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isTouch, setIsTouch] = useState({ newPassword: false, confirmedPassword: false });
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -70,10 +73,14 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const savePassword = async () => {
     try {
       setIsLoading(true);
+      setError(false);
+      setErrorMessage('');
       if (isValid) await Users.updatePassword(loggedUser._id, { local: { password: password.newPassword } });
       goBack();
     } catch (e) {
       if (e.status === 401) signOut();
+      setError(true);
+      setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
     } finally {
       setIsLoading(false);
     }
@@ -112,6 +119,7 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
               : ''} />
         </View>
         <View style={styles.footer}>
+          <NiErrorMessage message={errorMessage} show={error} />
           <NiButton caption="Valider" onPress={savePassword} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>

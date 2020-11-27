@@ -24,6 +24,7 @@ import MainActions from '../../../store/main/actions';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
+import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 
 interface ProfileEditionProps {
@@ -48,6 +49,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -90,6 +93,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const saveData = async () => {
     try {
       setIsLoading(true);
+      setError(false);
+      setErrorMessage('');
       if (isValid) {
         await Users.updateById(loggedUser._id, {
           ...editedUser,
@@ -102,6 +107,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       goBack();
     } catch (e) {
       if (e.status === 401) signOut();
+      else if (e.status === 409) setErrorMessage('L\'email est déjà relié à un utilisateur existant');
+      else setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
+      setError(true);
     } finally {
       setIsLoading(false);
     }
@@ -154,6 +162,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             validationMessage={emailValidation()} />
         </View>
         <View style={styles.footer}>
+          <NiErrorMessage message={errorMessage} show={error} />
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
