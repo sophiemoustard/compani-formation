@@ -18,12 +18,14 @@ export default StyleSheet.create({
     marginLeft: MAIN_MARGIN_LEFT,
   },
   countContainer: {
-    marginBottom: MARGIN.SM,
+    marginBottom: MARGIN.LG,
+    marginTop: MARGIN.SM,
     paddingVertical: PADDING.XS,
     paddingHorizontal: PADDING.SM,
-    marginLeft: MARGIN.SM,
+    marginLeft: MAIN_MARGIN_LEFT,
     borderRadius: BORDER_RADIUS.XS,
     overflow: 'hidden',
+    alignSelf: 'flex-start',
   },
   sectionTitle: {
     flexDirection: 'row',
@@ -31,6 +33,6 @@ export default StyleSheet.create({
   },
   sectionContainer: {
     position: 'relative',
-    marginBottom: MARGIN.XXXL,
+    marginBottom: MARGIN.XXL,
   },
 });

@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, FlatList, ScrollView } from 'react-native';
+import { Text, View, FlatList, ScrollView, ImageBackground, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -124,51 +124,68 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextSteps.length > 0 &&
-        <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.sectionTitle}>
-            <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
-            <Text style={[styles.nextEventsCount, commonStyles.countContainer]}>{nextSteps.length}</Text>
-          </View>
+        <View style={[commonStyles.sectionContainer, styles.nextSteps]}>
+          <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
+          <Text style={[styles.nextEventsCount, commonStyles.countContainer]}>
+            {nextSteps.length > 1 ? `${nextSteps.length} ÉVÉNEMENTS` : `${nextSteps.length} ÉVÉNEMENT`}
+          </Text>
           <FlatList horizontal data={nextSteps} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
             contentContainerStyle={styles.courseContainer} />
         </View>
       }
       {onGoingCourses.length > 0 &&
-        <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.sectionTitle}>
+        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/ongoing_background.png')}>
+          <View style={commonStyles.sectionContainer}>
             <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
-            <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>{onGoingCourses.length}</Text>
+            <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>
+              {onGoingCourses.length > 1 ? `${onGoingCourses.length} ÉVÉNEMENTS` : `${onGoingCourses.length} ÉVÉNEMENT`}
+            </Text>
+            <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
+              renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+              showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
           </View>
-          <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-        </View>
+        </ImageBackground>
       }
       {achievedCourses.length > 0 &&
-        <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.sectionTitle}>
-            <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
-            <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>{achievedCourses.length}</Text>
-          </View>
-          <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-        </View>
+       <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
+         source={require('../../../../assets/images/achieved_background.png')}>
+         <View style={commonStyles.sectionContainer}>
+           <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
+           <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>
+             {achievedCourses.length > 1
+               ? `${achievedCourses.length} ÉVÉNEMENTS`
+               : `${achievedCourses.length} ÉVÉNEMENT`
+             }
+           </Text>
+           <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
+             renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+         </View>
+       </ImageBackground>
       }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
-        <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.sectionTitle}>
-            <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
-            <Text style={[styles.subProgramsCount, commonStyles.countContainer]}>
-              {elearningDraftSubPrograms.length}
-            </Text>
-          </View>
-          <FlatList horizontal data={elearningDraftSubPrograms} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderSubProgramItem(item)} contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-        </View>
+       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+         source={require('../../../../assets/images/elearning_draft_background.png')}>
+         <View style={commonStyles.sectionContainer}>
+           <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
+           <Text style={[styles.subProgramsCount, commonStyles.countContainer]}>
+             {elearningDraftSubPrograms.length > 1
+               ? `${elearningDraftSubPrograms.length} ÉVÉNEMENTS`
+               : `${elearningDraftSubPrograms.length} ÉVÉNEMENT`
+             }
+           </Text>
+           <FlatList horizontal data={elearningDraftSubPrograms} keyExtractor={item => item._id}
+             renderItem={({ item }) => renderSubProgramItem(item)} contentContainerStyle={styles.courseContainer}
+             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+         </View>
+       </ImageBackground>
       }
+      <View style={styles.footer}>
+        <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
+        <Image source={require('../../../../assets/images/pa-aidant-balade.png')} style={styles.fellow} />
+      </View>
     </ScrollView>
   );
 };

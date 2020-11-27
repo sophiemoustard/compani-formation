@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, ScrollView, View, FlatList } from 'react-native';
+import { Text, ScrollView, View, FlatList, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import Programs from '../../../api/programs';
@@ -47,17 +47,21 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title}>Explorer</Text>
       {programs.length > 0 &&
-        <>
+        <ImageBackground imageStyle={styles.background} style={styles.sectionContainer}
+          source={require('../../../../assets/images/ongoing_background.png')}>
           <View style={commonStyles.sectionContainer}>
-            <View style={commonStyles.sectionTitle}>
-              <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
-              <Text style={[styles.programsCount, commonStyles.countContainer]}>{programs.length}</Text>
-            </View>
+            <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
+            <Text style={[styles.programsCount, commonStyles.countContainer]}>
+              {programs.length > 1
+                ? `${programs.length} ÉVÉNEMENTS`
+                : `${programs.length} ÉVÉNEMENT`
+              }
+            </Text>
             <FlatList horizontal data={programs} keyExtractor={item => item._id}
               renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.programContainer}
               showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
           </View>
-        </>
+        </ImageBackground>
       }
     </ScrollView>
   );
