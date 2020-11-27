@@ -57,18 +57,21 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: CourseListProps) => {
-  const [courses, setCourses] = useState(new Array(0));
+  const [onGoingCourses, setOnGoingCourses] = useState(new Array(0));
+  const [achievedCourses, setAchievedCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
-      setCourses(fetchedCourses);
+      setOnGoingCourses(fetchedCourses.filter(course => course.progress < 1));
+      setAchievedCourses(fetchedCourses.filter(course => course.progress === 1));
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setCourses(() => []);
+      setOnGoingCourses(() => []);
+      setAchievedCourses(() => []);
     }
   };
 
@@ -108,20 +111,14 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     goToCourse(id, isCourse);
   };
 
-  const getCourseProgress = (steps) => {
-    const progressSum = steps.map(step => step.progress).reduce((acc, value) => acc + value, 0);
-
-    return steps.length ? (progressSum / steps.length) : 0;
-  };
-
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} progress={getCourseProgress(course.subProgram.steps)}
+    onPress={() => onPressProgramCell(true, course._id)} progress={course.progress}
     misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const nextSteps = formatNextSteps(courses);
+  const nextSteps = formatNextSteps(onGoingCourses);
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -137,15 +134,28 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
             contentContainerStyle={styles.courseContainer} />
         </View>
       }
-      <View style={commonStyles.sectionContainer}>
-        <View style={commonStyles.sectionTitle}>
-          <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
-          <Text style={[styles.coursesCount, commonStyles.countContainer]}>{courses.length}</Text>
+      {onGoingCourses.length > 0 &&
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
+            <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>{onGoingCourses.length}</Text>
+          </View>
+          <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
         </View>
-        <FlatList horizontal data={courses} keyExtractor={item => item._id}
-          renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-          showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-      </View>
+      }
+      {achievedCourses.length > 0 &&
+        <View style={commonStyles.sectionContainer}>
+          <View style={commonStyles.sectionTitle}>
+            <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
+            <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>{achievedCourses.length}</Text>
+          </View>
+          <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
+            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+        </View>
+      }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
         <View style={commonStyles.sectionContainer}>
           <View style={commonStyles.sectionTitle}>
