@@ -11,9 +11,6 @@ const styles = StyleSheet.create({
     backgroundColor: GREY[100],
     paddingVertical: PADDING.XL,
   },
-  separator: {
-    marginRight: 8,
-  },
   onGoingCoursesCount: {
     ...FIRA_SANS_REGULAR.SM,
     color: YELLOW[900],
@@ -34,9 +31,6 @@ const styles = StyleSheet.create({
     color: PINK[600],
     backgroundColor: PINK[200],
   },
-  sectionContainer: {
-    marginBottom: MARGIN.LG,
-  },
   onGoingAndDraftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
@@ -52,7 +46,7 @@ const styles = StyleSheet.create({
   elipse: {
     width: '100%',
     position: 'absolute',
-    top: 16,
+    top: 64,
     resizeMode: 'contain',
   },
   fellow: {

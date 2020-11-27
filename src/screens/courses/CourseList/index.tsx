@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, FlatList, ScrollView, ImageBackground, Image } from 'react-native';
+import { Text, View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -18,6 +18,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import SubPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import CoursesSection from '../../../components/CoursesSection';
 
 interface CourseListProps {
   setIsCourse: (value: boolean) => void,
@@ -104,8 +105,6 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
-  const renderSeparator = () => <View style={styles.separator} />;
-
   const onPressProgramCell = (isCourse, id) => {
     setIsCourse(isCourse);
     goToCourse(id, isCourse);
@@ -118,69 +117,36 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
+  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+
   const nextSteps = formatNextSteps(onGoingCourses);
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextSteps.length > 0 &&
-        <View style={[commonStyles.sectionContainer, styles.nextSteps]}>
-          <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
-          <Text style={[styles.nextEventsCount, commonStyles.countContainer]}>
-            {nextSteps.length > 1 ? `${nextSteps.length} ÉVÉNEMENTS` : `${nextSteps.length} ÉVÉNEMENT`}
-          </Text>
-          <FlatList horizontal data={nextSteps} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
-            contentContainerStyle={styles.courseContainer} />
-        </View>
+        <CoursesSection items={nextSteps}
+          title={'Mes prochains rendez-vous'}
+          courseCountStyle={styles.nextEventsCount} backgroundStyle={styles.nextSteps}
+          renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
       }
       {onGoingCourses.length > 0 &&
-        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/ongoing_background.png')}>
-          <View style={commonStyles.sectionContainer}>
-            <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
-            <Text style={[styles.onGoingCoursesCount, commonStyles.countContainer]}>
-              {onGoingCourses.length > 1 ? `${onGoingCourses.length} ÉVÉNEMENTS` : `${onGoingCourses.length} ÉVÉNEMENT`}
-            </Text>
-            <FlatList horizontal data={onGoingCourses} keyExtractor={item => item._id}
-              renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-              showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-          </View>
-        </ImageBackground>
+        <CoursesSection items={onGoingCourses}
+          image={require('../../../../assets/images/ongoing_background.png')} title={'Mes formations en cours'}
+          courseCountStyle={styles.onGoingCoursesCount} backgroundStyle={styles.onGoingAndDraftBackground}
+          renderItem={renderCourseItem} />
       }
       {achievedCourses.length > 0 &&
-       <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
-         source={require('../../../../assets/images/achieved_background.png')}>
-         <View style={commonStyles.sectionContainer}>
-           <Text style={commonStyles.sectionTitleText}>Mes formations terminées</Text>
-           <Text style={[styles.achievedCoursesCount, commonStyles.countContainer]}>
-             {achievedCourses.length > 1
-               ? `${achievedCourses.length} ÉVÉNEMENTS`
-               : `${achievedCourses.length} ÉVÉNEMENT`
-             }
-           </Text>
-           <FlatList horizontal data={achievedCourses} keyExtractor={item => item._id}
-             renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-         </View>
-       </ImageBackground>
+         <CoursesSection items={achievedCourses}
+           image={require('../../../../assets/images/achieved_background.png')} title={'Mes formations terminées'}
+           courseCountStyle={styles.achievedCoursesCount} backgroundStyle={styles.achievedBackground}
+           renderItem={renderCourseItem} />
       }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
-       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-         source={require('../../../../assets/images/elearning_draft_background.png')}>
-         <View style={commonStyles.sectionContainer}>
-           <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
-           <Text style={[styles.subProgramsCount, commonStyles.countContainer]}>
-             {elearningDraftSubPrograms.length > 1
-               ? `${elearningDraftSubPrograms.length} ÉVÉNEMENTS`
-               : `${elearningDraftSubPrograms.length} ÉVÉNEMENT`
-             }
-           </Text>
-           <FlatList horizontal data={elearningDraftSubPrograms} keyExtractor={item => item._id}
-             renderItem={({ item }) => renderSubProgramItem(item)} contentContainerStyle={styles.courseContainer}
-             showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-         </View>
-       </ImageBackground>
+        <CoursesSection items={elearningDraftSubPrograms}
+          image={require('../../../../assets/images/elearning_draft_background.png')} title={'Mes formations à tester'}
+          courseCountStyle={styles.subProgramsCount} backgroundStyle={styles.onGoingAndDraftBackground}
+          renderItem={renderSubProgramItem}/>
       }
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />

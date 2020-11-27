@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, ScrollView, View, FlatList, ImageBackground } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import Programs from '../../../api/programs';
@@ -9,6 +9,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import { ProgramType } from '../../../types/ProgramType';
+import CoursesSection from '../../../components/CoursesSection';
 
 interface CatalogProps {
   loggedUserId: string | null,
@@ -39,29 +40,16 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = program => navigation.navigate('About', { programId: program._id });
 
-  const renderSeparator = () => <View style={styles.separator} />;
-
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title}>Explorer</Text>
       {programs.length > 0 &&
-        <ImageBackground imageStyle={styles.background} style={styles.sectionContainer}
-          source={require('../../../../assets/images/ongoing_background.png')}>
-          <View style={commonStyles.sectionContainer}>
-            <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
-            <Text style={[styles.programsCount, commonStyles.countContainer]}>
-              {programs.length > 1
-                ? `${programs.length} ÉVÉNEMENTS`
-                : `${programs.length} ÉVÉNEMENT`
-              }
-            </Text>
-            <FlatList horizontal data={programs} keyExtractor={item => item._id}
-              renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.programContainer}
-              showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-          </View>
-        </ImageBackground>
+        <CoursesSection items={programs}
+          image={require('../../../../assets/images/ongoing_background.png')} title={'Formations e-learning'}
+          courseCountStyle={styles.programsCount} backgroundStyle={styles.background}
+          renderItem={renderItem} />
       }
     </ScrollView>
   );
