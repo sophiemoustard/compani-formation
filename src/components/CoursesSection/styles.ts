@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
   countContainer: {
     marginBottom: MARGIN.LG,
     marginTop: MARGIN.SM,
+    marginLeft: MAIN_MARGIN_LEFT,
     paddingVertical: PADDING.XS,
     paddingHorizontal: PADDING.SM,
-    marginLeft: MAIN_MARGIN_LEFT,
     borderRadius: BORDER_RADIUS.XS,
     overflow: 'hidden',
     alignSelf: 'flex-start',
