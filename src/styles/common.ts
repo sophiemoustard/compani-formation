@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN, MAIN_MARGIN_LEFT } from './metrics';
 import { WHITE } from './colors';
-import { FIRA_SANS_BLACK, FIRA_SANS_BOLD } from './fonts';
+import { FIRA_SANS_BLACK } from './fonts';
 
 export default StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
@@ -12,10 +12,6 @@ export default StyleSheet.create({
     marginLeft: MAIN_MARGIN_LEFT,
     marginVertical: MARGIN.XL,
     ...FIRA_SANS_BLACK.XL,
-  },
-  sectionTitleText: {
-    ...FIRA_SANS_BOLD.LG,
-    marginLeft: MAIN_MARGIN_LEFT,
   },
   sectionTitle: {
     flexDirection: 'row',

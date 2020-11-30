@@ -125,31 +125,31 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextSteps.length > 0 &&
-      <View style={styles.nextSteps}>
-        <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
-          renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
-      </View>
+        <View style={styles.nextSteps}>
+          <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
+            renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
+        </View>
       }
       {onGoingCourses.length > 0 &&
-       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-         source={require('../../../../assets/images/ongoing_background.png')}>
-         <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
-           countStyle={styles.onGoingCoursesCount} />
-       </ImageBackground>
+        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/ongoing_background.png')}>
+          <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
+            countStyle={styles.onGoingCoursesCount} />
+        </ImageBackground>
       }
       {achievedCourses.length > 0 &&
-      <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
-        source={require('../../../../assets/images/achieved_background.png')}>
-        <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
-          countStyle={styles.achievedCoursesCount} />
-      </ImageBackground>
+        <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/achieved_background.png')}>
+          <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
+            countStyle={styles.achievedCoursesCount} />
+        </ImageBackground>
       }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
-      <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-        source={require('../../../../assets/images/elearning_draft_background.png')}>
-        <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
-          countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
-      </ImageBackground>
+        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/elearning_draft_background.png')}>
+          <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
+            countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
+        </ImageBackground>
       }
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />

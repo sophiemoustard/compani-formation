@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../styles/metrics';
+import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   courseContainer: {
-    paddingHorizontal: MAIN_MARGIN_LEFT,
+    marginHorizontal: MAIN_MARGIN_LEFT,
   },
   separator: {
     marginRight: MARGIN.SM,
@@ -17,6 +18,10 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.XS,
     overflow: 'hidden',
     alignSelf: 'flex-start',
+  },
+  title: {
+    ...FIRA_SANS_BOLD.LG,
+    marginLeft: MAIN_MARGIN_LEFT,
   },
 });
 

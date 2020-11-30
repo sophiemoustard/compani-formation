@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, StyleProp, ViewStyle } from 'react-native';
 import styles from './styles';
-import commonStyles from '../../styles/common';
 import { SubProgramType } from '../../types/SubProgramType';
 import { CourseType } from '../../types/CourseType';
 import { ProgramType } from '../../types/ProgramType';
@@ -26,7 +25,7 @@ const CoursesSection = ({
 
   return (
     <>
-      <Text style={commonStyles.sectionTitleText}>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
       <Text style={[countStyle, styles.countContainer]}>
         {formatWordToPlural(items, type).toUpperCase()}
       </Text>
