@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
 import { YELLOW } from '../../../styles/colors';
 
 export default StyleSheet.create({
   programsCount: {
-    ...FIRA_SANS_BOLD.MD,
-    color: YELLOW[800],
+    ...FIRA_SANS_REGULAR.SM,
+    color: YELLOW[900],
     backgroundColor: YELLOW[200],
   },
   programContainer: {
@@ -14,5 +14,14 @@ export default StyleSheet.create({
   },
   separator: {
     marginRight: MARGIN.SM,
+  },
+  sectionContainer: {
+    marginVertical: MARGIN.LG,
+  },
+  background: {
+    resizeMode: 'contain',
+    position: 'absolute',
+    right: -264,
+    top: -32,
   },
 });

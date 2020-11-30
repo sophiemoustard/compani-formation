@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, ScrollView, View, FlatList } from 'react-native';
+import { Text, ScrollView, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import Programs from '../../../api/programs';
@@ -9,6 +9,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import { ProgramType } from '../../../types/ProgramType';
+import CoursesSection from '../../../components/CoursesSection';
 
 interface CatalogProps {
   loggedUserId: string | null,
@@ -39,25 +40,17 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = program => navigation.navigate('About', { programId: program._id });
 
-  const renderSeparator = () => <View style={styles.separator} />;
-
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title}>Explorer</Text>
       {programs.length > 0 &&
-        <>
-          <View style={commonStyles.sectionContainer}>
-            <View style={commonStyles.sectionTitle}>
-              <Text style={commonStyles.sectionTitleText}>Formations e-learning</Text>
-              <Text style={[styles.programsCount, commonStyles.countContainer]}>{programs.length}</Text>
-            </View>
-            <FlatList horizontal data={programs} keyExtractor={item => item._id}
-              renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.programContainer}
-              showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-          </View>
-        </>
+      <ImageBackground imageStyle={styles.background} style={styles.sectionContainer}
+        source={require('../../../../assets/images/catalog_background.png')}>
+        <CoursesSection items={programs} title='Suggéré pour vous' countStyle={styles.programsCount}
+          renderItem={renderItem} />
+      </ImageBackground>
       }
     </ScrollView>
   );
