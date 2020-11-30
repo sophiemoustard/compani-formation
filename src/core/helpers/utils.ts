@@ -12,5 +12,5 @@ export const formatPhoneForPayload = phoneNumber => (phoneNumber
   : '');
 
 export const formatWordToPlural = (items, text) => (items.length > 1
-  ? `${items.length} ${text}S`
+  ? `${items.length} ${text}s`
   : `${items.length} ${text}`);

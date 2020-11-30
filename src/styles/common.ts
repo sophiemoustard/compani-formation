@@ -17,22 +17,8 @@ export default StyleSheet.create({
     ...FIRA_SANS_BOLD.LG,
     marginLeft: MAIN_MARGIN_LEFT,
   },
-  countContainer: {
-    marginBottom: MARGIN.LG,
-    marginTop: MARGIN.SM,
-    paddingVertical: PADDING.XS,
-    paddingHorizontal: PADDING.SM,
-    marginLeft: MAIN_MARGIN_LEFT,
-    borderRadius: BORDER_RADIUS.XS,
-    overflow: 'hidden',
-    alignSelf: 'flex-start',
-  },
   sectionTitle: {
     flexDirection: 'row',
     marginBottom: MARGIN.MD,
-  },
-  sectionContainer: {
-    position: 'relative',
-    marginBottom: MARGIN.XXL,
   },
 });

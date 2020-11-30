@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import Programs from '../../../api/programs';
@@ -46,10 +46,11 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title}>Explorer</Text>
       {programs.length > 0 &&
-        <CoursesSection items={programs}
-          image={require('../../../../assets/images/ongoing_background.png')} title={'Formations e-learning'}
-          courseCountStyle={styles.programsCount} backgroundStyle={styles.background}
+      <ImageBackground imageStyle={styles.background} style={styles.sectionContainer}
+        source={require('../../../../assets/images/ongoing_background.png')}>
+        <CoursesSection items={programs} title='Formations e-learning' countStyle={styles.programsCount}
           renderItem={renderItem} />
+      </ImageBackground>
       }
     </ScrollView>
   );

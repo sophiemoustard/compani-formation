@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, ScrollView, Image } from 'react-native';
+import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -125,28 +125,31 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextSteps.length > 0 &&
-        <CoursesSection items={nextSteps}
-          title={'Mes prochains rendez-vous'}
-          courseCountStyle={styles.nextEventsCount} backgroundStyle={styles.nextSteps}
+      <View style={styles.nextSteps}>
+        <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
           renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
+      </View>
       }
       {onGoingCourses.length > 0 &&
-        <CoursesSection items={onGoingCourses}
-          image={require('../../../../assets/images/ongoing_background.png')} title={'Mes formations en cours'}
-          courseCountStyle={styles.onGoingCoursesCount} backgroundStyle={styles.onGoingAndDraftBackground}
-          renderItem={renderCourseItem} />
+       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+         source={require('../../../../assets/images/ongoing_background.png')}>
+         <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
+           countStyle={styles.onGoingCoursesCount} />
+       </ImageBackground>
       }
       {achievedCourses.length > 0 &&
-         <CoursesSection items={achievedCourses}
-           image={require('../../../../assets/images/achieved_background.png')} title={'Mes formations terminées'}
-           courseCountStyle={styles.achievedCoursesCount} backgroundStyle={styles.achievedBackground}
-           renderItem={renderCourseItem} />
+      <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
+        source={require('../../../../assets/images/achieved_background.png')}>
+        <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
+          countStyle={styles.achievedCoursesCount} />
+      </ImageBackground>
       }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
-        <CoursesSection items={elearningDraftSubPrograms}
-          image={require('../../../../assets/images/elearning_draft_background.png')} title={'Mes formations à tester'}
-          courseCountStyle={styles.subProgramsCount} backgroundStyle={styles.onGoingAndDraftBackground}
-          renderItem={renderSubProgramItem}/>
+      <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+        source={require('../../../../assets/images/elearning_draft_background.png')}>
+        <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
+          countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
+      </ImageBackground>
       }
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
