@@ -21,7 +21,7 @@ export default StyleSheet.create({
   background: {
     resizeMode: 'contain',
     position: 'absolute',
-    left: -176,
+    right: -264,
     top: -32,
   },
 });

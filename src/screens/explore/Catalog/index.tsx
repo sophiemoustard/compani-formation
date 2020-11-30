@@ -47,7 +47,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
       <Text style={commonStyles.title}>Explorer</Text>
       {programs.length > 0 &&
       <ImageBackground imageStyle={styles.background} style={styles.sectionContainer}
-        source={require('../../../../assets/images/ongoing_background.png')}>
+        source={require('../../../../assets/images/catalog_background.png')}>
         <CoursesSection items={programs} title='Suggéré pour vous' countStyle={styles.programsCount}
           renderItem={renderItem} />
       </ImageBackground>
