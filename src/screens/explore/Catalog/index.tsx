@@ -33,7 +33,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   };
 
   useEffect(() => {
-    async function fetchData() { getPrograms(); }
+    async function fetchData() { await getPrograms(); }
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);

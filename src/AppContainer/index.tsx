@@ -21,7 +21,6 @@ import CourseProfile from '../screens/courses/CourseProfile';
 import SubProgramProfile from '../screens/courses/SubProgramProfile';
 import CardContainer from '../screens/courses/CardContainer';
 import MainActions from '../store/main/actions';
-import Actions from '../store/actions';
 import { PINK, WHITE } from '../styles/colors';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import Users from '../api/users';
@@ -64,24 +63,27 @@ const MainStack = createStackNavigator();
 
 interface AppContainerProps {
   setLoggedUser: (user: UserType) => void,
-  resetAllReducers: () => void,
   statusBarVisible: boolean,
 }
 
-const AppContainer = ({ setLoggedUser, resetAllReducers, statusBarVisible }: AppContainerProps) => {
-  const { tryLocalSignIn, alenviToken, appIsReady } = useContext(AuthContext);
+const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
+  const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
   useEffect(() => {
     async function setUser() {
-      const userId = await asyncStorage.getUserId();
-      const user = await Users.getById(userId);
-      setLoggedUser(user);
+      try {
+        const userId = await asyncStorage.getUserId();
+        const user = await Users.getById(userId);
+        setLoggedUser(user);
+      } catch (e) {
+        if (e.status === 401) signOut();
+        console.error(e);
+      }
     }
     if (alenviToken) setUser();
-    else resetAllReducers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alenviToken]);
 
@@ -114,7 +116,6 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-  resetAllReducers: () => dispatch(Actions.resetAllReducers()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
