@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Text,
   View,
@@ -8,23 +8,32 @@ import {
   ImageBackground,
   useWindowDimensions,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { NavigationType } from '../../types/NavigationType';
+import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import NiErrorMessage from '../../components/ErrorMessage';
 import { Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
 import { GREY } from '../../styles/colors';
+import Actions from '../../store/actions';
 
 interface AuthenticationProps {
   navigation: NavigationType,
+  resetAllReducers: () => void,
 }
 
-const Authentication = ({ navigation }: AuthenticationProps) => {
+const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
   const isIOS = Platform.OS === 'ios';
+
+  useEffect(() => {
+    resetAllReducers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onPress = () => signIn({ email, password });
   const forgotPassword = () => {
@@ -60,4 +69,8 @@ const Authentication = ({ navigation }: AuthenticationProps) => {
   );
 };
 
-export default Authentication;
+const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
+  resetAllReducers: () => dispatch(Actions.resetAllReducers()),
+});
+
+export default connect(null, mapDispatchToProps)(Authentication);
