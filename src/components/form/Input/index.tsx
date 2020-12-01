@@ -44,7 +44,7 @@ const Input = ({
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
             style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType}
-            autoFocus={autoFocus} />
+            autoFocus={autoFocus} textContentType='oneTimeCode' />
           {isPassword &&
           <TouchableOpacity style={style.inputIcon} onPress={togglePassword}>
             <Feather name={showPasswordIcon} size={ICON.XS} />

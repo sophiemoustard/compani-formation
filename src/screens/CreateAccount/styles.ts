@@ -5,20 +5,12 @@ const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
   },
-  container: {
-    flexGrow: 1,
-    marginHorizontal: MARGIN.LG,
-  },
   goBack: {
-    margin: MARGIN.MD,
-  },
-  footer: {
     marginBottom: MARGIN.XL,
-    justifyContent: 'flex-end',
-    flex: 1,
-  },
-  errorMessage: {
-    marginVertical: MARGIN.SM,
+    marginTop: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
 
