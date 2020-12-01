@@ -93,8 +93,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
 
   useEffect(() => {
     async function fetchData() {
-      await getCourses();
-      await getElearningDraftSubPrograms();
+      await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
