@@ -21,8 +21,9 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [isLoading] = useState<boolean>(false);
   const { email } = route.params;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [account, setAccount] = useState({ email, firstname: '', lastname: '', phone: '', password: '' });
-  const form = [
+  const [formList, setFormList] = useState([
     [{
       type: 'text',
       field: 'firstname',
@@ -31,7 +32,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       value: '',
       isValid: true,
       errorMessage: '',
-      isTouched: false,
+      isValidationAttempted: false,
+      required: false,
     }],
     [{
       type: 'text',
@@ -41,7 +43,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       value: '',
       isValid: false,
       errorMessage: 'Ce champ est obligatoire',
-      isTouched: false,
+      isValidationAttempted: false,
+      required: true,
     }],
     [{
       type: 'phone',
@@ -51,7 +54,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       value: '',
       isValid: true,
       errorMessage: 'Ton numéro de téléphone n\'est pas valide',
-      isTouched: false,
+      isValidationAttempted: false,
+      required: false,
     }],
     [{
       type: 'password',
@@ -61,7 +65,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       value: '',
       isValid: false,
       errorMessage: 'Le mot de passe doit comporter au minimum 6 caractères',
-      isTouched: false,
+      isValidationAttempted: false,
+      required: true,
     },
     {
       type: 'password',
@@ -71,9 +76,10 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       value: '',
       isValid: false,
       errorMessage: 'Ton mot de passe et sa confirmation ne correspondent pas',
-      isTouched: false,
+      isValidationAttempted: false,
+      required: true,
     }],
-  ];
+  ]);
 
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -85,30 +91,32 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
-  const goBack = i => (i > 0 ? navigate(`field-${i - 1}`) : navigation.navigate('FirstConnection'));
+  const goBack = i => (i > 0 ? navigate(`create-account-screen-${i - 1}`) : navigation.navigate('FirstConnection'));
 
-  const quit = () => {
+  const cancelAccountCreation = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     navigation.navigate('Authentication');
   };
 
-  const sendToParent = (text, field) => {
-    setAccount({ ...account, [field]: text });
+  const setAccountAndFormList = (valueToSave, fieldToSave, dataToUpdate, indexToUpdate) => {
+    setAccount(prevAccount => ({ ...prevAccount, [fieldToSave]: valueToSave }));
+    setFormList(prevFormList => (prevFormList
+      .map((fieldsGroup, i) => (i === indexToUpdate ? dataToUpdate : fieldsGroup))));
   };
 
   const renderCardScreen = (fields: Array<any>, i: number) => (
-    <Stack.Screen key={fields[0].title} name={`field-${i}`}>
+    <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
       {() => (
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
           keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-          <View style={styles.goBack}>
+          <View style={styles.header}>
             <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]} />
-            <ExitModal onPressConfirmButton={() => quit()} visible={exitConfirmationModal}
+            <ExitModal onPressConfirmButton={cancelAccountCreation} visible={exitConfirmationModal}
               onPressCancelButton={() => setExitConfirmationModal(false)}
               title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
-            <ProgressBar progress={((i + 1) / form.length) * 100} />
+            <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
-          <CreateAccountForm isLoading={isLoading} datas={fields} sendToParent={sendToParent} index={i}/>
+          <CreateAccountForm isLoading={isLoading} datas={fields} setAccount={setAccountAndFormList} index={i}/>
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>
@@ -116,12 +124,10 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   const Stack = createStackNavigator();
 
-  return (form && (
+  return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {
-        form.map((fields, i) => renderCardScreen(fields, i))
-      }
-    </Stack.Navigator>)
+      {formList.map((fields, i) => renderCardScreen(fields, i))}
+    </Stack.Navigator>
   );
 };
 

@@ -14,6 +14,7 @@ interface InputProps {
   darkMode?: boolean,
   validationMessage?: string,
   autoFocus?: boolean,
+  required?: boolean,
 }
 
 const Input = ({
@@ -24,6 +25,7 @@ const Input = ({
   darkMode,
   validationMessage = '',
   autoFocus = false,
+  required = false,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -38,7 +40,10 @@ const Input = ({
 
   return (
     <>
-      <Text style={textStyle}>{caption}</Text>
+      <View style={style.captionContainer}>
+        <Text style={textStyle}>{caption}</Text>
+        {required && <Text style={style.required}>*</Text>}
+      </View>
       <View style={style.container}>
         <View style={style.input}>
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}

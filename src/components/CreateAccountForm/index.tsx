@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
@@ -11,34 +11,35 @@ interface CreateAccountProps {
   index: number
   datas: any,
   isLoading: boolean,
-  sendToParent: (value: string, field: string) => void,
+  setAccount: (valueTosave, fieldToSave, dataToUpdate, indexToUpdate) => void,
 }
-const CreateAccountForm = ({ index, datas, isLoading, sendToParent }: CreateAccountProps) => {
-  const scrollRef = useRef<ScrollView>(null);
+const CreateAccountForm = ({ index, datas, isLoading, setAccount }: CreateAccountProps) => {
   const [data, setData] = useState(datas);
 
-  const enterData = (text, i) => {
+  const onChangeText = (text, fieldToChangeIndex) => {
     setData(prevData => prevData
-      .map((d, j) => (i === j
-        ? {
-          ...d,
-          value: text,
-          isValid: fieldVerification(d.field, data.length > 1
-            ? data.map((da, k) => (i === k ? text : da.value))
-            : text),
+      .map((dataItem, fieldIndex) => {
+        if (fieldIndex === fieldToChangeIndex) {
+          return {
+            ...dataItem,
+            value: text,
+            isValid: isFieldValid(dataItem.field, prevData.length > 1
+              ? prevData.map((item, valueIndex) => (fieldToChangeIndex === valueIndex ? text : item.value))
+              : text),
+          };
         }
-        : { ...d }
-      )));
+        return dataItem;
+      }));
   };
 
   const saveData = () => {
     if (data.every(d => d.isValid)) {
-      sendToParent(data[0].value, data[0].field);
-      if (index !== 3) navigate(`field-${index + 1}`);
+      setAccount(data[0].value, data[0].field, data, index);
+      if (index !== 3) navigate(`create-account-screen-${index + 1}`);
     }
   };
 
-  const fieldVerification = (field, value) => {
+  const isFieldValid = (field, value) => {
     switch (field) {
       case 'lastname':
         return value !== '';
@@ -57,30 +58,25 @@ const CreateAccountForm = ({ index, datas, isLoading, sendToParent }: CreateAcco
     setData(prevData => prevData
       .map(d => ({
         ...d,
-        isValid: fieldVerification(d.field, data.length > 1 ? data.map(da => da.value) : d.value),
+        isValid: isFieldValid(d.field, data.length > 1 ? prevData.map(da => da.value) : d.value),
+        isValidationAttempted: true,
       })));
     saveData();
-    setData(prevData => prevData.map(d => ({ ...d, isTouched: true })));
   };
 
-  const renderFields = () => <ScrollView contentContainerStyle={styles.container} ref={scrollRef}
-    showsVerticalScrollIndicator={false} >
-    {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
-      <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-        autoFocus={i === 0} darkMode={false} onChangeText={text => enterData(text, i)}
-        validationMessage={!d.isValid && d.isTouched ? d.errorMessage : ''} />
-    </View>)}
-    <View style={styles.footer}>
-      <NiButton caption="Valider" onPress={validData} loading={isLoading}
-        bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
-    </View>
-  </ScrollView>;
-
   return (
-    <>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} >
       <Text style={styles.title}>{data[0].title}</Text>
-      {renderFields()}
-    </>
+      {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
+        <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
+          autoFocus={i === 0} darkMode={false} onChangeText={text => onChangeText(text, i)}
+          validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
+      </View>)}
+      <View style={styles.footer}>
+        <NiButton caption="Valider" onPress={validData} loading={isLoading}
+          bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+      </View>
+    </ScrollView>
   );
 };
 

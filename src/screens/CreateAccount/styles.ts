@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
   },
-  goBack: {
+  header: {
     marginBottom: MARGIN.XL,
     marginTop: MARGIN.MD,
     marginHorizontal: MARGIN.MD,
