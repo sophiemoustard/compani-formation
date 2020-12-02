@@ -1,50 +1,51 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { PINK, WHITE } from '../../styles/colors';
 import { PHONE_REGEX } from '../../core/data/constants';
-import { navigate } from '../../navigationRef';
+import { NavigationType } from '../../types/NavigationType';
 
 interface CreateAccountProps {
+  navigation: NavigationType,
   index: number
-  datas: any,
+  data: any,
   isLoading: boolean,
-  setAccount: (valueTosave, fieldToSave, dataToUpdate, indexToUpdate) => void,
+  setAccount: (valueTosave, fieldToSave) => void,
+  setData: (data: any, i: number) => void,
 }
-const CreateAccountForm = ({ index, datas, isLoading, setAccount }: CreateAccountProps) => {
-  const [data, setData] = useState(datas);
-
+const CreateAccountForm = ({ navigation, index, data, isLoading, setAccount, setData }: CreateAccountProps) => {
   const onChangeText = (text, fieldToChangeIndex) => {
-    setData(prevData => prevData
-      .map((dataItem, fieldIndex) => {
+    setData(
+      data.map((dataItem, fieldIndex) => {
         if (fieldIndex === fieldToChangeIndex) {
           return {
             ...dataItem,
             value: text,
-            isValid: isFieldValid(dataItem.field, prevData.length > 1
-              ? prevData.map((item, valueIndex) => (fieldToChangeIndex === valueIndex ? text : item.value))
-              : text),
+            isValid: isFieldValid(dataItem.field, data.map((item, valueIndex) => (fieldToChangeIndex === valueIndex
+              ? text
+              : item.value))),
           };
         }
         return dataItem;
-      }));
+      }), index
+    );
   };
 
   const saveData = () => {
     if (data.every(d => d.isValid)) {
-      setAccount(data[0].value, data[0].field, data, index);
-      if (index !== 3) navigate(`create-account-screen-${index + 1}`);
+      setAccount(data[0].value, data[0].field);
+      if (index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
     }
   };
 
   const isFieldValid = (field, value) => {
     switch (field) {
       case 'lastname':
-        return value !== '';
+        return value[0] !== '';
       case 'phone':
-        return value.match(PHONE_REGEX) || !value;
+        return !!value[0].match(PHONE_REGEX) || !value[0];
       case 'password':
         return value[0].length >= 6;
       case 'confirmedPassword':
@@ -55,18 +56,19 @@ const CreateAccountForm = ({ index, datas, isLoading, setAccount }: CreateAccoun
   };
 
   const validData = () => {
-    setData(prevData => prevData
-      .map(d => ({
+    setData(
+      data.map(d => ({
         ...d,
-        isValid: isFieldValid(d.field, data.length > 1 ? prevData.map(da => da.value) : d.value),
+        isValid: isFieldValid(d.field, data.map(da => da.value)),
         isValidationAttempted: true,
-      })));
+      })), index
+    );
     saveData();
   };
 
-  return (
+  return (<>
+    <Text style={styles.title}>{data[0].title}</Text>
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} >
-      <Text style={styles.title}>{data[0].title}</Text>
       {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
         <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
           autoFocus={i === 0} darkMode={false} onChangeText={text => onChangeText(text, i)}
@@ -77,6 +79,7 @@ const CreateAccountForm = ({ index, datas, isLoading, setAccount }: CreateAccoun
           bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
       </View>
     </ScrollView>
+  </>
   );
 };
 

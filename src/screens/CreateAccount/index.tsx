@@ -9,7 +9,6 @@ import styles from './styles';
 import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
 import ProgressBar from '../../components/cards/ProgressBar';
-import { navigate } from '../../navigationRef';
 
 interface CreateAccountProps {
   route: { params: { email: string } },
@@ -91,20 +90,25 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
-  const goBack = i => (i > 0 ? navigate(`create-account-screen-${i - 1}`) : navigation.navigate('FirstConnection'));
+  const goBack = i => (i > 0
+    ? navigation.navigate(`create-account-screen-${i - 1}`)
+    : navigation.navigate('FirstConnection'));
 
   const cancelAccountCreation = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     navigation.navigate('Authentication');
   };
 
-  const setAccountAndFormList = (valueToSave, fieldToSave, dataToUpdate, indexToUpdate) => {
+  const setAccountAndFormList = (valueToSave, fieldToSave) => {
     setAccount(prevAccount => ({ ...prevAccount, [fieldToSave]: valueToSave }));
-    setFormList(prevFormList => (prevFormList
-      .map((fieldsGroup, i) => (i === indexToUpdate ? dataToUpdate : fieldsGroup))));
   };
 
-  const renderCardScreen = (fields: Array<any>, i: number) => (
+  const setForm = (data, index) => {
+    setFormList(prevFormList => (prevFormList
+      .map((fieldsGroup, i) => (i === index ? data : fieldsGroup))));
+  };
+
+  const renderScreen = (fields: Array<any>, i: number) => (
     <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
       {() => (
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
@@ -116,7 +120,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
               title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
-          <CreateAccountForm isLoading={isLoading} datas={fields} setAccount={setAccountAndFormList} index={i}/>
+          <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm}
+            setAccount={(setAccountAndFormList)} index={i}/>
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>
@@ -126,7 +131,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {formList.map((fields, i) => renderCardScreen(fields, i))}
+      {formList.map((fields, i) => renderScreen(fields, i))}
     </Stack.Navigator>
   );
 };
