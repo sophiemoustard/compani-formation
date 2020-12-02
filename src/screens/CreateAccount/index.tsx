@@ -19,9 +19,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [isLoading] = useState<boolean>(false);
-  const { email } = route.params;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [account, setAccount] = useState({ email, firstname: '', lastname: '', phone: '', password: '' });
+  const { email } = route.params;
   const [formList, setFormList] = useState([
     [{
       type: 'text',
