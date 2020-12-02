@@ -12,10 +12,9 @@ interface CreateAccountProps {
   index: number
   data: any,
   isLoading: boolean,
-  setAccount: (valueTosave, fieldToSave) => void,
   setData: (data: any, i: number) => void,
 }
-const CreateAccountForm = ({ navigation, index, data, isLoading, setAccount, setData }: CreateAccountProps) => {
+const CreateAccountForm = ({ navigation, index, data, isLoading, setData }: CreateAccountProps) => {
   const onChangeText = (text, fieldToChangeIndex) => {
     setData(
       data.map((dataItem, fieldIndex) => {
@@ -23,21 +22,15 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setAccount, set
           return {
             ...dataItem,
             value: text,
-            isValid: isFieldValid(dataItem.field, data.map((item, valueIndex) => (fieldToChangeIndex === valueIndex
-              ? text
-              : item.value))),
+            isValid: isFieldValid(
+              dataItem.field,
+              data.map((item, valueIndex) => (fieldToChangeIndex === valueIndex ? text : item.value))
+            ),
           };
         }
         return dataItem;
       }), index
     );
-  };
-
-  const saveData = () => {
-    if (data.every(d => d.isValid)) {
-      setAccount(data[0].value, data[0].field);
-      if (index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
-    }
   };
 
   const isFieldValid = (field, value) => {
@@ -63,23 +56,24 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setAccount, set
         isValidationAttempted: true,
       })), index
     );
-    saveData();
+    if (data.every(d => d.isValid) && index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
   };
 
-  return (<>
-    <Text style={styles.title}>{data[0].title}</Text>
-    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} >
-      {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
-        <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-          autoFocus={i === 0} darkMode={false} onChangeText={text => onChangeText(text, i)}
-          validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
-      </View>)}
-      <View style={styles.footer}>
-        <NiButton caption="Valider" onPress={validData} loading={isLoading}
-          bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
-      </View>
-    </ScrollView>
-  </>
+  return (
+    <>
+      <Text style={styles.title}>{data[0].title}</Text>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false} >
+        {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
+          <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
+            autoFocus={i === 0} darkMode={false} onChangeText={text => onChangeText(text, i)}
+            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
+        </View>)}
+        <View style={styles.footer}>
+          <NiButton caption="Valider" onPress={validData} loading={isLoading}
+            bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 

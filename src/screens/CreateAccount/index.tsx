@@ -99,10 +99,6 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     navigation.navigate('Authentication');
   };
 
-  const setAccountAndFormList = (valueToSave, fieldToSave) => {
-    setAccount(prevAccount => ({ ...prevAccount, [fieldToSave]: valueToSave }));
-  };
-
   const setForm = (data, index) => {
     setFormList(prevFormList => (prevFormList
       .map((fieldsGroup, i) => (i === index ? data : fieldsGroup))));
@@ -120,8 +116,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
               title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
-          <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm}
-            setAccount={(setAccountAndFormList)} index={i}/>
+          <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}/>
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>
