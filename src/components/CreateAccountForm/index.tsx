@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, Text, View, BackHandler } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
@@ -13,8 +13,16 @@ interface CreateAccountProps {
   data: any,
   isLoading: boolean,
   setData: (data: any, i: number) => void,
+  goBack: (index: number) => void,
 }
-const CreateAccountForm = ({ navigation, index, data, isLoading, setData }: CreateAccountProps) => {
+const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack }: CreateAccountProps) => {
+  const hardwareBackPress = () => {
+    goBack(index);
+    return true;
+  };
+
+  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+
   const onChangeText = (text, fieldToChangeIndex) => {
     setData(
       data.map((dataItem, fieldIndex) => {

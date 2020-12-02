@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Keyboard, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import React, { useState } from 'react';
+import { View, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import ExitModal from '../../components/ExitModal';
 import IconButton from '../../components/IconButton';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
@@ -17,7 +16,6 @@ interface CreateAccountProps {
 
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
-  const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [isLoading] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { email } = route.params;
@@ -82,21 +80,9 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const keyboardDidHide = () => Keyboard.dismiss();
   Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
-  const hardwareBackPress = () => {
-    setExitConfirmationModal(true);
-    return true;
-  };
-
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
-
   const goBack = i => (i > 0
     ? navigation.navigate(`create-account-screen-${i - 1}`)
     : navigation.navigate('FirstConnection'));
-
-  const cancelAccountCreation = () => {
-    if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Authentication');
-  };
 
   const setForm = (data, index) => {
     setFormList(prevFormList => (prevFormList
@@ -110,12 +96,10 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
           keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
           <View style={styles.header}>
             <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]} />
-            <ExitModal onPressConfirmButton={cancelAccountCreation} visible={exitConfirmationModal}
-              onPressCancelButton={() => setExitConfirmationModal(false)}
-              title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
-          <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}/>
+          <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}
+            goBack={goBack} />
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>
