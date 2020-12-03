@@ -8,6 +8,8 @@ import styles from './styles';
 import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
 import ProgressBar from '../../components/cards/ProgressBar';
+import Users from '../../api/users';
+import { formatPhoneForPayload } from '../../core/helpers/utils';
 
 interface CreateAccountProps {
   route: { params: { email: string } },
@@ -17,7 +19,6 @@ interface CreateAccountProps {
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
   const [isLoading] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { email } = route.params;
   const [formList, setFormList] = useState([
     [{
@@ -89,6 +90,20 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       .map((fieldsGroup, i) => (i === index ? data : fieldsGroup))));
   };
 
+  const saveData = async () => {
+    const data = {
+      identity: formList[0][0].value === ''
+        ? { lastname: formList[1][0].value }
+        : { lastname: formList[1][0].value, firstname: formList[0][0].value },
+      local: { email },
+    };
+    const user = await Users.create(Object.assign(
+      data,
+      formList[2][0].value === '' ? null : { contact: { phone: formatPhoneForPayload(formList[2][0].value) } }
+    ));
+    await Users.updatePassword(user._id, formList[3][0].value);
+  };
+
   const renderScreen = (fields: Array<any>, i: number) => (
     <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
       {() => (
@@ -99,7 +114,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}
-            goBack={goBack} />
+            goBack={goBack} saveData={saveData}/>
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>
