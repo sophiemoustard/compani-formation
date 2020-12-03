@@ -3,7 +3,7 @@ import { BORDER_RADIUS, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../styles/m
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
-  courseContainer: {
+  container: {
     marginHorizontal: MAIN_MARGIN_LEFT,
   },
   separator: {
