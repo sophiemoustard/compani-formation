@@ -56,7 +56,6 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     try {
       await Authentication.forgotPassword({ email });
       setIsBottomPopUpVisible(true);
-      setIsLoading(false);
     } catch (e) {
       setError(true);
       setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
@@ -71,10 +70,9 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
       if (isValid) {
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await sendEmail();
-        else goBack();
+        else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
-      setIsLoading(false);
       setError(true);
       setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
     } finally {

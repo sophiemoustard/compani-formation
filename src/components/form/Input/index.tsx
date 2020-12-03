@@ -13,9 +13,20 @@ interface InputProps {
   type: string,
   darkMode?: boolean,
   validationMessage?: string,
+  autoFocus?: boolean,
+  required?: boolean,
 }
 
-const Input = ({ value, onChangeText, caption, type, darkMode, validationMessage = '' }: InputProps) => {
+const Input = ({
+  value,
+  onChangeText,
+  caption,
+  type,
+  darkMode,
+  validationMessage = '',
+  autoFocus = false,
+  required = false,
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const isPassword = type === 'password';
@@ -29,12 +40,16 @@ const Input = ({ value, onChangeText, caption, type, darkMode, validationMessage
 
   return (
     <>
-      <Text style={textStyle}>{caption}</Text>
+      <View style={style.captionContainer}>
+        <Text style={textStyle}>{caption}</Text>
+        {required && <Text style={style.required}>*</Text>}
+      </View>
       <View style={style.container}>
         <View style={style.input}>
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
-            style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType} />
+            style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType}
+            autoFocus={autoFocus} textContentType='oneTimeCode' />
           {isPassword &&
           <TouchableOpacity style={style.inputIcon} onPress={togglePassword}>
             <Feather name={showPasswordIcon} size={ICON.XS} />

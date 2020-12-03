@@ -14,6 +14,7 @@ import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
 import ForgotPassword from '../screens/ForgotPassword';
 import FirstConnection from '../screens/FirstConnection';
+import CreateAccount from '../screens/CreateAccount';
 import Catalog from '../screens/explore/Catalog';
 import About from '../screens/explore/About';
 import CourseList from '../screens/courses/CourseList';
@@ -91,7 +92,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
-  const authScreens = { Authentication, ForgotPassword, FirstConnection };
+  const authScreens = { Authentication, ForgotPassword, FirstConnection, CreateAccount };
 
   const Profile = { ProfileEdition, PasswordEdition };
   const Courses = { CourseProfile, SubProgramProfile };
