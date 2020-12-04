@@ -34,6 +34,7 @@ const Input = ({
   const keyboradType = type === 'email' ? 'email-address' : 'default';
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
+  const textContentType = isPassword ? 'newPassword' : undefined;
   const togglePassword = () => { setShowPassword(previousShowPassword => !previousShowPassword); };
   const style = styles(isSelected);
   const textStyle = darkMode ? { ...style.text, color: WHITE } : { ...style.text };
@@ -49,7 +50,7 @@ const Input = ({
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
             style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType}
-            autoFocus={autoFocus} textContentType='oneTimeCode' />
+            autoFocus={autoFocus} textContentType={textContentType} />
           {isPassword &&
           <TouchableOpacity style={style.inputIcon} onPress={togglePassword}>
             <Feather name={showPasswordIcon} size={ICON.XS} />
