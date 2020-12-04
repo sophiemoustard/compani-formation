@@ -13,7 +13,7 @@ import CoursesSection from '../../../components/CoursesSection';
 
 interface CatalogProps {
   loggedUserId: string | null,
-  navigation: { navigate: (path: string, params: { programId: string }) => {} },
+  navigation: { navigate: (path: string, params: { program: ProgramType }) => {} },
 }
 
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
@@ -38,7 +38,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = program => navigation.navigate('About', { programId: program._id });
+  const goToProgram = program => navigation.navigate('About', { program });
 
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 
