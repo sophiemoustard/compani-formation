@@ -9,9 +9,7 @@ import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
 import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
-import Authentication from '../../api/authentication';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
-import asyncStorage from '../../core/helpers/asyncStorage';
 import { Context as AuthContext } from '../../context/AuthContext';
 
 interface CreateAccountProps {
