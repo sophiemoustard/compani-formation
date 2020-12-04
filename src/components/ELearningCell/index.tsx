@@ -20,8 +20,7 @@ const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
-  const renderActivityCell = activity => <ActivityCell activity={activity}
-    onPress={() => navigation.navigate('CardContainer', { activityId: activity._id, courseId: id })}/>;
+  const renderActivityCell = activity => <ActivityCell activity={activity} courseId={id} navigation={navigation} />;
 
   const renderSeparator = () => <View style={styles.separator} />;
 

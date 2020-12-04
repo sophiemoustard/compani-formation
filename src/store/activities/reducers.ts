@@ -7,6 +7,7 @@ import {
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   INC_GOOD_ANSWERS_COUNT,
+  SET_ACTIVITY_HISTORIES,
   ActivityActionType,
   ActivityActionWithoutPayloadType,
 } from '../../types/store/ActivityStoreType';
@@ -17,6 +18,7 @@ const initialState: ActivityStateType = {
   exitConfirmationModal: false,
   questionnaireAnswersList: [],
   score: 0,
+  activityHistories: [],
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
@@ -47,6 +49,8 @@ export const activities = (
       return { ...state, exitConfirmationModal: action.payload };
     case ADD_QUESTIONNAIRE_ANSWER:
       return applyAddQuestionnaireAnswer(state, action);
+    case SET_ACTIVITY_HISTORIES:
+      return { ...state, activityHistories: action.payload };
     case RESET_ACTIVITY_REDUCER:
       return initialState;
     case SET_QUESTIONNAIRE_ANSWERS_LIST:

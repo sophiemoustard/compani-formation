@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../../components/form/Button';
@@ -6,18 +6,16 @@ import { navigate } from '../../../../navigationRef';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import ActivitiesActions from '../../../../store/activities/actions';
-import { ActivityType } from '../../../../types/ActivityType';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
-import Activities from '../../../../api/activities';
-import { Context as AuthContext } from '../../../../context/AuthContext';
 import styles from './styles';
 import MainActions from '../../../../store/main/actions';
+import { ActivityHistoryType } from '../../../../types/ActivityHistoryType';
 
 interface StartCardProps {
   title: string,
   courseId: string,
   isCourse: boolean,
-  activity: ActivityType,
+  activityHistories: Array<ActivityHistoryType>,
   resetActivityReducer: () => void,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
   setStatusBarVisible: (boolean) => void,
@@ -27,28 +25,21 @@ const StartCard = ({
   title,
   courseId,
   isCourse,
-  activity,
+  activityHistories,
   resetActivityReducer,
   setQuestionnaireAnswersList,
   setStatusBarVisible,
 }: StartCardProps) => {
-  const { signOut } = useContext(AuthContext);
+  const setActivityHistory = () => {
+    const activityHistory = activityHistories[activityHistories.length - 1];
 
-  const getActivityHistory = async () => {
-    try {
-      const fetchedActivityHistory = await Activities.getActivityHistory(activity._id);
-
-      if (fetchedActivityHistory?.questionnaireAnswersList) {
-        setQuestionnaireAnswersList(fetchedActivityHistory.questionnaireAnswersList);
-      }
-    } catch (e) {
-      if (e.status === 401) signOut();
-      setQuestionnaireAnswersList([]);
+    if (activityHistory?.questionnaireAnswersList) {
+      setQuestionnaireAnswersList(activityHistory.questionnaireAnswersList);
     }
   };
 
   useEffect(() => {
-    async function fetchData() { await getActivityHistory(); }
+    function fetchData() { setActivityHistory(); }
     if (isCourse) fetchData();
     setStatusBarVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,8 +71,8 @@ const StartCard = ({
 };
 
 const mapStateToProps = state => ({
-  activity: state.activities.activity,
   isCourse: state.courses.isCourse,
+  activityHistories: state.activities.activityHistories,
 });
 
 const mapDispatchToProps = dispatch => ({

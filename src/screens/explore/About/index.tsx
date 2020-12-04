@@ -35,7 +35,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
 
   const isFocused = useIsFocused();
 
-  const setProgram = async () => {
+  const setProgram = () => {
     const { program } = route.params;
     const programImage = get(program, 'image.link') || '';
     setProgramName(program.name || '');
@@ -59,7 +59,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   };
 
   useEffect(() => {
-    async function fetchData() { setProgram(); }
+    function fetchData() { setProgram(); }
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
