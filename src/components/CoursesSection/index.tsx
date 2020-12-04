@@ -29,9 +29,9 @@ const CoursesSection = ({
       <Text style={[countStyle, styles.countContainer]}>
         {formatWordToPlural(items, type).toUpperCase()}
       </Text>
-      <FlatList horizontal data={items} keyExtractor={item => item._id}
-        renderItem={({ item }) => renderItem(item)} contentContainerStyle={styles.courseContainer}
-        showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+      <FlatList horizontal data={items} keyExtractor={item => item._id} style={styles.container}
+        renderItem={({ item }) => renderItem(item)} showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={renderSeparator} />
     </>
   );
 };

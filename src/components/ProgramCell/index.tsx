@@ -18,6 +18,7 @@ interface ProgramCellProps {
 const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
+  const programDescription = program.description || '';
   const source = programImage
     ? { uri: programImage }
     : require('../../../assets/images/authentication_background_image.jpg');
@@ -57,9 +58,10 @@ const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCe
           {renderProgress()}
         </ImageBackground>
       </View>
-      <View style={styles.title}>
-        <Text lineBreakMode={'tail'} numberOfLines={2}>{programName}{misc ? ` - ${misc}` : ''}</Text>
-      </View>
+      <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={2}>
+        {programName}{misc ? ` - ${misc}` : ''}
+      </Text>
+      <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
     </TouchableOpacity>
   );
 };
