@@ -65,8 +65,10 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
         isValidationAttempted: true,
       })), index
     );
-    if (data.every(d => d.isValid) && index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
-    else saveData();
+    if (data.every(d => d.isValid)) {
+      if (index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
+      else saveData();
+    }
   };
 
   return (

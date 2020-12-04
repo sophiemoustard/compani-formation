@@ -42,7 +42,6 @@ const signIn = dispatch => async ({ email, password }) => {
     await asyncStorage.setUserId(authentication.user._id);
 
     dispatch({ type: 'signin', payload: authentication.token });
-    navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
   } catch (e) {
     dispatch({
       type: 'signinError',
@@ -62,13 +61,15 @@ const signOut = dispatch => async () => {
   navigate('Authentication');
 };
 
-const refreshAlenviToken = async (refreshToken, dispatch) => {
+const refreshAlenviToken = dispatch => async (refreshToken) => {
   try {
     const token = await Users.refreshToken({ refreshToken });
 
     await asyncStorage.setAlenviToken(token.token);
     await asyncStorage.setRefreshToken(token.refreshToken);
     await asyncStorage.setUserId(token.user._id);
+
+    dispatch({ type: 'signin', payload: token.token });
   } catch (e) {
     signOut(dispatch)();
   }
@@ -89,7 +90,7 @@ const tryLocalSignIn = dispatch => async () => {
 
   const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
   if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
-    await refreshAlenviToken(refreshToken, dispatch);
+    await refreshAlenviToken(dispatch)(refreshToken);
     return localSignIn(dispatch);
   }
 
@@ -103,6 +104,6 @@ const resetError = dispatch => () => {
 
 export const { Provider, Context }: any = createDataContext(
   authReducer,
-  { signIn, tryLocalSignIn, signOut, resetError },
+  { signIn, tryLocalSignIn, signOut, resetError, refreshAlenviToken },
   { alenviToken: null, loading: false, error: false, errorMessage: '', appIsReady: false }
 );

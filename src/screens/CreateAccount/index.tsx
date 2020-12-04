@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import IconButton from '../../components/IconButton';
@@ -9,7 +9,10 @@ import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
 import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
+import Authentication from '../../api/authentication';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
+import asyncStorage from '../../core/helpers/asyncStorage';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 interface CreateAccountProps {
   route: { params: { email: string } },
@@ -18,8 +21,9 @@ interface CreateAccountProps {
 
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
-  const [isLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
+  const { refreshAlenviToken } = useContext(AuthContext);
   const [formList, setFormList] = useState([
     [{
       type: 'text',
@@ -91,6 +95,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   };
 
   const saveData = async () => {
+    setIsLoading(true);
     const data = {
       identity: formList[0][0].value === ''
         ? { lastname: formList[1][0].value }
@@ -101,7 +106,10 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       data,
       formList[2][0].value === '' ? null : { contact: { phone: formatPhoneForPayload(formList[2][0].value) } }
     ));
-    await Users.updatePassword(user._id, formList[3][0].value);
+    await refreshAlenviToken(user.refreshToken);
+
+    await Users.updatePassword(user._id, { local: { password: formList[3][0].value } });
+    setIsLoading(false);
   };
 
   const renderScreen = (fields: Array<any>, i: number) => (
