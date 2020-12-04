@@ -92,19 +92,24 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       .map((fieldsGroup, i) => (i === index ? data : fieldsGroup))));
   };
 
-  const saveData = async () => {
+  const formatCreationPayload = () => {
+    const data = {
+      identity: formList[0][0].value === ''
+        ? { lastname: formList[1][0].value }
+        : { lastname: formList[1][0].value, firstname: formList[0][0].value },
+      local: { email },
+    };
+
+    return Object.assign(
+      data,
+      formList[2][0].value === '' ? null : { contact: { phone: formatPhoneForPayload(formList[2][0].value) } }
+    );
+  };
+
+  const create = async () => {
     try {
       setIsLoading(true);
-      const data = {
-        identity: formList[0][0].value === ''
-          ? { lastname: formList[1][0].value }
-          : { lastname: formList[1][0].value, firstname: formList[0][0].value },
-        local: { email },
-      };
-      const user = await Users.create(Object.assign(
-        data,
-        formList[2][0].value === '' ? null : { contact: { phone: formatPhoneForPayload(formList[2][0].value) } }
-      ));
+      const user = await Users.create(formatCreationPayload());
       await refreshAlenviToken(user.refreshToken);
 
       await Users.updatePassword(user._id, { local: { password: formList[3][0].value } });
@@ -125,7 +130,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}
-            goBack={goBack} saveData={saveData}/>
+            goBack={goBack} create={create}/>
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>

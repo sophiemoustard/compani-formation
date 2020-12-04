@@ -14,9 +14,9 @@ interface CreateAccountProps {
   isLoading: boolean,
   setData: (data: any, i: number) => void,
   goBack: (index: number) => void,
-  saveData: () => void;
+  create: () => void;
 }
-const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, saveData }: CreateAccountProps) => {
+const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, create }: CreateAccountProps) => {
   const hardwareBackPress = () => {
     goBack(index);
     return true;
@@ -67,7 +67,7 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
     );
     if (data.every(d => d.isValid)) {
       if (index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
-      else saveData();
+      else create();
     }
   };
 
