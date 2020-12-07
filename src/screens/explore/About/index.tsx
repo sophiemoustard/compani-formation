@@ -29,8 +29,6 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   const { program } = route.params;
   const programImage = get(program, 'image.link') || '';
   const source = programImage ? { uri: programImage } : defaultImg;
-  const programName = program.name || '';
-  const programDescription = program.description || '';
   const subProgram = program.subPrograms ? program.subPrograms[0] : null;
   const incompleteSteps = subProgram?.steps?.length && subProgram.steps[0].activities?.length
     ? subProgram.steps.map(st => ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
@@ -79,13 +77,13 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
         </TouchableOpacity>
         <View style={styles.titleContainer}>
           <Text style={styles.aboutTitle}>A PROPOS</Text>
-          <Text style={styles.programTitle}>{programName}</Text>
+          <Text style={styles.programTitle}>{program.name}</Text>
         </View>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={source} />
         </View>
         <View style={styles.description}>
-          <Text>{programDescription}</Text>
+          <Text>{program.description}</Text>
         </View>
       </View>
       <Button style={styles.footer} caption={buttonCaption} onPress={subscribeAndGoToCourseProfile} />

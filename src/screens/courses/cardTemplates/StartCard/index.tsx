@@ -30,16 +30,14 @@ const StartCard = ({
   setQuestionnaireAnswersList,
   setStatusBarVisible,
 }: StartCardProps) => {
-  const setActivityHistory = () => {
+  if (isCourse) {
     const activityHistory = activityHistories[activityHistories.length - 1];
-
     if (activityHistory?.questionnaireAnswersList) {
       setQuestionnaireAnswersList(activityHistory.questionnaireAnswersList);
     }
-  };
+  }
 
   useEffect(() => {
-    if (isCourse) setActivityHistory();
     setStatusBarVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCourse]);
