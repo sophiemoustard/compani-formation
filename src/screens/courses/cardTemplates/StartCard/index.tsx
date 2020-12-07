@@ -39,8 +39,7 @@ const StartCard = ({
 
   useEffect(() => {
     setStatusBarVisible(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCourse]);
+  });
 
   const goBack = () => {
     resetActivityReducer();
