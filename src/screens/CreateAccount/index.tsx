@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import IconButton from '../../components/IconButton';
@@ -8,6 +8,9 @@ import styles from './styles';
 import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
 import ProgressBar from '../../components/cards/ProgressBar';
+import Users from '../../api/users';
+import { formatPhoneForPayload } from '../../core/helpers/utils';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 interface CreateAccountProps {
   route: { params: { email: string } },
@@ -16,9 +19,9 @@ interface CreateAccountProps {
 
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
-  const [isLoading] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
+  const { refreshAlenviToken, signOut } = useContext(AuthContext);
   const [formList, setFormList] = useState([
     [{
       type: 'text',
@@ -89,6 +92,34 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       .map((fieldsGroup, i) => (i === index ? data : fieldsGroup))));
   };
 
+  const formatCreationPayload = () => {
+    const data = {
+      identity: formList[0][0].value === ''
+        ? { lastname: formList[1][0].value }
+        : { lastname: formList[1][0].value, firstname: formList[0][0].value },
+      local: { email },
+    };
+
+    return Object.assign(
+      data,
+      formList[2][0].value === '' ? null : { contact: { phone: formatPhoneForPayload(formList[2][0].value) } }
+    );
+  };
+
+  const create = async () => {
+    try {
+      setIsLoading(true);
+      const user = await Users.create(formatCreationPayload());
+      await refreshAlenviToken(user.refreshToken);
+
+      await Users.updatePassword(user._id, { local: { password: formList[3][0].value } });
+    } catch (e) {
+      if (e.status === 401) signOut();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const renderScreen = (fields: Array<any>, i: number) => (
     <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
       {() => (
@@ -99,7 +130,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}
-            goBack={goBack} />
+            goBack={goBack} create={create}/>
         </KeyboardAvoidingView>
       )}
     </Stack.Screen>

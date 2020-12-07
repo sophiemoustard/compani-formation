@@ -20,4 +20,9 @@ export default {
     const exists = await alenviAxios.get(`${baseURL}/users/exists`, { params });
     return exists.data.data.exists;
   },
+  create: async (data) => {
+    const { baseURL } = getEnvVars();
+    const newUser = await alenviAxios.post(`${baseURL}/users`, data);
+    return newUser.data.data.user;
+  },
 };
