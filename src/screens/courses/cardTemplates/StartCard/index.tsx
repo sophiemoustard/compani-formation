@@ -39,8 +39,7 @@ const StartCard = ({
   };
 
   useEffect(() => {
-    function fetchData() { setActivityHistory(); }
-    if (isCourse) fetchData();
+    if (isCourse) setActivityHistory();
     setStatusBarVisible(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCourse]);

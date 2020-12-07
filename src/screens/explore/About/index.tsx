@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View, ScrollView, ImageSourcePropType, BackHandler } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { Image, Text, TouchableOpacity, View, ScrollView, BackHandler } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { CommonActions, StackActions, StackActionType, useIsFocused } from '@react-navigation/native';
+import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
 import get from 'lodash/get';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
@@ -26,43 +26,20 @@ interface AboutProps {
 const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => {
   const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
   const { signOut } = useContext(AuthContext);
-  const [source, setSource] = useState<ImageSourcePropType>(defaultImg);
-  const [programName, setProgramName] = useState<string>('');
-  const [programDescription, setProgramDescription] = useState<string>('');
-  const [courseId, setCourseId] = useState<string>('');
-  const [nextActivityId, setNextActivityId] = useState<string>('');
-  const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState<Boolean>(false);
-
-  const isFocused = useIsFocused();
-
-  const setProgram = () => {
-    const { program } = route.params;
-    const programImage = get(program, 'image.link') || '';
-    setProgramName(program.name || '');
-    setProgramDescription(program.description || '');
-
-    if (programImage) setSource({ uri: programImage });
-
-    const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-    if (subProgram?.steps?.length && subProgram.steps[0].activities?.length) {
-      const incompleteSteps = subProgram.steps.map(st =>
-        ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
-        .filter(st => st.activities.length);
-
-      if (incompleteSteps.length) setNextActivityId(incompleteSteps[0].activities[0]._id);
-      else setNextActivityId('');
-    }
-    const fetchedCourse = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-
-    setCourseId(fetchedCourse._id);
-    setHasAlreadySubscribed(fetchedCourse.trainees.includes(loggedUserId));
-  };
-
-  useEffect(() => {
-    function fetchData() { setProgram(); }
-    if (loggedUserId && isFocused) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId, isFocused]);
+  const { program } = route.params;
+  const programImage = get(program, 'image.link') || '';
+  const source = programImage ? { uri: programImage } : defaultImg;
+  const programName = program.name || '';
+  const programDescription = program.description || '';
+  const subProgram = program.subPrograms ? program.subPrograms[0] : null;
+  const incompleteSteps = subProgram?.steps?.length && subProgram.steps[0].activities?.length
+    ? subProgram.steps.map(st => ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
+      .filter(st => st.activities.length)
+    : [];
+  const nextActivityId = incompleteSteps.length ? incompleteSteps[0].activities[0]._id : '';
+  const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+  const courseId = course._id;
+  const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
 
   const hardwareBackPress = () => {
     goBack();
