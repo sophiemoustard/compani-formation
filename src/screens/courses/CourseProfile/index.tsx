@@ -40,7 +40,6 @@ interface CourseProfileProps {
 
 const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
-  const [totalProgress, setTotalProgress] = useState<number>(0);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
@@ -68,15 +67,6 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
-
-  useEffect(() => {
-    if (isFocused && course) {
-      const { steps } = course.subProgram;
-      const progressSum = steps.map(step => step.progress).reduce((acc, value) => acc + value, 0);
-
-      setTotalProgress(steps.length ? (progressSum / steps.length) * 100 : 0);
-    }
-  }, [course, isFocused]);
 
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
@@ -112,8 +102,8 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
       </ImageBackground>
       <View style={styles.progressBarContainer}>
         <Text style={styles.progressBarText}>ÉTAPES</Text>
-        <ProgressBar progress={totalProgress} />
-        <Text style={styles.progressBarText}>{totalProgress.toFixed(0)}%</Text>
+        <ProgressBar progress={course.progress * 100} />
+        <Text style={styles.progressBarText}>{(course.progress * 100).toFixed(0)}%</Text>
       </View>
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />

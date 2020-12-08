@@ -11,6 +11,7 @@ export interface CourseType {
   trainer: string,
   slots: Array<CourseSlotType>
   misc: string,
+  progress: number,
 }
 
 export interface ContactType {

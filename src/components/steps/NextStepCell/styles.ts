@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { PADDING, BORDER_RADIUS, PROGRAM_CELL_WIDTH, BORDER_WIDTH } from '../../../styles/metrics';
-import { TRANSPARENT_GREY } from '../../../styles/colors';
+import { TRANSPARENT_GREY, WHITE } from '../../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     borderColor: TRANSPARENT_GREY,
     flexDirection: 'row',
     padding: PADDING.MD,
+    backgroundColor: WHITE,
   },
 });
 

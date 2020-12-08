@@ -18,10 +18,19 @@ const styles = (isSelected: boolean) => StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: WHITE,
   },
+  captionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   text: {
     ...FIRA_SANS_REGULAR.SM,
     marginBottom: MARGIN.XS,
     color: GREY[600],
+  },
+  required: {
+    ...FIRA_SANS_REGULAR.SM,
+    color: PINK[500],
+    paddingHorizontal: PADDING.SM,
   },
   inputIcon: {
     paddingRight: PADDING.MD,

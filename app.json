@@ -17,16 +17,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["assets/*"],
+    "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.6",
+      "buildNumber": "1.0.15",
       "requireFullScreen": true
     },
     "android": {
       "package": "com.alenvi.compani",
       "permissions": [],
-      "versionCode": 32
+      "versionCode": 40
     }
   }
 }
