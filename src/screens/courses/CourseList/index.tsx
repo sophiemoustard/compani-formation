@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, View, FlatList, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -18,6 +18,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import SubPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import CoursesSection from '../../../components/CoursesSection';
 
 interface CourseListProps {
   setIsCourse: (value: boolean) => void,
@@ -57,18 +58,21 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: CourseListProps) => {
-  const [courses, setCourses] = useState(new Array(0));
+  const [onGoingCourses, setOnGoingCourses] = useState(new Array(0));
+  const [achievedCourses, setAchievedCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
   const getCourses = async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
-      setCourses(fetchedCourses);
+      setOnGoingCourses(fetchedCourses.filter(course => course.progress < 1));
+      setAchievedCourses(fetchedCourses.filter(course => course.progress === 1));
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setCourses(() => []);
+      setOnGoingCourses(() => []);
+      setAchievedCourses(() => []);
     }
   };
 
@@ -89,8 +93,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
 
   useEffect(() => {
     async function fetchData() {
-      getCourses();
-      getElearningDraftSubPrograms();
+      await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
     if (loggedUserId && isFocused) fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,64 +104,56 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
-  const renderSeparator = () => <View style={styles.separator} />;
-
   const onPressProgramCell = (isCourse, id) => {
     setIsCourse(isCourse);
     goToCourse(id, isCourse);
   };
 
-  const getCourseProgress = (steps) => {
-    const progressSum = steps.map(step => step.progress).reduce((acc, value) => acc + value, 0);
-
-    return steps.length ? (progressSum / steps.length) : 0;
-  };
-
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} progress={getCourseProgress(course.subProgram.steps)}
+    onPress={() => onPressProgramCell(true, course._id)} progress={course.progress}
     misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const nextSteps = formatNextSteps(courses);
+  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+
+  const nextSteps = formatNextSteps(onGoingCourses);
 
   return (
     <ScrollView style={commonStyles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextSteps.length > 0 &&
-        <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.sectionTitle}>
-            <Text style={commonStyles.sectionTitleText}>Mes prochains rendez-vous</Text>
-            <Text style={[styles.nextEventsCount, commonStyles.countContainer]}>{nextSteps.length}</Text>
-          </View>
-          <FlatList horizontal data={nextSteps} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => <NextStepCell nextSlotsStep={item} />} ItemSeparatorComponent={renderSeparator}
-            contentContainerStyle={styles.courseContainer} />
+        <View style={styles.nextSteps}>
+          <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
+            renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
         </View>
       }
-      <View style={commonStyles.sectionContainer}>
-        <View style={commonStyles.sectionTitle}>
-          <Text style={commonStyles.sectionTitleText}>Mes formations en cours</Text>
-          <Text style={[styles.coursesCount, commonStyles.countContainer]}>{courses.length}</Text>
-        </View>
-        <FlatList horizontal data={courses} keyExtractor={item => item._id}
-          renderItem={({ item }) => renderCourseItem(item)} contentContainerStyle={styles.courseContainer}
-          showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-      </View>
+      {onGoingCourses.length > 0 &&
+        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/ongoing_background.png')}>
+          <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
+            countStyle={styles.onGoingCoursesCount} />
+        </ImageBackground>
+      }
+      {achievedCourses.length > 0 &&
+        <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/achieved_background.png')}>
+          <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
+            countStyle={styles.achievedCoursesCount} />
+        </ImageBackground>
+      }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
-        <View style={commonStyles.sectionContainer}>
-          <View style={commonStyles.sectionTitle}>
-            <Text style={commonStyles.sectionTitleText}>Mes formations à tester</Text>
-            <Text style={[styles.subProgramsCount, commonStyles.countContainer]}>
-              {elearningDraftSubPrograms.length}
-            </Text>
-          </View>
-          <FlatList horizontal data={elearningDraftSubPrograms} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderSubProgramItem(item)} contentContainerStyle={styles.courseContainer}
-            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-        </View>
+        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+          source={require('../../../../assets/images/elearning_draft_background.png')}>
+          <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
+            countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
+        </ImageBackground>
       }
+      <View style={styles.footer}>
+        <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
+        <Image source={require('../../../../assets/images/pa-aidant-balade.png')} style={styles.fellow} />
+      </View>
     </ScrollView>
   );
 };

@@ -2,11 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 import styles from './styles';
 
-interface ProgressBar {
+interface ProgressBarProps {
   progress: number,
 }
 
-const ProgressBar = ({ progress }: ProgressBar) => {
+const ProgressBar = ({ progress }: ProgressBarProps) => {
   const style = styles(progress);
 
   return (

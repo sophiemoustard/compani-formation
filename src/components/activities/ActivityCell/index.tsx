@@ -1,19 +1,24 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType } from '../../../types/ActivityType';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { QUIZ } from '../../../core/data/constants';
+import Actions from '../../../store/activities/actions';
 import styles from './styles';
+import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 
 interface ActivityCellProps {
   activity: ActivityType,
-  onPress: () => void,
+  courseId: string,
+  navigation: { navigate: (path: string, activityId: any) => {} },
+  setActivityHistories: (activityHistories: Array<ActivityHistoryType>) => void,
 }
 
-const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
+const ActivityCell = ({ activity, courseId, navigation, setActivityHistories }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
@@ -27,6 +32,11 @@ const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
   else if (isCompleted) colors = { border: ORANGE[600], background: ORANGE[300], check: ORANGE[500] };
 
   const coloredStyle = styles(colors.check);
+
+  const onPress = () => {
+    setActivityHistories(activity.activityHistories);
+    navigation.navigate('CardContainer', { activityId: activity._id, courseId });
+  };
 
   return (
     <View style={coloredStyle.container}>
@@ -50,4 +60,8 @@ const ActivityCell = ({ activity, onPress }: ActivityCellProps) => {
   );
 };
 
-export default ActivityCell;
+const mapDispatchToProps = dispatch => ({
+  setActivityHistories: activityHistories => dispatch(Actions.setActivityHistories(activityHistories)),
+});
+
+export default connect(null, mapDispatchToProps)(ActivityCell);

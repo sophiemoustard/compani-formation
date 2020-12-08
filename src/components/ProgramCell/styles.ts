@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, TRANSPARENT_GREY, GREY, GREEN } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, PROGRAM_CELL_WIDTH, BORDER_WIDTH, ICON, MARGIN } from '../../styles/metrics';
-import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
-const imageHeight = 100;
+const imageHeight = 128;
+const containerHeight = 288;
 const styles = StyleSheet.create({
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
@@ -11,6 +12,8 @@ const styles = StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
     overflow: 'hidden',
+    backgroundColor: WHITE,
+    height: containerHeight,
   },
   image: {
     height: imageHeight,
@@ -19,11 +22,15 @@ const styles = StyleSheet.create({
     height: imageHeight,
   },
   title: {
-    ...FIRA_SANS_MEDIUM.MD,
+    ...FIRA_SANS_BOLD.MD,
     padding: PADDING.MD,
     backgroundColor: WHITE,
     borderBottomLeftRadius: BORDER_RADIUS.SM,
     borderBottomRightRadius: BORDER_RADIUS.SM,
+  },
+  description: {
+    ...FIRA_SANS_REGULAR.MD,
+    padding: PADDING.MD,
   },
   progressContainer: {
     margin: MARGIN.SM,
