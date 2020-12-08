@@ -20,13 +20,13 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.14",
+      "buildNumber": "1.0.15",
       "requireFullScreen": true
     },
     "android": {
       "package": "com.alenvi.compani",
       "permissions": [],
-      "versionCode": 36
+      "versionCode": 40
     }
   }
 }
