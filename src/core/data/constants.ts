@@ -48,3 +48,6 @@ export const EMAIL_REGEX = /^[\w-.+]+@([\w-]+\.)+[\w-]{2,4}$/;
 // MEDIA TYPES
 export const IMAGE = 'image';
 export const AUDIO = 'audio';
+
+// ORIGIN
+export const MOBILE = 'mobile';
