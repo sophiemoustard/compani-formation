@@ -2,8 +2,8 @@ import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
+import { MOBILE } from '../core/data/constants';
 
-const MOBILE = 'mobile';
 export interface StateType {
   alenviToken: string | null,
   loading: boolean,
