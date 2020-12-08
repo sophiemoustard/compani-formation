@@ -13,8 +13,11 @@ import {
   SetQuestionnaireAnswersListType,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   INC_GOOD_ANSWERS_COUNT,
+  SetActivityHistories,
+  SET_ACTIVITY_HISTORIES,
 } from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
+import { ActivityHistoryType } from '../../types/ActivityHistoryType';
 
 const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_ACTIVITY, payload: activity });
 const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
@@ -27,6 +30,8 @@ const setQuestionnaireAnswersList =
 (questionnaireAnswersList: Array<QuestionnaireAnswerType>) : SetQuestionnaireAnswersListType =>
   ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
 const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
+const setActivityHistories = (activityHistories: Array<ActivityHistoryType>): SetActivityHistories =>
+  ({ type: SET_ACTIVITY_HISTORIES, payload: activityHistories });
 
 export default {
   setActivity,
@@ -36,4 +41,5 @@ export default {
   resetActivityReducer,
   setQuestionnaireAnswersList,
   incGoodAnswersCount,
+  setActivityHistories,
 };

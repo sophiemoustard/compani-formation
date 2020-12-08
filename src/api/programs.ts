@@ -7,9 +7,4 @@ export default {
     const response = await alenviAxios.get(`${baseURL}/programs/e-learning`);
     return response.data.data.programs;
   },
-  getProgramForUser: async (programId): Promise<any> => {
-    const { baseURL } = getEnvVars();
-    const response = await alenviAxios.get(`${baseURL}/programs/${programId}/user`);
-    return response.data.data.program;
-  },
 };
