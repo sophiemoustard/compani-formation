@@ -1,4 +1,4 @@
-import Users from '../api/authentication';
+import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
@@ -36,7 +36,7 @@ const signIn = dispatch => async ({ email, password }) => {
     if (!email || !password) return;
 
     dispatch({ type: 'beforeSignin' });
-    const authentication = await Users.authenticate({ email, password, origin: MOBILE });
+    const authentication = await Authentication.authenticate({ email, password, origin: MOBILE });
 
     await asyncStorage.setAlenviToken(authentication.token);
     await asyncStorage.setRefreshToken(authentication.refreshToken);
@@ -64,7 +64,7 @@ const signOut = dispatch => async () => {
 
 const refreshAlenviToken = dispatch => async (refreshToken) => {
   try {
-    const token = await Users.refreshToken({ refreshToken });
+    const token = await Authentication.refreshToken({ refreshToken });
 
     await asyncStorage.setAlenviToken(token.token);
     await asyncStorage.setRefreshToken(token.refreshToken);

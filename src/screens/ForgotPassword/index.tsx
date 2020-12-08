@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { NavigationType } from '../../types/NavigationType';
-import Users from '../../api/authentication';
+import Authentication from '../../api/authentication';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import NiErrorMessage from '../../components/ErrorMessage';
@@ -29,7 +29,7 @@ const ForgotPassword = ({ navigation }: ForgotPasswordProps) => {
     setErrorMessage('');
     setSuccessMessage('');
     try {
-      await Users.forgotPassword({ email });
+      await Authentication.forgotPassword({ email });
       setSuccessMessage('Un email a été envoyé à l\'adresse indiquée ! Redirection ...');
       setTimeout(goBack, 2000);
     } catch (e) {
