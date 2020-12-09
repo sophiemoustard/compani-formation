@@ -26,7 +26,6 @@ const NiCamera = ({ navigation }: NiCameraProps) => {
 
   useEffect(() => {
     onStartCamera();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const hardwareBackPress = () => {
