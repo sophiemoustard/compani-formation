@@ -34,13 +34,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: PINK[500],
   },
-  cancelButton: {
-    width: 80,
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  closeButton: {
+  button: {
     width: 80,
     height: 44,
     alignItems: 'center',

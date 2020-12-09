@@ -22,10 +22,10 @@ const ExitModal = ({
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.contentText}>{contentText}</Text>
     <View style={styles.buttons}>
-      <TouchableOpacity style={styles.cancelButton} onPress={onPressCancelButton}>
+      <TouchableOpacity style={styles.button} onPress={onPressCancelButton}>
         <Text style={styles.buttonText}>Annuler</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.closeButton} onPress={onPressConfirmButton}>
+      <TouchableOpacity style={styles.button} onPress={onPressConfirmButton}>
         <Text style={styles.buttonText}>Quitter</Text>
       </TouchableOpacity>
     </View>
