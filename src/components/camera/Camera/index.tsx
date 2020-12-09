@@ -38,8 +38,7 @@ const NiCamera = ({ navigation }: NiCameraProps) => {
 
   const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
 
-  const onSavePhoto = (photo) => {
-    console.log('image sauvegardée !', photo);
+  const onSavePhoto = () => {
     goBack();
   };
 
@@ -54,7 +53,7 @@ const NiCamera = ({ navigation }: NiCameraProps) => {
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture} />
       ) : (
-        <NiCameraShooting setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} goBack={goBack} />)}
+        <NiCameraShooting setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
     </View>
   );
 };
