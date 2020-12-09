@@ -27,7 +27,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
   const [answers, setAnswers] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!isLoading && !isPressed) setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
+    if (!isLoading && !isPressed) setAnswers(shuffle([...card.qcAnswers.map(a => a.text), card.qcuGoodAnswer]));
   }, [isLoading, card, isPressed]);
 
   if (isLoading) return null;
