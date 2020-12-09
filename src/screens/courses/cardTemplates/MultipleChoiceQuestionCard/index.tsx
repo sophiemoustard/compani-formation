@@ -48,7 +48,7 @@ const MultipleChoiceQuestionCard = ({
   });
 
   useEffect(() => {
-    if (!isLoading && !isValidated) setAnswers(shuffle(card.qcmAnswers.map(ans => ({ ...ans, isSelected: false }))));
+    if (!isLoading && !isValidated) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
   }, [card, isLoading, isValidated]);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const MultipleChoiceQuestionCard = ({
     return navigate(`card-${cardIndex + 1}`);
   };
 
-  const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.label}
+  const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
 
   const style = styles(footerColors.textColor, footerColors.backgroundColor);

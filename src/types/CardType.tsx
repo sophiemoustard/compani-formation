@@ -64,14 +64,14 @@ export interface TitleTextType {
 
 export interface qcmAnswerFromAPIType {
   correct: boolean,
-  label: string,
+  text: string,
 }
 
 export interface MultipleChoiceQuestionType {
   _id: string,
   template: string,
   question: string,
-  qcmAnswers: Array<qcmAnswerFromAPIType>,
+  qcAnswers: Array<qcmAnswerFromAPIType>,
   explanation: string,
 }
 
