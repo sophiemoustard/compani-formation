@@ -80,7 +80,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
                 <TouchableOpacity style={styles.profileImageEdit} onPress={() => setPictureModal(true)}>
                   <Feather size={ICON.SM} color={GREY[200]} name={hasPhoto ? 'edit' : 'plus'} />
                 </TouchableOpacity>
-                <NiModal visible={pictureModal}>
+                <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
                   <TouchableOpacity style={styles.button} onPress={TakePicture}>
                     <Text style={styles.buttonText}>Prendre une photo</Text>
                   </TouchableOpacity>
