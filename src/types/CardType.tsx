@@ -117,5 +117,5 @@ export interface QuestionAnswerType {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
-  questionAnswers: Array<answerFromAPIType>,
+  qcAnswers: Array<answerFromAPIType>,
 }

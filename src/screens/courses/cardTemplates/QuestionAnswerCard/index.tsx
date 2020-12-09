@@ -37,7 +37,7 @@ const QuestionAnswerCard = ({
 
   useEffect(() => {
     if (!isLoading) {
-      setSelectedAnswers(card.questionAnswers.map(answer =>
+      setSelectedAnswers(card.qcAnswers.map(answer =>
         ({ ...answer, isSelected: questionnaireAnswer?.answerList.includes(answer._id) })));
     }
   }, [card, isLoading, questionnaireAnswer]);
