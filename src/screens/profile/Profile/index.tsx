@@ -56,7 +56,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
 
   const TakePicture = () => {
     if (pictureModal) setPictureModal(false);
-    navigation.navigate('NiCamera');
+    navigation.navigate('Camera');
   };
 
   const addPictureFromGallery = () => {
@@ -80,18 +80,6 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
                 <TouchableOpacity style={styles.profileImageEdit} onPress={() => setPictureModal(true)}>
                   <Feather size={ICON.SM} color={GREY[200]} name={hasPhoto ? 'edit' : 'plus'} />
                 </TouchableOpacity>
-                <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
-                  <TouchableOpacity style={styles.button} onPress={TakePicture}>
-                    <Text style={styles.buttonText}>Prendre une photo</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
-                    <Text style={styles.buttonText}>Ajouter une photo</Text>
-                  </TouchableOpacity>
-                  {hasPhoto &&
-                    <TouchableOpacity style={styles.button} onPress={DeletePicture}>
-                      <Text style={styles.buttonText}>Supprimer la photo</Text>
-                    </TouchableOpacity>}
-                </NiModal>
               </View>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
               <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
@@ -99,6 +87,18 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               <Text style={styles.numberOfCourses}>{courses.length}</Text>
             </ImageBackground>
           </View>
+          <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
+            <TouchableOpacity style={styles.button} onPress={TakePicture}>
+              <Text style={styles.buttonText}>Prendre une photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
+              <Text style={styles.buttonText}>Ajouter une photo</Text>
+            </TouchableOpacity>
+            {hasPhoto &&
+                    <TouchableOpacity style={styles.button} onPress={DeletePicture}>
+                      <Text style={styles.buttonText}>Supprimer la photo</Text>
+                    </TouchableOpacity>}
+          </NiModal>
           <View style={styles.sectionDelimiter} />
           <View style={styles.contactsContainer}>
             <Text style={styles.contact}>Contact</Text>

@@ -1,13 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { WHITE } from '../../../styles/colors';
-import { BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN, PADDING } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   camera: {
     flex: 1,
     width: '100%',
@@ -23,24 +18,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
   },
-  text: {
-    fontSize: 20,
-  },
   flash: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 32,
+    width: ICON.XL,
   },
   cameraType: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: PADDING.SM,
-    width: 32,
+    width: ICON.XL,
   },
   takePicture: {
-    width: 70,
-    height: 70,
-    borderRadius: 50,
+    width: ICON.XXXL,
+    height: ICON.XXXL,
+    borderRadius: BORDER_RADIUS.XXL,
     borderColor: WHITE,
     borderWidth: 4 * BORDER_WIDTH,
   },
