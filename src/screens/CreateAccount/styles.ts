@@ -2,11 +2,8 @@ import { StyleSheet } from 'react-native';
 import { MARGIN } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
-  keyboardAvoidingView: {
-    flex: 1,
-  },
   header: {
-    marginBottom: MARGIN.XL,
+    marginBottom: MARGIN.MD,
     marginTop: MARGIN.MD,
     marginHorizontal: MARGIN.MD,
     alignItems: 'center',
