@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
-const styles = StyleSheet.create({
+const styles = isKeyboardOpen => StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
     marginVertical: MARGIN.LG,
@@ -11,14 +11,15 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   input: {
-    marginBottom: MARGIN.SM,
+    marginBottom: MARGIN.XS,
   },
   container: {
     flexGrow: 1,
     marginHorizontal: MARGIN.LG,
   },
   footer: {
-    marginBottom: MARGIN.XL + MARGIN.MD,
+    marginTop: MARGIN.LG,
+    marginBottom: isKeyboardOpen ? MARGIN.MD : (MARGIN.XL + MARGIN.MD),
     justifyContent: 'flex-end',
     flex: 1,
   },

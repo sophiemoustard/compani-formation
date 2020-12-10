@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
@@ -14,6 +14,7 @@ interface InputProps {
   darkMode?: boolean,
   validationMessage?: string,
   required?: boolean,
+  isKeyboardOpen?: (value: boolean) => void,
 }
 
 const Input = ({
@@ -24,6 +25,7 @@ const Input = ({
   darkMode,
   validationMessage = '',
   required = false,
+  isKeyboardOpen,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -35,6 +37,19 @@ const Input = ({
   const togglePassword = () => { setShowPassword(previousShowPassword => !previousShowPassword); };
   const style = styles(isSelected);
   const textStyle = darkMode ? { ...style.text, color: WHITE } : { ...style.text };
+
+  const keyboardDidShow = () => {
+    if (isKeyboardOpen) isKeyboardOpen(true);
+  };
+
+  const keyboardDidHide = () => {
+    Keyboard.dismiss();
+    if (isKeyboardOpen) isKeyboardOpen(false);
+  };
+
+  useEffect(() => { Keyboard.addListener('keyboardDidHide', keyboardDidHide); });
+
+  useEffect(() => { Keyboard.addListener('keyboardDidShow', keyboardDidShow); });
 
   return (
     <>
