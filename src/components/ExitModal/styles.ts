@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, MODAL_BACKDROP_GREY, PINK } from '../../styles/colors';
-import { BORDER_RADIUS, PADDING, MARGIN } from '../../styles/metrics';
+import { BORDER_RADIUS, PADDING, MARGIN, BUTTON_HEIGHT } from '../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 80,
-    height: 44,
+    height: BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
   },
