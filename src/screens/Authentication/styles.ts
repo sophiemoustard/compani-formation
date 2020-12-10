@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { WHITE } from '../../styles/colors';
-import { MARGIN } from '../../styles/metrics';
+import { WHITE, GREY } from '../../styles/colors';
+import { MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -21,13 +21,19 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginBottom: MARGIN.SM,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: PADDING.SM,
+    zIndex: 100,
   },
   forgotPasswordText: {
     ...FIRA_SANS_REGULAR.SM,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
     color: WHITE,
+    textShadowColor: GREY[800],
+    textShadowRadius: 4,
+    textShadowOffset: { width: 0, height: 1 },
   },
   button: {
     marginTop: MARGIN.XL,
