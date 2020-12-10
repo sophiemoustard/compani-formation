@@ -1,13 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  Text,
-  ScrollView,
-  View,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  BackHandler,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Keyboard, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import ExitModal from '../../components/ExitModal';
 import IconButton from '../../components/IconButton';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
@@ -80,8 +72,6 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     }
   };
 
-  const scrollRef = useRef<ScrollView>(null);
-
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     navigation.navigate('Authentication');
@@ -110,7 +100,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
       </View>
-      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
         <Text style={styles.title}>Quelle est ton adresse email ?</Text>
         <View style={styles.input}>
           <NiInput caption="E-mail" value={email} type="email"
@@ -124,7 +114,7 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };
