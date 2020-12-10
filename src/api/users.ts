@@ -1,4 +1,5 @@
 import getEnvVars from '../../environment';
+import { MOBILE } from '../core/data/constants';
 import { alenviAxios } from './ressources/alenviAxios';
 
 export default {
@@ -22,7 +23,7 @@ export default {
   },
   create: async (data) => {
     const { baseURL } = getEnvVars();
-    const newUser = await alenviAxios.post(`${baseURL}/users`, data);
+    const newUser = await alenviAxios.post(`${baseURL}/users`, { ...data, origin: MOBILE });
     return newUser.data.data.user;
   },
 };
