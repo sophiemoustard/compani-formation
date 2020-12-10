@@ -9,11 +9,12 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
 import { CourseType } from '../../../types/CourseType';
-import { GREY } from '../../../styles/colors';
+import { GREY, PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
 import NiModal from '../../../components/Modal';
+import IconButton from '../../../components/IconButton';
 
 interface ProfileProps {
   loggedUser: UserType,
@@ -77,9 +78,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               source={require('../../../../assets/images/profile_background.png')}>
               <View>
                 <Image style={styles.profileImage} source={source} />
-                <TouchableOpacity style={styles.profileImageEdit} onPress={() => setPictureModal(true)}>
-                  <Feather size={ICON.SM} color={GREY[200]} name={hasPhoto ? 'edit' : 'plus'} />
-                </TouchableOpacity>
+                <IconButton name={hasPhoto ? 'edit' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
+                  color={GREY[200]} style={styles.profileImageEdit} />
               </View>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
               <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
@@ -111,6 +111,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
       </View>
       <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
+        <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
+          style={styles.goBack} />
         <TouchableOpacity style={styles.button} onPress={TakePicture}>
           <Text style={styles.buttonText}>Prendre une photo</Text>
         </TouchableOpacity>
@@ -118,9 +120,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
           <Text style={styles.buttonText}>Ajouter une photo</Text>
         </TouchableOpacity>
         {hasPhoto &&
-                    <TouchableOpacity style={styles.button} onPress={DeletePicture}>
-                      <Text style={styles.buttonText}>Supprimer la photo</Text>
-                    </TouchableOpacity>}
+          <TouchableOpacity style={styles.button} onPress={DeletePicture}>
+            <Text style={styles.buttonText}>Supprimer la photo</Text>
+          </TouchableOpacity>}
       </NiModal>
     </ScrollView>
   );

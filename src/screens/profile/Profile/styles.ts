@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
   },
   profileImageEdit: {
     position: 'absolute',
-    left: 64,
     bottom: 0,
+    right: 0,
     borderRadius: BORDER_RADIUS.XXL,
     backgroundColor: WHITE,
     padding: PADDING.SM,
@@ -92,11 +92,14 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: MARGIN.SM,
+    paddingVertical: MARGIN.MD,
   },
   buttonText: {
     ...FIRA_SANS_MEDIUM.MD,
     color: PINK[500],
+  },
+  goBack: {
+    alignSelf: 'flex-end',
   },
 });
 
