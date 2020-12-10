@@ -47,7 +47,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     [{
       type: 'phone',
       field: 'phone',
-      title: 'Quel est ton numéro de téléphone ?',
+      title: 'Quel est ton téléphone ?',
       caption: 'Téléphone',
       value: '',
       isValid: true,

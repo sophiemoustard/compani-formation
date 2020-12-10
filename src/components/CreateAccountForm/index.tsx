@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
@@ -19,6 +19,8 @@ interface CreateAccountProps {
 }
 const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, create }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
     goBack(index);
@@ -75,16 +77,16 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
   };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <View style={styles.container}>
-        <Text style={styles.title}>{data[0].title}</Text>
-        {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
+      <View style={style.container}>
+        <Text style={style.title}>{data[0].title}</Text>
+        {data.map((d, i) => <View style={style.input} key={`container${i}`}>
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-            darkMode={false} onChangeText={text => onChangeText(text, i)}
+            darkMode={false} onChangeText={text => onChangeText(text, i)} isKeyboardOpen={setIsKeyboardOpen}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
         </View>)}
-        <View style={styles.footer}>
+        <View style={style.footer}>
           <NiButton caption="Valider" onPress={validData} loading={isLoading}
             bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>

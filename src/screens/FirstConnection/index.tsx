@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Keyboard, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import ExitModal from '../../components/ExitModal';
 import IconButton from '../../components/IconButton';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
@@ -29,9 +29,8 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
-
-  const keyboardDidHide = () => Keyboard.dismiss();
-  Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
     setExitConfirmationModal(true);
@@ -63,10 +62,11 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await sendEmail();
         else navigation.navigate('CreateAccount', { email });
+        if (error) setError(false);
       }
     } catch (e) {
       setError(true);
-      setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
+      setErrorMessage('Oops, erreur lors de l\'envoi de l\'adresse.');
     } finally {
       setIsLoading(false);
     }
@@ -88,29 +88,30 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   };
 
   const renderContentText = () =>
-    <Text style={styles.contentText}>Nous avons envoyé un e-mail à<Text style={styles.email}>{` ${email}`}</Text>
+    <Text style={style.contentText}>Nous avons envoyé un e-mail à<Text style={style.email}>{` ${email}`}</Text>
     . Si tu ne l’as pas reçu, vérifie ton Courrier indésirable, ou réessaie.</Text>;
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
-      <View style={styles.goBack}>
+      <View style={style.goBack}>
         <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
       </View>
-      <View style={styles.container}>
-        <Text style={styles.title}>Quelle est ton adresse email ?</Text>
-        <View style={styles.input}>
+      <View style={style.container}>
+        <Text style={style.title}>Quelle est ton adresse mail ?</Text>
+        <View style={style.input}>
           <NiInput caption="E-mail" value={email} type="email"
             darkMode={false} onChangeText={text => enterEmail(text)}
-            validationMessage={unvalidEmail && isTouch ? 'Ton adresse e-mail n\'est pas valide' : ''} />
+            validationMessage={unvalidEmail && isTouch ? 'Ton adresse e-mail n\'est pas valide' : ''}
+            isKeyboardOpen={setIsKeyboardOpen} />
         </View>
-        <View style={styles.footer}>
+        <View style={style.footer}>
           <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
-          <NiErrorMessage style={styles.errorMessage} message={errorMessage} show={error} />
+          <NiErrorMessage style={style.errorMessage} message={errorMessage} show={error} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />
