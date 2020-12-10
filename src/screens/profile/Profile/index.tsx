@@ -87,18 +87,6 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               <Text style={styles.numberOfCourses}>{courses.length}</Text>
             </ImageBackground>
           </View>
-          <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
-            <TouchableOpacity style={styles.button} onPress={TakePicture}>
-              <Text style={styles.buttonText}>Prendre une photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
-              <Text style={styles.buttonText}>Ajouter une photo</Text>
-            </TouchableOpacity>
-            {hasPhoto &&
-                    <TouchableOpacity style={styles.button} onPress={DeletePicture}>
-                      <Text style={styles.buttonText}>Supprimer la photo</Text>
-                    </TouchableOpacity>}
-          </NiModal>
           <View style={styles.sectionDelimiter} />
           <View style={styles.contactsContainer}>
             <Text style={styles.contact}>Contact</Text>
@@ -122,6 +110,18 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
       </View>
+      <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
+        <TouchableOpacity style={styles.button} onPress={TakePicture}>
+          <Text style={styles.buttonText}>Prendre une photo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
+          <Text style={styles.buttonText}>Ajouter une photo</Text>
+        </TouchableOpacity>
+        {hasPhoto &&
+                    <TouchableOpacity style={styles.button} onPress={DeletePicture}>
+                      <Text style={styles.buttonText}>Supprimer la photo</Text>
+                    </TouchableOpacity>}
+      </NiModal>
     </ScrollView>
   );
 };

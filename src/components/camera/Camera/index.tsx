@@ -32,12 +32,12 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
     if (Platform.OS === 'ios' || !camera.current) return;
 
     const { height, width } = Dimensions.get('window');
-    if (width === 0) return;
+    if (!width) return;
     const screenRatio = height / width;
     const supportedratios = await camera.current.getSupportedRatiosAsync();
     const ratiosNumbers = supportedratios?.map((supportedratio) => {
       const values = supportedratio.split(':');
-      if (Number(values[1]) === 0) return null;
+      if (!values[1]) return null;
       return Number(values[0]) / Number(values[1]);
     });
 

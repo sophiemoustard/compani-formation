@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, BackHandler } from 'react-native';
+import { View, BackHandler, Alert } from 'react-native';
 import { Camera as Cam } from 'expo-camera';
 import styles from './styles';
 import { NavigationType } from '../../types/NavigationType';
@@ -22,14 +22,16 @@ const Camera = ({ navigation }: CameraProps) => {
     if (status === 'granted') {
       setStartCamera(true);
     } else {
-      goBack();
+      Alert.alert(
+        'Accès refusé',
+        'Vérifie que l\'application a bien l\'autorisation d\'utiliser l\'appareil photo',
+        [{ text: 'OK', onPress: () => goBack() }], { cancelable: false }
+      );
     }
   };
 
-  useEffect(() => {
-    onStartCamera();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { onStartCamera(); }, []);
 
   const hardwareBackPress = () => {
     goBack();
