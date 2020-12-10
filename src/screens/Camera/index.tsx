@@ -5,6 +5,9 @@ import styles from './styles';
 import { NavigationType } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
+import IconButton from '../../components/IconButton';
+import { ICON } from '../../styles/metrics';
+import { WHITE } from '../../styles/colors';
 
 interface CameraProps {
   navigation: NavigationType,
@@ -56,6 +59,7 @@ const Camera = ({ navigation }: CameraProps) => {
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
+      <IconButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />
     </View>
   );
 };

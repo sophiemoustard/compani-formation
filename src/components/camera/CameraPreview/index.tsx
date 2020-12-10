@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, ImageBackground, TouchableOpacity, Text } from 'react-native';
+import { View, ImageBackground } from 'react-native';
+import { GREY, PINK, WHITE } from '../../../styles/colors';
+import NiButton from '../../form/Button';
 import styles from './style';
 
 interface NiCameraPreviewProps {
@@ -13,12 +15,10 @@ const NiCameraPreview = ({ photo, onSavePhoto, onRetakePicture }: NiCameraPrevie
     <ImageBackground source={{ uri: photo && photo.uri }}
       style={styles.photo}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, styles.SavePictureButton]} onPress={() => onSavePhoto(photo)}>
-          <Text style={[styles.text, styles.savePictureText]}>Enregistrer la photo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.retakePictureButton]} onPress={onRetakePicture}>
-          <Text style={[styles.text, styles.retakePictureText]}>Reprendre la photo</Text>
-        </TouchableOpacity>
+        <NiButton caption='Enregistrer la photo' onPress={() => onSavePhoto(photo)}
+          style={styles.button} bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+        <NiButton caption='Reprendre la photo' onPress={onRetakePicture}
+          style={styles.button} bgColor={WHITE} color={GREY[600]} borderColor={GREY[600]} />
       </View>
     </ImageBackground>
   </View>
