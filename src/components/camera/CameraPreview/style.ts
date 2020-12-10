@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN } from '../../../styles/metrics';
 
-const styles = ({ borderColor, backgroundColor, color }) => StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
@@ -22,20 +23,30 @@ const styles = ({ borderColor, backgroundColor, color }) => StyleSheet.create({
     height: BUTTON_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor,
-    borderColor,
     borderRadius: BORDER_RADIUS.MD,
     borderWidth: BORDER_WIDTH,
     display: 'flex',
     flexDirection: 'row',
     marginHorizontal: MARGIN.LG,
     marginBottom: MARGIN.MD,
-
+  },
+  retakePictureButton: {
+    backgroundColor: WHITE,
+    borderColor: GREY[600],
+  },
+  SavePictureButton: {
+    backgroundColor: PINK[500],
+    borderColor: PINK[500],
   },
   text: {
     ...FIRA_SANS_BLACK.MD,
     marginHorizontal: MARGIN.SM,
-    color,
+  },
+  retakePictureText: {
+    color: GREY[600],
+  },
+  savePictureText: {
+    color: WHITE,
   },
 });
 
