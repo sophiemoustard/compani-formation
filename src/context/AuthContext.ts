@@ -2,7 +2,6 @@ import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
-import { MOBILE } from '../core/data/constants';
 
 export interface StateType {
   alenviToken: string | null,
@@ -36,7 +35,7 @@ const signIn = dispatch => async ({ email, password }) => {
     if (!email || !password) return;
 
     dispatch({ type: 'beforeSignin' });
-    const authentication = await Authentication.authenticate({ email, password, origin: MOBILE });
+    const authentication = await Authentication.authenticate({ email, password });
 
     await asyncStorage.setAlenviToken(authentication.token);
     await asyncStorage.setRefreshToken(authentication.refreshToken);
