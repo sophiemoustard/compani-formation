@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { Feather } from '@expo/vector-icons';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiButton from '../../../components/form/Button';
 import commonStyles from '../../../styles/common';
