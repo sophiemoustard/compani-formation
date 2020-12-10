@@ -15,7 +15,6 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     borderColor: isSelected ? color : GREY[200],
     borderRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
-
   },
   markerContainer: {
     marginHorizontal: MARGIN.SM,
