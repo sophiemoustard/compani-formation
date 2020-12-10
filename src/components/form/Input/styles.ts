@@ -39,6 +39,7 @@ const styles = (isSelected: boolean) => StyleSheet.create({
     ...FIRA_SANS_MEDIUM.MD,
     flex: 1,
     paddingHorizontal: PADDING.MD,
+    height: INPUT_HEIGHT,
   },
   shadow: {
     backgroundColor: TRANSPARENT_PINK,
