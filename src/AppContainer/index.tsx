@@ -9,6 +9,7 @@ import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
 import ProfileEdition from '../screens/profile/ProfileEdition';
+import Camera from '../screens/Camera';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
@@ -94,7 +95,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const authScreens = { Authentication, ForgotPassword, FirstConnection, CreateAccount };
 
-  const Profile = { ProfileEdition, PasswordEdition };
+  const Profile = { ProfileEdition, PasswordEdition, Camera };
   const Courses = { CourseProfile, SubProgramProfile };
   const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
 

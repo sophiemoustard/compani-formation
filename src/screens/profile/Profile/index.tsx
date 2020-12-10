@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, ScrollView, Image, View, ImageBackground } from 'react-native';
+import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiButton from '../../../components/form/Button';
@@ -8,9 +8,12 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
 import { CourseType } from '../../../types/CourseType';
-import { GREY } from '../../../styles/colors';
+import { GREY, PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
+import { ICON } from '../../../styles/metrics';
+import NiModal from '../../../components/Modal';
+import IconButton from '../../../components/IconButton';
 
 interface ProfileProps {
   loggedUser: UserType,
@@ -21,6 +24,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const [courses, setCourses] = useState<Array<CourseType>>([]);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
+  const [hasPhoto, setHasPhoto] = useState<boolean>();
+  const [pictureModal, setPictureModal] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
@@ -43,8 +48,24 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   }, []);
 
   useEffect(() => {
-    if (loggedUser && loggedUser.picture?.link) setSource({ uri: loggedUser.picture.link });
+    if (loggedUser && loggedUser.picture?.link) {
+      setSource({ uri: loggedUser.picture.link });
+      setHasPhoto(true);
+    }
   }, [loggedUser]);
+
+  const TakePicture = () => {
+    if (pictureModal) setPictureModal(false);
+    navigation.navigate('Camera');
+  };
+
+  const addPictureFromGallery = () => {
+    if (pictureModal) setPictureModal(false);
+  };
+
+  const DeletePicture = () => {
+    if (pictureModal) setPictureModal(false);
+  };
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -54,7 +75,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
           <View style={styles.identityContainer}>
             <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
               source={require('../../../../assets/images/profile_background.png')}>
-              <Image style={styles.profileImage} source={source} />
+              <View>
+                <Image style={styles.profileImage} source={source} />
+                <IconButton name={hasPhoto ? 'edit' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
+                  color={GREY[200]} style={styles.profileImageEdit} />
+              </View>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
               <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
               <Text style={styles.courses}>FORMATIONS EN COURS</Text>
@@ -84,6 +109,20 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
       </View>
+      <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
+        <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
+          style={styles.goBack} />
+        <TouchableOpacity style={styles.button} onPress={TakePicture}>
+          <Text style={styles.buttonText}>Prendre une photo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
+          <Text style={styles.buttonText}>Ajouter une photo</Text>
+        </TouchableOpacity>
+        {hasPhoto &&
+          <TouchableOpacity style={styles.button} onPress={DeletePicture}>
+            <Text style={styles.buttonText}>Supprimer la photo</Text>
+          </TouchableOpacity>}
+      </NiModal>
     </ScrollView>
   );
 };
