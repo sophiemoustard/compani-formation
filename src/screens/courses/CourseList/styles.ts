@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
 import { GREEN, GREY, PINK, PURPLE, YELLOW } from '../../../styles/colors';
-import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   courseContainer: {
@@ -60,6 +60,20 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
+  },
+  text: {
+    ...FIRA_SANS_BOLD.MD,
+    marginBottom: MARGIN.XL,
+  },
+  goToCatalog: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: MARGIN.MD,
+  },
+  goToCatalogBackground: {
+    resizeMode: 'contain',
+    position: 'absolute',
+    right: -408,
   },
 });
 

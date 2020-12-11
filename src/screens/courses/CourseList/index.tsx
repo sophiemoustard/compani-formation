@@ -19,6 +19,8 @@ import SubPrograms from '../../../api/subPrograms';
 import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import CoursesSection from '../../../components/CoursesSection';
+import NiButton from '../../../components/form/Button';
+import { PINK, WHITE } from '../../../styles/colors';
 
 interface CourseListProps {
   setIsCourse: (value: boolean) => void,
@@ -105,6 +107,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
     else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
+  const goToCatalog = () => navigation.navigate('Catalog');
+
   const onPressProgramCell = (isCourse, id) => {
     setIsCourse(isCourse);
     goToCourse(id, isCourse);
@@ -130,11 +134,17 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
             renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
         </View>
       }
-      {onGoingCourses.length > 0 &&
-        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+      {onGoingCourses.length > 0
+        ? <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
           source={require('../../../../assets/images/ongoing_background.png')}>
           <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
             countStyle={styles.onGoingCoursesCount} />
+        </ImageBackground>
+        : <ImageBackground imageStyle={styles.goToCatalogBackground} style={styles.goToCatalog}
+          source={require('../../../../assets/images/go-to-catalog.png')}>
+          <Text style={styles.text}>Tu n’as pas de formation en cours...</Text>
+          <NiButton caption="Chercher une formation" onPress={goToCatalog} bgColor={PINK[500]} color={WHITE}
+            borderColor={PINK[500]} />
         </ImageBackground>
       }
       {achievedCourses.length > 0 &&
