@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, BackHandler, KeyboardAvoidingView, Platform } from 'react-native';
+import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
@@ -79,7 +79,8 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <View style={style.container}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps='always'>
         <Text style={style.title}>{data[0].title}</Text>
         {data.map((d, i) => <View style={style.input} key={`container${i}`}>
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
@@ -90,7 +91,7 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
           <NiButton caption="Valider" onPress={validData} loading={isLoading}
             bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
