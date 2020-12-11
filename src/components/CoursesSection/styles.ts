@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
+import { TRANSPARENT_GREY, WHITE } from '../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +23,28 @@ const styles = StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
     marginLeft: MAIN_MARGIN_LEFT,
+  },
+  text: {
+    ...FIRA_SANS_BOLD.MD,
+    marginBottom: MARGIN.XL,
+  },
+  goToCatalog: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: MARGIN.MD,
+  },
+  goToCatalogBackground: {
+    resizeMode: 'contain',
+    position: 'absolute',
+    right: -360,
+  },
+  courseContainer: {
+    borderRadius: BORDER_RADIUS.SM,
+    borderWidth: BORDER_WIDTH,
+    borderColor: TRANSPARENT_GREY,
+    overflow: 'hidden',
+    backgroundColor: WHITE,
+    marginHorizontal: MARGIN.LG,
   },
 });
 
