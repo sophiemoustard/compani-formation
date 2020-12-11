@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { View, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
+import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import IconButton from '../../components/IconButton';
-import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
+import { ICON } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import styles from './styles';
 import { GREY } from '../../styles/colors';
@@ -18,7 +18,6 @@ interface CreateAccountProps {
 }
 
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
-  const isIOS = Platform.OS === 'ios';
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
   const { refreshAlenviToken, signOut } = useContext(AuthContext);
@@ -48,7 +47,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     [{
       type: 'phone',
       field: 'phone',
-      title: 'Quel est ton numéro de téléphone ?',
+      title: 'Quel est ton téléphone ?',
       caption: 'Téléphone',
       value: '',
       isValid: true,
@@ -79,9 +78,6 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       required: true,
     }],
   ]);
-
-  const keyboardDidHide = () => Keyboard.dismiss();
-  Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
   const goBack = i => (i > 0
     ? navigation.navigate(`create-account-screen-${i - 1}`)
@@ -123,15 +119,14 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const renderScreen = (fields: Array<any>, i: number) => (
     <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
       {() => (
-        <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
-          keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
+        <>
           <View style={styles.header}>
             <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}
             goBack={goBack} create={create}/>
-        </KeyboardAvoidingView>
+        </>
       )}
     </Stack.Screen>
   );

@@ -40,7 +40,13 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const keyboardDidHide = () => Keyboard.dismiss();
-  Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+    };
+  });
 
   const hardwareBackPress = () => {
     setExitConfirmationModal(true);
