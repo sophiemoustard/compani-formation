@@ -60,7 +60,14 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
       </ScrollView>
       <View style={style.footerContainer}>
         {!isPressed && <FooterGradient /> }
-        {isPressed && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
+        {isPressed && (
+          <View style={[cardsStyle.explanation, style.explanation]}>
+            <Text style={style.explanationTitle}>
+              {answers[selectedAnswerIndex] === card.qcuGoodAnswer ? 'Bonne réponse' : 'Mauvaise réponse'}
+            </Text>
+            <Text style={style.explanationText}>{card.explanation}</Text>
+          </View>
+        )}
         <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK[500]}
           buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY[300]} />
       </View>

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../../../styles/colors';
-import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, GAP_WIDTH, ABSOLUTE_BOTTOM_POSITION } from '../../../../styles/metrics';
+import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, GAP_WIDTH, PADDING } from '../../../../styles/metrics';
+import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 
 const styles = (textColor: string, backgroundColor: string) => StyleSheet.create({
   container: {
@@ -20,13 +21,17 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
     width: GAP_WIDTH,
   },
   explanation: {
-    color: textColor,
-    minHeight: INPUT_HEIGHT,
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: ABSOLUTE_BOTTOM_POSITION,
     backgroundColor,
+  },
+  explanationTitle: {
+    ...FIRA_SANS_MEDIUM.MD,
+    color: textColor,
+    paddingBottom: PADDING.MD,
+  },
+  explanationText: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: textColor,
+    paddingTop: PADDING.MD,
   },
   footerContainer: {
     backgroundColor,

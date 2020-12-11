@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK } from './colors';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BLACK, FIRA_SANS_MEDIUM } from './fonts';
-import { BORDER_RADIUS, MARGIN, PADDING } from './metrics';
+import { ABSOLUTE_BOTTOM_POSITION, BORDER_RADIUS, INPUT_HEIGHT, MARGIN, PADDING } from './metrics';
 
 export default StyleSheet.create({
   title: {
@@ -22,7 +22,11 @@ export default StyleSheet.create({
     marginBottom: MARGIN.XL,
   },
   explanation: {
-    ...FIRA_SANS_REGULAR.MD,
+    minHeight: INPUT_HEIGHT,
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: ABSOLUTE_BOTTOM_POSITION,
     paddingHorizontal: PADDING.XL,
     paddingVertical: PADDING.LG,
   },

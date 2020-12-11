@@ -107,7 +107,12 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
-        {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
+        {isValidated && (
+          <View style={[cardsStyle.explanation, style.explanation]}>
+            <Text style={style.explanationTitle}>{isOrderedCorrectly ? 'Bonne réponse' : 'Mauvaise réponse'}</Text>
+            <Text style={style.explanationText}>{card.explanation}</Text>
+          </View>
+        )}
         <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
           arrowColor={footerColors.buttonsColor} index={index} buttonDisabled={false}
           buttonColor={footerColors.buttonsColor} />
