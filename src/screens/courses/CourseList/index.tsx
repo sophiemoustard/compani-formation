@@ -48,6 +48,7 @@ const formatCourseStep = (course) => {
         slots: slotsSorted.map(s => s.endDate),
         _id: slotsSorted[0]._id,
         progress: courseSteps[stepIndex].progress,
+        courseId: course._id,
       };
     })
     .filter(step => !!step);
@@ -116,7 +117,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} navigation={navigation} />;
 
   const nextSteps = formatNextSteps(onGoingCourses);
 
