@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Keyboard } from 'react-native';
+import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import IconButton from '../../components/IconButton';
 import { ICON } from '../../styles/metrics';
@@ -78,9 +78,6 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       required: true,
     }],
   ]);
-
-  const keyboardDidHide = () => Keyboard.dismiss();
-  Keyboard.addListener('keyboardDidHide', keyboardDidHide);
 
   const goBack = i => (i > 0
     ? navigation.navigate(`create-account-screen-${i - 1}`)
