@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
-const styles = isKeyboardOpen => StyleSheet.create({
+const styles = footerTooClose => StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
     marginVertical: MARGIN.LG,
@@ -22,8 +22,7 @@ const styles = isKeyboardOpen => StyleSheet.create({
     marginBottom: MARGIN.XS,
   },
   footer: {
-    marginTop: MARGIN.LG,
-    marginBottom: isKeyboardOpen ? MARGIN.MD : MARGIN.XL,
+    marginBottom: footerTooClose ? MARGIN.MD : MARGIN.XL,
     justifyContent: 'flex-end',
     flex: 1,
   },

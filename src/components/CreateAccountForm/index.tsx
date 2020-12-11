@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
@@ -19,8 +19,6 @@ interface CreateAccountProps {
 }
 const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, create }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
     goBack(index);
@@ -77,17 +75,17 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
   };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps='always'>
-        <Text style={style.title}>{data[0].title}</Text>
-        {data.map((d, i) => <View style={style.input} key={`container${i}`}>
+        <Text style={styles.title}>{data[0].title}</Text>
+        {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-            darkMode={false} onChangeText={text => onChangeText(text, i)} isKeyboardOpen={setIsKeyboardOpen}
+            darkMode={false} onChangeText={text => onChangeText(text, i)}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
         </View>)}
-        <View style={style.footer}>
+        <View style={styles.footer}>
           <NiButton caption="Valider" onPress={validData} loading={isLoading}
             bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>

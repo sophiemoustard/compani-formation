@@ -47,9 +47,14 @@ const Input = ({
     if (isKeyboardOpen) isKeyboardOpen(false);
   };
 
-  useEffect(() => { Keyboard.addListener('keyboardDidHide', keyboardDidHide); });
-
-  useEffect(() => { Keyboard.addListener('keyboardDidShow', keyboardDidShow); });
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+    };
+  });
 
   return (
     <>
