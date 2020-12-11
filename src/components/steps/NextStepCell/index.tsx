@@ -1,10 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { NavigationType } from '../../../types/NavigationType';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
 import styles from './styles';
 
 interface NextStepCellProps {
+  navigation: NavigationType,
   nextSlotsStep: NextSlotsStepType,
 }
 
@@ -15,16 +17,19 @@ interface NextSlotsStepType {
   type: string,
   stepIndex: number,
   progress: number,
+  courseId: string,
 }
 
-const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
-  const { stepIndex, slots, progress } = nextSlotsStep;
+const NextStepCell = ({ navigation, nextSlotsStep }: NextStepCellProps) => {
+  const { stepIndex, slots, progress, courseId } = nextSlotsStep;
+
+  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={goToCourse}>
       <CalendarIcon slots={slots} progress={progress}/>
       <StepCellTitle index={stepIndex} step={nextSlotsStep} />
-    </View>
+    </TouchableOpacity>
   );
 };
 
