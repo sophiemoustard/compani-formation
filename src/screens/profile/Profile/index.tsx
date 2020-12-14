@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Text, ScrollView, Image, View, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiButton from '../../../components/form/Button';
@@ -8,15 +8,15 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
 import { CourseType } from '../../../types/CourseType';
-import { GREY, PINK } from '../../../styles/colors';
+import { GREY } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
-import NiModal from '../../../components/Modal';
 import IconButton from '../../../components/IconButton';
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
+import PictureModal from '../../../components/PictureModal';
 
 interface ProfileProps {
   loggedUser: UserType,
@@ -29,7 +29,7 @@ const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const [courses, setCourses] = useState<Array<CourseType>>([]);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
-  const [hasPhoto, setHasPhoto] = useState<boolean>();
+  const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -54,7 +54,7 @@ const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
   }, []);
 
   useEffect(() => {
-    if (loggedUser.picture?.link) {
+    if (loggedUser?.picture?.link) {
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
     } else {
@@ -128,23 +128,9 @@ const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
       </View>
-      <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
-        <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
-          style={styles.goBack} />
-        <TouchableOpacity style={styles.button} onPress={TakePicture}>
-          <Text style={styles.buttonText}>Prendre une photo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
-          <Text style={styles.buttonText}>Ajouter une photo</Text>
-        </TouchableOpacity>
-        {hasPhoto &&
-          <TouchableOpacity style={styles.button} onPress={DeletePicture}>
-            <Text style={styles.buttonText}>Supprimer la photo</Text>
-            {isLoading &&
-              <ActivityIndicator style={[commonStyles.disabled, styles.loading]} color={GREY[200]} size="small" />
-            }
-          </TouchableOpacity>}
-      </NiModal>
+      <PictureModal visible={pictureModal} isLoading={isLoading} hasPhoto={hasPhoto}
+        setPictureModal={setPictureModal} TakePicture={TakePicture} addPictureFromGallery={addPictureFromGallery}
+        DeletePicture={DeletePicture} />
     </ScrollView>
   );
 };
