@@ -13,9 +13,6 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_MEDIUM.MD,
     color: PINK[500],
   },
-  modalGoBack: {
-    alignSelf: 'flex-end',
-  },
   loading: {
     paddingHorizontal: PADDING.SM,
     position: 'absolute',

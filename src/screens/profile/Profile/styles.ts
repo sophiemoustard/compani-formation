@@ -89,23 +89,6 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
   },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: MARGIN.MD,
-  },
-  buttonText: {
-    ...FIRA_SANS_MEDIUM.MD,
-    color: PINK[500],
-  },
-  goBack: {
-    alignSelf: 'flex-end',
-  },
-  loading: {
-    paddingHorizontal: PADDING.SM,
-    position: 'absolute',
-    right: 40,
-  },
 });
 
 export default styles;

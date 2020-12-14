@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 import { PINK, TRANSPARENT_GREY } from '../../../styles/colors';
 
@@ -40,23 +40,6 @@ const styles = StyleSheet.create({
   profileEdit: {
     ...FIRA_SANS_MEDIUM.MD,
     color: PINK[500],
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: MARGIN.MD,
-  },
-  buttonText: {
-    ...FIRA_SANS_MEDIUM.MD,
-    color: PINK[500],
-  },
-  modalGoBack: {
-    alignSelf: 'flex-end',
-  },
-  loading: {
-    paddingHorizontal: PADDING.SM,
-    position: 'absolute',
-    right: 40,
   },
 });
 
