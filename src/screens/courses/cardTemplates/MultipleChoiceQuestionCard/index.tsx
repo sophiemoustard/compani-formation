@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import { MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../../types/CardType';
+import { footerColorsType, MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { navigate } from '../../../../navigationRef';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
-import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
@@ -24,12 +24,6 @@ interface MultipleChoiceQuestionCardProps {
 
 export interface qcmAnswerType extends qcmAnswerFromAPIType {
   isSelected: boolean,
-}
-
-interface footerColorsType {
-  buttonsColor: string,
-  textColor: string,
-  backgroundColor: string,
 }
 
 const MultipleChoiceQuestionCard = ({
@@ -110,7 +104,8 @@ const MultipleChoiceQuestionCard = ({
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={cardIndex}
-          footerStyles={footerColors} explanation={card.explanation} onPressFooterButton={onPressFooterButton} />
+          buttonDisabled={!isOneAnswerSelected()} footerStyles={footerColors} explanation={card.explanation}
+          onPressFooterButton={onPressFooterButton} />
       </View>
     </>
   );

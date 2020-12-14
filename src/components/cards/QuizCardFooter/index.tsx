@@ -12,7 +12,7 @@ interface QuestionCardFooterProps {
   footerStyles,
   explanation: string,
   buttonDisabled?: boolean,
-  onPressFooterButton: () => void,
+  onPressFooterButton?: () => void,
 }
 
 const QuizCardFooter = ({
@@ -25,18 +25,18 @@ const QuizCardFooter = ({
   onPressFooterButton,
 }: QuestionCardFooterProps) => {
   const style = styles(footerStyles.textColor, footerStyles.backgroundColor);
-  return (<>
-    {isValidated && (
-      <View style={[cardsStyle.explanation, style.explanation]}>
-        <Text style={style.explanationTitle}>{isValid ? 'Bonne réponse' : 'Mauvaise réponse'}</Text>
-        <Text style={style.explanationText}>{explanation}</Text>
-      </View>
-    )}
-    <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-      arrowColor={footerStyles.buttonsColor} index={cardIndex} buttonDisabled={buttonDisabled}
-      buttonColor={!buttonDisabled ? footerStyles.buttonsColor : GREY[300]} />
-
-  </>);
+  return (
+    <>
+      {isValidated && (
+        <View style={[cardsStyle.explanation, style.explanation]}>
+          <Text style={style.explanationTitle}>{isValid ? 'Bonne réponse' : 'Mauvaise réponse'}</Text>
+          <Text style={style.explanationText}>{explanation}</Text>
+        </View>
+      )}
+      <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
+        arrowColor={footerStyles.buttonsColor} index={cardIndex} buttonDisabled={buttonDisabled}
+        buttonColor={!buttonDisabled ? footerStyles.buttonsColor : GREY[300]} />
+    </>);
 };
 
 export default QuizCardFooter;
