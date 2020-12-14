@@ -30,4 +30,8 @@ export default {
     const { baseURL } = getEnvVars();
     await alenviAxios.post(`${baseURL}/users/${userId}/upload`, data);
   },
+  deleteImage: async (userId) => {
+    const { baseURL } = getEnvVars();
+    await alenviAxios.delete(`${baseURL}/users/${userId}/upload`);
+  },
 };

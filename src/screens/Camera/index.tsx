@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, BackHandler, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import mime from 'mime';
 import { Camera as Cam } from 'expo-camera';
 import styles from './styles';
 import { NavigationType } from '../../types/NavigationType';
@@ -8,15 +10,36 @@ import NiCamera from '../../components/camera/Camera';
 import IconButton from '../../components/IconButton';
 import { ICON } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
+import { getLoggedUserId } from '../../store/main/selectors';
+import Users from '../../api/users';
+import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
+import { UserType } from '../../types/UserType';
+import MainActions from '../../store/main/actions';
 
 interface CameraProps {
   navigation: NavigationType,
+  loggedUserId: string | null,
+  setLoggedUser: (user: UserType) => void,
+
 }
 
-const Camera = ({ navigation }: CameraProps) => {
+declare global {
+  interface FormDataValue {
+    uri: string;
+    name: string;
+    type: string;
+  }
+
+  interface FormData {
+    append(key: string, value: FormDataValue | string): void;
+  }
+}
+
+const Camera = ({ navigation, loggedUserId, setLoggedUser }: CameraProps) => {
   const [startCamera, setStartCamera] = useState<boolean>(true);
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
 
@@ -43,8 +66,24 @@ const Camera = ({ navigation }: CameraProps) => {
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
-  const onSavePhoto = () => {
-    goBack();
+  const onSavePhoto = async (photo) => {
+    try {
+      setIsLoading(true);
+      const data: FormData = new FormData();
+      const uri = `file:///${photo.uri.split('file:/').join('')}`;
+      const file = { uri, type: mime.getType(uri), name: 'test' };
+      data.append('fileName', 'test');
+      data.append('file', file);
+
+      await Users.uploadImage(loggedUserId, data);
+      const user = await Users.getById(loggedUserId);
+      setLoggedUser(user);
+      goBack();
+    } catch (e) {
+      console.error('error is', e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onRetakePicture = () => {
@@ -56,7 +95,8 @@ const Camera = ({ navigation }: CameraProps) => {
   return startCamera && (
     <View style={styles.container}>
       {previewVisible && capturedImage ? (
-        <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture} />
+        <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
+          isLoading={isLoading} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
       <IconButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />
@@ -64,4 +104,10 @@ const Camera = ({ navigation }: CameraProps) => {
   );
 };
 
-export default Camera;
+const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
+  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Camera);

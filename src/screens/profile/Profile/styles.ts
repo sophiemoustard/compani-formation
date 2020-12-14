@@ -101,6 +101,11 @@ const styles = StyleSheet.create({
   goBack: {
     alignSelf: 'flex-end',
   },
+  loading: {
+    paddingHorizontal: PADDING.SM,
+    position: 'absolute',
+    right: 40,
+  },
 });
 
 export default styles;
