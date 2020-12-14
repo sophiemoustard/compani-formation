@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 import { TRANSPARENT_GREY, WHITE } from '../../styles/colors';
 
