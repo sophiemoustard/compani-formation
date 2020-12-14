@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderColor: TRANSPARENT_GREY,
     overflow: 'hidden',
     backgroundColor: WHITE,
-    marginHorizontal: MARGIN.LG,
+    marginHorizontal: MAIN_MARGIN_LEFT,
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 176,
