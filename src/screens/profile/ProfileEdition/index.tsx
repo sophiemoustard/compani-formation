@@ -51,7 +51,6 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isLoadingForModal, setIsLoadingForModal] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
@@ -67,40 +66,6 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   };
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
-
-  useEffect(() => {
-    if (loggedUser?.picture?.link) {
-      setSource({ uri: loggedUser.picture.link });
-      setHasPhoto(true);
-    } else {
-      setSource(require('../../../../assets/images/default_avatar.png'));
-      setHasPhoto(false);
-    }
-  }, [loggedUser]);
-
-  const TakePicture = () => {
-    if (pictureModal) setPictureModal(false);
-    navigation.navigate('Camera');
-  };
-
-  const addPictureFromGallery = () => {
-    if (pictureModal) setPictureModal(false);
-  };
-
-  const DeletePicture = async () => {
-    try {
-      setIsLoadingForModal(true);
-      await Users.deleteImage(loggedUser._id);
-      const user = await Users.getById(loggedUser._id);
-      setLoggedUser(user);
-      if (pictureModal) setPictureModal(false);
-      goBack();
-    } catch (e) {
-      console.error('error is', e);
-    } finally {
-      setIsLoadingForModal(false);
-    }
-  };
 
   useEffect(() => {
     setUnvalid({
@@ -183,7 +148,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         <View style={styles.imageContainer}>
           <Image style={styles.profileImage} source={source} />
           <TouchableOpacity onPress={() => setPictureModal(true)}>
-            <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
+            <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.input}>
@@ -210,9 +175,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
-        <PictureModal visible={pictureModal} isLoading={isLoadingForModal} hasPhoto={hasPhoto}
-          setPictureModal={setPictureModal} TakePicture={TakePicture} addPictureFromGallery={addPictureFromGallery}
-          DeletePicture={DeletePicture} />
+        <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
+          setHasPhoto={setHasPhoto} goBack={goBack} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
