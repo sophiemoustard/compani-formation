@@ -33,9 +33,9 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
   });
 
   useEffect(() => {
@@ -48,14 +48,14 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
 
   useEffect(() => {
     if (!isValidated) {
-      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
     if (isOrderedCorrectly) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, answers, isOrderedCorrectly]);
 
   const onPressFooterButton = () => {
@@ -79,7 +79,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+  const style = styles(footerColors.text, footerColors.background);
 
   return (
     <>
@@ -102,7 +102,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}
-          buttonDisabled={false} footerStyles={footerColors} explanation={card.explanation}
+          buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
           onPressFooterButton={onPressFooterButton} />
       </View>
     </>

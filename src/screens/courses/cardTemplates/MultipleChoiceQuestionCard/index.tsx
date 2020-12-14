@@ -36,9 +36,9 @@ const MultipleChoiceQuestionCard = ({
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
   });
 
   useEffect(() => {
@@ -47,14 +47,14 @@ const MultipleChoiceQuestionCard = ({
 
   useEffect(() => {
     if (!isValidated) {
-      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
     if (isAnsweredCorrectly) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, answers, isAnsweredCorrectly]);
 
   if (isLoading) return null;
@@ -88,7 +88,7 @@ const MultipleChoiceQuestionCard = ({
   const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
 
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+  const style = styles(footerColors.text, footerColors.background);
 
   return (
     <>
@@ -104,7 +104,7 @@ const MultipleChoiceQuestionCard = ({
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={cardIndex}
-          buttonDisabled={!isOneAnswerSelected()} footerStyles={footerColors} explanation={card.explanation}
+          buttonDisabled={!isOneAnswerSelected()} footerColors={footerColors} explanation={card.explanation}
           onPressFooterButton={onPressFooterButton} />
       </View>
     </>

@@ -121,7 +121,7 @@ export interface QuestionAnswerType {
 }
 
 export interface footerColorsType {
-  buttonsColor: string,
-  textColor: string,
-  backgroundColor: string,
+  buttons: string,
+  text: string,
+  background: string,
 }

@@ -26,9 +26,9 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
   });
 
   useEffect(() => {
@@ -37,14 +37,14 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
 
   useEffect(() => {
     if (!isPressed) {
-      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
     if (card && answers[selectedAnswerIndex] === card.qcuGoodAnswer) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [answers, card, isPressed, selectedAnswerIndex]);
 
   if (isLoading) return null;
@@ -59,7 +59,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
     if (answers[selectedIndex] === card.qcuGoodAnswer) incGoodAnswersCount();
   };
 
-  const style = styles(isPressed, footerColors.backgroundColor, footerColors.textColor);
+  const style = styles(isPressed, footerColors.background);
 
   return (
     <>
@@ -75,7 +75,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
       <View style={style.footerContainer}>
         {!isPressed && <FooterGradient /> }
         <QuizCardFooter isValidated={isPressed} isValid={answers[selectedAnswerIndex] === card.qcuGoodAnswer}
-          cardIndex={index} footerStyles={footerColors} explanation={card.explanation}
+          cardIndex={index} footerColors={footerColors} explanation={card.explanation}
           buttonDisabled={!isPressed} />
       </View>
     </>

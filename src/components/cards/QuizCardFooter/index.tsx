@@ -9,7 +9,7 @@ interface QuestionCardFooterProps {
   isValidated: boolean,
   isValid: boolean,
   cardIndex: number,
-  footerStyles,
+  footerColors,
   explanation: string,
   buttonDisabled?: boolean,
   onPressFooterButton?: () => void,
@@ -19,12 +19,12 @@ const QuizCardFooter = ({
   isValidated,
   isValid,
   cardIndex,
-  footerStyles,
+  footerColors,
   explanation,
   buttonDisabled = false,
   onPressFooterButton,
 }: QuestionCardFooterProps) => {
-  const style = styles(footerStyles.textColor, footerStyles.backgroundColor);
+  const style = styles(footerColors.text, footerColors.background);
   return (
     <>
       {isValidated && (
@@ -34,8 +34,8 @@ const QuizCardFooter = ({
         </View>
       )}
       <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-        arrowColor={footerStyles.buttonsColor} index={cardIndex} buttonDisabled={buttonDisabled}
-        buttonColor={!buttonDisabled ? footerStyles.buttonsColor : GREY[300]} />
+        arrowColor={footerColors.buttons} index={cardIndex} buttonDisabled={buttonDisabled}
+        buttonColor={!buttonDisabled ? footerColors.buttons : GREY[300]} />
     </>);
 };
 
