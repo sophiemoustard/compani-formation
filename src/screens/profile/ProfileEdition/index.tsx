@@ -94,6 +94,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       const user = await Users.getById(loggedUser._id);
       setLoggedUser(user);
       if (pictureModal) setPictureModal(false);
+      goBack();
     } catch (e) {
       console.error('error is', e);
     } finally {
