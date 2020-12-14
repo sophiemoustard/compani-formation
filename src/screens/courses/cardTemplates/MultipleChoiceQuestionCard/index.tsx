@@ -8,12 +8,12 @@ import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
-import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import { navigate } from '../../../../navigationRef';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
@@ -109,15 +109,8 @@ const MultipleChoiceQuestionCard = ({
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
-        {isValidated && (
-          <View style={[cardsStyle.explanation, style.explanation]}>
-            <Text style={style.explanationTitle}>{isAnsweredCorrectly ? 'Bonne réponse' : 'Mauvaise réponse'}</Text>
-            <Text style={style.explanationText}>{card.explanation}</Text>
-          </View>
-        )}
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={cardIndex} buttonDisabled={!isOneAnswerSelected()}
-          buttonColor={isOneAnswerSelected() ? footerColors.buttonsColor : GREY[300]} />
+        <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={cardIndex}
+          footerStyles={footerColors} explanation={card.explanation} onPressFooterButton={onPressFooterButton} />
       </View>
     </>
   );
