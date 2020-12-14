@@ -3,13 +3,13 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import { OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
+import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
-import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { navigate } from '../../../../navigationRef';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
@@ -26,12 +26,6 @@ interface OrderTheSequenceCardProps {
 export interface answerPositionType extends OrderedAnswerType {
   goodPosition: number,
   tempPosition: number,
-}
-
-interface footerColorsType {
-  buttonsColor: string,
-  textColor: string,
-  backgroundColor: string,
 }
 
 const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: OrderTheSequenceCardProps) => {
@@ -107,15 +101,9 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
-        {isValidated && (
-          <View style={[cardsStyle.explanation, style.explanation]}>
-            <Text style={style.explanationTitle}>{isOrderedCorrectly ? 'Bonne réponse' : 'Mauvaise réponse'}</Text>
-            <Text style={style.explanationText}>{card.explanation}</Text>
-          </View>
-        )}
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={index} buttonDisabled={false}
-          buttonColor={footerColors.buttonsColor} />
+        <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}
+          buttonDisabled={false} footerStyles={footerColors} explanation={card.explanation}
+          onPressFooterButton={onPressFooterButton} />
       </View>
     </>
   );

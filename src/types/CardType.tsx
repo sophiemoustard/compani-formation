@@ -119,3 +119,9 @@ export interface QuestionAnswerType {
   question: string,
   qcAnswers: Array<answerFromAPIType>,
 }
+
+export interface footerColorsType {
+  buttonsColor: string,
+  textColor: string,
+  backgroundColor: string,
+}
