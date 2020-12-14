@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiButton from '../../../components/form/Button';
@@ -14,18 +14,24 @@ import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
 import NiModal from '../../../components/Modal';
 import IconButton from '../../../components/IconButton';
+import Users from '../../../api/users';
+import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import MainActions from '../../../store/main/actions';
 
 interface ProfileProps {
   loggedUser: UserType,
   navigation: NavigationType,
+  setLoggedUser: (user: UserType) => void,
+
 }
 
-const Profile = ({ loggedUser, navigation }: ProfileProps) => {
+const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const [courses, setCourses] = useState<Array<CourseType>>([]);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>();
   const [pictureModal, setPictureModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
@@ -48,9 +54,12 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   }, []);
 
   useEffect(() => {
-    if (loggedUser && loggedUser.picture?.link) {
+    if (loggedUser.picture?.link) {
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
+    } else {
+      setSource(require('../../../../assets/images/default_avatar.png'));
+      setHasPhoto(false);
     }
   }, [loggedUser]);
 
@@ -63,8 +72,18 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
     if (pictureModal) setPictureModal(false);
   };
 
-  const DeletePicture = () => {
-    if (pictureModal) setPictureModal(false);
+  const DeletePicture = async () => {
+    try {
+      setIsLoading(true);
+      await Users.deleteImage(loggedUser._id);
+      const user = await Users.getById(loggedUser._id);
+      setLoggedUser(user);
+      if (pictureModal) setPictureModal(false);
+    } catch (e) {
+      console.error('error is', e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,6 +140,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         {hasPhoto &&
           <TouchableOpacity style={styles.button} onPress={DeletePicture}>
             <Text style={styles.buttonText}>Supprimer la photo</Text>
+            {isLoading &&
+              <ActivityIndicator style={[commonStyles.disabled, styles.loading]} color={GREY[200]} size="small" />
+            }
           </TouchableOpacity>}
       </NiModal>
     </ScrollView>
@@ -129,4 +151,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
 
 const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
+  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -59,5 +59,6 @@ module.exports = {
     __DEV__: true,
     Platform: true,
     JSX: true,
+    FormData: true,
   },
 };
