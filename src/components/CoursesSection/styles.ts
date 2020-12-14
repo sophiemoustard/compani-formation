@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'absolute',
-    right: -32,
-    bottom: 16,
+    right: -160,
+    bottom: 8,
+    maxHeight: 160,
   },
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
