@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import { MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../../types/CardType';
+import { footerColorsType, MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
-import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { navigate } from '../../../../navigationRef';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
@@ -26,12 +26,6 @@ export interface qcmAnswerType extends qcmAnswerFromAPIType {
   isSelected: boolean,
 }
 
-interface footerColorsType {
-  buttonsColor: string,
-  textColor: string,
-  backgroundColor: string,
-}
-
 const MultipleChoiceQuestionCard = ({
   card,
   cardIndex,
@@ -42,9 +36,9 @@ const MultipleChoiceQuestionCard = ({
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
   });
 
   useEffect(() => {
@@ -53,14 +47,14 @@ const MultipleChoiceQuestionCard = ({
 
   useEffect(() => {
     if (!isValidated) {
-      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
     if (isAnsweredCorrectly) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, answers, isAnsweredCorrectly]);
 
   if (isLoading) return null;
@@ -94,7 +88,7 @@ const MultipleChoiceQuestionCard = ({
   const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
 
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+  const style = styles(footerColors.background);
 
   return (
     <>
@@ -109,10 +103,9 @@ const MultipleChoiceQuestionCard = ({
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
-        {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={cardIndex} buttonDisabled={!isOneAnswerSelected()}
-          buttonColor={isOneAnswerSelected() ? footerColors.buttonsColor : GREY[300]} />
+        <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={cardIndex}
+          buttonDisabled={!isOneAnswerSelected()} footerColors={footerColors} explanation={card.explanation}
+          onPressFooterButton={onPressFooterButton} />
       </View>
     </>
   );

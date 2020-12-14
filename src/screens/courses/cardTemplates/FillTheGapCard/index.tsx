@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Text, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
-import { FillTheGapType } from '../../../../types/CardType';
+import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import cardsStyle from '../../../../styles/cards';
 import styles from './styles';
-import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
@@ -22,12 +21,6 @@ interface FillTheGap {
   index: number,
   isLoading: boolean,
   incGoodAnswersCount: () => void,
-}
-
-interface footerColorsType {
-  buttons: string,
-  text: string,
-  background: string,
 }
 
 export interface FillTheGapAnswers {
@@ -63,16 +56,20 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
   }, [card, goodAnswers, isLoading, isValidated]);
 
   useEffect(() => {
-    if (!isValidated) return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
+    if (!isValidated) {
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
+    }
 
-    if (isAnsweredCorrectly) return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
+    if (isAnsweredCorrectly) {
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
+    }
 
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, isAnsweredCorrectly]);
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.text, footerColors.background);
+  const style = styles(footerColors.background);
 
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;
@@ -129,11 +126,9 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
         </DraxProvider>
       </ScrollView>
       <View style={style.footerContainer}>
-        {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttons} index={index}
-          buttonDisabled={!areGapsFilled}
-          buttonColor={areGapsFilled ? footerColors.buttons : GREY[300]} />
+        <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={index}
+          buttonDisabled={!areGapsFilled} footerColors={footerColors} explanation={card.explanation}
+          onPressFooterButton={onPressFooterButton} />
       </View>
     </>
   );
