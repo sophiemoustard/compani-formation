@@ -89,7 +89,8 @@ export interface OpenQuestionType {
 }
 
 export interface OrderedAnswerType {
-  label: string,
+  text: string,
+  _id: string,
 }
 
 export interface OrderTheSequenceType {
