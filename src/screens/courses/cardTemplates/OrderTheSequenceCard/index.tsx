@@ -79,7 +79,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.text, footerColors.background);
+  const style = styles(footerColors.background);
 
   return (
     <>
