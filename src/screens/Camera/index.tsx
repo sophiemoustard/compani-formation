@@ -3,17 +3,17 @@ import { View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import mime from 'mime';
 import { Camera as Cam } from 'expo-camera';
-import styles from './styles';
 import { NavigationType } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
 import IconButton from '../../components/IconButton';
 import { ICON } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
-import { getLoggedUserId } from '../../store/main/selectors';
+import styles from './styles';
 import Users from '../../api/users';
-import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import { UserType } from '../../types/UserType';
+import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
+import { getLoggedUserId } from '../../store/main/selectors';
 import MainActions from '../../store/main/actions';
 
 interface CameraProps {
@@ -21,18 +21,6 @@ interface CameraProps {
   loggedUserId: string | null,
   setLoggedUser: (user: UserType) => void,
 
-}
-
-declare global {
-  interface FormDataValue {
-    uri: string;
-    name: string;
-    type: string;
-  }
-
-  interface FormData {
-    append(key: string, value: FormDataValue | string): void;
-  }
 }
 
 const Camera = ({ navigation, loggedUserId, setLoggedUser }: CameraProps) => {
@@ -96,7 +84,7 @@ const Camera = ({ navigation, loggedUserId, setLoggedUser }: CameraProps) => {
     <View style={styles.container}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
-          isLoading={isLoading} />
+          loading={isLoading} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
       <IconButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />

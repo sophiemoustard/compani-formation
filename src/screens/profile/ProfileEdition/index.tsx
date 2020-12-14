@@ -8,6 +8,7 @@ import {
   Platform,
   BackHandler,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import IconButton from '../../../components/IconButton';
@@ -26,7 +27,7 @@ import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
-import NiModal from '../../../components/Modal';
+import PictureModal from '../../../components/PictureModal';
 
 interface ProfileEditionProps {
   loggedUser: UserType,
@@ -50,10 +51,11 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingForModal, setIsLoadingForModal] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
-  const [hasPhoto, setHasPhoto] = useState<boolean>();
+  const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
@@ -67,9 +69,12 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
   useEffect(() => {
-    if (loggedUser && loggedUser.picture?.link) {
+    if (loggedUser?.picture?.link) {
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
+    } else {
+      setSource(require('../../../../assets/images/default_avatar.png'));
+      setHasPhoto(false);
     }
   }, [loggedUser]);
 
@@ -82,8 +87,18 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     if (pictureModal) setPictureModal(false);
   };
 
-  const DeletePicture = () => {
-    if (pictureModal) setPictureModal(false);
+  const DeletePicture = async () => {
+    try {
+      setIsLoadingForModal(true);
+      await Users.deleteImage(loggedUser._id);
+      const user = await Users.getById(loggedUser._id);
+      setLoggedUser(user);
+      if (pictureModal) setPictureModal(false);
+    } catch (e) {
+      console.error('error is', e);
+    } finally {
+      setIsLoadingForModal(false);
+    }
   };
 
   useEffect(() => {
@@ -194,20 +209,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
-        <NiModal visible={pictureModal} onRequestClose={() => setPictureModal(false)}>
-          <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
-            style={styles.modalGoBack} />
-          <TouchableOpacity style={styles.button} onPress={TakePicture}>
-            <Text style={styles.buttonText}>Prendre une photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={addPictureFromGallery}>
-            <Text style={styles.buttonText}>Ajouter une photo</Text>
-          </TouchableOpacity>
-          {hasPhoto &&
-          <TouchableOpacity style={styles.button} onPress={DeletePicture}>
-            <Text style={styles.buttonText}>Supprimer la photo</Text>
-          </TouchableOpacity>}
-        </NiModal>
+        <PictureModal visible={pictureModal} isLoading={isLoadingForModal} hasPhoto={hasPhoto}
+          setPictureModal={setPictureModal} TakePicture={TakePicture} addPictureFromGallery={addPictureFromGallery}
+          DeletePicture={DeletePicture} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
