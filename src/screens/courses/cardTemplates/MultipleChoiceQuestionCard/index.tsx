@@ -88,7 +88,7 @@ const MultipleChoiceQuestionCard = ({
   const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
 
-  const style = styles(footerColors.text, footerColors.background);
+  const style = styles(footerColors.background);
 
   return (
     <>

@@ -69,7 +69,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.text, footerColors.background);
+  const style = styles(footerColors.background);
 
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;

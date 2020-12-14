@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { MARGIN, PADDING } from '../../../../styles/metrics';
 
-const styles = (textColor: string, backgroundColor: string) => StyleSheet.create({
+const styles = (backgroundColor: string) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
