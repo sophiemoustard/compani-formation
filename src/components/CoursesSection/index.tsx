@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, StyleProp, ViewStyle, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleProp, ViewStyle, TouchableOpacity, Image } from 'react-native';
 import styles from './styles';
 import { SubProgramType } from '../../types/SubProgramType';
 import { CourseType } from '../../types/CourseType';
@@ -39,13 +39,10 @@ const CoursesSection = ({
         ItemSeparatorComponent={renderSeparator} />
       {showCatalogButton &&
       <TouchableOpacity style={styles.courseContainer}>
-        <ImageBackground imageStyle={styles.goToCatalogBackground} style={styles.goToCatalog}
-          source={require('../../../assets/images/go-to-catalog.png')}>
-          <Text style={styles.text}>Tu n’as pas de formation en cours...</Text>
-          <NiButton caption="Chercher une formation" onPress={() => navigate('Catalog')}
-            bgColor={PINK[500]}
-            color={WHITE} borderColor={PINK[500]} />
-        </ImageBackground>
+        <Text style={styles.text}>Tu n’as pas de formation en cours...</Text>
+        <NiButton caption="Chercher une formation" onPress={() => navigate('Catalog')} bgColor={PINK[500]}
+          color={WHITE} borderColor={PINK[500]} />
+        <Image source={require('../../../assets/images/go-to-catalog.png')} style={styles.image} />
       </TouchableOpacity>
       }
     </>

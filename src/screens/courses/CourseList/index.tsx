@@ -133,7 +133,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
         source={require('../../../../assets/images/ongoing_background.png')}>
         <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
-          countStyle={styles.onGoingCoursesCount} showCatalogButton={onGoingCourses.length === 0}/>
+          countStyle={styles.onGoingCoursesCount} showCatalogButton={!onGoingCourses.length} />
       </ImageBackground>
       {achievedCourses.length > 0 &&
         <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
