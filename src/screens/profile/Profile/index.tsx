@@ -13,25 +13,19 @@ import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../../components/IconButton';
-import Users from '../../../api/users';
-import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
 import PictureModal from '../../../components/PictureModal';
 
 interface ProfileProps {
   loggedUser: UserType,
   navigation: NavigationType,
-  setLoggedUser: (user: UserType) => void,
-
 }
 
-const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
+const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const [courses, setCourses] = useState<Array<CourseType>>([]);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
@@ -52,39 +46,6 @@ const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (loggedUser?.picture?.link) {
-      setSource({ uri: loggedUser.picture.link });
-      setHasPhoto(true);
-    } else {
-      setSource(require('../../../../assets/images/default_avatar.png'));
-      setHasPhoto(false);
-    }
-  }, [loggedUser]);
-
-  const TakePicture = () => {
-    if (pictureModal) setPictureModal(false);
-    navigation.navigate('Camera');
-  };
-
-  const addPictureFromGallery = () => {
-    if (pictureModal) setPictureModal(false);
-  };
-
-  const DeletePicture = async () => {
-    try {
-      setIsLoading(true);
-      await Users.deleteImage(loggedUser._id);
-      const user = await Users.getById(loggedUser._id);
-      setLoggedUser(user);
-      if (pictureModal) setPictureModal(false);
-    } catch (e) {
-      console.error('error is', e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <ScrollView style={commonStyles.container}>
@@ -128,17 +89,12 @@ const Profile = ({ loggedUser, navigation, setLoggedUser }: ProfileProps) => {
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
       </View>
-      <PictureModal visible={pictureModal} isLoading={isLoading} hasPhoto={hasPhoto}
-        setPictureModal={setPictureModal} TakePicture={TakePicture} addPictureFromGallery={addPictureFromGallery}
-        DeletePicture={DeletePicture} />
+      <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
+        setHasPhoto={setHasPhoto} />
     </ScrollView>
   );
 };
 
 const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps)(Profile);
