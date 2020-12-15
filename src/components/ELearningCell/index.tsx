@@ -34,7 +34,7 @@ const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      <ActivityList step={step} visible={isOpen} id={id} navigation={navigation} />
+      {isOpen && <ActivityList step={step} id={id} navigation={navigation} />}
     </View>
   );
 };

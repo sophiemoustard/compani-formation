@@ -51,8 +51,8 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
             onPress={onPressChevron} size={ICON.MD} color={GREY[500]} style={styles.iconButtonContainer} />}
         </View>
       </View>
-      { isOpen && <View style={[styles.container, styles.openedContainer]}>
-        <ActivityList step={step} visible={isOpen} navigation={navigation} id={id} />
+      {isOpen && <View style={[styles.container, styles.openedContainer]}>
+        <ActivityList step={step} navigation={navigation} id={id} />
       </View>}
     </>
   );
