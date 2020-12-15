@@ -4,14 +4,14 @@ import { StepType } from '../../types/StepType';
 import ActivityCell from '../activities/ActivityCell';
 import styles from './styles';
 
-interface ActivitiesListProps {
+interface ActivityListProps {
   step: StepType,
   visible: boolean,
   id: string,
   navigation: { navigate: (path: string, activityId: any) => {} },
 }
 
-const ActivitiesList = ({ step, visible, id, navigation }: ActivitiesListProps) => {
+const ActivityList = ({ step, visible, id, navigation }: ActivityListProps) => {
   const renderActivityCell = activity => <ActivityCell activity={activity} courseId={id} navigation={navigation} />;
 
   const renderSeparator = () => <View style={styles.separator} />;
@@ -26,4 +26,4 @@ const ActivitiesList = ({ step, visible, id, navigation }: ActivitiesListProps) 
   );
 };
 
-export default ActivitiesList;
+export default ActivityList;
