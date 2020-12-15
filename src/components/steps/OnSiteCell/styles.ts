@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
   upperContainer: {
     flexDirection: 'row',
   },
+  iconContainer: {
+    justifyContent: 'space-between',
+  },
   openedContainer: {
     marginRight: 0,
     borderBottomRightRadius: 0,
