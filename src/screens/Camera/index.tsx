@@ -13,17 +13,16 @@ import styles from './styles';
 import Users from '../../api/users';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
-import { getLoggedUserId } from '../../store/main/selectors';
 import MainActions from '../../store/main/actions';
 
 interface CameraProps {
   navigation: NavigationType,
-  loggedUserId: string | null,
+  loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 
 }
 
-const Camera = ({ navigation, loggedUserId, setLoggedUser }: CameraProps) => {
+const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   const [startCamera, setStartCamera] = useState<boolean>(true);
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
@@ -60,15 +59,16 @@ const Camera = ({ navigation, loggedUserId, setLoggedUser }: CameraProps) => {
       const data: FormData = new FormData();
       const uri = `file:///${photo.uri.split('file:/').join('')}`;
       const file = { uri, type: mime.getType(uri), name: 'test' };
-      data.append('fileName', 'test');
+      const { firstname, lastname } = loggedUser.identity;
+      data.append('fileName', `${lastname}${firstname}picture${Math.floor(Math.random() * (99))}`);
       data.append('file', file);
-
-      await Users.uploadImage(loggedUserId, data);
-      const user = await Users.getById(loggedUserId);
+      if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
+      await Users.uploadImage(loggedUser._id, data);
+      const user = await Users.getById(loggedUser._id);
       setLoggedUser(user);
       goBack();
     } catch (e) {
-      console.error('error is', e);
+      console.error(e);
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +92,7 @@ const Camera = ({ navigation, loggedUserId, setLoggedUser }: CameraProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),

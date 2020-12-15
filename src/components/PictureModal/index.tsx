@@ -35,6 +35,7 @@ const PictureModal = ({
   goBack,
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (loggedUser?.picture?.link) {
       setSource({ uri: loggedUser.picture.link });
@@ -55,7 +56,7 @@ const PictureModal = ({
     setPictureModal(false);
   };
 
-  const DeletePicture = async () => {
+  const deletePicture = async () => {
     try {
       setIsLoading(true);
       await Users.deleteImage(loggedUser._id);
@@ -64,11 +65,12 @@ const PictureModal = ({
       setPictureModal(false);
       if (goBack) goBack();
     } catch (e) {
-      console.error('error is', e);
+      console.error(e);
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
       <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
@@ -80,12 +82,11 @@ const PictureModal = ({
         <Text style={styles.buttonText}>Ajouter une photo</Text>
       </TouchableOpacity>
       {hasPhoto &&
-    <TouchableOpacity style={styles.button} onPress={DeletePicture} disabled={isLoading}>
-      <Text style={styles.buttonText}>Supprimer la photo</Text>
-      {isLoading &&
-        <ActivityIndicator style={[commonStyles.disabled, styles.loading]} color={GREY[200]} size="small" />
-      }
-    </TouchableOpacity>}
+        <TouchableOpacity style={styles.button} onPress={deletePicture} disabled={isLoading}>
+          <Text style={styles.buttonText}>Supprimer la photo</Text>
+          {isLoading &&
+            <ActivityIndicator style={[commonStyles.disabled, styles.loading]} color={GREY[200]} size="small" />}
+        </TouchableOpacity>}
     </NiModal>);
 };
 
