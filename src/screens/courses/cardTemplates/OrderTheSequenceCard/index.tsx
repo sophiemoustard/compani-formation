@@ -41,7 +41,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
   useEffect(() => {
     if (!isLoading && !isValidated) {
       const shuffledCards = shuffle(card.orderedAnswers
-        .map((ans, answerIndex) => ({ label: ans, goodPosition: answerIndex })));
+        .map((ans, answerIndex) => ({ label: ans.text, goodPosition: answerIndex })));
       setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
   }, [card, isValidated, isLoading]);
