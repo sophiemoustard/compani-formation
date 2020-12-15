@@ -39,21 +39,21 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
     <>
       <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
-      <View style={[styles.container, isOpen && styles.openedContainer]}>
-        <View style={styles.upperContainer}>
-          <TouchableOpacity onPress={openModal}>
-            <CalendarIcon slots={dates} progress={step.progress} />
-          </TouchableOpacity>
-          <StepCellTitle index={index} step={step} />
-          <View style={styles.iconContainer}>
-            <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
-              style={styles.infoButtonContainer} />
-            {!!step.activities?.length && <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' }
-              onPress={onPressChevron} size={ICON.MD} color={GREY[500]} style={styles.iconButtonContainer} />}
-          </View>
+      <View style={[styles.container, styles.upperContainer, isOpen && styles.openedContainer]}>
+        <TouchableOpacity onPress={openModal}>
+          <CalendarIcon slots={dates} progress={step.progress} />
+        </TouchableOpacity>
+        <StepCellTitle index={index} step={step} />
+        <View style={styles.iconContainer}>
+          <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
+            style={styles.infoButtonContainer} />
+          {!!step.activities?.length && <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' }
+            onPress={onPressChevron} size={ICON.MD} color={GREY[500]} style={styles.iconButtonContainer} />}
         </View>
-        <ActivitiesList step={step} visible={isOpen} navigation={navigation} id={id} />
       </View>
+      { isOpen && <View style={[styles.container, styles.openedContainer]}>
+        <ActivitiesList step={step} visible={isOpen} navigation={navigation} id={id} />
+      </View>}
     </>
   );
 };
