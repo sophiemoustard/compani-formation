@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { StepType } from '../../types/StepType';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from '../steps/StepCellTitle';
-import ActivityCell from '../activities/ActivityCell';
+import ActivitiesList from '../ActivitiesList';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 
@@ -19,10 +19,6 @@ interface ELearningCellProps {
 const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
-
-  const renderActivityCell = activity => <ActivityCell activity={activity} courseId={id} navigation={navigation} />;
-
-  const renderSeparator = () => <View style={styles.separator} />;
 
   const iconButtonStyle = isOpen
     ? { ...styles.iconButtonContainer, ...styles.openedIconButtonContainer }
@@ -38,10 +34,7 @@ const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      {isOpen &&
-        <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
-          renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
-          contentContainerStyle={styles.activityCellList} showsHorizontalScrollIndicator={false} />}
+      <ActivitiesList step={step} visible={isOpen} id={id} navigation={navigation} />
     </View>
   );
 };

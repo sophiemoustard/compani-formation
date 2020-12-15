@@ -31,13 +31,6 @@ const styles = StyleSheet.create({
   openedIconButtonContainer: {
     marginRight: MARGIN.MD,
   },
-  activityCellList: {
-    marginTop: MARGIN.MD,
-    paddingHorizontal: PADDING.MD,
-  },
-  separator: {
-    marginHorizontal: MARGIN.XS,
-  },
 });
 
 export default styles;
