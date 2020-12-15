@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   profileEdit: {
     ...FIRA_SANS_MEDIUM.MD,
     color: PINK[500],
+    marginTop: MARGIN.MD,
   },
 });
 
