@@ -40,16 +40,16 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
       <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
       <View style={[styles.container, isOpen && styles.openedContainer]}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.upperContainer}>
           <TouchableOpacity onPress={openModal}>
             <CalendarIcon slots={dates} progress={step.progress} />
           </TouchableOpacity>
           <StepCellTitle index={index} step={step} />
-          <View style={{ justifyContent: 'space-around' }}>
+          <View style={styles.iconContainer}>
             <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
               style={styles.infoButtonContainer} />
-            <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
-              color={GREY[500]} style={styles.iconButtonContainer} />
+            {!!step.activities?.length && <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' }
+              onPress={onPressChevron} size={ICON.MD} color={GREY[500]} style={styles.iconButtonContainer} />}
           </View>
         </View>
         <ActivitiesList step={step} visible={isOpen} navigation={navigation} id={id} />
