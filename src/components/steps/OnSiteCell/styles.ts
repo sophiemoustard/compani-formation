@@ -6,13 +6,13 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: GREY[100],
-    flexDirection: 'column',
+    flexDirection: 'row',
     padding: PADDING.LG,
-    borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
+    borderBottomWidth: BORDER_WIDTH,
   },
   upperContainer: {
-    flexDirection: 'row',
+    borderTopWidth: BORDER_WIDTH,
   },
   iconContainer: {
     justifyContent: 'space-between',
