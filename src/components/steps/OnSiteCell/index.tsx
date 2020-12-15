@@ -7,6 +7,7 @@ import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
+import ActivitiesList from '../../ActivitiesList';
 import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
 import IconButton from '../../IconButton';
 import styles from './styles';
@@ -15,10 +16,16 @@ interface OnSiteCellProps {
   step: StepType,
   slots?: Array<CourseSlotType>,
   index: number,
+  id: string,
+  navigation: { navigate: (path: string, activityId: any) => {} },
 }
 
-const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
+const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const onPressChevron = () => { setIsOpen(prevState => !prevState); };
+
   const stepSlots = slots.filter(slot => slot.step === step._id);
   const dates = stepSlots.length
     ? stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => moment(a).diff(b, 'days'))
@@ -32,13 +39,20 @@ const OnSiteCell = ({ step, slots = [], index }: OnSiteCellProps) => {
     <>
       <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
-      <View style={styles.container}>
-        <TouchableOpacity onPress={openModal}>
-          <CalendarIcon slots={dates} progress={step.progress} />
-        </TouchableOpacity>
-        <StepCellTitle index={index} step={step} />
-        <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
-          style={styles.infoButtonContainer} />
+      <View style={[styles.container, isOpen && styles.openedContainer]}>
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={openModal}>
+            <CalendarIcon slots={dates} progress={step.progress} />
+          </TouchableOpacity>
+          <StepCellTitle index={index} step={step} />
+          <View style={{ justifyContent: 'space-around' }}>
+            <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
+              style={styles.infoButtonContainer} />
+            <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
+              color={GREY[500]} style={styles.iconButtonContainer} />
+          </View>
+        </View>
+        <ActivitiesList step={step} visible={isOpen} navigation={navigation} id={id} />
       </View>
     </>
   );

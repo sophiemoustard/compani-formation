@@ -79,7 +79,10 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
   };
 
   const renderCells = ({ item, index }) => {
-    if (item.type === ON_SITE) return <OnSiteCell step={item} slots={course?.slots} index={index} />;
+    if (item.type === ON_SITE) {
+      return <OnSiteCell step={item} slots={course?.slots} index={index} navigation={navigation}
+        id={route.params.courseId} />;
+    }
 
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} navigation={navigation} id={route.params.courseId} />;
