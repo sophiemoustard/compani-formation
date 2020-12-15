@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { navigate } from '../../navigationRef';
 import NiModal from '../Modal';
+import NiButton from '../form/Button';
 import IconButton from '../IconButton';
 import { ICON } from '../../styles/metrics';
-import { GREY, PINK } from '../../styles/colors';
-import commonStyles from '../../styles/common';
+import { PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
 import { UserType } from '../../types/UserType';
 import Users from '../../api/users';
@@ -65,7 +65,11 @@ const PictureModal = ({
       setPictureModal(false);
       if (goBack) goBack();
     } catch (e) {
-      console.error(e);
+      Alert.alert(
+        'Echec de la suppression',
+        'Réessaie plus tard',
+        [{ text: 'OK', onPress: () => navigate('Camera') }], { cancelable: false }
+      );
     } finally {
       setIsLoading(false);
     }
@@ -75,18 +79,13 @@ const PictureModal = ({
     <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
       <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
-      <TouchableOpacity style={styles.button} onPress={TakePicture} disabled={isLoading}>
-        <Text style={styles.buttonText}>Prendre une photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={addPictureFromGallery} disabled={isLoading}>
-        <Text style={styles.buttonText}>Ajouter une photo</Text>
-      </TouchableOpacity>
+      <NiButton caption='Prendre une photo' style={styles.button} onPress={TakePicture} disabled={isLoading}
+        bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
+      <NiButton caption='Ajouter une photo' style={styles.button} onPress={addPictureFromGallery} disabled={isLoading}
+        bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
       {hasPhoto &&
-        <TouchableOpacity style={styles.button} onPress={deletePicture} disabled={isLoading}>
-          <Text style={styles.buttonText}>Supprimer la photo</Text>
-          {isLoading &&
-            <ActivityIndicator style={[commonStyles.disabled, styles.loading]} color={GREY[200]} size="small" />}
-        </TouchableOpacity>}
+        <NiButton caption='Supprimer la photo' style={styles.button} onPress={deletePicture} disabled={isLoading}
+          bgColor={WHITE} borderColor={WHITE} color={PINK[500]} loading={isLoading} />}
     </NiModal>);
 };
 

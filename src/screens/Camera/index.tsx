@@ -14,6 +14,7 @@ import Users from '../../api/users';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
+import { navigate } from '../../navigationRef';
 
 interface CameraProps {
   navigation: NavigationType,
@@ -68,7 +69,11 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
       setLoggedUser(user);
       goBack();
     } catch (e) {
-      console.error(e);
+      Alert.alert(
+        'Echec de l\'enregistrement',
+        'Essaie de reprendre la photo',
+        [{ text: 'OK', onPress: () => navigate('Camera') }], { cancelable: false }
+      );
     } finally {
       setIsLoading(false);
     }

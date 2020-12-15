@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { PINK } from '../../styles/colors';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { PADDING } from '../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: MARGIN.MD,
   },
   buttonText: {
     ...FIRA_SANS_MEDIUM.MD,
