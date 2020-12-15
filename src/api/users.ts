@@ -26,4 +26,12 @@ export default {
     const newUser = await alenviAxios.post(`${baseURL}/users`, { ...data, origin: MOBILE });
     return newUser.data.data.user;
   },
+  uploadImage: async (userId, data) => {
+    const { baseURL } = getEnvVars();
+    await alenviAxios.post(`${baseURL}/users/${userId}/upload`, data);
+  },
+  deleteImage: async (userId) => {
+    const { baseURL } = getEnvVars();
+    await alenviAxios.delete(`${baseURL}/users/${userId}/upload`);
+  },
 };

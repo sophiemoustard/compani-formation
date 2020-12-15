@@ -7,6 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   BackHandler,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import IconButton from '../../../components/IconButton';
@@ -25,6 +27,7 @@ import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
+import PictureModal from '../../../components/PictureModal';
 
 interface ProfileEditionProps {
   loggedUser: UserType,
@@ -50,6 +53,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
+  const [hasPhoto, setHasPhoto] = useState<boolean>(false);
+  const [pictureModal, setPictureModal] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -145,6 +151,12 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mes informations</Text>
+        <View style={styles.imageContainer}>
+          <Image style={styles.profileImage} source={source} />
+          <TouchableOpacity onPress={() => setPictureModal(true)}>
+            <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.input}>
           <NiInput caption="Prénom" value={editedUser.identity.firstname}
             type="firstname" darkMode={false} onChangeText={text => onChangeIdentity('firstname', text)} />
@@ -169,6 +181,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
         </View>
+        <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
+          setHasPhoto={setHasPhoto} goBack={goBack} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

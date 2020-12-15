@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
+import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import { PINK, TRANSPARENT_GREY } from '../../../styles/colors';
 
 const styles = StyleSheet.create({
   title: {
@@ -24,6 +25,22 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.XL,
     justifyContent: 'flex-end',
     flex: 1,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: MARGIN.XL,
+  },
+  profileImage: {
+    height: 88,
+    width: 88,
+    borderRadius: BORDER_RADIUS.XXL,
+    borderWidth: BORDER_WIDTH,
+    borderColor: TRANSPARENT_GREY,
+  },
+  profileEdit: {
+    ...FIRA_SANS_MEDIUM.MD,
+    color: PINK[500],
+    marginTop: MARGIN.MD,
   },
 });
 

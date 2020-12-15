@@ -54,6 +54,7 @@
     "expo-font": "~8.3.0",
     "expo-linear-gradient": "~8.3.0",
     "expo-screen-orientation": "~2.0.0",
+    "mime": "^2.4.6",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",

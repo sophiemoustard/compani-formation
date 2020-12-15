@@ -46,7 +46,7 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
   };
 
   const onTakePicture = async () => {
-    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
+    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true, quality: 0.8 });
     setPreviewVisible(true);
     setCapturedImage(photo);
   };
@@ -67,7 +67,7 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
         <IconButton disabled={cameraType === front} iconFamily={IONICONS} onPress={onHandleFlashMode}
           style={styles.flash} color={WHITE} size={ICON.XL} name={flashMode === on ? 'md-flash' : 'md-flash-off'}/>
         <TouchableOpacity onPress={onTakePicture} style={styles.takePicture} />
-        <IconButton iconFamily={IONICONS} style={styles.cameraType} color={WHITE}size={ICON.XL}
+        <IconButton iconFamily={IONICONS} style={styles.cameraType} color={WHITE} size={ICON.XL}
           name={cameraType === front ? 'ios-reverse-camera' : 'ios-camera'} onPress={onHandleCameraType} />
       </View>
     </Camera>
