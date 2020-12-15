@@ -39,7 +39,8 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
     <>
       <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
-      <View style={[styles.container, styles.upperContainer, isOpen && styles.openedContainer]}>
+      <TouchableOpacity style={[styles.container, styles.upperContainer, isOpen && styles.openedContainer]}
+        onPress={onPressChevron}>
         <TouchableOpacity onPress={openModal}>
           <CalendarIcon slots={dates} progress={step.progress} />
         </TouchableOpacity>
@@ -50,7 +51,7 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
           {!!step.activities?.length && <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' }
             onPress={onPressChevron} size={ICON.MD} color={GREY[500]} style={styles.iconButtonContainer} />}
         </View>
-      </View>
+      </TouchableOpacity>
       {isOpen && <View style={[styles.container, styles.openedContainer]}>
         <ActivityList step={step} navigation={navigation} id={id} />
       </View>}
