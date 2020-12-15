@@ -4,14 +4,14 @@ import { StepType } from '../../types/StepType';
 import ActivityCell from '../activities/ActivityCell';
 import styles from './styles';
 
-interface ELearningCellProps {
+interface ActivitiesListProps {
   step: StepType,
   visible: boolean,
   id: string,
   navigation: { navigate: (path: string, activityId: any) => {} },
 }
 
-const ELearningCell = ({ step, visible, id, navigation }: ELearningCellProps) => {
+const ActivitiesList = ({ step, visible, id, navigation }: ActivitiesListProps) => {
   const renderActivityCell = activity => <ActivityCell activity={activity} courseId={id} navigation={navigation} />;
 
   const renderSeparator = () => <View style={styles.separator} />;
@@ -26,4 +26,4 @@ const ELearningCell = ({ step, visible, id, navigation }: ELearningCellProps) =>
   );
 };
 
-export default ELearningCell;
+export default ActivitiesList;
