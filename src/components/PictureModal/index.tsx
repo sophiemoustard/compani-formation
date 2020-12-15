@@ -68,7 +68,7 @@ const PictureModal = ({
       Alert.alert(
         'Echec de la suppression',
         'Réessaie plus tard',
-        [{ text: 'OK', onPress: () => navigate('Camera') }], { cancelable: false }
+        [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
       );
     } finally {
       setIsLoading(false);

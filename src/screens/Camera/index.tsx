@@ -59,9 +59,9 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
       setIsLoading(true);
       const data: FormData = new FormData();
       const uri = `file:///${photo.uri.split('file:/').join('')}`;
-      const file = { uri, type: mime.getType(uri), name: 'test' };
       const { firstname, lastname } = loggedUser.identity;
-      data.append('fileName', `${lastname}${firstname}picture${Math.floor(Math.random() * (99))}`);
+      const file = { uri, type: mime.getType(uri), name: `photo_${firstname}_${lastname}` };
+      data.append('fileName', `photo_${firstname}_${lastname}`);
       data.append('file', file);
       if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
       await Users.uploadImage(loggedUser._id, data);
