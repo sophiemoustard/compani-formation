@@ -127,16 +127,14 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
       {nextSteps.length > 0 &&
         <View style={styles.nextSteps}>
           <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
-            renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'}/>
+            renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'} />
         </View>
       }
-      {onGoingCourses.length > 0 &&
-        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/ongoing_background.png')}>
-          <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
-            countStyle={styles.onGoingCoursesCount} />
-        </ImageBackground>
-      }
+      <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+        source={require('../../../../assets/images/ongoing_background.png')}>
+        <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
+          countStyle={styles.onGoingCoursesCount} showCatalogButton={!onGoingCourses.length} />
+      </ImageBackground>
       {achievedCourses.length > 0 &&
         <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
           source={require('../../../../assets/images/achieved_background.png')}>
