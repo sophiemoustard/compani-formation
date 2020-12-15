@@ -7,7 +7,7 @@ import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
-import ActivitiesList from '../../ActivitiesList';
+import ActivityList from '../../ActivityList';
 import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
 import IconButton from '../../IconButton';
 import styles from './styles';
@@ -52,7 +52,7 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
         </View>
       </View>
       { isOpen && <View style={[styles.container, styles.openedContainer]}>
-        <ActivitiesList step={step} visible={isOpen} navigation={navigation} id={id} />
+        <ActivityList step={step} visible={isOpen} navigation={navigation} id={id} />
       </View>}
     </>
   );

@@ -5,7 +5,7 @@ import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from '../steps/StepCellTitle';
-import ActivitiesList from '../ActivitiesList';
+import ActivityList from '../ActivityList';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 
@@ -34,7 +34,7 @@ const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      <ActivitiesList step={step} visible={isOpen} id={id} navigation={navigation} />
+      <ActivityList step={step} visible={isOpen} id={id} navigation={navigation} />
     </View>
   );
 };
