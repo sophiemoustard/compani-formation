@@ -15,11 +15,11 @@ import Users from '../../api/users';
 import Authentication from '../../api/authentication';
 
 interface EmailFormProps {
+  route: { params: { firstConnection: string } },
   navigation: NavigationType,
-  firstConnection?: boolean,
 }
 
-const EmailForm = ({ navigation, firstConnection = false }: EmailFormProps) => {
+const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
@@ -61,7 +61,7 @@ const EmailForm = ({ navigation, firstConnection = false }: EmailFormProps) => {
       setIsLoading(true);
       if (isValid) {
         if (error) setError(false);
-        if (!firstConnection) await sendEmail();
+        if (!route.params.firstConnection) await sendEmail();
         else {
           const isExistingUser = await Users.exists({ email });
           if (isExistingUser) await sendEmail();

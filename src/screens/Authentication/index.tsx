@@ -38,7 +38,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   const onPress = () => signIn({ email, password });
   const forgotPassword = () => {
     resetError();
-    navigation.navigate('EmailForm');
+    navigation.navigate('EmailForm', { firstConnection: false });
   };
 
   const firstConnection = () => navigation.navigate('EmailForm', { firstConnection: true });
