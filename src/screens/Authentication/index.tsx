@@ -38,10 +38,10 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   const onPress = () => signIn({ email, password });
   const forgotPassword = () => {
     resetError();
-    navigation.navigate('ForgotPassword');
+    navigation.navigate('EmailForm');
   };
 
-  const firstConnection = () => navigation.navigate('FirstConnection');
+  const firstConnection = () => navigation.navigate('EmailForm', { firstConnection: true });
 
   return (
     <ImageBackground

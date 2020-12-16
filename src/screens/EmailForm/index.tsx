@@ -14,11 +14,12 @@ import BottomPopUp from '../../components/BottomPopUp';
 import Users from '../../api/users';
 import Authentication from '../../api/authentication';
 
-interface FirstConnectionProps {
+interface EmailFormProps {
   navigation: NavigationType,
+  firstConnection?: boolean,
 }
 
-const FirstConnection = ({ navigation }: FirstConnectionProps) => {
+const EmailForm = ({ navigation, firstConnection = false }: EmailFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
@@ -59,10 +60,13 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
     try {
       setIsLoading(true);
       if (isValid) {
-        const isExistingUser = await Users.exists({ email });
-        if (isExistingUser) await sendEmail();
-        else navigation.navigate('CreateAccount', { email });
         if (error) setError(false);
+        if (!firstConnection) await sendEmail();
+        else {
+          const isExistingUser = await Users.exists({ email });
+          if (isExistingUser) await sendEmail();
+          else navigation.navigate('CreateAccount', { email });
+        }
       }
     } catch (e) {
       setError(true);
@@ -120,4 +124,4 @@ const FirstConnection = ({ navigation }: FirstConnectionProps) => {
   );
 };
 
-export default FirstConnection;
+export default EmailForm;
