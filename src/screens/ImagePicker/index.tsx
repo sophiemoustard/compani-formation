@@ -15,6 +15,7 @@ import commonStyle from '../../styles/common';
 import { GREY } from '../../styles/colors';
 import styles from './styles';
 import { NavigationType } from '../../types/NavigationType';
+import { IMAGE_MAX_SIZE } from '../../core/data/constants';
 
 interface ImagePickerContainerProps {
   navigation: NavigationType;
@@ -25,7 +26,6 @@ interface ImagePickerContainerProps {
 
 const ImagePickerContainer = ({ navigation, loggedUser, setLoggedUser }:ImagePickerContainerProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const maxSize = 5242880;
 
   useEffect(() => {
     async function requestPermissions() {
@@ -60,7 +60,7 @@ const ImagePickerContainer = ({ navigation, loggedUser, setLoggedUser }:ImagePic
     const compressedPhoto = await ImageManipulator.manipulateAsync(
       uri,
       [],
-      { compress: 1 / (size / maxSize) }
+      { compress: 1 / (size / IMAGE_MAX_SIZE) }
     );
 
     return `file:///${compressedPhoto.uri.split('file:/').join('')}`;
@@ -70,7 +70,7 @@ const ImagePickerContainer = ({ navigation, loggedUser, setLoggedUser }:ImagePic
     try {
       setIsLoading(true);
       const fileInfos = await FileSystem.getInfoAsync(photo.uri);
-      const uri = (fileInfos.size && ((fileInfos.size / maxSize) > 1))
+      const uri = (fileInfos.size && ((fileInfos.size / IMAGE_MAX_SIZE) > 1))
         ? await compressPhoto(photo.uri, fileInfos.size)
         : `file:///${photo.uri.split('file:/').join('')}`;
 
@@ -98,7 +98,7 @@ const ImagePickerContainer = ({ navigation, loggedUser, setLoggedUser }:ImagePic
   return isLoading && (
     <View style={styles.loader}>
       <Text style={styles.text}>Enregistrement en cours...</Text>
-      <ActivityIndicator style={commonStyle.disabled} color={GREY[400]} size='large' />
+      <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
     </View>
   );
 };

@@ -3,6 +3,8 @@ import { View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import mime from 'mime';
 import { Camera as Cam } from 'expo-camera';
+import * as FileSystem from 'expo-file-system';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { NavigationType } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
@@ -15,6 +17,7 @@ import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import { navigate } from '../../navigationRef';
+import { IMAGE_MAX_SIZE } from '../../core/data/constants';
 
 interface CameraProps {
   navigation: NavigationType,
@@ -54,11 +57,25 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
+  const compressPhoto = async (uri, size) => {
+    const compressedPhoto = await ImageManipulator.manipulateAsync(
+      uri,
+      [],
+      { compress: 1 / (size / IMAGE_MAX_SIZE) }
+    );
+
+    return `file:///${compressedPhoto.uri.split('file:/').join('')}`;
+  };
+
   const onSavePhoto = async (photo) => {
     try {
       setIsLoading(true);
+      const fileInfos = await FileSystem.getInfoAsync(photo.uri);
+      const uri = (fileInfos.size && ((fileInfos.size / IMAGE_MAX_SIZE) > 1))
+        ? await compressPhoto(photo.uri, fileInfos.size)
+        : `file:///${photo.uri.split('file:/').join('')}`;
+
       const data: FormData = new FormData();
-      const uri = `file:///${photo.uri.split('file:/').join('')}`;
       const { firstname, lastname } = loggedUser.identity;
       const file = { uri, type: mime.getType(uri), name: `photo_${firstname}_${lastname}` };
       data.append('fileName', `photo_${firstname}_${lastname}`);

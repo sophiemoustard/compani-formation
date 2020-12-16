@@ -45,7 +45,7 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
   };
 
   const onTakePicture = async () => {
-    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true, quality: 0.8 });
+    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
     setPreviewVisible(true);
     setCapturedImage(photo);
   };
