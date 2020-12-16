@@ -5,7 +5,7 @@ import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import IconButton from '../IconButton';
 import StepCellTitle from '../steps/StepCellTitle';
-import ActivityList from '../ActivityList';
+import ActivityList from '../activities/ActivityList';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 

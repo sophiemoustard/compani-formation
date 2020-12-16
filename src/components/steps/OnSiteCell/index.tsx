@@ -7,7 +7,7 @@ import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
-import ActivityList from '../../ActivityList';
+import ActivityList from '../../activities/ActivityList';
 import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
 import IconButton from '../../IconButton';
 import styles from './styles';
@@ -40,7 +40,7 @@ const OnSiteCell = ({ step, slots = [], index, navigation, id }: OnSiteCellProps
       <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
       <TouchableOpacity style={[styles.container, styles.upperContainer, isOpen && styles.openedContainer]}
-        onPress={onPressChevron}>
+        onPress={onPressChevron} disabled={!step.activities?.length}>
         <TouchableOpacity onPress={openModal}>
           <CalendarIcon slots={dates} progress={step.progress} />
         </TouchableOpacity>
