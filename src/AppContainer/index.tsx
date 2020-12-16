@@ -10,6 +10,7 @@ import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
 import ProfileEdition from '../screens/profile/ProfileEdition';
 import Camera from '../screens/Camera';
+import ImagePickerContainer from '../screens/ImagePicker';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
@@ -94,7 +95,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const authScreens = { Authentication, EmailForm, CreateAccount };
 
-  const Profile = { ProfileEdition, PasswordEdition, Camera };
+  const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerContainer };
   const Courses = { CourseProfile, SubProgramProfile };
   const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
 

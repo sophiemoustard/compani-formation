@@ -52,6 +52,11 @@ const PictureModal = ({
     navigate('Camera');
   };
 
+  const addPictureFromGallery = () => {
+    setPictureModal(false);
+    navigate('ImagePickerContainer');
+  };
+
   const deletePicture = async () => {
     try {
       setIsLoading(true);
