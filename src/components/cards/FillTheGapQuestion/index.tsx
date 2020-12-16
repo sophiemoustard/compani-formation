@@ -26,13 +26,15 @@ const FillTheGapQuestion = ({ text, isValidated, renderGap }: FillTheGapQuestion
     });
   };
 
-  return <View style={[cardsStyle.question, styles.questionContainer]} pointerEvents={isValidated ? 'none' : 'auto'}>
-    {formatText(splittedText).map((txt, index) => {
-      if (txt.match(/^<trou[0,1]>$/)) return renderGap(Number(txt.replace(/^<trou([0,1])>$/, '$1')));
-      return <Text style={styles.question} key={`text${index}`}>{`${txt} `}</Text>;
-    })
-    }
-  </View>;
+  return (
+    <View style={[cardsStyle.question, styles.questionContainer]} pointerEvents={isValidated ? 'none' : 'auto'}>
+      {formatText(splittedText).map((txt, index) => {
+        if (txt.match(/^<trou[0,1]>$/)) return renderGap(Number(txt.replace(/^<trou([0,1])>$/, '$1')));
+        return <Text style={styles.question} key={`text${index}`}>{`${txt} `}</Text>;
+      })
+      }
+    </View>
+  );
 };
 
 export default FillTheGapQuestion;
