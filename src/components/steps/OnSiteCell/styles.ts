@@ -7,11 +7,12 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: GREY[100],
     flexDirection: 'row',
-    padding: PADDING.LG,
+    paddingBottom: PADDING.LG,
     borderColor: GREY[200],
     borderBottomWidth: BORDER_WIDTH,
   },
   upperContainer: {
+    padding: PADDING.LG,
     borderTopWidth: BORDER_WIDTH,
   },
   iconContainer: {
