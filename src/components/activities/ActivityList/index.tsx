@@ -15,9 +15,11 @@ const ActivityList = ({ step, id, navigation }: ActivityListProps) => {
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  return <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
-    renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
-    contentContainerStyle={styles.cell} showsHorizontalScrollIndicator={false} />;
+  return (
+    <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
+      renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
+      contentContainerStyle={styles.cell} showsHorizontalScrollIndicator={false} />
+  );
 };
 
 export default ActivityList;
