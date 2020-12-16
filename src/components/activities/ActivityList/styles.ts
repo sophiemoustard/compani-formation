@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { MARGIN, PADDING } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
-  activityCellList: {
+  cell: {
     marginTop: MARGIN.MD,
     paddingHorizontal: PADDING.MD,
   },
