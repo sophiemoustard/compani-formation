@@ -81,7 +81,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   const goBack = i => (i > 0
     ? navigation.navigate(`create-account-screen-${i - 1}`)
-    : navigation.navigate('FirstConnection'));
+    : navigation.navigate('EmailForm', { firstConnection: true }));
 
   const setForm = (data, index) => {
     setFormList(prevFormList => (prevFormList
