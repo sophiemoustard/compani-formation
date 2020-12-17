@@ -12,6 +12,7 @@ import styles from './styles';
 import { ProgramType } from '../../../types/ProgramType';
 import CoursesSection from '../../../components/CoursesSection';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
+import { capitalizeFirstLetter } from '../../../core/helpers/utils';
 
 interface CatalogProps {
   loggedUserId: string | null,
@@ -21,22 +22,22 @@ interface CatalogProps {
 const CategoriesStyleList = [
   {
     imageBackground: require('../../../../assets/images/yellow_section_background.png'),
-    backgroundStyle: styles('').leftBackground,
+    backgroundStyle: styles({ background: YELLOW[200], color: YELLOW[900] }).leftBackground,
     countStyle: { background: YELLOW[200], color: YELLOW[900] },
   },
   {
     imageBackground: require('../../../../assets/images/green_section_background.png'),
-    backgroundStyle: styles('').rightBackground,
+    backgroundStyle: styles({ background: GREEN[200], color: GREEN[900] }).rightBackground,
     countStyle: { background: GREEN[200], color: GREEN[900] },
   },
   {
     imageBackground: require('../../../../assets/images/purple_section_background.png'),
-    backgroundStyle: styles('').leftBackground,
+    backgroundStyle: styles({ background: PURPLE[200], color: PURPLE[800] }).leftBackground,
     countStyle: { background: PURPLE[200], color: PURPLE[800] },
   },
   {
     imageBackground: require('../../../../assets/images/pink_section_background.png'),
-    backgroundStyle: styles('').rightBackground,
+    backgroundStyle: styles({ background: PINK[200], color: PINK[600] }).rightBackground,
     countStyle: { background: PINK[200], color: PINK[600] },
   },
 ];
@@ -45,16 +46,13 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
-  const style = styles('');
+  const style = styles({});
 
   const getPrograms = async () => {
     try {
       const fetchedPrograms = await Programs.getELearningPrograms();
       const splittedByCategoryPrograms = fetchedPrograms.map(f => (
-        f.categories.map(category => ({
-          ...f,
-          category: category.name,
-        }))
+        f.categories.map(category => ({ ...f, category: category.name }))
       )).flat();
       setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
     } catch (e) {
@@ -80,7 +78,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
       {Object.keys(programsByCategories).map((key, i) =>
         <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
           key={`program${i}`} source={CategoriesStyleList[i % 4].imageBackground}>
-          <CoursesSection items={programsByCategories[key]} title={key}
+          <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
             countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
         </ImageBackground>)}
       <View style={style.footer}>
