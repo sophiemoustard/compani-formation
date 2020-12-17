@@ -19,29 +19,29 @@ interface CatalogProps {
 }
 
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
-  const [programs, setPrograms] = useState<object>({});
+  const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const style = styles('');
   const CategoriesStyleList = [
     {
       imageBackground: require('../../../../assets/images/yellow_section_background.png'),
-      backgroundStyle: style.yellowAndGreenBackground,
+      backgroundStyle: style.rightBackground,
       countStyle: { background: YELLOW[200], color: YELLOW[900] },
     },
     {
       imageBackground: require('../../../../assets/images/pink_section_background.png'),
-      backgroundStyle: style.pinkAndPurpleBackground,
+      backgroundStyle: style.leftBackground,
       countStyle: { background: PINK[200], color: PINK[600] },
     },
     {
       imageBackground: require('../../../../assets/images/green_section_background.png'),
-      backgroundStyle: style.yellowAndGreenBackground,
+      backgroundStyle: style.rightBackground,
       countStyle: { background: GREEN[200], color: GREEN[900] },
     },
     {
       imageBackground: require('../../../../assets/images/purple_section_background.png'),
-      backgroundStyle: style.pinkAndPurpleBackground,
+      backgroundStyle: style.leftBackground,
       countStyle: { background: PURPLE[200], color: PURPLE[800] },
     },
   ];
@@ -55,11 +55,11 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
           category: category.name,
         }))
       )).flat();
-      setPrograms(groupBy(splittedByCategoryPrograms, f => f.category));
+      setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setPrograms(() => {});
+      setProgramsByCategories(() => {});
     }
   };
 
@@ -76,12 +76,11 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   return (
     <ScrollView style={commonStyles.container} contentContainerStyle={style.container}>
       <Text style={commonStyles.title}>Explorer</Text>
-      {Object.keys(programs).map((key, i) =>
+      {Object.keys(programsByCategories).map((key, i) =>
         <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
           key={`program${i}`} source={CategoriesStyleList[i % 4].imageBackground}>
-          <CoursesSection items={programs[key]} title={key}
-            countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount}
-            renderItem={renderItem} />
+          <CoursesSection items={programsByCategories[key]} title={key}
+            countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
         </ImageBackground>)}
       <View style={style.footer}>
         <Image style={style.elipse} source={require('../../../../assets/images/log_out_background.png')} />

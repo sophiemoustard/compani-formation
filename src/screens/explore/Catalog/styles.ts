@@ -20,13 +20,13 @@ const styles = count => StyleSheet.create({
   sectionContainer: {
     marginVertical: MARGIN.LG,
   },
-  yellowAndGreenBackground: {
+  rightBackground: {
     resizeMode: 'contain',
     position: 'absolute',
     right: -360,
     top: -32,
   },
-  pinkAndPurpleBackground: {
+  leftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
     left: -144,
