@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import mime from 'mime';
-import { Camera as Cam } from 'expo-camera';
-import * as FileSystem from 'expo-file-system';
-import * as ImageManipulator from 'expo-image-manipulator';
 import { NavigationType } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
@@ -12,12 +8,11 @@ import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
 import styles from './styles';
-import Users from '../../api/users';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import { navigate } from '../../navigationRef';
-import { IMAGE_MAX_SIZE } from '../../core/data/constants';
+import { savePhoto } from '../../core/helpers/pictures';
 
 interface CameraProps {
   navigation: NavigationType,
@@ -27,28 +22,11 @@ interface CameraProps {
 }
 
 const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
-  const [startCamera, setStartCamera] = useState<boolean>(true);
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
-
-  const onStartCamera = async () => {
-    const { status } = await Cam.requestPermissionsAsync();
-    if (status === 'granted') {
-      setStartCamera(true);
-    } else {
-      Alert.alert(
-        'Accès refusé',
-        'Vérifie que l\'application a bien l\'autorisation d\'utiliser l\'appareil photo',
-        [{ text: 'OK', onPress: () => goBack() }], { cancelable: false }
-      );
-    }
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { onStartCamera(); }, []);
 
   const hardwareBackPress = () => {
     goBack();
@@ -57,32 +35,10 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
 
   useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
-  const compressPhoto = async (uri, size) => {
-    const compressedPhoto = await ImageManipulator.manipulateAsync(
-      uri,
-      [],
-      { compress: 1 / (size / IMAGE_MAX_SIZE) }
-    );
-
-    return `file:///${compressedPhoto.uri.split('file:/').join('')}`;
-  };
-
   const onSavePhoto = async (photo) => {
     try {
       setIsLoading(true);
-      const fileInfos = await FileSystem.getInfoAsync(photo.uri);
-      const uri = (fileInfos.size && ((fileInfos.size / IMAGE_MAX_SIZE) > 1))
-        ? await compressPhoto(photo.uri, fileInfos.size)
-        : `file:///${photo.uri.split('file:/').join('')}`;
-
-      const data: FormData = new FormData();
-      const { firstname, lastname } = loggedUser.identity;
-      const file = { uri, type: mime.getType(uri), name: `photo_${firstname}_${lastname}` };
-      data.append('fileName', `photo_${firstname}_${lastname}`);
-      data.append('file', file);
-      if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
-      await Users.uploadImage(loggedUser._id, data);
-      const user = await Users.getById(loggedUser._id);
+      const user = await savePhoto(photo, loggedUser);
       setLoggedUser(user);
       goBack();
     } catch (e) {
@@ -99,10 +55,9 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   const onRetakePicture = () => {
     setCapturedImage(null);
     setPreviewVisible(false);
-    onStartCamera();
   };
 
-  return startCamera && (
+  return (
     <View style={styles.container}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}

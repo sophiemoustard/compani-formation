@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { connect } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+import * as Camera from 'expo-camera';
 import { navigate } from '../../navigationRef';
 import NiModal from '../Modal';
 import NiButton from '../form/Button';
@@ -49,12 +51,12 @@ const PictureModal = ({
 
   const TakePicture = () => {
     setPictureModal(false);
-    navigate('Camera');
+    requestPermissionsForCamera();
   };
 
   const addPictureFromGallery = () => {
     setPictureModal(false);
-    navigate('ImagePickerContainer');
+    requestPermissionsForImagePicker();
   };
 
   const deletePicture = async () => {
@@ -71,6 +73,45 @@ const PictureModal = ({
         'Réessaie plus tard',
         [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const requestPermissionsForImagePicker = async () => {
+    try {
+      setIsLoading(true);
+      const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+      if (status === 'granted') navigate('ImagePickerManager');
+      else {
+        Alert.alert(
+          'Accès refusé',
+          'Vérifie que l\'application a bien l\'autorisation d\'accéder à la galerie',
+          [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+        );
+      }
+    } catch {
+      if (goBack) goBack();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const requestPermissionsForCamera = async () => {
+    try {
+      setIsLoading(true);
+      const { status } = await Camera.requestPermissionsAsync();
+      if (status === 'granted') {
+        navigate('Camera');
+      } else {
+        Alert.alert(
+          'Accès refusé',
+          'Vérifie que l\'application a bien l\'autorisation d\'utiliser l\'appareil photo',
+          [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+        );
+      }
+    } catch {
+      setPictureModal(false);
     } finally {
       setIsLoading(false);
     }
