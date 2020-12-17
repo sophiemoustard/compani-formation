@@ -6,7 +6,6 @@ import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
-import NiErrorMessage from '../../components/ErrorMessage';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
