@@ -101,11 +101,16 @@ export interface OrderTheSequenceType {
   explanation: string,
 }
 
+export interface GapAnswerType {
+  text: string,
+  _id: string,
+}
+
 export interface FillTheGapType {
   _id: string,
   template: string,
   gappedText: string,
-  falsyGapAnswers: Array<string>,
+  falsyGapAnswers: Array<GapAnswerType>,
   explanation: string,
 }
 

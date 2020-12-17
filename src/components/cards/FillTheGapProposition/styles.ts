@@ -21,6 +21,8 @@ const styles = ({ color, isGoodAnswer, isSelected, isValidated }: StylesProps) =
     borderRadius: BORDER_RADIUS.MD,
   },
   textContainer: {
+    display: 'flex',
+    justifyContent: 'center',
     backgroundColor: WHITE,
     borderWidth: BORDER_WIDTH,
     borderColor: isValidated && (isSelected || isGoodAnswer) ? color : GREY[200],

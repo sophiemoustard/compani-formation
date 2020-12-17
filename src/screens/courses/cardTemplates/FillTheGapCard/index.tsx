@@ -49,7 +49,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setPropositions(shuffle([...card.falsyGapAnswers, ...goodAnswers])
+      setPropositions(shuffle([...card.falsyGapAnswers.map(a => a.text), ...goodAnswers])
         .map(proposition => ({ text: proposition, visible: true })));
       setSelectedAnswers(goodAnswers.map(() => ''));
     }
