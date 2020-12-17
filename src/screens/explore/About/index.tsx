@@ -52,7 +52,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
 
   const goToNextActivity = () => {
     navigation.dispatch(StackActions.push('CourseProfile', { courseId }));
-    navigation.navigate('CardContainer', { activityId: nextActivityId, courseId });
+    navigation.navigate('CardContainer', { activityId: nextActivityId, profileId: courseId });
   };
 
   const subscribeAndGoToCourseProfile = async () => {

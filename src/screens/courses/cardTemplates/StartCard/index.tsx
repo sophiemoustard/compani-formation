@@ -13,7 +13,7 @@ import { ActivityHistoryType } from '../../../../types/ActivityHistoryType';
 
 interface StartCardProps {
   title: string,
-  courseId: string,
+  profileId: string,
   isCourse: boolean,
   activityHistories: Array<ActivityHistoryType>,
   resetActivityReducer: () => void,
@@ -23,7 +23,7 @@ interface StartCardProps {
 
 const StartCard = ({
   title,
-  courseId,
+  profileId,
   isCourse,
   activityHistories,
   resetActivityReducer,
@@ -43,8 +43,8 @@ const StartCard = ({
 
   const goBack = () => {
     resetActivityReducer();
-    if (isCourse) navigate('CourseProfile', { courseId });
-    else navigate('SubProgramProfile', { subProgram: courseId });
+    if (isCourse) navigate('CourseProfile', { courseId: profileId });
+    else navigate('SubProgramProfile', { subProgramId: profileId });
   };
 
   return (

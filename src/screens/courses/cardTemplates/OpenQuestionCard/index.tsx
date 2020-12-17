@@ -37,8 +37,8 @@ const OpenQuestionCard = ({
     setAnswer(questionnaireAnswer?.answerList ? questionnaireAnswer.answerList[0] : '');
   }, [questionnaireAnswer]);
 
-  const validateQuestionnaireAnswer = (id: string, text: string) => {
-    addQuestionnaireAnswer({ card: id, answerList: [text] });
+  const validateQuestionnaireAnswer = (cardId: string, text: string) => {
+    addQuestionnaireAnswer({ card: cardId, answerList: [text] });
     setIsSelected(false);
   };
 
