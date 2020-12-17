@@ -21,13 +21,8 @@ interface CatalogProps {
 const CategoriesStyleList = [
   {
     imageBackground: require('../../../../assets/images/yellow_section_background.png'),
-    backgroundStyle: styles('').rightBackground,
-    countStyle: { background: YELLOW[200], color: YELLOW[900] },
-  },
-  {
-    imageBackground: require('../../../../assets/images/pink_section_background.png'),
     backgroundStyle: styles('').leftBackground,
-    countStyle: { background: PINK[200], color: PINK[600] },
+    countStyle: { background: YELLOW[200], color: YELLOW[900] },
   },
   {
     imageBackground: require('../../../../assets/images/green_section_background.png'),
@@ -38,6 +33,11 @@ const CategoriesStyleList = [
     imageBackground: require('../../../../assets/images/purple_section_background.png'),
     backgroundStyle: styles('').leftBackground,
     countStyle: { background: PURPLE[200], color: PURPLE[800] },
+  },
+  {
+    imageBackground: require('../../../../assets/images/pink_section_background.png'),
+    backgroundStyle: styles('').rightBackground,
+    countStyle: { background: PINK[200], color: PINK[600] },
   },
 ];
 
