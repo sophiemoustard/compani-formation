@@ -105,6 +105,7 @@ export interface GapAnswerType {
   text: string,
   _id: string,
 }
+
 export interface FillTheGapType {
   _id: string,
   template: string,
