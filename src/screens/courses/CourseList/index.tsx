@@ -131,7 +131,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
         </View>
       }
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-        source={require('../../../../assets/images/ongoing_background.png')}>
+        source={require('../../../../assets/images/yellow_section_background.png')}>
         <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
           countStyle={styles.onGoingCoursesCount} showCatalogButton={!onGoingCourses.length} />
       </ImageBackground>
