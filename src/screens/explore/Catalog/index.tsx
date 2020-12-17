@@ -18,33 +18,34 @@ interface CatalogProps {
   navigation: { navigate: (path: string, params: { program: ProgramType }) => {} },
 }
 
+const CategoriesStyleList = [
+  {
+    imageBackground: require('../../../../assets/images/yellow_section_background.png'),
+    backgroundStyle: styles('').rightBackground,
+    countStyle: { background: YELLOW[200], color: YELLOW[900] },
+  },
+  {
+    imageBackground: require('../../../../assets/images/pink_section_background.png'),
+    backgroundStyle: styles('').leftBackground,
+    countStyle: { background: PINK[200], color: PINK[600] },
+  },
+  {
+    imageBackground: require('../../../../assets/images/green_section_background.png'),
+    backgroundStyle: styles('').rightBackground,
+    countStyle: { background: GREEN[200], color: GREEN[900] },
+  },
+  {
+    imageBackground: require('../../../../assets/images/purple_section_background.png'),
+    backgroundStyle: styles('').leftBackground,
+    countStyle: { background: PURPLE[200], color: PURPLE[800] },
+  },
+];
+
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const style = styles('');
-  const CategoriesStyleList = [
-    {
-      imageBackground: require('../../../../assets/images/yellow_section_background.png'),
-      backgroundStyle: style.rightBackground,
-      countStyle: { background: YELLOW[200], color: YELLOW[900] },
-    },
-    {
-      imageBackground: require('../../../../assets/images/pink_section_background.png'),
-      backgroundStyle: style.leftBackground,
-      countStyle: { background: PINK[200], color: PINK[600] },
-    },
-    {
-      imageBackground: require('../../../../assets/images/green_section_background.png'),
-      backgroundStyle: style.rightBackground,
-      countStyle: { background: GREEN[200], color: GREEN[900] },
-    },
-    {
-      imageBackground: require('../../../../assets/images/purple_section_background.png'),
-      backgroundStyle: style.leftBackground,
-      countStyle: { background: PURPLE[200], color: PURPLE[800] },
-    },
-  ];
 
   const getPrograms = async () => {
     try {
