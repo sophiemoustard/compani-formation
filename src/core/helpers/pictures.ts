@@ -22,7 +22,7 @@ export const savePhoto = async (photo, loggedUser) => {
     ? await compressPhoto(photo.uri, fileInfos.size)
     : formatPhotoURI(photo.uri);
 
-  const data: FormData = new FormData();
+  const data = new FormData();
   const { firstname, lastname } = loggedUser.identity;
   const file = { uri, type: mime.getType(uri), name: `photo_${firstname}_${lastname}` };
 

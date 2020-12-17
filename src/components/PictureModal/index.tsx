@@ -49,33 +49,28 @@ const PictureModal = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUser]);
 
-  const TakePicture = () => {
-    setPictureModal(false);
-    requestPermissionsForCamera();
-  };
-
-  const addPictureFromGallery = () => {
-    setPictureModal(false);
-    requestPermissionsForImagePicker();
-  };
-
-  const deletePicture = async () => {
+  const requestPermissionsForCamera = async () => {
     try {
       setIsLoading(true);
-      await Users.deleteImage(loggedUser._id);
-      const user = await Users.getById(loggedUser._id);
-      setLoggedUser(user);
+      const { status } = await Camera.requestPermissionsAsync();
+      if (status === 'granted') navigate('Camera');
+      else {
+        Alert.alert(
+          'Accès refusé',
+          'Vérifie que l\'application a bien l\'autorisation d\'utiliser l\'appareil photo',
+          [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+        );
+      }
+    } catch {
       setPictureModal(false);
-      if (goBack) goBack();
-    } catch (e) {
-      Alert.alert(
-        'Echec de la suppression',
-        'Réessaie plus tard',
-        [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
-      );
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const TakePicture = () => {
+    setPictureModal(false);
+    requestPermissionsForCamera();
   };
 
   const requestPermissionsForImagePicker = async () => {
@@ -97,21 +92,25 @@ const PictureModal = ({
     }
   };
 
-  const requestPermissionsForCamera = async () => {
+  const addPictureFromGallery = () => {
+    setPictureModal(false);
+    requestPermissionsForImagePicker();
+  };
+
+  const deletePicture = async () => {
     try {
       setIsLoading(true);
-      const { status } = await Camera.requestPermissionsAsync();
-      if (status === 'granted') {
-        navigate('Camera');
-      } else {
-        Alert.alert(
-          'Accès refusé',
-          'Vérifie que l\'application a bien l\'autorisation d\'utiliser l\'appareil photo',
-          [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
-        );
-      }
-    } catch {
+      await Users.deleteImage(loggedUser._id);
+      const user = await Users.getById(loggedUser._id);
+      setLoggedUser(user);
       setPictureModal(false);
+      if (goBack) goBack();
+    } catch (e) {
+      Alert.alert(
+        'Echec de la suppression',
+        'Réessaie plus tard',
+        [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+      );
     } finally {
       setIsLoading(false);
     }
