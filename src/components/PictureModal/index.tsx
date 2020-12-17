@@ -38,6 +38,14 @@ const PictureModal = ({
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const alert = (component) => {
+    Alert.alert(
+      'Accès refusé',
+      `Vérifie que l'application a bien l'autorisation d'accéder à  ${component}`,
+      [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+    );
+  };
+
   useEffect(() => {
     if (loggedUser?.picture?.link) {
       setSource({ uri: loggedUser.picture.link });
@@ -54,13 +62,7 @@ const PictureModal = ({
       setIsLoading(true);
       const { status } = await Camera.requestPermissionsAsync();
       if (status === 'granted') navigate('Camera');
-      else {
-        Alert.alert(
-          'Accès refusé',
-          'Vérifie que l\'application a bien l\'autorisation d\'utiliser l\'appareil photo',
-          [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
-        );
-      }
+      else alert('l\'appareil photo');
     } catch {
       setPictureModal(false);
     } finally {
@@ -68,7 +70,7 @@ const PictureModal = ({
     }
   };
 
-  const TakePicture = () => {
+  const takePicture = () => {
     setPictureModal(false);
     requestPermissionsForCamera();
   };
@@ -78,13 +80,7 @@ const PictureModal = ({
       setIsLoading(true);
       const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
       if (status === 'granted') navigate('ImagePickerManager');
-      else {
-        Alert.alert(
-          'Accès refusé',
-          'Vérifie que l\'application a bien l\'autorisation d\'accéder à la galerie',
-          [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
-        );
-      }
+      else alert('la galerie');
     } catch {
       if (goBack) goBack();
     } finally {
@@ -120,7 +116,7 @@ const PictureModal = ({
     <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
       <FeatherButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
-      <NiButton caption='Prendre une photo' style={styles.button} onPress={TakePicture} disabled={isLoading}
+      <NiButton caption='Prendre une photo' style={styles.button} onPress={takePicture} disabled={isLoading}
         bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
       {hasPhoto &&
         <NiButton caption='Supprimer la photo' style={styles.button} onPress={deletePicture} disabled={isLoading}
