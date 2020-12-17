@@ -13,7 +13,7 @@ import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreTy
 import styles from './styles';
 
 interface EndCardProps {
-  courseId: String,
+  profileId: String,
   isCourse: boolean,
   activity: ActivityType,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
@@ -23,7 +23,7 @@ interface EndCardProps {
 }
 
 const EndCard = ({
-  courseId,
+  profileId,
   isCourse,
   activity,
   questionnaireAnswersList,
@@ -47,8 +47,8 @@ const EndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
-    if (isCourse) navigate('CourseProfile', { courseId });
-    else navigate('SubProgramProfile', { subProgramId: courseId });
+    if (isCourse) navigate('CourseProfile', { courseId: profileId });
+    else navigate('SubProgramProfile', { subProgramId: profileId });
     resetActivityReducer();
   };
 

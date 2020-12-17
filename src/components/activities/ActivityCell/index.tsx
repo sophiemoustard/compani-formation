@@ -13,12 +13,12 @@ import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 
 interface ActivityCellProps {
   activity: ActivityType,
-  courseId: string,
+  profileId: string,
   navigation: { navigate: (path: string, activityId: any) => {} },
   setActivityHistories: (activityHistories: Array<ActivityHistoryType>) => void,
 }
 
-const ActivityCell = ({ activity, courseId, navigation, setActivityHistories }: ActivityCellProps) => {
+const ActivityCell = ({ activity, profileId, navigation, setActivityHistories }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
@@ -35,7 +35,7 @@ const ActivityCell = ({ activity, courseId, navigation, setActivityHistories }: 
 
   const onPress = () => {
     setActivityHistories(activity.activityHistories);
-    navigation.navigate('CardContainer', { activityId: activity._id, courseId });
+    navigation.navigate('CardContainer', { activityId: activity._id, profileId });
   };
 
   return (

@@ -13,10 +13,10 @@ interface ELearningCellProps {
   step: StepType,
   index: number,
   navigation: { navigate: (path: string, activityId: any) => {} },
-  id: string,
+  profileId: string,
 }
 
-const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation, profileId }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
@@ -34,7 +34,7 @@ const ELearningCell = ({ step, index, navigation, id }: ELearningCellProps) => {
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      {isOpen && <ActivityList step={step} id={id} navigation={navigation} />}
+      {isOpen && <ActivityList step={step} profileId={profileId} navigation={navigation} />}
     </View>
   );
 };
