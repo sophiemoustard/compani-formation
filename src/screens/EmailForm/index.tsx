@@ -50,7 +50,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       setIsBottomPopUpVisible(true);
     } catch (e) {
       setError(true);
-      setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
+      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cette adresse mail');
+      else setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +83,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const enterEmail = (text) => {
+    setErrorMessage('');
     setEmail(text);
     setIsTouch(true);
   };
@@ -89,6 +91,12 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const confirm = () => {
     goBack();
     setIsBottomPopUpVisible(false);
+  };
+
+  const validationMessage = () => {
+    if (unvalidEmail && isTouch) return 'Ton adresse e-mail n\'est pas valide';
+    if (error) return errorMessage;
+    return '';
   };
 
   const renderContentText = () =>
@@ -107,15 +115,12 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       <View style={style.container}>
         <Text style={style.title}>Quelle est ton adresse mail ?</Text>
         <View style={style.input}>
-          <NiInput caption="E-mail" value={email} type="email"
-            darkMode={false} onChangeText={text => enterEmail(text)}
-            validationMessage={unvalidEmail && isTouch ? 'Ton adresse e-mail n\'est pas valide' : ''}
-            isKeyboardOpen={setIsKeyboardOpen} />
+          <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
+            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} />
         </View>
         <View style={style.footer}>
           <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
             bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
-          <NiErrorMessage style={style.errorMessage} message={errorMessage} show={error} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />
