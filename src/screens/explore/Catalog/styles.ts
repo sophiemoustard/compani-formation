@@ -2,14 +2,14 @@ import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
 
-const styles = count => StyleSheet.create({
+const styles = (count = { color: '', background: '' }) => StyleSheet.create({
   container: {
     flexGrow: 1,
   },
   programsCount: {
     ...FIRA_SANS_REGULAR.SM,
-    color: count.color,
-    backgroundColor: count.background,
+    color: count.color || null,
+    backgroundColor: count.background || null,
   },
   programContainer: {
     paddingHorizontal: MAIN_MARGIN_LEFT,

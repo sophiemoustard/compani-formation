@@ -22,22 +22,22 @@ interface CatalogProps {
 const CategoriesStyleList = [
   {
     imageBackground: require('../../../../assets/images/yellow_section_background.png'),
-    backgroundStyle: styles({ background: YELLOW[200], color: YELLOW[900] }).leftBackground,
+    backgroundStyle: styles().leftBackground,
     countStyle: { background: YELLOW[200], color: YELLOW[900] },
   },
   {
     imageBackground: require('../../../../assets/images/green_section_background.png'),
-    backgroundStyle: styles({ background: GREEN[200], color: GREEN[900] }).rightBackground,
+    backgroundStyle: styles().rightBackground,
     countStyle: { background: GREEN[200], color: GREEN[900] },
   },
   {
     imageBackground: require('../../../../assets/images/purple_section_background.png'),
-    backgroundStyle: styles({ background: PURPLE[200], color: PURPLE[800] }).leftBackground,
+    backgroundStyle: styles().leftBackground,
     countStyle: { background: PURPLE[200], color: PURPLE[800] },
   },
   {
     imageBackground: require('../../../../assets/images/pink_section_background.png'),
-    backgroundStyle: styles({ background: PINK[200], color: PINK[600] }).rightBackground,
+    backgroundStyle: styles().rightBackground,
     countStyle: { background: PINK[200], color: PINK[600] },
   },
 ];
@@ -46,7 +46,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
-  const style = styles({});
+  const style = styles();
 
   const getPrograms = async () => {
     try {
