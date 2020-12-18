@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, ScrollView, Image, View, ImageBackground } from 'react-native';
+import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiButton from '../../../components/form/Button';
@@ -14,7 +14,6 @@ import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../../components/IconButton';
 import PictureModal from '../../../components/PictureModal';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface ProfileProps {
   loggedUser: UserType,
