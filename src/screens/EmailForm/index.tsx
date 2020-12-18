@@ -26,7 +26,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isDisabledBackHandler = useRef(isLoading);
-  const [isTouch, setIsTouch] = useState<boolean>(false);
+  const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
@@ -66,6 +66,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   const saveEmail = async () => {
     try {
+      setIsValidationAttempted(true);
       setIsLoading(true);
       if (isValid) {
         if (error) setError(false);
@@ -92,7 +93,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const enterEmail = (text) => {
     setErrorMessage('');
     setEmail(text);
-    setIsTouch(true);
   };
 
   const confirm = () => {
@@ -101,7 +101,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const validationMessage = () => {
-    if (unvalidEmail && isTouch) return 'Ton adresse e-mail n\'est pas valide';
+    if (unvalidEmail && isValidationAttempted) return 'Ton adresse e-mail n\'est pas valide';
     if (error) return errorMessage;
     return '';
   };
@@ -127,8 +127,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} editable={!isLoading} />
         </View>
         <View style={style.footer}>
-          <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
-            bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
+          <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
+            color={WHITE} borderColor={PINK[500]} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />
