@@ -6,7 +6,7 @@
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#F29400",
+    "primaryColor": "#FFFFFF",
     "icon": "./assets/images/android_icon.png",
     "backgroundColor": "#FFFFFF",
     "splash": {
