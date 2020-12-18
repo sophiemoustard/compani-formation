@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import ExitModal from '../../components/ExitModal';
 import IconButton from '../../components/IconButton';
@@ -25,6 +25,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [unvalidEmail, setUnvalidEmail] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const isDisabledBackHandler = useRef(isLoading);
   const [isTouch, setIsTouch] = useState<boolean>(false);
   const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -33,11 +34,18 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
-    setExitConfirmationModal(true);
+    if (!isDisabledBackHandler.current) setExitConfirmationModal(true);
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
 
   useEffect(() => { setUnvalidEmail(!email.match(EMAIL_REGEX)); }, [email]);
 
