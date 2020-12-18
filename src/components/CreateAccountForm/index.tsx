@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
@@ -19,13 +19,21 @@ interface CreateAccountProps {
 }
 const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, create }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
+  const isDisabledBackHandler = useRef(isLoading);
 
   const hardwareBackPress = () => {
-    goBack(index);
+    if (!isDisabledBackHandler.current) goBack(index);
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
 
   const onChangeText = (text, fieldToChangeIndex) => {
     setData(
