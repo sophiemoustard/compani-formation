@@ -24,9 +24,11 @@ const styles = StyleSheet.create({
   },
   profileImageEdit: {
     position: 'absolute',
-    bottom: 0,
+    top: 0,
     right: 0,
     borderRadius: BORDER_RADIUS.XXL,
+    borderColor: GREY[200],
+    borderWidth: BORDER_WIDTH,
     backgroundColor: WHITE,
     padding: PADDING.SM,
   },
