@@ -122,7 +122,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const nextSteps = formatNextSteps(onGoingCourses);
 
   return (
-    <ScrollView style={commonStyles.container}>
+    <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
       {nextSteps.length > 0 &&
         <View style={styles.nextSteps}>
@@ -131,20 +131,20 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
         </View>
       }
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-        source={require('../../../../assets/images/ongoing_background.png')}>
+        source={require('../../../../assets/images/yellow_section_background.png')}>
         <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
           countStyle={styles.onGoingCoursesCount} showCatalogButton={!onGoingCourses.length} />
       </ImageBackground>
       {achievedCourses.length > 0 &&
         <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/achieved_background.png')}>
+          source={require('../../../../assets/images/green_section_background.png')}>
           <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
             countStyle={styles.achievedCoursesCount} />
         </ImageBackground>
       }
       {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
         <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/elearning_draft_background.png')}>
+          source={require('../../../../assets/images/purple_section_background.png')}>
           <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
             countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
         </ImageBackground>

@@ -14,3 +14,5 @@ export const formatPhoneForPayload = phoneNumber => (phoneNumber
 export const formatWordToPlural = (items, text) => (items.length > 1
   ? `${items.length} ${text}s`
   : `${items.length} ${text}`);
+
+export const capitalizeFirstLetter = s => `${s.charAt(0).toUpperCase()}${s.substr(1)}`;
