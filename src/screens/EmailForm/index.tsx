@@ -124,7 +124,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         <Text style={style.title}>Quelle est ton adresse mail ?</Text>
         <View style={style.input}>
           <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
-            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} editable={!isLoading} />
+            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} disabled={isLoading} />
         </View>
         <View style={style.footer}>
           <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
