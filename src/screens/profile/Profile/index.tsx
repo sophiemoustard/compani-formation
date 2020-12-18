@@ -8,12 +8,13 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
 import { CourseType } from '../../../types/CourseType';
-import { GREY } from '../../../styles/colors';
+import { GREY, PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
 import IconButton from '../../../components/IconButton';
 import PictureModal from '../../../components/PictureModal';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface ProfileProps {
   loggedUser: UserType,
@@ -55,11 +56,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
           <View style={styles.identityContainer}>
             <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
               source={require('../../../../assets/images/profile_background.png')}>
-              <View>
+              <TouchableOpacity onPress={() => setPictureModal(true)}>
                 <Image style={styles.profileImage} source={source} />
-                <IconButton name={hasPhoto ? 'edit' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
-                  color={GREY[200]} style={styles.profileImageEdit} />
-              </View>
+                <IconButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
+                  color={PINK[200]} style={styles.profileImageEdit} />
+              </TouchableOpacity>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
               <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
               <Text style={styles.courses}>FORMATIONS EN COURS</Text>
