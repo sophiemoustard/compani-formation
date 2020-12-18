@@ -37,7 +37,7 @@ const signIn = dispatch => async ({ email, password }) => {
     dispatch({ type: 'beforeSignin' });
     const authentication = await Authentication.authenticate({ email, password });
 
-    await asyncStorage.setAlenviToken(authentication.token);
+    await asyncStorage.setAlenviToken(authentication.token, authentication.tokenExpireDate);
     await asyncStorage.setRefreshToken(authentication.refreshToken);
     await asyncStorage.setUserId(authentication.user._id);
 
@@ -65,7 +65,7 @@ const refreshAlenviToken = dispatch => async (refreshToken) => {
   try {
     const token = await Authentication.refreshToken({ refreshToken });
 
-    await asyncStorage.setAlenviToken(token.token);
+    await asyncStorage.setAlenviToken(token.token, token.tokenExpireDate);
     await asyncStorage.setRefreshToken(token.refreshToken);
     await asyncStorage.setUserId(token.user._id);
 
