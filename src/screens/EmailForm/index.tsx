@@ -106,7 +106,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={style.goBack}>
-        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
+        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
+          disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
@@ -115,7 +116,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         <Text style={style.title}>Quelle est ton adresse mail ?</Text>
         <View style={style.input}>
           <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
-            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} />
+            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} editable={!isLoading} />
         </View>
         <View style={style.footer}>
           <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
