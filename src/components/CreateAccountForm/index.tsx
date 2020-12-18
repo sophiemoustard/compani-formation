@@ -82,7 +82,7 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
         <Text style={styles.title}>{data[0].title}</Text>
         {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-            darkMode={false} onChangeText={text => onChangeText(text, i)}
+            darkMode={false} onChangeText={text => onChangeText(text, i)} editable={!isLoading}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
         </View>)}
         <View style={styles.footer}>
