@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import ExitModal from '../../components/ExitModal';
 import IconButton from '../../components/IconButton';
@@ -25,7 +25,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [unvalidEmail, setUnvalidEmail] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isTouch, setIsTouch] = useState<boolean>(false);
+  const isDisabledBackHandler = useRef(isLoading);
+  const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
@@ -33,11 +34,18 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
-    setExitConfirmationModal(true);
+    if (!isDisabledBackHandler.current) setExitConfirmationModal(true);
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
 
   useEffect(() => { setUnvalidEmail(!email.match(EMAIL_REGEX)); }, [email]);
 
@@ -58,6 +66,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   const saveEmail = async () => {
     try {
+      setIsValidationAttempted(true);
       setIsLoading(true);
       if (isValid) {
         if (error) setError(false);
@@ -84,7 +93,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const enterEmail = (text) => {
     setErrorMessage('');
     setEmail(text);
-    setIsTouch(true);
   };
 
   const confirm = () => {
@@ -93,7 +101,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const validationMessage = () => {
-    if (unvalidEmail && isTouch) return 'Ton adresse e-mail n\'est pas valide';
+    if (unvalidEmail && isValidationAttempted) return 'Ton adresse e-mail n\'est pas valide';
     if (error) return errorMessage;
     return '';
   };
@@ -106,7 +114,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={style.goBack}>
-        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
+        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
+          disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
@@ -115,11 +124,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         <Text style={style.title}>Quelle est ton adresse mail ?</Text>
         <View style={style.input}>
           <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
-            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} />
+            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} disabled={isLoading} />
         </View>
         <View style={style.footer}>
-          <NiButton caption="Valider" onPress={saveEmail} disabled={!isValid} loading={isLoading}
-            bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
+          <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
+            color={WHITE} borderColor={PINK[500]} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
           title='Vérifie tes e-mails !' contentText={renderContentText} />

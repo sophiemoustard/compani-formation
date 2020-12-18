@@ -121,7 +121,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       {() => (
         <>
           <View style={styles.header}>
-            <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]} />
+            <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
+              disabled={isLoading} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}

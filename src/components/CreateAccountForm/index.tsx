@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
@@ -19,13 +19,21 @@ interface CreateAccountProps {
 }
 const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, create }: CreateAccountProps) => {
   const isIOS = Platform.OS === 'ios';
+  const isDisabledBackHandler = useRef(isLoading);
 
   const hardwareBackPress = () => {
-    goBack(index);
+    if (!isDisabledBackHandler.current) goBack(index);
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
 
   const onChangeText = (text, fieldToChangeIndex) => {
     setData(
@@ -82,7 +90,7 @@ const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack
         <Text style={styles.title}>{data[0].title}</Text>
         {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-            darkMode={false} onChangeText={text => onChangeText(text, i)}
+            darkMode={false} onChangeText={text => onChangeText(text, i)} disabled={isLoading}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
         </View>)}
         <View style={styles.footer}>
