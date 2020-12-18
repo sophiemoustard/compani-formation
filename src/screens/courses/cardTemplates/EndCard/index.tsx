@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import asyncStorage from '../../../../core/helpers/asyncStorage';
 import Button from '../../../../components/form/Button';
 import { navigate } from '../../../../navigationRef';
 import { StateType } from '../../../../types/store/StoreType';
@@ -13,7 +13,7 @@ import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreTy
 import styles from './styles';
 
 interface EndCardProps {
-  courseId: String,
+  profileId: String,
   isCourse: boolean,
   activity: ActivityType,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
@@ -23,7 +23,7 @@ interface EndCardProps {
 }
 
 const EndCard = ({
-  courseId,
+  profileId,
   isCourse,
   activity,
   questionnaireAnswersList,
@@ -35,7 +35,7 @@ const EndCard = ({
 
   useEffect(() => {
     async function fetchData() {
-      const userId = await AsyncStorage.getItem('user_id');
+      const userId = await asyncStorage.getUserId();
       const payload: Record<string, any> = { user: userId, activity: activity._id, score };
 
       if (questionnaireAnswersList?.length) payload.questionnaireAnswersList = questionnaireAnswersList;
@@ -47,8 +47,8 @@ const EndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
-    if (isCourse) navigate('CourseProfile', { courseId });
-    else navigate('SubProgramProfile', { subProgramId: courseId });
+    if (isCourse) navigate('CourseProfile', { courseId: profileId });
+    else navigate('SubProgramProfile', { subProgramId: profileId });
     resetActivityReducer();
   };
 

@@ -15,7 +15,7 @@ import Actions from '../../../store/activities/actions';
 import styles from './styles';
 
 interface CardContainerProps {
-  route: { params: { activityId: string, courseId: string } },
+  route: { params: { activityId: string, profileId: string } },
   navigation: NavigationType,
   activity: ActivityType,
   cardIndex: number | null,
@@ -52,8 +52,8 @@ const CardContainer = ({
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: route.params.courseId });
-    else navigation.navigate('SubProgramProfile', { subProgramId: route.params.courseId });
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: route.params.profileId });
+    else navigation.navigate('SubProgramProfile', { subProgramId: route.params.profileId });
   };
 
   useEffect(() => {
@@ -94,11 +94,11 @@ const CardContainer = ({
       {activity && activity.cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard title={activity.name} courseId={route.params.courseId} />}
+            {() => <StartCard title={activity.name} profileId={route.params.profileId} />}
           </Tab.Screen>
           {activity.cards.map((_, index) => renderCardScreen(index))}
           <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
-            {() => <EndCard courseId={route.params.courseId} />}
+            {() => <EndCard profileId={route.params.profileId} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>

@@ -37,7 +37,7 @@ const QuestionAnswerCard = ({
 
   useEffect(() => {
     if (!isLoading) {
-      setSelectedAnswers(card.questionAnswers.map(answer =>
+      setSelectedAnswers(card.qcAnswers.map(answer =>
         ({ ...answer, isSelected: questionnaireAnswer?.answerList.includes(answer._id) })));
     }
   }, [card, isLoading, questionnaireAnswer]);
@@ -54,9 +54,9 @@ const QuestionAnswerCard = ({
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
-  const validateQuestionnaireAnswer = (id: string) => {
+  const validateQuestionnaireAnswer = (cardId: string) => {
     const answer = selectedAnswers.filter(sa => sa.isSelected).map(sa => sa._id);
-    addQuestionnaireAnswer({ card: id, answerList: answer });
+    addQuestionnaireAnswer({ card: cardId, answerList: answer });
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}

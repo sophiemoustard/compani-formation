@@ -9,11 +9,11 @@ import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
 import ProfileEdition from '../screens/profile/ProfileEdition';
+import Camera from '../screens/Camera';
 import { Context as AuthContext } from '../context/AuthContext';
 import { navigationRef } from '../navigationRef';
 import Authentication from '../screens/Authentication';
-import ForgotPassword from '../screens/ForgotPassword';
-import FirstConnection from '../screens/FirstConnection';
+import EmailForm from '../screens/EmailForm';
 import CreateAccount from '../screens/CreateAccount';
 import Catalog from '../screens/explore/Catalog';
 import About from '../screens/explore/About';
@@ -92,9 +92,9 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
-  const authScreens = { Authentication, ForgotPassword, FirstConnection, CreateAccount };
+  const authScreens = { Authentication, EmailForm, CreateAccount };
 
-  const Profile = { ProfileEdition, PasswordEdition };
+  const Profile = { ProfileEdition, PasswordEdition, Camera };
   const Courses = { CourseProfile, SubProgramProfile };
   const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
 

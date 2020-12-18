@@ -41,6 +41,7 @@ export const ICON = {
   LG: 26,
   XL: 32,
   XXL: 64,
+  XXXL: 72,
 };
 
 export const IOS_WIDTH_THRESHOLD = 375;
@@ -52,7 +53,7 @@ export const IS_SMALL_SCREEN = Platform.select({
   android: PixelRatio.get() < ANDROID_PIXEL_DENSITY_THRESHOLD,
 });
 
-export const INPUT_HEIGHT = 40;
+export const INPUT_HEIGHT = 48;
 export const GAP_WIDTH = 144;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;

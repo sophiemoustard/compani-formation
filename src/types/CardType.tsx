@@ -33,7 +33,7 @@ export interface SingleChoiceQuestionType {
   template: string,
   question: string,
   qcuGoodAnswer: string,
-  qcuFalsyAnswers: Array<string>,
+  qcAnswers: Array<answerFromAPIType>,
   explanation: string,
 }
 
@@ -64,14 +64,14 @@ export interface TitleTextType {
 
 export interface qcmAnswerFromAPIType {
   correct: boolean,
-  label: string,
+  text: string,
 }
 
 export interface MultipleChoiceQuestionType {
   _id: string,
   template: string,
   question: string,
-  qcmAnswers: Array<qcmAnswerFromAPIType>,
+  qcAnswers: Array<qcmAnswerFromAPIType>,
   explanation: string,
 }
 
@@ -89,7 +89,8 @@ export interface OpenQuestionType {
 }
 
 export interface OrderedAnswerType {
-  label: string,
+  text: string,
+  _id: string,
 }
 
 export interface OrderTheSequenceType {
@@ -100,11 +101,16 @@ export interface OrderTheSequenceType {
   explanation: string,
 }
 
+export interface GapAnswerType {
+  text: string,
+  _id: string,
+}
+
 export interface FillTheGapType {
   _id: string,
   template: string,
   gappedText: string,
-  falsyGapAnswers: Array<string>,
+  falsyGapAnswers: Array<GapAnswerType>,
   explanation: string,
 }
 
@@ -117,5 +123,11 @@ export interface QuestionAnswerType {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
-  questionAnswers: Array<answerFromAPIType>,
+  qcAnswers: Array<answerFromAPIType>,
+}
+
+export interface footerColorsType {
+  buttons: string,
+  text: string,
+  background: string,
 }

@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../../../styles/colors';
-import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, GAP_WIDTH, ABSOLUTE_BOTTOM_POSITION } from '../../../../styles/metrics';
+import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, GAP_WIDTH } from '../../../../styles/metrics';
 
-const styles = (textColor: string, backgroundColor: string) => StyleSheet.create({
+const styles = (backgroundColor: string) => StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
     flexGrow: 1,
@@ -18,15 +18,6 @@ const styles = (textColor: string, backgroundColor: string) => StyleSheet.create
   answerContainer: {
     height: INPUT_HEIGHT,
     width: GAP_WIDTH,
-  },
-  explanation: {
-    color: textColor,
-    minHeight: INPUT_HEIGHT,
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: ABSOLUTE_BOTTOM_POSITION,
-    backgroundColor,
   },
   footerContainer: {
     backgroundColor,

@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from './moment';
 
 const isTokenValid = (token: string | null, expiryDate: string | null): boolean =>
@@ -14,9 +14,9 @@ const getAlenviToken = async (): Promise<AlenviToken> => ({
   alenviTokenExpiryDate: await AsyncStorage.getItem('alenvi_token_expiry_date'),
 });
 
-const setAlenviToken = async (token: string): Promise<void> => {
+const setAlenviToken = async (token: string, tokenExpireDate: string): Promise<void> => {
   await AsyncStorage.setItem('alenvi_token', token);
-  await AsyncStorage.setItem('alenvi_token_expiry_date', moment().endOf('d').add(1, 'day').toISOString());
+  await AsyncStorage.setItem('alenvi_token_expiry_date', tokenExpireDate);
 };
 
 const removeAlenviToken = async (): Promise<void> => {

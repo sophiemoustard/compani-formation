@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK, TRANSPARENT_GREY } from '../../../styles/colors';
+import { GREY, PINK, TRANSPARENT_GREY, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR, NUNITO_SEMI, NUNITO_LIGHT } from '../../../styles/fonts';
 
@@ -21,6 +21,16 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.XXL,
     borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
+  },
+  profileImageEdit: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    borderRadius: BORDER_RADIUS.XXL,
+    borderColor: GREY[200],
+    borderWidth: BORDER_WIDTH,
+    backgroundColor: WHITE,
+    padding: PADDING.SM,
   },
   name: {
     ...FIRA_SANS_BOLD.LG,

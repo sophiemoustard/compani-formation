@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import { SingleChoiceQuestionType } from '../../../../types/CardType';
+import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
-import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
@@ -25,10 +25,27 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
+  const [footerColors, setFooterColors] = useState<footerColorsType>({
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
+  });
 
   useEffect(() => {
-    if (!isLoading && !isPressed) setAnswers(shuffle([...card.qcuFalsyAnswers, card.qcuGoodAnswer]));
+    if (!isLoading && !isPressed) setAnswers(shuffle([...card.qcAnswers.map(a => a.text), card.qcuGoodAnswer]));
   }, [isLoading, card, isPressed]);
+
+  useEffect(() => {
+    if (!isPressed) {
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
+    }
+
+    if (card && answers[selectedAnswerIndex] === card.qcuGoodAnswer) {
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
+    }
+
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
+  }, [answers, card, isPressed, selectedAnswerIndex]);
 
   if (isLoading) return null;
 
@@ -42,10 +59,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
     if (answers[selectedIndex] === card.qcuGoodAnswer) incGoodAnswersCount();
   };
 
-  const expectedColors = answers[selectedAnswerIndex] === card.qcuGoodAnswer
-    ? { button: GREEN[600], background: GREEN[100], text: GREEN[800] }
-    : { button: ORANGE[600], background: ORANGE[100], text: ORANGE[800] };
-  const style = styles(isPressed, expectedColors.background, expectedColors.text);
+  const style = styles(isPressed, footerColors.background);
 
   return (
     <>
@@ -60,9 +74,9 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
       </ScrollView>
       <View style={style.footerContainer}>
         {!isPressed && <FooterGradient /> }
-        {isPressed && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
-        <QuestionCardFooter index={index} arrowColor={isPressed ? expectedColors.button : PINK[500]}
-          buttonVisible={isPressed} buttonColor={isPressed ? expectedColors.button : GREY[300]} />
+        <QuizCardFooter isValidated={isPressed} isValid={answers[selectedAnswerIndex] === card.qcuGoodAnswer}
+          cardIndex={index} footerColors={footerColors} explanation={card.explanation}
+          buttonDisabled={!isPressed} />
       </View>
     </>
   );

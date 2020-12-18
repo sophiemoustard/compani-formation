@@ -3,13 +3,13 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import { OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
+import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
-import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
+import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { navigate } from '../../../../navigationRef';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
@@ -28,40 +28,34 @@ export interface answerPositionType extends OrderedAnswerType {
   tempPosition: number,
 }
 
-interface footerColorsType {
-  buttonsColor: string,
-  textColor: string,
-  backgroundColor: string,
-}
-
 const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
-    buttonsColor: PINK[500],
-    textColor: GREY[100],
-    backgroundColor: GREY[100],
+    buttons: PINK[500],
+    text: GREY[100],
+    background: GREY[100],
   });
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
       const shuffledCards = shuffle(card.orderedAnswers
-        .map((ans, answerIndex) => ({ label: ans, goodPosition: answerIndex })));
+        .map((ans, answerIndex) => ({ label: ans.text, goodPosition: answerIndex })));
       setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
   }, [card, isValidated, isLoading]);
 
   useEffect(() => {
     if (!isValidated) {
-      return setFooterColors({ buttonsColor: PINK[500], textColor: GREY[100], backgroundColor: GREY[100] });
+      return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
     if (isOrderedCorrectly) {
-      return setFooterColors({ buttonsColor: GREEN[600], textColor: GREEN[600], backgroundColor: GREEN[100] });
+      return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
-    return setFooterColors({ buttonsColor: ORANGE[600], textColor: ORANGE[600], backgroundColor: ORANGE[100] });
+    return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, answers, isOrderedCorrectly]);
 
   const onPressFooterButton = () => {
@@ -85,7 +79,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.textColor, footerColors.backgroundColor);
+  const style = styles(footerColors.background);
 
   return (
     <>
@@ -107,10 +101,9 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
-        {isValidated && <Text style={[cardsStyle.explanation, style.explanation]}>{card.explanation}</Text>}
-        <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
-          arrowColor={footerColors.buttonsColor} index={index} buttonDisabled={false}
-          buttonColor={footerColors.buttonsColor} />
+        <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}
+          buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
+          onPressFooterButton={onPressFooterButton} />
       </View>
     </>
   );

@@ -30,6 +30,22 @@ instance.interceptors.request.use(async (config: AxiosRequestConfig): Promise<Ax
   return config;
 }, err => Promise.reject(err));
 
-instance.interceptors.response.use(response => response, error => Promise.reject(error.response));
+instance.interceptors.response.use(
+  response => response,
+  async (error) => {
+    if (error.response.status === 401) {
+      await asyncStorage.removeAlenviToken();
+      await alenvi.refreshAlenviCookies();
 
+      const { alenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
+      if (asyncStorage.isTokenValid(alenviToken, alenviTokenExpiryDate)) {
+        const config = { ...error.config };
+        config.headers['x-access-token'] = alenviToken;
+        return axios.request(config);
+      }
+      return Promise.reject(error.response);
+    }
+    return Promise.reject(error.response);
+  }
+);
 export const alenviAxios = instance;

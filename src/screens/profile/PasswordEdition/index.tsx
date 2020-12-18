@@ -3,7 +3,6 @@ import {
   Text,
   ScrollView,
   View,
-  TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -41,7 +40,13 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const keyboardDidHide = () => Keyboard.dismiss();
-  Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+    };
+  });
 
   const hardwareBackPress = () => {
     setExitConfirmationModal(true);
@@ -95,9 +100,7 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={styles.goBack}>
-        <TouchableOpacity>
-          <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
-        </TouchableOpacity>
+        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />

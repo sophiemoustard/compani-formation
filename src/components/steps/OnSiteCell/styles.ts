@@ -7,13 +7,29 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: GREY[100],
     flexDirection: 'row',
-    padding: PADDING.LG,
-    borderWidth: BORDER_WIDTH,
+    paddingBottom: PADDING.LG,
     borderColor: GREY[200],
+    borderBottomWidth: BORDER_WIDTH,
+  },
+  upperContainer: {
+    padding: PADDING.LG,
+    borderTopWidth: BORDER_WIDTH,
+  },
+  iconContainer: {
+    justifyContent: 'space-between',
+  },
+  openedContainer: {
+    marginRight: 0,
+    borderBottomRightRadius: 0,
+    borderTopRightRadius: 0,
   },
   infoButtonContainer: {
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+  },
+  iconButtonContainer: {
+    alignItems: 'center',
+    flexDirection: 'column-reverse',
   },
 });
 

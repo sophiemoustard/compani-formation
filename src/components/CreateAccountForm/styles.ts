@@ -5,17 +5,20 @@ import { FIRA_SANS_BOLD } from '../../styles/fonts';
 const styles = StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
-    margin: MARGIN.LG,
+    marginVertical: MARGIN.LG,
+  },
+  keyboardAvoidingView: {
+    flexGrow: 1,
   },
   input: {
-    marginBottom: MARGIN.SM,
+    marginBottom: MARGIN.XS,
   },
   container: {
     flexGrow: 1,
     marginHorizontal: MARGIN.LG,
   },
   footer: {
-    marginBottom: MARGIN.XL,
+    marginBottom: MARGIN.XL + MARGIN.SM,
     justifyContent: 'flex-end',
     flex: 1,
   },

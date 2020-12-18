@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
@@ -13,8 +13,9 @@ interface InputProps {
   type: string,
   darkMode?: boolean,
   validationMessage?: string,
-  autoFocus?: boolean,
   required?: boolean,
+  disabled?: boolean,
+  isKeyboardOpen?: (value: boolean) => void,
 }
 
 const Input = ({
@@ -24,8 +25,9 @@ const Input = ({
   type,
   darkMode,
   validationMessage = '',
-  autoFocus = false,
   required = false,
+  disabled = false,
+  isKeyboardOpen,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -38,6 +40,24 @@ const Input = ({
   const style = styles(isSelected);
   const textStyle = darkMode ? { ...style.text, color: WHITE } : { ...style.text };
 
+  const keyboardDidShow = () => {
+    if (isKeyboardOpen) isKeyboardOpen(true);
+  };
+
+  const keyboardDidHide = () => {
+    Keyboard.dismiss();
+    if (isKeyboardOpen) isKeyboardOpen(false);
+  };
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+    };
+  });
+
   return (
     <>
       <View style={style.captionContainer}>
@@ -49,7 +69,7 @@ const Input = ({
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
             style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType}
-            autoFocus={autoFocus} textContentType='oneTimeCode' />
+            textContentType='oneTimeCode' editable={!disabled} />
           {isPassword &&
           <TouchableOpacity style={style.inputIcon} onPress={togglePassword}>
             <Feather name={showPasswordIcon} size={ICON.XS} />

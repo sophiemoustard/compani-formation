@@ -1,12 +1,13 @@
-import Users from '../../api/authentication';
+import Authentication from '../../api/authentication';
 import asyncStorage from './asyncStorage';
 
 const refreshAlenviCookies = async (): Promise<boolean> => {
   try {
     const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
     if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
-      const token = await Users.refreshToken({ refreshToken });
-      await asyncStorage.setAlenviToken(token.token);
+      const token = await Authentication.refreshToken({ refreshToken });
+
+      await asyncStorage.setAlenviToken(token.token, token.tokenExpireDate);
       await asyncStorage.setRefreshToken(token.refreshToken);
       await asyncStorage.setUserId(token.user._id);
 
