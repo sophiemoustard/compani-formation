@@ -58,7 +58,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               <TouchableOpacity onPress={() => setPictureModal(true)}>
                 <Image style={styles.profileImage} source={source} />
                 <IconButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
-                  color={PINK[200]} style={styles.profileImageEdit} />
+                  color={PINK[500]} style={styles.profileImageEdit} />
               </TouchableOpacity>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
               <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
