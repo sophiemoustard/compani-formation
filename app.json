@@ -20,9 +20,12 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.17",
+      "buildNumber": "1.0.18",
       "requireFullScreen": true,
-      "icon": "./assets/images/ios_icon.png"
+      "icon": "./assets/images/ios_icon.png",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow access to your camera so you can take a picture and upload it as your profile picture to Compani"
+      }
     },
     "android": {
       "package": "com.alenvi.compani",
