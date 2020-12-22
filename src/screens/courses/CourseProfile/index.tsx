@@ -26,7 +26,7 @@ import { CourseType } from '../../../types/CourseType';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import IconButton from '../../../components/IconButton';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -101,7 +101,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
         <View style={styles.header}>
-          <IconButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
+          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
           <Text style={styles.title}>{programName}{course.misc ? ` - ${course.misc}` : ''}</Text>
         </View>
       </ImageBackground>

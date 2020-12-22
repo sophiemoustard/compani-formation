@@ -3,7 +3,7 @@ import { View, Text, FlatList } from 'react-native';
 import { CourseSlotType } from '../../../types/CourseSlotType';
 import moment from '../../../core/helpers/moment';
 import NiModal from '../../Modal';
-import IconButton from '../../IconButton';
+import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import OnSiteInfoItem from '../OnSiteInfoItem';
@@ -34,7 +34,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
     <NiModal visible={visible}>
       <View style={styles.header}>
         <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={3}>{title}</Text>
-        <IconButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[500]}
+        <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[500]}
           style={styles.closeButton} />
       </View>
       <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={true}

@@ -4,8 +4,7 @@ import { Camera } from 'expo-camera';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import { WHITE } from '../../../styles/colors';
-import IconButton from '../../IconButton';
-import { IONICONS } from '../../../core/data/constants';
+import IoniconsButton from '../../icons/IoniconsButton';
 
 interface NiCameraProps {
   setPreviewVisible: (visible: boolean) => void,
@@ -64,11 +63,11 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
     <Camera ref={camera} type={cameraType} flashMode={flashMode} style={styles.camera}
       ratio ={ratio} onCameraReady={setScreenDimension}>
       <View style={styles.buttons}>
-        <IconButton disabled={cameraType === front} iconFamily={IONICONS} onPress={onHandleFlashMode}
-          style={styles.flash} color={WHITE} size={ICON.XL} name={flashMode === on ? 'md-flash' : 'md-flash-off'}/>
+        <IoniconsButton disabled={cameraType === front} onPress={onHandleFlashMode} style={styles.flash} color={WHITE}
+          size={ICON.XL} name={flashMode === on ? 'md-flash' : 'md-flash-off'}/>
         <TouchableOpacity onPress={onTakePicture} style={styles.takePicture} />
-        <IconButton iconFamily={IONICONS} style={styles.cameraType} color={WHITE} size={ICON.XL}
-          name={cameraType === front ? 'ios-reverse-camera' : 'ios-camera'} onPress={onHandleCameraType} />
+        <IoniconsButton style={styles.cameraType} color={WHITE} size={ICON.XL} onPress={onHandleCameraType}
+          name={cameraType === front ? 'ios-camera-reverse' : 'ios-camera'} />
       </View>
     </Camera>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AppState } from 'react-native';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import getEnvVars from './environment';
@@ -45,7 +45,9 @@ const App = () => {
     return () => { AppState.removeEventListener('change', checkUpdate); };
   }, []);
 
-  if (!fontLoaded) return <AppLoading startAsync={fetchFonts} onFinish={() => setFontLoaded(true)} />;
+  if (!fontLoaded) {
+    return <AppLoading startAsync={fetchFonts} onFinish={() => setFontLoaded(true)} onError={console.error} />;
+  }
 
   return (
     <>

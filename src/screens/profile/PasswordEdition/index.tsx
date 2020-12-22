@@ -9,7 +9,7 @@ import {
   BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
-import IconButton from '../../../components/IconButton';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import NiButton from '../../../components/form/Button';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
@@ -100,7 +100,8 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={styles.goBack}>
-        <IconButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]} />
+        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
+          color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />
