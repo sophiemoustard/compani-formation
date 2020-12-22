@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import IconButton from '../../components/IconButton';
+import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import styles from './styles';
@@ -121,7 +121,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       {() => (
         <>
           <View style={styles.header}>
-            <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
+            <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
               disabled={isLoading} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>

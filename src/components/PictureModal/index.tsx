@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { navigate } from '../../navigationRef';
 import NiModal from '../Modal';
 import NiButton from '../form/Button';
-import IconButton from '../IconButton';
+import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
@@ -73,7 +73,7 @@ const PictureModal = ({
 
   return (
     <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
-      <IconButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
+      <FeatherButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
       <NiButton caption='Prendre une photo' style={styles.button} onPress={TakePicture} disabled={isLoading}
         bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />

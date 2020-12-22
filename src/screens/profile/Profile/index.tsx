@@ -12,7 +12,7 @@ import { GREY, PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
-import IconButton from '../../../components/IconButton';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
 
 interface ProfileProps {
@@ -57,7 +57,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               source={require('../../../../assets/images/profile_background.png')}>
               <TouchableOpacity onPress={() => setPictureModal(true)}>
                 <Image style={styles.profileImage} source={source} />
-                <IconButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
+                <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)} size={ICON.SM}
                   color={PINK[500]} style={styles.profileImageEdit} />
               </TouchableOpacity>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>

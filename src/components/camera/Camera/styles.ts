@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN, PADDING } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
   camera: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   cameraType: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: PADDING.SM,
+    marginHorizontal: MARGIN.XS,
     width: ICON.XL,
   },
   takePicture: {

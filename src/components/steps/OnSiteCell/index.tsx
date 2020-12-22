@@ -9,7 +9,7 @@ import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
 import ActivityList from '../../activities/ActivityList';
 import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
-import IconButton from '../../IconButton';
+import FeatherButton from '../../icons/FeatherButton';
 import styles from './styles';
 
 interface OnSiteCellProps {
@@ -46,9 +46,9 @@ const OnSiteCell = ({ step, slots = [], index, navigation, profileId }: OnSiteCe
         </TouchableOpacity>
         <StepCellTitle index={index} step={step} />
         <View style={styles.iconContainer}>
-          <IconButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
+          <FeatherButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
             style={styles.infoButtonContainer} />
-          {!!step.activities?.length && <IconButton name={isOpen ? 'chevron-up' : 'chevron-down' }
+          {!!step.activities?.length && <FeatherButton name={isOpen ? 'chevron-up' : 'chevron-down' }
             onPress={onPressChevron} size={ICON.MD} color={GREY[500]} style={styles.iconButtonContainer} />}
         </View>
       </TouchableOpacity>

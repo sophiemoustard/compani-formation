@@ -6,7 +6,7 @@ import { Camera as Cam } from 'expo-camera';
 import { NavigationType } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
-import IconButton from '../../components/IconButton';
+import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
 import styles from './styles';
@@ -92,7 +92,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
           loading={isLoading} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
-      <IconButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />
+      <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />
     </View>
   );
 };

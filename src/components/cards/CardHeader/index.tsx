@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import IconButton from '../../IconButton';
+import FeatherButton from '../../icons/FeatherButton';
 import Actions from '../../../store/activities/actions';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -9,10 +9,11 @@ import { ActionType, StateType } from '../../../types/store/StoreType';
 import styles from './styles';
 import ProgressBar from '../ProgressBar';
 import Selectors from '../../../store/activities/selectors';
+import { FeatherType } from '../../../types/FeatherType';
 
 interface CardHeaderProps {
   color?: string,
-  icon?: string,
+  icon?: FeatherType,
   displayProgressBar: boolean,
   maxProgress: number,
   progress: number,
@@ -38,8 +39,7 @@ const CardHeader = ({
 
   return (
     <View style={styles.container}>
-      <IconButton name={icon} onPress={iconButtonOnPress} size={ICON.LG} color={color}
-        style={styles.closeButton} />
+      <FeatherButton name={icon} onPress={iconButtonOnPress} size={ICON.LG} color={color} style={styles.closeButton} />
       {displayProgressBar && <ProgressBar progress={progressPercentage} />}
     </View>
   );
