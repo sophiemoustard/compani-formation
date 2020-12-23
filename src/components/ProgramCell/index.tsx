@@ -1,12 +1,9 @@
 import React from 'react';
 import { Text, View, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { ProgressCircle } from 'react-native-svg-charts';
-import { Feather } from '@expo/vector-icons';
 import get from 'lodash/get';
 import { ProgramType } from '../../types/ProgramType';
 import styles from './styles';
-import { BORDER_RADIUS, ICON } from '../../styles/metrics';
-import { PINK, WHITE, YELLOW } from '../../styles/colors';
+import ProgressPieChart from '../ProgressPieChart';
 
 interface ProgramCellProps {
   program: ProgramType,
@@ -23,31 +20,12 @@ const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCe
     ? { uri: programImage }
     : require('../../../assets/images/authentication_background_image.jpg');
 
-  const renderProgress = () => {
-    if (progress === 0) {
-      return (
-        <View style={styles.unstartedContainer}>
-          <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
-        </View>
-      );
+  const progressStyle = () => {
+    switch (progress) {
+      case 0: return styles.unstartedContainer;
+      case 1: return styles.finishedContainer;
+      default: return styles.progressContainer;
     }
-
-    if (!progress) return null;
-
-    if (progress < 1) {
-      return (
-        <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progressCircle} progress={progress} progressColor={YELLOW[500]}
-            strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
-        </View>
-      );
-    }
-
-    return (
-      <View style={styles.finishedContainer}>
-        <Feather name='check' size={ICON.XS} color={WHITE} />
-      </View>
-    );
   };
 
   return (
@@ -55,7 +33,10 @@ const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCe
       <View style={styles.imageContainer}>
         <ImageBackground source={source} imageStyle={styles.image}
           style={{ resizeMode: 'contain' } as StyleProp<ViewStyle>}>
-          {renderProgress()}
+          {progress !== null &&
+            <View style={progressStyle()}>
+              <ProgressPieChart progress={progress} />
+            </View>}
         </ImageBackground>
       </View>
       <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={2}>
