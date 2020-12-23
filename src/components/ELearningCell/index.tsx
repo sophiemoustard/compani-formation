@@ -28,7 +28,7 @@ const ELearningCell = ({ step, index, navigation, profileId }: ELearningCellProp
     <View style={[styles.container, isOpen && styles.openedContainer]}>
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
-          <ProgressPieChart step={step} />
+          <ProgressPieChart progress={step.progress} />
           <StepCellTitle index={index} step={step} />
           <FeatherButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
             color={GREY[500]} style={iconButtonStyle} />
