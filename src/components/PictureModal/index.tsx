@@ -78,7 +78,7 @@ const PictureModal = ({
   const requestPermissionsForImagePicker = async () => {
     try {
       setIsLoading(true);
-      const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status === 'granted') navigate('ImagePickerManager');
       else alert('la galerie');
     } catch {
@@ -117,6 +117,8 @@ const PictureModal = ({
       <FeatherButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
       <NiButton caption='Prendre une photo' style={styles.button} onPress={takePicture} disabled={isLoading}
+        bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
+      <NiButton caption='Ajouter une photo' style={styles.button} onPress={addPictureFromGallery} disabled={isLoading}
         bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
       {hasPhoto &&
         <NiButton caption='Supprimer la photo' style={styles.button} onPress={deletePicture} disabled={isLoading}
