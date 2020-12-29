@@ -13,8 +13,7 @@ interface NiCameraPreviewProps {
 
 const NiCameraPreview = ({ photo, loading, onSavePhoto, onRetakePicture }: NiCameraPreviewProps) => (
   <View style={styles.container}>
-    <ImageBackground source={{ uri: photo && photo.uri }}
-      style={styles.photo}>
+    <ImageBackground source={{ uri: photo && photo.uri }} style={styles.photo}>
       <View style={styles.buttonContainer}>
         <NiButton caption='Enregistrer la photo' onPress={() => onSavePhoto(photo)} loading={loading} disabled={loading}
           style={styles.button} bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />

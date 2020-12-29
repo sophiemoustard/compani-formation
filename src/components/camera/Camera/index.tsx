@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { Camera } from 'expo-camera';
+import * as ImageManipulator from 'expo-image-manipulator';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import { WHITE } from '../../../styles/colors';
@@ -44,10 +45,15 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
     setRatio(supportedratios[index]);
   };
 
+  const flipPhoto = async photo => ImageManipulator.manipulateAsync(
+    photo.uri,
+    [{ flip: ImageManipulator.FlipType.Horizontal }]
+  );
+
   const onTakePicture = async () => {
-    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true, quality: 0.8 });
+    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
     setPreviewVisible(true);
-    setCapturedImage(photo);
+    setCapturedImage(cameraType === back ? photo : await flipPhoto(photo));
   };
 
   const onHandleCameraType = () => {
