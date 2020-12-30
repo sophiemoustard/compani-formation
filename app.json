@@ -20,7 +20,7 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.18",
+      "buildNumber": "1.0.19",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
@@ -31,7 +31,7 @@
     "android": {
       "package": "com.alenvi.compani",
       "permissions": [],
-      "versionCode": 42,
+      "versionCode": 43,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android_icon.png"
       }
