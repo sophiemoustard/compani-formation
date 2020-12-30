@@ -20,7 +20,7 @@ interface CreateAccountProps {
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
-  const { refreshAlenviToken, signOut } = useContext(AuthContext);
+  const { signIn, signOut } = useContext(AuthContext);
   const [formList, setFormList] = useState([
     [{
       type: 'text',
@@ -93,7 +93,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       identity: formList[0][0].value === ''
         ? { lastname: formList[1][0].value }
         : { lastname: formList[1][0].value, firstname: formList[0][0].value },
-      local: { email },
+      local: { email, password: formList[3][0].value },
     };
 
     return Object.assign(
@@ -105,10 +105,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const create = async () => {
     try {
       setIsLoading(true);
-      const user = await Users.create(formatCreationPayload());
-      await refreshAlenviToken(user.refreshToken);
-
-      await Users.updatePassword(user._id, { local: { password: formList[3][0].value } });
+      await Users.create(formatCreationPayload());
+      signIn({ email, password: formList[3][0].value });
     } catch (e) {
       if (e.status === 401) signOut();
     } finally {

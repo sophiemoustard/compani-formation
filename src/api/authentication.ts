@@ -17,4 +17,8 @@ export default {
     const refreshToken = await axios.post(`${baseURL}/users/refreshToken`, payload);
     return refreshToken.data.data;
   },
+  logOut: async () => {
+    const { baseURL } = getEnvVars();
+    await axios.post(`${baseURL}/users/logout`);
+  },
 };
