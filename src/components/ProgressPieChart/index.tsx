@@ -5,24 +5,23 @@ import { ProgressCircle } from 'react-native-svg-charts';
 import styles from './styles';
 import { BORDER_RADIUS, ICON } from '../../styles/metrics';
 import { PINK, WHITE, YELLOW } from '../../styles/colors';
-import { StepType } from '../../types/StepType';
 
 interface ProgressPieChartProps {
-  step: StepType,
+  progress: number | null,
 }
 
-const ProgressPieChart = ({ step }: ProgressPieChartProps) => (
+const ProgressPieChart = ({ progress }: ProgressPieChartProps) => (
   <View style={styles.container}>
-    {!step.progress &&
+    {!progress &&
         <View style={styles.unstartedContainer}>
           <Feather name='play-circle' size={ICON.MD} color={PINK[500]} />
         </View>}
-    {!!step.progress && step.progress < 1 &&
+    {!!progress && progress < 1 &&
         <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progress} progress={step.progress}
+          <ProgressCircle style={styles.progress} progress={progress}
             progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
         </View>}
-    {step.progress === 1 &&
+    {progress === 1 &&
         <View style={styles.finishedContainer}>
           <Feather name='check' size={ICON.XS} color={WHITE} />
         </View>}

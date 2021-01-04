@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { ProgressCircle } from 'react-native-svg-charts';
-import { Feather } from '@expo/vector-icons';
 import moment from '../../core/helpers/moment';
 import { capitalize } from '../../core/helpers/utils';
 import Shadow from '../design/Shadow';
 import styles from './styles';
-import { ICON, BORDER_RADIUS } from '../../styles/metrics';
-import { YELLOW, WHITE } from '../../styles/colors';
+import ProgressPieChart from '../ProgressPieChart';
 
 interface CalendarIconProps {
   slots: Array<Date>,
@@ -45,18 +42,9 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
       );
     }
 
-    if (progress < 1) {
-      return (
-        <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progress} progress={progress} progressColor={YELLOW[500]}
-            strokeWidth={4} cornerRadius={BORDER_RADIUS.LG} backgroundColor={WHITE} />
-        </View>
-      );
-    }
-
     return (
-      <View style={styles.finishedContainer}>
-        <Feather name='check' size={ICON.XS} color={WHITE} />
+      <View style={progress < 1 ? styles.progressContainer : styles.finishedContainer}>
+        <ProgressPieChart progress={progress} />
       </View>
     );
   };

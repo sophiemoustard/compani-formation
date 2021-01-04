@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import IconButton from '../../components/IconButton';
+import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import styles from './styles';
@@ -20,7 +20,7 @@ interface CreateAccountProps {
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
-  const { refreshAlenviToken, signOut } = useContext(AuthContext);
+  const { signIn, signOut } = useContext(AuthContext);
   const [formList, setFormList] = useState([
     [{
       type: 'text',
@@ -93,7 +93,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       identity: formList[0][0].value === ''
         ? { lastname: formList[1][0].value }
         : { lastname: formList[1][0].value, firstname: formList[0][0].value },
-      local: { email },
+      local: { email, password: formList[3][0].value },
     };
 
     return Object.assign(
@@ -105,10 +105,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const create = async () => {
     try {
       setIsLoading(true);
-      const user = await Users.create(formatCreationPayload());
-      await refreshAlenviToken(user.refreshToken);
-
-      await Users.updatePassword(user._id, { local: { password: formList[3][0].value } });
+      await Users.create(formatCreationPayload());
+      signIn({ email, password: formList[3][0].value });
     } catch (e) {
       if (e.status === 401) signOut();
     } finally {
@@ -121,7 +119,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       {() => (
         <>
           <View style={styles.header}>
-            <IconButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
+            <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
               disabled={isLoading} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>

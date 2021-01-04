@@ -17,4 +17,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     marginBottom: MARGIN.MD,
   },
+  iconButton: {
+    zIndex: 100,
+  },
 });

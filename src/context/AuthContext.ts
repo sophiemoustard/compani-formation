@@ -53,6 +53,7 @@ const signIn = dispatch => async ({ email, password }) => {
 };
 
 const signOut = dispatch => async () => {
+  await Authentication.logOut();
   await asyncStorage.removeAlenviToken();
   await asyncStorage.removeRefreshToken();
   await asyncStorage.removeUserId();
