@@ -8,7 +8,7 @@ import styles from './styles';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import Button from '../../../components/form/Button';
-import IconButton from '../../../components/IconButton';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
@@ -72,7 +72,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
     <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
       <View style={styles.header} />
       <View style={styles.content}>
-        <IconButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
+        <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
         <View style={styles.titleContainer}>
           <Text style={styles.aboutTitle}>A PROPOS</Text>
           <Text style={styles.programTitle}>{program.name}</Text>

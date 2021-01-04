@@ -25,7 +25,7 @@ import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import { SubProgramType } from '../../../types/SubProgramType';
-import IconButton from '../../../components/IconButton';
+import FeatherButton from '../../../components/icons/FeatherButton';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -92,7 +92,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
         <View style={styles.header}>
-          <IconButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
+          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>

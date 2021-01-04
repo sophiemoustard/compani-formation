@@ -4,7 +4,7 @@
     "slug": "compani",
     "description": "Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain",
     "platforms": ["ios", "android"],
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "primaryColor": "#FFFFFF",
     "icon": "./assets/images/android_icon.png",
@@ -20,17 +20,18 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.18",
+      "buildNumber": "1.0.19",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
-        "NSCameraUsageDescription": "Autorisez l'accès à votre caméra pour pouvoir prendre une photo et la charger comme photo de profil dans Compani."
+        "NSCameraUsageDescription": "Autorisez l'accès à votre caméra pour pouvoir prendre une photo et la charger comme photo de profil dans Compani.",
+        "NSPhotoLibraryUsageDescription": "Autorisez l'accès à votre librairie pour pouvoir choisir une photo et la charger comme photo de profil dans Compani."
       }
     },
     "android": {
       "package": "com.alenvi.compani",
       "permissions": [],
-      "versionCode": 42,
+      "versionCode": 43,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android_icon.png"
       }

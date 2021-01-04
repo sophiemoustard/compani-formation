@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { Camera } from 'expo-camera';
+import * as ImageManipulator from 'expo-image-manipulator';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import { WHITE } from '../../../styles/colors';
-import IconButton from '../../IconButton';
-import { IONICONS } from '../../../core/data/constants';
+import IoniconsButton from '../../icons/IoniconsButton';
 
 interface NiCameraProps {
   setPreviewVisible: (visible: boolean) => void,
@@ -45,10 +45,15 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
     setRatio(supportedratios[index]);
   };
 
+  const flipPhoto = async photo => ImageManipulator.manipulateAsync(
+    photo.uri,
+    [{ flip: ImageManipulator.FlipType.Horizontal }]
+  );
+
   const onTakePicture = async () => {
-    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true, quality: 0.8 });
+    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
     setPreviewVisible(true);
-    setCapturedImage(photo);
+    setCapturedImage(cameraType === back ? photo : await flipPhoto(photo));
   };
 
   const onHandleCameraType = () => {
@@ -64,11 +69,11 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
     <Camera ref={camera} type={cameraType} flashMode={flashMode} style={styles.camera}
       ratio ={ratio} onCameraReady={setScreenDimension}>
       <View style={styles.buttons}>
-        <IconButton disabled={cameraType === front} iconFamily={IONICONS} onPress={onHandleFlashMode}
-          style={styles.flash} color={WHITE} size={ICON.XL} name={flashMode === on ? 'md-flash' : 'md-flash-off'}/>
+        <IoniconsButton disabled={cameraType === front} onPress={onHandleFlashMode} style={styles.flash} color={WHITE}
+          size={ICON.XL} name={flashMode === on ? 'md-flash' : 'md-flash-off'}/>
         <TouchableOpacity onPress={onTakePicture} style={styles.takePicture} />
-        <IconButton iconFamily={IONICONS} style={styles.cameraType} color={WHITE} size={ICON.XL}
-          name={cameraType === front ? 'ios-reverse-camera' : 'ios-camera'} onPress={onHandleCameraType} />
+        <IoniconsButton style={styles.cameraType} color={WHITE} size={ICON.XL} onPress={onHandleCameraType}
+          name={cameraType === front ? 'ios-camera-reverse' : 'ios-camera'} />
       </View>
     </Camera>
   );

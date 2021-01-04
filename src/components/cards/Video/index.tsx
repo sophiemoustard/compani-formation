@@ -4,7 +4,7 @@ import { Platform, View } from 'react-native';
 import { Video } from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
-import IconButton from '../../../components/IconButton';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import { GREY } from '../../../styles/colors';
 
 interface NiVideoProps {
@@ -52,7 +52,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
     // The View is needed to center the play button
     <View>
       {isIosVersionWithPlayButton && playVisible &&
-        <IconButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
+        <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
           style={styles.play} />}
       <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
         onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate} style={styles.media}

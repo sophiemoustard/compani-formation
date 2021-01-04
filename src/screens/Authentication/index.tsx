@@ -61,7 +61,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
           </TouchableOpacity>
           <NiErrorMessage message={errorMessage} show={error} />
           <NiButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
-          <NiButton caption="C'est ma première connection" onPress={firstConnection}
+          <NiButton caption="C'est ma première connexion" onPress={firstConnection}
             bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
         </View>
       </KeyboardAvoidingView>

@@ -3,10 +3,9 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Audio, AVPlaybackStatus } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
-import IconButton from '../../IconButton';
+import IoniconsButton from '../../icons/IoniconsButton';
 import { GREY, PINK } from '../../../styles/colors';
 import styles from './styles';
-import { IONICONS } from '../../../core/data/constants';
 import commonStyle from '../../../styles/common';
 
 interface NiAudioProps {
@@ -87,8 +86,8 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     <View style={styles.container}>
       <View style={styles.player}>
         {isLoaded
-          ? <IconButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
-            color={GREY[800]} iconFamily={IONICONS} style={styles.icon} />
+          ? <IoniconsButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
+            color={GREY[800]} style={styles.icon} />
           : <ActivityIndicator style={[commonStyle.disabled, styles.icon]} color={GREY[800]} size={ICON.MD} />}
         <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
         <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} thumbTintColor={PINK[500]}
