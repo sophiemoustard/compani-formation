@@ -101,7 +101,8 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
         <View style={styles.header}>
-          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}/>
+          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
+            iconStyle={styles.arrowShadow} />
           <Text style={styles.title}>{programName}{course.misc ? ` - ${course.misc}` : ''}</Text>
         </View>
       </ImageBackground>

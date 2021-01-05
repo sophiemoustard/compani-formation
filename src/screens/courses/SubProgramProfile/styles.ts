@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
   arrow: {
     margin: MAIN_MARGIN_LEFT,
   },
+  arrowShadow: {
+    textShadowColor: GREY[800],
+    textShadowRadius: 4,
+    textShadowOffset: { width: 1, height: 1 },
+  },
   title: {
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
