@@ -7,7 +7,7 @@
     "version": "1.2.0",
     "orientation": "portrait",
     "primaryColor": "#FFFFFF",
-    "icon": "./assets/images/android_icon.png",
+    "icon": "./assets/images/ios_icon.png",
     "backgroundColor": "#FFFFFF",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -20,7 +20,7 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.19",
+      "buildNumber": "1.0.20",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
@@ -30,8 +30,8 @@
     },
     "android": {
       "package": "com.alenvi.compani",
-      "permissions": [],
-      "versionCode": 43,
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
+      "versionCode": 47,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android_icon.png"
       }
