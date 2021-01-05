@@ -10,6 +10,7 @@ interface FeatherButtonProps {
   color: string,
   size: number,
   style?: object,
+  iconStyle?: object,
   disabled?: boolean,
   hitSlop?: Insets,
 }
@@ -20,12 +21,13 @@ const FeatherButton = ({
   color,
   size,
   style,
+  iconStyle,
   disabled = false,
   hitSlop = { top: 12, bottom: 12, left: 12, right: 12 },
 }: FeatherButtonProps) => (
   <TouchableOpacity onPress={onPress} style={[style, disabled && commonStyle.disabled, commonStyle.iconButton]}
     disabled={disabled} hitSlop={hitSlop}>
-    <Feather name={name} size={size} color={color} />
+    <Feather name={name} size={size} color={color} style={iconStyle} />
   </TouchableOpacity>
 );
 
