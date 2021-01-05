@@ -30,8 +30,8 @@
     },
     "android": {
       "package": "com.alenvi.compani",
-      "permissions": [],
-      "versionCode": 43,
+      "permissions": ["CAMERA", "MEDIA_LIBRARY"],
+      "versionCode": 45,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android_icon.png"
       }
