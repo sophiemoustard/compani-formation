@@ -11,6 +11,7 @@ import AppContainer from './src/AppContainer';
 import UpdateAppModal from './src/components/UpdateAppModal';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
+import { ACTIVE_STATE } from './src/core/data/constants';
 
 const store = createStore(reducers, tron.createEnhancer());
 
@@ -32,7 +33,7 @@ const App = () => {
   const [modalOpened, setModalOpened] = useState(false);
 
   const checkUpdate = async (nextState) => {
-    if (nextState === 'active') {
+    if (nextState === ACTIVE_STATE) {
       const envVars = getEnvVars();
       const { mustUpdate } = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
       setModalOpened(mustUpdate);
@@ -40,6 +41,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    checkUpdate(ACTIVE_STATE);
     AppState.addEventListener('change', checkUpdate);
 
     return () => { AppState.removeEventListener('change', checkUpdate); };
