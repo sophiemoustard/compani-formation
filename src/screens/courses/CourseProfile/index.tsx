@@ -28,6 +28,7 @@ import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
+import { achievementJingle } from '../../../core/helpers/utils';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -57,6 +58,10 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (course?.progress === 1) { achievementJingle(true); }
+  }, [course]);
 
   const isFocused = useIsFocused();
   useEffect(() => {

@@ -13,6 +13,7 @@ import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
+import { quizJingle } from '../../../../core/helpers/utils';
 
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
@@ -56,6 +57,7 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
   const onSelectAnswer = (selectedIndex) => {
     setIsPressed(true);
     setSelectedAnswerIndex(selectedIndex);
+    quizJingle(answers[selectedIndex] === card.qcuGoodAnswer);
     if (answers[selectedIndex] === card.qcuGoodAnswer) incGoodAnswersCount();
   };
 

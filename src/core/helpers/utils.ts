@@ -1,3 +1,5 @@
+import { Audio } from 'expo-av';
+
 export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -16,3 +18,23 @@ export const formatWordToPlural = (items, text) => (items.length > 1
   : `${items.length} ${text}`);
 
 export const capitalizeFirstLetter = s => `${s.charAt(0).toUpperCase()}${s.substr(1)}`;
+
+export const quizJingle = async (isGoodAnswer) => {
+  if (isGoodAnswer) {
+    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/good-answer.mp3'));
+    await sound.playAsync();
+  } else {
+    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/wrong-answer.mp3'));
+    await sound.playAsync();
+  }
+};
+
+export const achievementJingle = async (isCourse) => {
+  if (isCourse) {
+    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/completed-course.mp3'));
+    await sound.playAsync();
+  } else {
+    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/completed-activity.mp3'));
+    await sound.playAsync();
+  }
+};
