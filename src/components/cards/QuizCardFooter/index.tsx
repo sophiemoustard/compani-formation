@@ -5,7 +5,7 @@ import cardsStyle from '../../../styles/cards';
 import styles from './styles';
 import { GREY } from '../../../styles/colors';
 
-interface QuestionCardFooterProps {
+interface QuizCardFooterProps {
   isValidated: boolean,
   isValid: boolean,
   cardIndex: number,
@@ -23,7 +23,7 @@ const QuizCardFooter = ({
   explanation,
   buttonDisabled = false,
   onPressFooterButton,
-}: QuestionCardFooterProps) => {
+}: QuizCardFooterProps) => {
   const style = styles(footerColors.text, footerColors.background);
   return (
     <>
