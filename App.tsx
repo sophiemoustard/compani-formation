@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AppState } from 'react-native';
 import { createStore } from 'redux';
+import Constants from 'expo-constants';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
-import { Provider as AuthProvider } from './src/context/AuthContext';
-import getEnvVars from './environment';
+import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 import Version from './src/api/version';
 import AppContainer from './src/AppContainer';
 import UpdateAppModal from './src/components/UpdateAppModal';
@@ -31,12 +31,17 @@ const fetchFonts = () => Font.loadAsync({
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
+  const { signOut } = useContext(AuthContext);
 
   const checkUpdate = async (nextState) => {
-    if (nextState === ACTIVE_STATE) {
-      const envVars = getEnvVars();
-      const { mustUpdate } = await Version.checkUpdate({ apiVersion: envVars.apiVersion });
-      setModalOpened(mustUpdate);
+    try {
+      if (nextState === ACTIVE_STATE) {
+        const { mustUpdate } = await Version.checkUpdate({ mobileVersion: Constants.manifest.version });
+        setModalOpened(mustUpdate);
+      }
+    } catch (error) {
+      if (error.status === 401) signOut();
+      console.error(error);
     }
   };
 
@@ -45,6 +50,7 @@ const App = () => {
     AppState.addEventListener('change', checkUpdate);
 
     return () => { AppState.removeEventListener('change', checkUpdate); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!fontLoaded) {
