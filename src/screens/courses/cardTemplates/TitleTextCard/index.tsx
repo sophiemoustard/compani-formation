@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import Selectors from '../../../../store/activities/selectors';
@@ -23,7 +24,7 @@ const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
-        <Text style={cardsStyle.text}>{card.text}</Text>
+        <Markdown style={cardsStyle.text}>{card.text}</Markdown>
       </ScrollView>
       <CardFooter index={index} />
     </>
