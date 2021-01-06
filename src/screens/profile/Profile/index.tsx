@@ -48,7 +48,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   }, []);
 
   return (
-    <ScrollView style={commonStyles.container}>
+    <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
       {!!loggedUser &&
         <>
           <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
