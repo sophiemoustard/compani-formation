@@ -101,14 +101,14 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const validationMessage = () => {
-    if (unvalidEmail && isValidationAttempted) return 'Ton adresse e-mail n\'est pas valide';
+    if (unvalidEmail && isValidationAttempted) return 'Votre adresse e-mail n\'est pas valide';
     if (error) return errorMessage;
     return '';
   };
 
   const renderContentText = () =>
     <Text style={style.contentText}>Nous avons envoyé un e-mail à<Text style={style.email}>{` ${email}`}</Text>
-    . Si tu ne l’as pas reçu, vérifie ton Courrier indésirable, ou réessaie.</Text>;
+    . Si vous ne l’avez pas reçu, vérifiez votre Courrier indésirable, ou réessayez.</Text>;
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
@@ -118,10 +118,10 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title={'Es-tu sûr de cela ?'} contentText={'Tu reviendras à la page d\'accueil.'} />
+          title={'Êtes-vous sûr de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
       </View>
       <View style={style.container}>
-        <Text style={style.title}>Quelle est ton adresse mail ?</Text>
+        <Text style={style.title}>Quelle est votre adresse mail ?</Text>
         <View style={style.input}>
           <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
             onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} disabled={isLoading} />
@@ -131,7 +131,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             color={WHITE} borderColor={PINK[500]} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
-          title='Vérifie tes e-mails !' contentText={renderContentText} />
+          title='Vérifiez vos e-mails !' contentText={renderContentText} />
       </View>
     </KeyboardAvoidingView>
   );

@@ -104,7 +104,7 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
           color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />
+          title={'Êtes-vous sûr de cela ?'} contentText={'Vos modifications ne seront pas enregistrées.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
@@ -119,7 +119,7 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
           <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
             type="password" darkMode={false} onChangeText={text => setPasswordField(text, 'confirmedPassword')}
             validationMessage={unvalid.confirmedPassword && isTouch.confirmedPassword
-              ? 'Ton nouveau mot de passe et sa confirmation ne correspondent pas'
+              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
               : ''} />
         </View>
         <View style={styles.footer}>

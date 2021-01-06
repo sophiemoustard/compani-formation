@@ -134,7 +134,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   };
 
   const emailValidation = () => {
-    if (unvalid.email) return 'Ton adresse e-mail n\'est pas valide';
+    if (unvalid.email) return 'Votre adresse e-mail n\'est pas valide';
     if (unvalid.emptyEmail) return 'Ce champ est obligatoire';
 
     return '';
@@ -148,7 +148,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />
+          title={'Êtes-vous sûr de cela ?'} contentText={'Vos modifications ne seront pas enregistrées.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mes informations</Text>
@@ -170,7 +170,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         <View style={styles.input}>
           <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
             darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
-            validationMessage={unvalid.phone ? 'Ton numéro de téléphone n\'est pas valide' : ''} />
+            validationMessage={unvalid.phone ? 'Votre numéro de téléphone n\'est pas valide' : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="E-mail" value={editedUser.local.email} type="email"
