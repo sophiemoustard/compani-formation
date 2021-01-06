@@ -47,7 +47,7 @@ const EndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
-    if (isCourse) navigate('CourseProfile', { courseId: profileId });
+    if (isCourse) navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
     else navigate('SubProgramProfile', { subProgramId: profileId });
     resetActivityReducer();
   };

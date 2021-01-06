@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { StepType } from '../../types/StepType';
 import { ICON } from '../../styles/metrics';
@@ -14,15 +14,22 @@ interface ELearningCellProps {
   index: number,
   navigation: { navigate: (path: string, activityId: any) => {} },
   profileId: string,
+  lastActivity?: string,
 }
 
-const ELearningCell = ({ step, index, navigation, profileId }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation, profileId, lastActivity = '' }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
   const iconButtonStyle = isOpen
     ? { ...styles.iconButtonContainer, ...styles.openedIconButtonContainer }
     : styles.iconButtonContainer;
+
+  useEffect(() => {
+    if (step && step.activities && lastActivity) {
+      setIsOpen(step.activities?.map(activity => activity._id).includes(lastActivity));
+    }
+  }, [lastActivity, step]);
 
   return (
     <View style={[styles.container, isOpen && styles.openedContainer]}>
