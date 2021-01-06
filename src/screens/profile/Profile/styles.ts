@@ -4,6 +4,9 @@ import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/me
 import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR, NUNITO_SEMI, NUNITO_LIGHT } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
   title: {
     paddingHorizontal: PADDING.LG,
   },
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
+    marginTop: 'auto',
   },
 });
 
