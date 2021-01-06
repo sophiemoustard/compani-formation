@@ -7,7 +7,6 @@ import commonStyles from '../../../styles/common';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
-import { CourseType } from '../../../types/CourseType';
 import { GREY, PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
@@ -22,7 +21,8 @@ interface ProfileProps {
 
 const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
-  const [courses, setCourses] = useState<Array<CourseType>>([]);
+  const [onGoingCoursesNumber, setOnGoingCoursesNumber] = useState<number>();
+  const [achievedCoursesNumber, setAchievedCoursesNumber] = useState<number>();
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
@@ -30,10 +30,12 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const getUserCourses = async () => {
     try {
       const fetchedCourses = await Course.getUserCourses();
-      setCourses(fetchedCourses);
+      setOnGoingCoursesNumber(fetchedCourses.filter(course => course.progress < 1).length);
+      setAchievedCoursesNumber(fetchedCourses.filter(course => course.progress === 1).length);
     } catch (e) {
       if (e.status === 401) signOut();
-      setCourses([]);
+      setOnGoingCoursesNumber(0);
+      setAchievedCoursesNumber(0);
     }
   };
 
@@ -62,8 +64,16 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               </TouchableOpacity>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
               <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
-              <Text style={styles.courses}>FORMATIONS EN COURS</Text>
-              <Text style={styles.numberOfCourses}>{courses.length}</Text>
+              <View style={styles.coursesContainer}>
+                <View style={styles.coursesContent}>
+                  <Text style={styles.courses}>FORMATIONS EN COURS</Text>
+                  <Text style={styles.numberOfCourses}>{onGoingCoursesNumber}</Text>
+                </View>
+                <View style={styles.coursesContent}>
+                  <Text style={styles.courses}>FORMATIONS TERMINÉES</Text>
+                  <Text style={styles.numberOfCourses}>{achievedCoursesNumber}</Text>
+                </View>
+              </View>
             </ImageBackground>
           </View>
           <View style={styles.sectionDelimiter} />
