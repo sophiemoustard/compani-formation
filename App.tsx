@@ -33,10 +33,10 @@ const App = () => {
   const [modalOpened, setModalOpened] = useState(false);
   const { signOut } = useContext(AuthContext);
 
-  const checkUpdate = async (nextState) => {
+  const shouldUpdate = async (nextState) => {
     try {
       if (nextState === ACTIVE_STATE) {
-        const { mustUpdate } = await Version.checkUpdate({ mobileVersion: Constants.manifest.version });
+        const { mustUpdate } = await Version.shouldUpdate({ mobileVersion: Constants.manifest.version });
         setModalOpened(mustUpdate);
       }
     } catch (error) {
@@ -46,10 +46,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    checkUpdate(ACTIVE_STATE);
-    AppState.addEventListener('change', checkUpdate);
+    shouldUpdate(ACTIVE_STATE);
+    AppState.addEventListener('change', shouldUpdate);
 
-    return () => { AppState.removeEventListener('change', checkUpdate); };
+    return () => { AppState.removeEventListener('change', shouldUpdate); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
