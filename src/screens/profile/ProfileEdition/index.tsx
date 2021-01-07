@@ -134,7 +134,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   };
 
   const emailValidation = () => {
-    if (unvalid.email) return 'Votre adresse e-mail n\'est pas valide';
+    if (unvalid.email) return 'Votre adresse mail n\'est pas valide';
     if (unvalid.emptyEmail) return 'Ce champ est obligatoire';
 
     return '';
