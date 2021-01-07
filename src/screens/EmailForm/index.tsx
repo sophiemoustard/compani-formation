@@ -101,13 +101,13 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const validationMessage = () => {
-    if (unvalidEmail && isValidationAttempted) return 'Votre adresse e-mail n\'est pas valide';
+    if (unvalidEmail && isValidationAttempted) return 'Votre adresse mail n\'est pas valide';
     if (error) return errorMessage;
     return '';
   };
 
   const renderContentText = () =>
-    <Text style={style.contentText}>Nous avons envoyé un e-mail à<Text style={style.email}>{` ${email}`}</Text>
+    <Text style={style.contentText}>Nous avons envoyé un mail à<Text style={style.email}>{` ${email}`}</Text>
     . Si vous ne l’avez pas reçu, vérifiez votre Courrier indésirable, ou réessayez.</Text>;
 
   return (
@@ -131,7 +131,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             color={WHITE} borderColor={PINK[500]} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
-          title='Vérifiez vos e-mails !' contentText={renderContentText} />
+          title='Vérifiez vos mails !' contentText={renderContentText} />
       </View>
     </KeyboardAvoidingView>
   );
