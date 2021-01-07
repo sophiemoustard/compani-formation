@@ -21,8 +21,8 @@ interface ProfileProps {
 
 const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
-  const [onGoingCoursesNumber, setOnGoingCoursesNumber] = useState<number>();
-  const [achievedCoursesNumber, setAchievedCoursesNumber] = useState<number>();
+  const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
+  const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
@@ -30,12 +30,12 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const getUserCourses = async () => {
     try {
       const fetchedCourses = await Course.getUserCourses();
-      setOnGoingCoursesNumber(fetchedCourses.filter(course => course.progress < 1).length);
-      setAchievedCoursesNumber(fetchedCourses.filter(course => course.progress === 1).length);
+      setOnGoingCoursesCount(fetchedCourses.filter(course => course.progress < 1).length);
+      setAchievedCoursesCount(fetchedCourses.filter(course => course.progress === 1).length);
     } catch (e) {
       if (e.status === 401) signOut();
-      setOnGoingCoursesNumber(0);
-      setAchievedCoursesNumber(0);
+      setOnGoingCoursesCount(0);
+      setAchievedCoursesCount(0);
     }
   };
 
@@ -67,11 +67,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
               <View style={styles.coursesContainer}>
                 <View style={styles.coursesContent}>
                   <Text style={styles.courses}>FORMATIONS EN COURS</Text>
-                  <Text style={styles.numberOfCourses}>{onGoingCoursesNumber}</Text>
+                  <Text style={styles.numberOfCourses}>{onGoingCoursesCount}</Text>
                 </View>
                 <View style={styles.coursesContent}>
                   <Text style={styles.courses}>FORMATIONS TERMINÉES</Text>
-                  <Text style={styles.numberOfCourses}>{achievedCoursesNumber}</Text>
+                  <Text style={styles.numberOfCourses}>{achievedCoursesCount}</Text>
                 </View>
               </View>
             </ImageBackground>
