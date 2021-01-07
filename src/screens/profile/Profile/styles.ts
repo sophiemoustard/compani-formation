@@ -43,6 +43,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: MARGIN.LG,
   },
+  coursesContainer: {
+    flexDirection: 'row',
+  },
+  coursesContent: {
+    alignItems: 'center',
+    marginHorizontal: MARGIN.SM,
+  },
   courses: {
     ...NUNITO_SEMI.XS,
     textAlign: 'center',
