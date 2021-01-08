@@ -57,8 +57,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       setIsBottomPopUpVisible(true);
     } catch (e) {
       setError(true);
-      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cette adresse mail');
-      else setErrorMessage('Oops, erreur lors de la transmission de l\'adresse mail.');
+      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
+      else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +79,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       }
     } catch (e) {
       setError(true);
-      setErrorMessage('Oops, erreur lors de l\'envoi de l\'adresse.');
+      setErrorMessage('Oops, erreur lors de l\'envoi de l\'e-mail.');
     } finally {
       setIsLoading(false);
     }
@@ -101,13 +101,13 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const validationMessage = () => {
-    if (unvalidEmail && isValidationAttempted) return 'Votre adresse mail n\'est pas valide';
+    if (unvalidEmail && isValidationAttempted) return 'Votre e-mail n\'est pas valide';
     if (error) return errorMessage;
     return '';
   };
 
   const renderContentText = () =>
-    <Text style={style.contentText}>Nous avons envoyé un mail à<Text style={style.email}>{` ${email}`}</Text>
+    <Text style={style.contentText}>Nous avons envoyé un e-mail à<Text style={style.email}>{` ${email}`}</Text>
     . Si vous ne l’avez pas reçu, vérifiez votre Courrier indésirable, ou réessayez.</Text>;
 
   return (
@@ -121,7 +121,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           title={'Êtes-vous sûr de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
       </View>
       <View style={style.container}>
-        <Text style={style.title}>Quelle est votre adresse mail ?</Text>
+        <Text style={style.title}>Quelle est votre e-mail ?</Text>
         <View style={style.input}>
           <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
             onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} disabled={isLoading} />
@@ -131,7 +131,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             color={WHITE} borderColor={PINK[500]} />
         </View>
         <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
-          title='Vérifiez vos mails !' contentText={renderContentText} />
+          title='Vérifiez vos e-mails !' contentText={renderContentText} />
       </View>
     </KeyboardAvoidingView>
   );
