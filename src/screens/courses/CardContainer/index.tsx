@@ -80,7 +80,7 @@ const CardContainer = ({
         <View style={styles.cardScreen}>
           <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
             onPressCancelButton={() => setExitConfirmationModal(false)}
-            title='Es-tu sûr de cela ?' contentText='Tous tes progrès dans la leçon seront perdus.' />
+            title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
           <CardTemplate index={index} />
         </View>
       )}
