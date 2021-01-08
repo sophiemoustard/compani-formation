@@ -88,7 +88,7 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
 
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} navigation={navigation} profileId={route.params.courseId}
-        lastActivity={route.params.endedActivity} />;
+        endedActivity={route.params.endedActivity} />;
     }
 
     return null;
