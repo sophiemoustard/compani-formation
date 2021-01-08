@@ -14,10 +14,10 @@ interface ELearningCellProps {
   index: number,
   navigation: { navigate: (path: string, activityId: any) => {} },
   profileId: string,
-  lastActivity?: string,
+  endedActivity?: string,
 }
 
-const ELearningCell = ({ step, index, navigation, profileId, lastActivity = '' }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, navigation, profileId, endedActivity = '' }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
@@ -26,10 +26,10 @@ const ELearningCell = ({ step, index, navigation, profileId, lastActivity = '' }
     : styles.iconButtonContainer;
 
   useEffect(() => {
-    if (step && step.activities && lastActivity) {
-      setIsOpen(step.activities?.map(activity => activity._id).includes(lastActivity));
+    if (step && step.activities && endedActivity) {
+      setIsOpen(step.activities.map(activity => activity._id).includes(endedActivity));
     }
-  }, [lastActivity, step]);
+  }, [endedActivity, step]);
 
   return (
     <View style={[styles.container, isOpen && styles.openedContainer]}>
