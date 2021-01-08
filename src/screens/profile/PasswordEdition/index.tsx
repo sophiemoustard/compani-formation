@@ -78,11 +78,11 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const savePassword = async () => {
     try {
       setIsValidationAttempted(true);
-      if (Object.values(unvalid).every(value => !value)) {
+      if (isValid) {
         setIsLoading(true);
         setError(false);
         setErrorMessage('');
-        if (isValid) await Users.updatePassword(loggedUser._id, { local: { password: password.newPassword } });
+        await Users.updatePassword(loggedUser._id, { local: { password: password.newPassword } });
         goBack();
       }
     } catch (e) {
