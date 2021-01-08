@@ -85,11 +85,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   useEffect(() => {
     const { lastName, phone, email, emptyEmail } = unvalid;
-    if (lastName || phone || email || emptyEmail ||
-      (editedUser.identity.firstname === loggedUser.identity.firstname &&
-        editedUser.identity.lastname === loggedUser.identity.lastname &&
-        editedUser.contact.phone === loggedUser.contact?.phone &&
-        editedUser.local.email === loggedUser.local.email)) {
+    if (lastName || phone || email || emptyEmail) {
       setIsValid(false);
     } else setIsValid(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,16 +101,14 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const saveData = async () => {
     try {
       setIsValidationAttempted(true);
-      if (Object.values(unvalid).every(value => !value)) {
+      if (isValid) {
         setIsLoading(true);
         setError(false);
         setErrorMessage('');
-        if (isValid) {
-          await Users.updateById(loggedUser._id, {
-            ...editedUser,
-            contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
-          });
-        }
+        await Users.updateById(loggedUser._id, {
+          ...editedUser,
+          contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
+        });
         const userId = loggedUser._id;
         const user = await Users.getById(userId);
         setLoggedUser(user);
