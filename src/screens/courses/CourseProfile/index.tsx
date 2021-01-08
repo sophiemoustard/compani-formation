@@ -32,7 +32,7 @@ import ProgressBar from '../../../components/cards/ProgressBar';
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
-  route: { params: { courseId: string } },
+  route: { params: { courseId: string, endedActivity: string} },
   navigation: NavigationType,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
@@ -87,7 +87,8 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     }
 
     if (item.type === E_LEARNING) {
-      return <ELearningCell step={item} index={index} navigation={navigation} profileId={route.params.courseId} />;
+      return <ELearningCell step={item} index={index} navigation={navigation} profileId={route.params.courseId}
+        endedActivity={route.params.endedActivity} />;
     }
 
     return null;
