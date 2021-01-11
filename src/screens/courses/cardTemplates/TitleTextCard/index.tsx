@@ -25,7 +25,11 @@ const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
+<<<<<<< HEAD
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
+=======
+        <Markdown style={{ body: cardsStyle.text }}>{card.text}</Markdown>
+>>>>>>> COM-1762: apply style to markdown
       </ScrollView>
       <CardFooter index={index} />
     </>
