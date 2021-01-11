@@ -6,6 +6,7 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
+import { markdownStyle } from '../../../../styles/common';
 import { TitleTextType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
@@ -24,7 +25,7 @@ const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
-        <Markdown style={{ body: cardsStyle.text, bullet_list: styles.list }}>{card.text}</Markdown>
+        <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
       </ScrollView>
       <CardFooter index={index} />
     </>

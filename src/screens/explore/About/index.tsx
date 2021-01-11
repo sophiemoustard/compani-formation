@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Image, Text, View, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
+import Markdown from 'react-native-markdown-display';
 import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
 import get from 'lodash/get';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -13,6 +14,7 @@ import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { markdownStyle } from '../../../styles/common';
 
 interface AboutProps {
   route: { params: { program } },
@@ -80,9 +82,7 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={source} />
         </View>
-        <View style={styles.description}>
-          <Text>{program.description}</Text>
-        </View>
+        <Markdown style={markdownStyle(program.description)}>{program.description}</Markdown>
       </View>
       <Button style={styles.footer} caption={buttonCaption} onPress={subscribeAndGoToCourseProfile} />
     </ScrollView>
