@@ -23,6 +23,9 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const loadAudio = async () => {
     try {
       let status = await soundObject.getStatusAsync();
+      await Audio.setAudioModeAsync({
+        playsInSilentModeIOS: true,
+      });
       if (mediaSource && !status.isLoaded) {
         status = await soundObject.loadAsync(mediaSource);
         if (status.isLoaded) setDuration(status.durationMillis || 0);
