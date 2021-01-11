@@ -8,6 +8,7 @@ import {
   StyleProp,
   ViewStyle,
   LogBox,
+  BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
@@ -67,6 +68,13 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused]);
+
+  const hardwareBackPress = () => {
+    goBack();
+    return true;
+  };
+
+  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
 
   const programImage = get(course, 'subProgram.program.image.link') || '';
   const programName = get(course, 'subProgram.program.name') || '';
