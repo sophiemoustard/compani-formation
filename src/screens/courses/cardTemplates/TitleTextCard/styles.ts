@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.MD,
     marginBottom: MARGIN.LG,
   },
+  list: {
+    margin: MARGIN.MD,
+  },
 });
 
 export default styles;
