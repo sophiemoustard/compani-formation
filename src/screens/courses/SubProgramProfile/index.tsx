@@ -72,13 +72,19 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const programImage = get(subProgram, 'program.image.link') || '';
   const programName = get(subProgram, 'program.name') || '';
   const source = programImage
     ? { uri: programImage }
     : require('../../../../assets/images/authentication_background_image.jpg');
+
   const goBack = () => {
     resetCourseReducer();
     navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });

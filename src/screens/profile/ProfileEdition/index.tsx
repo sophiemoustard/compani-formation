@@ -72,7 +72,12 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setUnvalid({

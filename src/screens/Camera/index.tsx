@@ -33,7 +33,12 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSavePhoto = async (photo) => {
     try {
