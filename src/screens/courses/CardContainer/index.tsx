@@ -69,11 +69,12 @@ const CardContainer = ({
     return true;
   };
 
-  useEffect(
-    () => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cardIndex]
-  );
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardIndex]);
 
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
