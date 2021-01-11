@@ -56,6 +56,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
+  const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -84,11 +85,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   useEffect(() => {
     const { lastName, phone, email, emptyEmail } = unvalid;
-    if (lastName || phone || email || emptyEmail ||
-      (editedUser.identity.firstname === loggedUser.identity.firstname &&
-        editedUser.identity.lastname === loggedUser.identity.lastname &&
-        editedUser.contact.phone === loggedUser.contact?.phone &&
-        editedUser.local.email === loggedUser.local.email)) {
+    if (lastName || phone || email || emptyEmail) {
       setIsValid(false);
     } else setIsValid(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,19 +100,20 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   const saveData = async () => {
     try {
-      setIsLoading(true);
-      setError(false);
-      setErrorMessage('');
+      setIsValidationAttempted(true);
       if (isValid) {
+        setIsLoading(true);
+        setError(false);
+        setErrorMessage('');
         await Users.updateById(loggedUser._id, {
           ...editedUser,
           contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
         });
+        const userId = loggedUser._id;
+        const user = await Users.getById(userId);
+        setLoggedUser(user);
+        goBack();
       }
-      const userId = loggedUser._id;
-      const user = await Users.getById(userId);
-      setLoggedUser(user);
-      goBack();
     } catch (e) {
       if (e.status === 401) signOut();
       else if (e.status === 409) setErrorMessage('L\'email est déjà relié à un utilisateur existant');
@@ -134,8 +132,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   };
 
   const emailValidation = () => {
-    if (unvalid.email) return 'Votre e-mail n\'est pas valide';
-    if (unvalid.emptyEmail) return 'Ce champ est obligatoire';
+    if (unvalid.email && isValidationAttempted) return 'Votre e-mail n\'est pas valide';
+    if (unvalid.emptyEmail && isValidationAttempted) return 'Ce champ est obligatoire';
 
     return '';
   };
@@ -165,12 +163,14 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         <View style={styles.input}>
           <NiInput caption="Nom" value={editedUser.identity.lastname}
             type="lastname" darkMode={false} onChangeText={text => onChangeIdentity('lastname', text)}
-            validationMessage={unvalid.lastName ? 'Ce champ est obligatoire' : ''} />
+            validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
             darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
-            validationMessage={unvalid.phone ? 'Votre numéro de téléphone n\'est pas valide' : ''} />
+            validationMessage={unvalid.phone && isValidationAttempted
+              ? 'Votre numéro de téléphone n\'est pas valide'
+              : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="E-mail" value={editedUser.local.email} type="email"
@@ -179,8 +179,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={errorMessage} show={error} />
-          <NiButton caption="Valider" onPress={saveData} disabled={!isValid} loading={isLoading}
-            bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
+          <NiButton caption="Valider" onPress={saveData} loading={isLoading}
+            bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
           setHasPhoto={setHasPhoto} goBack={goBack} />
