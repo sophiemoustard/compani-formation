@@ -15,6 +15,7 @@ import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
+import { quizJingle } from '../../../../core/helpers/utils';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -107,6 +108,8 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
   const onPressFooterButton = () => {
     if (!isValidated) {
       const areAnswersCorrect = selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
+
+      quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
 

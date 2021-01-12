@@ -36,7 +36,7 @@ const EndCard = ({
 
   useEffect(() => {
     async function fetchData() {
-      achievementJingle(false);
+      achievementJingle();
       const userId = await asyncStorage.getUserId();
       const payload: Record<string, any> = { user: userId, activity: activity._id, score };
 
