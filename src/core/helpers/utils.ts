@@ -29,12 +29,7 @@ export const quizJingle = async (isGoodAnswer) => {
   }
 };
 
-export const achievementJingle = async (isCourse) => {
-  if (isCourse) {
-    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/completed-course.mp3'));
-    await sound.playAsync();
-  } else {
-    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/completed-activity.mp3'));
-    await sound.playAsync();
-  }
+export const achievementJingle = async () => {
+  const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/ended-activity.mp3'));
+  await sound.playAsync();
 };
