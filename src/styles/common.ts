@@ -3,7 +3,7 @@ import { MARGIN, MAIN_MARGIN_LEFT } from './metrics';
 import { WHITE } from './colors';
 import { FIRA_SANS_BLACK } from './fonts';
 
-const commonStyles = StyleSheet.create({
+export default StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
   disabled: {
     opacity: 0.6,
@@ -20,14 +20,9 @@ const commonStyles = StyleSheet.create({
   iconButton: {
     zIndex: 100,
   },
-  listItems: {
-    margin: MARGIN.XS,
-  },
 });
 
-export default commonStyles;
-
 export const markdownStyle = bodyStyle => ({
-  body: bodyStyle,
-  list_item: commonStyles.listItems,
+  text: bodyStyle,
+  list_item: { margin: MARGIN.XS },
 });
