@@ -10,7 +10,7 @@ interface UpdateAppModalProps {
 
 const UpdateAppModal = ({ visible }: UpdateAppModalProps) => {
   const appUrl = Platform.OS === 'ios'
-    ? 'https://apps.apple.com/app/id1447513534'
+    ? 'https://apps.apple.com/app/id/1516691161'
     : 'market://details?id=com.alenvi.compani';
 
   return (
