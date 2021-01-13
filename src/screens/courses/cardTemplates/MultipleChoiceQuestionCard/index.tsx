@@ -14,6 +14,7 @@ import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
+import { quizJingle } from '../../../../core/helpers/utils';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
@@ -76,6 +77,8 @@ const MultipleChoiceQuestionCard = ({
     if (!isValidated) {
       const areAnswersCorrect = answers.every(answer =>
         (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+
+      quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
 

@@ -11,6 +11,7 @@ import { ActivityType } from '../../../../types/ActivityType';
 import Actions from '../../../../store/activities/actions';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
+import { achievementJingle } from '../../../../core/helpers/utils';
 
 interface EndCardProps {
   profileId: String,
@@ -35,6 +36,7 @@ const EndCard = ({
 
   useEffect(() => {
     async function fetchData() {
+      achievementJingle();
       const userId = await asyncStorage.getUserId();
       const payload: Record<string, any> = { user: userId, activity: activity._id, score };
 
