@@ -8,6 +8,8 @@ import cardsStyle from '../../../../styles/cards';
 import { TitleTextType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
+import MarkdownWebView from '../../../../components/MarkdownWebView';
+import Markdown from '../../../../components/Markdown';
 
 interface TitleTextCardProps {
   card: TitleTextType,
@@ -23,7 +25,8 @@ const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
-        <Text style={cardsStyle.text}>{card.text}</Text>
+        <MarkdownWebView text={card.text} />
+        <Markdown text={card.text} />
       </ScrollView>
       <CardFooter index={index} />
     </>

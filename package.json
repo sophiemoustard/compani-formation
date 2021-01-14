@@ -72,6 +72,7 @@
     "react-native-svg": "12.1.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^2.15.2",
+    "react-native-webview": "11.0.0",
     "react-redux": "^7.2.2",
     "react-test-renderer": "~16.11.0",
     "redux": "^4.0.5",
