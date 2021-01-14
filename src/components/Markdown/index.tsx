@@ -59,15 +59,15 @@ const Markdown = ({ text }: MarkdownProps) => {
         }
         if (txt.match(/^<bulletlist(\d+)>$/)) {
           const i = txt.replace(/^<bulletlist(\d+)>$/, '$1');
-          return (<View style={styles(0).bulletContainer}>
-            <Text style={styles(stock[i].level).bulletText}>{`\u2022 ${stock[i].value}`}</Text>
+          return (<View style={styles(0).listContainer}>
+            <Text style={styles(stock[i].level).listText}>{`\u2022 ${stock[i].value}`}</Text>
           </View>
           );
         }
         if (txt.match(/^<orderedlist(\d+)>$/)) {
           const i = txt.replace(/^<orderedlist(\d+)>$/, '$1');
-          return (<View style={styles(0).bulletContainer}>
-            <Text style={styles(stock[i].level).bulletText}>
+          return (<View style={styles(0).listContainer}>
+            <Text style={styles(stock[i].level).listText}>
               <Text style={styles(0).listIndex}>{`${stock[i].index}. `}</Text>
               {stock[i].value}
             </Text>

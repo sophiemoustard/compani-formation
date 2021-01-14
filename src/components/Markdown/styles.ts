@@ -21,11 +21,11 @@ const styles = level => StyleSheet.create({
   text: {
     marginBottom: MARGIN.XL,
   },
-  bulletContainer: {
+  listContainer: {
     width: '100%',
   },
-  bulletText: {
-    paddingLeft: level * PADDING.SM,
+  listText: {
+    paddingLeft: PADDING.SM + level * PADDING.SM,
   },
   listIndex: {
     fontWeight: 'bold',

@@ -21,9 +21,9 @@ const MarkdownWebView = ({ text }: MarkdownWebViewProps) => {
     let str = '';
     if (numberOfSpaces === 0) return `<ul><li>${words}</li></ul>`;
     for (let i = 0; i < numberOfSpaces; i += 1) {
-      str += i === numberOfSpaces - 1 ? '<ul>' : '<ul>';
+      str += '<ul>';
     }
-    str += `<li>${words}</li>`;
+    str += `<ul><li>${words}</li></ul>`;
     for (let i = 0; i < numberOfSpaces; i += 1) {
       str += '</ul>';
     }
@@ -50,9 +50,9 @@ const MarkdownWebView = ({ text }: MarkdownWebViewProps) => {
     let str = '';
     if (numberOfSpaces === 0) return `<ol start=${index} type=${type}><li>${words}</li></ol>`;
     for (let i = 0; i < numberOfSpaces; i += 1) {
-      str += i === numberOfSpaces - 1 ? `<ol start=${index} type=${type}>` : '<ol>';
+      str += '<ol>';
     }
-    str += `<li>${words}</li>`;
+    str += `<ol start=${index} type=${type}><li>${words}</li></ol>`;
     for (let i = 0; i < numberOfSpaces; i += 1) {
       str += '</ol>';
     }
