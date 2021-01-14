@@ -11,12 +11,12 @@ const MarkdownWebView = ({ text }: MarkdownWebViewProps) => {
     .replace(/\*\*(.*)\*\*/g, '<span style="font-weight: bold;">$1</span>')
     .replace(/\*(.*)\*/g, '<span style="font-style: italic;">$1</span>')
     .replace(/~~(.*)~~/g, '<span style="text-decoration: line-through;">$1</span>')
-    .replace(/(\s+)\*\s(.*)/g, m => BulletPointsDeepness(m))
-    .replace(/(\s+)([a-zA-Z0-9_])\.\s(.*)/g, m => NumberListDeepness(m));
+    .replace(/(_*)\*\s(.*)/g, m => formatBulletList(m))
+    .replace(/(_*)([a-zA-Z0-9_])\.\s(.*)/g, m => formatOrderedList(m));
 
-  const BulletPointsDeepness = (string) => {
-    const numberOfSpaces = string.replace(/(\s+)\*\s(.*)/g, '$1').length - 1;
-    const words = string.replace(/(\s+)\*\s(.*)/g, '$2');
+  const formatBulletList = (string) => {
+    const numberOfSpaces = string.replace(/(_*)\*\s(.*)/g, '$1').length;
+    const words = string.replace(/(_*)\*\s(.*)/g, '$2');
 
     let str = '';
     if (numberOfSpaces === 0) return `<ul><li>${words}</li></ul>`;
@@ -31,10 +31,10 @@ const MarkdownWebView = ({ text }: MarkdownWebViewProps) => {
     return str;
   };
 
-  const NumberListDeepness = (string) => {
-    const numberOfSpaces = string.replace(/(\s+)([a-zA-Z0-9_])\.\s(.*)/g, '$1').length - 1;
-    const words = string.replace(/(\s+)([a-zA-Z0-9_])\.\s(.*)/g, '$3');
-    const indexValue = string.replace(/(\s+)([a-zA-Z0-9_])\.\s(.*)/g, '$2');
+  const formatOrderedList = (string) => {
+    const numberOfSpaces = string.replace(/(_*)([a-zA-Z0-9_])\.\s(.*)/g, '$1').length;
+    const words = string.replace(/(_*)([a-zA-Z0-9_])\.\s(.*)/g, '$3');
+    const indexValue = string.replace(/(_*)([a-zA-Z0-9_])\.\s(.*)/g, '$2');
     let index = '';
     let type = '';
     if (indexValue.charAt() * 1) {
