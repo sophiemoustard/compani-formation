@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../styles/colors';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { PADDING } from '../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from '../../styles/fonts';
 
 const styles = level => StyleSheet.create({
