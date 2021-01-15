@@ -74,7 +74,7 @@ const Markdown = ({ text }: MarkdownProps) => {
           </View>
           );
         }
-        return <Text key={`text${index}`}>{`${txt} `}</Text>;
+        return <Text key={`text${index}`} style={styles(0).text}>{`${txt} `}</Text>;
       })
       }
     </View>

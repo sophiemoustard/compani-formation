@@ -27,6 +27,7 @@ const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
         <Text style={cardsStyle.title}>{card.title}</Text>
         <MarkdownWebView text={card.text} />
         <Markdown text={card.text} />
+        <Text style={cardsStyle.text}>{card.text}</Text>
       </ScrollView>
       <CardFooter index={index} />
     </>
