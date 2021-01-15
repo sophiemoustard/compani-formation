@@ -44,7 +44,12 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const goBack = () => navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
 

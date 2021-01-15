@@ -15,6 +15,7 @@ import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
 import styles from './styles';
+import { quizJingle } from '../../../../core/helpers/utils';
 
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
@@ -61,6 +62,8 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
   const onPressFooterButton = () => {
     if (!isValidated) {
       const isOrderCorrect = answers.every(answer => (answer.goodPosition === answer.tempPosition));
+
+      quizJingle(isOrderCorrect);
       setIsOrderedCorrectly(isOrderCorrect);
       if (isOrderCorrect) incGoodAnswersCount();
 

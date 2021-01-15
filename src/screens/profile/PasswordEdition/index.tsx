@@ -35,9 +35,9 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const [unvalid, setUnvalid] = useState({ newPassword: false, confirmedPassword: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isTouch, setIsTouch] = useState({ newPassword: false, confirmedPassword: false });
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -53,7 +53,12 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
     return true;
   };
 
-  useEffect(() => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); });
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setUnvalid({
@@ -77,11 +82,14 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
 
   const savePassword = async () => {
     try {
-      setIsLoading(true);
-      setError(false);
-      setErrorMessage('');
-      if (isValid) await Users.updatePassword(loggedUser._id, { local: { password: password.newPassword } });
-      goBack();
+      setIsValidationAttempted(true);
+      if (isValid) {
+        setIsLoading(true);
+        setError(false);
+        setErrorMessage('');
+        await Users.updatePassword(loggedUser._id, { local: { password: password.newPassword } });
+        goBack();
+      }
     } catch (e) {
       if (e.status === 401) signOut();
       setError(true);
@@ -93,7 +101,6 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
 
   const setPasswordField = (text, key) => {
     setPassword({ ...password, [key]: text });
-    setIsTouch({ ...isTouch, [key]: true });
   };
 
   return (
@@ -104,28 +111,28 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
           color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title='Es-tu sûr de cela ?' contentText='Tes modifications ne seront pas enregistrées.' />
+          title={'Êtes-vous sûr de cela ?'} contentText={'Vos modifications ne seront pas enregistrées.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
         <View style={styles.input}>
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
             type="password" darkMode={false} onChangeText={text => setPasswordField(text, 'newPassword')}
-            validationMessage={unvalid.newPassword && isTouch.newPassword
+            validationMessage={unvalid.newPassword && isValidationAttempted
               ? 'Le mot de passe doit comporter au minimum 6 caractères'
               : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
             type="password" darkMode={false} onChangeText={text => setPasswordField(text, 'confirmedPassword')}
-            validationMessage={unvalid.confirmedPassword && isTouch.confirmedPassword
-              ? 'Ton nouveau mot de passe et sa confirmation ne correspondent pas'
+            validationMessage={unvalid.confirmedPassword && isValidationAttempted
+              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
               : ''} />
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={errorMessage} show={error} />
-          <NiButton caption="Valider" onPress={savePassword} disabled={!isValid} loading={isLoading}
-            bgColor={isValid ? PINK[500] : GREY[500]} color={WHITE} borderColor={isValid ? PINK[500] : GREY[500]} />
+          <NiButton caption="Valider" onPress={savePassword} loading={isLoading}
+            bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

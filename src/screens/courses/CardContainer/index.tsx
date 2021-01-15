@@ -52,8 +52,9 @@ const CardContainer = ({
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: route.params.profileId });
-    else navigation.navigate('SubProgramProfile', { subProgramId: route.params.profileId });
+    if (isCourse) {
+      navigation.navigate('CourseProfile', { courseId: route.params.profileId, endedActivity: activity._id });
+    } else navigation.navigate('SubProgramProfile', { subProgramId: route.params.profileId });
   };
 
   useEffect(() => {
@@ -68,11 +69,12 @@ const CardContainer = ({
     return true;
   };
 
-  useEffect(
-    () => { BackHandler.addEventListener('hardwareBackPress', hardwareBackPress); },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cardIndex]
-  );
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardIndex]);
 
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
@@ -80,7 +82,7 @@ const CardContainer = ({
         <View style={styles.cardScreen}>
           <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
             onPressCancelButton={() => setExitConfirmationModal(false)}
-            title='Es-tu sûr de cela ?' contentText='Tous tes progrès dans la leçon seront perdus.' />
+            title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
           <CardTemplate index={index} />
         </View>
       )}

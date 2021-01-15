@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, Image, ImageBackground, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import Button from '../../../../components/form/Button';
 import { navigate } from '../../../../navigationRef';
@@ -46,6 +46,18 @@ const StartCard = ({
     if (isCourse) navigate('CourseProfile', { courseId: profileId });
     else navigate('SubProgramProfile', { subProgramId: profileId });
   };
+
+  const hardwareBackPress = () => {
+    goBack();
+    return true;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
