@@ -20,7 +20,7 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.20",
+      "buildNumber": "1.0.21",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
@@ -31,7 +31,7 @@
     "android": {
       "package": "com.alenvi.compani",
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
-      "versionCode": 47,
+      "versionCode": 48,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android_icon.png"
       }
