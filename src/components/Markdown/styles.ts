@@ -4,7 +4,7 @@ import { MARGIN, PADDING } from '../../styles/metrics';
 
 const styles = level => StyleSheet.create({
   container: {
-    backgroundColor: GREY[200],
+    backgroundColor: GREY[100],
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
