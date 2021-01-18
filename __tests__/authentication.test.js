@@ -8,25 +8,37 @@ import { Provider as AuthProvider } from '../src/context/AuthContext';
 import getEnvVars from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
+import { alenviAxios } from '../src/api/ressources/alenviAxios';
 
 describe('Authentication tests', () => {
   let axiosMock;
+  let alenviAxiosMock;
+
   beforeEach(() => {
     axiosMock = new MockAdapter(axios);
+    alenviAxiosMock = new MockAdapter(alenviAxios);
   });
 
   afterEach(() => {
-    axiosMock.reset();
+    axiosMock.restore();
+    alenviAxiosMock.restore();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
     const { baseURL } = getEnvVars();
     const store = createStore(reducers);
-    axiosMock.onPost(`${baseURL}/users/authenticate`).reply(
-      200,
-      { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
-    );
-    axiosMock.onGet(`${baseURL}/users/321`).reply(200, { data: { user: { _id: '321' } } });
+    axiosMock.onPost(`${baseURL}/users/authenticate`)
+      .reply(
+        200,
+        { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
+      )
+      .onPost(`${baseURL}/users/refreshToken`, { refreshToken: 'refresh-token' })
+      .reply(
+        200,
+        { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
+      );
+    alenviAxiosMock.onGet(`${baseURL}/users/321`).reply(200, { data: { user: { _id: '321' } } })
+      .onGet(`${baseURL}/courses/user`).reply(200, { data: { courses: [] } });
 
     const element = render(
       <AuthProvider>
