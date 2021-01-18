@@ -85,9 +85,18 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={source} />
         </View>
-        <View style={styles.description}>
-          <Text>{program.description}</Text>
-        </View>
+        {program.description &&
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.sectionContent}>{program.description}</Text>
+          </View>
+        }
+        {program.learningGoals &&
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
+            <Text style={styles.sectionContent}>{program.learningGoals}</Text>
+          </View>
+        }
       </View>
       <Button style={styles.footer} caption={buttonCaption} onPress={subscribeAndGoToCourseProfile} />
     </ScrollView>

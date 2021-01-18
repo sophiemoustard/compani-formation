@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
+import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI, FIRA_SANS_BOLD } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -31,16 +31,24 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
   },
+  sectionTitle: {
+    ...FIRA_SANS_BOLD.LG,
+    marginBottom: MARGIN.SM,
+    color: GREY[900],
+  },
   imageContainer: {
     marginVertical: MARGIN.MD,
     height: 160,
+  },
+  sectionContainer: {
+    marginBottom: MARGIN.MD,
   },
   image: {
     height: '100%',
     width: '100%',
     borderRadius: BORDER_RADIUS.MD,
   },
-  description: {
+  sectionContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
   },
