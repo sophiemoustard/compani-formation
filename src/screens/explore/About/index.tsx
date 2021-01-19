@@ -17,7 +17,7 @@ import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
-  route: { params: { program } },
+  route: { params: { program, isFromCourses? } },
   navigation: {
     navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {}},
@@ -53,7 +53,10 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goBack = () => navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
+  const goBack = () => {
+    if (route.params.isFromCourses) goToCourse();
+    else navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
+  };
 
   const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 

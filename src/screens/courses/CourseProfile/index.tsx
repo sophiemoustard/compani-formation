@@ -119,7 +119,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       ...course?.subProgram.program,
       subPrograms: [{ ...course?.subProgram, courses: [{ ...course, trainees: [userId] }] }],
     };
-    navigation.navigate('About', { program, params: { isFromCourses: true } });
+    navigation.navigate('About', { program, isFromCourses: true });
   };
 
   return course && (
