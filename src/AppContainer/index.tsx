@@ -5,7 +5,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
 import ProfileEdition from '../screens/profile/ProfileEdition';
