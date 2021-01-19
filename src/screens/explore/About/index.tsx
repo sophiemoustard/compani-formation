@@ -1,10 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { Image, Text, View, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
+import Markdown from 'react-native-markdown-display';
 import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
 import get from 'lodash/get';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
+import { markdownStyle } from '../../../styles/common';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import Button from '../../../components/form/Button';
@@ -85,9 +87,18 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={source} />
         </View>
-        <View style={styles.description}>
-          <Text>{program.description}</Text>
-        </View>
+        {program.description &&
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.sectionContent}>{program.description}</Text>
+          </View>
+        }
+        {program.learningGoals &&
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
+            <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
+          </View>
+        }
       </View>
       <Button style={styles.footer} caption={buttonCaption} onPress={subscribeAndGoToCourseProfile} />
     </ScrollView>
