@@ -35,11 +35,6 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.SM,
     marginBottom: MARGIN.XXXL,
   },
-  loading: {
-    paddingHorizontal: PADDING.SM,
-    position: 'absolute',
-    right: 40,
-  },
   goBack: {
     alignSelf: 'flex-end',
   },
