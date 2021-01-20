@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { GREY, MODAL_BACKDROP_GREY, WHITE } from '../../styles/colors';
+import { GREY, MODAL_BACKDROP_GREY, ORANGE, WHITE } from '../../styles/colors';
 import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -18,10 +18,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '80%',
     padding: PADDING.LG,
-  },
-  content: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   button: {
     marginHorizontal: MARGIN.SM,
@@ -46,6 +42,11 @@ const styles = StyleSheet.create({
   },
   goBack: {
     alignSelf: 'flex-end',
+  },
+  unvalid: {
+    ...FIRA_SANS_ITALIC.SM,
+    color: ORANGE[600],
+    marginTop: MARGIN.XXS,
   },
 });
 

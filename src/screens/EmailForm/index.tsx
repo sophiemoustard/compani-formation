@@ -8,8 +8,7 @@ import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
-import { EMAIL_REGEX } from '../../core/data/constants';
-// import BottomPopUp from '../../components/BottomPopUp';
+import { EMAIL_REGEX, MOBILE } from '../../core/data/constants';
 import Users from '../../api/users';
 import Authentication from '../../api/authentication';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
@@ -28,7 +27,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isDisabledBackHandler = useRef(isLoading);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
-  // const [isBottomPopUpVisible, setIsBottomPopUpVisible] = useState<boolean>(false);
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
@@ -56,9 +54,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const sendEmail = async () => {
     try {
       setIsLoading(true);
-      await Authentication.forgotPassword({ email });
-      // setForgotPasswordModal(false);
-      // setIsBottomPopUpVisible(true);
+      await Authentication.forgotPassword({ email, origin: MOBILE, type: 'email' });
     } catch (e) {
       setError(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
@@ -71,13 +67,12 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const saveEmail = async () => {
     try {
       setIsValidationAttempted(true);
-      // setIsLoading(true);
       if (isValid) {
         if (error) setError(false);
         if (!route.params.firstConnection) setForgotPasswordModal(true);
         else {
           const isExistingUser = await Users.exists({ email });
-          if (isExistingUser) await sendEmail();
+          if (isExistingUser) await setForgotPasswordModal(true);
           else navigation.navigate('CreateAccount', { email });
         }
       }
@@ -99,20 +94,10 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     setEmail(text);
   };
 
-  // const confirm = () => {
-  //   goBack();
-  //   setIsBottomPopUpVisible(false);
-  // };
-
   const validationMessage = () => {
     if (unvalidEmail && isValidationAttempted) return 'Votre e-mail n\'est pas valide';
-    if (error) return errorMessage;
     return '';
   };
-
-  // const renderContentText = () =>
-  //   <Text style={style.contentText}>Nous avons envoyé un e-mail à<Text style={style.email}>{` ${email}`}</Text>
-  //   . Si vous ne l’avez pas reçu, vérifiez votre Courrier indésirable, ou réessayez.</Text>;
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
@@ -134,10 +119,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
             color={WHITE} borderColor={PINK[500]} />
         </View>
-        {/* <BottomPopUp onPressConfirmButton={confirm} visible={isBottomPopUpVisible}
-          title='Vérifiez vos e-mails !' contentText={renderContentText} /> */}
         <ForgotPasswordModal visible={forgotPasswordModal} isLoading={isLoading} sendEmail={sendEmail}
-          setModal={setForgotPasswordModal} />
+          setModal={setForgotPasswordModal} errorMessage={error ? errorMessage : ''} />
       </View>
     </KeyboardAvoidingView>
   );
