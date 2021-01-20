@@ -16,7 +16,7 @@ import { capitalizeFirstLetter } from '../../../core/helpers/utils';
 
 interface CatalogProps {
   loggedUserId: string | null,
-  navigation: { navigate: (path: string, params: { program: ProgramType }) => {} },
+  navigation: { navigate: (path: string, params: { program: ProgramType, isFromCourses: boolean }) => {} },
 }
 
 const CategoriesStyleList = [
@@ -68,7 +68,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = program => navigation.navigate('About', { program });
+  const goToProgram = program => navigation.navigate('ElearningAbout', { program, isFromCourses: false });
 
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 

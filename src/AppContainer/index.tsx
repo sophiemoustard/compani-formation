@@ -16,7 +16,8 @@ import Authentication from '../screens/Authentication';
 import EmailForm from '../screens/EmailForm';
 import CreateAccount from '../screens/CreateAccount';
 import Catalog from '../screens/explore/Catalog';
-import About from '../screens/explore/About';
+import BlendedAbout from '../screens/explore/About/BlendedAbout';
+import ElearningAbout from '../screens/explore/About/ELearningAbout';
 import CourseList from '../screens/courses/CourseList';
 import CourseProfile from '../screens/courses/CourseProfile';
 import SubProgramProfile from '../screens/courses/SubProgramProfile';
@@ -96,7 +97,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
   const Courses = { CourseProfile, SubProgramProfile };
-  const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
+  const userScreens = { Home, CardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
 
   return (
     <NavigationContainer ref={navigationRef}>
