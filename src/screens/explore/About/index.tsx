@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, View, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
@@ -17,7 +17,7 @@ import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 
 interface AboutProps {
-  route: { params: { program, isFromCourses? } },
+  route: { params: { program?, course?, isFromCourses? } },
   navigation: {
     navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {}},
@@ -25,21 +25,20 @@ interface AboutProps {
   setIsCourse: (value: boolean) => void,
 }
 
+interface DataProps {
+  name,
+  source,
+  description,
+  learningGoals,
+  nextActivityId,
+  courseId,
+  hasAlreadySubscribed,
+}
+
 const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => {
-  const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
   const { signOut } = useContext(AuthContext);
-  const { program } = route.params;
-  const programImage = get(program, 'image.link') || '';
-  const source = programImage ? { uri: programImage } : defaultImg;
-  const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-  const incompleteSteps = subProgram?.steps?.length && subProgram.steps[0].activities?.length
-    ? subProgram.steps.map(st => ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
-      .filter(st => st.activities.length)
-    : [];
-  const nextActivityId = incompleteSteps.length ? incompleteSteps[0].activities[0]._id : '';
-  const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-  const courseId = course._id;
-  const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
+  const [data, setData] = useState<DataProps>();
+  const { isFromCourses } = route.params;
 
   const hardwareBackPress = () => {
     goBack();
@@ -53,30 +52,55 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const program = route.params.program || route.params.course.subProgram.program;
+
+    const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
+    const programImage = get(program, 'image.link') || '';
+    const source = programImage ? { uri: programImage } : defaultImg;
+    const subProgram = program.subPrograms ? program.subPrograms[0] : null;
+    const incompleteSteps = subProgram?.steps?.length && subProgram.steps[0].activities?.length
+      ? subProgram.steps
+        .map(st => ({ ...st, activities: st.activities?.filter(ac => !ac.activityHistories?.length) }))
+        .filter(st => st.activities?.length)
+      : [];
+    const nextActivityId = incompleteSteps.length && incompleteSteps[0].activities
+      ? incompleteSteps[0].activities[0]._id : '';
+
+    let course;
+    if (route.params.course) course = route.params.course;
+    if (route.params.program) course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+
+    const courseId = course._id;
+    const hasAlreadySubscribed = true;
+    const { name, description, learningGoals } = program;
+    setData({ name, source, description, learningGoals, nextActivityId, courseId, hasAlreadySubscribed });
+  }, [route.params, loggedUserId]);
+
   const goBack = () => {
-    if (route.params.isFromCourses) goToCourse();
+    if (isFromCourses) goToCourse();
     else navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
   };
 
-  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
+  const goToCourse = () => navigation.navigate('CourseProfile', { courseId: data?.courseId });
 
   const goToNextActivity = () => {
-    navigation.dispatch(StackActions.push('CourseProfile', { courseId }));
-    navigation.navigate('CardContainer', { activityId: nextActivityId, profileId: courseId });
+    navigation.dispatch(StackActions.push('CourseProfile', { courseId: data?.courseId }));
+    navigation.navigate('CardContainer', { activityId: data?.nextActivityId, profileId: data?.courseId });
   };
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
+      if (!data?.hasAlreadySubscribed) await Courses.registerToELearningCourse(data?.courseId);
       setIsCourse(true);
-      if (nextActivityId) goToNextActivity();
+      if (data?.nextActivityId && !isFromCourses) goToNextActivity();
       else goToCourse();
     } catch (e) {
       if (e.status === 401) signOut();
     }
   };
 
-  const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
+  const buttonCaption = data?.hasAlreadySubscribed ? 'Continuer' : 'Commencer';
 
   return (
     <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
@@ -85,21 +109,21 @@ const About = ({ route, navigation, loggedUserId, setIsCourse }: AboutProps) => 
         <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
         <View style={styles.titleContainer}>
           <Text style={styles.aboutTitle}>A PROPOS</Text>
-          <Text style={styles.programTitle}>{program.name}</Text>
+          <Text style={styles.programTitle}>{data?.name}</Text>
         </View>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={source} />
+          <Image style={styles.image} source={data?.source} />
         </View>
-        {program.description &&
+        {data?.description &&
           <View style={styles.sectionContainer}>
             <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.sectionContent}>{program.description}</Text>
+            <Text style={styles.sectionContent}>{data.description}</Text>
           </View>
         }
-        {program.learningGoals &&
+        {data?.learningGoals &&
           <View style={styles.sectionContainer}>
             <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
-            <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
+            <Markdown style={markdownStyle(styles.sectionContent)}>{data.learningGoals}</Markdown>
           </View>
         }
       </View>

@@ -31,19 +31,17 @@ import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
-import { getLoggedUserId } from '../../../store/main/selectors';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
   route: { params: { courseId: string, endedActivity: string} },
   navigation: NavigationType,
-  userId: string,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
 }
 
-const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
+const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const { signOut } = useContext(AuthContext);
 
@@ -114,13 +112,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  const goToAbout = () => {
-    const program = {
-      ...course?.subProgram.program,
-      subPrograms: [{ ...course?.subProgram, courses: [{ ...course, trainees: [userId] }] }],
-    };
-    navigation.navigate('About', { program, isFromCourses: true });
-  };
+  const goToAbout = () => navigation.navigate('About', { course, isFromCourses: true });
 
   return course && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
@@ -150,11 +142,9 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   );
 };
 
-const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
-
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
   resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CourseProfile);
+export default connect(null, mapDispatchToProps)(CourseProfile);
