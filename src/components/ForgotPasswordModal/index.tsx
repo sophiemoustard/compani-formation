@@ -14,7 +14,7 @@ interface ForgotPasswordModalProps {
   sendEmail: () => void
 }
 
-const ForgotPasswordModal = ({ 
+const ForgotPasswordModal = ({
   visible,
   isLoading,
   errorMessage,
