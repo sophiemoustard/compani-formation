@@ -122,7 +122,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
       navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
-    } else navigation.navigate('BlendedAbout', { course, isFromCourses: true });
+    } else navigation.navigate('BlendedAbout', { course });
   };
 
   return course && (
@@ -138,7 +138,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       </ImageBackground>
       <View style={styles.aboutContainer}>
         <TouchableOpacity style={styles.aboutContent} onPress={goToAbout}>
-          <Feather name={'info'} color={GREY[600]} size={ICON.MD} />
+          <Feather name='info' color={GREY[600]} size={ICON.MD} />
           <Text style={styles.aboutText}>A propos</Text>
         </TouchableOpacity>
       </View>

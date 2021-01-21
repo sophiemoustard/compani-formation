@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { Image, Text, View, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
-import { useNavigation } from '@react-navigation/native';
 import get from 'lodash/get';
+import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
-import { markdownStyle } from '../../../styles/common';
-import { WHITE } from '../../../styles/colors';
-import { ICON } from '../../../styles/metrics';
-import Button from '../../../components/form/Button';
-import FeatherButton from '../../../components/icons/FeatherButton';
-import CoursesActions from '../../../store/courses/actions';
-import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { ProgramType } from '../../../types/ProgramType';
+import { markdownStyle } from '../../styles/common';
+import { WHITE } from '../../styles/colors';
+import { ICON } from '../../styles/metrics';
+import Button from '../../components/form/Button';
+import FeatherButton from '../../components/icons/FeatherButton';
+import CoursesActions from '../../store/courses/actions';
+import { ActionWithoutPayloadType } from '../../types/store/StoreType';
+import { ProgramType } from '../../types/ProgramType';
 
 interface AboutProps {
   program: ProgramType,
@@ -21,7 +21,7 @@ interface AboutProps {
 }
 
 const About = ({ program, buttonCaption = 'Continuer', onPress }: AboutProps) => {
-  const defaultImg = require('../../../../assets/images/authentication_background_image.jpg');
+  const defaultImg = require('../../../assets/images/authentication_background_image.jpg');
   const programImage = get(program, 'image.link') || '';
   const source = programImage ? { uri: programImage } : defaultImg;
   const navigation = useNavigation();
