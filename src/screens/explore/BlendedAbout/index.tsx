@@ -10,11 +10,11 @@ interface BlendedAboutProps {
 
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
-  const { program } = course.subProgram ? course.subProgram : null;
+  const program = course.subProgram?.program || null;
 
   const goBack = () => navigation.goBack();
 
-  return (
+  return program && (
     <About program={program} onPress={goBack} />
   );
 };
