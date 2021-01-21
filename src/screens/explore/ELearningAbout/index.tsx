@@ -1,19 +1,20 @@
-import React, { useContext, useEffect } from 'react';
-import { BackHandler } from 'react-native';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
-import { Context as AuthContext } from '../../../../context/AuthContext';
-import Courses from '../../../../api/courses';
-import { getLoggedUserId } from '../../../../store/main/selectors';
-import CoursesActions from '../../../../store/courses/actions';
-import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
-import About from '../../About';
+import { Context as AuthContext } from '../../../context/AuthContext';
+import Courses from '../../../api/courses';
+import { getLoggedUserId } from '../../../store/main/selectors';
+import CoursesActions from '../../../store/courses/actions';
+import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import About from '../../../components/About';
 
 interface ElearningAboutProps {
   route: { params: { program, isFromCourses } },
   navigation: {
     navigate: (path: string, params?: object) => {},
-    dispatch: (action: CommonActions.Action | StackActionType) => {}},
+    dispatch: (action: CommonActions.Action | StackActionType) => {},
+    goBack: () => {},
+  },
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }
@@ -30,20 +31,6 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
   const courseId = course._id;
   const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
-
-  const hardwareBackPress = () => {
-    goBack();
-    return true;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
-
-    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const goBack = () => navigation.navigate('Home', { screen: 'Explore', params: { screen: 'Catalog' } });
 
   const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
