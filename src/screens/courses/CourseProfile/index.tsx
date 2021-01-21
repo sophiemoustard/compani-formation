@@ -115,14 +115,16 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const renderSeparator = () => <View style={styles.separator} />;
 
   const goToAbout = () => {
-    if (course?.subProgram.isStrictlyELearning) {
-      const { program } = course.subProgram;
-      const eLearningProgram = {
-        ...program,
-        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
-      };
-      navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
-    } else navigation.navigate('BlendedAbout', { course });
+    if (course) {
+      if (course.subProgram.isStrictlyELearning) {
+        const { program } = course.subProgram;
+        const eLearningProgram = {
+          ...program,
+          subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
+        };
+        navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
+      } else navigation.navigate('BlendedAbout', { course });
+    }
   };
 
   return course && (

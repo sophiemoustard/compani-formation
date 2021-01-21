@@ -35,7 +35,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
   const goToNextActivity = () => {
-    navigation.dispatch(StackActions.push('CourseProfile', { courseId }));
+    navigation.dispatch(StackActions.replace('CourseProfile', { courseId }));
     navigation.navigate('CardContainer', { activityId: nextActivityId, profileId: courseId });
   };
 
