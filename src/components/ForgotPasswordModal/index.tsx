@@ -10,18 +10,22 @@ interface ForgotPasswordModalProps {
   visible: boolean,
   isLoading: boolean,
   errorMessage: string,
-  setModal: (value) => void,
+  onRequestClose: () => void,
   sendEmail: () => void
 }
 
-const ForgotPasswordModal = ({ visible, isLoading, errorMessage, setModal, sendEmail }: ForgotPasswordModalProps) => (
-  <Modal visible={visible} transparent={true} onRequestClose={() => setModal(false)}>
+const ForgotPasswordModal = ({ visible,
+  isLoading,
+  errorMessage,
+  onRequestClose,
+  sendEmail }: ForgotPasswordModalProps) => (
+  <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
-        <FeatherButton name={'x-circle'} onPress={() => setModal(false)} size={ICON.LG} color={GREY[600]}
+        <FeatherButton name={'x-circle'} onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
           style={styles.goBack} />
         <Text style={styles.title}>Confirmez votre identité</Text>
-        <Text style={styles.text} >
+        <Text style={styles.text}>
           Pour réinitialiser votre mot de passe, vous devez d’abord confirmer votre identité par un code temporaire.
         </Text>
         <NiButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail} loading={isLoading}

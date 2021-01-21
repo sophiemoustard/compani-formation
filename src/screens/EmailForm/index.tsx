@@ -8,7 +8,7 @@ import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
-import { EMAIL_REGEX, MOBILE } from '../../core/data/constants';
+import { EMAIL, EMAIL_REGEX, MOBILE } from '../../core/data/constants';
 import Users from '../../api/users';
 import Authentication from '../../api/authentication';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
@@ -54,7 +54,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const sendEmail = async () => {
     try {
       setIsLoading(true);
-      await Authentication.forgotPassword({ email, origin: MOBILE, type: 'email' });
+      await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
     } catch (e) {
       setError(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
@@ -69,7 +69,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       setIsValidationAttempted(true);
       if (isValid) {
         if (error) setError(false);
-        if (!route.params.firstConnection) setForgotPasswordModal(true);
+        if (!route.params.firstConnection) await setForgotPasswordModal(true);
         else {
           const isExistingUser = await Users.exists({ email });
           if (isExistingUser) await setForgotPasswordModal(true);
@@ -120,7 +120,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             color={WHITE} borderColor={PINK[500]} />
         </View>
         <ForgotPasswordModal visible={forgotPasswordModal} isLoading={isLoading} sendEmail={sendEmail}
-          setModal={setForgotPasswordModal} errorMessage={error ? errorMessage : ''} />
+          onRequestClose={() => setForgotPasswordModal(false)} errorMessage={error ? errorMessage : ''} />
       </View>
     </KeyboardAvoidingView>
   );
