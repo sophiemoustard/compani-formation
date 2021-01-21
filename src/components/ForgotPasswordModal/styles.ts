@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   modalContent: {
     display: 'flex',
     backgroundColor: WHITE,
-    borderRadius: BORDER_RADIUS.MD,
+    borderTopLeftRadius: BORDER_RADIUS.MD,
+    borderTopRightRadius: BORDER_RADIUS.MD,
     width: '100%',
     height: '80%',
     padding: PADDING.LG,
