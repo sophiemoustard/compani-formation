@@ -14,11 +14,13 @@ interface ForgotPasswordModalProps {
   sendEmail: () => void
 }
 
-const ForgotPasswordModal = ({ visible,
+const ForgotPasswordModal = ({ 
+  visible,
   isLoading,
   errorMessage,
   onRequestClose,
-  sendEmail }: ForgotPasswordModalProps) => (
+  sendEmail,
+}: ForgotPasswordModalProps) => (
   <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
