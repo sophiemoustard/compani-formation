@@ -127,7 +127,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     }
   };
 
-  return course && (
+  return course && (get(course, 'subProgram.program') || null) && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
