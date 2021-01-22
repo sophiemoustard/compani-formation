@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "compani",
+    "name": "Compani",
     "slug": "compani",
     "description": "Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain",
     "platforms": ["ios", "android"],
-    "version": "1.3.0",
+    "version": "1.3.1",
     "orientation": "portrait",
     "primaryColor": "#FFFFFF",
     "icon": "./assets/images/ios_icon.png",
@@ -20,7 +20,7 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "1.0.22",
+      "buildNumber": "1.3.1",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
@@ -31,7 +31,7 @@
     "android": {
       "package": "com.alenvi.compani",
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
-      "versionCode": 49,
+      "versionCode": 50,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/android_icon.png"
       }
