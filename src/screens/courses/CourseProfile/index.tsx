@@ -9,14 +9,17 @@ import {
   ViewStyle,
   LogBox,
   BackHandler,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
+import has from 'lodash/has';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Feather } from '@expo/vector-icons';
 import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
-import { WHITE } from '../../../styles/colors';
+import { GREY, WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import OnSiteCell from '../../../components/steps/OnSiteCell';
 import ELearningCell from '../../../components/ELearningCell';
@@ -29,17 +32,19 @@ import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
+import { getLoggedUserId } from '../../../store/main/selectors';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
   route: { params: { courseId: string, endedActivity: string} },
   navigation: NavigationType,
+  userId: string,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
 }
 
-const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
+const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const { signOut } = useContext(AuthContext);
 
@@ -110,7 +115,19 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  return course && (
+  const goToAbout = () => {
+    if (!course) return;
+    if (course.subProgram.isStrictlyELearning) {
+      const { program } = course.subProgram;
+      const eLearningProgram = {
+        ...program,
+        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
+      };
+      navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
+    } else navigation.navigate('BlendedAbout', { course });
+  };
+
+  return course && has(course, 'subProgram.program') && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
@@ -121,6 +138,12 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
           <Text style={styles.title}>{programName}{course.misc ? ` - ${course.misc}` : ''}</Text>
         </View>
       </ImageBackground>
+      <View style={styles.aboutContainer}>
+        <TouchableOpacity style={styles.aboutContent} onPress={goToAbout}>
+          <Feather name='info' color={GREY[600]} size={ICON.MD} />
+          <Text style={styles.aboutText}>A propos</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.progressBarContainer}>
         <Text style={styles.progressBarText}>ÉTAPES</Text>
         <ProgressBar progress={course.progress * 100} />
@@ -131,10 +154,11 @@ const CourseProfile = ({ route, navigation, setStatusBarVisible, resetCourseRedu
     </ScrollView>
   );
 };
+const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
   resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
-export default connect(null, mapDispatchToProps)(CourseProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseProfile);
