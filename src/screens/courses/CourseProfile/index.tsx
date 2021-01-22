@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
+import has from 'lodash/has';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { NavigationType } from '../../../types/NavigationType';
@@ -115,19 +116,18 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const renderSeparator = () => <View style={styles.separator} />;
 
   const goToAbout = () => {
-    if (course) {
-      if (course.subProgram.isStrictlyELearning) {
-        const { program } = course.subProgram;
-        const eLearningProgram = {
-          ...program,
-          subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
-        };
-        navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
-      } else navigation.navigate('BlendedAbout', { course });
-    }
+    if (!course) return;
+    if (course.subProgram.isStrictlyELearning) {
+      const { program } = course.subProgram;
+      const eLearningProgram = {
+        ...program,
+        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
+      };
+      navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
+    } else navigation.navigate('BlendedAbout', { course });
   };
 
-  return course && (get(course, 'subProgram.program') || null) && (
+  return course && has(course, 'subProgram.program') && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
