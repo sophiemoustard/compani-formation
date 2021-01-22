@@ -31,6 +31,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const [codeRecipient, setCodeRecipient] = useState<string>('');
   const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
@@ -55,6 +56,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     try {
       setIsLoading(true);
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
+      setCodeRecipient(email);
     } catch (e) {
       setError(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
@@ -99,6 +101,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     return '';
   };
 
+  const onRequestClose = () => {
+    setForgotPasswordModal(false);
+    setCodeRecipient('');
+  };
+
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
@@ -120,7 +127,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             color={WHITE} borderColor={PINK[500]} />
         </View>
         <ForgotPasswordModal visible={forgotPasswordModal} isLoading={isLoading} sendEmail={sendEmail}
-          onRequestClose={() => setForgotPasswordModal(false)} errorMessage={error ? errorMessage : ''} />
+          onRequestClose={onRequestClose} errorMessage={error ? errorMessage : ''}
+          codeRecipient={codeRecipient} />
       </View>
     </KeyboardAvoidingView>
   );
