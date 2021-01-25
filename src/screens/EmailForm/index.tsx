@@ -57,10 +57,25 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       setIsLoading(true);
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
+      setError(false);
     } catch (e) {
       setError(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
       else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendCode = async (code) => {
+    try {
+      setIsLoading(true);
+      const checkToken = await Authentication.passwordToken(email, code);
+      setForgotPasswordModal(false);
+      navigation.navigate('PasswordEdition', { userId: checkToken.user._id, isPasswordForgotten: true, email });
+    } catch (e) {
+      setError(true);
+      setErrorMessage('Oops, le code n\'est pas valide');
     } finally {
       setIsLoading(false);
     }
@@ -93,7 +108,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   const enterEmail = (text) => {
     setErrorMessage('');
-    setEmail(text);
+    setEmail(text.replace(/\s/g, ''));
   };
 
   const validationMessage = () => {
@@ -126,9 +141,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
             color={WHITE} borderColor={PINK[500]} />
         </View>
-        <ForgotPasswordModal visible={forgotPasswordModal} isLoading={isLoading} sendEmail={sendEmail}
-          onRequestClose={onRequestClose} errorMessage={error ? errorMessage : ''}
-          codeRecipient={codeRecipient} />
+        { forgotPasswordModal
+          ? <ForgotPasswordModal visible={forgotPasswordModal} isLoading={isLoading} sendEmail={sendEmail}
+            onRequestClose={onRequestClose} errorMessage={error ? errorMessage : ''} codeRecipient={codeRecipient}
+            sendCode={sendCode} />
+          : null }
       </View>
     </KeyboardAvoidingView>
   );
