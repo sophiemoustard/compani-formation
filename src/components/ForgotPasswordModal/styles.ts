@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.SM,
     marginBottom: MARGIN.LG,
   },
+  recipient: {
+    ...FIRA_SANS_BOLD.MD,
+    color: GREY[800],
+  },
   inputContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_ITALIC.SM,
     color: ORANGE[600],
     marginTop: MARGIN.XXS,
+    marginHorizontal: MARGIN.SM,
   },
 });
 

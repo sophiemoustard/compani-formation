@@ -41,7 +41,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
 
   const editProfile = () => navigation.navigate('ProfileEdition');
 
-  const editPassword = () => navigation.navigate('PasswordEdition');
+  const editPassword = () => navigation.navigate('PasswordEdition', { userId: loggedUser._id });
 
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }

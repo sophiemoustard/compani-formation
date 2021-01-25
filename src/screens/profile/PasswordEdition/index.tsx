@@ -8,12 +8,11 @@ import {
   Platform,
   BackHandler,
 } from 'react-native';
-import { connect } from 'react-redux';
+import { StackActions } from '@react-navigation/native';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import NiButton from '../../../components/form/Button';
 import { GREY, PINK, WHITE } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
-import { UserType } from '../../../types/UserType';
 import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { NavigationType } from '../../../types/NavigationType';
@@ -23,13 +22,13 @@ import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 
 interface PasswordEditionProps {
-  loggedUser: UserType,
+  route: { params: { userId: string, isPasswordForgotten?: boolean, email?: string } },
   navigation: NavigationType,
 }
 
-const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
+const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
   const isIOS = Platform.OS === 'ios';
-  const { signOut } = useContext(AuthContext);
+  const { signOut, signIn } = useContext(AuthContext);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [password, setPassword] = useState({ newPassword: '', confirmedPassword: '' });
   const [unvalid, setUnvalid] = useState({ newPassword: false, confirmedPassword: false });
@@ -38,6 +37,7 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
+  const { userId, isPasswordForgotten, email } = route.params;
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -77,7 +77,8 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
+    if (isPasswordForgotten) navigation.navigate('EmailForm');
+    else navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
   };
 
   const savePassword = async () => {
@@ -87,8 +88,15 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
         setIsLoading(true);
         setError(false);
         setErrorMessage('');
-        await Users.updatePassword(loggedUser._id, { local: { password: password.newPassword } });
-        goBack();
+        await Users.updatePassword(userId, { local: { password: password.newPassword } });
+        if (isPasswordForgotten && !!email) {
+          try {
+            await signIn({ email, password: password.newPassword });
+            navigation.dispatch(StackActions.replace('Home', { screen: 'Courses', params: { screen: 'CourseList' } }));
+          } catch (e) {
+            if (e.status === 401) signOut();
+          }
+        } else goBack();
       }
     } catch (e) {
       if (e.status === 401) signOut();
@@ -108,13 +116,15 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
-          color={GREY[600]} />
+          color={GREY[600]} disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title={'Êtes-vous sûr de cela ?'} contentText={'Vos modifications ne seront pas enregistrées.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Modifier mon mot de passe</Text>
+        <Text style={styles.title}>
+          {isPasswordForgotten ? 'Réinitialiser mon mot de passe' : 'Modifier mon mot de passe'}
+        </Text>
         <View style={styles.input}>
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
             type="password" darkMode={false} onChangeText={text => setPasswordField(text, 'newPassword')}
@@ -138,6 +148,5 @@ const PasswordEdition = ({ loggedUser, navigation }: PasswordEditionProps) => {
     </KeyboardAvoidingView>
   );
 };
-const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
-export default connect(mapStateToProps)(PasswordEdition);
+export default PasswordEdition;

@@ -21,4 +21,9 @@ export default {
     const { baseURL } = getEnvVars();
     await axios.post(`${baseURL}/users/logout`);
   },
+  passwordToken: async (email, token) => {
+    const { baseURL } = getEnvVars();
+    const checkToken = await axios.get(`${baseURL}/users/passwordtoken/${token}?email=${email}`);
+    return checkToken.data.data;
+  },
 };
