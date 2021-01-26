@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   subSectionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: MARGIN.SM,
   },
   subSectionTitle: {
     ...FIRA_SANS_MEDIUM.LG,
@@ -29,8 +30,8 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.MD,
   },
   trainerPicture: {
-    height: 64,
-    width: 64,
+    height: ICON.XXL,
+    width: ICON.XXL,
     marginRight: MARGIN.MD,
     borderRadius: BORDER_RADIUS.XXL,
   },
