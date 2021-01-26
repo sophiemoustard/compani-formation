@@ -1,0 +1,43 @@
+import { StyleSheet } from 'react-native';
+import { GREY, PINK } from '../../../styles/colors';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../styles/metrics';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+
+const styles = StyleSheet.create({
+  sectionTitle: {
+    ...FIRA_SANS_BOLD.LG,
+    marginBottom: MARGIN.MD,
+    color: GREY[900],
+  },
+  sectionContent: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: GREY[800],
+  },
+  subSectionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  subSectionTitle: {
+    ...FIRA_SANS_MEDIUM.LG,
+    color: GREY[900],
+    flexWrap: 'wrap',
+    flex: 1,
+  },
+  sectionDelimiter: {
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY[200],
+    marginVertical: MARGIN.MD,
+  },
+  trainerPicture: {
+    height: 64,
+    width: 64,
+    marginRight: MARGIN.MD,
+    borderRadius: BORDER_RADIUS.XXL,
+  },
+  contactContent: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: PINK[500],
+  },
+});
+
+export default styles;
