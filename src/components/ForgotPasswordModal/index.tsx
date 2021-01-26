@@ -79,7 +79,7 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
       setIsLoading(true);
       const checkToken = await Authentication.passwordToken(email, formattedCode);
       onRequestClose();
-      navigation.navigate('PasswordEdition', { userId: checkToken.user._id, isPasswordForgotten: true, email });
+      navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
       setUnvalidCode(true);
       setErrorMessage('Oops, le code n\'est pas valide');
