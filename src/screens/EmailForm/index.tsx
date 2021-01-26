@@ -8,9 +8,8 @@ import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { GREY, PINK, WHITE } from '../../styles/colors';
-import { EMAIL, EMAIL_REGEX, MOBILE } from '../../core/data/constants';
+import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
-import Authentication from '../../api/authentication';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
 interface EmailFormProps {
@@ -31,7 +30,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const [codeRecipient, setCodeRecipient] = useState<string>('');
   const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
@@ -48,50 +46,26 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
 
-  useEffect(() => { setUnvalidEmail(!email.match(EMAIL_REGEX)); }, [email]);
+  useEffect(() => {
+    setUnvalidEmail(!email.match(EMAIL_REGEX));
+    if (!email.match(EMAIL_REGEX) && isValidationAttempted) setErrorMessage('Votre e-mail n\'est pas valide');
+    else setErrorMessage('');
+  }, [email, isValidationAttempted]);
 
   useEffect(() => { setIsValid(!unvalidEmail); }, [unvalidEmail]);
-
-  const sendEmail = async () => {
-    try {
-      setIsLoading(true);
-      await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
-      setCodeRecipient(email);
-      setError(false);
-    } catch (e) {
-      setError(true);
-      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
-      else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const sendCode = async (code) => {
-    try {
-      setIsLoading(true);
-      const checkToken = await Authentication.passwordToken(email, code);
-      setForgotPasswordModal(false);
-      navigation.navigate('PasswordEdition', { userId: checkToken.user._id, isPasswordForgotten: true, email });
-    } catch (e) {
-      setError(true);
-      setErrorMessage('Oops, le code n\'est pas valide');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const saveEmail = async () => {
     try {
       setIsValidationAttempted(true);
+      setIsLoading(true);
       if (isValid) {
         if (error) setError(false);
-        if (!route.params.firstConnection) await setForgotPasswordModal(true);
-        else {
-          const isExistingUser = await Users.exists({ email });
-          if (isExistingUser) await setForgotPasswordModal(true);
-          else navigation.navigate('CreateAccount', { email });
-        }
+        const isExistingUser = await Users.exists({ email });
+        if (isExistingUser) await setForgotPasswordModal(true);
+        else if (!route.params.firstConnection) {
+          setUnvalidEmail(true);
+          setErrorMessage('Votre e-mail n\'est pas reconnu');
+        } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
       setError(true);
@@ -106,19 +80,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     navigation.navigate('Authentication');
   };
 
-  const enterEmail = (text) => {
-    setErrorMessage('');
-    setEmail(text.replace(/\s/g, ''));
-  };
+  const enterEmail = text => setEmail(text.trim());
 
   const validationMessage = () => {
-    if (unvalidEmail && isValidationAttempted) return 'Votre e-mail n\'est pas valide';
+    if ((unvalidEmail && isValidationAttempted) || error) return errorMessage;
     return '';
-  };
-
-  const onRequestClose = () => {
-    setForgotPasswordModal(false);
-    setCodeRecipient('');
   };
 
   return (
@@ -141,11 +107,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
             color={WHITE} borderColor={PINK[500]} />
         </View>
-        { forgotPasswordModal
-          ? <ForgotPasswordModal visible={forgotPasswordModal} isLoading={isLoading} sendEmail={sendEmail}
-            onRequestClose={onRequestClose} errorMessage={error ? errorMessage : ''} codeRecipient={codeRecipient}
-            sendCode={sendCode} />
-          : null }
+        {forgotPasswordModal &&
+          <ForgotPasswordModal email={email} onRequestClose={() => setForgotPasswordModal(false)} />}
       </View>
     </KeyboardAvoidingView>
   );

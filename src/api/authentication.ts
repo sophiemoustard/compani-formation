@@ -23,7 +23,7 @@ export default {
   },
   passwordToken: async (email, token) => {
     const { baseURL } = getEnvVars();
-    const checkToken = await axios.get(`${baseURL}/users/passwordtoken/${token}?email=${email}`);
+    const checkToken = await axios.get(`${baseURL}/users/passwordtoken/${token}`, { params: { email } });
     return checkToken.data.data;
   },
 };
