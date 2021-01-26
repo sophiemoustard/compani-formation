@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { MARGIN } from '../../styles/metrics';
+import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   title: {

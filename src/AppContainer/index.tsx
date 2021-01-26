@@ -29,6 +29,7 @@ import Users from '../api/users';
 import { UserType } from '../types/UserType';
 import styles from './styles';
 import PasswordEdition from '../screens/profile/PasswordEdition';
+import PasswordReset from '../screens/PasswordReset';
 
 interface TabBarIconProps {
   color: string,
@@ -93,7 +94,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
-  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordEdition };
+  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
   const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
   const Courses = { CourseProfile, SubProgramProfile };

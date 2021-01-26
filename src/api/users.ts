@@ -12,9 +12,10 @@ export default {
     const { baseURL } = getEnvVars();
     await alenviAxios.put(`${baseURL}/users/${userId}`, data);
   },
-  updatePassword: async (userId, data) => {
+  updatePassword: async (userId, data, token = '') => {
     const { baseURL } = getEnvVars();
-    await alenviAxios.put(`${baseURL}/users/${userId}/password`, data);
+    if (!token) await alenviAxios.put(`${baseURL}/users/${userId}/password`, data);
+    else await alenviAxios.put(`${baseURL}/users/${userId}/password`, data, { headers: { 'x-access-token': token } });
   },
   exists: async (params) => {
     const { baseURL } = getEnvVars();
