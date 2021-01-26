@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
     paddingVertical: PADDING.MD,
     paddingHorizontal: PADDING.LG,
     flexDirection: 'row',
+    alignItems: 'center',
+
   },
   aboutText: {
     ...FIRA_SANS_MEDIUM.LG,
