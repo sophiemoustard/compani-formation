@@ -69,7 +69,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       }
     } catch (e) {
       setError(true);
-      setErrorMessage('Oops, erreur lors de l\'envoi de l\'e-mail.');
+      setErrorMessage('Oops, erreur lors de la vérification de l\'e-mail.');
     } finally {
       setIsLoading(false);
     }
