@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, ScrollView, Image } from 'react-native';
 import Markdown from 'react-native-markdown-display';
+import get from 'lodash/get';
 import moment from '../../../core/helpers/moment';
 import About from '../../../components/About';
 import styles from './styles';
@@ -41,7 +42,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
         return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
       }));
     }
-    if (course.trainer.picture?.link) setTrainerPictureSource({ uri: course.trainer.picture.link });
+    if (get(course, 'trainer.picture.link')) setTrainerPictureSource({ uri: course.trainer.picture.link });
   }, [dates, course]);
 
   const goBack = () => navigation.goBack();
@@ -55,7 +56,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
             <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
               renderItem={({ item }) =>
                 <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
-            <View style={styles.sectionDelimiter} />
+          <View style={styles.sectionDelimiter} />
           </>}
         {course.trainer &&
         <>
@@ -65,10 +66,10 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
             <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
           </View>
           {course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
-          <View style={styles.sectionDelimiter} />
         </>}
-        {course.contact &&
+        {!!course.contact.name &&
         <>
+          <View style={styles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
           <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
           <Text style={styles.contactContent}>{course.contact.phone}</Text>
