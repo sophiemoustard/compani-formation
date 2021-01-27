@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, ScrollView, Image } from 'react-native';
+import { View, Text, FlatList, Image } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import moment from '../../../core/helpers/moment';
@@ -49,26 +49,23 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
 
   return program && (
     <About program={program} onPress={goBack}>
-      {course.slots.length > 0 &&
-        <>
-          <View style={styles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Dates de formation</Text>
-          <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
-            renderItem={({ item }) =>
-              <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
-        </>}
-      {course.trainer &&
-      <>
+      {course.slots.length > 0 && <>
+        <View style={styles.sectionDelimiter} />
+        <Text style={styles.sectionTitle}>Dates de formation</Text>
+        <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
+          renderItem={({ item }) =>
+            <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
+      </>}
+      {!!course.trainer && <>
         <View style={styles.sectionDelimiter} />
         <Text style={styles.sectionTitle}>Intervenant</Text>
         <View style={styles.subSectionContainer}>
           <Image style={styles.trainerPicture} source={trainerPictureSource} />
           <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
         </View>
-        {course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+        {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
       </>}
-      {!!course.contact?.name &&
-      <>
+      {!!course.contact?.name && <>
         <View style={styles.sectionDelimiter} />
         <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
         <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
