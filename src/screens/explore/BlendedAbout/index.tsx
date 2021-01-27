@@ -56,7 +56,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
             <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
               renderItem={({ item }) =>
                 <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
-          <View style={styles.sectionDelimiter} />
+            <View style={styles.sectionDelimiter} />
           </>}
         {course.trainer &&
         <>
