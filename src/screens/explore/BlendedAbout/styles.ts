@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK } from '../../../styles/colors';
+import { GREY, PINK, TRANSPARENT_GREY } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
     width: ICON.XXL,
     marginRight: MARGIN.MD,
     borderRadius: BORDER_RADIUS.XXL,
+    borderWidth: BORDER_WIDTH,
+    borderColor: TRANSPARENT_GREY,
   },
   contactContent: {
     ...FIRA_SANS_REGULAR.MD,
