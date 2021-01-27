@@ -104,7 +104,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
           contentText={'Vos modifications ne seront pas enregistrées.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Réinitialiser mon mot de passe</Text>
+        <Text style={styles.title}>Modifier mon mot de passe</Text>
         <View style={styles.input}>
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
             type="password" darkMode={false} onChangeText={text => setPasswordField(text, 'newPassword')}
