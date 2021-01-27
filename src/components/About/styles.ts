@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK, WHITE } from '../../styles/colors';
-import { BORDER_RADIUS, MARGIN } from '../../styles/metrics';
+import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
+    backgroundColor: GREY[100],
   },
   content: {
     margin: MARGIN.MD,
@@ -53,7 +54,9 @@ const styles = StyleSheet.create({
     color: GREY[800],
   },
   footer: {
-    margin: MARGIN.XL,
+    paddingBottom: PADDING.XXL,
+    paddingHorizontal: PADDING.XL,
+    backgroundColor: GREY[100],
   },
 });
 
