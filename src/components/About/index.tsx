@@ -13,6 +13,7 @@ import FeatherButton from '../../components/icons/FeatherButton';
 import CoursesActions from '../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import { ProgramType } from '../../types/ProgramType';
+import FooterGradient from '../design/FooterGradient';
 
 interface AboutProps {
   program: ProgramType,
@@ -42,33 +43,37 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
   const goBack = () => navigation.goBack();
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-      <View style={styles.header} />
-      <View style={styles.content}>
-        <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
-        <View style={styles.titleContainer}>
-          <Text style={styles.aboutTitle}>A PROPOS</Text>
-          <Text style={styles.programTitle}>{program.name}</Text>
-        </View>
-        <View style={styles.imageContainer}>
-          <Image style={styles.image} source={source} />
-        </View>
-        {program.description &&
+    <>
+      <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+        <View style={styles.header} />
+        <View style={styles.content}>
+          <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
+          <View style={styles.titleContainer}>
+            <Text style={styles.aboutTitle}>A PROPOS</Text>
+            <Text style={styles.programTitle}>{program.name}</Text>
+          </View>
+          <View style={styles.imageContainer}>
+            <Image style={styles.image} source={source} />
+          </View>
+          {!!program.description &&
           <View style={styles.sectionContainer}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.sectionContent}>{program.description}</Text>
           </View>
-        }
-        {program.learningGoals &&
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
-            <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
-          </View>
-        }
-        {children}
+          }
+          {!!program.learningGoals &&
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
+              <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
+            </View>}
+          {children}
+        </View>
+      </ScrollView>
+      <View style={styles.footer}>
+        <FooterGradient />
+        <Button caption={buttonCaption} onPress={onPress} />
       </View>
-      <Button style={styles.footer} caption={buttonCaption} onPress={onPress} />
-    </ScrollView>
+    </>
   );
 };
 

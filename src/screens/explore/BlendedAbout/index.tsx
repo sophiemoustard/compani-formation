@@ -48,36 +48,34 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const goBack = () => navigation.goBack();
 
   return program && (
-    <ScrollView>
-      <About program={program} onPress={goBack}>
-        {course.slots.length > 0 &&
-          <>
-            <View style={styles.sectionDelimiter} />
-            <Text style={styles.sectionTitle}>Dates de formation</Text>
-            <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
-              renderItem={({ item }) =>
-                <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
-          </>}
-        {course.trainer &&
+    <About program={program} onPress={goBack}>
+      {course.slots.length > 0 &&
         <>
           <View style={styles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Intervenant</Text>
-          <View style={styles.subSectionContainer}>
-            <Image style={styles.trainerPicture} source={trainerPictureSource} />
-            <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
-          </View>
-          {course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+          <Text style={styles.sectionTitle}>Dates de formation</Text>
+          <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
+            renderItem={({ item }) =>
+              <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
         </>}
-        {!!course.contact?.name &&
-        <>
-          <View style={styles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
-          <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
-          <Text style={styles.contactContent}>{course.contact.phone}</Text>
-          <Text style={styles.contactContent}>{course.contact.email}</Text>
-        </>}
-      </About>
-    </ScrollView>
+      {course.trainer &&
+      <>
+        <View style={styles.sectionDelimiter} />
+        <Text style={styles.sectionTitle}>Intervenant</Text>
+        <View style={styles.subSectionContainer}>
+          <Image style={styles.trainerPicture} source={trainerPictureSource} />
+          <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
+        </View>
+        {course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+      </>}
+      {!!course.contact?.name &&
+      <>
+        <View style={styles.sectionDelimiter} />
+        <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
+        <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
+        <Text style={styles.contactContent}>{course.contact.phone}</Text>
+        <Text style={styles.contactContent}>{course.contact.email}</Text>
+      </>}
+    </About>
   );
 };
 
