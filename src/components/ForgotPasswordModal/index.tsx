@@ -1,40 +1,152 @@
-import React from 'react';
-import { Text, View, Modal } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, Modal, TextInput, Keyboard, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import NiButton from '../form/Button';
 import FeatherButton from '../icons/FeatherButton';
-import { ICON } from '../../styles/metrics';
+import Authentication from '../../api/authentication';
+import { EMAIL, MOBILE } from '../../core/data/constants';
+import { ICON, IS_LARGE_SCREEN } from '../../styles/metrics';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
 
 interface ForgotPasswordModalProps {
-  visible: boolean,
-  isLoading: boolean,
-  errorMessage: string,
+  email: string,
   onRequestClose: () => void,
-  sendEmail: () => void
 }
 
-const ForgotPasswordModal = ({
-  visible,
-  isLoading,
-  errorMessage,
-  onRequestClose,
-  sendEmail,
-}: ForgotPasswordModalProps) => (
-  <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
-    <View style={styles.modalContainer}>
-      <View style={styles.modalContent}>
-        <FeatherButton name={'x-circle'} onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
-          style={styles.goBack} />
-        <Text style={styles.title}>Confirmez votre identité</Text>
-        <Text style={styles.text}>
-          Pour réinitialiser votre mot de passe, vous devez d’abord confirmer votre identité par un code temporaire.
-        </Text>
-        <NiButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail} loading={isLoading}
-          bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
-        <Text style={styles.unvalid}>{errorMessage}</Text>
+const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps) => {
+  const [code, setCode] = useState<Array<string>>(['', '', '', '']);
+  const [isPreviousKeyBackSpace, setIsPreviousKeyBackSpace] = useState<boolean>(false);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
+  const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
+  const [unvalidCode, setUnvalidCode] = useState<boolean>(false);
+  const inputRefs: Array<any> = [
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+  ];
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigation = useNavigation();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [codeRecipient, setCodeRecipient] = useState<string>('');
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', () => setIsKeyboardOpen(false));
+    };
+  });
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', () => setIsKeyboardOpen(true));
+    };
+  });
+
+  useEffect(() => {
+    setUnvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
+  }, [code]);
+
+  const onChangeText = (char, index) => {
+    setCode(code.map((c, i) => (i === index ? char : c)));
+    if (char !== '' && index + 1 < 4) inputRefs[index + 1].focus();
+  };
+
+  const goPreviousAfterEdit = (index) => {
+    if (index - 1 >= 0) {
+      inputRefs[index - 1].focus();
+      if (code[index] === '') onChangeText('', index - 1);
+    }
+  };
+
+  const checkKeyValue = (key, idx) => {
+    if (key === 'Backspace' && (isPreviousKeyBackSpace || !code[idx])) goPreviousAfterEdit(idx);
+    setIsPreviousKeyBackSpace(key === 'Backspace');
+  };
+
+  const formatCode = () => {
+    Keyboard.dismiss();
+    const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
+    setIsValidationAttempted(true);
+    if (!unvalidCode) sendCode(formattedCode);
+    else setErrorMessage('Le format du code est incorrect');
+  };
+
+  const sendCode = async (formattedCode) => {
+    try {
+      setIsLoading(true);
+      const checkToken = await Authentication.passwordToken(email, formattedCode);
+      navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
+      onRequestClose();
+    } catch (e) {
+      setUnvalidCode(true);
+      setErrorMessage('Oops, le code n\'est pas valide');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendEmail = async () => {
+    try {
+      setIsLoading(true);
+      await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
+      setCodeRecipient(email);
+      setUnvalidCode(false);
+    } catch (e) {
+      setUnvalidCode(true);
+      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
+      else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const beforeCodeSent = () => (
+    <>
+      <Text style={styles.beforeCodeSentText}>
+        Pour réinitialiser votre mot de passe, vous devez d’abord confirmer votre identité par un code temporaire.
+      </Text>
+      <NiButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail}
+        loading={isLoading} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
+      <Text style={styles.unvalid}>{errorMessage}</Text>
+    </>);
+
+  const afterCodeSent = () => (
+    <>
+      {(IS_LARGE_SCREEN || !isKeyboardOpen) &&
+        <>
+          <Text style={styles.afterCodeSentText }>
+            Nous avons envoyé un e-mail à<Text style={styles.recipient}> {codeRecipient} </Text>
+            avec le code temporaire. Si vous ne l’avez pas reçu, vérifiez votre courrier indésirable, ou réessayez.
+          </Text>
+          <Text style={styles.afterCodeSentText}>Saisie du code temporaire</Text>
+        </>}
+      <View style={styles.inputContainer}>
+        {inputRefs.map((k, idx) => (
+          <TextInput ref={(r) => { inputRefs[idx] = r; }} key={`${k}${idx}`} value={code[idx]}
+            onChangeText={char => onChangeText(char, idx)} style={styles.input} placeholder={'_'}
+            onKeyPress={({ nativeEvent }) => checkKeyValue(nativeEvent.key, idx)}
+            maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} />))}
       </View>
-    </View>
-  </Modal>);
+      <NiButton caption='Valider' style={styles.button} onPress={() => formatCode()}
+        loading={isLoading} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
+      {unvalidCode && isValidationAttempted && <Text style={styles.unvalid}>{errorMessage}</Text>}
+    </>
+  );
+
+  return (
+    <Modal transparent={true} onRequestClose={onRequestClose}>
+      <ScrollView contentContainerStyle={styles.modalContainer} keyboardShouldPersistTaps='handled'>
+        <View style={styles.modalContent}>
+          <FeatherButton name={'x-circle'} onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
+            style={styles.goBack} />
+          <Text style={styles.title}>Confirmez votre identité</Text>
+          {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
+        </View>
+      </ScrollView>
+    </Modal>);
+};
 
 export default ForgotPasswordModal;

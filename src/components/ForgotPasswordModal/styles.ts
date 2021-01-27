@@ -5,7 +5,7 @@ import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC } from '../../style
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'column',
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: BORDER_RADIUS.MD,
     borderTopRightRadius: BORDER_RADIUS.MD,
     width: '100%',
-    height: '80%',
+    height: '85%',
     padding: PADDING.LG,
   },
   button: {
@@ -29,12 +29,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: MARGIN.LG,
   },
-  text: {
+  beforeCodeSentText: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
     textAlign: 'center',
     marginHorizontal: MARGIN.SM,
     marginBottom: MARGIN.XXXL,
+  },
+  afterCodeSentText: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: GREY[800],
+    textAlign: 'center',
+    marginHorizontal: MARGIN.SM,
+    marginBottom: MARGIN.LG,
+  },
+  recipient: {
+    ...FIRA_SANS_BOLD.MD,
+    color: GREY[800],
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginHorizontal: MARGIN.SM,
+    marginBottom: MARGIN.XL,
+  },
+  input: {
+    ...FIRA_SANS_REGULAR.XXL,
+    marginHorizontal: MARGIN.XXS,
   },
   goBack: {
     alignSelf: 'flex-end',
@@ -43,6 +64,7 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_ITALIC.SM,
     color: ORANGE[600],
     marginTop: MARGIN.XXS,
+    marginHorizontal: MARGIN.SM,
   },
 });
 

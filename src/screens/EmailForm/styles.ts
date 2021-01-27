@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN } from '../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM } from '../../styles/fonts';
+import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = footerTooClose => StyleSheet.create({
   title: {
@@ -25,18 +25,6 @@ const styles = footerTooClose => StyleSheet.create({
     marginBottom: footerTooClose ? MARGIN.MD : MARGIN.XL,
     justifyContent: 'flex-end',
     flex: 1,
-  },
-  contentText: {
-    ...FIRA_SANS_REGULAR.MD,
-    textAlign: 'center',
-    marginBottom: MARGIN.XL,
-    width: '100%',
-  },
-  email: {
-    ...FIRA_SANS_MEDIUM.MD,
-  },
-  errorMessage: {
-    marginTop: MARGIN.SM,
   },
 });
 
