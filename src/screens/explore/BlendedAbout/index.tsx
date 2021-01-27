@@ -27,8 +27,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
     setDates(course.slots.length
       ? course.slots.map(slot => slot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
       : []);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [course]);
 
   useEffect(() => {
     if (dates) {
@@ -43,8 +42,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
       }));
     }
     if (course.trainer.picture?.link) setTrainerPictureSource({ uri: course.trainer.picture.link });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dates]);
+  }, [dates, course]);
 
   const goBack = () => navigation.goBack();
 
