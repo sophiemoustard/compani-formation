@@ -56,11 +56,10 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
             <Image style={styles.image} source={source} />
           </View>
           {!!program.description &&
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.sectionContent}>{program.description}</Text>
-          </View>
-          }
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Description</Text>
+              <Text style={styles.sectionContent}>{program.description}</Text>
+            </View>}
           {!!program.learningGoals &&
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
