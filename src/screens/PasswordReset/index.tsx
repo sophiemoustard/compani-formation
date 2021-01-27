@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { StackActions } from '@react-navigation/native';
 import PasswordForm from '../../components/PasswordForm';
 import { NavigationType } from '../../types/NavigationType';
 import Users from '../../api/users';
@@ -19,7 +18,6 @@ const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
   const savePassword = async (password) => {
     await Users.updatePassword(userId, { local: { password } }, token);
     await signIn({ email, password });
-    navigation.dispatch(StackActions.replace('Home', { screen: 'Courses', params: { screen: 'CourseList' } }));
   };
 
   return (
