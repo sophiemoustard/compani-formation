@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: MARGIN.SM,
+    marginBottom: MARGIN.SM,
   },
   title: {
     ...FIRA_SANS_BOLD.LG,
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     color: GREY[800],
     textAlign: 'center',
     marginHorizontal: MARGIN.SM,
-    marginBottom: MARGIN.XXXL,
+    marginBottom: MARGIN.XXL,
   },
   afterCodeSentText: {
     ...FIRA_SANS_REGULAR.MD,
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
   unvalid: {
     ...FIRA_SANS_ITALIC.SM,
     color: ORANGE[600],
-    marginTop: MARGIN.XXS,
     marginHorizontal: MARGIN.SM,
   },
 });
