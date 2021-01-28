@@ -4,17 +4,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { GREY, TRANSPARENT_GRADIENT } from '../../styles/colors';
 import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT } from '../../styles/metrics';
 
-const FooterGradient = () => (
-  <LinearGradient style={styles.gradient} colors={[TRANSPARENT_GRADIENT, GREY[100]]} />
+interface FooterGradientProps {
+  colors?: Array<string>,
+  bottomPosition?: number,
+  height?: number,
+}
+const FooterGradient = ({
+  colors = [TRANSPARENT_GRADIENT, GREY[100]],
+  bottomPosition = ABSOLUTE_BOTTOM_POSITION,
+  height = INPUT_HEIGHT,
+}: FooterGradientProps) => (
+  <LinearGradient style={styles(bottomPosition, height).gradient} colors={colors} />
 );
 
-const styles = StyleSheet.create({
+const styles = (bottomPosition: number, height: number) => StyleSheet.create({
   gradient: {
-    height: INPUT_HEIGHT,
+    height,
     position: 'absolute',
     right: 0,
     left: 0,
-    bottom: ABSOLUTE_BOTTOM_POSITION,
+    bottom: bottomPosition,
   },
 });
 

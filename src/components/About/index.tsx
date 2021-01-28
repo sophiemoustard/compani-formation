@@ -65,8 +65,8 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
               <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
               <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
             </View>}
-          {children}
         </View>
+        {children}
       </ScrollView>
       <View style={styles.footer}>
         <FooterGradient />
