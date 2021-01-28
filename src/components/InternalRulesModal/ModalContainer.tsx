@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Modal } from 'react-native';
+import { View, Modal } from 'react-native';
 import { TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { INPUT_HEIGHT } from '../../styles/metrics';
 import FooterGradient from '../design/FooterGradient';
@@ -13,11 +13,11 @@ interface UpdateAppModalProps {
 
 const ModalContainer = ({ visible, onRequestClose, children }: UpdateAppModalProps) => (
   <Modal transparent={true} onRequestClose={onRequestClose} visible={visible}>
-    <ScrollView contentContainerStyle={styles.modalContainer}>
+    <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
         {children}
       </View>
-    </ScrollView>
+    </View>
     <FooterGradient colors={[TRANSPARENT_GRADIENT, WHITE]} bottomPosition={0} height={2 * INPUT_HEIGHT}/>
   </Modal>
 );

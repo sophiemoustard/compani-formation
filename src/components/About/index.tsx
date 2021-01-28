@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { markdownStyle } from '../../styles/common';
-import { WHITE } from '../../styles/colors';
+import { GREY, TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import Button from '../../components/form/Button';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -69,7 +69,7 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
         {children}
       </ScrollView>
       <View style={styles.footer}>
-        <FooterGradient />
+        <FooterGradient colors={[TRANSPARENT_GRADIENT, GREY[0]]} />
         <Button caption={buttonCaption} onPress={onPress} />
       </View>
     </>

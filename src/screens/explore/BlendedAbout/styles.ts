@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GREY[100],
-    marginVertical: MARGIN.MD,
+    marginVertical: MARGIN.LG,
   },
   internalRules: {
     marginVertical: MARGIN.XXL,
