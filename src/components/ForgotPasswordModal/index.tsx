@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Modal, TextInput, Keyboard, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import get from 'lodash/get';
 import NiButton from '../form/Button';
 import FeatherButton from '../icons/FeatherButton';
 import Authentication from '../../api/authentication';
-import { EMAIL, MOBILE } from '../../core/data/constants';
+import { EMAIL, MOBILE, PHONE } from '../../core/data/constants';
 import { ICON, IS_LARGE_SCREEN } from '../../styles/metrics';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
@@ -28,8 +29,9 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
   ];
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigation = useNavigation();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [codeRecipient, setCodeRecipient] = useState<string>('');
+  const [chosenMethod, setChosenMethod] = useState<string>('');
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
@@ -91,6 +93,7 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
   const sendEmail = async () => {
     try {
       setIsLoading(true);
+      setChosenMethod(EMAIL);
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
       setUnvalidCode(false);
@@ -103,13 +106,32 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
     }
   };
 
+  const sendSMS = async () => {
+    try {
+      setIsLoading(true);
+      setChosenMethod(PHONE);
+      const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
+      setCodeRecipient(get(sms, 'phone'));
+      setUnvalidCode(false);
+    } catch (e) {
+      setUnvalidCode(true);
+      if (e.response.status === 409) {
+        setErrorMessage('Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte');
+      } else setErrorMessage('Oops, erreur lors de la transmission du numéro de téléphone.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const beforeCodeSent = () => (
     <>
       <Text style={styles.beforeCodeSentText}>
         Pour réinitialiser votre mot de passe, vous devez d’abord confirmer votre identité par un code temporaire.
       </Text>
       <NiButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail}
-        loading={isLoading} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
+        loading={isLoading && chosenMethod === EMAIL} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
+      <NiButton caption='Recevoir le code par SMS' style={styles.button} onPress={sendSMS}
+        loading={isLoading && chosenMethod === PHONE} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
       <Text style={styles.unvalid}>{errorMessage}</Text>
     </>);
 
@@ -117,10 +139,16 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
     <>
       {(IS_LARGE_SCREEN || !isKeyboardOpen) &&
         <>
-          <Text style={styles.afterCodeSentText }>
-            Nous avons envoyé un e-mail à<Text style={styles.recipient}> {codeRecipient} </Text>
-            avec le code temporaire. Si vous ne l’avez pas reçu, vérifiez votre courrier indésirable, ou réessayez.
-          </Text>
+          {chosenMethod === EMAIL
+            ? <Text style={styles.afterCodeSentText}>
+              Nous avons envoyé un e-mail à<Text style={styles.recipient}> {codeRecipient} </Text>
+              avec le code temporaire. Si vous ne l’avez pas reçu, vérifiez votre courrier indésirable, ou réessayez.
+            </Text>
+            : <Text style={styles.afterCodeSentText}>
+              Nous avons envoyé un SMS au
+              <Text style={styles.recipient}> {codeRecipient.replace(/\d{2}(?=.)/g, '$& ')} </Text>
+              avec le code temporaire.
+            </Text>}
           <Text style={styles.afterCodeSentText}>Saisie du code temporaire</Text>
         </>}
       <View style={styles.inputContainer}>
