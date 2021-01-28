@@ -10,8 +10,8 @@ export default {
   },
   forgotPassword: async (payload) => {
     const { baseURL } = getEnvVars();
-    const sendCode = await axios.post(`${baseURL}/users/forgot-password`, payload);
-    return sendCode.data.data.mailInfo;
+    const code = await axios.post(`${baseURL}/users/forgot-password`, payload);
+    return code.data.data.mailInfo;
   },
   refreshToken: async (payload) => {
     const { baseURL } = getEnvVars();

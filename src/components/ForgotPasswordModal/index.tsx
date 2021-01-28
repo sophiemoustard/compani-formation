@@ -115,8 +115,9 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
       setUnvalidCode(false);
     } catch (e) {
       setUnvalidCode(true);
-      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas ce numéro de téléphone');
-      else setErrorMessage('Oops, erreur lors de la transmission du numéro de téléphone.');
+      if (e.response.status === 409) {
+        setErrorMessage('Oops, nous n\'avons pas trouvé de numérode téléphone associé à votre compte');
+      } else setErrorMessage('Oops, erreur lors de la transmission du numéro de téléphone.');
     } finally {
       setIsLoading(false);
     }
