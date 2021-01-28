@@ -17,10 +17,11 @@ import { ProgramType } from '../../types/ProgramType';
 interface AboutProps {
   program: ProgramType,
   buttonCaption?: string,
+  children?: any,
   onPress: () => void,
 }
 
-const About = ({ program, buttonCaption = 'Continuer', onPress }: AboutProps) => {
+const About = ({ program, buttonCaption = 'Continuer', children, onPress }: AboutProps) => {
   const defaultImg = require('../../../assets/images/authentication_background_image.jpg');
   const programImage = get(program, 'image.link') || '';
   const source = programImage ? { uri: programImage } : defaultImg;
@@ -64,6 +65,7 @@ const About = ({ program, buttonCaption = 'Continuer', onPress }: AboutProps) =>
             <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
           </View>
         }
+        {children}
       </View>
       <Button style={styles.footer} caption={buttonCaption} onPress={onPress} />
     </ScrollView>
