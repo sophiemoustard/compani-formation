@@ -52,14 +52,15 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
       <About program={program} onPress={goBack}>
         {course.slots.length > 0 &&
           <>
+            <View style={styles.sectionDelimiter} />
             <Text style={styles.sectionTitle}>Dates de formation</Text>
             <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
               renderItem={({ item }) =>
                 <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
-            <View style={styles.sectionDelimiter} />
           </>}
         {course.trainer &&
         <>
+          <View style={styles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Intervenant</Text>
           <View style={styles.subSectionContainer}>
             <Image style={styles.trainerPicture} source={trainerPictureSource} />
