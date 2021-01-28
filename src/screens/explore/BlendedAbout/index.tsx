@@ -68,7 +68,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
               <Image style={styles.trainerPicture} source={trainerPictureSource} />
               <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
             </View>
-            {course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+            {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
           </>}
         {!!course.contact?.name && <>
           <View style={styles.sectionDelimiter} />
