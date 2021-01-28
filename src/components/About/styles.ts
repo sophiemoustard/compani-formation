@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
-    backgroundColor: GREY[100],
   },
   content: {
     margin: MARGIN.MD,
@@ -56,7 +55,6 @@ const styles = StyleSheet.create({
   footer: {
     paddingBottom: PADDING.XXL,
     paddingHorizontal: PADDING.XL,
-    backgroundColor: GREY[100],
   },
 });
 

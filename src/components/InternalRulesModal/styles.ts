@@ -19,12 +19,13 @@ export default StyleSheet.create({
     borderTopRightRadius: BORDER_RADIUS.MD,
     width: '100%',
     height: '100%',
-    padding: PADDING.LG,
+    paddingHorizontal: PADDING.LG,
+    paddingTop: PADDING.LG,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: MARGIN.LG,
+    marginBottom: MARGIN.MD,
   },
   goBack: {
     alignSelf: 'flex-end',
