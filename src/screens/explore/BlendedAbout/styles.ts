@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: GREY[100],
+    marginVertical: MARGIN.MD,
   },
   internalRules: {
     marginVertical: MARGIN.XXL,
