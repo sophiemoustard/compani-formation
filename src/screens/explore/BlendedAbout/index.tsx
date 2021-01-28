@@ -67,7 +67,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           </View>
           {course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
         </>}
-        {!!course.contact.name &&
+        {!!course.contact?.name &&
         <>
           <View style={styles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
