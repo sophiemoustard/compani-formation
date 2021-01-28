@@ -123,7 +123,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         ...program,
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
-      navigation.navigate('ElearningAbout', { program: eLearningProgram, isFromCourses: true });
+      navigation.navigate('ElearningAbout', { program: eLearningProgram });
     } else navigation.navigate('BlendedAbout', { course });
   };
 

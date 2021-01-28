@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
+import get from 'lodash/get';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
@@ -9,7 +10,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import About from '../../../components/About';
 
 interface ElearningAboutProps {
-  route: { params: { program, isFromCourses } },
+  route: { params: { program } },
   navigation: {
     navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {},
@@ -21,30 +22,32 @@ interface ElearningAboutProps {
 
 const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: ElearningAboutProps) => {
   const { signOut } = useContext(AuthContext);
-  const { program, isFromCourses } = route.params;
-  const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-  const incompleteSteps = subProgram?.steps?.length && subProgram.steps[0].activities?.length
-    ? subProgram.steps.map(st => ({ ...st, activities: st.activities.filter(ac => !ac.activityHistories?.length) }))
-      .filter(st => st.activities.length)
-    : [];
-  const nextActivityId = incompleteSteps.length ? incompleteSteps[0].activities[0]._id : '';
-  const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-  const courseId = course._id;
-  const hasAlreadySubscribed = course.trainees.includes(loggedUserId);
+  const { program } = route.params;
+  const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
+  const [courseId, setCourseId] = useState(null);
+
+  useEffect(() => {
+    const subProgram = program.subPrograms ? program.subPrograms[0] : null;
+    const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
+    setCourseId(course._id);
+    setHasAlreadySubscribed(course.trainees.includes(loggedUserId));
+  }, [loggedUserId, program]);
 
   const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
-  const goToNextActivity = () => {
+  const startActivity = () => {
+    const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
     navigation.dispatch(StackActions.replace('CourseProfile', { courseId }));
-    navigation.navigate('CardContainer', { activityId: nextActivityId, profileId: courseId });
+    navigation.navigate('CardContainer', { activityId: firstActivity._id, profileId: courseId });
   };
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      if (!hasAlreadySubscribed) await Courses.registerToELearningCourse(courseId);
       setIsCourse(true);
-      if (nextActivityId && !isFromCourses) goToNextActivity();
-      else goToCourse();
+      if (!hasAlreadySubscribed) {
+        await Courses.registerToELearningCourse(courseId);
+        startActivity();
+      } else goToCourse();
     } catch (e) {
       if (e.status === 401) signOut();
     }
