@@ -145,7 +145,9 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
               avec le code temporaire. Si vous ne l’avez pas reçu, vérifiez votre courrier indésirable, ou réessayez.
             </Text>
             : <Text style={styles.afterCodeSentText}>
-              Nous avons envoyé un SMS au<Text style={styles.recipient}> {codeRecipient} </Text>avec le code temporaire.
+              Nous avons envoyé un SMS au
+              <Text style={styles.recipient}> {codeRecipient.replace(/\d{2}(?=.)/g, '$& ')} </Text>
+              avec le code temporaire.
             </Text>}
           <Text style={styles.afterCodeSentText}>Saisie du code temporaire</Text>
         </>}
