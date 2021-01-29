@@ -18,6 +18,7 @@ interface ForgotPasswordModalProps {
 const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps) => {
   const [code, setCode] = useState<Array<string>>(['', '', '', '']);
   const [isPreviousKeyBackSpace, setIsPreviousKeyBackSpace] = useState<boolean>(false);
+  const [previousIndex, setPreviousIndex] = useState<number>(0);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [unvalidCode, setUnvalidCode] = useState<boolean>(false);
@@ -49,15 +50,18 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
 
   useEffect(() => {
     setUnvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
-  }, [code]);
+    if (isValidationAttempted) setErrorMessage('Le format du code est incorrect');
+  }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
+    setIsPreviousKeyBackSpace(!char);
     setCode(code.map((c, i) => (i === index ? char : c)));
-    if (char !== '' && index + 1 < 4) inputRefs[index + 1].focus();
+    setPreviousIndex(index);
+    if (!!char && index + 1 < 4) inputRefs[index + 1].focus();
   };
 
   const goPreviousAfterEdit = (index) => {
-    if (index - 1 >= 0) {
+    if (index - 1 >= 0 && (previousIndex === index || !code[index])) {
       inputRefs[index - 1].focus();
       if (code[index] === '') onChangeText('', index - 1);
     }
@@ -65,7 +69,6 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
 
   const checkKeyValue = (key, idx) => {
     if (key === 'Backspace' && (isPreviousKeyBackSpace || !code[idx])) goPreviousAfterEdit(idx);
-    setIsPreviousKeyBackSpace(key === 'Backspace');
   };
 
   const formatCode = () => {
@@ -73,7 +76,6 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
     const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
     setIsValidationAttempted(true);
     if (!unvalidCode) sendCode(formattedCode);
-    else setErrorMessage('Le format du code est incorrect');
   };
 
   const sendCode = async (formattedCode) => {
