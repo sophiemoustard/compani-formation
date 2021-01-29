@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   contactContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
+    marginVertical: MARGIN.SM,
   },
 });
 
