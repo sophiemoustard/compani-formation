@@ -63,6 +63,8 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
 
   const checkKeyValue = (key, idx) => {
     if (key === 'Backspace') {
+      if (!idx && code[idx] === '') return;
+
       if (code[idx] === '') goPreviousAfterEdit(idx - 1);
       else onChangeText('', idx);
     }
