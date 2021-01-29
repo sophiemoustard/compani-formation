@@ -5,7 +5,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import '../ReactotronConfig';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileDetails from '../screens/profile/Profile';
 import ProfileEdition from '../screens/profile/ProfileEdition';
@@ -17,7 +16,8 @@ import Authentication from '../screens/Authentication';
 import EmailForm from '../screens/EmailForm';
 import CreateAccount from '../screens/CreateAccount';
 import Catalog from '../screens/explore/Catalog';
-import About from '../screens/explore/About';
+import BlendedAbout from '../screens/explore/BlendedAbout';
+import ElearningAbout from '../screens/explore/ELearningAbout';
 import CourseList from '../screens/courses/CourseList';
 import CourseProfile from '../screens/courses/CourseProfile';
 import SubProgramProfile from '../screens/courses/SubProgramProfile';
@@ -29,6 +29,7 @@ import Users from '../api/users';
 import { UserType } from '../types/UserType';
 import styles from './styles';
 import PasswordEdition from '../screens/profile/PasswordEdition';
+import PasswordReset from '../screens/PasswordReset';
 
 interface TabBarIconProps {
   color: string,
@@ -93,11 +94,11 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
 
-  const authScreens = { Authentication, EmailForm, CreateAccount };
+  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
   const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
   const Courses = { CourseProfile, SubProgramProfile };
-  const userScreens = { Home, CardContainer, About, ...Profile, ...Courses };
+  const userScreens = { Home, CardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
 
   return (
     <NavigationContainer ref={navigationRef}>

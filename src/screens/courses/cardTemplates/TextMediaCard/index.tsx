@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
+import { markdownStyle } from '../../../../styles/common';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import styles from './styles';
@@ -45,7 +47,7 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
     <>
       <CardHeader />
       <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
-        <Text style={cardsStyle.text}>{card.text}</Text>
+        <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
           <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}

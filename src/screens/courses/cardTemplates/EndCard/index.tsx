@@ -36,7 +36,6 @@ const EndCard = ({
 
   useEffect(() => {
     async function fetchData() {
-      achievementJingle();
       const userId = await asyncStorage.getUserId();
       const payload: Record<string, any> = { user: userId, activity: activity._id, score };
 
@@ -45,7 +44,10 @@ const EndCard = ({
       setCardIndex(null);
     }
 
-    if (isFocused && isCourse) fetchData();
+    if (isFocused) {
+      if (isCourse) fetchData();
+      achievementJingle();
+    }
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
