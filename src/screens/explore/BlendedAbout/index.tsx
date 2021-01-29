@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image } from 'react-native';
+import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import moment from '../../../core/helpers/moment';
@@ -69,8 +69,12 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
         <View style={styles.sectionDelimiter} />
         <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
         <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
-        <Text style={styles.contactContent}>{course.contact.phone}</Text>
-        <Text style={styles.contactContent}>{course.contact.email}</Text>
+        <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.phone}`)}>
+          <Text style={styles.contactContent}>{course.contact.phone}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.email}`)} >
+          <Text style={styles.contactContent}>{course.contact.email}</Text>
+        </TouchableOpacity>
       </>}
     </About>
   );
