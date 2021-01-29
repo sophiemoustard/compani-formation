@@ -33,3 +33,21 @@ export const achievementJingle = async () => {
   const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/ended-activity.mp3'));
   await sound.playAsync();
 };
+export const formatIdentity = (identity, format) => {
+  if (!identity) return '';
+  const formatLower = format.toLowerCase();
+  const values = [''];
+
+  for (let i = 0; i < format.length; i += 1) {
+    let value;
+    if (formatLower[i] === 'f') value = (identity.firstname || '').trim();
+    else if (formatLower[i] === 'l') value = (identity.lastname || '').trim();
+
+    if (!value) break;
+
+    if (formatLower[i] === format[i]) value = `${value.charAt(0).toUpperCase()}.`;
+    values.push(value);
+  }
+
+  return values.join(' ');
+};

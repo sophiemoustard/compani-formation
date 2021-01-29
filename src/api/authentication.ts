@@ -10,7 +10,8 @@ export default {
   },
   forgotPassword: async (payload) => {
     const { baseURL } = getEnvVars();
-    await axios.post(`${baseURL}/users/forgot-password`, payload);
+    const code = await axios.post(`${baseURL}/users/forgot-password`, payload);
+    return code.data.data.mailInfo;
   },
   refreshToken: async (payload) => {
     const { baseURL } = getEnvVars();
@@ -20,5 +21,10 @@ export default {
   logOut: async () => {
     const { baseURL } = getEnvVars();
     await axios.post(`${baseURL}/users/logout`);
+  },
+  passwordToken: async (email, token) => {
+    const { baseURL } = getEnvVars();
+    const checkToken = await axios.get(`${baseURL}/users/passwordtoken/${token}`, { params: { email } });
+    return checkToken.data.data;
   },
 };

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY } from '../../../styles/colors';
-import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK, NUNITO_SEMI } from '../../../styles/fonts';
+import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
+import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 const imageHeight = 200;
 const styles = StyleSheet.create({
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.MD,
   },
   progressBarContainer: {
-    marginTop: MARGIN.XL,
     marginBottom: MARGIN.MD,
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,6 +53,25 @@ const styles = StyleSheet.create({
   progressBarText: {
     ...NUNITO_SEMI.XS,
     color: GREY[600],
+  },
+  aboutContainer: {
+    marginVertical: MARGIN.LG,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  aboutContent: {
+    borderColor: GREY[200],
+    borderWidth: BORDER_WIDTH,
+    borderRadius: BORDER_RADIUS.SM,
+    paddingVertical: PADDING.MD,
+    paddingHorizontal: PADDING.LG,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  aboutText: {
+    ...FIRA_SANS_MEDIUM.LG,
+    color: GREY[600],
+    paddingLeft: PADDING.MD,
   },
 });
 

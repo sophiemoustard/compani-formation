@@ -68,7 +68,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = program => navigation.navigate('About', { program });
+  const goToProgram = program => navigation.navigate('ElearningAbout', { program });
 
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 

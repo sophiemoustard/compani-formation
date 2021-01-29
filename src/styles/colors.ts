@@ -70,6 +70,7 @@ export const PINK = {
 
 // Grey
 export const GREY = {
+  '0': '#F2F2F2',
   '100': '#F9F6F8',
   '200': '#E2DADF',
   '300': '#C8BCC3',

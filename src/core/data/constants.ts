@@ -52,6 +52,10 @@ export const AUDIO = 'audio';
 // ORIGIN
 export const MOBILE = 'mobile';
 
+// TYPE
+export const EMAIL = 'email';
+export const PHONE = 'phone';
+
 // MEDIA
 export const IMAGE_MAX_SIZE = 5242880;
 

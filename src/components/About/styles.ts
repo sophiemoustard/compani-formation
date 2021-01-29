@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK, WHITE } from '../../../styles/colors';
-import { BORDER_RADIUS, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
+import { GREY, PINK, WHITE } from '../../styles/colors';
+import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
+import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR, NUNITO_SEMI, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   content: {
-    margin: MARGIN.MD,
+    marginTop: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
   },
   header: {
     position: 'absolute',
@@ -31,6 +32,11 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
   },
+  sectionTitle: {
+    ...FIRA_SANS_BOLD.LG,
+    marginBottom: MARGIN.SM,
+    color: GREY[900],
+  },
   imageContainer: {
     marginVertical: MARGIN.MD,
     height: 160,
@@ -40,12 +46,14 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: BORDER_RADIUS.MD,
   },
-  description: {
+  sectionContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
+    marginBottom: MARGIN.MD,
   },
   footer: {
-    margin: MARGIN.XL,
+    paddingBottom: PADDING.XXL,
+    paddingHorizontal: PADDING.XL,
   },
 });
 

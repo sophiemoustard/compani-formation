@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN, MAIN_MARGIN_LEFT } from './metrics';
 import { WHITE } from './colors';
-import { FIRA_SANS_BLACK } from './fonts';
+import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
 
 export default StyleSheet.create({
   container: { flex: 1, backgroundColor: WHITE },
@@ -20,4 +20,11 @@ export default StyleSheet.create({
   iconButton: {
     zIndex: 100,
   },
+});
+
+export const markdownStyle = bodyStyle => ({
+  body: bodyStyle,
+  strong: { ...FIRA_SANS_BOLD.MD },
+  em: { ...FIRA_SANS_ITALIC.MD },
+  list_item: { margin: MARGIN.XS },
 });
