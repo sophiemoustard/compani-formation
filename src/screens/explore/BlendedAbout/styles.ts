@@ -1,9 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK, TRANSPARENT_GREY } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, NUNITO_SEMI } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  content: {
+    marginHorizontal: MARGIN.MD,
+  },
   sectionTitle: {
     ...FIRA_SANS_BOLD.LG,
     marginBottom: MARGIN.MD,
@@ -12,6 +15,7 @@ const styles = StyleSheet.create({
   sectionContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
+    marginBottom: MARGIN.MD,
   },
   subSectionContainer: {
     flexDirection: 'row',
@@ -27,7 +31,8 @@ const styles = StyleSheet.create({
   sectionDelimiter: {
     borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
-    marginVertical: MARGIN.MD,
+    marginBottom: MARGIN.MD,
+    justifyContent: 'center',
   },
   trainerPicture: {
     height: ICON.XXL,
@@ -41,6 +46,18 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
     marginVertical: MARGIN.SM,
+  },
+  internalRulesContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: GREY[200],
+    marginVertical: MARGIN.LG,
+  },
+  internalRules: {
+    marginVertical: MARGIN.XXL,
+    ...NUNITO_SEMI.XS,
+    color: GREY[600],
+    textDecorationLine: 'underline',
   },
 });
 

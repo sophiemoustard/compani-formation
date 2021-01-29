@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
-    backgroundColor: GREY[100],
   },
   content: {
-    margin: MARGIN.MD,
+    marginTop: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
   },
   header: {
     position: 'absolute',
@@ -41,9 +41,6 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.MD,
     height: 160,
   },
-  sectionContainer: {
-    marginBottom: MARGIN.MD,
-  },
   image: {
     height: '100%',
     width: '100%',
@@ -52,11 +49,11 @@ const styles = StyleSheet.create({
   sectionContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
+    marginBottom: MARGIN.MD,
   },
   footer: {
     paddingBottom: PADDING.XXL,
     paddingHorizontal: PADDING.XL,
-    backgroundColor: GREY[100],
   },
 });
 

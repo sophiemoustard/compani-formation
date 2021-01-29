@@ -6,7 +6,7 @@ import get from 'lodash/get';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { markdownStyle } from '../../styles/common';
-import { WHITE } from '../../styles/colors';
+import { GREY, TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import Button from '../../components/form/Button';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -55,21 +55,19 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={source} />
           </View>
-          {!!program.description &&
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Description</Text>
-              <Text style={styles.sectionContent}>{program.description}</Text>
-            </View>}
-          {!!program.learningGoals &&
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
-              <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
-            </View>}
-          {children}
+          {!!program.description && <>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.sectionContent}>{program.description}</Text>
+          </>}
+          {!!program.learningGoals && <>
+            <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
+            <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
+          </>}
         </View>
+        {children}
       </ScrollView>
       <View style={styles.footer}>
-        <FooterGradient />
+        <FooterGradient colors={[TRANSPARENT_GRADIENT, GREY[0]]} />
         <Button caption={buttonCaption} onPress={onPress} />
       </View>
     </>
