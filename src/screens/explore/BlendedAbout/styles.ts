@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   internalRulesContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: GREY[100],
+    backgroundColor: GREY[200],
     marginVertical: MARGIN.LG,
   },
   internalRules: {
