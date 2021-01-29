@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { GREY, TRANSPARENT_GRADIENT } from '../../styles/colors';
-import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT } from '../../styles/metrics';
+import { GREY, TRANSPARENT_GRADIENT } from '../../../styles/colors';
+import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT } from '../../../styles/metrics';
+import styles from './styles';
 
 interface FooterGradientProps {
   colors?: Array<string>,
@@ -16,15 +16,5 @@ const FooterGradient = ({
 }: FooterGradientProps) => (
   <LinearGradient style={styles(bottomPosition, height).gradient} colors={colors} />
 );
-
-const styles = (bottomPosition: number, height: number) => StyleSheet.create({
-  gradient: {
-    height,
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    bottom: bottomPosition,
-  },
-});
 
 export default FooterGradient;
