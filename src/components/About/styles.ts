@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   content: {
-    margin: MARGIN.MD,
+    marginTop: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
   },
   header: {
     position: 'absolute',
@@ -40,9 +41,6 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.MD,
     height: 160,
   },
-  sectionContainer: {
-    marginBottom: MARGIN.MD,
-  },
   image: {
     height: '100%',
     width: '100%',
@@ -51,6 +49,7 @@ const styles = StyleSheet.create({
   sectionContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
+    marginBottom: MARGIN.MD,
   },
   footer: {
     paddingBottom: PADDING.XXL,

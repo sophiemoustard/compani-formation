@@ -5,7 +5,7 @@ import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, NUNITO_SEMI } from
 
 const styles = StyleSheet.create({
   content: {
-    margin: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
   },
   sectionTitle: {
     ...FIRA_SANS_BOLD.LG,
@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   sectionContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREY[800],
+    marginBottom: MARGIN.MD,
   },
   subSectionContainer: {
     flexDirection: 'row',
@@ -30,7 +31,8 @@ const styles = StyleSheet.create({
   sectionDelimiter: {
     borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
-    marginVertical: MARGIN.MD,
+    marginBottom: MARGIN.MD,
+    justifyContent: 'center',
   },
   trainerPicture: {
     height: ICON.XXL,
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.XXL,
     ...NUNITO_SEMI.XS,
     color: GREY[600],
+    textDecorationLine: 'underline',
   },
 });
 

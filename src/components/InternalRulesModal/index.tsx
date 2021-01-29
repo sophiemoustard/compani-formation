@@ -9,18 +9,18 @@ import { articles } from '../../core/data/rules';
 import FooterGradient from '../design/FooterGradient';
 import styles from './styles';
 
-interface ModalContainerProps {
+interface InternalRulesModalProps {
   onRequestClose: () => void,
   visible: boolean,
 }
 
-const InternalRulesModal = ({ onRequestClose, visible }: ModalContainerProps) => (
+const InternalRulesModal = ({ onRequestClose, visible }: InternalRulesModalProps) => (
   <Modal transparent={true} onRequestClose={onRequestClose} visible={visible}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
         <View style={styles.header}>
           <Text style={styles.title}>Règlement intérieur</Text>
-          <FeatherButton name={'x-circle'} onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
+          <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
             style={styles.goBack} />
         </View>
         <ScrollView>
