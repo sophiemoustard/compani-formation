@@ -38,14 +38,14 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
     return () => {
       Keyboard.removeListener('keyboardDidHide', () => setIsKeyboardOpen(false));
     };
-  });
+  }, []);
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
     return () => {
       Keyboard.removeListener('keyboardDidShow', () => setIsKeyboardOpen(true));
     };
-  });
+  }, []);
 
   useEffect(() => {
     setInvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
