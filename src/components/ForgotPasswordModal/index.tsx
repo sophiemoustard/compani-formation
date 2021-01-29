@@ -17,11 +17,10 @@ interface ForgotPasswordModalProps {
 
 const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps) => {
   const [code, setCode] = useState<Array<string>>(['', '', '', '']);
-  const [isPreviousKeyBackSpace, setIsPreviousKeyBackSpace] = useState<boolean>(false);
   const [previousIndex, setPreviousIndex] = useState<number>(0);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
-  const [unvalidCode, setUnvalidCode] = useState<boolean>(false);
+  const [invalidCode, setInvalidCode] = useState<boolean>(false);
   const inputRefs: Array<any> = [
     React.createRef(),
     React.createRef(),
@@ -49,33 +48,32 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
   });
 
   useEffect(() => {
-    setUnvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
+    setInvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
     if (isValidationAttempted) setErrorMessage('Le format du code est incorrect');
   }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
-    setIsPreviousKeyBackSpace(!char);
     setCode(code.map((c, i) => (i === index ? char : c)));
     setPreviousIndex(index);
     if (!!char && index + 1 < 4) inputRefs[index + 1].focus();
   };
 
   const goPreviousAfterEdit = (index) => {
-    if (index - 1 >= 0 && (previousIndex === index || !code[index])) {
+    if (index - 1 >= 0 && (previousIndex === index && !code[index])) {
       inputRefs[index - 1].focus();
       if (code[index] === '') onChangeText('', index - 1);
     }
   };
 
   const checkKeyValue = (key, idx) => {
-    if (key === 'Backspace' && (isPreviousKeyBackSpace || !code[idx])) goPreviousAfterEdit(idx);
+    if (key === 'Backspace' && (previousIndex === idx)) goPreviousAfterEdit(idx);
   };
 
   const formatCode = () => {
     Keyboard.dismiss();
     const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
     setIsValidationAttempted(true);
-    if (!unvalidCode) sendCode(formattedCode);
+    if (!invalidCode) sendCode(formattedCode);
   };
 
   const sendCode = async (formattedCode) => {
@@ -85,7 +83,7 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
       onRequestClose();
     } catch (e) {
-      setUnvalidCode(true);
+      setInvalidCode(true);
       setErrorMessage('Oops, le code n\'est pas valide');
     } finally {
       setIsLoading(false);
@@ -98,9 +96,9 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
       setChosenMethod(EMAIL);
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
-      setUnvalidCode(false);
+      setInvalidCode(false);
     } catch (e) {
-      setUnvalidCode(true);
+      setInvalidCode(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
       else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
     } finally {
@@ -114,9 +112,9 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
       setChosenMethod(PHONE);
       const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
       setCodeRecipient(get(sms, 'phone'));
-      setUnvalidCode(false);
+      setInvalidCode(false);
     } catch (e) {
-      setUnvalidCode(true);
+      setInvalidCode(true);
       if (e.response.status === 409) {
         setErrorMessage('Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte');
       } else setErrorMessage('Oops, erreur lors de la transmission du numéro de téléphone.');
@@ -162,7 +160,7 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
       </View>
       <NiButton caption='Valider' style={styles.button} onPress={() => formatCode()}
         loading={isLoading} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
-      {unvalidCode && isValidationAttempted && <Text style={styles.unvalid}>{errorMessage}</Text>}
+      {invalidCode && isValidationAttempted && <Text style={styles.unvalid}>{errorMessage}</Text>}
     </>
   );
 
