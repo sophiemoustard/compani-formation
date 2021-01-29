@@ -17,7 +17,6 @@ interface ForgotPasswordModalProps {
 
 const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps) => {
   const [code, setCode] = useState<Array<string>>(['', '', '', '']);
-  const [previousIndex, setPreviousIndex] = useState<number>(0);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [invalidCode, setInvalidCode] = useState<boolean>(false);
@@ -54,19 +53,19 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
 
   const onChangeText = (char, index) => {
     setCode(code.map((c, i) => (i === index ? char : c)));
-    setPreviousIndex(index);
     if (!!char && index + 1 < 4) inputRefs[index + 1].focus();
   };
 
   const goPreviousAfterEdit = (index) => {
-    if (index - 1 >= 0 && (previousIndex === index && !code[index])) {
-      inputRefs[index - 1].focus();
-      if (code[index] === '') onChangeText('', index - 1);
-    }
+    inputRefs[index].focus();
+    if (code[index] !== '') onChangeText('', index);
   };
 
   const checkKeyValue = (key, idx) => {
-    if (key === 'Backspace' && (previousIndex === idx)) goPreviousAfterEdit(idx);
+    if (key === 'Backspace') {
+      if (code[idx] === '') goPreviousAfterEdit(idx - 1);
+      else onChangeText('', idx);
+    }
   };
 
   const formatCode = () => {
