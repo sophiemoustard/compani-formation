@@ -55,16 +55,14 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={source} />
           </View>
-          {!!program.description &&
-            <>
-              <Text style={styles.sectionTitle}>Description</Text>
-              <Text style={styles.sectionContent}>{program.description}</Text>
-            </>}
-          {!!program.learningGoals &&
-            <>
-              <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
-              <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
-            </>}
+          {!!program.description && <>
+            <Text style={styles.sectionTitle}>Description</Text>
+            <Text style={styles.sectionContent}>{program.description}</Text>
+          </>}
+          {!!program.learningGoals && <>
+            <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
+            <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
+          </>}
         </View>
         {children}
       </ScrollView>

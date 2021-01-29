@@ -60,16 +60,15 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
               renderItem={({ item }) =>
                 <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
           </>}
-        {!!course.trainer &&
-          <>
-            <View style={styles.sectionDelimiter} />
-            <Text style={styles.sectionTitle}>Intervenant</Text>
-            <View style={styles.subSectionContainer}>
-              <Image style={styles.trainerPicture} source={trainerPictureSource} />
-              <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
-            </View>
-            {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
-          </>}
+        {!!course.trainer && <>
+          <View style={styles.sectionDelimiter} />
+          <Text style={styles.sectionTitle}>Intervenant</Text>
+          <View style={styles.subSectionContainer}>
+            <Image style={styles.trainerPicture} source={trainerPictureSource} />
+            <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
+          </View>
+          {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+        </>}
         {!!course.contact?.name && <>
           <View style={styles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
