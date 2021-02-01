@@ -46,8 +46,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   });
 
   useEffect(() => {
-    setInvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
-    if (isValidationAttempted) setErrorMessage('Le format du code est incorrect');
+    const isCodeInvalid = !(code.every(char => char !== '' && Number.isInteger(Number(char))));
+    setInvalidCode(isCodeInvalid);
+    if (isCodeInvalid && isValidationAttempted) setErrorMessage('Le format du code est incorrect');
+    else setErrorMessage('');
   }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
