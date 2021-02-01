@@ -11,7 +11,8 @@
   - Oui parce que
   - Non parce que
 
-- [ ] Je n'envoie pas de nouveau paramètres dans une route
+- [ ] Je n'envoie pas de nouveau paramètre dans une route
+    - Si j'en envoie un nouveau, explication et gestion de la compatibilite:
 - [ ] J'attends un nouveau champs en retour de l'api: j'ai géré le cas où il n'y est pas
 - [ ] J'appelle une nouvelle route: j'ai géré le cas ou la route n'existe pas.
 - [ ] Je n'ai pas changé de constante
