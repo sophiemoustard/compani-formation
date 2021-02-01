@@ -11,11 +11,12 @@ import { GREY, PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
 
 interface ForgotPasswordModalProps {
+  visible: boolean,
   email: string,
-  onRequestClose: () => void,
+  setForgotPasswordModal: (value: boolean) => void,
 }
 
-const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps) => {
+const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotPasswordModalProps) => {
   const [code, setCode] = useState<Array<string>>(['', '', '', '']);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
@@ -77,12 +78,23 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
     if (!invalidCode) sendCode(formattedCode);
   };
 
+  const onRequestClose = () => {
+    setCode(['', '', '', '']);
+    setIsKeyboardOpen(false);
+    setIsValidationAttempted(false);
+    setInvalidCode(false);
+    setErrorMessage('');
+    setCodeRecipient('');
+    setChosenMethod('');
+    setForgotPasswordModal(false);
+  };
+
   const sendCode = async (formattedCode) => {
     try {
       setIsLoading(true);
+      onRequestClose();
       const checkToken = await Authentication.passwordToken(email, formattedCode);
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
-      onRequestClose();
     } catch (e) {
       setInvalidCode(true);
       setErrorMessage('Oops, le code n\'est pas valide');
@@ -166,10 +178,10 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
   );
 
   return (
-    <Modal transparent={true} onRequestClose={onRequestClose}>
+    <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
       <ScrollView contentContainerStyle={styles.modalContainer} keyboardShouldPersistTaps='handled'>
         <View style={styles.modalContent}>
-          <FeatherButton name={'x-circle'} onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
+          <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
             style={styles.goBack} />
           <Text style={styles.title}>Confirmez votre identité</Text>
           {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
