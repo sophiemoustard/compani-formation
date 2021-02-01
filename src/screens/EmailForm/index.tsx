@@ -107,8 +107,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
             color={WHITE} borderColor={PINK[500]} />
         </View>
-        {forgotPasswordModal &&
-          <ForgotPasswordModal email={email} onRequestClose={() => setForgotPasswordModal(false)} />}
+        <ForgotPasswordModal email={email} setForgotPasswordModal={setForgotPasswordModal}
+          visible={forgotPasswordModal} />
       </View>
     </KeyboardAvoidingView>
   );

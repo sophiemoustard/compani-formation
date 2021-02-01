@@ -11,11 +11,12 @@ import { GREY, PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
 
 interface ForgotPasswordModalProps {
+  visible: boolean,
   email: string,
-  onRequestClose: () => void,
+  setForgotPasswordModal: (value: boolean) => void,
 }
 
-const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps) => {
+const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotPasswordModalProps) => {
   const [code, setCode] = useState<Array<string>>(['', '', '', '']);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
@@ -32,23 +33,23 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
   const [codeRecipient, setCodeRecipient] = useState<string>('');
   const [chosenMethod, setChosenMethod] = useState<string>('');
 
+  const keyboardDidHide = () => setIsKeyboardOpen(false);
+  const keyboardDidShow = () => setIsKeyboardOpen(true);
+
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
     return () => {
-      Keyboard.removeListener('keyboardDidHide', () => setIsKeyboardOpen(false));
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
     };
   });
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', () => setIsKeyboardOpen(true));
-    };
-  });
-
-  useEffect(() => {
-    setInvalidCode(!(code.every(char => char !== '' && Number.isInteger(Number(char)))));
-    if (isValidationAttempted) setErrorMessage('Le format du code est incorrect');
+    const isCodeInvalid = !(code.every(char => char !== '' && Number.isInteger(Number(char))));
+    setInvalidCode(isCodeInvalid);
+    if (isCodeInvalid && isValidationAttempted) setErrorMessage('Le format du code est incorrect');
+    else setErrorMessage('');
   }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
@@ -77,12 +78,23 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
     if (!invalidCode) sendCode(formattedCode);
   };
 
+  const onRequestClose = () => {
+    setCode(['', '', '', '']);
+    setIsKeyboardOpen(false);
+    setIsValidationAttempted(false);
+    setInvalidCode(false);
+    setErrorMessage('');
+    setCodeRecipient('');
+    setChosenMethod('');
+    setForgotPasswordModal(false);
+  };
+
   const sendCode = async (formattedCode) => {
     try {
       setIsLoading(true);
       const checkToken = await Authentication.passwordToken(email, formattedCode);
-      navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
       onRequestClose();
+      navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
       setInvalidCode(true);
       setErrorMessage('Oops, le code n\'est pas valide');
@@ -166,10 +178,10 @@ const ForgotPasswordModal = ({ email, onRequestClose }: ForgotPasswordModalProps
   );
 
   return (
-    <Modal transparent={true} onRequestClose={onRequestClose}>
+    <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
       <ScrollView contentContainerStyle={styles.modalContainer} keyboardShouldPersistTaps='handled'>
         <View style={styles.modalContent}>
-          <FeatherButton name={'x-circle'} onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
+          <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
             style={styles.goBack} />
           <Text style={styles.title}>Confirmez votre identité</Text>
           {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
