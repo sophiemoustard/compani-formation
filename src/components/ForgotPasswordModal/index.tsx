@@ -33,17 +33,15 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const [codeRecipient, setCodeRecipient] = useState<string>('');
   const [chosenMethod, setChosenMethod] = useState<string>('');
 
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', () => setIsKeyboardOpen(false));
-    return () => {
-      Keyboard.removeListener('keyboardDidHide', () => setIsKeyboardOpen(false));
-    };
-  });
+  const keyboardDidHide = () => setIsKeyboardOpen(false);
+  const keyboardDidShow = () => setIsKeyboardOpen(true);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setIsKeyboardOpen(true));
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
     return () => {
-      Keyboard.removeListener('keyboardDidShow', () => setIsKeyboardOpen(true));
+      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
     };
   });
 
@@ -92,8 +90,8 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const sendCode = async (formattedCode) => {
     try {
       setIsLoading(true);
-      onRequestClose();
       const checkToken = await Authentication.passwordToken(email, formattedCode);
+      onRequestClose();
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
       setInvalidCode(true);
