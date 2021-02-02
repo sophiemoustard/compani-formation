@@ -53,4 +53,9 @@ export default StyleSheet.create({
     textAlign: 'left',
     marginBottom: MARGIN.MD,
   },
+  lastContentText: {
+    ...FIRA_SANS_REGULAR.MD,
+    textAlign: 'left',
+    marginBottom: MARGIN.LG,
+  },
 });
