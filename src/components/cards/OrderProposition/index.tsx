@@ -32,7 +32,7 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
 
   return (
     <View style={style.container}>
-      <TouchableOpacity style={style.contentContainer} disabled={isValidated} onLongPress={drag} >
+      <TouchableOpacity style={style.contentContainer} disabled={isValidated} onLongPress={drag} delayLongPress={100}>
         <View style= {style.indexContainer}>
           <View style={style.index}>
             <Text style={style.indexText}>{item.tempPosition + 1}</Text>
