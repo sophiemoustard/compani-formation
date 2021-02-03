@@ -25,8 +25,8 @@ const InternalRulesModal = ({ onRequestClose, visible }: InternalRulesModalProps
         </View>
         <ScrollView>
           <Text style={styles.italicText}>
-        Règlement intérieur établi conformément aux articles
-        L6352-3 et L6352-4 et R6352-1 à R6352-15 du Code du travail
+            Règlement intérieur établi conformément aux articles
+            L6352-3 et L6352-4 et R6352-1 à R6352-15 du Code du travail
           </Text>
           <Text style={styles.articleTitle}>Article 1 - Objet et champ d’application du règlement</Text>
           <Text style={styles.contentText}>{articles[1]}</Text>
@@ -65,11 +65,13 @@ const InternalRulesModal = ({ onRequestClose, visible }: InternalRulesModalProps
           <Text style={styles.articleTitle}>Article 15 - Durée du mandat des délégués des stagiaires</Text>
           <Markdown style={markdownStyle(styles.contentText)}>{articles[15]}</Markdown>
           <Text style={styles.articleTitle}>Article 16 - Rôle des délégués des stagiaires</Text>
-          <Markdown style={markdownStyle(styles.contentText)}>{articles[16]}</Markdown>
+          <Markdown style={markdownStyle({ ...styles.contentText, ...styles.lastContentText })}>
+            {articles[16]}
+          </Markdown>
         </ScrollView>
       </View>
     </View>
-    <FooterGradient colors={[TRANSPARENT_GRADIENT, WHITE]} bottomPosition={0} height={2 * INPUT_HEIGHT}/>
+    <FooterGradient colors={[TRANSPARENT_GRADIENT, WHITE]} bottomPosition={0} height={INPUT_HEIGHT}/>
   </Modal>
 );
 
