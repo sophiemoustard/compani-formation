@@ -65,7 +65,9 @@ const InternalRulesModal = ({ onRequestClose, visible }: InternalRulesModalProps
           <Text style={styles.articleTitle}>Article 15 - Durée du mandat des délégués des stagiaires</Text>
           <Markdown style={markdownStyle(styles.contentText)}>{articles[15]}</Markdown>
           <Text style={styles.articleTitle}>Article 16 - Rôle des délégués des stagiaires</Text>
-          <Markdown style={markdownStyle(styles.lastContentText)}>{articles[16]}</Markdown>
+          <Markdown style={markdownStyle({ ...styles.contentText, ...styles.lastContentText })}>
+            {articles[16]}
+          </Markdown>
         </ScrollView>
       </View>
     </View>
