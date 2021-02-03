@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import moment from '../../../core/helpers/moment';
@@ -8,6 +9,8 @@ import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
 import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
+import { ICON } from '../../../styles/metrics';
+import { GREY } from '../../../styles/colors';
 
 interface BlendedAboutProps {
   route: { params: { course } },
@@ -73,10 +76,12 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           <View style={styles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
           <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.phone}`)}>
+          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.phone}`)} style={styles.contact}>
+            <Feather name='phone' size={ICON.MD} color={GREY[600]} />
             <Text style={styles.contactContent}>{course.contact.phone}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.email}`)} >
+          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.email}`)} style={styles.contact}>
+            <Feather name='mail' size={ICON.MD} color={GREY[600]}/>
             <Text style={styles.contactContent}>{course.contact.email}</Text>
           </TouchableOpacity>
         </>}
