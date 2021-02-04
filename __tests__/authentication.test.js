@@ -3,7 +3,7 @@ import axios from 'axios';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
-import { render, fireEvent, waitFor } from 'react-native-testing-library';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
 import getEnvVars from '../environment';
 import reducers from '../src/store/index';
