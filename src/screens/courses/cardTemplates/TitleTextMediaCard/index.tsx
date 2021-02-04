@@ -43,10 +43,9 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
 
   const resizeImage = () => (mediaHeight !== SCREEN_HEIGHT / 1.5
     ? setMediaHeight(SCREEN_HEIGHT / 1.5)
-    : Image.getSize(
-      card?.media?.link || '',
-      (width, height) => { setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT)); }
-    ));
+    : Image.getSize(card?.media?.link || '', (width, height) => {
+      setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
+    }));
 
   if (isLoading) return null;
 
@@ -59,9 +58,9 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
-          (<TouchableOpacity onPress={resizeImage}>
+          <TouchableOpacity onPress={resizeImage}>
             <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />
-          </TouchableOpacity>)}
+          </TouchableOpacity>}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource}/>}
       </ScrollView>
