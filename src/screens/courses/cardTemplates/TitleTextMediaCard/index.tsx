@@ -41,10 +41,10 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
 
   // const resizeImage = async () => ImageManipulator.manipulateAsync(card.media.link, [{ resize: { width: 300 } }]);
 
-  const resizeImage = () => setMediaHeight(mediaHeight !== SCREEN_HEIGHT / 1.5
-    ? SCREEN_HEIGHT / 1.5
+  const resizeImage = () => (mediaHeight !== SCREEN_HEIGHT / 1.5
+    ? setMediaHeight(SCREEN_HEIGHT / 1.5)
     : Image.getSize(
-      card.media?.link || '',
+      card?.media?.link || '',
       (width, height) => { setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT)); }
     ));
 
