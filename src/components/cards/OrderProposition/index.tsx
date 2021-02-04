@@ -32,20 +32,21 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
 
   return (
     <View style={style.container}>
-      <TouchableOpacity style={style.contentContainer} disabled={isValidated} onLongPress={drag} delayLongPress={100}>
-        <TouchableOpacity style= {style.indexContainer} onLongPress={drag} delayLongPress={0}>
+      <View style={style.contentContainer}>
+        <TouchableOpacity style= {style.indexContainer} disabled={isValidated} onLongPress={drag} delayLongPress={0}
+          activeOpacity={1}>
           <View style={style.index}>
             <Text style={style.indexText}>{item.tempPosition + 1}</Text>
           </View>
           <Shadow customStyle={style.indexShadow} />
         </TouchableOpacity>
-        <View style={style.answerContainer}>
+        <TouchableOpacity style={style.answerContainer} disabled={isValidated} onLongPress={drag} delayLongPress={100}>
           <View style={style.answer}>
             <Text style={style.answerText}>{item.label}</Text>
           </View>
           <Shadow customStyle={style.answerShadow} />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
