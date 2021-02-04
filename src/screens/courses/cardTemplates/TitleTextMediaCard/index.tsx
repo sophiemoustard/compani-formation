@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView } from 'react-native';
+import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -10,7 +10,7 @@ import { markdownStyle } from '../../../../styles/common';
 import { TitleTextMediaType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
-import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
+import { CARD_MEDIA_MAX_HEIGHT, SCREEN_HEIGHT } from '../../../../styles/metrics';
 import { AUDIO, IMAGE, VIDEO } from '../../../../core/data/constants';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import NiVideo from '../../../../components/cards/Video';
@@ -39,6 +39,15 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
     }
   }, [card, isLoading]);
 
+  // const resizeImage = async () => ImageManipulator.manipulateAsync(card.media.link, [{ resize: { width: 300 } }]);
+
+  const resizeImage = () => setMediaHeight(mediaHeight !== SCREEN_HEIGHT / 1.5
+    ? SCREEN_HEIGHT / 1.5
+    : Image.getSize(
+      card.media?.link || '',
+      (width, height) => { setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT)); }
+    ));
+
   if (isLoading) return null;
 
   const styleWithHeight = styles(mediaHeight);
@@ -50,7 +59,9 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
-          <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
+          (<TouchableOpacity onPress={resizeImage}>
+            <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />
+          </TouchableOpacity>)}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource}/>}
       </ScrollView>
