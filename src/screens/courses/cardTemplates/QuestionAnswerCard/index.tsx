@@ -45,6 +45,7 @@ const QuestionAnswerCard = ({
   if (isLoading) return null;
 
   const isAnswerSelected = () => selectedAnswers.some(answer => answer.isSelected);
+  const isValidationDisabled = card.isMandatory && !isAnswerSelected();
 
   const onSelectAnswer = (index: number) => {
     if (!card.isQuestionAnswerMultipleChoiced) {
@@ -54,9 +55,9 @@ const QuestionAnswerCard = ({
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
-  const validateQuestionnaireAnswer = (cardId: string) => {
+  const validateQuestionnaireAnswer = () => {
     const answer = selectedAnswers.filter(sa => sa.isSelected).map(sa => sa._id);
-    addQuestionnaireAnswer({ card: cardId, answerList: answer });
+    if (card.isMandatory || isAnswerSelected()) addQuestionnaireAnswer({ card: card._id, answerList: answer });
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
@@ -79,8 +80,8 @@ const QuestionAnswerCard = ({
       <View style={styles.footerContainer}>
         <FooterGradient />
         <QuestionCardFooter buttonCaption={'Valider'} arrowColor={PINK[500]} index={cardIndex}
-          buttonDisabled={!isAnswerSelected()} buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]}
-          validateCard={() => validateQuestionnaireAnswer(card._id)}/>
+          buttonDisabled={isValidationDisabled} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
+          validateCard={validateQuestionnaireAnswer}/>
       </View>
     </>
   );
