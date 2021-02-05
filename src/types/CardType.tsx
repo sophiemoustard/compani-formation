@@ -52,6 +52,7 @@ export interface SurveyType {
   _id: string,
   template: string,
   question: string,
+  isMandatory: boolean,
   label?: { left: string, right: string},
 }
 
@@ -85,6 +86,7 @@ export interface OpenQuestionType {
   _id: string,
   template: string,
   question: string,
+  isMandatory: boolean,
   answer?: string,
 }
 
@@ -124,6 +126,7 @@ export interface QuestionAnswerType {
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
   qcAnswers: Array<answerFromAPIType>,
+  isMandatory: boolean,
 }
 
 export interface footerColorsType {
