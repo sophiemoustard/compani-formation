@@ -31,7 +31,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
 
   const isValidationDisabled = card.isMandatory && !selectedScore;
 
-  const validateCard = () => {
+  const validateSurvey = () => {
     if (card.isMandatory || selectedScore !== '') {
       addQuestionnaireAnswer({ card: card._id, answerList: [selectedScore] });
     }
@@ -56,7 +56,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
       </View>
       <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
         arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
-        validateCard={validateCard} />
+        validateCard={validateSurvey} />
     </>
   );
 };
