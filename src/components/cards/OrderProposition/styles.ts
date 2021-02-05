@@ -17,6 +17,7 @@ const styles = (color: string, isValidated: boolean) => StyleSheet.create({
     flex: 1,
   },
   index: {
+    flexDirection: 'row',
     height: '100%',
     borderWidth: BORDER_WIDTH,
     borderRightWidth: 0,
@@ -25,7 +26,6 @@ const styles = (color: string, isValidated: boolean) => StyleSheet.create({
     borderTopLeftRadius: BORDER_RADIUS.MD,
     borderBottomLeftRadius: BORDER_RADIUS.MD,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   answer: {
     minHeight: ORDERED_ANSWER_MIN_HEIGHT,
@@ -47,7 +47,7 @@ const styles = (color: string, isValidated: boolean) => StyleSheet.create({
   indexText: {
     ...NUNITO_BLACK.XL,
     color: isValidated ? WHITE : GREY[800],
-    marginHorizontal: MARGIN.MD,
+    marginRight: MARGIN.SM,
   },
   answerShadow: {
     backgroundColor: isValidated ? color : GREY[200],
