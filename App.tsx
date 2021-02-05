@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
+import * as Sentry from 'sentry-expo';
 import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 import Version from './src/api/version';
 import AppContainer from './src/AppContainer';
@@ -12,6 +13,14 @@ import UpdateAppModal from './src/components/UpdateAppModal';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
 import { ACTIVE_STATE } from './src/core/data/constants';
+import getEnvVars from './environment';
+
+const { sentryKey } = getEnvVars();
+Sentry.init({
+  dsn: sentryKey,
+  enableInExpoDevelopment: true,
+  debug: true,
+});
 
 const store = createStore(reducers, tron.createEnhancer());
 

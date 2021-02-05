@@ -2,7 +2,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "prestart": "source $HOME/.nvm/nvm.sh; nvm use 12.13.0",
-    "start": "expo start",
+    "start": ". ~/setSentryAuthKey.sh && expo start",
+    "build": ". ~/setSentryAuthKey.sh && expo build",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -75,6 +76,7 @@
     "react-native-tab-view": "^2.15.2",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
+    "sentry-expo": "^3.0.4",
     "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
