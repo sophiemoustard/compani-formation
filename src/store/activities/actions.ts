@@ -1,20 +1,22 @@
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import {
   SET_ACTIVITY,
-  SET_CARD_INDEX,
-  ADD_QUESTIONNAIRE_ANSWER,
   SetActivityType,
+  SET_CARD_INDEX,
   SetCardIndexType,
-  SetExitConfirmationModalType,
   SET_EXIT_CONFIRMATION_MODAL,
-  RESET_ACTIVITY_REDUCER,
-  QuestionnaireAnswerType,
+  SetExitConfirmationModalType,
+  ADD_QUESTIONNAIRE_ANSWER,
   AddQuestionnaireAnswerType,
-  SetQuestionnaireAnswersListType,
+  REMOVE_QUESTIONNAIRE_ANSWER,
+  RemoveQuestionnaireAnswerType,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
-  INC_GOOD_ANSWERS_COUNT,
-  SetActivityHistories,
+  SetQuestionnaireAnswersListType,
   SET_ACTIVITY_HISTORIES,
+  SetActivityHistories,
+  QuestionnaireAnswerType,
+  RESET_ACTIVITY_REDUCER,
+  INC_GOOD_ANSWERS_COUNT,
 } from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
 import { ActivityHistoryType } from '../../types/ActivityHistoryType';
@@ -25,6 +27,8 @@ const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfir
   ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
 const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
   ({ type: ADD_QUESTIONNAIRE_ANSWER, payload: questionnaireAnswer });
+const removeQuestionnaireAnswer = (card: string): RemoveQuestionnaireAnswerType =>
+  ({ type: REMOVE_QUESTIONNAIRE_ANSWER, payload: card });
 const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
 const setQuestionnaireAnswersList =
 (questionnaireAnswersList: Array<QuestionnaireAnswerType>) : SetQuestionnaireAnswersListType =>
@@ -38,6 +42,7 @@ export default {
   setCardIndex,
   setExitConfirmationModal,
   addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
   resetActivityReducer,
   setQuestionnaireAnswersList,
   incGoodAnswersCount,

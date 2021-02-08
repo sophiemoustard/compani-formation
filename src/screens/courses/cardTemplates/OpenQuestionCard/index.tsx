@@ -18,6 +18,7 @@ interface OpenQuestionCardProps {
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
 }
 
@@ -26,6 +27,7 @@ const OpenQuestionCard = ({
   index,
   questionnaireAnswer,
   addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
   isLoading,
 }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
@@ -44,7 +46,8 @@ const OpenQuestionCard = ({
   const isValidationDisabled = card.isMandatory && !answer;
 
   const validateQuestionnaireAnswer = () => {
-    addQuestionnaireAnswer({ card: card._id, answerList: [answer] });
+    if (answer) addQuestionnaireAnswer({ card: card._id, answerList: [answer] });
+    else removeQuestionnaireAnswer(card._id);
     setIsSelected(false);
   };
 
@@ -76,6 +79,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestionCard);

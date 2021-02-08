@@ -5,6 +5,7 @@ import {
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
   ADD_QUESTIONNAIRE_ANSWER,
+  REMOVE_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   INC_GOOD_ANSWERS_COUNT,
   SET_ACTIVITY_HISTORIES,
@@ -36,6 +37,11 @@ const applyAddQuestionnaireAnswer = (state, action) => {
   return { ...state, questionnaireAnswersList: [...state.questionnaireAnswersList, questionnaireAnswer] };
 };
 
+const applyRemoveQuestionnaireAnswer = (state, action) => {
+  const card = action.payload;
+  return { ...state, questionnaireAnswersList: state.questionnaireAnswersList.filter(qa => qa.card !== card) };
+};
+
 export const activities = (
   state: ActivityStateType = initialState,
   action: ActivityActionType | ActivityActionWithoutPayloadType
@@ -49,6 +55,8 @@ export const activities = (
       return { ...state, exitConfirmationModal: action.payload };
     case ADD_QUESTIONNAIRE_ANSWER:
       return applyAddQuestionnaireAnswer(state, action);
+    case REMOVE_QUESTIONNAIRE_ANSWER:
+      return applyRemoveQuestionnaireAnswer(state, action);
     case SET_ACTIVITY_HISTORIES:
       return { ...state, activityHistories: action.payload };
     case RESET_ACTIVITY_REDUCER:
