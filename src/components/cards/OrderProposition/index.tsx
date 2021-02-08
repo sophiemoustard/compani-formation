@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
@@ -33,9 +34,10 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
   return (
     <View style={style.container}>
       <View style={style.contentContainer}>
-        <TouchableOpacity style= {style.indexContainer} disabled={isValidated} onLongPress={drag} delayLongPress={0}
+        <TouchableOpacity style={style.indexContainer} disabled={isValidated} onLongPress={drag} delayLongPress={0}
           activeOpacity={1}>
           <View style={style.index}>
+            <MaterialCommunityIcons name="drag" size={30} color={GREY[500]} />
             <Text style={style.indexText}>{item.tempPosition + 1}</Text>
           </View>
           <Shadow customStyle={style.indexShadow} />
