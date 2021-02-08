@@ -46,6 +46,7 @@ const OpenQuestionCard = ({
   const isValidationDisabled = card.isMandatory && !answer;
 
   const validateQuestionnaireAnswer = () => {
+    if (!answer && card.isMandatory) return;
     if (answer) addQuestionnaireAnswer({ card: card._id, answerList: [answer] });
     else removeQuestionnaireAnswer(card._id);
     setIsSelected(false);
