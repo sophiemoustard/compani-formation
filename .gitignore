@@ -21,3 +21,6 @@ api-*
 
 #Reactotron
 src/ReactotronConfig.js
+
+#Sentry
+setSentryAuthKey.sh

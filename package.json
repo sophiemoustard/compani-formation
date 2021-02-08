@@ -2,8 +2,9 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "prestart": "source $HOME/.nvm/nvm.sh; nvm use 12.13.0",
-    "start": ". ~/setSentryAuthKey.sh && expo start",
-    "build": ". ~/setSentryAuthKey.sh && expo build",
+    "start": ". setSentryAuthKey.sh && expo start",
+    "build:android": ". setSentryAuthKey.sh && expo build:android",
+    "build:ios": ". setSentryAuthKey.sh && expo build:ios",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
