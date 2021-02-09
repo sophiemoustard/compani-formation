@@ -16,11 +16,19 @@ interface SurveyCardProps {
   card: SurveyType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   isLoading: boolean,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  removeQuestionnaireAnswer: (card: string) => void,
 }
 
-const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isLoading }: SurveyCardProps) => {
+const SurveyCard = ({
+  card,
+  index,
+  questionnaireAnswer,
+  isLoading,
+  addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
+}: SurveyCardProps) => {
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
@@ -31,10 +39,16 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
 
   const isValidationDisabled = card.isMandatory && !selectedScore;
 
+  const onPressScore = (score: string) => {
+    if (selectedScore === score) setSelectedScore('');
+    else setSelectedScore(score);
+  };
+
   const validateSurvey = () => {
+    if (!selectedScore && card.isMandatory) return;
     if (card.isMandatory || selectedScore !== '') {
       addQuestionnaireAnswer({ card: card._id, answerList: [selectedScore] });
-    }
+    } else removeQuestionnaireAnswer(card._id);
   };
 
   return (
@@ -43,7 +57,7 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
       <View style={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
         <View style={styles.surveyScoreContainer}>
-          <SurveyScoreSelector onPressScore={setSelectedScore} selectedScore={selectedScore} />
+          <SurveyScoreSelector onPressScore={onPressScore} selectedScore={selectedScore} />
           <View style={styles.labelContainer}>
             {card.label?.left && card.label?.right && (
               <>
@@ -69,6 +83,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyCard);

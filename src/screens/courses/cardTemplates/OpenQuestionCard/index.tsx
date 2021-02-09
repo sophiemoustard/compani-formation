@@ -17,18 +17,18 @@ interface OpenQuestionCardProps {
   card: OpenQuestionType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
+  isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
-  isLoading: boolean,
 }
 
 const OpenQuestionCard = ({
   card,
   index,
   questionnaireAnswer,
+  isLoading,
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,
-  isLoading,
 }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);

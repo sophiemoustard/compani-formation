@@ -83,6 +83,7 @@ export const GREY = {
 };
 
 export const WHITE = 'white';
+export const BLACK = 'black';
 export const TRANSPARENT_GREY = 'rgba(31, 20, 27, 0.2)';
 export const TRANSPARENT_LIGHT_GREY = 'rgba(226, 218, 223, 0.3)';
 export const TRANSPARENT_DARK_GREY = '#00000066';
