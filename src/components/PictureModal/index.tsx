@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Camera from 'expo-camera';
-import { navigate } from '../../navigationRef';
+import { useNavigation } from '@react-navigation/native';
 import NiModal from '../Modal';
 import NiButton from '../form/Button';
 import FeatherButton from '../icons/FeatherButton';
@@ -37,6 +37,7 @@ const PictureModal = ({
   goBack,
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   const alert = (component) => {
     Alert.alert(
@@ -61,7 +62,7 @@ const PictureModal = ({
     try {
       setIsLoading(true);
       const { status } = await Camera.requestPermissionsAsync();
-      if (status === 'granted') navigate('Camera');
+      if (status === 'granted') navigation.navigate('Camera');
       else alert('l\'appareil photo');
     } catch {
       setPictureModal(false);
@@ -79,7 +80,7 @@ const PictureModal = ({
     try {
       setIsLoading(true);
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status === 'granted') navigate('ImagePickerManager');
+      if (status === 'granted') navigation.navigate('ImagePickerManager');
       else alert('la galerie');
     } catch {
       if (goBack) goBack();
