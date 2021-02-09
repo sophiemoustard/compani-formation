@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
 import { PINK, WHITE } from '../../styles/colors';
 import { PHONE_REGEX } from '../../core/data/constants';
-import { NavigationType } from '../../types/NavigationType';
 import { IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 
-interface CreateAccountProps {
-  navigation: NavigationType,
+interface CreateAccountFormProps {
   index: number
   data: any,
   isLoading: boolean,
@@ -17,9 +16,10 @@ interface CreateAccountProps {
   goBack: (index: number) => void,
   create: () => void;
 }
-const CreateAccountForm = ({ navigation, index, data, isLoading, setData, goBack, create }: CreateAccountProps) => {
+const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create }: CreateAccountFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const isDisabledBackHandler = useRef(isLoading);
+  const navigation = useNavigation();
 
   const hardwareBackPress = () => {
     if (!isDisabledBackHandler.current) goBack(index);
