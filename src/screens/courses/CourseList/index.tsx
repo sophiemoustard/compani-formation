@@ -117,7 +117,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} navigation={navigation} />;
+  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
 
   const nextSteps = formatNextSteps(onGoingCourses);
 
