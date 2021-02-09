@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
 import Button from '../../../../components/form/Button';
-import { navigate } from '../../../../navigationRef';
 import { StateType } from '../../../../types/store/StoreType';
 import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
@@ -33,6 +32,7 @@ const EndCard = ({
   resetActivityReducer,
 }: EndCardProps) => {
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function fetchData() {
@@ -51,8 +51,8 @@ const EndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   const goBack = () => {
-    if (isCourse) navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
-    else navigate('SubProgramProfile', { subProgramId: profileId });
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
+    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
     resetActivityReducer();
   };
 
