@@ -19,6 +19,7 @@ interface QuestionAnswerCardProps {
   cardIndex: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
 }
 
@@ -29,9 +30,10 @@ export interface answerType extends answerFromAPIType {
 const QuestionAnswerCard = ({
   card,
   cardIndex,
-  isLoading,
   questionnaireAnswer,
   addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
+  isLoading,
 }: QuestionAnswerCardProps) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
 
@@ -57,7 +59,9 @@ const QuestionAnswerCard = ({
 
   const validateQuestionnaireAnswer = () => {
     const answer = selectedAnswers.filter(sa => sa.isSelected).map(sa => sa._id);
+    if (card.isMandatory && !isAnswerSelected()) return;
     if (card.isMandatory || isAnswerSelected()) addQuestionnaireAnswer({ card: card._id, answerList: answer });
+    else removeQuestionnaireAnswer(card._id);
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
@@ -95,6 +99,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionAnswerCard);
