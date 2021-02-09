@@ -19,6 +19,7 @@ interface QuestionAnswerCardProps {
   cardIndex: number,
   questionnaireAnswer: QuestionnaireAnswerType,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
 }
 
@@ -29,9 +30,10 @@ export interface answerType extends answerFromAPIType {
 const QuestionAnswerCard = ({
   card,
   cardIndex,
-  isLoading,
   questionnaireAnswer,
   addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
+  isLoading,
 }: QuestionAnswerCardProps) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
 
@@ -45,18 +47,23 @@ const QuestionAnswerCard = ({
   if (isLoading) return null;
 
   const isAnswerSelected = () => selectedAnswers.some(answer => answer.isSelected);
+  const isValidationDisabled = card.isMandatory && !isAnswerSelected();
 
   const onSelectAnswer = (index: number) => {
     if (!card.isQuestionAnswerMultipleChoiced) {
-      setSelectedAnswers(array => array.map(answer => Object.assign([], answer, { isSelected: false })));
+      setSelectedAnswers(array => array.map((answer, answerIdx) => ((answerIdx === index)
+        ? answer
+        : { ...answer, isSelected: false })));
     }
     setSelectedAnswers(array => Object.assign([], array,
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
   };
 
-  const validateQuestionnaireAnswer = (cardId: string) => {
+  const validateQuestionnaireAnswer = () => {
     const answer = selectedAnswers.filter(sa => sa.isSelected).map(sa => sa._id);
-    addQuestionnaireAnswer({ card: cardId, answerList: answer });
+    if (card.isMandatory && !isAnswerSelected()) return;
+    if (card.isMandatory || isAnswerSelected()) addQuestionnaireAnswer({ card: card._id, answerList: answer });
+    else removeQuestionnaireAnswer(card._id);
   };
 
   const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
@@ -79,8 +86,8 @@ const QuestionAnswerCard = ({
       <View style={styles.footerContainer}>
         <FooterGradient />
         <QuestionCardFooter buttonCaption={'Valider'} arrowColor={PINK[500]} index={cardIndex}
-          buttonDisabled={!isAnswerSelected()} buttonColor={isAnswerSelected() ? PINK[500] : GREY[300]}
-          validateCard={() => validateQuestionnaireAnswer(card._id)}/>
+          buttonDisabled={isValidationDisabled} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
+          validateCard={validateQuestionnaireAnswer}/>
       </View>
     </>
   );
@@ -94,6 +101,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionAnswerCard);

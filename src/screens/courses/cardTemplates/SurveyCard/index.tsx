@@ -16,11 +16,19 @@ interface SurveyCardProps {
   card: SurveyType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   isLoading: boolean,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  removeQuestionnaireAnswer: (card: string) => void,
 }
 
-const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, isLoading }: SurveyCardProps) => {
+const SurveyCard = ({
+  card,
+  index,
+  questionnaireAnswer,
+  isLoading,
+  addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
+}: SurveyCardProps) => {
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => {
@@ -29,13 +37,24 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
 
   if (isLoading) return null;
 
+  const isValidationDisabled = card.isMandatory && !selectedScore;
+
+  const onPressScore = (score: string) => setSelectedScore(previousValue => (previousValue === score ? '' : score));
+
+  const validateSurvey = () => {
+    if (!selectedScore && card.isMandatory) return;
+    if (card.isMandatory || selectedScore !== '') {
+      addQuestionnaireAnswer({ card: card._id, answerList: [selectedScore] });
+    } else removeQuestionnaireAnswer(card._id);
+  };
+
   return (
     <>
       <CardHeader />
       <View style={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
         <View style={styles.surveyScoreContainer}>
-          <SurveyScoreSelector onPressScore={setSelectedScore} selectedScore={selectedScore} />
+          <SurveyScoreSelector onPressScore={onPressScore} selectedScore={selectedScore} />
           <View style={styles.labelContainer}>
             {card.label?.left && card.label?.right && (
               <>
@@ -46,9 +65,9 @@ const SurveyCard = ({ card, index, questionnaireAnswer, addQuestionnaireAnswer, 
           </View>
         </View>
       </View>
-      <QuestionCardFooter index={index} buttonColor={selectedScore ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!selectedScore}
-        validateCard={() => addQuestionnaireAnswer({ card: card._id, answerList: [selectedScore] })} />
+      <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
+        validateCard={validateSurvey} />
     </>
   );
 };
@@ -61,6 +80,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyCard);
