@@ -51,10 +51,9 @@ const QuestionAnswerCard = ({
 
   const onSelectAnswer = (index: number) => {
     if (!card.isQuestionAnswerMultipleChoiced) {
-      setSelectedAnswers(array => array.map((answer, answerIdx) => {
-        if (answerIdx === index) return answer;
-        return { ...answer, isSelected: false };
-      }));
+      setSelectedAnswers(array => array.map((answer, answerIdx) => ((answerIdx === index)
+        ? answer
+        : { ...answer, isSelected: false })));
     }
     setSelectedAnswers(array => Object.assign([], array,
       { [index]: { ...array[index], isSelected: !array[index].isSelected } }));

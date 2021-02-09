@@ -39,10 +39,7 @@ const SurveyCard = ({
 
   const isValidationDisabled = card.isMandatory && !selectedScore;
 
-  const onPressScore = (score: string) => {
-    if (selectedScore === score) setSelectedScore('');
-    else setSelectedScore(score);
-  };
+  const onPressScore = (score: string) => setSelectedScore(previousValue => (previousValue === score ? '' : score));
 
   const validateSurvey = () => {
     if (!selectedScore && card.isMandatory) return;
