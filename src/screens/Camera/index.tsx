@@ -11,14 +11,12 @@ import styles from './styles';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
-import { navigate } from '../../navigationRef';
 import { savePhoto } from '../../core/helpers/pictures';
 
 interface CameraProps {
   navigation: NavigationType,
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
-
 }
 
 const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
@@ -50,7 +48,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
       Alert.alert(
         'Echec de l\'enregistrement',
         'Essaie de reprendre la photo',
-        [{ text: 'OK', onPress: () => navigate('Camera') }], { cancelable: false }
+        [{ text: 'OK', onPress: () => navigation.navigate('Camera') }], { cancelable: false }
       );
     } finally {
       setIsLoading(false);

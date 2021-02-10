@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Camera from 'expo-camera';
-import { useNavigation } from '@react-navigation/native';
 import NiModal from '../Modal';
 import NiButton from '../form/Button';
 import FeatherButton from '../icons/FeatherButton';
