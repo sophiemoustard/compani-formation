@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { View, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -39,6 +39,7 @@ const CardContainer = ({
   resetActivityReducer,
 }: CardContainerProps) => {
   const { signOut } = useContext(AuthContext);
+  const [isSwipeEnabled, setIsSwipeEnabled] = useState<boolean>(false);
 
   const getActivity = async () => {
     try {
@@ -80,7 +81,7 @@ const CardContainer = ({
   const _onSwipe = (index, event) => {
     if (event.nativeEvent.translationX > 0 && index > 0) navigation.navigate(`card-${index - 1}`);
 
-    if (event.nativeEvent.translationX < 0) navigation.navigate(`card-${index + 1}`);
+    if (event.nativeEvent.translationX < 0 && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
   };
 
   const renderCardScreen = (index: number) => (
@@ -91,7 +92,7 @@ const CardContainer = ({
             <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
               onPressCancelButton={() => setExitConfirmationModal(false)}
               title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
-            <CardTemplate index={index} />
+            <CardTemplate index={index} setIsSwipeEnabled={setIsSwipeEnabled} />
           </View>
         </PanGestureHandler>
       )}
