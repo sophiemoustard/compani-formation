@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { View, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
 import { NavigationType } from '../../../types/NavigationType';
@@ -76,15 +77,23 @@ const CardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
+  const _onSwipe = (index, event) => {
+    if (event.nativeEvent.translationX > 0 && index > 0) navigation.navigate(`card-${index - 1}`);
+
+    if (event.nativeEvent.translationX < 0) navigation.navigate(`card-${index + 1}`);
+  };
+
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
-        <View style={styles.cardScreen}>
-          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-            onPressCancelButton={() => setExitConfirmationModal(false)}
-            title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
-          <CardTemplate index={index} />
-        </View>
+        <PanGestureHandler onGestureEvent={event => _onSwipe(index, event)}>
+          <View style={styles.cardScreen}>
+            <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+              onPressCancelButton={() => setExitConfirmationModal(false)}
+              title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
+            <CardTemplate index={index} />
+          </View>
+        </PanGestureHandler>
       )}
     </Tab.Screen>
   );
