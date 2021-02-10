@@ -97,6 +97,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
     if (Number.isInteger(idx)) {
       return card.canSwitchAnswers ? goodAnswers.includes(text) : goodAnswers.indexOf(text) === idx;
     }
+
     return goodAnswers.includes(text);
   };
 
