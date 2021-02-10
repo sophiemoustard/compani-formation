@@ -18,6 +18,19 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["assets/images/*"],
+    "extra": {
+      "hooks": {
+        "postPublish": [
+          {
+            "file": "sentry-expo/upload-sourcemaps",
+            "config": {
+              "organization": "alenvi",
+              "project": "mobile"
+            }
+          }
+        ]
+      }
+    },
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
       "buildNumber": "1.4.0",
