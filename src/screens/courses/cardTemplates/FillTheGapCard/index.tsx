@@ -93,10 +93,18 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
     setPropositions(tempPropositions);
   };
 
+  const isGoodAnswer = (text, idx) => {
+    if (Number.isInteger(idx)) {
+      return card.canSwitchAnswers ? goodAnswers.includes(text) : goodAnswers.indexOf(text) === idx;
+    }
+
+    return goodAnswers.includes(text);
+  };
+
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
     <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
       <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
-        isGoodAnswer={Number.isInteger(idx) ? goodAnswers.indexOf(text) === idx : goodAnswers.includes(text)} />
+        isGoodAnswer={isGoodAnswer(text, idx)} />
     </DraxView>;
 
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
@@ -107,7 +115,9 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
 
   const onPressFooterButton = () => {
     if (!isValidated) {
-      const areAnswersCorrect = selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
+      const areAnswersCorrect = card.canSwitchAnswers
+        ? selectedAnswers.every(text => goodAnswers.includes(text))
+        : selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
 
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);

@@ -114,6 +114,7 @@ export interface FillTheGapType {
   gappedText: string,
   falsyGapAnswers: Array<GapAnswerType>,
   explanation: string,
+  canSwitchAnswers: boolean,
 }
 
 export interface answerFromAPIType {
