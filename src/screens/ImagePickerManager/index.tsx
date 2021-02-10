@@ -6,7 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
-import { navigate } from '../../navigationRef';
 import commonStyle from '../../styles/common';
 import { GREY } from '../../styles/colors';
 import styles from './styles';
@@ -28,7 +27,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }:ImagePicke
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goBack = () => navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
+  const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
 
   const pickImage = async () => {
     try {
@@ -62,7 +61,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }:ImagePicke
       Alert.alert(
         'Echec de l\'enregistrement',
         'Veuillez réessayer',
-        [{ text: 'OK', onPress: () => navigate('Profile') }], { cancelable: false }
+        [{ text: 'OK', onPress: () => navigation.navigate('Profile') }], { cancelable: false }
       );
     } finally {
       setIsLoading(false);

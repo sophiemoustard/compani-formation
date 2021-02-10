@@ -12,12 +12,11 @@ import ProgressPieChart from '../ProgressPieChart';
 interface ELearningCellProps {
   step: StepType,
   index: number,
-  navigation: { navigate: (path: string, activityId: any) => {} },
   profileId: string,
   endedActivity?: string,
 }
 
-const ELearningCell = ({ step, index, navigation, profileId, endedActivity = '' }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, profileId, endedActivity = '' }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
@@ -41,7 +40,7 @@ const ELearningCell = ({ step, index, navigation, profileId, endedActivity = '' 
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      {isOpen && <ActivityList step={step} profileId={profileId} navigation={navigation} />}
+      {isOpen && <ActivityList step={step} profileId={profileId} />}
     </View>
   );
 };

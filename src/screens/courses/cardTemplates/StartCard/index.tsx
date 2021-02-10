@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, ImageBackground, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import Button from '../../../../components/form/Button';
-import { navigate } from '../../../../navigationRef';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import ActivitiesActions from '../../../../store/activities/actions';
@@ -30,6 +30,8 @@ const StartCard = ({
   setQuestionnaireAnswersList,
   setStatusBarVisible,
 }: StartCardProps) => {
+  const navigation = useNavigation();
+
   if (isCourse) {
     const activityHistory = activityHistories[activityHistories.length - 1];
     if (activityHistory?.questionnaireAnswersList) {
@@ -43,8 +45,8 @@ const StartCard = ({
 
   const goBack = () => {
     resetActivityReducer();
-    if (isCourse) navigate('CourseProfile', { courseId: profileId });
-    else navigate('SubProgramProfile', { subProgramId: profileId });
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId });
+    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
   };
 
   const hardwareBackPress = () => {
@@ -72,7 +74,7 @@ const StartCard = ({
           <Text style={styles.text}>{title}</Text>
         </View>
         <Button style={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
-          onPress={() => navigate('card-0')} />
+          onPress={() => navigation.navigate('card-0')} />
       </View>
     </ScrollView>
   );

@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
+import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
@@ -10,7 +11,6 @@ import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
-import { navigate } from '../../../../navigationRef';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
@@ -38,6 +38,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
     text: GREY[100],
     background: GREY[100],
   });
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -69,7 +70,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
 
       return setIsValidated(true);
     }
-    return navigate(`card-${index + 1}`);
+    return navigation.navigate(`card-${index + 1}`);
   };
 
   const setAnswersArray = ({ data }) => {

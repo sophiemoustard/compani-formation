@@ -17,10 +17,9 @@ interface OnSiteCellProps {
   slots?: Array<CourseSlotType>,
   index: number,
   profileId: string,
-  navigation: { navigate: (path: string, activityId: any) => {} },
 }
 
-const OnSiteCell = ({ step, slots = [], index, navigation, profileId }: OnSiteCellProps) => {
+const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -53,7 +52,7 @@ const OnSiteCell = ({ step, slots = [], index, navigation, profileId }: OnSiteCe
         </View>
       </TouchableOpacity>
       {isOpen && <View style={[styles.container, styles.openedContainer]}>
-        <ActivityList step={step} navigation={navigation} profileId={profileId} />
+        <ActivityList step={step} profileId={profileId} />
       </View>}
     </>
   );
