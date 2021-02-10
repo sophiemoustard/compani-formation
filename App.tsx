@@ -18,8 +18,7 @@ import getEnvVars from './environment';
 const { sentryKey } = getEnvVars();
 Sentry.init({
   dsn: sentryKey,
-  enableInExpoDevelopment: true,
-  debug: true,
+  debug: false,
 });
 
 const store = createStore(reducers, tron.createEnhancer());
