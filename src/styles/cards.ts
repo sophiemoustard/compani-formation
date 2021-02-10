@@ -11,6 +11,7 @@ export default StyleSheet.create({
   text: {
     ...FIRA_SANS_REGULAR.MD,
     marginBottom: MARGIN.XL,
+    lineHeight: 24,
   },
   media: {
     resizeMode: 'contain',
