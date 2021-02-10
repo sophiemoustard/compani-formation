@@ -17,11 +17,20 @@ interface OrderPropositionProps {
 
 const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionProps) => {
   const [color, setColor] = useState<string>(GREY[200]);
+  const [dragButtonColor, setDragButtonColor] = useState<string>(GREY[500]);
   const [isGoodPosition, setIsGoodPosition] = useState<boolean>(item.goodPosition === item.tempPosition);
 
   useEffect(() => {
-    if (isGoodPosition && isValidated) return setColor(GREEN[600]);
-    if (!isGoodPosition && isValidated) return setColor(ORANGE[600]);
+    if (isGoodPosition && isValidated) {
+      setDragButtonColor(GREEN[800]);
+      return setColor(GREEN[600]);
+    }
+    if (!isGoodPosition && isValidated) {
+      setDragButtonColor(ORANGE[800]);
+      return setColor(ORANGE[600]);
+    }
+
+    setDragButtonColor(GREY[500]);
     return setColor(GREY[500]);
   }, [isGoodPosition, isValidated]);
 
@@ -37,7 +46,7 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
         <TouchableOpacity style={style.indexContainer} disabled={isValidated} onLongPress={drag} delayLongPress={0}
           activeOpacity={1}>
           <View style={style.index}>
-            <MaterialCommunityIcons name="drag" size={30} color={GREY[500]} />
+            <MaterialCommunityIcons name="drag" size={30} color={dragButtonColor} />
             <Text style={style.indexText}>{item.tempPosition + 1}</Text>
           </View>
           <Shadow customStyle={style.indexShadow} />
