@@ -49,22 +49,18 @@ const CardTemplate = ({ index, activity, setCardIndex, setIsSwipeEnabled }: Card
     setIsLoading(true);
     async function fetchData() { setCardIndex(index); }
     if (isFocused) fetchData().then(() => setIsLoading(false));
-  }, [isFocused, setCardIndex, index, setIsLoading]);
+  }, [isFocused, setCardIndex, index, setIsLoading, setIsSwipeEnabled]);
 
   const card = activity.cards[index];
   switch (card.template) {
     case TRANSITION:
-      setIsSwipeEnabled(true);
-      return <Transition isLoading={isLoading} />;
+      return <Transition isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case TITLE_TEXT:
-      setIsSwipeEnabled(true);
-      return <TitleTextCard isLoading={isLoading} />;
+      return <TitleTextCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case TEXT_MEDIA:
-      setIsSwipeEnabled(true);
-      return <TextMediaCard isLoading={isLoading} />;
+      return <TextMediaCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case TITLE_TEXT_MEDIA:
-      setIsSwipeEnabled(true);
-      return <TitleTextMediaCard isLoading={isLoading} />;
+      return <TitleTextMediaCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case SINGLE_CHOICE_QUESTION:
       return <SingleChoiceQuestionCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case MULTIPLE_CHOICE_QUESTION:
