@@ -20,9 +20,16 @@ interface SingleChoiceQuestionCardProps {
   index: number,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
+  setIsSwipeEnabled: (boolean) => void,
 }
 
-const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading }: SingleChoiceQuestionCardProps) => {
+const SingleChoiceQuestionCard = ({
+  card,
+  index,
+  incGoodAnswersCount,
+  isLoading,
+  setIsSwipeEnabled,
+}: SingleChoiceQuestionCardProps) => {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -34,7 +41,8 @@ const SingleChoiceQuestionCard = ({ card, index, incGoodAnswersCount, isLoading 
 
   useEffect(() => {
     if (!isLoading && !isPressed) setAnswers(shuffle([...card.qcAnswers.map(a => a.text), card.qcuGoodAnswer]));
-  }, [isLoading, card, isPressed]);
+    setIsSwipeEnabled(isPressed);
+  }, [isLoading, card, isPressed, setIsSwipeEnabled]);
 
   useEffect(() => {
     if (!isPressed) {
