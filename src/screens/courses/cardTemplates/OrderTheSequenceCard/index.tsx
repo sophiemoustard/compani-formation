@@ -22,6 +22,7 @@ interface OrderTheSequenceCardProps {
   index: number,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
+  setIsSwipeEnabled: (boolean) => void,
 }
 
 export interface answerPositionType extends OrderedAnswerType {
@@ -29,7 +30,13 @@ export interface answerPositionType extends OrderedAnswerType {
   tempPosition: number,
 }
 
-const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({
+  card,
+  index,
+  incGoodAnswersCount,
+  isLoading,
+  setIsSwipeEnabled,
+}: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
@@ -39,6 +46,8 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
     background: GREY[100],
   });
   const navigation = useNavigation();
+
+  useEffect(() => setIsSwipeEnabled(false));
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
