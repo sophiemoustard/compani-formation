@@ -78,7 +78,7 @@ const CardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const _onSwipe = (index, event) => {
+  const onSwipe = (index, event) => {
     if (event.nativeEvent.translationX > 0 && index > 0) navigation.navigate(`card-${index - 1}`);
 
     if (event.nativeEvent.translationX < 0 && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
@@ -87,7 +87,7 @@ const CardContainer = ({
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
-        <PanGestureHandler onGestureEvent={event => _onSwipe(index, event)}>
+        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}>
           <View style={styles.cardScreen}>
             <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
               onPressCancelButton={() => setExitConfirmationModal(false)}

@@ -47,7 +47,7 @@ const OrderTheSequenceCard = ({
   });
   const navigation = useNavigation();
 
-  useEffect(() => setIsSwipeEnabled(false));
+  useEffect(() => setIsSwipeEnabled(isValidated), [isValidated, setIsSwipeEnabled]);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -97,7 +97,7 @@ const OrderTheSequenceCard = ({
   return (
     <>
       <CardHeader />
-      <View style={style.container}>
+      <View style={style.container} pointerEvents={isValidated ? 'none' : 'auto'}>
         <DraggableFlatList
           contentContainerStyle={style.draggableContainer}
           ListHeaderComponentStyle={style.questionContainer}
