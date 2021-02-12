@@ -47,15 +47,14 @@ const OrderTheSequenceCard = ({
   });
   const navigation = useNavigation();
 
-  useEffect(() => setIsSwipeEnabled(isValidated), [isValidated, setIsSwipeEnabled]);
-
   useEffect(() => {
     if (!isLoading && !isValidated) {
       const shuffledCards = shuffle(card.orderedAnswers
         .map((ans, answerIndex) => ({ label: ans.text, goodPosition: answerIndex })));
       setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
-  }, [card, isValidated, isLoading]);
+    setIsSwipeEnabled(isValidated || false);
+  }, [card, isValidated, isLoading, setIsSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -110,7 +109,7 @@ const OrderTheSequenceCard = ({
             </>
           }
           showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} onDragEnd={setAnswersArray} />
+          renderItem={renderItem} onDragEnd={setAnswersArray} activationDistance={10} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
