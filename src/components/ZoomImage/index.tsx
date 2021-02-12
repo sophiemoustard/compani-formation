@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Animated } from 'react-native';
 import { PinchGestureHandler } from 'react-native-gesture-handler';
-import { GREY } from '../../styles/colors';
+import { PINK } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import FeatherButton from '../icons/FeatherButton';
 import cardsStyle from '../../styles/cards';
@@ -25,7 +25,7 @@ const ZoomImage = ({
 
   return (
     <View style={styleWithHeight.container}>
-      <FeatherButton name={'x-circle'} onPress={() => setZoomImage(false)} size={ICON.LG} color={GREY[600]}
+      <FeatherButton name={'x-circle'} onPress={() => setZoomImage(false)} size={ICON.LG} color={PINK[500]}
         style={styleWithHeight.goBack} />
       <Animated.View style={styleWithHeight.content}>
         {!!image &&
