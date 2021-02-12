@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY } from '../../styles/colors';
+import { MODAL_BACKDROP_GREY } from '../../styles/colors';
 import { MARGIN, PADDING } from '../../styles/metrics';
 
 const styles = (mediaHeight: number) => StyleSheet.create({
@@ -15,13 +15,12 @@ const styles = (mediaHeight: number) => StyleSheet.create({
     height: '100%',
     width: '100%',
     flexGrow: 1,
-    backgroundColor: GREY[100],
+    backgroundColor: MODAL_BACKDROP_GREY,
     zIndex: 100,
     padding: PADDING.LG,
   },
   content: {
     flexGrow: 1,
-    backgroundColor: GREY[100],
     justifyContent: 'center',
   },
 });
