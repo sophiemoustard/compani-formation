@@ -117,7 +117,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} navigation={navigation} />;
+  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
 
   const nextSteps = formatNextSteps(onGoingCourses);
 
@@ -151,7 +151,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
       }
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-        <Image source={require('../../../../assets/images/pa-aidant-balade.png')} style={styles.fellow} />
+        <Image source={require('../../../../assets/images/pa_aidant_balade.png')} style={styles.fellow} />
       </View>
     </ScrollView>
   );

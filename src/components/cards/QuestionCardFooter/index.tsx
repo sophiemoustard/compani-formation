@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ArrowButton from '../../ArrowButton';
-import { navigate } from '../../../navigationRef';
 import { LEFT } from '../../../core/data/constants';
 import { WHITE } from '../../../styles/colors';
 import Button from '../../form/Button';
@@ -32,25 +32,24 @@ const QuestionCardFooter = ({
 }: QuestionCardFooterProps) => {
   const arrowButtonVisible = !(index === 0);
   const style = styles(arrowButtonVisible);
+  const navigation = useNavigation();
 
   const onPress = () => {
     if (onPressButton) onPressButton();
     else {
       if (validateCard) validateCard();
-      navigate(`card-${index + 1}`);
+      navigation.navigate(`card-${index + 1}`);
     }
   };
 
   const goBack = () => {
     if (onPressArrow) onPressArrow();
-    navigate(`card-${index - 1}`);
+    navigation.navigate(`card-${index - 1}`);
   };
 
   return (
     <View style={style.container}>
-      {arrowButtonVisible &&
-        <ArrowButton color={arrowColor} direction={LEFT}
-          onPress={goBack} />}
+      {arrowButtonVisible && <ArrowButton color={arrowColor} direction={LEFT} onPress={goBack} />}
       {buttonVisible &&
         <View style={style.button}>
           <Button bgColor={buttonColor} color={WHITE} borderColor={buttonColor} disabled={buttonDisabled}

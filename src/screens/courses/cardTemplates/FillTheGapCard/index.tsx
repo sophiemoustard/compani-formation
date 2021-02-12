@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
+import { useNavigation } from '@react-navigation/native';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
 import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
@@ -10,7 +11,6 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import styles from './styles';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import { navigate } from '../../../../navigationRef';
 import Actions from '../../../../store/activities/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
@@ -41,6 +41,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
     text: GREY[100],
     background: GREY[100],
   });
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -93,10 +94,18 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
     setPropositions(tempPropositions);
   };
 
+  const isGoodAnswer = (text, idx) => {
+    if (Number.isInteger(idx)) {
+      return card.canSwitchAnswers ? goodAnswers.includes(text) : goodAnswers.indexOf(text) === idx;
+    }
+
+    return goodAnswers.includes(text);
+  };
+
   const renderContent = (isVisible, item, text, idx?) => isVisible &&
     <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
       <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
-        isGoodAnswer={Number.isInteger(idx) ? goodAnswers.indexOf(text) === idx : goodAnswers.includes(text)} />
+        isGoodAnswer={isGoodAnswer(text, idx)} />
     </DraxView>;
 
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
@@ -107,7 +116,9 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
 
   const onPressFooterButton = () => {
     if (!isValidated) {
-      const areAnswersCorrect = selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
+      const areAnswersCorrect = card.canSwitchAnswers
+        ? selectedAnswers.every(text => goodAnswers.includes(text))
+        : selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
 
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
@@ -115,7 +126,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
 
       return setIsValidated(true);
     }
-    return navigate(`card-${index + 1}`);
+    return navigation.navigate(`card-${index + 1}`);
   };
 
   return (

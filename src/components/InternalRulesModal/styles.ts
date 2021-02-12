@@ -53,4 +53,7 @@ export default StyleSheet.create({
     textAlign: 'left',
     marginBottom: MARGIN.MD,
   },
+  lastContentText: {
+    marginBottom: MARGIN.LG,
+  },
 });

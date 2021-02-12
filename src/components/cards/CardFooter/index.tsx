@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ArrowButton from '../../ArrowButton';
-import { navigate } from '../../../navigationRef';
 import { LEFT, RIGHT } from '../../../core/data/constants';
 import styles from './styles';
 
@@ -13,6 +13,7 @@ interface CardFooterProps {
 
 const CardFooter = ({ index, color, removeRight }: CardFooterProps) => {
   const removeLeft = index === 0;
+  const navigation = useNavigation();
 
   let justifyContent;
   if (removeLeft) justifyContent = 'flex-end';
@@ -21,8 +22,10 @@ const CardFooter = ({ index, color, removeRight }: CardFooterProps) => {
 
   return (
     <View style={styles({ justifyContent }).container}>
-      {!removeLeft && <ArrowButton color={color} direction={LEFT} onPress={() => navigate(`card-${index - 1}`)} />}
-      {!removeRight && <ArrowButton color={color} direction={RIGHT} onPress={() => navigate(`card-${index + 1}`)} />}
+      {!removeLeft && <ArrowButton color={color} direction={LEFT}
+        onPress={() => navigation.navigate(`card-${index - 1}`)} />}
+      {!removeRight && <ArrowButton color={color} direction={RIGHT}
+        onPress={() => navigation.navigate(`card-${index + 1}`)} />}
     </View>
   );
 };

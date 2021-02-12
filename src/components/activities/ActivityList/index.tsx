@@ -7,12 +7,11 @@ import styles from './styles';
 interface ActivityListProps {
   step: StepType,
   profileId: string,
-  navigation: { navigate: (path: string, activityId: any) => {} },
 }
 
-const ActivityList = ({ step, profileId, navigation }: ActivityListProps) => {
+const ActivityList = ({ step, profileId }: ActivityListProps) => {
   const renderActivityCell = activity => (
-    <ActivityCell activity={activity} profileId={profileId} navigation={navigation} />
+    <ActivityCell activity={activity} profileId={profileId} />
   );
 
   const renderSeparator = () => <View style={styles.separator} />;

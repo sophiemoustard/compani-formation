@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK } from '../../../styles/colors';
+import { GREY, PINK, BLACK } from '../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { BORDER_WIDTH, ICON, PADDING } from '../../../styles/metrics';
 
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   text: {
     ...FIRA_SANS_REGULAR.MD,
     textAlign: 'center',
+    color: BLACK,
   },
   selectedText: {
     ...FIRA_SANS_REGULAR.XL,

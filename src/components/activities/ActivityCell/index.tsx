@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType } from '../../../types/ActivityType';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
@@ -14,17 +15,17 @@ import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 interface ActivityCellProps {
   activity: ActivityType,
   profileId: string,
-  navigation: { navigate: (path: string, activityId: any) => {} },
   setActivityHistories: (activityHistories: Array<ActivityHistoryType>) => void,
 }
 
-const ActivityCell = ({ activity, profileId, navigation, setActivityHistories }: ActivityCellProps) => {
+const ActivityCell = ({ activity, profileId, setActivityHistories }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
   const quizCount = activity.quizCount || 0;
   const isQuiz = activity.type === QUIZ;
   const isAboveAverage = isQuiz ? lastScore * 2 > quizCount : true;
+  const navigation = useNavigation();
 
   type colorsType = { border: string, background: string, check?: string }
   let colors: colorsType = { border: YELLOW[600], background: YELLOW[300] };

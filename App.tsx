@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AppState } from 'react-native';
 import { createStore } from 'redux';
 import Constants from 'expo-constants';
+import { Asset } from 'expo-asset';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
+import * as Sentry from 'sentry-expo';
 import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext';
 import Version from './src/api/version';
 import AppContainer from './src/AppContainer';
@@ -12,6 +14,13 @@ import UpdateAppModal from './src/components/UpdateAppModal';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
 import { ACTIVE_STATE } from './src/core/data/constants';
+import getEnvVars from './environment';
+
+const { sentryKey } = getEnvVars();
+Sentry.init({
+  dsn: sentryKey,
+  debug: false,
+});
 
 const store = createStore(reducers, tron.createEnhancer());
 
@@ -28,8 +37,31 @@ const fetchFonts = () => Font.loadAsync({
   'nunito-black': require('./assets/fonts/Nunito-Black.ttf'),
 });
 
+const fetchAssets = async () => {
+  const cachedImages = [
+    require('./assets/images/authentication_background_image.jpg'),
+    require('./assets/images/aux_detective.png'),
+    require('./assets/images/aux_joie.png'),
+    require('./assets/images/aux_fierte.png'),
+    require('./assets/images/default_avatar.png'),
+    require('./assets/images/doct_liste.png'),
+    require('./assets/images/end_card_background.png'),
+    require('./assets/images/green_section_background.png'),
+    require('./assets/images/log_out_background.png'),
+    require('./assets/images/pa_aidant_balade.png'),
+    require('./assets/images/pink_section_background.png'),
+    require('./assets/images/profile_background.png'),
+    require('./assets/images/purple_section_background.png'),
+    require('./assets/images/start_card_background.png'),
+    require('./assets/images/yellow_section_background.png'),
+  ];
+  const imageAssets = cachedImages.map(img => Asset.fromModule(img).downloadAsync());
+
+  await Promise.all([...imageAssets]);
+};
+
 const App = () => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [appReady, setAppReady] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
   const { signOut } = useContext(AuthContext);
 
@@ -53,8 +85,17 @@ const App = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!fontLoaded) {
-    return <AppLoading startAsync={fetchFonts} onFinish={() => setFontLoaded(true)} onError={console.error} />;
+  const startLoading = async () => {
+    try {
+      await fetchFonts();
+      await fetchAssets();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (!appReady) {
+    return <AppLoading startAsync={startLoading} onFinish={() => setAppReady(true)} onError={console.error} />;
   }
 
   return (

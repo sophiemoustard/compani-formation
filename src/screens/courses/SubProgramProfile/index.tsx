@@ -92,7 +92,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
 
   const renderCells = ({ item, index }) => {
     if (item.type === E_LEARNING) {
-      return <ELearningCell step={item} index={index} navigation={navigation} profileId={route.params.subProgramId} />;
+      return <ELearningCell step={item} index={index} profileId={route.params.subProgramId} />;
     }
 
     return null;

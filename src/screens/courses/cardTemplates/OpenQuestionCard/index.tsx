@@ -17,19 +17,23 @@ interface OpenQuestionCardProps {
   card: OpenQuestionType,
   index: number,
   questionnaireAnswer: QuestionnaireAnswerType,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   isLoading: boolean,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  removeQuestionnaireAnswer: (card: string) => void,
 }
 
 const OpenQuestionCard = ({
   card,
   index,
   questionnaireAnswer,
-  addQuestionnaireAnswer,
   isLoading,
+  addQuestionnaireAnswer,
+  removeQuestionnaireAnswer,
 }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
+  const scrollRef = useRef<ScrollView>(null);
+
   const isIOS = Platform.OS === 'ios';
   const style = styles(isSelected);
 
@@ -37,21 +41,18 @@ const OpenQuestionCard = ({
     setAnswer(questionnaireAnswer?.answerList ? questionnaireAnswer.answerList[0] : '');
   }, [questionnaireAnswer]);
 
-  const validateQuestionnaireAnswer = (cardId: string, text: string) => {
-    addQuestionnaireAnswer({ card: cardId, answerList: [text] });
+  if (isLoading) return null;
+
+  const isValidationDisabled = card.isMandatory && !answer;
+
+  const validateQuestionnaireAnswer = () => {
+    if (!answer && card.isMandatory) return;
+    if (answer) addQuestionnaireAnswer({ card: card._id, answerList: [answer] });
+    else removeQuestionnaireAnswer(card._id);
     setIsSelected(false);
   };
 
-  const scrollRef = useRef<ScrollView>(null);
-
-  const onFocusTextInput = (contentHeight) => {
-    scrollRef.current?.scrollTo({
-      y: contentHeight,
-      animated: true,
-    });
-  };
-
-  if (isLoading) return null;
+  const onFocusTextInput = contentHeight => scrollRef.current?.scrollTo({ y: contentHeight, animated: true });
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
@@ -64,10 +65,9 @@ const OpenQuestionCard = ({
             onSelect={setIsSelected} answer={answer}/>
         </View>
       </ScrollView>
-      <QuestionCardFooter index={index} buttonColor={answer ? PINK[500] : GREY[300]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={!answer}
-        onPressArrow={() => setIsSelected(false)}
-        validateCard={() => validateQuestionnaireAnswer(card._id, answer)} />
+      <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
+        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
+        onPressArrow={() => setIsSelected(false)} validateCard={validateQuestionnaireAnswer} />
     </KeyboardAvoidingView>
   );
 };
@@ -80,6 +80,7 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestionCard);

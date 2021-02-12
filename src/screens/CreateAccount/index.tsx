@@ -123,8 +123,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
               disabled={isLoading} />
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
-          <CreateAccountForm navigation={navigation} isLoading={isLoading} data={fields} setData={setForm} index={i}
-            goBack={goBack} create={create}/>
+          <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
+            create={create}/>
         </>
       )}
     </Stack.Screen>

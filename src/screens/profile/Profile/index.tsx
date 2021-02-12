@@ -97,7 +97,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-        <Image source={require('../../../../assets/images/aux-joie.png')} style={styles.fellow} />
+        <Image source={require('../../../../assets/images/aux_joie.png')} style={styles.fellow} />
       </View>
       <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
         setHasPhoto={setHasPhoto} />

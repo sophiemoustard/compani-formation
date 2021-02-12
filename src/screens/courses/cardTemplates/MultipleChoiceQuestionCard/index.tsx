@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
+import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/activities/selectors';
@@ -9,7 +10,6 @@ import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
-import { navigate } from '../../../../navigationRef';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
@@ -41,6 +41,7 @@ const MultipleChoiceQuestionCard = ({
     text: GREY[100],
     background: GREY[100],
   });
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!isLoading && !isValidated) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
@@ -85,7 +86,7 @@ const MultipleChoiceQuestionCard = ({
       return setIsValidated(true);
     }
 
-    return navigate(`card-${cardIndex + 1}`);
+    return navigation.navigate(`card-${cardIndex + 1}`);
   };
 
   const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}

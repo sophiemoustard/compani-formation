@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
   contactContent: {
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
-    marginVertical: MARGIN.SM,
+    marginLeft: MARGIN.MD,
+    textDecorationLine: 'underline',
   },
   internalRulesContainer: {
     justifyContent: 'center',
@@ -58,6 +59,11 @@ const styles = StyleSheet.create({
     ...NUNITO_SEMI.XS,
     color: GREY[600],
     textDecorationLine: 'underline',
+  },
+  contact: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: MARGIN.SM,
   },
 });
 
