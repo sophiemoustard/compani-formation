@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Animated } from 'react-native';
-import { PinchGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, PinchGestureHandler } from 'react-native-gesture-handler';
 import { PINK } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import FeatherButton from '../icons/FeatherButton';
@@ -20,19 +20,32 @@ const ZoomImage = ({
 }: ZoomImageProps) => {
   const styleWithHeight = styles(mediaHeight);
   const scale = new Animated.Value(1);
+  const translateX = new Animated.Value(0);
+  const translateY = new Animated.Value(0);
 
   const handlePinch = Animated.event([{ nativeEvent: { scale } }], { useNativeDriver: true });
+  const handlePan = Animated.event(
+    [{ nativeEvent: { translationX: translateX, translationY: translateY } }],
+    { useNativeDriver: true }
+  );
 
   return (
     <View style={styleWithHeight.container}>
       <FeatherButton name={'x-circle'} onPress={() => setZoomImage(false)} size={ICON.LG} color={PINK[500]}
         style={styleWithHeight.goBack} />
-      <Animated.View style={styleWithHeight.content}>
-        {!!image &&
-        <PinchGestureHandler onGestureEvent={handlePinch}>
-          <Animated.Image source={image} style={[cardsStyle.media, styleWithHeight.media, { transform: [{ scale }] }]}/>
-        </PinchGestureHandler>}
-      </Animated.View>
+      <PanGestureHandler onGestureEvent={handlePan} minPointers={1} maxPointers={1}>
+        <Animated.View style={styleWithHeight.content}>
+          {!!image &&
+            <PinchGestureHandler onGestureEvent={handlePinch}>
+              <Animated.Image source={image} style={[
+                cardsStyle.media,
+                styleWithHeight.media,
+                { transform: [{ scale }, { translateX }, { translateY }] },
+              ]}/>
+            </PinchGestureHandler>
+          }
+        </Animated.View>
+      </PanGestureHandler>
     </View>);
 };
 
