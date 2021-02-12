@@ -44,7 +44,7 @@ const CoursesSection = ({
         <Text style={styles.text}>Vous n’avez pas de formation en cours...</Text>
         <NiButton caption="Chercher une formation" onPress={() => navigation.navigate('Catalog')} bgColor={PINK[500]}
           color={WHITE} borderColor={PINK[500]} />
-        <Image source={require('../../../assets/images/aux-detective.png')} style={styles.image} resizeMode='contain' />
+        <Image source={require('../../../assets/images/aux_detective.png')} style={styles.image} resizeMode='contain' />
       </TouchableOpacity>
       }
     </>

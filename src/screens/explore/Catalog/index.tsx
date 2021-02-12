@@ -83,7 +83,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
         </ImageBackground>)}
       <View style={style.footer}>
         <Image style={style.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-        <Image source={require('../../../../assets/images/aux-detective.png')} style={style.fellow} />
+        <Image source={require('../../../../assets/images/aux_detective.png')} style={style.fellow} />
       </View>
     </ScrollView>
   );
