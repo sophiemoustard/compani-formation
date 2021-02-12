@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { AppState, Image } from 'react-native';
+import { AppState } from 'react-native';
 import { createStore } from 'redux';
 import Constants from 'expo-constants';
 import { Asset } from 'expo-asset';
@@ -55,17 +55,10 @@ const fetchAssets = async () => {
     require('./assets/images/start_card_background.png'),
     require('./assets/images/yellow_section_background.png'),
   ];
-  const imageAssets = cacheImages(cachedImages);
+  const imageAssets = cachedImages.map(img => Asset.fromModule(img).downloadAsync());
 
   await Promise.all([...imageAssets]);
 };
-
-const cacheImages = images => images.map((img) => {
-  if (typeof img === 'string') {
-    return Image.prefetch(img);
-  }
-  return Asset.fromModule(img).downloadAsync();
-});
 
 const App = () => {
   const [appReady, setAppReady] = useState(false);
