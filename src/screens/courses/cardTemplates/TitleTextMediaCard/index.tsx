@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView } from 'react-native';
+import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
+import ZoomImage from '../../../../components/ZoomImage';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
@@ -26,6 +27,7 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
+  const [zoomImage, setZoomImage] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -50,12 +52,16 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
-          <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
+          <TouchableOpacity onPress={() => setZoomImage(true)}>
+            <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />
+          </TouchableOpacity>}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource}/>}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
+      {zoomImage &&
+        <ZoomImage image={mediaSource} setZoomImage={setZoomImage} mediaHeight={mediaHeight} />}
     </>
   );
 };
