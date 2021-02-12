@@ -33,7 +33,7 @@ const ZoomImage = ({
     <View style={styleWithHeight.container}>
       <FeatherButton name={'x-circle'} onPress={() => setZoomImage(false)} size={ICON.LG} color={PINK[500]}
         style={styleWithHeight.goBack} />
-      <PanGestureHandler onGestureEvent={handlePan} minPointers={1} maxPointers={1}>
+      <PanGestureHandler onGestureEvent={handlePan}>
         <Animated.View style={styleWithHeight.content}>
           {!!image &&
             <PinchGestureHandler onGestureEvent={handlePinch}>
