@@ -38,7 +38,7 @@ const CardContainer = ({
   setExitConfirmationModal,
   resetActivityReducer,
 }: CardContainerProps) => {
-  const minDeltaX = 20;
+  const SWIPE_SENSIBILITY = 20;
   const { signOut } = useContext(AuthContext);
   const [isSwipeEnabled, setIsSwipeEnabled] = useState<boolean>(false);
 
@@ -80,15 +80,16 @@ const CardContainer = ({
   }, [cardIndex]);
 
   const onSwipe = (index, event) => {
-    if (event.nativeEvent.translationX > minDeltaX && index > 0) navigation.navigate(`card-${index - 1}`);
+    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && index > 0) navigation.navigate(`card-${index - 1}`);
 
-    if (event.nativeEvent.translationX < -minDeltaX && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
+    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
   };
 
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
-        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)} activeOffsetX={[-minDeltaX, minDeltaX]}>
+        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
+          activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
           <View style={styles.cardScreen}>
             <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
               onPressCancelButton={() => setExitConfirmationModal(false)}
