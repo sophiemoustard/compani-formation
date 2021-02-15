@@ -60,8 +60,8 @@ const TitleTextMediaCard = ({ card, index, isLoading }: TitleTextMediaCardProps)
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
-      {zoomImage &&
-        <ZoomImage image={mediaSource} setZoomImage={setZoomImage} mediaHeight={mediaHeight} />}
+      {zoomImage && mediaSource &&
+        <ZoomImage image={mediaSource} setZoomImage={setZoomImage} />}
     </>
   );
 };
