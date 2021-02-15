@@ -20,6 +20,7 @@ interface OpenQuestionCardProps {
   isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
+  setIsSwipeEnabled: (boolean) => void,
 }
 
 const OpenQuestionCard = ({
@@ -29,6 +30,7 @@ const OpenQuestionCard = ({
   isLoading,
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,
+  setIsSwipeEnabled,
 }: OpenQuestionCardProps) => {
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -36,6 +38,8 @@ const OpenQuestionCard = ({
 
   const isIOS = Platform.OS === 'ios';
   const style = styles(isSelected);
+
+  useEffect(() => setIsSwipeEnabled(false));
 
   useEffect(() => {
     setAnswer(questionnaireAnswer?.answerList ? questionnaireAnswer.answerList[0] : '');

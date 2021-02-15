@@ -38,9 +38,10 @@ interface CardTemplateProps {
   index: number,
   activity: ActivityType,
   setCardIndex: (number) => void,
+  setIsSwipeEnabled: (boolean) => void,
 }
 
-const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
+const CardTemplate = ({ index, activity, setCardIndex, setIsSwipeEnabled }: CardTemplateProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isFocused = useIsFocused();
 
@@ -48,34 +49,34 @@ const CardTemplate = ({ index, activity, setCardIndex }: CardTemplateProps) => {
     setIsLoading(true);
     async function fetchData() { setCardIndex(index); }
     if (isFocused) fetchData().then(() => setIsLoading(false));
-  }, [isFocused, setCardIndex, index, setIsLoading]);
+  }, [isFocused, setCardIndex, index, setIsLoading, setIsSwipeEnabled]);
 
   const card = activity.cards[index];
   switch (card.template) {
-    case TRANSITION:
-      return <Transition isLoading={isLoading} />;
-    case TITLE_TEXT_MEDIA:
-      return <TitleTextMediaCard isLoading={isLoading} />;
-    case SINGLE_CHOICE_QUESTION:
-      return <SingleChoiceQuestionCard isLoading={isLoading} />;
-    case TEXT_MEDIA:
-      return <TextMediaCard isLoading={isLoading} />;
-    case SURVEY:
-      return <SurveyCard isLoading={isLoading} />;
-    case TITLE_TEXT:
-      return <TitleTextCard isLoading={isLoading} />;
-    case MULTIPLE_CHOICE_QUESTION:
-      return <MultipleChoiceQuestionCard isLoading={isLoading} />;
     case FLASHCARD:
-      return <FlashCard isLoading={isLoading} />;
-    case OPEN_QUESTION:
-      return <OpenQuestionCard isLoading={isLoading} />;
-    case ORDER_THE_SEQUENCE:
-      return <OrderTheSequenceCard isLoading={isLoading} />;
+      return <FlashCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case FILL_THE_GAPS:
-      return <FillTheGapCard isLoading={isLoading} />;
+      return <FillTheGapCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case MULTIPLE_CHOICE_QUESTION:
+      return <MultipleChoiceQuestionCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case OPEN_QUESTION:
+      return <OpenQuestionCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case ORDER_THE_SEQUENCE:
+      return <OrderTheSequenceCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
     case QUESTION_ANSWER:
-      return <QuestionAnswerCard isLoading={isLoading} />;
+      return <QuestionAnswerCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case SINGLE_CHOICE_QUESTION:
+      return <SingleChoiceQuestionCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case SURVEY:
+      return <SurveyCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case TEXT_MEDIA:
+      return <TextMediaCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case TITLE_TEXT:
+      return <TitleTextCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case TITLE_TEXT_MEDIA:
+      return <TitleTextMediaCard isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
+    case TRANSITION:
+      return <Transition isLoading={isLoading} setIsSwipeEnabled={setIsSwipeEnabled} />;
 
     default:
       return (

@@ -22,6 +22,7 @@ interface OrderTheSequenceCardProps {
   index: number,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
+  setIsSwipeEnabled: (boolean) => void,
 }
 
 export interface answerPositionType extends OrderedAnswerType {
@@ -29,7 +30,13 @@ export interface answerPositionType extends OrderedAnswerType {
   tempPosition: number,
 }
 
-const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({
+  card,
+  index,
+  incGoodAnswersCount,
+  isLoading,
+  setIsSwipeEnabled,
+}: OrderTheSequenceCardProps) => {
   const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
@@ -46,7 +53,8 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
         .map((ans, answerIndex) => ({ label: ans.text, goodPosition: answerIndex })));
       setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
     }
-  }, [card, isValidated, isLoading]);
+    setIsSwipeEnabled(isValidated || false);
+  }, [card, isValidated, isLoading, setIsSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -88,7 +96,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
   return (
     <>
       <CardHeader />
-      <View style={style.container}>
+      <View style={style.container} pointerEvents={isValidated ? 'none' : 'auto'}>
         <DraggableFlatList
           contentContainerStyle={style.draggableContainer}
           ListHeaderComponentStyle={style.questionContainer}
@@ -101,7 +109,7 @@ const OrderTheSequenceCard = ({ card, index, incGoodAnswersCount, isLoading }: O
             </>
           }
           showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} onDragEnd={setAnswersArray} />
+          renderItem={renderItem} onDragEnd={setAnswersArray} activationDistance={10} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }

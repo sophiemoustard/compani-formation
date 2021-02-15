@@ -20,12 +20,15 @@ interface TextMediaCardProps {
   card: TextMediaType,
   index: number,
   isLoading: boolean,
+  setIsSwipeEnabled: (boolean) => void,
 }
 
-const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
+const TextMediaCard = ({ card, index, isLoading, setIsSwipeEnabled }: TextMediaCardProps) => {
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
+
+  useEffect(() => setIsSwipeEnabled(true));
 
   useEffect(() => {
     if (!isLoading) {
