@@ -64,3 +64,4 @@ export const ACTIVE_STATE = 'active';
 
 // SWIPE
 export const SWIPE_SENSIBILITY = 20;
+export const SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED = 22;

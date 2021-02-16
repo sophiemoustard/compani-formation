@@ -15,7 +15,7 @@ import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
-import { SWIPE_SENSIBILITY } from '../../../../core/data/constants';
+import { SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED } from '../../../../core/data/constants';
 import styles from './styles';
 
 interface OrderTheSequenceCardProps {
@@ -107,7 +107,7 @@ const OrderTheSequenceCard = ({
         <DraggableFlatList contentContainerStyle={style.draggableContainer} showsVerticalScrollIndicator={false}
           data={answers} ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
           ListHeaderComponent={renderListHeaderComponent} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} activationDistance={SWIPE_SENSIBILITY + 2} />
+          renderItem={renderItem} activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
