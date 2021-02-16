@@ -13,6 +13,7 @@ import EndCard from '../cardTemplates/EndCard';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import Actions from '../../../store/activities/actions';
+import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import styles from './styles';
 
 interface CardContainerProps {
@@ -79,15 +80,16 @@ const CardContainer = ({
   }, [cardIndex]);
 
   const onSwipe = (index, event) => {
-    if (event.nativeEvent.translationX > 0 && index > 0) navigation.navigate(`card-${index - 1}`);
+    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && index > 0) navigation.navigate(`card-${index - 1}`);
 
-    if (event.nativeEvent.translationX < 0 && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
+    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
   };
 
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
-        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}>
+        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
+          activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
           <View style={styles.cardScreen}>
             <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
               onPressCancelButton={() => setExitConfirmationModal(false)}

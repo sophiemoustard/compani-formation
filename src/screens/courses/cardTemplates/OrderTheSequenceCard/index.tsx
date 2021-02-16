@@ -14,8 +14,9 @@ import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
-import styles from './styles';
 import { quizJingle } from '../../../../core/helpers/utils';
+import { SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED } from '../../../../core/data/constants';
+import styles from './styles';
 
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
@@ -87,6 +88,12 @@ const OrderTheSequenceCard = ({
     })));
   };
 
+  const renderListHeaderComponent = () => <>
+    <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+    <Text style={cardsStyle.informativeText}>
+      Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
+    </Text>
+  </>;
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   if (isLoading) return null;
@@ -96,20 +103,11 @@ const OrderTheSequenceCard = ({
   return (
     <>
       <CardHeader />
-      <View style={style.container} pointerEvents={isValidated ? 'none' : 'auto'}>
-        <DraggableFlatList
-          contentContainerStyle={style.draggableContainer}
-          ListHeaderComponentStyle={style.questionContainer}
-          ListHeaderComponent={
-            <>
-              <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-              <Text style={cardsStyle.informativeText}>
-                Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
-              </Text>
-            </>
-          }
-          showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} onDragEnd={setAnswersArray} activationDistance={10} />
+      <View style={style.container}>
+        <DraggableFlatList contentContainerStyle={style.draggableContainer} showsVerticalScrollIndicator={false}
+          data={answers} ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
+          ListHeaderComponent={renderListHeaderComponent} keyExtractor={(_, answerIndex) => answerIndex.toString()}
+          renderItem={renderItem} activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
