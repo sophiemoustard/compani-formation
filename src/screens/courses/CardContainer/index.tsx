@@ -13,6 +13,7 @@ import EndCard from '../cardTemplates/EndCard';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import Actions from '../../../store/activities/actions';
+import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import styles from './styles';
 
 interface CardContainerProps {
@@ -38,7 +39,6 @@ const CardContainer = ({
   setExitConfirmationModal,
   resetActivityReducer,
 }: CardContainerProps) => {
-  const SWIPE_SENSIBILITY = 20;
   const { signOut } = useContext(AuthContext);
   const [isSwipeEnabled, setIsSwipeEnabled] = useState<boolean>(false);
 
