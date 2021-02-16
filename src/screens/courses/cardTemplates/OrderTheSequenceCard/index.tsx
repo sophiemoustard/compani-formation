@@ -88,6 +88,12 @@ const OrderTheSequenceCard = ({
     })));
   };
 
+  const renderListHeaderComponent = () => <>
+    <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+    <Text style={cardsStyle.informativeText}>
+      Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
+    </Text>
+  </>;
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   if (isLoading) return null;
@@ -98,19 +104,10 @@ const OrderTheSequenceCard = ({
     <>
       <CardHeader />
       <View style={style.container}>
-        <DraggableFlatList
-          contentContainerStyle={style.draggableContainer}
-          ListHeaderComponentStyle={style.questionContainer}
-          ListHeaderComponent={
-            <>
-              <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-              <Text style={cardsStyle.informativeText}>
-                Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
-              </Text>
-            </>
-          }
-          showsVerticalScrollIndicator={false} data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} onDragEnd={setAnswersArray} activationDistance={SWIPE_SENSIBILITY + 2} />
+        <DraggableFlatList contentContainerStyle={style.draggableContainer} showsVerticalScrollIndicator={false}
+          data={answers} ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
+          ListHeaderComponent={renderListHeaderComponent} keyExtractor={(_, answerIndex) => answerIndex.toString()}
+          renderItem={renderItem} activationDistance={SWIPE_SENSIBILITY + 2} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
