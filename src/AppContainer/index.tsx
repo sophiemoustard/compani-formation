@@ -99,6 +99,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
   const Courses = { CourseProfile, SubProgramProfile };
   const userScreens = { Home, CardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
+  const undismissableScreens = ['CardContainer'];
 
   return (
     <NavigationContainer ref={navigationRef}>
@@ -107,7 +108,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
         {Object.entries(alenviToken ? userScreens : authScreens)
-          .map(([name, component]) => (<MainStack.Screen key={name} name={name} component={component} />))}
+          .map(([name, component]) => (
+            <MainStack.Screen key={name} name={name} component={component}
+              options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
+          ))}
       </MainStack.Navigator>
     </NavigationContainer>
   );
