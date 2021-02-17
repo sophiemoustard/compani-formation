@@ -108,8 +108,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       </View>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
         {Object.entries(alenviToken ? userScreens : authScreens)
-          .map(([name, component]) => (<MainStack.Screen key={name} name={name} component={component}
-            options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />))}
+          .map(([name, component]) => (
+            <MainStack.Screen key={name} name={name} component={component}
+              options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
+          ))}
       </MainStack.Navigator>
     </NavigationContainer>
   );
