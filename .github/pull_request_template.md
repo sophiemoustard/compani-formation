@@ -17,4 +17,7 @@
 - [ ] J'appelle une nouvelle route: j'ai géré le cas ou la route n'existe pas.
 - [ ] Je n'ai pas changé de constante
 
+- J'ai ajouté une variable d'environnement :
+  - [ ] Je l'ai ajouté dans env.dev et env.prod aussi
+
 - Cas d'usage : 
