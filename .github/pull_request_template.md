@@ -1,11 +1,6 @@
 - [ ] J'ai testé sur iphone
 - [ ] J'ai testé sur android
 
-- [ ] J'ai testé les anciennes versions: a minima:
-  - [ ] Affichage des pages explorer/mes formations/About/CourseProfile
-  - [ ] Inscription a une formation e-learning
-  - [ ] Possibilité de faire une activité
-
 - [ ] La nouvelle version de l'app est compatible avec l'ancienne version de l'API ? (J'ai teste en me mettant sur
   master en api)
   - Oui parce que
