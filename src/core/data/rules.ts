@@ -97,7 +97,7 @@ Adresse de courrier électronique : support@alenvi.io
 Directeur de la publication : Guillaume DESNOËS
 Hébergeur : Heroku
 
-Les Services permettent aux Utilisateurs de gérer les tâches administratives, et la planification dans le cadre de relations d’accompagnement à domicile de personnes en perte d’autonomie. Ils leur permettent également d’accéder à des formations dispensées en ligne et en présentiel.
+Les Services permettent aux Utilisateurs de gérer les tâches administratives, et la planification dans le cadre de relations d'accompagnement à domicile de personnes en perte d’autonomie. Ils leur permettent également d’accéder à des formations dispensées en ligne et en présentiel.
 
 Les présentes Conditions générales ont pour objet de fixer les conditions d’accès et d’utilisation des Services accessibles sur le Site et régissent les relations contractuelles entre les Utilisateurs et l’Editeur.
 
@@ -137,7 +137,7 @@ L’inscription se fait à partir du Site. Pour utiliser les Services, l’Utili
 - Renseigner les champs du formulaire d’inscription suivants :
   - L’adresse email (obligatoire)
   - Le mot de passe personnel (obligatoire)
-  - Nom (facultatif)
+  - Nom (obligatoire)
   - Prénom (facultatif)
 - Confirmer son inscription et sa prise de connaissance et son acceptation des présentes Conditions générales.
 
@@ -164,7 +164,7 @@ Dans le cadre de l'Utilisation des Services, l'Utilisateur s'interdit de se livr
 - à respecter les droits des tiers, et notamment les droits de propriété intellectuelle/droit à l’image ;
 - à respecter le caractère confidentiel des échanges avec les autres utilisateurs.
 
-L’Editeur invite les Utilisateurs à l'alerter s'ils découvrent du contenu qui constitue une violation aux lois et règlements en vigueur et aux présentes Conditions générales. Pour signaler un abus, l'Utilisateur peut avertir L’Editeur en envoyant un courrier électronique à l'adresse suivante : support@alenvi.ioCe signalement doit être accompagné de l'ensemble des informations permettant à d'identifier le contenu illicite ou frauduleux.
+L’Editeur invite les Utilisateurs à l'alerter s'ils découvrent du contenu qui constitue une violation aux lois et règlements en vigueur et aux présentes Conditions générales. Pour signaler un abus, l'Utilisateur peut avertir L’Editeur en envoyant un courrier électronique à l'adresse suivante : support@alenvi.io. Ce signalement doit être accompagné de l'ensemble des informations permettant à d'identifier le contenu illicite ou frauduleux.
 
 FRAUDE : soyez vigilant
 Des tentatives de fraude dont sont victimes les entreprises comme les particuliers sont régulièrement signalées. Des messages sont adressés au nom d’organismes publics et privés usurpant leur identité, pour demander à leurs clients des données à caractères personnels et leurs coordonnées bancaires.
@@ -173,6 +173,7 @@ Conseils :
 - Ne répondez jamais à ce type de messages, ne communiquez notamment jamais vos identifiants, vos coordonnées bancaires, vos codes d’accès à vos espaces personnels.
 - Ne cliquez pas sur les liens proposés.
 - Supprimez ces messages.
+
 Information :
 Nous mettons tout en œuvre afin de garantir la sécurité de vos informations personnelles conformément à la réglementation en vigueur.
 Nous ne vous demanderons jamais sur votre adresse de messagerie personnelle des données confidentielles.
