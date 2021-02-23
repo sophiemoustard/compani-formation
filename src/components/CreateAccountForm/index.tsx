@@ -93,12 +93,12 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
             darkMode={false} onChangeText={text => onChangeText(text, i)} disabled={isLoading}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
-          {!!d.openModal && <TouchableOpacity onPress={openModal}>
-            <Text style={styles.modalText}>
-              <Text>{d.openModal.text}</Text>
-              <Text style={styles.modalLink}>{d.openModal.link}</Text>
+          {!!d.openModal && <Text>
+            <Text style={styles.modalText}>{d.openModal.text}</Text>
+            <Text style={[styles.modalText, styles.modalLink]} onPress={openModal} suppressHighlighting>
+              {d.openModal.link}
             </Text>
-          </TouchableOpacity>}
+          </Text>}
         </View>)}
         <View style={styles.footer}>
           <NiButton caption="Valider" onPress={validData} loading={isLoading}

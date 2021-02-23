@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   },
   modalLink: {
     textDecorationLine: 'underline',
+    textAlign: 'center',
   },
 });
 
