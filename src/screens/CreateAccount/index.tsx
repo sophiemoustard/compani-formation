@@ -78,7 +78,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       errorMessage: 'Votre mot de passe et sa confirmation ne correspondent pas',
       isValidationAttempted: false,
       required: true,
-      openModal: 'En continuant, vous vous engagez à respecter nos conditions d’utilisation',
+      openModal: { text: 'En continuant, vous vous engagez à respecter nos ', link: 'conditions d\'utilisation' },
     }],
   ]);
 

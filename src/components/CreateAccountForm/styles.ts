@@ -23,9 +23,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     flex: 1,
   },
-  modal: {
+  modalText: {
     ...FIRA_SANS_ITALIC.SM,
     color: GREY[600],
+  },
+  modalLink: {
     textDecorationLine: 'underline',
   },
 });

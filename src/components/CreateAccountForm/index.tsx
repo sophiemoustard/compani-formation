@@ -94,7 +94,10 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
             darkMode={false} onChangeText={text => onChangeText(text, i)} disabled={isLoading}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
           {!!d.openModal && <TouchableOpacity onPress={openModal}>
-            <Text style={styles.modal}>{d.openModal}</Text>
+            <Text style={styles.modalText}>
+              <Text>{d.openModal.text}</Text>
+              <Text style={styles.modalLink}>{d.openModal.link}</Text>
+            </Text>
           </TouchableOpacity>}
         </View>)}
         <View style={styles.footer}>
