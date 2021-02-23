@@ -22,7 +22,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
   const { signIn, signOut } = useContext(AuthContext);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [formList, setFormList] = useState([
     [{
       type: 'text',
@@ -127,8 +127,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
-            create={create} setModal={() => setIsOpenModal(true)} />
-          <TermoOfUseModal visible={isOpenModal} onRequestClose={() => setIsOpenModal(false)} />
+            create={create} openModal={() => setIsModalOpen(true)} />
+          <TermoOfUseModal visible={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
         </>
       )}
     </Stack.Screen>

@@ -15,9 +15,9 @@ interface CreateAccountFormProps {
   setData: (data: any, i: number) => void,
   goBack: (index: number) => void,
   create: () => void,
-  setModal: () => void,
+  openModal: () => void,
 }
-const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, setModal }: CreateAccountFormProps) => {
+const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openModal }: CreateAccountFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const isDisabledBackHandler = useRef(isLoading);
   const navigation = useNavigation();
@@ -93,7 +93,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, se
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
             darkMode={false} onChangeText={text => onChangeText(text, i)} disabled={isLoading}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
-          {!!d.openModal && <TouchableOpacity onPress={setModal}>
+          {!!d.openModal && <TouchableOpacity onPress={openModal}>
             <Text style={styles.modal}>{d.openModal}</Text>
           </TouchableOpacity>}
         </View>)}
