@@ -139,6 +139,7 @@ L’inscription se fait à partir du Site. Pour utiliser les Services, l’Utili
   - Le mot de passe personnel (obligatoire)
   - Nom (obligatoire)
   - Prénom (facultatif)
+  - Numéro de téléphone (facultatif)
 - Confirmer son inscription et sa prise de connaissance et son acceptation des présentes Conditions générales.
 
 Chaque Utilisateur s’engage à fournir des informations véritables et sincères le concernant. L’Editeur ne saurait être tenue responsable des défaillances des Services qui seraient liées à des informations erronées communiquées par l’Utilisateur.`,
