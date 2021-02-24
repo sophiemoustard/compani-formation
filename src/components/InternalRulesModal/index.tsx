@@ -7,7 +7,7 @@ import { ICON, INPUT_HEIGHT } from '../../styles/metrics';
 import FeatherButton from '../icons/FeatherButton';
 import { internalRulesArticles } from '../../core/data/rules';
 import FooterGradient from '../design/FooterGradient';
-import styles from './styles';
+import styles from '../../styles/rulesModal';
 
 interface InternalRulesModalProps {
   onRequestClose: () => void,

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM } from '../../styles/fonts';
-import { GREY, MODAL_BACKDROP_GREY } from '../../styles/colors';
+import { BORDER_RADIUS, MARGIN, PADDING } from './metrics';
+import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC, FIRA_SANS_MEDIUM } from './fonts';
+import { GREY, MODAL_BACKDROP_GREY } from './colors';
 
 export default StyleSheet.create({
   modalContainer: {
@@ -33,8 +33,18 @@ export default StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
   },
+  italicText: {
+    ...FIRA_SANS_ITALIC.MD,
+    textAlign: 'left',
+    marginBottom: MARGIN.MD,
+  },
   articleTitle: {
     ...FIRA_SANS_MEDIUM.MD,
+    textAlign: 'left',
+    marginBottom: MARGIN.SM,
+  },
+  sectionTitle: {
+    ...FIRA_SANS_BOLD.MD,
     textAlign: 'left',
     marginBottom: MARGIN.SM,
   },
