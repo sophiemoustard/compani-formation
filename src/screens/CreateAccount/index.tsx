@@ -11,6 +11,7 @@ import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { Context as AuthContext } from '../../context/AuthContext';
+import TermoOfUseModal from '../../components/TermOfUseModal';
 
 interface CreateAccountProps {
   route: { params: { email: string } },
@@ -21,6 +22,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
   const { signIn, signOut } = useContext(AuthContext);
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const [formList, setFormList] = useState([
     [{
       type: 'text',
@@ -76,6 +78,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       errorMessage: 'Votre mot de passe et sa confirmation ne correspondent pas',
       isValidationAttempted: false,
       required: true,
+      openModal: { text: 'En continuant, vous vous engagez à respecter nos ', link: 'conditions d\'utilisation' },
     }],
   ]);
 
@@ -124,7 +127,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
             <ProgressBar progress={((i + 1) / formList.length) * 100} />
           </View>
           <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
-            create={create}/>
+            create={create} openModal={() => setIsModalOpened(true)} />
+          <TermoOfUseModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         </>
       )}
     </Stack.Screen>

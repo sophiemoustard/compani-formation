@@ -27,7 +27,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const [trainerPictureSource, setTrainerPictureSource] = useState(
     require('../../../../assets/images/default_avatar.png')
   );
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
   useEffect(() => {
     setDates(course.slots.length
@@ -86,10 +86,10 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           </TouchableOpacity>
         </>}
       </View>
-      <TouchableOpacity style={styles.internalRulesContainer} onPress={() => setIsOpenModal(true)}>
+      <TouchableOpacity style={styles.internalRulesContainer} onPress={() => setIsModalOpened(true)}>
         <Text style={styles.internalRules}>RÈGLEMENT INTÉRIEUR</Text>
       </TouchableOpacity>
-      <InternalRulesModal visible={isOpenModal} onRequestClose={() => setIsOpenModal(false)} />
+      <InternalRulesModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
     </About>
   );
 };

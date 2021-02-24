@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
@@ -14,9 +14,10 @@ interface CreateAccountFormProps {
   isLoading: boolean,
   setData: (data: any, i: number) => void,
   goBack: (index: number) => void,
-  create: () => void;
+  create: () => void,
+  openModal: () => void,
 }
-const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create }: CreateAccountFormProps) => {
+const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openModal }: CreateAccountFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const isDisabledBackHandler = useRef(isLoading);
   const navigation = useNavigation();
@@ -92,6 +93,12 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create }: 
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
             darkMode={false} onChangeText={text => onChangeText(text, i)} disabled={isLoading}
             validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
+          {!!d.openModal && <TouchableOpacity onPress={openModal}>
+            <Text style={styles.modalText}>
+              <Text>{d.openModal.text}</Text>
+              <Text style={styles.modalLink}>{d.openModal.link}</Text>
+            </Text>
+          </TouchableOpacity>}
         </View>)}
         <View style={styles.footer}>
           <NiButton caption="Valider" onPress={validData} loading={isLoading}
