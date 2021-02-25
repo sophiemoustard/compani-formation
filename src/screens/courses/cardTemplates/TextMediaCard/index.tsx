@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
+import ZoomImage from '../../../../components/ZoomImage';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
@@ -27,8 +28,10 @@ const TextMediaCard = ({ card, index, isLoading, setIsSwipeEnabled }: TextMediaC
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
+  const [zoomImage, setZoomImage] = useState<boolean>(false);
 
   useEffect(() => setIsSwipeEnabled(true));
+  useEffect(() => setIsSwipeEnabled(!zoomImage), [zoomImage, setIsSwipeEnabled]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -52,12 +55,16 @@ const TextMediaCard = ({ card, index, isLoading, setIsSwipeEnabled }: TextMediaC
       <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
-          <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
+          <TouchableOpacity onPress={() => setZoomImage(true)}>
+            <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />
+          </TouchableOpacity>}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource} />}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
+      {zoomImage && mediaSource &&
+        <ZoomImage image={mediaSource} setZoomImage={setZoomImage} />}
     </>
   );
 };
