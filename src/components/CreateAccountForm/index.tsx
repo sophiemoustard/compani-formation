@@ -99,8 +99,8 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
             bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>
         <TouchableOpacity onPress={openModal} style={styles.modalWrapper}>
-          {data.map(d =>
-            !!d.openModal && <Text style={styles.modalText}>
+          {data.map((d, i) =>
+            !!d.openModal && <Text style={styles.modalText} key={`modalText${i}`}>
               <Text>{d.openModal.text}</Text>
               <Text style={styles.modalLink}>{d.openModal.link}</Text>
             </Text>)}
