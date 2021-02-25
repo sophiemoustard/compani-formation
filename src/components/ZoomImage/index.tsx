@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { View, Animated, TouchableOpacity } from 'react-native';
+import { View, Animated } from 'react-native';
 import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
-import { PINK } from '../../styles/colors';
+import { WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import FeatherButton from '../icons/FeatherButton';
 import cardsStyle from '../../styles/cards';
@@ -37,7 +37,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
 
   const onPanStateChange = (event) => {
     translate.extractOffset();
-    if (event.nativeEvent.state === State.ACTIVE) {
+    if (event.nativeEvent.oldState === State.ACTIVE) {
       Animated.spring(translate.x, { toValue: 1, useNativeDriver: false }).start();
       Animated.spring(translate.y, { toValue: 1, useNativeDriver: false }).start();
     }
@@ -47,19 +47,16 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
 
   return (
     <View style={styles.container} >
-      <TouchableOpacity onPress={() => setZoomImage(false)} activeOpacity={1}>
-        <FeatherButton name={'x-circle'} onPress={() => setZoomImage(false)} size={ICON.LG} color={PINK[500]}
-          style={styles.goBack} />
-        <PanGestureHandler onGestureEvent={handlePan} onHandlerStateChange={onPanStateChange} ref={pan}
-          simultaneousHandlers={pinch} maxPointers={1}>
-          <PinchGestureHandler onGestureEvent={handlePinch} onHandlerStateChange={onPinchStateChange} ref={pinch}
-            simultaneousHandlers={pan}>
-            {!!image &&
-              <Animated.Image source={image} style={[cardsStyle.media, styles.media, { transform }]}
-                resizeMode="contain" />}
-          </PinchGestureHandler>
-        </PanGestureHandler>
-      </TouchableOpacity>
+      <FeatherButton name='x-circle' onPress={() => setZoomImage(false)} size={ICON.LG} color={WHITE}
+        style={styles.goBack} />
+      <PanGestureHandler onGestureEvent={handlePan} onHandlerStateChange={onPanStateChange} ref={pan}
+        simultaneousHandlers={pinch} maxPointers={1}>
+        <PinchGestureHandler onGestureEvent={handlePinch} onHandlerStateChange={onPinchStateChange} ref={pinch}
+          simultaneousHandlers={pan}>
+          {!!image &&
+            <Animated.Image source={image} style={[cardsStyle.media, styles.media, { transform }]} />}
+        </PinchGestureHandler>
+      </PanGestureHandler>
     </View>);
 };
 
