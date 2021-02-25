@@ -21,7 +21,7 @@ interface MultipleChoiceQuestionCardProps {
   cardIndex: number,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
-  setIsSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
 export interface qcmAnswerType extends qcmAnswerFromAPIType {
@@ -33,7 +33,7 @@ const MultipleChoiceQuestionCard = ({
   cardIndex,
   incGoodAnswersCount,
   isLoading,
-  setIsSwipeEnabled,
+  setIsRightSwipeEnabled,
 }: MultipleChoiceQuestionCardProps) => {
   const [answers, setAnswers] = useState<Array<qcmAnswerType>>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
@@ -47,8 +47,8 @@ const MultipleChoiceQuestionCard = ({
 
   useEffect(() => {
     if (!isLoading && !isValidated) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
-    setIsSwipeEnabled(isValidated);
-  }, [card, isLoading, isValidated, setIsSwipeEnabled]);
+    setIsRightSwipeEnabled(isValidated);
+  }, [card, isLoading, isValidated, setIsRightSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {

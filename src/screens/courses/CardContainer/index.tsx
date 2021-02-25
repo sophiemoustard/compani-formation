@@ -40,7 +40,8 @@ const CardContainer = ({
   resetActivityReducer,
 }: CardContainerProps) => {
   const { signOut } = useContext(AuthContext);
-  const [isSwipeEnabled, setIsSwipeEnabled] = useState<boolean>(false);
+  const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
+  const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
 
   const getActivity = async () => {
     try {
@@ -80,9 +81,13 @@ const CardContainer = ({
   }, [cardIndex]);
 
   const onSwipe = (index, event) => {
-    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && index > 0) navigation.navigate(`card-${index - 1}`);
+    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && index > 0 && isLeftSwipeEnabled) {
+      navigation.navigate(`card-${index - 1}`);
+    }
 
-    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isSwipeEnabled) navigation.navigate(`card-${index + 1}`);
+    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
+      navigation.navigate(`card-${index + 1}`);
+    }
   };
 
   const renderCardScreen = (index: number) => (
@@ -94,7 +99,8 @@ const CardContainer = ({
             <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
               onPressCancelButton={() => setExitConfirmationModal(false)}
               title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
-            <CardTemplate index={index} setIsSwipeEnabled={setIsSwipeEnabled} />
+            <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
+              setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
           </View>
         </PanGestureHandler>
       )}
