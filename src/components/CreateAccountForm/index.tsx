@@ -98,12 +98,13 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
           <NiButton caption="Valider" onPress={validData} loading={isLoading}
             bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
         </View>
-        {data.map((d, i) => !!d.openModal && <TouchableOpacity onPress={openModal} key={`text${i}`}>
-          <Text style={styles.modalText}>
-            <Text>{d.openModal.text}</Text>
-            <Text style={styles.modalLink}>{d.openModal.link}</Text>
-          </Text>
-        </TouchableOpacity>)}
+        <TouchableOpacity onPress={openModal} style={styles.modalWrapper}>
+          {data.map(d =>
+            !!d.openModal && <Text style={styles.modalText}>
+              <Text>{d.openModal.text}</Text>
+              <Text style={styles.modalLink}>{d.openModal.link}</Text>
+            </Text>)}
+        </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
