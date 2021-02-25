@@ -15,11 +15,11 @@ interface TitleTextCardProps {
   card: TitleTextType,
   index: number,
   isLoading: boolean,
-  setIsSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const TitleTextCard = ({ card, index, isLoading, setIsSwipeEnabled }: TitleTextCardProps) => {
-  useEffect(() => setIsSwipeEnabled(true));
+const TitleTextCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: TitleTextCardProps) => {
+  useEffect(() => setIsRightSwipeEnabled(true));
 
   if (isLoading) return null;
 

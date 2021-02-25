@@ -13,7 +13,7 @@ interface FlashCardProps {
   card: FlashCardType,
   index: number,
   isLoading: boolean,
-  setIsSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
 // eslint-disable-next-line no-shadow
@@ -23,7 +23,7 @@ export enum ClickOnCard {
   CLICKED_MORE_THAN_ONCE_CARD = 'clickedMoreThanOnce',
 }
 
-const FlashCard = ({ card, index, isLoading, setIsSwipeEnabled }: FlashCardProps) => {
+const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
@@ -32,7 +32,7 @@ const FlashCard = ({ card, index, isLoading, setIsSwipeEnabled }: FlashCardProps
   animatedValue.addListener(({ value }) => { rotationValue = value; });
 
   useEffect(() => {
-    setIsSwipeEnabled(timesHasBeenClicked !== ClickOnCard.UNCLICKED_CARD);
+    setIsRightSwipeEnabled(timesHasBeenClicked !== ClickOnCard.UNCLICKED_CARD);
     if (timesHasBeenClicked === ClickOnCard.CLICKED_ONCE_CARD && !hasBeenClicked.current) {
       Animated.spring(animatedValue, {
         toValue: 180,
@@ -44,7 +44,7 @@ const FlashCard = ({ card, index, isLoading, setIsSwipeEnabled }: FlashCardProps
     } else if (hasBeenClicked.current) {
       setTimesHasBeenClicked(ClickOnCard.CLICKED_MORE_THAN_ONCE_CARD);
     }
-  }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue, setIsSwipeEnabled]);
+  }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue, setIsRightSwipeEnabled]);
 
   if (isLoading) return null;
 

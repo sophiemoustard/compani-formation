@@ -13,11 +13,11 @@ interface TransitionProps {
   index: number,
   card: TransitionType,
   isLoading: boolean,
-  setIsSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const Transition = ({ index, card, isLoading, setIsSwipeEnabled }: TransitionProps) => {
-  useEffect(() => setIsSwipeEnabled(true));
+const Transition = ({ index, card, isLoading, setIsRightSwipeEnabled }: TransitionProps) => {
+  useEffect(() => setIsRightSwipeEnabled(true));
 
   if (isLoading) return null;
 
