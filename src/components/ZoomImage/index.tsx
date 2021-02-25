@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { View, Animated, TouchableOpacity } from 'react-native';
 import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
 import { PINK } from '../../styles/colors';
@@ -13,26 +13,31 @@ interface ZoomImageProps {
 }
 
 const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
-  const [scale] = useState(new Animated.Value(1));
-  const [translate] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
+  let lastScale = 1;
+  const baseScale = new Animated.Value(1);
+  const pinchScale = new Animated.Value(1);
+  const scale = Animated.multiply(baseScale, pinchScale);
+  const translate = new Animated.ValueXY({ x: 0, y: 0 });
   const pan = useRef<PanGestureHandler>(null);
   const pinch = useRef<PinchGestureHandler>(null);
 
-  const handlePinch = Animated.event([{ nativeEvent: { scale } }], { useNativeDriver: false });
+  const handlePinch = Animated.event([{ nativeEvent: { scale: pinchScale } }], { useNativeDriver: false });
   const handlePan = Animated.event(
     [{ nativeEvent: { translationX: translate.x, translationY: translate.y } }],
     { useNativeDriver: false }
   );
 
   const onPinchStateChange = (event) => {
-    if (event.nativeEvent.oldtate === State.ACTIVE) {
-      Animated.spring(scale, { toValue: 1, useNativeDriver: false }).start();
+    if (event.nativeEvent.oldState === State.ACTIVE) {
+      lastScale *= event.nativeEvent.scale;
+      baseScale.setValue(lastScale);
+      pinchScale.setValue(1);
     }
   };
 
   const onPanStateChange = (event) => {
     translate.extractOffset();
-    if (event.nativeEvent.oldState === State.ACTIVE) {
+    if (event.nativeEvent.state === State.ACTIVE) {
       Animated.spring(translate.x, { toValue: 1, useNativeDriver: false }).start();
       Animated.spring(translate.y, { toValue: 1, useNativeDriver: false }).start();
     }
@@ -49,7 +54,9 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
           simultaneousHandlers={pinch} maxPointers={1}>
           <PinchGestureHandler onGestureEvent={handlePinch} onHandlerStateChange={onPinchStateChange} ref={pinch}
             simultaneousHandlers={pan}>
-            {!!image && <Animated.Image source={image} style={[cardsStyle.media, styles.media, { transform }]} />}
+            {!!image &&
+              <Animated.Image source={image} style={[cardsStyle.media, styles.media, { transform }]}
+                resizeMode="contain" />}
           </PinchGestureHandler>
         </PanGestureHandler>
       </TouchableOpacity>
