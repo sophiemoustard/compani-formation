@@ -23,13 +23,10 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.MD,
     flex: 1,
   },
-  modalWrapper: {
-    height: 50,
-  },
   modalText: {
     ...FIRA_SANS_ITALIC.SM,
     color: GREY[600],
-    marginBottom: MARGIN.MD,
+    marginBottom: MARGIN.LG,
   },
   modalLink: {
     textDecorationLine: 'underline',
