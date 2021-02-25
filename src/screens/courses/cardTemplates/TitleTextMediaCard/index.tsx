@@ -32,6 +32,8 @@ const TitleTextMediaCard = ({ card, index, isLoading, setIsSwipeEnabled }: Title
 
   useEffect(() => setIsSwipeEnabled(true));
 
+  useEffect(() => setIsSwipeEnabled(!zoomImage), [zoomImage, setIsSwipeEnabled]);
+
   useEffect(() => {
     if (!isLoading) {
       if (card?.media?.link && card?.media?.type === IMAGE) {
