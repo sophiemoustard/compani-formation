@@ -22,6 +22,7 @@ interface FillTheGap {
   index: number,
   isLoading: boolean,
   incGoodAnswersCount: () => void,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
 export interface FillTheGapAnswers {
@@ -29,7 +30,7 @@ export interface FillTheGapAnswers {
   visible: boolean,
 }
 
-const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillTheGap) => {
+const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRightSwipeEnabled }: FillTheGap) => {
   const [goodAnswers, setGoodAnswers] = useState<Array<string>>([]);
   const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
@@ -55,7 +56,8 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount }: FillThe
         .map(proposition => ({ text: proposition, visible: true })));
       setSelectedAnswers(goodAnswers.map(() => ''));
     }
-  }, [card, goodAnswers, isLoading, isValidated]);
+    setIsRightSwipeEnabled(isValidated);
+  }, [card, goodAnswers, isLoading, isValidated, setIsRightSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {

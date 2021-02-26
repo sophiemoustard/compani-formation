@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
@@ -15,9 +15,12 @@ interface TitleTextCardProps {
   card: TitleTextType,
   index: number,
   isLoading: boolean,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const TitleTextCard = ({ card, index, isLoading }: TitleTextCardProps) => {
+const TitleTextCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: TitleTextCardProps) => {
+  useEffect(() => setIsRightSwipeEnabled(true));
+
   if (isLoading) return null;
 
   return (

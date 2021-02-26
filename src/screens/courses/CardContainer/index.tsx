@@ -1,7 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { View, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
 import { NavigationType } from '../../../types/NavigationType';
@@ -12,6 +13,7 @@ import EndCard from '../cardTemplates/EndCard';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import Actions from '../../../store/activities/actions';
+import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import styles from './styles';
 
 interface CardContainerProps {
@@ -38,6 +40,8 @@ const CardContainer = ({
   resetActivityReducer,
 }: CardContainerProps) => {
   const { signOut } = useContext(AuthContext);
+  const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
+  const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
 
   const getActivity = async () => {
     try {
@@ -76,15 +80,29 @@ const CardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
+  const onSwipe = (index, event) => {
+    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && index > 0 && isLeftSwipeEnabled) {
+      navigation.navigate(`card-${index - 1}`);
+    }
+
+    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
+      navigation.navigate(`card-${index + 1}`);
+    }
+  };
+
   const renderCardScreen = (index: number) => (
     <Tab.Screen key={index} name={`card-${index}`}>
       {() => (
-        <View style={styles.cardScreen}>
-          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-            onPressCancelButton={() => setExitConfirmationModal(false)}
-            title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
-          <CardTemplate index={index} />
-        </View>
+        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
+          activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
+          <View style={styles.cardScreen}>
+            <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+              onPressCancelButton={() => setExitConfirmationModal(false)}
+              title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
+            <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
+              setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
+          </View>
+        </PanGestureHandler>
       )}
     </Tab.Screen>
   );

@@ -19,6 +19,7 @@ interface SurveyCardProps {
   isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
 const SurveyCard = ({
@@ -28,8 +29,11 @@ const SurveyCard = ({
   isLoading,
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,
+  setIsRightSwipeEnabled,
 }: SurveyCardProps) => {
   const [selectedScore, setSelectedScore] = useState<string>('');
+
+  useEffect(() => setIsRightSwipeEnabled(false));
 
   useEffect(() => {
     setSelectedScore(questionnaireAnswer ? questionnaireAnswer.answerList[0] : '');

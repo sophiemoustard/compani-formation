@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC, FIRA_SANS_MEDIUM } from '../../styles/fonts';
-import { GREY, MODAL_BACKDROP_GREY } from '../../styles/colors';
+import { BORDER_RADIUS, MARGIN, PADDING } from './metrics';
+import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC, FIRA_SANS_MEDIUM } from './fonts';
+import { GREY, MODAL_BACKDROP_GREY } from './colors';
 
 export default StyleSheet.create({
   modalContainer: {

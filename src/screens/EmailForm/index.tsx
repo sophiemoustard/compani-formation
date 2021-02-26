@@ -7,6 +7,7 @@ import { NavigationType } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
+import accountCreationStyles from '../../styles/accountCreation';
 import { GREY, PINK, WHITE } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
@@ -29,8 +30,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const style = styles(isKeyboardOpen && !IS_LARGE_SCREEN);
 
   const hardwareBackPress = () => {
     if (!isDisabledBackHandler.current) setExitConfirmationModal(true);
@@ -88,22 +87,22 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={accountCreationStyles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
-      <View style={style.goBack}>
+      <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
           disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title={'Êtes-vous sûr de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
       </View>
-      <View style={style.container}>
-        <Text style={style.title}>Quelle est votre e-mail ?</Text>
-        <View style={style.input}>
+      <View style={accountCreationStyles.container}>
+        <Text style={accountCreationStyles.title}>Quelle est votre e-mail ?</Text>
+        <View style={accountCreationStyles.input}>
           <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
-            onChangeText={text => enterEmail(text)} isKeyboardOpen={setIsKeyboardOpen} disabled={isLoading} />
+            onChangeText={text => enterEmail(text)} disabled={isLoading} />
         </View>
-        <View style={style.footer}>
+        <View style={accountCreationStyles.footer}>
           <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
             color={WHITE} borderColor={PINK[500]} />
         </View>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
+import ZoomImage from '../../../../components/ZoomImage';
 import Selectors from '../../../../store/activities/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
@@ -20,12 +21,27 @@ interface TextMediaCardProps {
   card: TextMediaType,
   index: number,
   isLoading: boolean,
+  setIsRightSwipeEnabled: (boolean) => void,
+  setIsLeftSwipeEnabled: (boolean) => void,
 }
 
-const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
+const TextMediaCard = ({
+  card,
+  index,
+  isLoading,
+  setIsRightSwipeEnabled,
+  setIsLeftSwipeEnabled,
+}: TextMediaCardProps) => {
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
+  const [zoomImage, setZoomImage] = useState<boolean>(false);
+
+  useEffect(() => setIsRightSwipeEnabled(true));
+  useEffect(() => {
+    setIsRightSwipeEnabled(!zoomImage);
+    setIsLeftSwipeEnabled(!zoomImage);
+  }, [zoomImage, setIsRightSwipeEnabled, setIsLeftSwipeEnabled]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -49,12 +65,16 @@ const TextMediaCard = ({ card, index, isLoading }: TextMediaCardProps) => {
       <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
-          <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />}
+          <TouchableOpacity onPress={() => setZoomImage(true)}>
+            <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />
+          </TouchableOpacity>}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource} />}
       </ScrollView>
       <FooterGradient />
       <CardFooter index={index} />
+      {zoomImage && mediaSource &&
+        <ZoomImage image={mediaSource} setZoomImage={setZoomImage} />}
     </>
   );
 };

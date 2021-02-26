@@ -21,6 +21,7 @@ interface QuestionAnswerCardProps {
   addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
+  setIsRightSwipeEnabled: (boolean) => void,
 }
 
 export interface answerType extends answerFromAPIType {
@@ -34,8 +35,11 @@ const QuestionAnswerCard = ({
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,
   isLoading,
+  setIsRightSwipeEnabled,
 }: QuestionAnswerCardProps) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
+
+  useEffect(() => setIsRightSwipeEnabled(false));
 
   useEffect(() => {
     if (!isLoading) {
