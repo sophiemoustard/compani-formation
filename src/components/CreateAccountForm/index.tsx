@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
 import styles from './styles';
+import accountCreationStyles from '../../styles/accountCreation';
 import { PINK, WHITE } from '../../styles/colors';
 import { PHONE_REGEX } from '../../core/data/constants';
 import { IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
@@ -84,17 +85,17 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
   };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={accountCreationStyles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}
+      <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps='always'>
-        <Text style={styles.title}>{data[0].title}</Text>
-        {data.map((d, i) => <View style={styles.input} key={`container${i}`}>
-          <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type}
-            darkMode={false} onChangeText={text => onChangeText(text, i)} disabled={isLoading}
-            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} required={d.required} />
+        <Text style={accountCreationStyles.title}>{data[0].title}</Text>
+        {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
+          <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type} darkMode={false}
+            onChangeText={text => onChangeText(text, i)} disabled={isLoading} required={d.required}
+            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
         </View>)}
-        <View style={styles.footer}>
+        <View style={accountCreationStyles.footer}>
           {data.map((d, i) => <TouchableOpacity onPress={openModal} key={`modalText${i}`}>
             {!!d.openModal && <Text style={styles.modalText}>
               <Text>{d.openModal.text}</Text>
