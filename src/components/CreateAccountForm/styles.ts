@@ -19,13 +19,14 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.LG,
   },
   footer: {
-    marginBottom: MARGIN.XL + MARGIN.SM,
     justifyContent: 'flex-end',
+    marginBottom: MARGIN.MD,
     flex: 1,
   },
   modalText: {
     ...FIRA_SANS_ITALIC.SM,
     color: GREY[600],
+    marginBottom: MARGIN.LG,
   },
   modalLink: {
     textDecorationLine: 'underline',
