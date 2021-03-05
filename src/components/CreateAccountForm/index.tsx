@@ -93,7 +93,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
         {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
           <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type} darkMode={false}
             onChangeText={text => onChangeText(text, i)} disabled={isLoading} required={d.required}
-            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
+            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} displayRequired={true} />
         </View>)}
         <View style={accountCreationStyles.footer}>
           {data.map((d, i) => <TouchableOpacity onPress={openModal} key={`modalText${i}`}>
