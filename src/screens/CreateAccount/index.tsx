@@ -33,7 +33,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       isValid: true,
       errorMessage: '',
       isValidationAttempted: false,
-      optional: true,
+      required: false,
     }],
     [{
       type: 'text',
@@ -55,7 +55,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       isValid: true,
       errorMessage: 'Votre numéro de téléphone n\'est pas valide',
       isValidationAttempted: false,
-      optional: true,
+      required: false,
     }],
     [{
       type: 'password',
