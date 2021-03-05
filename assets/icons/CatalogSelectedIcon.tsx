@@ -3,12 +3,12 @@ import React from 'react';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { ICON } from '../../src/styles/metrics';
 
-interface ExploreSelectedIconProps {
+interface CatalogSelectedIconProps {
   style?: object,
   size?: number,
 }
 
-const ExploreSelectedIcon = ({ style, size = ICON.MD }: ExploreSelectedIconProps) => (
+const CatalogSelectedIcon = ({ style, size = ICON.MD }: CatalogSelectedIconProps) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style}>
     <Circle cx="10" cy="10" r="6" fill="#FFEBF1"/>
     <Path fillRule="evenodd" clipRule="evenodd" d="M4.03662 10.6671C5.50149 9.03018 7.63042 8 9.99995 8C12.3695 8 14.4984 9.03018 15.9633 10.6671C15.6315 13.6669 13.0882 16 9.99995 16C6.91173 16 4.36845 13.6669 4.03662 10.6671Z" fill="#FBB8D2"/>
@@ -16,4 +16,4 @@ const ExploreSelectedIcon = ({ style, size = ICON.MD }: ExploreSelectedIconProps
   </Svg>
 );
 
-export default ExploreSelectedIcon;
+export default CatalogSelectedIcon;

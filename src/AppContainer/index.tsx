@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, Text, View, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
@@ -55,7 +55,14 @@ const Home = () => {
       screenOptions={screenOptions}
       initialRouteName="Courses"
     >
-      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarLabel: 'Explorer' }} />
+      <Tab.Screen name="Catalog" component={Catalog} options={{
+        tabBarLabel: ({ focused }: {focused: boolean}) => (focused ? <Text>Explorer</Text> : <Text></Text>),
+        tabBarIcon: ({ focused }: {focused: boolean}) => (
+          <Image source={focused
+            ? require('../../assets/icons/CatalogSelectedIcon.tsx')
+            : require('../../assets/icons/CatalogIcon')} />
+        ),
+      }} />
       <Tab.Screen name="Courses" component={CourseList} options={{ tabBarLabel: 'Mes formations' }} />
       <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarLabel: 'Profil' }} />
     </Tab.Navigator>
