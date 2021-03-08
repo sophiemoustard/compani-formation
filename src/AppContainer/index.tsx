@@ -47,23 +47,32 @@ const Home = () => {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{ activeTintColor: PINK[500] }}
+      tabBarOptions={{ showLabel: false, style: { height: 72 } }}
       initialRouteName="Courses"
     >
       <Tab.Screen name="Catalog" component={Catalog} options={{
-        tabBarLabel: ({ focused }: tabBarProps) => (focused ? <Text style={style.iconText}>Explorer</Text> : null),
-        tabBarIcon: ({ focused }: tabBarProps) => (focused ? <CatalogSelectedIcon /> : <CatalogIcon />),
+        tabBarIcon: ({ focused }: tabBarProps) => (focused
+          ? <View style={style.iconContainer}>
+            <CatalogSelectedIcon />
+            <Text style={style.iconText}>Explorer</Text>
+          </View>
+          : <CatalogIcon style={style.iconContainer} />),
       }} />
       <Tab.Screen name="Courses" component={CourseList} options={{
-        tabBarLabel: ({ focused }: tabBarProps) => (focused
-          ? <Text style={style.iconText}>Mes formations</Text>
-          : null
-        ),
-        tabBarIcon: ({ focused }: tabBarProps) => (focused ? <CoursesSelectedIcon /> : <CoursesIcon />),
+        tabBarIcon: ({ focused }: tabBarProps) => (focused
+          ? <View style={style.iconContainer}>
+            <CoursesSelectedIcon />
+            <Text style={style.iconText}>Mes formations</Text>
+          </View>
+          : <CoursesIcon style={style.iconContainer} />),
       }} />
       <Tab.Screen name="Profile" component={ProfileDetails} options={{
-        tabBarLabel: ({ focused }: tabBarProps) => (focused ? <Text style={style.iconText}>Profil</Text> : null),
-        tabBarIcon: ({ focused }: tabBarProps) => (focused ? <ProfileSelectedIcon /> : <ProfileIcon />),
+        tabBarIcon: ({ focused }: tabBarProps) => (focused
+          ? <View style={style.iconContainer}>
+            <ProfileSelectedIcon />
+            <Text style={style.iconText}>Profil</Text>
+          </View>
+          : <ProfileIcon style={style.iconContainer} />),
       }} />
     </Tab.Navigator>
   );

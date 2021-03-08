@@ -12,8 +12,16 @@ const styles = (statusBarVisible: boolean = false, StatusBarHeight: number = 0) 
       height: STATUSBAR_HEIGHT,
     },
     iconText: {
-      ...FIRA_SANS_BOLD.MD,
+      ...FIRA_SANS_BOLD.SM,
       color: PINK[500],
+    },
+    iconContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: 110,
+      marginBottom: 24,
+      marginTop: 8,
     },
   });
 };
