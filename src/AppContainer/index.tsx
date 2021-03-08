@@ -39,6 +39,10 @@ import ProfileSelectedIcon from '../../assets/icons/ProfileSelectedIcon';
 
 const Tab = createBottomTabNavigator();
 
+interface tabBarProps {
+  focused: boolean
+}
+
 const Home = () => {
   const style = styles();
 
@@ -48,22 +52,19 @@ const Home = () => {
       initialRouteName="Courses"
     >
       <Tab.Screen name="Catalog" component={Catalog} options={{
-        tabBarLabel: ({ focused }: {focused: boolean}) => (focused
-          ? <Text style={style.iconText}>Explorer</Text>
-          : null
-        ),
-        tabBarIcon: ({ focused }: {focused: boolean}) => (focused ? <CatalogSelectedIcon /> : <CatalogIcon />),
+        tabBarLabel: ({ focused }: tabBarProps) => (focused ? <Text style={style.iconText}>Explorer</Text> : null),
+        tabBarIcon: ({ focused }: tabBarProps) => (focused ? <CatalogSelectedIcon /> : <CatalogIcon />),
       }} />
       <Tab.Screen name="Courses" component={CourseList} options={{
-        tabBarLabel: ({ focused }: {focused: boolean}) => (focused
+        tabBarLabel: ({ focused }: tabBarProps) => (focused
           ? <Text style={style.iconText}>Mes formations</Text>
           : null
         ),
-        tabBarIcon: ({ focused }: {focused: boolean}) => (focused ? <CoursesSelectedIcon /> : <CoursesIcon />),
+        tabBarIcon: ({ focused }: tabBarProps) => (focused ? <CoursesSelectedIcon /> : <CoursesIcon />),
       }} />
       <Tab.Screen name="Profile" component={ProfileDetails} options={{
-        tabBarLabel: ({ focused }: {focused: boolean}) => (focused ? <Text style={style.iconText}>Profil</Text> : null),
-        tabBarIcon: ({ focused }: {focused: boolean}) => (focused ? <ProfileSelectedIcon /> : <ProfileIcon />),
+        tabBarLabel: ({ focused }: tabBarProps) => (focused ? <Text style={style.iconText}>Profil</Text> : null),
+        tabBarIcon: ({ focused }: tabBarProps) => (focused ? <ProfileSelectedIcon /> : <ProfileIcon />),
       }} />
     </Tab.Navigator>
   );
