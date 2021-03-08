@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { StatusBar, Text, View, Image } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
