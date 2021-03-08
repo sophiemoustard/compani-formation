@@ -30,41 +30,41 @@ import { UserType } from '../types/UserType';
 import styles from './styles';
 import PasswordEdition from '../screens/profile/PasswordEdition';
 import PasswordReset from '../screens/PasswordReset';
-
-interface TabBarIconProps {
-  color: string,
-  size: number,
-}
+import CatalogIcon from '../../assets/icons/CatalogIcon';
+import CatalogSelectedIcon from '../../assets/icons/CatalogSelectedIcon';
+import CoursesIcon from '../../assets/icons/CoursesIcon';
+import CoursesSelectedIcon from '../../assets/icons/CoursesSelectedIcon';
+import ProfileIcon from '../../assets/icons/ProfileIcon';
+import ProfileSelectedIcon from '../../assets/icons/ProfileSelectedIcon';
 
 const Tab = createBottomTabNavigator();
 
-const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
-  const icons = { Courses: 'book', Catalog: 'search', Profile: 'person-outline' };
-
-  return (
-    <MaterialIcons name={icons[route.name]} color={color} size={size} />
-  );
-};
-
 const Home = () => {
-  const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
+  const style = styles();
 
   return (
     <Tab.Navigator
       tabBarOptions={{ activeTintColor: PINK[500] }}
-      screenOptions={screenOptions}
       initialRouteName="Courses"
     >
       <Tab.Screen name="Catalog" component={Catalog} options={{
-        tabBarLabel: ({ focused }: {focused: boolean}) => (focused ? <Text>Explorer</Text> : <Text></Text>),
-        tabBarIcon: ({ focused }: {focused: boolean}) => (
-          <Image source={focused
-            ? require('../../assets/icons/CatalogSelectedIcon.tsx')
-            : require('../../assets/icons/CatalogIcon')} />
+        tabBarLabel: ({ focused }: {focused: boolean}) => (focused
+          ? <Text style={style.iconText}>Explorer</Text>
+          : null
         ),
+        tabBarIcon: ({ focused }: {focused: boolean}) => (focused ? <CatalogSelectedIcon /> : <CatalogIcon />),
       }} />
-      <Tab.Screen name="Courses" component={CourseList} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarLabel: 'Profil' }} />
+      <Tab.Screen name="Courses" component={CourseList} options={{
+        tabBarLabel: ({ focused }: {focused: boolean}) => (focused
+          ? <Text style={style.iconText}>Mes formations</Text>
+          : null
+        ),
+        tabBarIcon: ({ focused }: {focused: boolean}) => (focused ? <CoursesSelectedIcon /> : <CoursesIcon />),
+      }} />
+      <Tab.Screen name="Profile" component={ProfileDetails} options={{
+        tabBarLabel: ({ focused }: {focused: boolean}) => (focused ? <Text style={style.iconText}>Profil</Text> : null),
+        tabBarIcon: ({ focused }: {focused: boolean}) => (focused ? <ProfileSelectedIcon /> : <ProfileIcon />),
+      }} />
     </Tab.Navigator>
   );
 };

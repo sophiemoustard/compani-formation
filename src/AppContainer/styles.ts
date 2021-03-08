@@ -1,7 +1,8 @@
 import { Platform, StyleSheet } from 'react-native';
-import { WHITE } from '../styles/colors';
+import { PINK, WHITE } from '../styles/colors';
+import { FIRA_SANS_BOLD } from '../styles/fonts';
 
-const styles = (statusBarVisible: boolean, StatusBarHeight: number) => {
+const styles = (statusBarVisible: boolean = false, StatusBarHeight: number = 0) => {
   const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarHeight;
 
   return StyleSheet.create({
@@ -9,6 +10,10 @@ const styles = (statusBarVisible: boolean, StatusBarHeight: number) => {
       display: statusBarVisible ? 'flex' : 'none',
       backgroundColor: WHITE,
       height: STATUSBAR_HEIGHT,
+    },
+    iconText: {
+      ...FIRA_SANS_BOLD.MD,
+      color: PINK[500],
     },
   });
 };
