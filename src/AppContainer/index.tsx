@@ -46,7 +46,7 @@ const Home = () => {
   const style = styles();
 
   return (
-    <Tab.Navigator tabBarOptions={{ showLabel: false, style: { height: 72 } }} initialRouteName="Courses">
+    <Tab.Navigator tabBarOptions={{ showLabel: false, style: style.tabBar }} initialRouteName="Courses">
       <Tab.Screen name="Catalog" component={Catalog} options={{
         tabBarIcon: ({ focused }: tabBarProps) => (focused
           ? <View style={style.iconContainer}>
