@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -23,41 +22,55 @@ import CourseProfile from '../screens/courses/CourseProfile';
 import SubProgramProfile from '../screens/courses/SubProgramProfile';
 import CardContainer from '../screens/courses/CardContainer';
 import MainActions from '../store/main/actions';
-import { PINK, WHITE } from '../styles/colors';
+import { WHITE } from '../styles/colors';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import Users from '../api/users';
 import { UserType } from '../types/UserType';
 import styles from './styles';
 import PasswordEdition from '../screens/profile/PasswordEdition';
 import PasswordReset from '../screens/PasswordReset';
-
-interface TabBarIconProps {
-  color: string,
-  size: number,
-}
+import CatalogIcon from '../../assets/icons/CatalogIcon';
+import CatalogSelectedIcon from '../../assets/icons/CatalogSelectedIcon';
+import CoursesIcon from '../../assets/icons/CoursesIcon';
+import CoursesSelectedIcon from '../../assets/icons/CoursesSelectedIcon';
+import ProfileIcon from '../../assets/icons/ProfileIcon';
+import ProfileSelectedIcon from '../../assets/icons/ProfileSelectedIcon';
 
 const Tab = createBottomTabNavigator();
 
-const tabBarIcon = route => ({ size, color }: TabBarIconProps) => {
-  const icons = { Courses: 'book', Catalog: 'search', Profile: 'person-outline' };
-
-  return (
-    <MaterialIcons name={icons[route.name]} color={color} size={size} />
-  );
-};
+interface tabBarProps {
+  focused: boolean
+}
 
 const Home = () => {
-  const screenOptions = ({ route }) => ({ tabBarIcon: tabBarIcon(route) });
+  const style = styles();
 
   return (
-    <Tab.Navigator
-      tabBarOptions={{ activeTintColor: PINK[500] }}
-      screenOptions={screenOptions}
-      initialRouteName="Courses"
-    >
-      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarLabel: 'Explorer' }} />
-      <Tab.Screen name="Courses" component={CourseList} options={{ tabBarLabel: 'Mes formations' }} />
-      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarLabel: 'Profil' }} />
+    <Tab.Navigator tabBarOptions={{ showLabel: false, style: style.tabBar }} initialRouteName="Courses">
+      <Tab.Screen name="Catalog" component={Catalog} options={{
+        tabBarIcon: ({ focused }: tabBarProps) => (focused
+          ? <View style={style.iconContainer}>
+            <CatalogSelectedIcon />
+            <Text style={style.iconText}>Explorer</Text>
+          </View>
+          : <CatalogIcon style={style.iconContainer} />),
+      }} />
+      <Tab.Screen name="Courses" component={CourseList} options={{
+        tabBarIcon: ({ focused }: tabBarProps) => (focused
+          ? <View style={style.iconContainer}>
+            <CoursesSelectedIcon />
+            <Text style={style.iconText}>Mes formations</Text>
+          </View>
+          : <CoursesIcon style={style.iconContainer} />),
+      }} />
+      <Tab.Screen name="Profile" component={ProfileDetails} options={{
+        tabBarIcon: ({ focused }: tabBarProps) => (focused
+          ? <View style={style.iconContainer}>
+            <ProfileSelectedIcon />
+            <Text style={style.iconText}>Profil</Text>
+          </View>
+          : <ProfileIcon style={style.iconContainer} />),
+      }} />
     </Tab.Navigator>
   );
 };
@@ -92,7 +105,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
-  const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
+  const style = styles(statusBarVisible, StatusBar.currentHeight);
 
   const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
