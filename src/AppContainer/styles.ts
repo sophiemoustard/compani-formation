@@ -2,7 +2,7 @@ import { Platform, StyleSheet } from 'react-native';
 import { PINK, WHITE } from '../styles/colors';
 import { FIRA_SANS_BOLD } from '../styles/fonts';
 
-const styles = (statusBarVisible: boolean = false, StatusBarHeight: number = 0) => {
+const styles = (statusBarVisible: boolean = false, StatusBarHeight: number = 20) => {
   const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarHeight;
 
   return StyleSheet.create({

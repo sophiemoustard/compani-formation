@@ -22,7 +22,7 @@ import CourseProfile from '../screens/courses/CourseProfile';
 import SubProgramProfile from '../screens/courses/SubProgramProfile';
 import CardContainer from '../screens/courses/CardContainer';
 import MainActions from '../store/main/actions';
-import { PINK, WHITE } from '../styles/colors';
+import { WHITE } from '../styles/colors';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import Users from '../api/users';
 import { UserType } from '../types/UserType';
@@ -46,10 +46,7 @@ const Home = () => {
   const style = styles();
 
   return (
-    <Tab.Navigator
-      tabBarOptions={{ showLabel: false, style: { height: 72 } }}
-      initialRouteName="Courses"
-    >
+    <Tab.Navigator tabBarOptions={{ showLabel: false, style: { height: 72 } }} initialRouteName="Courses">
       <Tab.Screen name="Catalog" component={Catalog} options={{
         tabBarIcon: ({ focused }: tabBarProps) => (focused
           ? <View style={style.iconContainer}>
@@ -108,7 +105,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
-  const style = styles(statusBarVisible, StatusBar.currentHeight || 20);
+  const style = styles(statusBarVisible, StatusBar.currentHeight);
 
   const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
