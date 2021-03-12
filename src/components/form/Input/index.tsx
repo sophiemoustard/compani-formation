@@ -14,6 +14,7 @@ interface InputProps {
   darkMode?: boolean,
   validationMessage?: string,
   required?: boolean,
+  optional?: boolean,
   disabled?: boolean,
   isKeyboardOpen?: (value: boolean) => void,
 }
@@ -26,6 +27,7 @@ const Input = ({
   darkMode,
   validationMessage = '',
   required = false,
+  optional = false,
   disabled = false,
   isKeyboardOpen,
 }: InputProps) => {
@@ -63,6 +65,7 @@ const Input = ({
       <View style={style.captionContainer}>
         <Text style={textStyle}>{caption}</Text>
         {required && <Text style={style.required}>*</Text>}
+        {optional && <Text style={style.required}>(optionnel)</Text>}
       </View>
       <View style={style.container}>
         <View style={style.input}>

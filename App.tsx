@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import * as Analytics from 'expo-firebase-analytics';
 import { AppState } from 'react-native';
 import { createStore } from 'redux';
 import Constants from 'expo-constants';
@@ -76,6 +77,11 @@ const App = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    async function startAnalytics() { await Analytics.logEvent('session_start'); }
+    startAnalytics();
+  }, []);
 
   useEffect(() => {
     shouldUpdate(ACTIVE_STATE);

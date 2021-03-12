@@ -21,3 +21,7 @@ api-*
 
 #Reactotron
 src/ReactotronConfig.js
+
+#Firebase
+google-services.json
+GoogleService-Info.plist
