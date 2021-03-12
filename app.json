@@ -31,6 +31,11 @@
         ]
       }
     },
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 3000
+    },
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
       "buildNumber": "1.6.3",
