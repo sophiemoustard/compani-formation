@@ -5,8 +5,8 @@ import prodEnv from './env/env.prod';
 
 const getEnvVars = (env = Constants.manifest.releaseChannel) => {
   if (__DEV__) return localEnv;
-  if (env === 'dev') return devEnv;
-  if (env === 'prod') return prodEnv;
+  if (/dev/.test(env)) return devEnv;
+  if (/prod/.test(env)) return prodEnv;
   return localEnv;
 };
 
