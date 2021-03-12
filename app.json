@@ -14,9 +14,6 @@
       "resizeMode": "cover",
       "backgroundColor": "#FFFFFF"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": ["assets/images/*"],
     "extra": {
       "hooks": {
