@@ -10,13 +10,12 @@ import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
-import { getLoggedUserId, getUserVendorRole } from '../../../store/main/selectors';
+import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
 import { NavigationType } from '../../../types/NavigationType';
 import SubPrograms from '../../../api/subPrograms';
-import { TRAINING_ORGANISATION_MANAGER, VENDOR_ADMIN } from '../../../core/data/constants';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import CoursesSection from '../../../components/CoursesSection';
 
@@ -24,7 +23,6 @@ interface CourseListProps {
   setIsCourse: (value: boolean) => void,
   navigation: NavigationType,
   loggedUserId: string | null,
-  userVendorRole: string,
 }
 
 const formatCourseStep = (course) => {
@@ -58,7 +56,7 @@ const formatNextSteps = courses => courses.map(formatCourseStep).flat()
   .filter(step => step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
-const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: CourseListProps) => {
+const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) => {
   const [onGoingCourses, setOnGoingCourses] = useState(new Array(0));
   const [achievedCourses, setAchievedCourses] = useState(new Array(0));
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
@@ -78,15 +76,13 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   };
 
   const getElearningDraftSubPrograms = async () => {
-    if ([VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole)) {
-      try {
-        const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
-        setElearningDraftSubPrograms(fetchedSubPrograms);
-      } catch (e) {
-        if (e.status === 401) signOut();
-        console.error(e);
-        setElearningDraftSubPrograms(() => []);
-      }
+    try {
+      const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
+      setElearningDraftSubPrograms(fetchedSubPrograms);
+    } catch (e) {
+      if (e.status === 401) signOut();
+      console.error(e);
+      setElearningDraftSubPrograms(() => []);
     }
   };
 
@@ -142,7 +138,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
             countStyle={styles.achievedCoursesCount} />
         </ImageBackground>
       }
-      {[VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER].includes(userVendorRole) &&
+      {elearningDraftSubPrograms.length > 0 &&
         <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
           source={require('../../../../assets/images/purple_section_background.png')}>
           <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
@@ -157,7 +153,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId, userVendorRole }: C
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state), userVendorRole: getUserVendorRole(state) });
+const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
   setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
