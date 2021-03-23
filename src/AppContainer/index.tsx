@@ -125,7 +125,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
 
     if (prevRouteName !== currentRouteName) {
-      Analytics.setCurrentScreen(currentRouteName);
+      Analytics.logScreenView(currentRouteName);
       routeNameRef.current = currentRouteName;
     }
   };
