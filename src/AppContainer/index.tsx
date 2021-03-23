@@ -53,20 +53,12 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
         console.error(e);
       }
     }
+
     if (alenviToken) setUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alenviToken]);
 
   if (!appIsReady) return null;
-
-  const style = styles(statusBarVisible, StatusBar.currentHeight);
-
-  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
-
-  const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
-  const Courses = { CourseProfile, SubProgramProfile };
-  const userScreens = { Home, CardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
-  const undismissableScreens = ['CardContainer'];
 
   const handleOnReadyNavigation = () => {
     routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
@@ -82,9 +74,18 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     }
   };
 
+  const style = styles(statusBarVisible, StatusBar.currentHeight);
+
+  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
+
+  const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
+  const Courses = { CourseProfile, SubProgramProfile };
+  const userScreens = { Home, CardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
+  const undismissableScreens = ['CardContainer'];
+
   return (
     <NavigationContainer ref={navigationRef} onReady={handleOnReadyNavigation}
-      onStateChange={handleNavigationStateChange} >
+      onStateChange={handleNavigationStateChange}>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
