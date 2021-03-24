@@ -70,8 +70,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setOnGoingCourses(() => []);
-      setAchievedCourses(() => []);
+      setOnGoingCourses([]);
+      setAchievedCourses([]);
     }
   };
 
@@ -82,7 +82,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setElearningDraftSubPrograms(() => []);
+      setElearningDraftSubPrograms([]);
     }
   };
 
@@ -120,7 +120,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
   return (
     <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
       <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      {nextSteps.length > 0 &&
+      {!!nextSteps.length &&
         <View style={styles.nextSteps}>
           <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
             renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'} />
@@ -131,14 +131,14 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
         <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
           countStyle={styles.onGoingCoursesCount} showCatalogButton={!onGoingCourses.length} />
       </ImageBackground>
-      {achievedCourses.length > 0 &&
+      {!!achievedCourses.length &&
         <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
           source={require('../../../../assets/images/green_section_background.png')}>
           <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
             countStyle={styles.achievedCoursesCount} />
         </ImageBackground>
       }
-      {elearningDraftSubPrograms.length > 0 &&
+      {!!elearningDraftSubPrograms.length &&
         <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
           source={require('../../../../assets/images/purple_section_background.png')}>
           <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
