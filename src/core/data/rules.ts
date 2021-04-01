@@ -11,7 +11,9 @@ Toute personne doit respecter les termes du présent règlement durant toute la 
 - de toute consigne imposée soit par la direction de l’organisme de formation soit par le
 constructeur ou le formateur s’agissant notamment de l’usage des matériels mis à disposition.
 
-Chaque stagiaire doit ainsi veiller à sa sécurité personnelle et à celle des autres en respectant, en fonction de sa formation, les consignes générales et particulières en matière d’hygiène et de sécurité. S’il constate un dysfonctionnement du système de sécurité, il en avertit immédiatement la direction de l’organisme de formation. Le non-respect de ces consignes expose la personne à des sanctions disciplinaires.`,
+Chaque stagiaire doit ainsi veiller à sa sécurité personnelle et à celle des autres en respectant, en fonction de sa formation, les consignes générales et particulières en matière d’hygiène et de sécurité. S’il constate un dysfonctionnement du système de sécurité, il en avertit immédiatement la direction de l’organisme de formation. Le non-respect de ces consignes expose la personne à des sanctions disciplinaires.
+
+Ces mesures s’appliquent d’autant plus dans le contexte de crise sanitaire que nous vivons. Chacun s’engage à s’assurer que les conditions des formations s’inscrivent dans le respect des mesures gouvernementales de distanciation sociale et des gestes barrières.`,
   3: `Les consignes d’incendie et notamment un plan de localisation des extincteurs et des issues de secours sont affichés dans les locaux de l’organisme de formation. Le stagiaire doit en prendre connaissance.
 
 En cas d’alerte, le stagiaire doit cesser toute activité de formation et suivre dans le calme les instructions du représentant habilité de l’organisme de formation ou des services de secours.
@@ -38,7 +40,7 @@ Le stagiaire est tenu de renseigner la feuille d’émargement au fur et à mesu
 
 A l’issue de l’action de formation, il se voit remettre une attestation de fin de formation et une attestation de présence au stage à transmettre, selon le cas, à son employeur/administration ou à l’organisme qui finance l’action.
 
-Le stagiaire remet, dans les meilleurs délais, à l’organisme de formation les documents qu’il doit renseigner en tant que prestataire (demande de rémunération ou de prise en charges des frais liés à la formation ; attestations d’inscription ou d’entrée en stage...).`,
+Le stagiaire remet, dans les meilleurs délais, à l’organisme de formation les documents qu’il doit renseigner en tant que prestataire (demande de rémunération ou de prise en charges des frais liés à la formation ; attestations d’inscription ou d’entrée en stage...). Pour rappel, les frais de restauration et d’hébergement ne sont pas pris en charge par l'organisme de formation.`,
   8: `Sauf autorisation expresse de la direction de l’organisme de formation, le stagiaire ne peut :
 -Entrer ou demeurer dans les locaux de formation à d’autres fins que la formation ;
 -Y introduire, faire introduire ou faciliter l’introduction de personnes étrangères à l’organisme ; procéder, dans ces derniers, à la vente de biens ou de services.`,
