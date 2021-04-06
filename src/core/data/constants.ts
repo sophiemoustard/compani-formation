@@ -1,3 +1,5 @@
+export const APP_NAME = 'formation';
+
 // COURSES
 export const STRICTLY_E_LEARNING = 'strictly_e_learning';
 

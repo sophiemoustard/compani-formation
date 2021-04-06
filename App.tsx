@@ -14,7 +14,7 @@ import AppContainer from './src/AppContainer';
 import UpdateAppModal from './src/components/UpdateAppModal';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
-import { ACTIVE_STATE } from './src/core/data/constants';
+import { ACTIVE_STATE, APP_NAME } from './src/core/data/constants';
 import getEnvVars from './environment';
 
 const { sentryKey } = getEnvVars();
@@ -69,7 +69,10 @@ const App = () => {
   const shouldUpdate = async (nextState) => {
     try {
       if (nextState === ACTIVE_STATE) {
-        const { mustUpdate } = await Version.shouldUpdate({ mobileVersion: Constants.manifest.version });
+        const { mustUpdate } = await Version.shouldUpdate({
+          mobileVersion: Constants.manifest.version,
+          appName: APP_NAME,
+        });
         setModalOpened(mustUpdate);
       }
     } catch (error) {

@@ -2,9 +2,9 @@ import axios from 'axios';
 import getEnvVars from '../../environment';
 
 export default {
-  shouldUpdate: async (payload) => {
+  shouldUpdate: async (params) => {
     const { baseURL } = getEnvVars();
-    const response = await axios.get(`${baseURL}/version/should-update?mobileVersion=${payload.mobileVersion}`);
+    const response = await axios.get(`${baseURL}/version/should-update`, { params });
     return response.data.data;
   },
 };
