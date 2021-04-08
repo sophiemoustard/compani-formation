@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import * as Analytics from 'expo-firebase-analytics';
 import { AppState } from 'react-native';
 import { createStore } from 'redux';
-import Constants from 'expo-constants';
 import { Asset } from 'expo-asset';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
@@ -14,7 +13,7 @@ import AppContainer from './src/AppContainer';
 import UpdateAppModal from './src/components/UpdateAppModal';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
-import { ACTIVE_STATE, APP_NAME } from './src/core/data/constants';
+import { ACTIVE_STATE } from './src/core/data/constants';
 import getEnvVars from './environment';
 
 const { sentryKey } = getEnvVars();
@@ -69,10 +68,7 @@ const App = () => {
   const shouldUpdate = async (nextState) => {
     try {
       if (nextState === ACTIVE_STATE) {
-        const { mustUpdate } = await Version.shouldUpdate({
-          mobileVersion: Constants.manifest.version,
-          appName: APP_NAME,
-        });
+        const { mustUpdate } = await Version.shouldUpdate();
         setModalOpened(mustUpdate);
       }
     } catch (error) {
