@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, ComponentType } from 'react';
 import { View, BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -28,7 +28,7 @@ interface CardContainerProps {
   resetActivityReducer: () => void,
 }
 
-const CardContainer = ({
+const CardContainer: ComponentType<any> = ({
   route,
   navigation,
   activity,

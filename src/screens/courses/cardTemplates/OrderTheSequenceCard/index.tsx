@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ComponentType } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -31,7 +31,7 @@ export interface answerPositionType extends OrderedAnswerType {
   tempPosition: number,
 }
 
-const OrderTheSequenceCard = ({
+const OrderTheSequenceCard: ComponentType<any> = ({
   card,
   index,
   incGoodAnswersCount,

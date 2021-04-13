@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ComponentType } from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -30,7 +30,13 @@ export interface FillTheGapAnswers {
   visible: boolean,
 }
 
-const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRightSwipeEnabled }: FillTheGap) => {
+const FillTheGapCard: ComponentType<any> = ({
+  card,
+  index,
+  isLoading,
+  incGoodAnswersCount,
+  setIsRightSwipeEnabled,
+}: FillTheGap) => {
   const [goodAnswers, setGoodAnswers] = useState<Array<string>>([]);
   const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);

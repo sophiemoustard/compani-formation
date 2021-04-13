@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, ComponentType } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../../types/store/StoreType';
@@ -23,7 +23,7 @@ export enum ClickOnCard {
   CLICKED_MORE_THAN_ONCE_CARD = 'clickedMoreThanOnce',
 }
 
-const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
+const FlashCard: ComponentType<any> = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);

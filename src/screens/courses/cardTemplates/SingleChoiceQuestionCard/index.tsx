@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ComponentType } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -23,7 +23,7 @@ interface SingleChoiceQuestionCardProps {
   setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const SingleChoiceQuestionCard = ({
+const SingleChoiceQuestionCard: ComponentType<any> = ({
   card,
   index,
   incGoodAnswersCount,

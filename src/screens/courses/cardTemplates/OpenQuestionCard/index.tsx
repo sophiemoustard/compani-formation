@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, ComponentType } from 'react';
 import { ScrollView, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
@@ -23,7 +23,7 @@ interface OpenQuestionCardProps {
   setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const OpenQuestionCard = ({
+const OpenQuestionCard: ComponentType<any> = ({
   card,
   index,
   questionnaireAnswer,

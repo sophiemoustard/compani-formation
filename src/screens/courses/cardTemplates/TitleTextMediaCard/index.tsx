@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ComponentType } from 'react';
 import { Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
@@ -25,7 +25,7 @@ interface TitleTextMediaCardProps {
   setIsLeftSwipeEnabled: (boolean) => void,
 }
 
-const TitleTextMediaCard = ({
+const TitleTextMediaCard: ComponentType<any> = ({
   card,
   index,
   isLoading,
