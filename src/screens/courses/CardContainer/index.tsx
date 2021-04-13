@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
+import { CardType } from '../../../types/CardType';
 import { NavigationType } from '../../../types/NavigationType';
 import ExitModal from '../../../components/ExitModal';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -12,7 +13,8 @@ import StartCard from '../cardTemplates/StartCard';
 import EndCard from '../cardTemplates/EndCard';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
-import Actions from '../../../store/activities/actions';
+import ActivityActions from '../../../store/activities/actions';
+import CardsActions from '../../../store/cards/actions';
 import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import styles from './styles';
 
@@ -23,7 +25,9 @@ interface CardContainerProps {
   cardIndex: number | null,
   isCourse: boolean,
   exitConfirmationModal: boolean,
+  cards: Array<CardType>,
   setActivity: (activity: ActivityType | null) => void,
+  setCards: (activity: Array<CardType> | null) => void,
   setExitConfirmationModal: (boolean) => void,
   resetActivityReducer: () => void,
 }
@@ -32,10 +36,12 @@ const CardContainer = ({
   route,
   navigation,
   activity,
+  cards,
   cardIndex,
   isCourse,
   exitConfirmationModal,
   setActivity,
+  setCards,
   setExitConfirmationModal,
   resetActivityReducer,
 }: CardContainerProps) => {
@@ -47,6 +53,7 @@ const CardContainer = ({
     try {
       const fetchedActivity = await Activities.getActivity(route.params.activityId);
       setActivity(fetchedActivity);
+      setCards(fetchedActivity.cards);
     } catch (e) {
       if (e.status === 401) signOut();
       setActivity(null);
@@ -111,13 +118,13 @@ const CardContainer = ({
 
   return (
     <>
-      {activity && activity.cards.length > 0 && (
+      {cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
             {() => <StartCard title={activity.name} profileId={route.params.profileId} />}
           </Tab.Screen>
-          {activity.cards.map((_, index) => renderCardScreen(index))}
-          <Tab.Screen key={activity.cards.length + 1} name={`card-${activity.cards.length}`}>
+          {cards.map((_, index) => renderCardScreen(index))}
+          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
             {() => <EndCard profileId={route.params.profileId} />}
           </Tab.Screen>
         </Tab.Navigator>)}
@@ -127,15 +134,17 @@ const CardContainer = ({
 
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
+  cards: state.cards.cards,
   cardIndex: state.activities.cardIndex,
   exitConfirmationModal: state.activities.exitConfirmationModal,
   isCourse: state.courses.isCourse,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setActivity: activity => dispatch(Actions.setActivity(activity)),
-  setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
-  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+  setActivity: activity => dispatch(ActivityActions.setActivity(activity)),
+  setCards: cards => dispatch(CardsActions.setCards(cards)),
+  setExitConfirmationModal: openModal => dispatch(ActivityActions.setExitConfirmationModal(openModal)),
+  resetActivityReducer: () => dispatch(ActivityActions.resetActivityReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);

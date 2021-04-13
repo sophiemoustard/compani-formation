@@ -7,7 +7,8 @@ import Button from '../../../../components/form/Button';
 import { StateType } from '../../../../types/store/StoreType';
 import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
-import Actions from '../../../../store/activities/actions';
+import ActivityActions from '../../../../store/activities/actions';
+import CardsActions from '../../../../store/cards/actions';
 import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
 import { achievementJingle } from '../../../../core/helpers/utils';
@@ -19,6 +20,7 @@ interface EndCardProps {
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
   score: number,
   resetActivityReducer: () => void,
+  resetCardReducer: () => void,
   setCardIndex: (number) => void,
 }
 
@@ -30,6 +32,7 @@ const EndCard = ({
   score,
   setCardIndex,
   resetActivityReducer,
+  resetCardReducer,
 }: EndCardProps) => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -54,6 +57,7 @@ const EndCard = ({
     if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
     resetActivityReducer();
+    resetCardReducer();
   };
 
   return (
@@ -75,8 +79,9 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCardIndex: index => dispatch(Actions.setCardIndex(index)),
-  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+  setCardIndex: index => dispatch(ActivityActions.setCardIndex(index)),
+  resetActivityReducer: () => dispatch(ActivityActions.resetActivityReducer()),
+  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EndCard);

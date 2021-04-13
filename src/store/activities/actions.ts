@@ -31,7 +31,7 @@ const removeQuestionnaireAnswer = (card: string): RemoveQuestionnaireAnswerType 
   ({ type: REMOVE_QUESTIONNAIRE_ANSWER, payload: card });
 const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
 const setQuestionnaireAnswersList =
-(questionnaireAnswersList: Array<QuestionnaireAnswerType>) : SetQuestionnaireAnswersListType =>
+(questionnaireAnswersList: Array<QuestionnaireAnswerType>): SetQuestionnaireAnswersListType =>
   ({ type: SET_QUESTIONNAIRE_ANSWERS_LIST, payload: questionnaireAnswersList });
 const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 const setActivityHistories = (activityHistories: Array<ActivityHistoryType>): SetActivityHistories =>
