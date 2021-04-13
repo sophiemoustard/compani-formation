@@ -1,7 +1,6 @@
 import {
   ActivityStateType,
   SET_ACTIVITY,
-  SET_CARD_INDEX,
   SET_EXIT_CONFIRMATION_MODAL,
   RESET_ACTIVITY_REDUCER,
   ADD_QUESTIONNAIRE_ANSWER,
@@ -15,7 +14,6 @@ import {
 
 const initialState: ActivityStateType = {
   activity: null,
-  cardIndex: null,
   exitConfirmationModal: false,
   questionnaireAnswersList: [],
   score: 0,
@@ -49,8 +47,6 @@ export const activities = (
   switch (action.type) {
     case SET_ACTIVITY:
       return { ...state, activity: action.payload };
-    case SET_CARD_INDEX:
-      return { ...state, cardIndex: action.payload };
     case SET_EXIT_CONFIRMATION_MODAL:
       return { ...state, exitConfirmationModal: action.payload };
     case ADD_QUESTIONNAIRE_ANSWER:

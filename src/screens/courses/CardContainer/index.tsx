@@ -135,7 +135,7 @@ const CardContainer = ({
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   cards: state.cards.cards,
-  cardIndex: state.activities.cardIndex,
+  cardIndex: state.cards.cardIndex,
   exitConfirmationModal: state.activities.exitConfirmationModal,
   isCourse: state.courses.isCourse,
 });

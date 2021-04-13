@@ -79,7 +79,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCardIndex: index => dispatch(ActivityActions.setCardIndex(index)),
+  setCardIndex: index => dispatch(CardsActions.setCardIndex(index)),
   resetActivityReducer: () => dispatch(ActivityActions.resetActivityReducer()),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });

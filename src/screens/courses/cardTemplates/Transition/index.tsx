@@ -32,6 +32,6 @@ const Transition = ({ index, card, isLoading, setIsRightSwipeEnabled }: Transiti
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ index: state.activities.cardIndex, card: Selectors.getCard(state) });
+const mapStateToProps = (state: StateType) => ({ index: state.cards.cardIndex, card: Selectors.getCard(state) });
 
 export default connect(mapStateToProps)(Transition);

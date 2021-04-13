@@ -120,7 +120,7 @@ const MultipleChoiceQuestionCard = ({
 
 const mapStateToProps = (state: StateType) => ({
   card: Selectors.getCard(state),
-  cardIndex: state.activities.cardIndex,
+  cardIndex: state.cards.cardIndex,
 });
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),

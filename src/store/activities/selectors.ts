@@ -1,7 +1,7 @@
 import { OPEN_QUESTION, QUESTION_ANSWER, SURVEY, TRANSITION } from '../../core/data/constants';
 import { QuestionnaireAnswerType } from '../../types/store/ActivityStoreType';
 
-const getCard = state => state.cards.cards[state.activities.cardIndex];
+const getCard = state => state.cards.cards[state.cards.cardIndex];
 
 const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | null => {
   const card = getCard(state);
@@ -13,12 +13,10 @@ const getMaxProgress = state =>
   state.activities.activity.cards.filter(card => card.template !== TRANSITION).length;
 
 const getProgress = (state) => {
-  const { activity, cardIndex } = state.activities;
+  const { cards, cardIndex } = state.cards;
   if (!Number.isInteger(cardIndex)) return 0;
 
-  return 1 + activity.cards.filter(c => c.template !== TRANSITION)
-    .map(c => c._id)
-    .indexOf(activity.cards[cardIndex]._id);
+  return 1 + cards.filter(c => c.template !== TRANSITION).map(c => c._id).indexOf(cards[cardIndex]._id);
 };
 
 const displayProgressBar = state => !!getCard(state) && getCard(state).template !== TRANSITION;

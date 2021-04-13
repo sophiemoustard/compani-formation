@@ -23,7 +23,7 @@ import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
 import TextMediaCard from './TextMediaCard';
 import { ActivityType } from '../../../types/ActivityType';
-import Actions from '../../../store/activities/actions';
+import Actions from '../../../store/cards/actions';
 import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
 import SurveyCard from './SurveyCard';
 import TitleTextCard from './TitleTextCard';

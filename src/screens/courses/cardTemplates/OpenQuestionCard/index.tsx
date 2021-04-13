@@ -78,7 +78,7 @@ const OpenQuestionCard = ({
 
 const mapStateToProps = (state: StateType) => ({
   card: Selectors.getCard(state),
-  index: state.activities.cardIndex,
+  index: state.cards.cardIndex,
   questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
 });
 

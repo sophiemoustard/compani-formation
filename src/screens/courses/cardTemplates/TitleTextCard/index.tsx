@@ -35,6 +35,6 @@ const TitleTextCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: Title
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
 export default connect(mapStateToProps)(TitleTextCard);

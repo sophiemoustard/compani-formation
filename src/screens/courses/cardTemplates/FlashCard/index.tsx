@@ -94,6 +94,6 @@ const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCard
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
 export default connect(mapStateToProps)(FlashCard);

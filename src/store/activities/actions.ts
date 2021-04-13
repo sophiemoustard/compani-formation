@@ -2,8 +2,6 @@ import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import {
   SET_ACTIVITY,
   SetActivityType,
-  SET_CARD_INDEX,
-  SetCardIndexType,
   SET_EXIT_CONFIRMATION_MODAL,
   SetExitConfirmationModalType,
   ADD_QUESTIONNAIRE_ANSWER,
@@ -22,7 +20,6 @@ import { ActivityType } from '../../types/ActivityType';
 import { ActivityHistoryType } from '../../types/ActivityHistoryType';
 
 const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_ACTIVITY, payload: activity });
-const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
 const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfirmationModalType =>
   ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
 const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): AddQuestionnaireAnswerType =>
@@ -39,7 +36,6 @@ const setActivityHistories = (activityHistories: Array<ActivityHistoryType>): Se
 
 export default {
   setActivity,
-  setCardIndex,
   setExitConfirmationModal,
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,

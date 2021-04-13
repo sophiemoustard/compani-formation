@@ -99,7 +99,7 @@ const QuestionAnswerCard = ({
 
 const mapStateToProps = (state: StateType) => ({
   card: Selectors.getCard(state),
-  cardIndex: state.activities.cardIndex,
+  cardIndex: state.cards.cardIndex,
   questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
 });
 

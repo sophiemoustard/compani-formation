@@ -92,7 +92,7 @@ const SingleChoiceQuestionCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
