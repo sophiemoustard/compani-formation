@@ -13,7 +13,7 @@ import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from './styles';
 import { achievementJingle } from '../../../../core/helpers/utils';
 
-interface EndCardProps {
+interface ActivityEndCardProps {
   profileId: String,
   isCourse: boolean,
   activity: ActivityType,
@@ -24,7 +24,7 @@ interface EndCardProps {
   setCardIndex: (number) => void,
 }
 
-const EndCard = ({
+const ActivityEndCard = ({
   profileId,
   isCourse,
   activity,
@@ -33,7 +33,7 @@ const EndCard = ({
   setCardIndex,
   resetActivityReducer,
   resetCardReducer,
-}: EndCardProps) => {
+}: ActivityEndCardProps) => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
 
@@ -84,4 +84,4 @@ const mapDispatchToProps = dispatch => ({
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EndCard);
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityEndCard);

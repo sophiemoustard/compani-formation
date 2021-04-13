@@ -10,7 +10,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import ExitModal from '../../../components/ExitModal';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
-import EndCard from '../cardTemplates/EndCard';
+import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import ActivityActions from '../../../store/activities/actions';
@@ -125,7 +125,7 @@ const ActivityCardContainer = ({
           </Tab.Screen>
           {cards.map((_, index) => renderCardScreen(index))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <EndCard profileId={route.params.profileId} />}
+            {() => <ActivityEndCard profileId={route.params.profileId} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>
