@@ -3,14 +3,14 @@ import { ScrollView, View, Text, KeyboardAvoidingView, Platform } from 'react-na
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
-import Actions from '../../../../store/activities/actions';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
+import Actions from '../../../../store/cards/actions';
 import styles from './styles';
 
 interface OpenQuestionCardProps {

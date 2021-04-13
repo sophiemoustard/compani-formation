@@ -6,9 +6,10 @@ import Button from '../../../../components/form/Button';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import ActivitiesActions from '../../../../store/activities/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from './styles';
 import MainActions from '../../../../store/main/actions';
+import CardsActions from '../../../../store/cards/actions';
 import { ActivityHistoryType } from '../../../../types/ActivityHistoryType';
 
 interface StartCardProps {
@@ -88,7 +89,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   resetActivityReducer: () => dispatch(ActivitiesActions.resetActivityReducer()),
   setQuestionnaireAnswersList: questionnaireAnswersList =>
-    dispatch(ActivitiesActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
+    dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 

@@ -9,7 +9,7 @@ import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
 import ActivityActions from '../../../../store/activities/actions';
 import CardsActions from '../../../../store/cards/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from './styles';
 import { achievementJingle } from '../../../../core/helpers/utils';
 
@@ -73,7 +73,7 @@ const EndCard = ({
 
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
-  questionnaireAnswersList: state.activities.questionnaireAnswersList,
+  questionnaireAnswersList: state.cards.questionnaireAnswersList,
   score: state.activities.score,
   isCourse: state.courses.isCourse,
 });

@@ -3,7 +3,7 @@ import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
@@ -11,8 +11,8 @@ import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import QuestionAnswerProposition from '../../../../components/cards/QuestionAnswerProposition';
-import Actions from '../../../../store/activities/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import Actions from '../../../../store/cards/actions';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
