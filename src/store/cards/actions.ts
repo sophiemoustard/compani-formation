@@ -5,6 +5,7 @@ import {
   RemoveQuestionnaireAnswerType,
   SetQuestionnaireAnswersListType,
   QuestionnaireAnswerType,
+  SetExitConfirmationModalType,
   SET_CARDS,
   RESET_CARD_REDUCER,
   SET_CARD_INDEX,
@@ -12,12 +13,15 @@ import {
   REMOVE_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   INC_GOOD_ANSWERS_COUNT,
+  SET_EXIT_CONFIRMATION_MODAL,
 } from '../../types/store/CardStoreType';
 import { CardType } from '../../types/CardType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 
 const resetCardReducer = (): ActionWithoutPayloadType => ({ type: RESET_CARD_REDUCER });
+
 const setCards = (cards: Array<CardType>): SetCardsType => ({ type: SET_CARDS, payload: cards });
+
 const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
 
 const setQuestionnaireAnswersList =
@@ -30,6 +34,9 @@ const removeQuestionnaireAnswer = (card: string): RemoveQuestionnaireAnswerType 
 
 const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 
+const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfirmationModalType =>
+  ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
+
 export default {
   setCards,
   resetCardReducer,
@@ -38,4 +45,5 @@ export default {
   removeQuestionnaireAnswer,
   setQuestionnaireAnswersList,
   incGoodAnswersCount,
+  setExitConfirmationModal,
 };

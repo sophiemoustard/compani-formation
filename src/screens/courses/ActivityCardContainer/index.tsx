@@ -30,6 +30,7 @@ interface ActivityCardContainerProps {
   setCards: (activity: Array<CardType> | null) => void,
   setExitConfirmationModal: (boolean) => void,
   resetActivityReducer: () => void,
+  resetCardReducer: () => void,
 }
 
 const ActivityCardContainer = ({
@@ -44,6 +45,7 @@ const ActivityCardContainer = ({
   setCards,
   setExitConfirmationModal,
   resetActivityReducer,
+  resetCardReducer,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
   const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
@@ -57,12 +59,14 @@ const ActivityCardContainer = ({
     } catch (e) {
       if (e.status === 401) signOut();
       setActivity(null);
+      setCards([]);
     }
   };
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
+    resetCardReducer();
     if (isCourse) {
       navigation.navigate('CourseProfile', { courseId: route.params.profileId, endedActivity: activity._id });
     } else navigation.navigate('SubProgramProfile', { subProgramId: route.params.profileId });
@@ -136,15 +140,16 @@ const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   cards: state.cards.cards,
   cardIndex: state.cards.cardIndex,
-  exitConfirmationModal: state.activities.exitConfirmationModal,
+  exitConfirmationModal: state.cards.exitConfirmationModal,
   isCourse: state.courses.isCourse,
 });
 
 const mapDispatchToProps = dispatch => ({
   setActivity: activity => dispatch(ActivityActions.setActivity(activity)),
   setCards: cards => dispatch(CardsActions.setCards(cards)),
-  setExitConfirmationModal: openModal => dispatch(ActivityActions.setExitConfirmationModal(openModal)),
+  setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetActivityReducer: () => dispatch(ActivityActions.resetActivityReducer()),
+  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);

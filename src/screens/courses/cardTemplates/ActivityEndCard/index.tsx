@@ -56,8 +56,8 @@ const ActivityEndCard = ({
   const goBack = () => {
     if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
-    resetActivityReducer();
     resetCardReducer();
+    resetActivityReducer();
   };
 
   return (

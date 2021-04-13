@@ -20,6 +20,7 @@ interface StartCardProps {
   resetActivityReducer: () => void,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
   setStatusBarVisible: (boolean) => void,
+  resetCardReducer: () => void,
 }
 
 const StartCard = ({
@@ -30,6 +31,7 @@ const StartCard = ({
   resetActivityReducer,
   setQuestionnaireAnswersList,
   setStatusBarVisible,
+  resetCardReducer,
 }: StartCardProps) => {
   const navigation = useNavigation();
 
@@ -46,6 +48,7 @@ const StartCard = ({
 
   const goBack = () => {
     resetActivityReducer();
+    resetCardReducer();
     if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
   };
@@ -91,6 +94,7 @@ const mapDispatchToProps = dispatch => ({
   setQuestionnaireAnswersList: questionnaireAnswersList =>
     dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StartCard);

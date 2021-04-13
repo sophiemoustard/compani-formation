@@ -8,6 +8,7 @@ import {
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   REMOVE_QUESTIONNAIRE_ANSWER,
   INC_GOOD_ANSWERS_COUNT,
+  SET_EXIT_CONFIRMATION_MODAL,
   CardActionWithoutPayloadType,
 } from '../../types/store/CardStoreType';
 
@@ -16,6 +17,7 @@ const initialState: CardStateType = {
   cardIndex: null,
   questionnaireAnswersList: [],
   score: 0,
+  exitConfirmationModal: false,
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
@@ -52,6 +54,8 @@ export const cards = (state: CardStateType = initialState, action: CardActionTyp
       return { ...state, questionnaireAnswersList: action.payload };
     case INC_GOOD_ANSWERS_COUNT:
       return { ...state, score: state.score + 1 };
+    case SET_EXIT_CONFIRMATION_MODAL:
+      return { ...state, exitConfirmationModal: action.payload };
     case RESET_CARD_REDUCER:
       return initialState;
     default:
