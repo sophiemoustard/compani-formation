@@ -5,7 +5,7 @@ import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import ZoomImage from '../../../../components/ZoomImage';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
 import { TitleTextMediaType } from '../../../../types/CardType';

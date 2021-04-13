@@ -6,7 +6,7 @@ import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import Actions from '../../../../store/activities/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';

@@ -5,7 +5,7 @@ import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
 import { useNavigation } from '@react-navigation/native';
 import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
 import styles from './styles';

@@ -8,7 +8,7 @@ import { GREY } from '../../../styles/colors';
 import { ActionType, StateType } from '../../../types/store/StoreType';
 import styles from './styles';
 import ProgressBar from '../ProgressBar';
-import Selectors from '../../../store/activities/selectors';
+import Selectors from '../../../store/cards/selectors';
 import { FeatherType } from '../../../types/FeatherType';
 
 interface CardHeaderProps {
