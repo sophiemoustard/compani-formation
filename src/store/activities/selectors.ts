@@ -9,8 +9,7 @@ const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | null => {
   return state.activities.questionnaireAnswersList.find(qa => qa.card === card._id) || null;
 };
 
-const getMaxProgress = state =>
-  state.activities.activity.cards.filter(card => card.template !== TRANSITION).length;
+const getMaxProgress = state => state.cards.cards.filter(card => card.template !== TRANSITION).length;
 
 const getProgress = (state) => {
   const { cards, cardIndex } = state.cards;
