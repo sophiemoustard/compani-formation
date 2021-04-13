@@ -22,7 +22,7 @@ import {
 import CardHeader from '../../../components/cards/CardHeader';
 import TitleTextMediaCard from './TitleTextMediaCard';
 import TextMediaCard from './TextMediaCard';
-import { ActivityType } from '../../../types/ActivityType';
+import { CardType } from '../../../types/CardType';
 import Actions from '../../../store/cards/actions';
 import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
 import SurveyCard from './SurveyCard';
@@ -36,7 +36,7 @@ import QuestionAnswerCard from './QuestionAnswerCard';
 
 interface CardTemplateProps {
   index: number,
-  activity: ActivityType,
+  cards: Array<CardType>,
   setCardIndex: (number) => void,
   setIsRightSwipeEnabled: (boolean) => void,
   setIsLeftSwipeEnabled: (boolean) => void,
@@ -44,7 +44,7 @@ interface CardTemplateProps {
 
 const CardTemplate = ({
   index,
-  activity,
+  cards,
   setCardIndex,
   setIsRightSwipeEnabled,
   setIsLeftSwipeEnabled,
@@ -58,7 +58,7 @@ const CardTemplate = ({
     if (isFocused) fetchData().then(() => setIsLoading(false));
   }, [isFocused, setCardIndex, index, setIsLoading]);
 
-  const card = activity.cards[index];
+  const card = cards[index];
   switch (card.template) {
     case FLASHCARD:
       return <FlashCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
@@ -98,7 +98,7 @@ const CardTemplate = ({
   }
 };
 
-const mapStateToProps = (state: StateType) => ({ activity: state.activities.activity });
+const mapStateToProps = (state: StateType) => ({ cards: state.cards.cards });
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
   setCardIndex: index => dispatch(Actions.setCardIndex(index)),
 });
