@@ -1,7 +1,7 @@
 import { OPEN_QUESTION, QUESTION_ANSWER, SURVEY, TRANSITION } from '../../core/data/constants';
 import { QuestionnaireAnswerType } from '../../types/store/ActivityStoreType';
 
-const getCard = state => state.activities.activity.cards[state.activities.cardIndex];
+const getCard = state => state.cards.cards[state.activities.cardIndex];
 
 const getQuestionnaireAnswer = (state): QuestionnaireAnswerType | null => {
   const card = getCard(state);
