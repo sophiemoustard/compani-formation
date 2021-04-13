@@ -36,7 +36,7 @@ const ActivityCell = ({ activity, profileId, setActivityHistories }: ActivityCel
 
   const onPress = () => {
     setActivityHistories(activity.activityHistories);
-    navigation.navigate('CardContainer', { activityId: activity._id, profileId });
+    navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId });
   };
 
   return (

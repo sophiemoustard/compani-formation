@@ -17,7 +17,7 @@ import BlendedAbout from '../screens/explore/BlendedAbout';
 import ElearningAbout from '../screens/explore/ELearningAbout';
 import CourseProfile from '../screens/courses/CourseProfile';
 import SubProgramProfile from '../screens/courses/SubProgramProfile';
-import CardContainer from '../screens/courses/CardContainer';
+import ActivityCardContainer from '../screens/courses/ActivityCardContainer';
 import MainActions from '../store/main/actions';
 import { WHITE } from '../styles/colors';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
@@ -80,8 +80,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
   const Courses = { CourseProfile, SubProgramProfile };
-  const userScreens = { Home, CardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
-  const undismissableScreens = ['CardContainer'];
+  const userScreens = { Home, ActivityCardContainer, BlendedAbout, ElearningAbout, ...Profile, ...Courses };
+  const undismissableScreens = ['ActivityCardContainer'];
 
   return (
     <NavigationContainer ref={navigationRef} onReady={handleOnReadyNavigation}

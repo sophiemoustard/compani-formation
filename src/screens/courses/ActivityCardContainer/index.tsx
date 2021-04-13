@@ -18,7 +18,7 @@ import CardsActions from '../../../store/cards/actions';
 import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import styles from './styles';
 
-interface CardContainerProps {
+interface ActivityCardContainerProps {
   route: { params: { activityId: string, profileId: string } },
   navigation: NavigationType,
   activity: ActivityType,
@@ -32,7 +32,7 @@ interface CardContainerProps {
   resetActivityReducer: () => void,
 }
 
-const CardContainer = ({
+const ActivityCardContainer = ({
   route,
   navigation,
   activity,
@@ -44,7 +44,7 @@ const CardContainer = ({
   setCards,
   setExitConfirmationModal,
   resetActivityReducer,
-}: CardContainerProps) => {
+}: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
   const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
   const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
@@ -147,4 +147,4 @@ const mapDispatchToProps = dispatch => ({
   resetActivityReducer: () => dispatch(ActivityActions.resetActivityReducer()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);
