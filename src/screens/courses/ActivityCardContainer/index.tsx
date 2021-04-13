@@ -1,22 +1,18 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { View, BackHandler } from 'react-native';
+import React, { useEffect, useContext } from 'react';
+import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
-import { PanGestureHandler } from 'react-native-gesture-handler';
 import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
 import { CardType } from '../../../types/CardType';
 import { NavigationType } from '../../../types/NavigationType';
-import ExitModal from '../../../components/ExitModal';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
-import CardTemplate from '../cardTemplates/CardTemplate';
 import { StateType } from '../../../types/store/StoreType';
 import ActivityActions from '../../../store/activities/actions';
 import CardsActions from '../../../store/cards/actions';
-import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
-import styles from './styles';
+import CardScreen from '../CardScreen';
 
 interface ActivityCardContainerProps {
   route: { params: { activityId: string, profileId: string } },
@@ -48,8 +44,6 @@ const ActivityCardContainer = ({
   resetCardReducer,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
-  const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
-  const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
 
   const getActivity = async () => {
     try {
@@ -91,33 +85,6 @@ const ActivityCardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const onSwipe = (index, event) => {
-    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && index > 0 && isLeftSwipeEnabled) {
-      navigation.navigate(`card-${index - 1}`);
-    }
-
-    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
-      navigation.navigate(`card-${index + 1}`);
-    }
-  };
-
-  const renderCardScreen = (index: number) => (
-    <Tab.Screen key={index} name={`card-${index}`}>
-      {() => (
-        <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
-          activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
-          <View style={styles.cardScreen}>
-            <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-              onPressCancelButton={() => setExitConfirmationModal(false)}
-              title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
-            <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
-              setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
-          </View>
-        </PanGestureHandler>
-      )}
-    </Tab.Screen>
-  );
-
   const Tab = createMaterialTopTabNavigator();
 
   return (
@@ -127,7 +94,11 @@ const ActivityCardContainer = ({
           <Tab.Screen key={0} name={'startCard'} >
             {() => <StartCard title={activity.name} profileId={route.params.profileId} />}
           </Tab.Screen>
-          {cards.map((_, index) => renderCardScreen(index))}
+          {cards.map((_, index) => (
+            <Tab.Screen key={index} name={`card-${index}`}>
+              {() => <CardScreen index={index} goBack={goBack} />}
+            </Tab.Screen>
+          ))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
             {() => <ActivityEndCard profileId={route.params.profileId} />}
           </Tab.Screen>
