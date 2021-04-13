@@ -5,7 +5,6 @@ import { ActivityHistoryType } from '../ActivityHistoryType';
 export const SET_ACTIVITY = 'SET_ACTIVITY';
 export const SET_EXIT_CONFIRMATION_MODAL = 'SET_EXIT_CONFIRMATION_MODAL';
 export const RESET_ACTIVITY_REDUCER = 'RESET_ACTIVITY_REDUCER';
-export const INC_GOOD_ANSWERS_COUNT = 'INC_GOOD_ANSWERS_COUNT';
 export const SET_ACTIVITY_HISTORIES = 'SET_ACTIVITY_HISTORIES';
 
 export interface SetActivityType {
@@ -26,20 +25,15 @@ export interface ResetActivityReducer {
   type: typeof RESET_ACTIVITY_REDUCER,
 }
 
-export interface IncGoodAnswersCountType {
-  type: typeof INC_GOOD_ANSWERS_COUNT,
-}
-
 export type ActivityActionType =
 SetActivityType |
 SetExitConfirmationModalType |
 SetActivityHistories;
 
-export type ActivityActionWithoutPayloadType = ResetActivityReducer | IncGoodAnswersCountType;
+export type ActivityActionWithoutPayloadType = ResetActivityReducer;
 
 export interface ActivityStateType {
   activity: ActivityType | null,
   exitConfirmationModal: boolean,
-  score: number
   activityHistories: Array<ActivityHistoryType>
 }

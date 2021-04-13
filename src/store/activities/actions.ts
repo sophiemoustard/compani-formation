@@ -7,7 +7,6 @@ import {
   SET_ACTIVITY_HISTORIES,
   SetActivityHistories,
   RESET_ACTIVITY_REDUCER,
-  INC_GOOD_ANSWERS_COUNT,
 } from '../../types/store/ActivityStoreType';
 import { ActivityType } from '../../types/ActivityType';
 import { ActivityHistoryType } from '../../types/ActivityHistoryType';
@@ -16,7 +15,6 @@ const setActivity = (activity: ActivityType): SetActivityType => ({ type: SET_AC
 const setExitConfirmationModal = (exitConfirmationModal: boolean): SetExitConfirmationModalType =>
   ({ type: SET_EXIT_CONFIRMATION_MODAL, payload: exitConfirmationModal });
 const resetActivityReducer = (): ActionWithoutPayloadType => ({ type: RESET_ACTIVITY_REDUCER });
-const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
 const setActivityHistories = (activityHistories: Array<ActivityHistoryType>): SetActivityHistories =>
   ({ type: SET_ACTIVITY_HISTORIES, payload: activityHistories });
 
@@ -24,6 +22,5 @@ export default {
   setActivity,
   setExitConfirmationModal,
   resetActivityReducer,
-  incGoodAnswersCount,
   setActivityHistories,
 };

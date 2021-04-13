@@ -11,6 +11,7 @@ import {
   ADD_QUESTIONNAIRE_ANSWER,
   REMOVE_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
+  INC_GOOD_ANSWERS_COUNT,
 } from '../../types/store/CardStoreType';
 import { CardType } from '../../types/CardType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
@@ -27,6 +28,8 @@ const addQuestionnaireAnswer = (questionnaireAnswer: QuestionnaireAnswerType): A
 const removeQuestionnaireAnswer = (card: string): RemoveQuestionnaireAnswerType =>
   ({ type: REMOVE_QUESTIONNAIRE_ANSWER, payload: card });
 
+const incGoodAnswersCount = (): ActionWithoutPayloadType => ({ type: INC_GOOD_ANSWERS_COUNT });
+
 export default {
   setCards,
   resetCardReducer,
@@ -34,4 +37,5 @@ export default {
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,
   setQuestionnaireAnswersList,
+  incGoodAnswersCount,
 };

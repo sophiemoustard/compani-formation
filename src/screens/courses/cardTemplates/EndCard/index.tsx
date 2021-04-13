@@ -74,7 +74,7 @@ const EndCard = ({
 const mapStateToProps = (state: StateType) => ({
   activity: state.activities.activity,
   questionnaireAnswersList: state.cards.questionnaireAnswersList,
-  score: state.activities.score,
+  score: state.cards.score,
   isCourse: state.courses.isCourse,
 });
 

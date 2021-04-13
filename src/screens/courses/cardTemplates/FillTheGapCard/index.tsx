@@ -11,7 +11,7 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import styles from './styles';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import Actions from '../../../../store/activities/actions';
+import Actions from '../../../../store/cards/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';

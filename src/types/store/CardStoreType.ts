@@ -6,12 +6,14 @@ export const SET_CARD_INDEX = 'SET_CARD_INDEX';
 export const ADD_QUESTIONNAIRE_ANSWER = 'ADD_QUESTIONNAIRE_ANSWER';
 export const REMOVE_QUESTIONNAIRE_ANSWER = 'REMOVE_QUESTIONNAIRE_ANSWER';
 export const SET_QUESTIONNAIRE_ANSWERS_LIST = 'SET_QUESTIONNAIRE_ANSWERS_LIST';
+export const INC_GOOD_ANSWERS_COUNT = 'INC_GOOD_ANSWERS_COUNT';
 
 // STATE
 export interface CardStateType {
   cards: Array<CardType>,
   cardIndex: number | null,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
+  score: number,
 }
 
 // ACTION
@@ -47,6 +49,10 @@ export interface SetQuestionnaireAnswersListType {
   payload: Array<QuestionnaireAnswerType>,
 }
 
+export interface IncGoodAnswersCountType {
+  type: typeof INC_GOOD_ANSWERS_COUNT,
+}
+
 export type CardActionType =
 SetCardsType |
 SetCardIndexType |
@@ -54,4 +60,4 @@ AddQuestionnaireAnswerType |
 SetQuestionnaireAnswersListType |
 RemoveQuestionnaireAnswerType;
 
-export type CardActionWithoutPayloadType = ResetCardReducerType;
+export type CardActionWithoutPayloadType = ResetCardReducerType | IncGoodAnswersCountType;

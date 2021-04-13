@@ -7,6 +7,7 @@ import {
   ADD_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
   REMOVE_QUESTIONNAIRE_ANSWER,
+  INC_GOOD_ANSWERS_COUNT,
   CardActionWithoutPayloadType,
 } from '../../types/store/CardStoreType';
 
@@ -14,6 +15,7 @@ const initialState: CardStateType = {
   cards: [],
   cardIndex: null,
   questionnaireAnswersList: [],
+  score: 0,
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
@@ -48,6 +50,8 @@ export const cards = (state: CardStateType = initialState, action: CardActionTyp
       return applyRemoveQuestionnaireAnswer(state, action);
     case SET_QUESTIONNAIRE_ANSWERS_LIST:
       return { ...state, questionnaireAnswersList: action.payload };
+    case INC_GOOD_ANSWERS_COUNT:
+      return { ...state, score: state.score + 1 };
     case RESET_CARD_REDUCER:
       return initialState;
     default:
