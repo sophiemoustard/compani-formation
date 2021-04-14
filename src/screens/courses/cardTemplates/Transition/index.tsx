@@ -1,4 +1,4 @@
-import React, { useEffect, ComponentType } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { WHITE } from '../../../../styles/colors';
@@ -16,7 +16,7 @@ interface TransitionProps {
   setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const Transition: ComponentType<any> = ({ index, card, isLoading, setIsRightSwipeEnabled }: TransitionProps) => {
+const Transition = ({ index, card, isLoading, setIsRightSwipeEnabled }: TransitionProps) => {
   useEffect(() => setIsRightSwipeEnabled(true));
 
   if (isLoading) return null;

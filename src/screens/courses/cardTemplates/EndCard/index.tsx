@@ -1,4 +1,4 @@
-import React, { useEffect, ComponentType } from 'react';
+import React, { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -22,7 +22,7 @@ interface EndCardProps {
   setCardIndex: (number) => void,
 }
 
-const EndCard: ComponentType<any> = ({
+const EndCard = ({
   profileId,
   isCourse,
   activity,

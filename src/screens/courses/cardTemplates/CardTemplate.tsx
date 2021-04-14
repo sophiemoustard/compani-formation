@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ComponentType } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -42,7 +42,7 @@ interface CardTemplateProps {
   setIsLeftSwipeEnabled: (boolean) => void,
 }
 
-const CardTemplate: ComponentType<any> = ({
+const CardTemplate = ({
   index,
   activity,
   setCardIndex,

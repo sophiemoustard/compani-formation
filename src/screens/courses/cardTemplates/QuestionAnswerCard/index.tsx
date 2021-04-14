@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ComponentType } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
@@ -28,7 +28,7 @@ export interface answerType extends answerFromAPIType {
   isSelected: boolean,
 }
 
-const QuestionAnswerCard: ComponentType<any> = ({
+const QuestionAnswerCard = ({
   card,
   cardIndex,
   questionnaireAnswer,

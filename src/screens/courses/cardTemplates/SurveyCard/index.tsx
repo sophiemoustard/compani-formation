@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ComponentType } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SurveyType } from '../../../../types/CardType';
@@ -22,7 +22,7 @@ interface SurveyCardProps {
   setIsRightSwipeEnabled: (boolean) => void,
 }
 
-const SurveyCard: ComponentType<any> = ({
+const SurveyCard = ({
   card,
   index,
   questionnaireAnswer,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ComponentType } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -28,7 +28,7 @@ export interface qcmAnswerType extends qcmAnswerFromAPIType {
   isSelected: boolean,
 }
 
-const MultipleChoiceQuestionCard: ComponentType<any> = ({
+const MultipleChoiceQuestionCard = ({
   card,
   cardIndex,
   incGoodAnswersCount,
