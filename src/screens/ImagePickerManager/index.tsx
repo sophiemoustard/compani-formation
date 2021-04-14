@@ -18,7 +18,7 @@ interface ImagePickerManagerProps {
   setLoggedUser: (user: UserType) => void,
 }
 
-const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }:ImagePickerManagerProps) => {
+const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePickerManagerProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
