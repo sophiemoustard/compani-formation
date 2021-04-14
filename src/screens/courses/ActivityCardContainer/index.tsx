@@ -13,6 +13,8 @@ import { StateType } from '../../../types/store/StoreType';
 import ActivityActions from '../../../store/activities/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
+import { QuestionnaireAnswerType } from '../../../types/store/CardStoreType';
+import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 
 interface ActivityCardContainerProps {
   route: { params: { activityId: string, profileId: string } },
@@ -22,11 +24,13 @@ interface ActivityCardContainerProps {
   isCourse: boolean,
   exitConfirmationModal: boolean,
   cards: Array<CardType>,
+  activityHistories: Array<ActivityHistoryType>,
   setActivity: (activity: ActivityType | null) => void,
   setCards: (activity: Array<CardType> | null) => void,
   setExitConfirmationModal: (boolean) => void,
   resetActivityReducer: () => void,
   resetCardReducer: () => void,
+  setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
 }
 
 const ActivityCardContainer = ({
@@ -37,13 +41,24 @@ const ActivityCardContainer = ({
   cardIndex,
   isCourse,
   exitConfirmationModal,
+  activityHistories,
   setActivity,
   setCards,
   setExitConfirmationModal,
   resetActivityReducer,
   resetCardReducer,
+  setQuestionnaireAnswersList,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
+
+  const getQuestionnaireAnswersList = () => {
+    if (isCourse) {
+      const activityHistory = activityHistories[activityHistories.length - 1];
+      if (activityHistory?.questionnaireAnswersList) {
+        setQuestionnaireAnswersList(activityHistory.questionnaireAnswersList);
+      }
+    }
+  };
 
   const getActivity = async () => {
     try {
@@ -67,7 +82,10 @@ const ActivityCardContainer = ({
   };
 
   useEffect(() => {
-    async function fetchData() { await getActivity(); }
+    async function fetchData() {
+      await getActivity();
+      getQuestionnaireAnswersList();
+    }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -113,6 +131,7 @@ const mapStateToProps = (state: StateType) => ({
   cardIndex: state.cards.cardIndex,
   exitConfirmationModal: state.cards.exitConfirmationModal,
   isCourse: state.courses.isCourse,
+  activityHistories: state.activities.activityHistories,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -121,6 +140,8 @@ const mapDispatchToProps = dispatch => ({
   setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetActivityReducer: () => dispatch(ActivityActions.resetActivityReducer()),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
+  setQuestionnaireAnswersList: questionnaireAnswersList =>
+    dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);

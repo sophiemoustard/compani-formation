@@ -6,19 +6,15 @@ import Button from '../../../../components/form/Button';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import ActivitiesActions from '../../../../store/activities/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from './styles';
 import MainActions from '../../../../store/main/actions';
 import CardsActions from '../../../../store/cards/actions';
-import { ActivityHistoryType } from '../../../../types/ActivityHistoryType';
 
 interface StartCardProps {
   title: string,
   profileId: string,
   isCourse: boolean,
-  activityHistories: Array<ActivityHistoryType>,
   resetActivityReducer: () => void,
-  setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
   setStatusBarVisible: (boolean) => void,
   resetCardReducer: () => void,
 }
@@ -27,20 +23,11 @@ const StartCard = ({
   title,
   profileId,
   isCourse,
-  activityHistories,
   resetActivityReducer,
-  setQuestionnaireAnswersList,
   setStatusBarVisible,
   resetCardReducer,
 }: StartCardProps) => {
   const navigation = useNavigation();
-
-  if (isCourse) {
-    const activityHistory = activityHistories[activityHistories.length - 1];
-    if (activityHistory?.questionnaireAnswersList) {
-      setQuestionnaireAnswersList(activityHistory.questionnaireAnswersList);
-    }
-  }
 
   useEffect(() => {
     setStatusBarVisible(false);
@@ -86,13 +73,10 @@ const StartCard = ({
 
 const mapStateToProps = state => ({
   isCourse: state.courses.isCourse,
-  activityHistories: state.activities.activityHistories,
 });
 
 const mapDispatchToProps = dispatch => ({
   resetActivityReducer: () => dispatch(ActivitiesActions.resetActivityReducer()),
-  setQuestionnaireAnswersList: questionnaireAnswersList =>
-    dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
