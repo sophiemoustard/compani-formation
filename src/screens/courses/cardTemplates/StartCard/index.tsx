@@ -12,33 +12,20 @@ import CardsActions from '../../../../store/cards/actions';
 
 interface StartCardProps {
   title: string,
-  profileId: string,
-  isCourse: boolean,
-  resetActivityReducer: () => void,
   setStatusBarVisible: (boolean) => void,
-  resetCardReducer: () => void,
+  goBack: () => void,
 }
 
 const StartCard = ({
   title,
-  profileId,
-  isCourse,
-  resetActivityReducer,
   setStatusBarVisible,
-  resetCardReducer,
+  goBack,
 }: StartCardProps) => {
   const navigation = useNavigation();
 
   useEffect(() => {
     setStatusBarVisible(false);
   });
-
-  const goBack = () => {
-    resetActivityReducer();
-    resetCardReducer();
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId });
-    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
-  };
 
   const hardwareBackPress = () => {
     goBack();
@@ -55,7 +42,7 @@ const StartCard = ({
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}>
-      <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
+      <CardHeader color={WHITE} onPress={goBack} icon='arrow-left' />
       <View style={styles.wrapper}>
         <View>
           <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.imageBackground}
@@ -71,14 +58,10 @@ const StartCard = ({
   );
 };
 
-const mapStateToProps = state => ({
-  isCourse: state.courses.isCourse,
-});
-
 const mapDispatchToProps = dispatch => ({
   resetActivityReducer: () => dispatch(ActivitiesActions.resetActivityReducer()),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StartCard);
+export default connect(null, mapDispatchToProps)(StartCard);

@@ -76,9 +76,9 @@ const ActivityCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
     resetActivityReducer();
     resetCardReducer();
-    if (isCourse) {
-      navigation.navigate('CourseProfile', { courseId: route.params.profileId, endedActivity: activity._id });
-    } else navigation.navigate('SubProgramProfile', { subProgramId: route.params.profileId });
+    const { profileId } = route.params;
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
+    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
   };
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const ActivityCardContainer = ({
       {cards.length > 0 && (
         <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
           <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard title={activity.name} profileId={route.params.profileId} />}
+            {() => <StartCard title={activity.name} goBack={goBack} />}
           </Tab.Screen>
           {cards.map((_, index) => (
             <Tab.Screen key={index} name={`card-${index}`}>
@@ -118,7 +118,7 @@ const ActivityCardContainer = ({
             </Tab.Screen>
           ))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <ActivityEndCard profileId={route.params.profileId} />}
+            {() => <ActivityEndCard goBack={goBack} />}
           </Tab.Screen>
         </Tab.Navigator>)}
     </>
