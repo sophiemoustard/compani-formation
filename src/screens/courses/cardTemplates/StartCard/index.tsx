@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground, ScrollView, BackHandler } from 'react-native';
+import { View, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../../../../components/form/Button';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
-import ActivitiesActions from '../../../../store/activities/actions';
 import styles from './styles';
 import MainActions from '../../../../store/main/actions';
-import CardsActions from '../../../../store/cards/actions';
 
 interface StartCardProps {
   title: string,
@@ -26,18 +24,6 @@ const StartCard = ({
   useEffect(() => {
     setStatusBarVisible(false);
   });
-
-  const hardwareBackPress = () => {
-    goBack();
-    return true;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
-
-    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
@@ -59,9 +45,7 @@ const StartCard = ({
 };
 
 const mapDispatchToProps = dispatch => ({
-  resetActivityReducer: () => dispatch(ActivitiesActions.resetActivityReducer()),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
 export default connect(null, mapDispatchToProps)(StartCard);
