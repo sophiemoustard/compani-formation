@@ -1,35 +1,33 @@
 import {
-  ActivityStateType,
-  SET_ACTIVITY,
+  CardStateType,
+  CardActionType,
+  SET_CARDS,
+  RESET_CARD_REDUCER,
   SET_CARD_INDEX,
-  SET_EXIT_CONFIRMATION_MODAL,
-  RESET_ACTIVITY_REDUCER,
   ADD_QUESTIONNAIRE_ANSWER,
-  REMOVE_QUESTIONNAIRE_ANSWER,
   SET_QUESTIONNAIRE_ANSWERS_LIST,
+  REMOVE_QUESTIONNAIRE_ANSWER,
   INC_GOOD_ANSWERS_COUNT,
-  SET_ACTIVITY_HISTORIES,
-  ActivityActionType,
-  ActivityActionWithoutPayloadType,
-} from '../../types/store/ActivityStoreType';
+  SET_EXIT_CONFIRMATION_MODAL,
+  CardActionWithoutPayloadType,
+} from '../../types/store/CardStoreType';
 
-const initialState: ActivityStateType = {
-  activity: null,
+const initialState: CardStateType = {
+  cards: [],
   cardIndex: null,
-  exitConfirmationModal: false,
   questionnaireAnswersList: [],
   score: 0,
-  activityHistories: [],
+  exitConfirmationModal: false,
 };
 
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
-  const indexOfQuestionnaireAnswer = state.questionnaireAnswersList.findIndex((qa =>
-    qa.card === questionnaireAnswer.card));
+  const indexOfAnswer = state.questionnaireAnswersList
+    .findIndex((qa => qa.card === questionnaireAnswer.card));
 
-  if (indexOfQuestionnaireAnswer !== -1) {
+  if (indexOfAnswer !== -1) {
     const newQuestionnaireAnswersList = [...state.questionnaireAnswersList];
-    newQuestionnaireAnswersList[indexOfQuestionnaireAnswer] = questionnaireAnswer;
+    newQuestionnaireAnswersList[indexOfAnswer] = questionnaireAnswer;
 
     return { ...state, questionnaireAnswersList: newQuestionnaireAnswersList };
   }
@@ -42,29 +40,24 @@ const applyRemoveQuestionnaireAnswer = (state, action) => {
   return { ...state, questionnaireAnswersList: state.questionnaireAnswersList.filter(qa => qa.card !== card) };
 };
 
-export const activities = (
-  state: ActivityStateType = initialState,
-  action: ActivityActionType | ActivityActionWithoutPayloadType
-): ActivityStateType => {
+export const cards = (state: CardStateType = initialState, action: CardActionType | CardActionWithoutPayloadType) => {
   switch (action.type) {
-    case SET_ACTIVITY:
-      return { ...state, activity: action.payload };
+    case SET_CARDS:
+      return { ...state, cards: action.payload };
     case SET_CARD_INDEX:
       return { ...state, cardIndex: action.payload };
-    case SET_EXIT_CONFIRMATION_MODAL:
-      return { ...state, exitConfirmationModal: action.payload };
     case ADD_QUESTIONNAIRE_ANSWER:
       return applyAddQuestionnaireAnswer(state, action);
     case REMOVE_QUESTIONNAIRE_ANSWER:
       return applyRemoveQuestionnaireAnswer(state, action);
-    case SET_ACTIVITY_HISTORIES:
-      return { ...state, activityHistories: action.payload };
-    case RESET_ACTIVITY_REDUCER:
-      return initialState;
     case SET_QUESTIONNAIRE_ANSWERS_LIST:
       return { ...state, questionnaireAnswersList: action.payload };
     case INC_GOOD_ANSWERS_COUNT:
       return { ...state, score: state.score + 1 };
+    case SET_EXIT_CONFIRMATION_MODAL:
+      return { ...state, exitConfirmationModal: action.payload };
+    case RESET_CARD_REDUCER:
+      return initialState;
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import { QuestionnaireAnswerType } from './store/ActivityStoreType';
+import { QuestionnaireAnswerType } from './store/CardStoreType';
 
 export interface ActivityHistoryType {
   _id: string,

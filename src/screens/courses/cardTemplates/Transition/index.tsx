@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { WHITE } from '../../../../styles/colors';
 import CardFooter from '../../../../components/cards/CardFooter';
 import CardHeader from '../../../../components/cards/CardHeader';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import { TransitionType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
@@ -32,6 +32,6 @@ const Transition = ({ index, card, isLoading, setIsRightSwipeEnabled }: Transiti
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ index: state.activities.cardIndex, card: Selectors.getCard(state) });
+const mapStateToProps = (state: StateType) => ({ index: state.cards.cardIndex, card: Selectors.getCard(state) });
 
 export default connect(mapStateToProps)(Transition);

@@ -1,38 +1,35 @@
 import React, { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
 import Button from '../../../../components/form/Button';
 import { StateType } from '../../../../types/store/StoreType';
 import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
-import Actions from '../../../../store/activities/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import CardsActions from '../../../../store/cards/actions';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from './styles';
 import { achievementJingle } from '../../../../core/helpers/utils';
 
-interface EndCardProps {
-  profileId: String,
+interface ActivityEndCardProps {
   isCourse: boolean,
   activity: ActivityType,
   questionnaireAnswersList: Array<QuestionnaireAnswerType>,
   score: number,
-  resetActivityReducer: () => void,
   setCardIndex: (number) => void,
+  goBack: () => void,
 }
 
-const EndCard = ({
-  profileId,
+const ActivityEndCard = ({
   isCourse,
   activity,
   questionnaireAnswersList,
   score,
   setCardIndex,
-  resetActivityReducer,
-}: EndCardProps) => {
+  goBack,
+}: ActivityEndCardProps) => {
   const isFocused = useIsFocused();
-  const navigation = useNavigation();
 
   useEffect(() => {
     async function fetchData() {
@@ -50,12 +47,6 @@ const EndCard = ({
     }
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
-  const goBack = () => {
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
-    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
-    resetActivityReducer();
-  };
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.png')}>
@@ -68,15 +59,13 @@ const EndCard = ({
 };
 
 const mapStateToProps = (state: StateType) => ({
-  activity: state.activities.activity,
-  questionnaireAnswersList: state.activities.questionnaireAnswersList,
-  score: state.activities.score,
+  questionnaireAnswersList: state.cards.questionnaireAnswersList,
+  score: state.cards.score,
   isCourse: state.courses.isCourse,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCardIndex: index => dispatch(Actions.setCardIndex(index)),
-  resetActivityReducer: () => dispatch(Actions.resetActivityReducer()),
+  setCardIndex: index => dispatch(CardsActions.setCardIndex(index)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EndCard);
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityEndCard);

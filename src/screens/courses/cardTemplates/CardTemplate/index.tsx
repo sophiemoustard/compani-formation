@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { StateType, ActionType } from '../../../types/store/StoreType';
-import Transition from './Transition';
-import CardFooter from '../../../components/cards/CardFooter';
+import { StateType, ActionType } from '../../../../types/store/StoreType';
+import Transition from '../Transition';
+import CardFooter from '../../../../components/cards/CardFooter';
 import {
   TRANSITION,
   TITLE_TEXT_MEDIA,
@@ -18,25 +18,25 @@ import {
   ORDER_THE_SEQUENCE,
   FILL_THE_GAPS,
   QUESTION_ANSWER,
-} from '../../../core/data/constants';
-import CardHeader from '../../../components/cards/CardHeader';
-import TitleTextMediaCard from './TitleTextMediaCard';
-import TextMediaCard from './TextMediaCard';
-import { ActivityType } from '../../../types/ActivityType';
-import Actions from '../../../store/activities/actions';
-import SingleChoiceQuestionCard from './SingleChoiceQuestionCard';
-import SurveyCard from './SurveyCard';
-import TitleTextCard from './TitleTextCard';
-import MultipleChoiceQuestionCard from './MultipleChoiceQuestionCard';
-import FlashCard from './FlashCard';
-import OpenQuestionCard from './OpenQuestionCard';
-import OrderTheSequenceCard from './OrderTheSequenceCard';
-import FillTheGapCard from './FillTheGapCard';
-import QuestionAnswerCard from './QuestionAnswerCard';
+} from '../../../../core/data/constants';
+import CardHeader from '../../../../components/cards/CardHeader';
+import TitleTextMediaCard from '../TitleTextMediaCard';
+import TextMediaCard from '../TextMediaCard';
+import { CardType } from '../../../../types/CardType';
+import Actions from '../../../../store/cards/actions';
+import SingleChoiceQuestionCard from '../SingleChoiceQuestionCard';
+import SurveyCard from '../SurveyCard';
+import TitleTextCard from '../TitleTextCard';
+import MultipleChoiceQuestionCard from '../MultipleChoiceQuestionCard';
+import FlashCard from '../FlashCard';
+import OpenQuestionCard from '../OpenQuestionCard';
+import OrderTheSequenceCard from '../OrderTheSequenceCard';
+import FillTheGapCard from '../FillTheGapCard';
+import QuestionAnswerCard from '../QuestionAnswerCard';
 
 interface CardTemplateProps {
   index: number,
-  activity: ActivityType,
+  cards: Array<CardType>,
   setCardIndex: (number) => void,
   setIsRightSwipeEnabled: (boolean) => void,
   setIsLeftSwipeEnabled: (boolean) => void,
@@ -44,7 +44,7 @@ interface CardTemplateProps {
 
 const CardTemplate = ({
   index,
-  activity,
+  cards,
   setCardIndex,
   setIsRightSwipeEnabled,
   setIsLeftSwipeEnabled,
@@ -58,7 +58,7 @@ const CardTemplate = ({
     if (isFocused) fetchData().then(() => setIsLoading(false));
   }, [isFocused, setCardIndex, index, setIsLoading]);
 
-  const card = activity.cards[index];
+  const card = cards[index];
   switch (card.template) {
     case FLASHCARD:
       return <FlashCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
@@ -98,7 +98,8 @@ const CardTemplate = ({
   }
 };
 
-const mapStateToProps = (state: StateType) => ({ activity: state.activities.activity });
+const mapStateToProps = (state: StateType) => ({ cards: state.cards.cards });
+
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
   setCardIndex: index => dispatch(Actions.setCardIndex(index)),
 });

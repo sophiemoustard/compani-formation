@@ -5,13 +5,13 @@ import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
 import { useNavigation } from '@react-navigation/native';
 import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
 import styles from './styles';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import Actions from '../../../../store/activities/actions';
+import Actions from '../../../../store/cards/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
@@ -150,7 +150,8 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
+
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });

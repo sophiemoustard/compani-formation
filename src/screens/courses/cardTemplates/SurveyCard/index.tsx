@@ -6,10 +6,10 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import { StateType, ActionType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
-import Actions from '../../../../store/activities/actions';
+import Selectors from '../../../../store/cards/selectors';
+import Actions from '../../../../store/cards/actions';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from './styles';
 
 interface SurveyCardProps {
@@ -78,7 +78,7 @@ const SurveyCard = ({
 
 const mapStateToProps = (state: StateType) => ({
   card: Selectors.getCard(state),
-  index: state.activities.cardIndex,
+  index: state.cards.cardIndex,
   questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
 });
 

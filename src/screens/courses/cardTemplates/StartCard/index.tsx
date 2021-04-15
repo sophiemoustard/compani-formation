@@ -1,70 +1,26 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground, ScrollView, BackHandler } from 'react-native';
-import { connect } from 'react-redux';
+import React from 'react';
+import { View, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../../../../components/form/Button';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
-import ActivitiesActions from '../../../../store/activities/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/ActivityStoreType';
 import styles from './styles';
-import MainActions from '../../../../store/main/actions';
-import { ActivityHistoryType } from '../../../../types/ActivityHistoryType';
 
 interface StartCardProps {
   title: string,
-  profileId: string,
-  isCourse: boolean,
-  activityHistories: Array<ActivityHistoryType>,
-  resetActivityReducer: () => void,
-  setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
-  setStatusBarVisible: (boolean) => void,
+  goBack: () => void,
 }
 
 const StartCard = ({
   title,
-  profileId,
-  isCourse,
-  activityHistories,
-  resetActivityReducer,
-  setQuestionnaireAnswersList,
-  setStatusBarVisible,
+  goBack,
 }: StartCardProps) => {
   const navigation = useNavigation();
-
-  if (isCourse) {
-    const activityHistory = activityHistories[activityHistories.length - 1];
-    if (activityHistory?.questionnaireAnswersList) {
-      setQuestionnaireAnswersList(activityHistory.questionnaireAnswersList);
-    }
-  }
-
-  useEffect(() => {
-    setStatusBarVisible(false);
-  });
-
-  const goBack = () => {
-    resetActivityReducer();
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId });
-    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
-  };
-
-  const hardwareBackPress = () => {
-    goBack();
-    return true;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
-
-    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}>
-      <CardHeader color={WHITE} onPress={() => goBack()} icon='arrow-left' />
+      <CardHeader color={WHITE} onPress={goBack} icon='arrow-left' />
       <View style={styles.wrapper}>
         <View>
           <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.imageBackground}
@@ -80,16 +36,4 @@ const StartCard = ({
   );
 };
 
-const mapStateToProps = state => ({
-  isCourse: state.courses.isCourse,
-  activityHistories: state.activities.activityHistories,
-});
-
-const mapDispatchToProps = dispatch => ({
-  resetActivityReducer: () => dispatch(ActivitiesActions.resetActivityReducer()),
-  setQuestionnaireAnswersList: questionnaireAnswersList =>
-    dispatch(ActivitiesActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(StartCard);
+export default StartCard;
