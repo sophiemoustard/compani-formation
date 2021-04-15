@@ -13,9 +13,7 @@ export const formatPhoneForPayload = phoneNumber => (phoneNumber
   ? phoneNumber.replace(/[\s\-.]/g, '')
   : '');
 
-export const formatWordToPlural = (items, text) => (items.length > 1
-  ? `${items.length} ${text}s`
-  : `${items.length} ${text}`);
+export const formatWordToPlural = (items, text) => (items.length > 1 ? `${text}s` : `${text}`);
 
 export const capitalizeFirstLetter = s => `${s.charAt(0).toUpperCase()}${s.substr(1)}`;
 
