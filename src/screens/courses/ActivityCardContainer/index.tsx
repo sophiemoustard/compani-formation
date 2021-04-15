@@ -10,10 +10,11 @@ import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
+import MainActions from '../../../store/main/actions';
 import ActivityActions from '../../../store/activities/actions';
 import CardsActions from '../../../store/cards/actions';
-import CardScreen from '../CardScreen';
 import { QuestionnaireAnswerType } from '../../../types/store/CardStoreType';
+import CardScreen from '../CardScreen';
 import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 
 interface ActivityCardContainerProps {
@@ -31,6 +32,7 @@ interface ActivityCardContainerProps {
   resetActivityReducer: () => void,
   resetCardReducer: () => void,
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
+  setStatusBarVisible: (boolean) => void,
 }
 
 const ActivityCardContainer = ({
@@ -48,8 +50,13 @@ const ActivityCardContainer = ({
   resetActivityReducer,
   resetCardReducer,
   setQuestionnaireAnswersList,
+  setStatusBarVisible,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
+
+  useEffect(() => {
+    setStatusBarVisible(false);
+  }, [setStatusBarVisible]);
 
   const getQuestionnaireAnswersList = () => {
     if (isCourse) {
@@ -72,6 +79,15 @@ const ActivityCardContainer = ({
     }
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      await getActivity();
+      getQuestionnaireAnswersList();
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
@@ -82,15 +98,6 @@ const ActivityCardContainer = ({
     resetCardReducer();
     resetActivityReducer();
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      await getActivity();
-      getQuestionnaireAnswersList();
-    }
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const hardwareBackPress = () => {
     if (cardIndex === null) goBack();
@@ -107,23 +114,20 @@ const ActivityCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator();
 
-  return (
-    <>
-      {cards.length > 0 && (
-        <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
-          <Tab.Screen key={0} name={'startCard'} >
-            {() => <StartCard title={activity?.name} goBack={goBack} />}
-          </Tab.Screen>
-          {cards.map((_, index) => (
-            <Tab.Screen key={index} name={`card-${index}`}>
-              {() => <CardScreen index={index} goBack={goBack} />}
-            </Tab.Screen>
-          ))}
-          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <ActivityEndCard goBack={goBack} />}
-          </Tab.Screen>
-        </Tab.Navigator>)}
-    </>
+  return cards.length > 0 && (
+    <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+      <Tab.Screen key={0} name={'startCard'} >
+        {() => <StartCard title={activity?.name} goBack={goBack} />}
+      </Tab.Screen>
+      {cards.map((_, index) => (
+        <Tab.Screen key={index} name={`card-${index}`}>
+          {() => <CardScreen index={index} goBack={goBack} />}
+        </Tab.Screen>
+      ))}
+      <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+        {() => <ActivityEndCard goBack={goBack} />}
+      </Tab.Screen>
+    </Tab.Navigator>
   );
 };
 
@@ -144,6 +148,7 @@ const mapDispatchToProps = dispatch => ({
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
   setQuestionnaireAnswersList: questionnaireAnswersList =>
     dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
+  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);

@@ -18,47 +18,27 @@ export interface CardStateType {
   exitConfirmationModal: boolean,
 }
 
-// ACTION
-export interface ResetCardReducerType {
-  type: typeof RESET_CARD_REDUCER,
-}
+// ACTIONS
+export interface ResetCardReducerType { type: typeof RESET_CARD_REDUCER }
 
-export interface SetCardsType {
-  type: typeof SET_CARDS,
-  payload: Array<CardType>,
-}
-export interface SetCardIndexType {
-  type: typeof SET_CARD_INDEX,
-  payload: number,
-}
+export interface SetCardsType { type: typeof SET_CARDS, payload: Array<CardType> }
 
-export interface QuestionnaireAnswerType {
-  _id?: string,
-  card: string,
-  answerList: Array<string>,
-}
+export interface SetCardIndexType { type: typeof SET_CARD_INDEX, payload: number }
 
-export interface AddQuestionnaireAnswerType {
-  type: typeof ADD_QUESTIONNAIRE_ANSWER,
-  payload: QuestionnaireAnswerType,
-}
-export interface RemoveQuestionnaireAnswerType {
-  type: typeof REMOVE_QUESTIONNAIRE_ANSWER,
-  payload: string,
-}
+export interface QuestionnaireAnswerType { _id?: string, card: string, answerList: Array<string> }
+
+export interface AddQuestionnaireAnswerType { type: typeof ADD_QUESTIONNAIRE_ANSWER, payload: QuestionnaireAnswerType }
+
+export interface RemoveQuestionnaireAnswerType { type: typeof REMOVE_QUESTIONNAIRE_ANSWER, payload: string }
+
 export interface SetQuestionnaireAnswersListType {
   type: typeof SET_QUESTIONNAIRE_ANSWERS_LIST,
   payload: Array<QuestionnaireAnswerType>,
 }
 
-export interface IncGoodAnswersCountType {
-  type: typeof INC_GOOD_ANSWERS_COUNT,
-}
+export interface IncGoodAnswersCountType { type: typeof INC_GOOD_ANSWERS_COUNT }
 
-export interface SetExitConfirmationModalType {
-  type: typeof SET_EXIT_CONFIRMATION_MODAL,
-  payload: boolean,
-}
+export interface SetExitConfirmationModalType { type: typeof SET_EXIT_CONFIRMATION_MODAL, payload: boolean }
 
 export type CardActionType =
 SetCardsType |

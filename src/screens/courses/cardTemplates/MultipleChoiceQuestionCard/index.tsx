@@ -122,6 +122,7 @@ const mapStateToProps = (state: StateType) => ({
   card: Selectors.getCard(state),
   cardIndex: state.cards.cardIndex,
 });
+
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });

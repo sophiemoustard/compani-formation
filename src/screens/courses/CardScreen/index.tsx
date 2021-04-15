@@ -17,12 +17,7 @@ interface CardScreenProps {
   goBack: () => void,
 }
 
-const CardScreen = ({
-  index,
-  exitConfirmationModal,
-  setExitConfirmationModal,
-  goBack,
-}: CardScreenProps) => {
+const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, goBack }: CardScreenProps) => {
   const navigation = useNavigation();
   const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
   const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
@@ -41,9 +36,8 @@ const CardScreen = ({
     <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
       activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
       <View style={styles.cardScreen}>
-        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
-          title={'Êtes-vous sûr de cela ?'} contentText={'Tous vos progrès dans l\'activité seront perdus'} />
+        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr de cela ?'}
+          onPressCancelButton={() => setExitConfirmationModal(false)} contentText={'Tous vos progrès seront perdus'} />
         <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
           setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
       </View>
@@ -54,6 +48,7 @@ const CardScreen = ({
 const mapStateToProps = (state: StateType) => ({
   exitConfirmationModal: state.cards.exitConfirmationModal,
 });
+
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
   setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
 });

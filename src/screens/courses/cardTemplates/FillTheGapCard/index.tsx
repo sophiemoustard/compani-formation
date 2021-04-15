@@ -151,6 +151,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
 };
 
 const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
+
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });

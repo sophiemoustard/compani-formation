@@ -99,6 +99,7 @@ const CardTemplate = ({
 };
 
 const mapStateToProps = (state: StateType) => ({ cards: state.cards.cards });
+
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
   setCardIndex: index => dispatch(Actions.setCardIndex(index)),
 });

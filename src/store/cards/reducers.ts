@@ -22,12 +22,12 @@ const initialState: CardStateType = {
 
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
-  const indexOfQuestionnaireAnswer = state.questionnaireAnswersList.findIndex((qa =>
-    qa.card === questionnaireAnswer.card));
+  const indexOfAnswer = state.questionnaireAnswersList
+    .findIndex((qa => qa.card === questionnaireAnswer.card));
 
-  if (indexOfQuestionnaireAnswer !== -1) {
+  if (indexOfAnswer !== -1) {
     const newQuestionnaireAnswersList = [...state.questionnaireAnswersList];
-    newQuestionnaireAnswersList[indexOfQuestionnaireAnswer] = questionnaireAnswer;
+    newQuestionnaireAnswersList[indexOfAnswer] = questionnaireAnswer;
 
     return { ...state, questionnaireAnswersList: newQuestionnaireAnswersList };
   }
