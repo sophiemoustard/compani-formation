@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   container: {
     margin: MARGIN.MD,
     alignItems: 'center',
+    width: 96,
   },
   questionaireName: {
     ...FIRA_SANS_REGULAR.MD,

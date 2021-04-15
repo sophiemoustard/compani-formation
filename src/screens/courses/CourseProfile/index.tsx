@@ -35,6 +35,7 @@ import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import QuestionnaireCellContainer from '../../../components/questionnaires/QuestionnaireCellContainer';
+import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -48,7 +49,7 @@ interface CourseProfileProps {
 
 const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
-  const [questionnaires, setQuestionnaires] = useState<any>([]);
+  const [questionnaires, setQuestionnaires] = useState<Array<QuestionnaireType>>([]);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
