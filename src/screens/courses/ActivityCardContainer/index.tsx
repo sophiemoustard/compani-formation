@@ -6,7 +6,6 @@ import Activities from '../../../api/activities';
 import { ActivityType } from '../../../types/ActivityType';
 import { CardType } from '../../../types/CardType';
 import { NavigationType } from '../../../types/NavigationType';
-import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
@@ -16,7 +15,7 @@ import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 
 interface ActivityCardContainerProps {
-  route: { params: { activityId: string, profileId: string, activityHistories: Array<ActivityHistoryType> } },
+  route: { params: { activityId: string, profileId: string } },
   navigation: NavigationType,
   cardIndex: number | null,
   isCourse: boolean,
@@ -41,9 +40,7 @@ const ActivityCardContainer = ({
   setStatusBarVisible,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
-  const [activity, setActivity] = useState<ActivityType>(
-    { _id: '', name: '', type: '', cards: [], activityHistories: [] }
-  );
+  const [activity, setActivity] = useState<ActivityType | null>(null);
 
   useEffect(() => {
     setStatusBarVisible(false);
@@ -52,11 +49,11 @@ const ActivityCardContainer = ({
   const getActivity = async () => {
     try {
       const fetchedActivity = await Activities.getActivity(route.params.activityId);
-      await setActivity(fetchedActivity);
-      await setCards(fetchedActivity.cards);
+      setActivity(fetchedActivity);
+      setCards(fetchedActivity.cards);
     } catch (e) {
       if (e.status === 401) signOut();
-      setActivity({ _id: '', name: '', type: '', cards: [], activityHistories: [] });
+      setActivity(null);
       setCards([]);
     }
   };
@@ -73,7 +70,7 @@ const ActivityCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
     const { profileId } = route.params;
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity._id });
+    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity?._id });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
 
     resetCardReducer();
@@ -97,7 +94,7 @@ const ActivityCardContainer = ({
   return cards.length > 0 && (
     <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
       <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={activity.name} goBack={goBack} />}
+        {() => <StartCard title={activity?.name || ''} goBack={goBack} />}
       </Tab.Screen>
       {cards.map((_, index) => (
         <Tab.Screen key={index} name={`card-${index}`}>
