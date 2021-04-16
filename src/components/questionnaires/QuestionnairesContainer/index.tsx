@@ -6,11 +6,11 @@ import { formatWordToPlural } from '../../../core/helpers/utils';
 
 import styles from './styles';
 
-interface QuestionnaireCellContainerProps {
+interface QuestionnairesContainerProps {
   questionnaires: Array<QuestionnaireType>,
 }
 
-const QuestionnaireCellContainer = ({ questionnaires }: QuestionnaireCellContainerProps) => (
+const QuestionnairesContainer = ({ questionnaires }: QuestionnairesContainerProps) => (
   <View style={styles.container}>
     <View style={styles.header}>
       <Text style={styles.headerText}>
@@ -23,4 +23,4 @@ const QuestionnaireCellContainer = ({ questionnaires }: QuestionnaireCellContain
   </View>
 );
 
-export default QuestionnaireCellContainer;
+export default QuestionnairesContainer;

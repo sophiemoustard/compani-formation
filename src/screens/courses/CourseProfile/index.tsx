@@ -34,7 +34,7 @@ import CoursesActions from '../../../store/courses/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
 import { getLoggedUserId } from '../../../store/main/selectors';
-import QuestionnaireCellContainer from '../../../components/questionnaires/QuestionnaireCellContainer';
+import QuestionnairesContainer from '../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -149,7 +149,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
           <Text style={styles.aboutText}>A propos</Text>
         </TouchableOpacity>
       </View>
-      {!!questionnaires.length && <QuestionnaireCellContainer questionnaires={questionnaires} />}
+      {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} />}
       <View style={styles.progressBarContainer}>
         <Text style={styles.progressBarText}>ÉTAPES</Text>
         <ProgressBar progress={course.progress * 100} />
