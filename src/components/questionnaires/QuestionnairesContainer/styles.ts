@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     ...FIRA_SANS_ITALIC.SM,
-    padding: PADDING.MD,
+    paddingHorizontal: PADDING.LG,
+    paddingVertical: PADDING.MD,
   },
   questionnairesCount: {
     ...FIRA_SANS_BOLD_ITALIC.SM,
