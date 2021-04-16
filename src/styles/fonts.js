@@ -95,6 +95,17 @@ export const FIRA_SANS_ITALIC = StyleSheet.create({
   },
 });
 
+export const FIRA_SANS_BOLD_ITALIC = StyleSheet.create({
+  MD: {
+    fontSize: 16,
+    fontFamily: 'fira-sans-bold-italic',
+  },
+  SM: {
+    fontSize: 14,
+    fontFamily: 'fira-sans-bold-italic',
+  },
+});
+
 export const NUNITO_SEMI = StyleSheet.create({
   MD: {
     fontSize: 16,

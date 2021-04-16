@@ -19,6 +19,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
+import Questionnaires from '../../../api/questionnaires';
 import { GREY, WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import OnSiteCell from '../../../components/steps/OnSiteCell';
@@ -33,6 +34,8 @@ import CoursesActions from '../../../store/courses/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
 import { getLoggedUserId } from '../../../store/main/selectors';
+import QuestionnairesContainer from '../../../components/questionnaires/QuestionnairesContainer';
+import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -46,12 +49,15 @@ interface CourseProfileProps {
 
 const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
+  const [questionnaires, setQuestionnaires] = useState<Array<QuestionnaireType>>([]);
   const { signOut } = useContext(AuthContext);
 
   const getCourse = async () => {
     try {
       const fetchedCourse = await Courses.getCourse(route.params.courseId);
+      const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
       setCourse(fetchedCourse);
+      setQuestionnaires(fetchedQuestionnaires);
     } catch (e) {
       if (e.status === 401) signOut();
       setCourse(null);
@@ -143,6 +149,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
           <Text style={styles.aboutText}>A propos</Text>
         </TouchableOpacity>
       </View>
+      {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} />}
       <View style={styles.progressBarContainer}>
         <Text style={styles.progressBarText}>ÉTAPES</Text>
         <ProgressBar progress={course.progress * 100} />

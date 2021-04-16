@@ -27,6 +27,7 @@ const store = createStore(reducers, tron.createEnhancer());
 const fetchFonts = () => Font.loadAsync({
   'fira-sans-black': require('./assets/fonts/FiraSans-Black.ttf'),
   'fira-sans-bold': require('./assets/fonts/FiraSans-Bold.ttf'),
+  'fira-sans-bold-italic': require('./assets/fonts/FiraSans-SemiBoldItalic.ttf'),
   'fira-sans-italic': require('./assets/fonts/FiraSans-Italic.ttf'),
   'fira-sans-medium': require('./assets/fonts/FiraSans-Medium.ttf'),
   'fira-sans-regular': require('./assets/fonts/FiraSans-Regular.ttf'),
