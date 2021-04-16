@@ -91,10 +91,10 @@ const ActivityCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator();
 
-  return cards.length > 0 && !!activity && (
+  return cards.length > 0 && activity && (
     <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
       <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={activity?.name || ''} goBack={goBack} />}
+        {() => <StartCard title={activity.name} goBack={goBack} />}
       </Tab.Screen>
       {cards.map((_, index) => (
         <Tab.Screen key={index} name={`card-${index}`}>

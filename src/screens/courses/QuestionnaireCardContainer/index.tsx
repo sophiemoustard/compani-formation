@@ -88,10 +88,10 @@ const QuestionnaireCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator();
 
-  return cards.length > 0 && !!questionnaire && (
+  return cards.length > 0 && questionnaire && (
     <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
       <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={questionnaire?.title || ''} goBack={goBack} />}
+        {() => <StartCard title={questionnaire.title} goBack={goBack} />}
       </Tab.Screen>
       {cards.map((_, index) => (
         <Tab.Screen key={index} name={`card-${index}`}>
