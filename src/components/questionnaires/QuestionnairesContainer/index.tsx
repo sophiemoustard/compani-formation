@@ -8,9 +8,10 @@ import styles from './styles';
 
 interface QuestionnairesContainerProps {
   questionnaires: Array<QuestionnaireType>,
+  profileId: string,
 }
 
-const QuestionnairesContainer = ({ questionnaires }: QuestionnairesContainerProps) => (
+const QuestionnairesContainer = ({ questionnaires, profileId }: QuestionnairesContainerProps) => (
   <View style={styles.container}>
     <View style={styles.header}>
       <Text style={styles.headerText}>
@@ -18,8 +19,8 @@ const QuestionnairesContainer = ({ questionnaires }: QuestionnairesContainerProp
         {formatWordToPlural(questionnaires, 'formulaire')} à compléter avant le début de la formation
       </Text>
     </View>
-    <FlatList horizontal data={questionnaires} keyExtractor={item => item._id}
-      renderItem={({ item }) => <QuestionnaireCell questionnaire={item} />} showsHorizontalScrollIndicator={false} />
+    <FlatList horizontal data={questionnaires} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
+      renderItem={({ item }) => <QuestionnaireCell questionnaire={item} profileId={profileId} />} />
   </View>
 );
 
