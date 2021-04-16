@@ -76,6 +76,7 @@ const QuestionnaireCardContainer = ({
   const hardwareBackPress = () => {
     if (cardIndex === null) goBack();
     else setExitConfirmationModal(true);
+
     return true;
   };
 
