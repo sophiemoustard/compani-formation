@@ -54,8 +54,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
             Identifiez-vous pour{'\n'}accéder aux informations
           </Text>
           <NiInput caption="Email" value={email} onChangeText={setEmail} type="email" darkMode={true} />
-          <NiInput caption="Mot de passe" value={password}
-            onChangeText={setPassword} type="password" darkMode={true} />
+          <NiInput caption="Mot de passe" value={password} onChangeText={setPassword} type="password" darkMode={true} />
           <TouchableOpacity style={styles.forgotPassword} onPress={forgotPassword} hitSlop={{ top: 12, bottom: 12 }}>
             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>

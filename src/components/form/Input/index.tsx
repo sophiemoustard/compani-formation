@@ -24,7 +24,7 @@ const Input = ({
   onChangeText,
   caption,
   type,
-  darkMode,
+  darkMode = false,
   validationMessage = '',
   required = false,
   optional = false,

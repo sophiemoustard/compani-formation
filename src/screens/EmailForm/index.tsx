@@ -99,7 +99,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       <View style={accountCreationStyles.container}>
         <Text style={accountCreationStyles.title}>Quelle est votre e-mail ?</Text>
         <View style={accountCreationStyles.input}>
-          <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
+          <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()}
             onChangeText={text => enterEmail(text)} disabled={isLoading} />
         </View>
         <View style={accountCreationStyles.footer}>
