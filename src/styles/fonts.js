@@ -135,6 +135,10 @@ export const NUNITO_REGULAR = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'nunito-regular',
   },
+  SM: {
+    fontSize: 14,
+    fontFamily: 'nunito-regular',
+  },
 });
 
 export const NUNITO_REGULAR_BOLD_ITALIC = StyleSheet.create({
