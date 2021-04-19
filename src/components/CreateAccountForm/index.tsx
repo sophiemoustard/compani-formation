@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NiInput from '../../components/form/Input';
@@ -20,22 +20,18 @@ interface CreateAccountFormProps {
 }
 const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openModal }: CreateAccountFormProps) => {
   const isIOS = Platform.OS === 'ios';
-  const isDisabledBackHandler = useRef(isLoading);
   const navigation = useNavigation();
 
-  const hardwareBackPress = () => {
-    if (!isDisabledBackHandler.current) goBack(index);
+  const hardwareBackPress = useCallback(() => {
+    if (!isLoading) goBack(index);
     return true;
-  };
+  }, [goBack, index, isLoading]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
+  }, [hardwareBackPress]);
 
   const onChangeText = (text, fieldToChangeIndex) => {
     setData(
