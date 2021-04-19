@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Image, Text, View, ScrollView, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
@@ -28,26 +28,23 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
   const source = programImage ? { uri: programImage } : defaultImg;
   const navigation = useNavigation();
 
-  const hardwareBackPress = () => {
-    goBack();
+  const hardwareBackPress = useCallback(() => {
+    navigation.goBack();
     return true;
-  };
+  }, [navigation]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const goBack = () => navigation.goBack();
+  }, [hardwareBackPress]);
 
   return (
     <>
       <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.header} />
         <View style={styles.content}>
-          <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
+          <FeatherButton name='arrow-left' onPress={navigation.goBack} size={ICON.MD} color={WHITE} />
           <View style={styles.titleContainer}>
             <Text style={styles.aboutTitle}>A PROPOS</Text>
             <Text style={styles.programTitle}>{program.name}</Text>
