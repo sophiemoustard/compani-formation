@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Image, Text, View, ScrollView, BackHandler } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Image, Text, View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
@@ -23,31 +23,33 @@ interface AboutProps {
 }
 
 const About = ({ program, buttonCaption = 'Continuer', children, onPress }: AboutProps) => {
-  const defaultImg = require('../../../assets/images/authentication_background_image.jpg');
-  const programImage = get(program, 'image.link') || '';
-  const source = programImage ? { uri: programImage } : defaultImg;
+  const [source, setSource] =
+    useState<ImageSourcePropType>(require('../../../assets/images/authentication_background_image.jpg'));
   const navigation = useNavigation();
 
-  const hardwareBackPress = () => {
-    goBack();
+  useEffect(() => {
+    const programImage = get(program, 'image.link') || '';
+    if (programImage) setSource({ uri: programImage });
+    else setSource(require('../../../assets/images/authentication_background_image.jpg'));
+  }, [program]);
+
+  const hardwareBackPress = useCallback(() => {
+    navigation.goBack();
     return true;
-  };
+  }, [navigation]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const goBack = () => navigation.goBack();
+  }, [hardwareBackPress]);
 
   return (
     <>
       <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
         <View style={styles.header} />
         <View style={styles.content}>
-          <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
+          <FeatherButton name='arrow-left' onPress={navigation.goBack} size={ICON.MD} color={WHITE} />
           <View style={styles.titleContainer}>
             <Text style={styles.aboutTitle}>A PROPOS</Text>
             <Text style={styles.programTitle}>{program.name}</Text>
