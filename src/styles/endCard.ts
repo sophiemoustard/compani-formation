@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { YELLOW, GREY } from '../../../../styles/colors';
-import { MARGIN } from '../../../../styles/metrics';
-import { FIRA_SANS_BLACK } from '../../../../styles/fonts';
+import { YELLOW, GREY } from './colors';
+import { MARGIN } from './metrics';
+import { FIRA_SANS_BLACK } from './fonts';
 
 const styles = StyleSheet.create({
   container: {

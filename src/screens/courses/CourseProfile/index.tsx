@@ -149,7 +149,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
           <Text style={styles.aboutText}>A propos</Text>
         </TouchableOpacity>
       </View>
-      {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} />}
+      {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
       <View style={styles.progressBarContainer}>
         <Text style={styles.progressBarText}>ÉTAPES</Text>
         <ProgressBar progress={course.progress * 100} />

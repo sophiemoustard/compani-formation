@@ -9,7 +9,7 @@ import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
 import CardsActions from '../../../../store/cards/actions';
 import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
-import styles from './styles';
+import styles from '../../../../styles/endCard';
 import { achievementJingle } from '../../../../core/helpers/utils';
 
 interface ActivityEndCardProps {
