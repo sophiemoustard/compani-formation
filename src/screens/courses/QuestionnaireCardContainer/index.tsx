@@ -39,6 +39,7 @@ const QuestionnaireCardContainer = ({
 }: QuestionnaireCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
   const [questionnaire, setQuestionnaire] = useState<QuestionnaireType | null>(null);
+  const { profileId } = route.params;
 
   useEffect(() => {
     setStatusBarVisible(false);
@@ -67,7 +68,6 @@ const QuestionnaireCardContainer = ({
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
-    const { profileId } = route.params;
     navigation.navigate('CourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
 
     resetCardReducer();
@@ -100,7 +100,7 @@ const QuestionnaireCardContainer = ({
         </Tab.Screen>
       ))}
       <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-        {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} />}
+        {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
       </Tab.Screen>
     </Tab.Navigator>
   );
