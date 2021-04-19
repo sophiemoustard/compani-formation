@@ -4,7 +4,7 @@ import asyncStorage from './asyncStorage';
 const refreshAlenviCookies = async (): Promise<boolean> => {
   try {
     const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
-    if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
+    if (refreshToken && asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
       const token = await Authentication.refreshToken({ refreshToken });
 
       await asyncStorage.setAlenviToken(token.token, token.tokenExpireDate);
