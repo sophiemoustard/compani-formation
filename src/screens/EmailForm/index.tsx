@@ -22,8 +22,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
-  const [unvalidEmail, setUnvalidEmail] = useState<boolean>(false);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const isDisabledBackHandler = useRef(isLoading);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
@@ -40,30 +39,27 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
 
   useEffect(() => {
-    setUnvalidEmail(!email.match(EMAIL_REGEX));
+    setInvalidEmail(!email.match(EMAIL_REGEX));
     if (!email.match(EMAIL_REGEX) && isValidationAttempted) setErrorMessage('Votre e-mail n\'est pas valide');
     else setErrorMessage('');
   }, [email, isValidationAttempted]);
-
-  useEffect(() => { setIsValid(!unvalidEmail); }, [unvalidEmail]);
 
   const saveEmail = async () => {
     try {
       setIsValidationAttempted(true);
       setIsLoading(true);
-      if (isValid) {
+      if (!invalidEmail) {
         if (error) setError(false);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!route.params.firstConnection) {
-          setUnvalidEmail(true);
-          setErrorMessage('Votre e-mail n\'est pas reconnu');
+          setInvalidEmail(true);
+          setErrorMessage('Oups ! Cet e-mail n\'est pas reconnu.');
         } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
@@ -82,7 +78,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const enterEmail = text => setEmail(text.trim());
 
   const validationMessage = () => {
-    if ((unvalidEmail && isValidationAttempted) || error) return errorMessage;
+    if ((invalidEmail && isValidationAttempted) || error) return errorMessage;
     return '';
   };
 
