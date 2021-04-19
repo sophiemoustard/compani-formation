@@ -1,5 +1,5 @@
 import 'array-flat-polyfill';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
@@ -62,7 +62,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
   const { signOut } = useContext(AuthContext);
 
-  const getCourses = async () => {
+  const getCourses = useCallback(async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
       setOnGoingCourses(fetchedCourses.filter(course => course.progress < 1));
@@ -73,9 +73,9 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       setOnGoingCourses([]);
       setAchievedCourses([]);
     }
-  };
+  }, [signOut]);
 
-  const getElearningDraftSubPrograms = async () => {
+  const getElearningDraftSubPrograms = useCallback(async () => {
     try {
       const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
       setElearningDraftSubPrograms(fetchedSubPrograms);
@@ -84,17 +84,13 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       console.error(e);
       setElearningDraftSubPrograms([]);
     }
-  };
+  }, [signOut]);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    async function fetchData() {
-      await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
-    }
-    if (loggedUserId && isFocused) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId, isFocused]);
+    if (loggedUserId && isFocused) Promise.all([getCourses(), getElearningDraftSubPrograms()]);
+  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
 
   const goToCourse = (id, isCourse) => {
     if (isCourse) navigation.navigate('CourseProfile', { courseId: id });
