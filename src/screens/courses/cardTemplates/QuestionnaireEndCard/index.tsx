@@ -32,9 +32,10 @@ const QuestionnaireEndCard = ({
   useEffect(() => {
     async function fetchData() {
       const userId = await asyncStorage.getUserId();
-      const payload: Record<string, any> = { course: courseId, user: userId, questionnaire: questionnaire._id };
+      const payload = questionnaireAnswersList?.length
+        ? { course: courseId, user: userId, questionnaire: questionnaire._id, questionnaireAnswersList }
+        : { course: courseId, user: userId, questionnaire: questionnaire._id };
 
-      if (questionnaireAnswersList?.length) payload.questionnaireAnswersList = questionnaireAnswersList;
       await QuestionnaireHistories.createQuestionnaireHistories(payload);
       setCardIndex(null);
     }
