@@ -34,9 +34,10 @@ const ActivityEndCard = ({
   useEffect(() => {
     async function fetchData() {
       const userId = await asyncStorage.getUserId();
-      const payload: Record<string, any> = { user: userId, activity: activity._id, score };
+      const payload = questionnaireAnswersList?.length
+        ? { user: userId, activity: activity._id, score }
+        : { user: userId, activity: activity._id, score, questionnaireAnswersList };
 
-      if (questionnaireAnswersList?.length) payload.questionnaireAnswersList = questionnaireAnswersList;
       await ActivityHistories.createActivityHistories(payload);
       setCardIndex(null);
     }
