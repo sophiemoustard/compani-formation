@@ -91,9 +91,9 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
         keyboardShouldPersistTaps='always'>
         <Text style={accountCreationStyles.title}>{data[0].title}</Text>
         {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
-          <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type} darkMode={false}
+          <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type} optional={!d.required}
             onChangeText={text => onChangeText(text, i)} disabled={isLoading} required={d.required}
-            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} optional={!d.required} />
+            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
         </View>)}
         <View style={accountCreationStyles.footer}>
           {data.map((d, i) => <TouchableOpacity onPress={openModal} key={`modalText${i}`}>

@@ -162,25 +162,24 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           </TouchableOpacity>
         </View>
         <View style={styles.input}>
-          <NiInput caption="Prénom" value={editedUser.identity.firstname}
-            type="firstname" darkMode={false} onChangeText={text => onChangeIdentity('firstname', text)} />
+          <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
+            onChangeText={text => onChangeIdentity('firstname', text)} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Nom" value={editedUser.identity.lastname}
-            type="lastname" darkMode={false} onChangeText={text => onChangeIdentity('lastname', text)}
+            type="lastname" onChangeText={text => onChangeIdentity('lastname', text)}
             validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
-            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
+            onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
             validationMessage={unvalid.phone && isValidationAttempted
               ? 'Votre numéro de téléphone n\'est pas valide'
               : ''} />
         </View>
         <View style={styles.input}>
-          <NiInput caption="E-mail" value={editedUser.local.email} type="email"
-            darkMode={false} onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })}
-            validationMessage={emailValidation()} />
+          <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
+            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={errorMessage} show={error} />
