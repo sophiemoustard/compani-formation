@@ -26,7 +26,7 @@ const QuestionnaireCell = ({ questionnaire, profileId }: QuestionnaireCellProps)
           <Shadow customStyle={styles.shadow} />
         </View>
       </TouchableOpacity>
-      <Text style={styles.questionaireName} lineBreakMode={'tail'} numberOfLines={2}>{questionnaire.title}</Text>
+      <Text style={styles.questionaireName} lineBreakMode={'tail'} numberOfLines={2}>{questionnaire.name}</Text>
     </View>
   );
 };
