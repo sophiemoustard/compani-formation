@@ -13,12 +13,13 @@ interface QuestionnairesContainerProps {
 
 const QuestionnairesContainer = ({ questionnaires, profileId }: QuestionnairesContainerProps) => (
   <View style={styles.container}>
-    <View style={styles.header}>
+    <Text style={styles.header}>
+      <Text style={styles.headerText}>Vous avez </Text>
+      <Text style={styles.questionnairesCount}>{questionnaires.length} </Text>
       <Text style={styles.headerText}>
-        Vous avez <Text style={styles.questionnairesCount}>{questionnaires.length} </Text>
         {formatWordToPlural(questionnaires, 'formulaire')} à compléter avant le début de la formation
       </Text>
-    </View>
+    </Text>
     <FlatList horizontal data={questionnaires} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => <QuestionnaireCell questionnaire={item} profileId={profileId} />} />
   </View>
