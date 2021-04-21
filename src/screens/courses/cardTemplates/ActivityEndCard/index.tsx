@@ -35,8 +35,8 @@ const ActivityEndCard = ({
     async function fetchData() {
       const userId = await asyncStorage.getUserId();
       const payload = questionnaireAnswersList?.length
-        ? { user: userId, activity: activity._id, score }
-        : { user: userId, activity: activity._id, score, questionnaireAnswersList };
+        ? { user: userId, activity: activity._id, score, questionnaireAnswersList }
+        : { user: userId, activity: activity._id, score };
 
       await ActivityHistories.createActivityHistories(payload);
       setCardIndex(null);

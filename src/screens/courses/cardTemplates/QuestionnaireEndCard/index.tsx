@@ -30,18 +30,17 @@ const QuestionnaireEndCard = ({
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    async function fetchData() {
+    async function createQuestionnaireHistories() {
       const userId = await asyncStorage.getUserId();
       const payload = questionnaireAnswersList?.length
         ? { course: courseId, user: userId, questionnaire: questionnaire._id, questionnaireAnswersList }
         : { course: courseId, user: userId, questionnaire: questionnaire._id };
 
       await QuestionnaireHistories.createQuestionnaireHistories(payload);
-      setCardIndex(null);
     }
 
     if (isFocused) {
-      fetchData();
+      createQuestionnaireHistories();
       achievementJingle();
     }
   }, [courseId, isFocused, questionnaire, questionnaireAnswersList, setCardIndex]);
