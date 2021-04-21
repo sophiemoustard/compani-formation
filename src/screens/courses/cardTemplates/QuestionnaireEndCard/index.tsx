@@ -1,22 +1,49 @@
 import React, { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import asyncStorage from '../../../../core/helpers/asyncStorage';
 import Button from '../../../../components/form/Button';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
+import CardsActions from '../../../../store/cards/actions';
 import styles from '../../../../styles/endCard';
 import { achievementJingle } from '../../../../core/helpers/utils';
+import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
+import { StateType } from '../../../../types/store/StoreType';
+import QuestionnaireHistories from '../../../../api/questionnaireHistories';
 
 interface QuestionnaireEndCardProps {
+  courseId: string
   questionnaire: QuestionnaireType,
+  questionnaireAnswersList: Array<QuestionnaireAnswerType>,
   goBack: () => void,
+  setCardIndex: (number) => void,
 }
 
-const QuestionnaireEndCard = ({ goBack }: QuestionnaireEndCardProps) => {
+const QuestionnaireEndCard = ({
+  courseId,
+  questionnaire,
+  questionnaireAnswersList,
+  goBack,
+  setCardIndex,
+}: QuestionnaireEndCardProps) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (isFocused) achievementJingle();
-  }, [isFocused]);
+    async function createQuestionnaireHistories() {
+      const userId = await asyncStorage.getUserId();
+      const payload = questionnaireAnswersList?.length
+        ? { course: courseId, user: userId, questionnaire: questionnaire._id, questionnaireAnswersList }
+        : { course: courseId, user: userId, questionnaire: questionnaire._id };
+
+      await QuestionnaireHistories.createQuestionnaireHistories(payload);
+    }
+
+    if (isFocused) {
+      createQuestionnaireHistories();
+      achievementJingle();
+    }
+  }, [courseId, isFocused, questionnaire, questionnaireAnswersList, setCardIndex]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -29,4 +56,12 @@ const QuestionnaireEndCard = ({ goBack }: QuestionnaireEndCardProps) => {
   );
 };
 
-export default QuestionnaireEndCard;
+const mapStateToProps = (state: StateType) => ({
+  questionnaireAnswersList: state.cards.questionnaireAnswersList,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCardIndex: index => dispatch(CardsActions.setCardIndex(index)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireEndCard);
