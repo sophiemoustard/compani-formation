@@ -18,7 +18,7 @@ interface ImagePickerManagerProps {
   setLoggedUser: (user: UserType) => void,
 }
 
-const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }:ImagePickerManagerProps) => {
+const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePickerManagerProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -69,11 +69,13 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }:ImagePicke
     }
   };
 
-  return isLoading && (
-    <View style={styles.loader}>
-      {isSaving && <Text style={styles.text}>Enregistrement en cours...</Text>}
-      <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
-    </View>
+  return (
+    <>
+      {isLoading && <View style={styles.loader}>
+        {isSaving && <Text style={styles.text}>Enregistrement en cours...</Text>}
+        <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
+      </View>}
+    </>
   );
 };
 

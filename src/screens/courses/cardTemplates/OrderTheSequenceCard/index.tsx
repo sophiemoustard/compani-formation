@@ -6,8 +6,8 @@ import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
-import Actions from '../../../../store/activities/actions';
+import Selectors from '../../../../store/cards/selectors';
+import Actions from '../../../../store/cards/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
@@ -119,7 +119,8 @@ const OrderTheSequenceCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
+
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });

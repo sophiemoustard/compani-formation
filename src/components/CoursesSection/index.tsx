@@ -34,7 +34,7 @@ const CoursesSection = ({
     <>
       <Text style={styles.title}>{title}</Text>
       <Text style={[countStyle, styles.countContainer]}>
-        {formatWordToPlural(items, type).toUpperCase()}
+        {items.length} {formatWordToPlural(items, type).toUpperCase()}
       </Text>
       <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`} style={styles.container}
         renderItem={({ item }) => renderItem(item)} showsHorizontalScrollIndicator={false}

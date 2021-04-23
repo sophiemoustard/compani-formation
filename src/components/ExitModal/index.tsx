@@ -19,16 +19,18 @@ const ExitModal = ({
   onPressConfirmButton,
 }: ExitModalProps) => (
   <NiModal visible={visible}>
-    <Text style={styles.title}>{title}</Text>
-    <Text style={styles.contentText}>{contentText}</Text>
-    <View style={styles.buttons}>
-      <TouchableOpacity style={styles.button} onPress={onPressCancelButton}>
-        <Text style={styles.buttonText}>Annuler</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={onPressConfirmButton}>
-        <Text style={styles.buttonText}>Quitter</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.contentText}>{contentText}</Text>
+      <View style={styles.buttons}>
+        <TouchableOpacity style={styles.button} onPress={onPressCancelButton}>
+          <Text style={styles.buttonText}>Annuler</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={onPressConfirmButton}>
+          <Text style={styles.buttonText}>Quitter</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   </NiModal>
 );
 

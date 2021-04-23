@@ -10,11 +10,9 @@ const ProgressBar = ({ progress }: ProgressBarProps) => {
   const style = styles(progress);
 
   return (
-    <>
-      <View style={style.container}>
-        <View style={style.content} />
-      </View>
-    </>
+    <View style={style.container}>
+      <View style={style.content} />
+    </View>
   );
 };
 

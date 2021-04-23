@@ -38,7 +38,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   const startActivity = () => {
     const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
     navigation.dispatch(StackActions.replace('CourseProfile', { courseId }));
-    navigation.navigate('CardContainer', { activityId: firstActivity._id, profileId: courseId });
+    navigation.navigate('ActivityCardContainer', { activityId: firstActivity._id, profileId: courseId });
   };
 
   const subscribeAndGoToCourseProfile = async () => {

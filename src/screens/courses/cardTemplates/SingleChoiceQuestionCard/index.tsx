@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/activities/selectors';
-import Actions from '../../../../store/activities/actions';
+import Selectors from '../../../../store/cards/selectors';
+import Actions from '../../../../store/cards/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
@@ -92,7 +92,7 @@ const SingleChoiceQuestionCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
 const mapDispatchToProps = dispatch => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),

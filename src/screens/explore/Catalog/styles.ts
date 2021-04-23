@@ -8,8 +8,8 @@ const styles = (count = { color: '', background: '' }) => StyleSheet.create({
   },
   programsCount: {
     ...FIRA_SANS_REGULAR.SM,
-    color: count.color || null,
-    backgroundColor: count.background || null,
+    color: count.color || undefined,
+    backgroundColor: count.background || undefined,
   },
   programContainer: {
     paddingHorizontal: MAIN_MARGIN_LEFT,

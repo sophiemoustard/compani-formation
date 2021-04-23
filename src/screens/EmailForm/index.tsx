@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import ExitModal from '../../components/ExitModal';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -22,48 +22,41 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
-  const [unvalidEmail, setUnvalidEmail] = useState<boolean>(false);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const isDisabledBackHandler = useRef(isLoading);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(false);
 
-  const hardwareBackPress = () => {
-    if (!isDisabledBackHandler.current) setExitConfirmationModal(true);
+  const hardwareBackPress = useCallback(() => {
+    if (!isLoading) setExitConfirmationModal(true);
     return true;
-  };
+  }, [isLoading]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
+  }, [hardwareBackPress]);
 
   useEffect(() => {
-    setUnvalidEmail(!email.match(EMAIL_REGEX));
+    setInvalidEmail(!email.match(EMAIL_REGEX));
     if (!email.match(EMAIL_REGEX) && isValidationAttempted) setErrorMessage('Votre e-mail n\'est pas valide');
     else setErrorMessage('');
   }, [email, isValidationAttempted]);
-
-  useEffect(() => { setIsValid(!unvalidEmail); }, [unvalidEmail]);
 
   const saveEmail = async () => {
     try {
       setIsValidationAttempted(true);
       setIsLoading(true);
-      if (isValid) {
+      if (!invalidEmail) {
         if (error) setError(false);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!route.params.firstConnection) {
-          setUnvalidEmail(true);
-          setErrorMessage('Votre e-mail n\'est pas reconnu');
+          setInvalidEmail(true);
+          setErrorMessage('Oups ! Cet e-mail n\'est pas reconnu.');
         } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
@@ -82,7 +75,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const enterEmail = text => setEmail(text.trim());
 
   const validationMessage = () => {
-    if ((unvalidEmail && isValidationAttempted) || error) return errorMessage;
+    if ((invalidEmail && isValidationAttempted) || error) return errorMessage;
     return '';
   };
 
@@ -97,9 +90,9 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           title={'Êtes-vous sûr de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
       </View>
       <View style={accountCreationStyles.container}>
-        <Text style={accountCreationStyles.title}>Quelle est votre e-mail ?</Text>
+        <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
         <View style={accountCreationStyles.input}>
-          <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()} darkMode={false}
+          <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()}
             onChangeText={text => enterEmail(text)} disabled={isLoading} />
         </View>
         <View style={accountCreationStyles.footer}>

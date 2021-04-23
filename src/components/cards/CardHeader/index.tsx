@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import FeatherButton from '../../icons/FeatherButton';
-import Actions from '../../../store/activities/actions';
+import Actions from '../../../store/cards/actions';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import { ActionType, StateType } from '../../../types/store/StoreType';
 import styles from './styles';
 import ProgressBar from '../ProgressBar';
-import Selectors from '../../../store/activities/selectors';
+import Selectors from '../../../store/cards/selectors';
 import { FeatherType } from '../../../types/FeatherType';
 
 interface CardHeaderProps {

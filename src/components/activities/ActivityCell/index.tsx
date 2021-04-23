@@ -1,24 +1,26 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux';
+import CardsActions from '../../../store/cards/actions';
+import { StateType } from '../../../types/store/StoreType';
+import { QuestionnaireAnswerType } from '../../../types/store/CardStoreType';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType } from '../../../types/ActivityType';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { QUIZ } from '../../../core/data/constants';
-import Actions from '../../../store/activities/actions';
 import styles from './styles';
-import { ActivityHistoryType } from '../../../types/ActivityHistoryType';
 
 interface ActivityCellProps {
   activity: ActivityType,
   profileId: string,
-  setActivityHistories: (activityHistories: Array<ActivityHistoryType>) => void,
+  isCourse: boolean,
+  setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
 }
 
-const ActivityCell = ({ activity, profileId, setActivityHistories }: ActivityCellProps) => {
+const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersList }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
@@ -34,9 +36,17 @@ const ActivityCell = ({ activity, profileId, setActivityHistories }: ActivityCel
 
   const coloredStyle = styles(colors.check);
 
+  const getQuestionnaireAnswersList = () => {
+    const activityHistory = activity.activityHistories[activity.activityHistories.length - 1];
+    if (activityHistory?.questionnaireAnswersList) {
+      setQuestionnaireAnswersList(activityHistory.questionnaireAnswersList);
+    }
+  };
+
   const onPress = () => {
-    setActivityHistories(activity.activityHistories);
-    navigation.navigate('CardContainer', { activityId: activity._id, profileId });
+    if (isCourse) getQuestionnaireAnswersList();
+
+    navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId });
   };
 
   return (
@@ -61,8 +71,13 @@ const ActivityCell = ({ activity, profileId, setActivityHistories }: ActivityCel
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  setActivityHistories: activityHistories => dispatch(Actions.setActivityHistories(activityHistories)),
+const mapStateToProps = (state: StateType) => ({
+  isCourse: state.courses.isCourse,
 });
 
-export default connect(null, mapDispatchToProps)(ActivityCell);
+const mapDispatchToProps = dispatch => ({
+  setQuestionnaireAnswersList: questionnaireAnswersList =>
+    dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityCell);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
-import Selectors from '../../../../store/activities/selectors';
+import Selectors from '../../../../store/cards/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
 import { TitleTextType } from '../../../../types/CardType';
@@ -35,6 +35,6 @@ const TitleTextCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: Title
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.activities.cardIndex });
+const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
 export default connect(mapStateToProps)(TitleTextCard);

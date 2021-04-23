@@ -67,3 +67,4 @@ export const CARD_MEDIA_MAX_HEIGHT = SCREEN_HEIGHT / 3;
 export const TEXT_LINE_HEIGHT = 24;
 export const TAB_BAR_HEIGHT = 72;
 export const TAB_BAR_LABEL_WIDTH = 110;
+export const QUESTIONNAIRE_WIDTH = 96;

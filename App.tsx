@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import * as Analytics from 'expo-firebase-analytics';
 import { AppState } from 'react-native';
 import { createStore } from 'redux';
-import Constants from 'expo-constants';
 import { Asset } from 'expo-asset';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
@@ -28,6 +27,7 @@ const store = createStore(reducers, tron.createEnhancer());
 const fetchFonts = () => Font.loadAsync({
   'fira-sans-black': require('./assets/fonts/FiraSans-Black.ttf'),
   'fira-sans-bold': require('./assets/fonts/FiraSans-Bold.ttf'),
+  'fira-sans-bold-italic': require('./assets/fonts/FiraSans-SemiBoldItalic.ttf'),
   'fira-sans-italic': require('./assets/fonts/FiraSans-Italic.ttf'),
   'fira-sans-medium': require('./assets/fonts/FiraSans-Medium.ttf'),
   'fira-sans-regular': require('./assets/fonts/FiraSans-Regular.ttf'),
@@ -69,7 +69,7 @@ const App = () => {
   const shouldUpdate = async (nextState) => {
     try {
       if (nextState === ACTIVE_STATE) {
-        const { mustUpdate } = await Version.shouldUpdate({ mobileVersion: Constants.manifest.version });
+        const { mustUpdate } = await Version.shouldUpdate();
         setModalOpened(mustUpdate);
       }
     } catch (error) {
