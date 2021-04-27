@@ -1,8 +1,10 @@
 import React, { useEffect, useContext, useRef } from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 import Analytics from '../core/helpers/analytics';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileEdition from '../screens/profile/ProfileEdition';
@@ -39,6 +41,42 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
+
+  const registerForPushNotificationsAsync = async () => {
+    if (!Constants.isDevice) return console.log('Les notifications ne sont pas disponibles sur simulateur');
+
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    console.log('ici', existingStatus);
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+      console.log('là', finalStatus);
+    }
+
+    if (finalStatus !== 'granted') {
+      console.log('Failed to get push token for push notification!');
+      return;
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
+
+    return token;
+  };
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => console.log('expoToken', token));
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
