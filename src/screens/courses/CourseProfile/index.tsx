@@ -40,7 +40,7 @@ import { QuestionnaireType } from '../../../types/QuestionnaireType';
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface CourseProfileProps {
-  route: { params: { courseId: string, endedActivity: string} },
+  route: { params: { courseId: string, endedActivity?: string} },
   navigation: NavigationType,
   userId: string,
   setStatusBarVisible: (boolean) => void,
