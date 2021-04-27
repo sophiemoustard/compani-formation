@@ -81,7 +81,7 @@
     "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0",
+    "@babel/core": "^7.9.6",
     "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^26.0.22",
     "@types/react": "~16.9.35",
