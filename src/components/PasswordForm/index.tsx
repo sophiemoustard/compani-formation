@@ -9,8 +9,8 @@ import {
   BackHandler,
 } from 'react-native';
 import FeatherButton from '../icons/FeatherButton';
-import NiButton from '../form/Button';
-import { GREY, PINK, WHITE } from '../../styles/colors';
+import NiPrimaryButton from '../form/PrimaryButton';
+import { GREY } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
 import NiInput from '../form/Input';
@@ -121,8 +121,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={errorMessage} show={error} />
-          <NiButton caption="Valider" onPress={savePassword} loading={isLoading} bgColor={PINK[500]} color={WHITE}
-            borderColor={PINK[500]} />
+          <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

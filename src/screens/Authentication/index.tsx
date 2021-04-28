@@ -13,6 +13,7 @@ import { NavigationType } from '../../types/NavigationType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import NiInput from '../../components/form/Input';
 import NiButton from '../../components/form/Button';
+import NiPrimaryButton from '../../components/form/PrimaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
 import { Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
@@ -59,7 +60,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>
           <NiErrorMessage message={errorMessage} show={error} />
-          <NiButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
+          <NiPrimaryButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
           <NiButton caption="C'est ma première connexion" onPress={firstConnection}
             bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
         </View>
