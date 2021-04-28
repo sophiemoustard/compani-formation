@@ -78,7 +78,8 @@
     "react-redux": "7.2.2",
     "redux": "^4.0.5",
     "sentry-expo": "^3.1.4",
-    "sharp-cli": "^1.14.1"
+    "sharp-cli": "^1.14.1",
+    "expo-notifications": "~0.11.6"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
