@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, Modal, TextInput, Keyboard, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import get from 'lodash/get';
-import NiButton from '../form/Button';
+import NiPrimaryButton from '../form/PrimaryButton';
 import FeatherButton from '../icons/FeatherButton';
 import Authentication from '../../api/authentication';
 import { EMAIL, MOBILE, PHONE } from '../../core/data/constants';
 import { ICON, IS_LARGE_SCREEN } from '../../styles/metrics';
-import { GREY, PINK, WHITE } from '../../styles/colors';
+import { GREY } from '../../styles/colors';
 import styles from './styles';
 
 interface ForgotPasswordModalProps {
@@ -141,10 +141,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       <Text style={styles.beforeCodeSentText}>
         Pour réinitialiser votre mot de passe, vous devez d’abord confirmer votre identité par un code temporaire.
       </Text>
-      <NiButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail}
-        loading={isLoading && chosenMethod === EMAIL} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
-      <NiButton caption='Recevoir le code par SMS' style={styles.button} onPress={sendSMS}
-        loading={isLoading && chosenMethod === PHONE} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
+      <NiPrimaryButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail}
+        loading={isLoading && chosenMethod === EMAIL} />
+      <NiPrimaryButton caption='Recevoir le code par SMS' style={styles.button} onPress={sendSMS}
+        loading={isLoading && chosenMethod === PHONE} />
       <Text style={styles.unvalid}>{errorMessage}</Text>
     </>);
 
@@ -171,8 +171,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
             onKeyPress={({ nativeEvent }) => checkKeyValue(nativeEvent.key, idx)}
             maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} />))}
       </View>
-      <NiButton caption='Valider' style={styles.button} onPress={() => formatCode()}
-        loading={isLoading} bgColor={PINK[500]} borderColor={PINK[500]} color={WHITE} />
+      <NiPrimaryButton caption='Valider' style={styles.button} onPress={() => formatCode()} loading={isLoading} />
       {invalidCode && isValidationAttempted && <Text style={styles.unvalid}>{errorMessage}</Text>}
     </>
   );

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Camera from 'expo-camera';
 import NiModal from '../Modal';
-import NiButton from '../form/Button';
+import NiPrimaryButton from '../form/PrimaryButton';
 import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { PINK, WHITE } from '../../styles/colors';
@@ -117,13 +117,13 @@ const PictureModal = ({
     <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
       <FeatherButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
-      <NiButton caption='Prendre une photo' style={styles.button} onPress={takePicture} disabled={isLoading}
-        bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
-      <NiButton caption='Ajouter une photo' style={styles.button} onPress={addPictureFromGallery} disabled={isLoading}
-        bgColor={WHITE} borderColor={WHITE} color={PINK[500]} />
+      <NiPrimaryButton caption='Prendre une photo' style={styles.button} onPress={takePicture} disabled={isLoading}
+        bgColor={WHITE} color={PINK[500]} />
+      <NiPrimaryButton caption='Ajouter une photo' style={styles.button} onPress={addPictureFromGallery}
+        disabled={isLoading} bgColor={WHITE} color={PINK[500]} />
       {hasPhoto &&
-        <NiButton caption='Supprimer la photo' style={styles.button} onPress={deletePicture} disabled={isLoading}
-          bgColor={WHITE} borderColor={WHITE} color={PINK[500]} loading={isLoading} />}
+        <NiPrimaryButton caption='Supprimer la photo' style={styles.button} onPress={deletePicture} disabled={isLoading}
+          bgColor={WHITE} color={PINK[500]} loading={isLoading} />}
     </NiModal>);
 };
 

@@ -2,10 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NiInput from '../../components/form/Input';
-import NiButton from '../../components/form/Button';
+import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
 import accountCreationStyles from '../../styles/accountCreation';
-import { PINK, WHITE } from '../../styles/colors';
 import { PHONE_REGEX } from '../../core/data/constants';
 import { IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 
@@ -102,8 +101,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
               <Text style={styles.modalLink}>{d.openModal.link}</Text>
             </Text>}
           </TouchableOpacity>)}
-          <NiButton caption="Valider" onPress={validData} loading={isLoading}
-            bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+          <NiPrimaryButton caption="Valider" onPress={validData} loading={isLoading} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

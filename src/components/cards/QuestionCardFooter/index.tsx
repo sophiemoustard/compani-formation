@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import ArrowButton from '../../ArrowButton';
 import { LEFT } from '../../../core/data/constants';
 import { WHITE } from '../../../styles/colors';
-import Button from '../../form/Button';
+import NiPrimaryButton from '../../form/PrimaryButton';
 import styles from './styles';
 
 interface QuestionCardFooterProps {
@@ -52,8 +52,8 @@ const QuestionCardFooter = ({
       {arrowButtonVisible && <ArrowButton color={arrowColor} direction={LEFT} onPress={goBack} />}
       {buttonVisible &&
         <View style={style.button}>
-          <Button bgColor={buttonColor} color={WHITE} borderColor={buttonColor} disabled={buttonDisabled}
-            caption={buttonCaption} onPress={onPress} />
+          <NiPrimaryButton bgColor={buttonColor} color={WHITE} disabled={buttonDisabled} caption={buttonCaption}
+            onPress={onPress} />
         </View>
       }
     </View>
