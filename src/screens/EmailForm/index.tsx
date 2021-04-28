@@ -19,7 +19,7 @@ interface EmailFormProps {
 }
 
 const EmailForm = ({ route, navigation }: EmailFormProps) => {
-  const isIOS = Platform.OS === 'ios';
+  const [behavior, setBehavior] = useState<'padding' | 'height'>('padding');
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
@@ -39,6 +39,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') setBehavior('padding');
+    else setBehavior('height');
+  }, []);
 
   useEffect(() => {
     setInvalidEmail(!email.match(EMAIL_REGEX));
@@ -80,7 +85,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={accountCreationStyles.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={behavior} style={accountCreationStyles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
