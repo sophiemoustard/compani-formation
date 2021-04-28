@@ -3,7 +3,7 @@ import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
-import Button from '../../../../components/form/Button';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import CardsActions from '../../../../store/cards/actions';
 import styles from '../../../../styles/endCard';
@@ -51,7 +51,7 @@ const QuestionnaireEndCard = ({
         <Text style={styles.text}>Questionnaire terminé</Text>
         <Image source={require('../../../../../assets/images/aux_fierte.png')} style={styles.image} />
       </ImageBackground>
-      <Button style={styles.button} caption="Terminer" onPress={goBack} />
+      <NiPrimaryButton style={styles.button} caption="Terminer" onPress={goBack} />
     </ScrollView>
   );
 };

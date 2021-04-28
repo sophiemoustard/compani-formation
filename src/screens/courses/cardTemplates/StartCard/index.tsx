@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Button from '../../../../components/form/Button';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { PINK, WHITE } from '../../../../styles/colors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import styles from './styles';
@@ -29,7 +29,7 @@ const StartCard = ({
           </ImageBackground>
           <Text style={styles.text}>{title}</Text>
         </View>
-        <Button style={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
+        <NiPrimaryButton style={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
           onPress={() => navigation.navigate('card-0')} />
       </View>
     </ScrollView>

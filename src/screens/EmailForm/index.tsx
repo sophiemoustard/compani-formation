@@ -5,10 +5,10 @@ import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
-import NiButton from '../../components/form/Button';
+import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
 import accountCreationStyles from '../../styles/accountCreation';
-import { GREY, PINK, WHITE } from '../../styles/colors';
+import { GREY } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
@@ -93,8 +93,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
             onChangeText={enterEmail} />
         </View>
         <View style={accountCreationStyles.footer}>
-          <NiButton caption="Valider" onPress={validateEmail} loading={isLoading} bgColor={PINK[500]}
-            color={WHITE} borderColor={PINK[500]} />
+          <NiPrimaryButton caption="Valider" onPress={validateEmail} loading={isLoading} />
         </View>
         <ForgotPasswordModal email={email} setForgotPasswordModal={setForgotPasswordModal}
           visible={forgotPasswordModal} />
