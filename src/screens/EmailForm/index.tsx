@@ -27,7 +27,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [error, setError] = useState(false);
 
   const hardwareBackPress = useCallback(() => {
     if (!isLoading) setExitConfirmationModal(true);
@@ -47,16 +46,15 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   useEffect(() => {
     setInvalidEmail(!email.match(EMAIL_REGEX));
-    if (!email.match(EMAIL_REGEX) && isValidationAttempted) setErrorMessage('Votre e-mail n\'est pas valide');
+    if (!email.match(EMAIL_REGEX) && isValidationAttempted) setErrorMessage('Votre e-mail n\'est pas valide.');
     else setErrorMessage('');
   }, [email, isValidationAttempted]);
 
-  const saveEmail = async () => {
+  const validateEmail = async () => {
     try {
       setIsValidationAttempted(true);
-      setIsLoading(true);
       if (!invalidEmail) {
-        if (error) setError(false);
+        setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!route.params.firstConnection) {
@@ -65,7 +63,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
-      setError(true);
       setErrorMessage('Oops, erreur lors de la vérification de l\'e-mail.');
     } finally {
       setIsLoading(false);
@@ -78,11 +75,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   };
 
   const enterEmail = text => setEmail(text.trim());
-
-  const validationMessage = () => {
-    if ((invalidEmail && isValidationAttempted) || error) return errorMessage;
-    return '';
-  };
 
   return (
     <KeyboardAvoidingView behavior={behavior} style={accountCreationStyles.keyboardAvoidingView}
@@ -97,11 +89,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       <View style={accountCreationStyles.container}>
         <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
         <View style={accountCreationStyles.input}>
-          <NiInput caption="E-mail" value={email} type="email" validationMessage={validationMessage()}
-            onChangeText={text => enterEmail(text)} disabled={isLoading} />
+          <NiInput caption="E-mail" value={email} type="email" validationMessage={errorMessage} disabled={isLoading}
+            onChangeText={enterEmail} />
         </View>
         <View style={accountCreationStyles.footer}>
-          <NiButton caption="Valider" onPress={saveEmail} loading={isLoading} bgColor={PINK[500]}
+          <NiButton caption="Valider" onPress={validateEmail} loading={isLoading} bgColor={PINK[500]}
             color={WHITE} borderColor={PINK[500]} />
         </View>
         <ForgotPasswordModal email={email} setForgotPasswordModal={setForgotPasswordModal}
