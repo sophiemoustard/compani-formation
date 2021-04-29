@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -160,
     bottom: 8,
-    height: 160,
+    height: 144,
   },
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
