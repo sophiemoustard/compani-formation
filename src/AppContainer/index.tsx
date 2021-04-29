@@ -41,6 +41,8 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const registerForPushNotificationsAsync = async () => {
     if (!Constants.isDevice) return console.log('Les notifications ne sont pas disponibles sur simulateur');
@@ -74,8 +76,23 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     return token;
   };
 
+  const _handleNotification = (notification) => {
+    console.log('j\'ai reçu ceci : \n', notification);
+  };
+
+  const _handleNotificationResponse = (response) => {
+    console.log('j\'ai reçu ceci : \n', response);
+  };
+
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => console.log('expoToken', token));
+    notificationListener.current = Notifications.addNotificationReceivedListener(_handleNotification);
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(_handleNotificationResponse);
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
