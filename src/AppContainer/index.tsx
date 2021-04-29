@@ -53,7 +53,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       .then(async (token) => {
         try {
           const userId = await asyncStorage.getUserId();
-          await Users.updateById(userId, { expoToken: token });
+          if (userId) await Users.updateById(userId, { expoToken: token });
         } catch (e) {
           console.error(e);
         }
@@ -65,7 +65,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
+  }, [alenviToken]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
