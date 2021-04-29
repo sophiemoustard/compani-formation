@@ -74,10 +74,10 @@
     "react-native-screens": "~3.0.0",
     "react-native-svg": "12.1.0",
     "react-native-svg-charts": "^5.4.0",
-    "react-native-tab-view": "^2.15.2",
+    "react-native-tab-view": "^2.16.0",
     "react-redux": "7.2.2",
     "redux": "^4.0.5",
-    "sentry-expo": "^3.1.0",
+    "sentry-expo": "^3.1.4",
     "sharp-cli": "^1.14.1"
   },
   "devDependencies": {
