@@ -63,6 +63,14 @@ const fetchAssets = async () => {
   await Promise.all([...imageAssets]);
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 const App = () => {
   const [appReady, setAppReady] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
