@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import commonStyle from '../../../styles/common';
 import { GREY } from '../../../styles/colors';
 import styles from './styles';
 
 interface SecondaryButtonProps {
-  style?: Object,
+  customStyle?: Object,
   caption: string,
   onPress: () => void,
   loading?: boolean,
@@ -17,7 +17,7 @@ interface SecondaryButtonProps {
 
 const SecondaryButton = (
   {
-    style,
+    customStyle,
     caption,
     onPress,
     loading = false,
@@ -26,11 +26,14 @@ const SecondaryButton = (
     disabled = false,
   }: SecondaryButtonProps
 ) => {
-  const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor: color };
+  const [style, setStyle] = useState<{ button: object, textButton: object}>(styles(bgColor, color));
+
+  useEffect(() => { setStyle(styles(bgColor, color)); }, [bgColor, color]);
 
   return (
-    <TouchableOpacity style={[style, buttonStyle]} onPress={onPress} disabled={loading || disabled} testID={caption}>
-      {!loading && <Text style={{ ...styles.textButton, color }}>{caption}</Text>}
+    <TouchableOpacity style={[customStyle, style.button]} onPress={onPress} disabled={loading || disabled}
+      testID={caption}>
+      {!loading && <Text style={{ ...style.textButton, color }}>{caption}</Text>}
       {loading && <ActivityIndicator style={commonStyle.disabled} color={color} size="small" />}
     </TouchableOpacity>
   );

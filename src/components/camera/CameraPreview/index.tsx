@@ -16,9 +16,9 @@ const NiCameraPreview = ({ photo, loading, onSavePhoto, onRetakePicture }: NiCam
     <ImageBackground source={{ uri: photo && photo.uri }} style={styles.photo}>
       <View style={styles.buttonContainer}>
         <NiPrimaryButton caption='Enregistrer la photo' onPress={() => onSavePhoto(photo)} loading={loading}
-          disabled={loading} style={styles.button} />
+          disabled={loading} customStyle={styles.button} />
         <NiSecondaryButton caption='Reprendre la photo' onPress={onRetakePicture} disabled={loading}
-          style={styles.button} />
+          customStyle={styles.button} />
       </View>
     </ImageBackground>
   </View>

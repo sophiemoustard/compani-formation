@@ -86,13 +86,13 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
             <Text style={styles.subTitle}>E-mail</Text>
             <Text style={styles.infos}>{loggedUser.local.email}</Text>
             <NiSecondaryButton caption="Modifier mes informations" onPress={editProfile} />
-            <NiSecondaryButton style={styles.passwordButton} caption="Modifier mon mot de passe"
+            <NiSecondaryButton customStyle={styles.passwordButton} caption="Modifier mon mot de passe"
               onPress={editPassword} />
           </View>
           <View style={styles.sectionDelimiter} />
         </>
       }
-      <NiSecondaryButton style={styles.logOutButton} caption="Me déconnecter" onPress={signOut} />
+      <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter" onPress={signOut} />
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux_joie.png')} style={styles.fellow} />

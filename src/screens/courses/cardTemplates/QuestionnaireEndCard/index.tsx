@@ -51,7 +51,7 @@ const QuestionnaireEndCard = ({
         <Text style={styles.text}>Questionnaire terminé</Text>
         <Image source={require('../../../../../assets/images/aux_fierte.png')} style={styles.image} />
       </ImageBackground>
-      <NiPrimaryButton style={styles.button} caption="Terminer" onPress={goBack} />
+      <NiPrimaryButton customStyle={styles.button} caption="Terminer" onPress={goBack} />
     </ScrollView>
   );
 };
