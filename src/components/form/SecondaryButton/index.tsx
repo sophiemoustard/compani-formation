@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
-import commonStyle from '../../../styles/common';
+import React from 'react';
+import NiButton from '../Button';
 import { GREY } from '../../../styles/colors';
-import styles from './styles';
 
 interface SecondaryButtonProps {
   customStyle?: Object,
@@ -25,18 +23,9 @@ const SecondaryButton = (
     color = GREY[600],
     disabled = false,
   }: SecondaryButtonProps
-) => {
-  const [style, setStyle] = useState<{ button: object, textButton: object}>(styles(bgColor, color));
-
-  useEffect(() => { setStyle(styles(bgColor, color)); }, [bgColor, color]);
-
-  return (
-    <TouchableOpacity style={[customStyle, style.button]} onPress={onPress} disabled={loading || disabled}
-      testID={caption}>
-      {!loading && <Text style={{ ...style.textButton, color }}>{caption}</Text>}
-      {loading && <ActivityIndicator style={commonStyle.disabled} color={color} size="small" />}
-    </TouchableOpacity>
-  );
-};
+) => (
+  <NiButton customStyle={customStyle} caption={caption} onPress={onPress} loading={loading} disabled={disabled}
+    bgColor={bgColor} borderColor={color} color={color} />
+);
 
 export default SecondaryButton;
