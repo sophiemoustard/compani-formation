@@ -1,21 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, BUTTON_HEIGHT, MARGIN, BORDER_WIDTH } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK } from '../../../styles/fonts';
+import commonStyle from '../../../styles/common';
 
-const styles = StyleSheet.create({
+const styles = (bgColor, color) => StyleSheet.create({
   button: {
-    borderRadius: BORDER_RADIUS.MD,
-    borderWidth: BORDER_WIDTH,
-    display: 'flex',
-    flexDirection: 'row',
-    height: BUTTON_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 100,
+    backgroundColor: bgColor,
+    borderColor: color,
+    ...commonStyle.button,
   },
   textButton: {
-    ...FIRA_SANS_BLACK.MD,
-    marginHorizontal: MARGIN.SM,
+    color,
+    ...commonStyle.textButton,
   },
 });
 

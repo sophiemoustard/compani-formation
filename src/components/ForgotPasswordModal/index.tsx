@@ -141,9 +141,9 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       <Text style={styles.beforeCodeSentText}>
         Pour réinitialiser votre mot de passe, vous devez d’abord confirmer votre identité par un code temporaire.
       </Text>
-      <NiPrimaryButton caption='Recevoir le code par e-mail' style={styles.button} onPress={sendEmail}
+      <NiPrimaryButton caption='Recevoir le code par e-mail' customStyle={styles.button} onPress={sendEmail}
         loading={isLoading && chosenMethod === EMAIL} />
-      <NiPrimaryButton caption='Recevoir le code par SMS' style={styles.button} onPress={sendSMS}
+      <NiPrimaryButton caption='Recevoir le code par SMS' customStyle={styles.button} onPress={sendSMS}
         loading={isLoading && chosenMethod === PHONE} />
       <Text style={styles.unvalid}>{errorMessage}</Text>
     </>);
@@ -171,7 +171,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
             onKeyPress={({ nativeEvent }) => checkKeyValue(nativeEvent.key, idx)}
             maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} />))}
       </View>
-      <NiPrimaryButton caption='Valider' style={styles.button} onPress={() => formatCode()} loading={isLoading} />
+      <NiPrimaryButton caption='Valider' customStyle={styles.button} onPress={() => formatCode()} loading={isLoading} />
       {invalidCode && isValidationAttempted && <Text style={styles.unvalid}>{errorMessage}</Text>}
     </>
   );
