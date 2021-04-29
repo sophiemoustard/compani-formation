@@ -30,6 +30,7 @@ import styles from './styles';
 import PasswordEdition from '../screens/profile/PasswordEdition';
 import PasswordReset from '../screens/PasswordReset';
 import Home from '../Home';
+import { BLENDED_COURSE_INSCRIPTION } from '../core/data/constants';
 
 const MainStack = createStackNavigator();
 
@@ -81,7 +82,18 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   };
 
   const _handleNotificationResponse = (response) => {
-    console.log('j\'ai reçu ceci : \n', response);
+    const { type, _id } = response.notification.request.content.data;
+    console.log('type \n', type);
+    console.log('_id \n', _id);
+
+    switch (type) {
+      case BLENDED_COURSE_INSCRIPTION:
+        console.log('ici');
+        navigationRef.current?.navigate('CourseProfile', { courseId: _id });
+        break;
+      default:
+        return null;
+    }
   };
 
   useEffect(() => {
