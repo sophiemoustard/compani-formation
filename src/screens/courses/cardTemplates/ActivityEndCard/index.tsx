@@ -3,7 +3,7 @@ import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
-import Button from '../../../../components/form/Button';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { StateType } from '../../../../types/store/StoreType';
 import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType } from '../../../../types/ActivityType';
@@ -54,7 +54,7 @@ const ActivityEndCard = ({
         <Text style={styles.text}>Activité terminée</Text>
         <Image source={require('../../../../../assets/images/aux_fierte.png')} style={styles.image} />
       </ImageBackground>
-      <Button style={styles.button} caption="Terminer" onPress={goBack} />
+      <NiPrimaryButton customStyle={styles.button} caption="Terminer" onPress={goBack} />
     </ScrollView>
   );
 };

@@ -6,8 +6,7 @@ import { SubProgramType } from '../../types/SubProgramType';
 import { CourseType } from '../../types/CourseType';
 import { ProgramType } from '../../types/ProgramType';
 import { formatWordToPlural } from '../../core/helpers/utils';
-import NiButton from '../../components/form/Button';
-import { PINK, WHITE } from '../../styles/colors';
+import NiPrimaryButton from '../../components/form/PrimaryButton';
 
 interface CoursesSectionProps {
   items: Array<ProgramType | CourseType | SubProgramType>,
@@ -42,8 +41,7 @@ const CoursesSection = ({
       {showCatalogButton &&
       <TouchableOpacity style={styles.courseContainer} onPress={() => navigation.navigate('Catalog')}>
         <Text style={styles.text}>Vous n’avez pas de formation en cours...</Text>
-        <NiButton caption="Chercher une formation" onPress={() => navigation.navigate('Catalog')} bgColor={PINK[500]}
-          color={WHITE} borderColor={PINK[500]} />
+        <NiPrimaryButton caption="Chercher une formation" onPress={() => navigation.navigate('Catalog')} />
         <Image source={require('../../../assets/images/aux_detective.png')} style={styles.image} resizeMode='contain' />
       </TouchableOpacity>
       }

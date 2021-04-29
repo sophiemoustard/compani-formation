@@ -8,7 +8,7 @@ import styles from './styles';
 import { markdownStyle } from '../../styles/common';
 import { GREY, TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
-import Button from '../../components/form/Button';
+import NiPrimaryButton from '../../components/form/PrimaryButton';
 import FeatherButton from '../../components/icons/FeatherButton';
 import CoursesActions from '../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
@@ -68,7 +68,7 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
       </ScrollView>
       <View style={styles.footer}>
         <FooterGradient colors={[TRANSPARENT_GRADIENT, GREY[0]]} />
-        <Button caption={buttonCaption} onPress={onPress} />
+        <NiPrimaryButton caption={buttonCaption} onPress={onPress} />
       </View>
     </>
   );
