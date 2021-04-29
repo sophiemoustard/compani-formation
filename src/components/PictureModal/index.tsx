@@ -117,13 +117,13 @@ const PictureModal = ({
     <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
       <FeatherButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
-      <NiPrimaryButton caption='Prendre une photo' style={styles.button} onPress={takePicture} disabled={isLoading}
-        bgColor={WHITE} color={PINK[500]} />
-      <NiPrimaryButton caption='Ajouter une photo' style={styles.button} onPress={addPictureFromGallery}
+      <NiPrimaryButton caption='Prendre une photo' customStyle={styles.button} onPress={takePicture}
+        disabled={isLoading} bgColor={WHITE} color={PINK[500]} />
+      <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} onPress={addPictureFromGallery}
         disabled={isLoading} bgColor={WHITE} color={PINK[500]} />
       {hasPhoto &&
-        <NiPrimaryButton caption='Supprimer la photo' style={styles.button} onPress={deletePicture} disabled={isLoading}
-          bgColor={WHITE} color={PINK[500]} loading={isLoading} />}
+        <NiPrimaryButton caption='Supprimer la photo' customStyle={styles.button} onPress={deletePicture}
+          disabled={isLoading} bgColor={WHITE} color={PINK[500]} loading={isLoading} />}
     </NiModal>);
 };
 

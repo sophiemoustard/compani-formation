@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, MAIN_MARGIN_LEFT } from './metrics';
+import { MARGIN, MAIN_MARGIN_LEFT, BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT } from './metrics';
 import { WHITE, PINK } from './colors';
 import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
 
@@ -19,6 +19,20 @@ export default StyleSheet.create({
   },
   iconButton: {
     zIndex: 100,
+  },
+  button: {
+    borderRadius: BORDER_RADIUS.MD,
+    borderWidth: BORDER_WIDTH,
+    display: 'flex',
+    flexDirection: 'row',
+    height: BUTTON_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 100,
+  },
+  textButton: {
+    ...FIRA_SANS_BLACK.MD,
+    marginHorizontal: MARGIN.SM,
   },
 });
 

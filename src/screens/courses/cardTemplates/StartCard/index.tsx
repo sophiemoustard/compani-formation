@@ -29,7 +29,7 @@ const StartCard = ({
           </ImageBackground>
           <Text style={styles.text}>{title}</Text>
         </View>
-        <NiPrimaryButton style={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
+        <NiPrimaryButton customStyle={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
           onPress={() => navigation.navigate('card-0')} />
       </View>
     </ScrollView>

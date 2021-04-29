@@ -59,7 +59,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
             <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
           </TouchableOpacity>
           <NiErrorMessage message={errorMessage} show={error} />
-          <NiPrimaryButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
+          <NiPrimaryButton customStyle={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
           <NiSecondaryButton caption="C'est ma première connexion" onPress={firstConnection} />
         </View>
       </KeyboardAvoidingView>
