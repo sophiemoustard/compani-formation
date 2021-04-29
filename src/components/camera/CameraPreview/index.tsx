@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, ImageBackground } from 'react-native';
-import { GREY, WHITE } from '../../../styles/colors';
 import NiPrimaryButton from '../../form/PrimaryButton';
-import NiButton from '../../form/Button';
+import NiSecondaryButton from '../../form/SecondaryButton';
 import styles from './style';
 
 interface NiCameraPreviewProps {
@@ -18,8 +17,8 @@ const NiCameraPreview = ({ photo, loading, onSavePhoto, onRetakePicture }: NiCam
       <View style={styles.buttonContainer}>
         <NiPrimaryButton caption='Enregistrer la photo' onPress={() => onSavePhoto(photo)} loading={loading}
           disabled={loading} style={styles.button} />
-        <NiButton caption='Reprendre la photo' onPress={onRetakePicture} disabled={loading}
-          style={styles.button} bgColor={WHITE} color={GREY[600]} borderColor={GREY[600]} />
+        <NiSecondaryButton caption='Reprendre la photo' onPress={onRetakePicture} disabled={loading}
+          style={styles.button} />
       </View>
     </ImageBackground>
   </View>
