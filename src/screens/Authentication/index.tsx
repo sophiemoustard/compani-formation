@@ -12,12 +12,11 @@ import { connect } from 'react-redux';
 import { NavigationType } from '../../types/NavigationType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import NiInput from '../../components/form/Input';
-import NiButton from '../../components/form/Button';
+import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
 import { Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
-import { GREY } from '../../styles/colors';
 import Actions from '../../store/actions';
 
 interface AuthenticationProps {
@@ -61,8 +60,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
           </TouchableOpacity>
           <NiErrorMessage message={errorMessage} show={error} />
           <NiPrimaryButton style={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
-          <NiButton caption="C'est ma première connexion" onPress={firstConnection}
-            bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
+          <NiSecondaryButton caption="C'est ma première connexion" onPress={firstConnection} />
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>

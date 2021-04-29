@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import commonStyle from '../../../styles/common';
-import { PINK, WHITE } from '../../../styles/colors';
+import { GREY } from '../../../styles/colors';
 import styles from './styles';
 
-interface ButtonProps {
+interface SecondaryButtonProps {
   style?: Object,
   caption: string,
   onPress: () => void,
@@ -15,19 +15,18 @@ interface ButtonProps {
   disabled?: boolean,
 }
 
-const Button = (
+const SecondaryButton = (
   {
     style,
     caption,
     onPress,
     loading = false,
-    bgColor = PINK[500],
-    color = WHITE,
-    borderColor = PINK[500],
+    bgColor = GREY[100],
+    color = GREY[600],
     disabled = false,
-  }: ButtonProps
+  }: SecondaryButtonProps
 ) => {
-  const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor };
+  const buttonStyle = { ...styles.button, backgroundColor: bgColor, borderColor: color };
 
   return (
     <TouchableOpacity style={[style, buttonStyle]} onPress={onPress} disabled={loading || disabled} testID={caption}>
@@ -37,4 +36,4 @@ const Button = (
   );
 };
 
-export default Button;
+export default SecondaryButton;
