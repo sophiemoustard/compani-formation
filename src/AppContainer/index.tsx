@@ -53,7 +53,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       .then(async (token) => {
         try {
           const userId = await asyncStorage.getUserId();
-          if (userId) await Users.updateById(userId, { expoToken: token });
+          const user = await Users.getById(userId);
+          if (!user?.formationExpoTokens?.includes(token)) {
+            await Users.updateById(userId, { formationExpoToken: token });
+          }
         } catch (e) {
           console.error(e);
         }
