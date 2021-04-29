@@ -40,8 +40,7 @@ export const _handleNotificationResponse = (response) => {
 
   switch (type) {
     case BLENDED_COURSE_INSCRIPTION:
-      navigationRef.current?.navigate('CourseProfile', { courseId: _id });
-      break;
+      return navigationRef.current?.navigate('CourseProfile', { courseId: _id });
     default:
       return null;
   }

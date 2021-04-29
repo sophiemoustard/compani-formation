@@ -49,7 +49,15 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   const responseListener = useRef();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => console.log('expoToken', token));
+    registerForPushNotificationsAsync()
+      .then(async (token) => {
+        try {
+          const userId = await asyncStorage.getUserId();
+          await Users.updateById(userId, { expoToken: token });
+        } catch (e) {
+          console.error(e);
+        }
+      });
     notificationListener.current = Notifications.addNotificationReceivedListener(_handleNotification);
     responseListener.current = Notifications.addNotificationResponseReceivedListener(_handleNotificationResponse);
 
