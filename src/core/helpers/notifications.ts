@@ -3,9 +3,12 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { BLENDED_COURSE_INSCRIPTION } from '../data/constants';
 import { navigationRef } from '../../navigationRef';
+import asyncStorage from './asyncStorage';
+import Users from '../../api/users';
 
 export const registerForPushNotificationsAsync = async () => {
   if (!Constants.isDevice) {
+    // eslint-disable-next-line no-console
     console.log('Les notifications ne sont pas disponibles sur simulateur');
     return { token: null, status: 'denied' };
   }
@@ -21,8 +24,8 @@ export const registerForPushNotificationsAsync = async () => {
   const token = (await Notifications.getExpoPushTokenAsync()).data;
 
   if (finalStatus !== 'granted') {
-    console.log('!granted token', token);
-    console.log('Failed to get push token for push notification!');
+    // eslint-disable-next-line no-console
+    console.log('Les notifications sont désactivées sur cet appareil');
 
     return { token, status: 'denied' };
   }
@@ -40,6 +43,7 @@ export const registerForPushNotificationsAsync = async () => {
 };
 
 export const handleNotification = (notification) => {
+  // eslint-disable-next-line no-console
   console.log('j\'ai reçu ceci : \n', notification);
 };
 
@@ -51,5 +55,29 @@ export const handleNotificationResponse = (response) => {
       return navigationRef.current?.navigate('CourseProfile', { courseId: _id });
     default:
       return null;
+  }
+};
+
+export const handleExpoToken = async (data) => {
+  try {
+    const { token, status } = data;
+
+    const userId = await asyncStorage.getUserId();
+    if (!userId) return;
+
+    const user = await Users.getById(userId);
+
+    if (token && status === 'granted') {
+      const expoTokenAlreadySaved = user?.formationExpoTokens?.includes(token);
+      if (!expoTokenAlreadySaved) {
+        await Users.updateById(userId, { formationExpoToken: token });
+      }
+    }
+
+    if (status === 'denied' && user?.formationExpoTokens?.includes(token)) {
+      // handleDeletion of expoToken
+    }
+  } catch (e) {
+    console.error(e);
   }
 };

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
+import { Subscription } from '@unimodules/core';
 import Analytics from '../core/helpers/analytics';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileEdition from '../screens/profile/ProfileEdition';
@@ -33,6 +34,7 @@ import {
   registerForPushNotificationsAsync,
   handleNotification,
   handleNotificationResponse,
+  handleExpoToken,
 } from '../core/helpers/notifications';
 
 const MainStack = createStackNavigator();
@@ -45,36 +47,15 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
-  const notificationListener = useRef();
-  const responseListener = useRef();
+  const notificationListener = useRef<Subscription>({ remove: () => {} });
+  const responseListener = useRef<Subscription>({ remove: () => {} });
 
   useEffect(() => {
-    registerForPushNotificationsAsync()
-      .then(async (data) => {
-        try {
-          if (!alenviToken) return;
+    registerForPushNotificationsAsync().then(async (data) => {
+      if (!alenviToken) return;
+      await handleExpoToken(data);
+    });
 
-          const { token, status } = data;
-
-          const userId = await asyncStorage.getUserId();
-          if (!userId) return;
-
-          const user = await Users.getById(userId);
-
-          if (token && status === 'granted') {
-            const expoTokenAlreadySaved = user?.formationExpoTokens?.includes(token);
-            if (!expoTokenAlreadySaved) {
-              await Users.updateById(userId, { formationExpoToken: token });
-            }
-          }
-
-          if (status === 'denied' && user?.formationExpoTokens?.includes(token)) {
-            // handleDeletion of expoToken
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
     notificationListener.current = Notifications.addNotificationReceivedListener(handleNotification);
     if (alenviToken) {
       responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
