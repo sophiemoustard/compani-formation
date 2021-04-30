@@ -3,19 +3,28 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { BLENDED_COURSE_INSCRIPTION } from '../data/constants';
 import { navigationRef } from '../../navigationRef';
+import users from '../../api/users';
 
 export const registerForPushNotificationsAsync = async () => {
   if (!Constants.isDevice) return console.log('Les notifications ne sont pas disponibles sur simulateur');
 
-  const permissions = await Notifications.getPermissionsAsync();
-  let finalStatus = permissions.existingStatus;
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  console.log('existingStatus', existingStatus);
+  let finalStatus = existingStatus;
 
-  if (permissions.existingStatus !== 'granted') {
+  if (existingStatus !== 'granted') {
     const { status } = await Notifications.requestPermissionsAsync();
+    console.log('finalstatus', status);
     finalStatus = status;
   }
 
-  if (finalStatus !== 'granted') return console.log('Failed to get push token for push notification!');
+  const token = (await Notifications.getExpoPushTokenAsync()).data;
+
+  if (finalStatus !== 'granted') {
+    console.log('!granted token', token);
+
+    return console.log('Failed to get push token for push notification!');
+  }
 
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
@@ -26,16 +35,14 @@ export const registerForPushNotificationsAsync = async () => {
     });
   }
 
-  const token = (await Notifications.getExpoPushTokenAsync()).data;
-
   return token;
 };
 
-export const _handleNotification = (notification) => {
+export const handleNotification = (notification) => {
   console.log('j\'ai reçu ceci : \n', notification);
 };
 
-export const _handleNotificationResponse = (response) => {
+export const handleNotificationResponse = (response) => {
   const { type, _id } = response.notification.request.content.data;
 
   switch (type) {
