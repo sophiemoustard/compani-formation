@@ -31,8 +31,8 @@ import PasswordReset from '../screens/PasswordReset';
 import Home from '../Home';
 import {
   registerForPushNotificationsAsync,
-  _handleNotification,
-  _handleNotificationResponse,
+  handleNotification,
+  handleNotificationResponse,
 } from '../core/helpers/notifications';
 
 const MainStack = createStackNavigator();
@@ -53,16 +53,18 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       .then(async (token) => {
         try {
           const userId = await asyncStorage.getUserId();
-          const user = await Users.getById(userId);
-          if (!user?.formationExpoTokens?.includes(token)) {
-            await Users.updateById(userId, { formationExpoToken: token });
+          if (userId && token) {
+            const user = await Users.getById(userId);
+            if (!user?.formationExpoTokens?.includes(token)) {
+              await Users.updateById(userId, { formationExpoToken: token });
+            }
           }
         } catch (e) {
           console.error(e);
         }
       });
-    notificationListener.current = Notifications.addNotificationReceivedListener(_handleNotification);
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(_handleNotificationResponse);
+    notificationListener.current = Notifications.addNotificationReceivedListener(handleNotification);
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
