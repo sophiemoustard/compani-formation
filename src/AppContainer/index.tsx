@@ -50,15 +50,27 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   useEffect(() => {
     registerForPushNotificationsAsync()
-      .then(async (token) => {
+      .then(async (data) => {
         try {
+          if (!alenviToken) return;
+
+          const { token, status } = data;
+
           const userId = await asyncStorage.getUserId();
-          if (userId && token) {
-            const user = await Users.getById(userId);
-            if (!user?.formationExpoTokens?.includes(token)) {
+          if (!userId) return;
+
+          const user = await Users.getById(userId);
+
+          if (token && status === 'granted') {
+            const expoTokenAlreadySaved = !!user?.formationExpoTokens?.includes(token);
+            if (!expoTokenAlreadySaved) {
               await Users.updateById(userId, { formationExpoToken: token });
             }
           }
+
+          // if (user?.formationExpoTokens?.includes(token)) {
+          //   await Users.updateById(userId, { expoTokens: user.formationExpoTokens.filter(t => t === token) });
+          // }
         } catch (e) {
           console.error(e);
         }
