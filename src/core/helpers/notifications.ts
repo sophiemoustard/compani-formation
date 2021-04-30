@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { BLENDED_COURSE_INSCRIPTION } from '../data/constants';
+import { BLENDED_COURSE_INSCRIPTION, GRANTED, DENIED } from '../data/constants';
 import { navigationRef } from '../../navigationRef';
 import asyncStorage from './asyncStorage';
 import Users from '../../api/users';
@@ -10,24 +10,24 @@ export const registerForPushNotificationsAsync = async () => {
   if (!Constants.isDevice) {
     // eslint-disable-next-line no-console
     console.log('Les notifications ne sont pas disponibles sur simulateur');
-    return { token: null, status: 'denied' };
+    return { token: null, status: DENIED };
   }
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
 
-  if (existingStatus !== 'granted') {
+  if (existingStatus !== GRANTED) {
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
   }
 
   const token = (await Notifications.getExpoPushTokenAsync()).data;
 
-  if (finalStatus !== 'granted') {
+  if (finalStatus !== GRANTED) {
     // eslint-disable-next-line no-console
     console.log('Les notifications sont désactivées sur cet appareil');
 
-    return { token, status: 'denied' };
+    return { token, status: DENIED };
   }
 
   if (Platform.OS === 'android') {
@@ -39,7 +39,7 @@ export const registerForPushNotificationsAsync = async () => {
     });
   }
 
-  return { token, status: 'granted' };
+  return { token, status: GRANTED };
 };
 
 export const handleNotification = (notification) => {
@@ -67,15 +67,15 @@ export const handleExpoToken = async (data) => {
 
     const user = await Users.getById(userId);
 
-    if (token && status === 'granted') {
+    if (token && status === GRANTED) {
       const expoTokenAlreadySaved = user?.formationExpoTokens?.includes(token);
       if (!expoTokenAlreadySaved) {
         await Users.updateById(userId, { formationExpoToken: token });
       }
     }
 
-    if (status === 'denied' && user?.formationExpoTokens?.includes(token)) {
-      // handleDeletion of expoToken
+    if (status === DENIED && user?.formationExpoTokens?.includes(token)) {
+      // handleDeletion of expoToken when user remove permissions
     }
   } catch (e) {
     console.error(e);
