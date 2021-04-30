@@ -62,21 +62,23 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
           const user = await Users.getById(userId);
 
           if (token && status === 'granted') {
-            const expoTokenAlreadySaved = !!user?.formationExpoTokens?.includes(token);
+            const expoTokenAlreadySaved = user?.formationExpoTokens?.includes(token);
             if (!expoTokenAlreadySaved) {
               await Users.updateById(userId, { formationExpoToken: token });
             }
           }
 
-          // if (user?.formationExpoTokens?.includes(token)) {
-          //   await Users.updateById(userId, { expoTokens: user.formationExpoTokens.filter(t => t === token) });
-          // }
+          if (status === 'denied' && user?.formationExpoTokens?.includes(token)) {
+            // handleDeletion of expoToken
+          }
         } catch (e) {
           console.error(e);
         }
       });
     notificationListener.current = Notifications.addNotificationReceivedListener(handleNotification);
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+    if (alenviToken) {
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+    }
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
