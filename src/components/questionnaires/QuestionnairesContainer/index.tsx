@@ -16,9 +16,7 @@ const QuestionnairesContainer = ({ questionnaires, profileId }: QuestionnairesCo
     <Text style={styles.header}>
       <Text style={styles.headerText}>Vous avez </Text>
       <Text style={styles.questionnairesCount}>{questionnaires.length} </Text>
-      <Text style={styles.headerText}>
-        {formatWordToPlural(questionnaires, 'formulaire')} à compléter avant le début de la formation
-      </Text>
+      <Text style={styles.headerText}>{formatWordToPlural(questionnaires, 'formulaire')} à compléter.</Text>
     </Text>
     <FlatList horizontal data={questionnaires} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => <QuestionnaireCell questionnaire={item} profileId={profileId} />} />
