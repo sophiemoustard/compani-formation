@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { createStore } from 'redux';
-import { AppState, Platform } from 'react-native';
-import Constants from 'expo-constants';
+import { AppState } from 'react-native';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Notifications from 'expo-notifications';
 import { Asset } from 'expo-asset';
@@ -15,14 +14,11 @@ import AppContainer from './src/AppContainer';
 import UpdateAppModal from './src/components/UpdateAppModal';
 import reducers from './src/store/index';
 import tron from './src/ReactotronConfig';
-import { ACTIVE_STATE, BLENDED_COURSE_INSCRIPTION } from './src/core/data/constants';
+import { ACTIVE_STATE } from './src/core/data/constants';
 import getEnvVars from './environment';
 
 const { sentryKey } = getEnvVars();
-Sentry.init({
-  dsn: sentryKey,
-  debug: false,
-});
+Sentry.init({ dsn: sentryKey, debug: false });
 
 const store = createStore(reducers, tron.createEnhancer());
 
@@ -64,11 +60,7 @@ const fetchAssets = async () => {
 };
 
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: true,
-  }),
+  handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),
 });
 
 const App = () => {

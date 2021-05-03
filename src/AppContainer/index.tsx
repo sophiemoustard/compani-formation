@@ -32,7 +32,6 @@ import PasswordReset from '../screens/PasswordReset';
 import Home from '../Home';
 import {
   registerForPushNotificationsAsync,
-  handleNotification,
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
@@ -47,7 +46,6 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
-  const notificationListener = useRef<Subscription>({ remove: () => {} });
   const responseListener = useRef<Subscription>({ remove: () => {} });
 
   useEffect(() => {
@@ -56,15 +54,11 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       await handleExpoToken(data);
     });
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(handleNotification);
     if (alenviToken) {
       responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
     }
 
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    return () => Notifications.removeNotificationSubscription(responseListener.current);
   }, [alenviToken]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
