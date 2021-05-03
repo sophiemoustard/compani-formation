@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { createStore } from 'redux';
 import { AppState } from 'react-native';
 import * as Analytics from 'expo-firebase-analytics';

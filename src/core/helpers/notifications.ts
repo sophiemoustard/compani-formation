@@ -53,13 +53,7 @@ export const handleExpoToken = async (data) => {
     if (!userId) return;
 
     const { token, status } = data;
-    const user = await Users.getById(userId);
-    if (token && status === GRANTED) {
-      const expoTokenAlreadySaved = user?.formationExpoTokens?.includes(token);
-      if (!expoTokenAlreadySaved) {
-        await Users.updateById(userId, { formationExpoToken: token });
-      }
-    }
+    if (token && status === GRANTED) await Users.updateById(userId, { formationExpoToken: token });
   } catch (e) {
     console.error(e);
   }
