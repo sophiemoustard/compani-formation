@@ -3,6 +3,8 @@ import { StatusBar, View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as Notifications from 'expo-notifications';
+import { Subscription } from '@unimodules/core';
 import Analytics from '../core/helpers/analytics';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileEdition from '../screens/profile/ProfileEdition';
@@ -28,6 +30,11 @@ import styles from './styles';
 import PasswordEdition from '../screens/profile/PasswordEdition';
 import PasswordReset from '../screens/PasswordReset';
 import Home from '../Home';
+import {
+  registerForPushNotificationsAsync,
+  handleNotificationResponse,
+  handleExpoToken,
+} from '../core/helpers/notifications';
 
 const MainStack = createStackNavigator();
 
@@ -39,6 +46,20 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
+  const responseListener = useRef<Subscription>({ remove: () => {} });
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(async (data) => {
+      if (!alenviToken) return;
+      await handleExpoToken(data);
+    });
+
+    if (alenviToken) {
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+    }
+
+    return () => Notifications.removeNotificationSubscription(responseListener.current);
+  }, [alenviToken]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);

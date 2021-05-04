@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import * as Analytics from 'expo-firebase-analytics';
-import { AppState } from 'react-native';
 import { createStore } from 'redux';
+import { AppState } from 'react-native';
+import * as Analytics from 'expo-firebase-analytics';
+import * as Notifications from 'expo-notifications';
 import { Asset } from 'expo-asset';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
@@ -17,10 +18,7 @@ import { ACTIVE_STATE } from './src/core/data/constants';
 import getEnvVars from './environment';
 
 const { sentryKey } = getEnvVars();
-Sentry.init({
-  dsn: sentryKey,
-  debug: false,
-});
+Sentry.init({ dsn: sentryKey, debug: false });
 
 const store = createStore(reducers, tron.createEnhancer());
 
@@ -60,6 +58,10 @@ const fetchAssets = async () => {
 
   await Promise.all([...imageAssets]);
 };
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),
+});
 
 const App = () => {
   const [appReady, setAppReady] = useState(false);
