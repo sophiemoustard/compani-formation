@@ -70,4 +70,4 @@ export const SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED = 22;
 // NOTIFICATION
 export const DENIED = 'denied';
 export const GRANTED = 'granted';
-export const BLENDED_COURSE_REGISTRATION = 'blendedCourseRegistration';
+export const BLENDED_COURSE_REGISTRATION = 'blended_course_registration';
