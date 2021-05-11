@@ -13,9 +13,10 @@ import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 
 interface BlendedAboutProps {
-  route: { params: { course } },
+  route: { params: { course, fromNotification?: boolean } },
   navigation: {
     goBack: () => {},
+    navigate: (path: string, params: { courseId: string }) => {},
   },
 }
 
@@ -52,8 +53,14 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
 
   const goBack = () => navigation.goBack();
 
+  const goToCourse = () => {
+    if (course._id) navigation.navigate('CourseProfile', { courseId: course._id });
+  };
+
+  const onPressButton = route.params?.fromNotification ? goToCourse : goBack;
+
   return program && (
-    <About program={program} onPress={goBack}>
+    <About program={program} onPress={onPressButton}>
       <View style={styles.content}>
         {course.slots.length > 0 &&
           <>
