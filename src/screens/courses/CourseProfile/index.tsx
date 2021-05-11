@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   LogBox,
   BackHandler,
   TouchableOpacity,
+  ImageSourcePropType,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
@@ -47,12 +48,38 @@ interface CourseProfileProps {
   resetCourseReducer: () => void,
 }
 
+const renderStepCell = ({ item, index }, course, route) => {
+  if (item.type === ON_SITE) {
+    return <OnSiteCell step={item} slots={course?.slots} index={index} profileId={route.params.courseId} />;
+  }
+
+  if (item.type === E_LEARNING) {
+    return <ELearningCell step={item} index={index} profileId={route.params.courseId}
+      endedActivity={route.params.endedActivity} />;
+  }
+
+  return null;
+};
+
+const renderSeparator = () => <View style={styles.separator} />;
+
 const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<Array<QuestionnaireType>>([]);
+  const [source, setSource] =
+    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
+  const [programName, setProgramName] = useState<string>('');
   const { signOut } = useContext(AuthContext);
 
-  const getCourse = async () => {
+  useEffect(() => {
+    setProgramName(get(course, 'subProgram.program.name') || '');
+
+    const programImage = get(course, 'subProgram.program.image.link') || '';
+    if (programImage) setSource({ uri: programImage });
+    else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
+  }, [course]);
+
+  const getCourse = useCallback(async () => {
     try {
       const fetchedCourse = await Courses.getCourse(route.params.courseId);
       const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
@@ -62,63 +89,33 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       if (e.status === 401) signOut();
       setCourse(null);
     }
-  };
+  }, [route.params.courseId, signOut]);
 
-  useEffect(() => {
-    async function fetchData() { await getCourse(); }
-    fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { getCourse(); }, [getCourse]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    async function fetchData() { await getCourse(); }
     if (isFocused) {
       setStatusBarVisible(true);
-      fetchData();
+      getCourse();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, [isFocused, getCourse, setStatusBarVisible]);
 
-  const hardwareBackPress = () => {
+  const goBack = useCallback(() => {
+    resetCourseReducer();
+    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+  }, [navigation, resetCourseReducer]);
+
+  const hardwareBackPress = useCallback(() => {
     goBack();
     return true;
-  };
+  }, [goBack]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const programImage = get(course, 'subProgram.program.image.link') || '';
-  const programName = get(course, 'subProgram.program.name') || '';
-  const source = programImage
-    ? { uri: programImage }
-    : require('../../../../assets/images/authentication_background_image.jpg');
-
-  const goBack = () => {
-    resetCourseReducer();
-    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
-  };
-
-  const renderCells = ({ item, index }) => {
-    if (item.type === ON_SITE) {
-      return (
-        <OnSiteCell step={item} slots={course?.slots} index={index} profileId={route.params.courseId} />
-      );
-    }
-
-    if (item.type === E_LEARNING) {
-      return <ELearningCell step={item} index={index} profileId={route.params.courseId}
-        endedActivity={route.params.endedActivity} />;
-    }
-
-    return null;
-  };
-
-  const renderSeparator = () => <View style={styles.separator} />;
+  }, [hardwareBackPress]);
 
   const goToAbout = () => {
     if (!course) return;
@@ -131,6 +128,8 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       navigation.navigate('ElearningAbout', { program: eLearningProgram });
     } else navigation.navigate('BlendedAbout', { course });
   };
+
+  const renderCells = item => renderStepCell(item, course, route);
 
   return course && has(course, 'subProgram.program') && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
@@ -160,6 +159,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     </ScrollView>
   );
 };
+
 const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
 
 const mapDispatchToProps = dispatch => ({
