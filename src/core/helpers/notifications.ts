@@ -56,6 +56,7 @@ export const handleExpoToken = async (data) => {
 
     const { token, status } = data;
     if (token && status === GRANTED) await Users.updateById(userId, { formationExpoToken: token });
+    if (token && status === DENIED) await Users.removeExpoToken(userId, token);
   } catch (e) {
     console.error(e);
   }
