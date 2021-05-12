@@ -19,6 +19,7 @@ export const registerForPushNotificationsAsync = async () => {
   }
 
   const token = (await Notifications.getExpoPushTokenAsync()).data;
+  await asyncStorage.setExpoToken(token);
 
   if (finalStatus !== GRANTED) return { token, status: DENIED };
 
