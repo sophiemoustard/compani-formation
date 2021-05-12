@@ -2,6 +2,7 @@ import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
+import Users from '../api/users';
 
 export interface StateType {
   alenviToken: string | null,
@@ -54,9 +55,15 @@ const signIn = dispatch => async ({ email, password }) => {
 
 const signOut = dispatch => async () => {
   await Authentication.logOut();
+
+  const token = await asyncStorage.getExpoToken();
+  const userId = await asyncStorage.getUserId();
+  if (token && userId) await Users.removeExpoToken(userId, token);
+
   await asyncStorage.removeAlenviToken();
   await asyncStorage.removeRefreshToken();
   await asyncStorage.removeUserId();
+  await asyncStorage.removeExpoToken();
 
   dispatch({ type: 'signout' });
   navigate('Authentication');

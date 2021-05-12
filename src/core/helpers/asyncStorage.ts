@@ -50,6 +50,12 @@ const setUserId = async (id: string): Promise<void> => AsyncStorage.setItem('use
 
 const removeUserId = async (): Promise<void> => AsyncStorage.removeItem('user_id');
 
+const getExpoToken = async (): Promise<string | null> => AsyncStorage.getItem('expo_token');
+
+const setExpoToken = async (expoToken: string): Promise<void> => AsyncStorage.setItem('expo_token', expoToken);
+
+const removeExpoToken = async (): Promise<void> => AsyncStorage.removeItem('expo_token');
+
 export default {
   isTokenValid,
   getAlenviToken,
@@ -61,4 +67,7 @@ export default {
   getUserId,
   setUserId,
   removeUserId,
+  getExpoToken,
+  setExpoToken,
+  removeExpoToken,
 };
