@@ -13,7 +13,7 @@ import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 
 interface BlendedAboutProps {
-  route: { params: { course, fromNotification?: boolean } },
+  route: { params: { course } },
   navigation: {
     goBack: () => {},
     navigate: (path: string, params: { courseId: string }) => {},
@@ -51,16 +51,12 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
     if (get(course, 'trainer.picture.link')) setTrainerPictureSource({ uri: course.trainer.picture.link });
   }, [dates, course]);
 
-  const goBack = () => navigation.goBack();
-
   const goToCourse = () => {
     if (course._id) navigation.navigate('CourseProfile', { courseId: course._id });
   };
 
-  const onPressButton = route.params?.fromNotification ? goToCourse : goBack;
-
   return program && (
-    <About program={program} onPress={onPressButton}>
+    <About program={program} onPress={goToCourse}>
       <View style={styles.content}>
         {course.slots.length > 0 &&
           <>
