@@ -35,8 +35,8 @@ export default {
     const { baseURL } = getEnvVars();
     await alenviAxios.delete(`${baseURL}/users/${userId}/upload`);
   },
-  removeExpoToken: async (userId, formationExpoToken) => {
+  removeExpoToken: async (userId, expoToken) => {
     const { baseURL } = getEnvVars();
-    await alenviAxios.delete(`${baseURL}/users/${userId}/formation-expo-token/${formationExpoToken}`);
+    await alenviAxios.delete(`${baseURL}/users/${userId}/expo-token/${expoToken}`);
   },
 };
