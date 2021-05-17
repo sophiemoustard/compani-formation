@@ -44,7 +44,7 @@ export const handleNotificationResponse = async (response) => {
 
   switch (type) {
     case BLENDED_COURSE_REGISTRATION:
-      return navigationRef.current?.navigate('BlendedAbout', { course, fromNotification: true });
+      return navigationRef.current?.navigate('BlendedAbout', { course });
     default:
       return null;
   }
@@ -56,7 +56,7 @@ export const handleExpoToken = async (data) => {
     if (!userId) return;
 
     const { token, status } = data;
-    if (token && status === GRANTED) await Users.updateById(userId, { formationExpoToken: token });
+    if (token && status === GRANTED) await Users.addExpoToken(userId, token);
     if (token && status === DENIED) await Users.removeExpoToken(userId, token);
   } catch (e) {
     console.error(e);
