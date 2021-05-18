@@ -47,7 +47,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
     } catch (e) {
       Alert.alert(
         'Echec de l\'enregistrement',
-        'Essaie de reprendre la photo',
+        'Essayez de reprendre la photo',
         [{ text: 'OK', onPress: () => navigation.navigate('Camera') }], { cancelable: false }
       );
     } finally {

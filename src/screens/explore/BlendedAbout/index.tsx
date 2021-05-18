@@ -16,6 +16,7 @@ interface BlendedAboutProps {
   route: { params: { course } },
   navigation: {
     goBack: () => {},
+    navigate: (path: string, params: { courseId: string }) => {},
   },
 }
 
@@ -50,10 +51,12 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
     if (get(course, 'trainer.picture.link')) setTrainerPictureSource({ uri: course.trainer.picture.link });
   }, [dates, course]);
 
-  const goBack = () => navigation.goBack();
+  const goToCourse = () => {
+    if (course._id) navigation.navigate('CourseProfile', { courseId: course._id });
+  };
 
   return program && (
-    <About program={program} onPress={goBack}>
+    <About program={program} onPress={goToCourse}>
       <View style={styles.content}>
         {course.slots.length > 0 &&
           <>
