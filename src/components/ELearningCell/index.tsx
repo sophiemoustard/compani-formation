@@ -19,16 +19,18 @@ interface ELearningCellProps {
 const ELearningCell = ({ step, index, profileId, endedActivity = '' }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
-
-  const iconButtonStyle = isOpen
-    ? { ...styles.iconButtonContainer, ...styles.openedIconButtonContainer }
-    : styles.iconButtonContainer;
+  const [iconButtonStyle, setIconButtonStyle] = useState<object>(styles.iconButtonContainer);
 
   useEffect(() => {
     if (step && step.activities && endedActivity) {
       setIsOpen(step.activities.map(activity => activity._id).includes(endedActivity));
     }
   }, [endedActivity, step]);
+
+  useEffect(() => {
+    if (isOpen) setIconButtonStyle({ ...styles.iconButtonContainer, ...styles.openedIconButtonContainer });
+    else setIconButtonStyle(styles.iconButtonContainer);
+  }, [isOpen]);
 
   return (
     <View style={[styles.container, isOpen && styles.openedContainer]}>

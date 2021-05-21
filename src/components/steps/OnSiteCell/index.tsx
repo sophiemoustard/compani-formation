@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { StepType } from '../../../types/StepType';
 import { CourseSlotType } from '../../../types/CourseSlotType';
@@ -22,14 +22,22 @@ interface OnSiteCellProps {
 const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [stepSlots, setStepSlots] = useState<Array<CourseSlotType>>([]);
+  const [dates, setDates] = useState<Date[]>([]);
+  const [modalTitle, setModalTitle] = useState('');
 
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
 
-  const stepSlots = slots.filter(slot => slot.step === step._id);
-  const dates = stepSlots.length
-    ? stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => moment(a).diff(b, 'days'))
-    : [];
-  const modalTitle = `Etape ${index + 1} - ${step.name}`;
+  useEffect(() => { setModalTitle(`Etape ${index + 1} - ${step.name}`); }, [step, index]);
+
+  useEffect(() => {
+    setStepSlots(slots.filter(slot => slot.step === step._id));
+  }, [slots, step]);
+
+  useEffect(() => {
+    if (!stepSlots.length) setDates([]);
+    else setDates(stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => moment(a).diff(b, 'days')));
+  }, [stepSlots]);
 
   const closeModal = () => setIsModalVisible(false);
   const openModal = () => setIsModalVisible(true);

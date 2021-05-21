@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
-import NiButton from '../../../components/form/Button';
+import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import commonStyles from '../../../styles/common';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Course from '../../../api/courses';
-import { GREY, PINK } from '../../../styles/colors';
+import { PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
@@ -85,16 +85,14 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
             </Text>
             <Text style={styles.subTitle}>E-mail</Text>
             <Text style={styles.infos}>{loggedUser.local.email}</Text>
-            <NiButton caption="Modifier mes informations" onPress={editProfile}
-              bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
-            <NiButton style={styles.passwordButton} caption="Modifier mon mot de passe" onPress={editPassword}
-              bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
+            <NiSecondaryButton caption="Modifier mes informations" onPress={editProfile} />
+            <NiSecondaryButton customStyle={styles.passwordButton} caption="Modifier mon mot de passe"
+              onPress={editPassword} />
           </View>
           <View style={styles.sectionDelimiter} />
         </>
       }
-      <NiButton style={styles.logOutButton} caption="Se déconnecter" onPress={signOut}
-        bgColor={GREY[100]} color={GREY[600]} borderColor={GREY[600]} />
+      <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter" onPress={signOut} />
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux_joie.png')} style={styles.fellow} />

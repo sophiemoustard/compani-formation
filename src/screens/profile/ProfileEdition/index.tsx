@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import FeatherButton from '../../../components/icons/FeatherButton';
-import NiButton from '../../../components/form/Button';
-import { GREY, PINK, WHITE } from '../../../styles/colors';
+import NiPrimaryButton from '../../../components/form/PrimaryButton';
+import { GREY } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import { UserType } from '../../../types/UserType';
 import styles from './styles';
@@ -183,8 +183,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={errorMessage} show={error} />
-          <NiButton caption="Valider" onPress={saveData} loading={isLoading}
-            bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+          <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
         </View>
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
           setHasPhoto={setHasPhoto} goBack={goBack} />

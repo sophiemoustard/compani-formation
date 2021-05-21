@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NiInput from '../../components/form/Input';
-import NiButton from '../../components/form/Button';
+import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
 import accountCreationStyles from '../../styles/accountCreation';
-import { PINK, WHITE } from '../../styles/colors';
 import { PHONE_REGEX } from '../../core/data/constants';
 import { IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 
@@ -20,22 +19,18 @@ interface CreateAccountFormProps {
 }
 const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openModal }: CreateAccountFormProps) => {
   const isIOS = Platform.OS === 'ios';
-  const isDisabledBackHandler = useRef(isLoading);
   const navigation = useNavigation();
 
-  const hardwareBackPress = () => {
-    if (!isDisabledBackHandler.current) goBack(index);
+  const hardwareBackPress = useCallback(() => {
+    if (!isLoading) goBack(index);
     return true;
-  };
+  }, [goBack, index, isLoading]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => { isDisabledBackHandler.current = isLoading; }, [isLoading]);
+  }, [hardwareBackPress]);
 
   const onChangeText = (text, fieldToChangeIndex) => {
     setData(
@@ -102,8 +97,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
               <Text style={styles.modalLink}>{d.openModal.link}</Text>
             </Text>}
           </TouchableOpacity>)}
-          <NiButton caption="Valider" onPress={validData} loading={isLoading}
-            bgColor={PINK[500]} color={WHITE} borderColor={PINK[500]} />
+          <NiPrimaryButton caption="Valider" onPress={validData} loading={isLoading} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
