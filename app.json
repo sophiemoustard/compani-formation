@@ -33,6 +33,10 @@
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 3000
     },
+    "notification": {
+      "icon": "./assets/images/android_notification_icon.png",
+      "color": "#C12862"
+    },
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
       "buildNumber": "1.11.0",
