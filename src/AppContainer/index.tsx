@@ -43,6 +43,8 @@ interface AppContainerProps {
   statusBarVisible: boolean,
 }
 
+Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
