@@ -35,7 +35,7 @@
     },
     "notification": {
       "icon": "./assets/images/android_notification_icon.png",
-      "color": "#C12862"
+      "color": "#005774"
     },
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
