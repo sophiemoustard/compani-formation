@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
-import { Subscription } from '@unimodules/core';
+import get from 'lodash/get';
 import Analytics from '../core/helpers/analytics';
 import asyncStorage from '../core/helpers/asyncStorage';
 import ProfileEdition from '../screens/profile/ProfileEdition';
@@ -46,7 +46,7 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
-  const responseListener = useRef<Subscription>({ remove: () => {} });
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(async (data) => {
@@ -54,12 +54,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       await handleExpoToken(data);
     });
 
-    if (alenviToken) {
-      responseListener.current = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
-    }
-
-    return () => Notifications.removeNotificationSubscription(responseListener.current);
-  }, [alenviToken]);
+    const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
+      get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
+    if (alenviToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+  }, [alenviToken, lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
