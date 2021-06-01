@@ -1,17 +1,17 @@
 import { ActivityType } from './ActivityType';
 
-interface StepInterface {
+type CommonStepType = {
   _id: string,
   name: string,
   type: string,
   progress: number,
 }
 
-export interface StepType extends StepInterface {
-  activities?: ActivityType[]
+export type StepType = CommonStepType & {
+  activities?: ActivityType[],
 }
 
-export interface CourseStepType extends StepInterface {
+export type CourseStepType = CommonStepType & {
   stepIndex: string,
   firstSlot: Date,
   slots: Date[],
