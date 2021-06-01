@@ -123,7 +123,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       {!!nextSteps.length &&
         <View style={styles.nextSteps}>
           <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
-            renderItem={renderNexStepsItem} type={'ÉVÉNEMENT'} />
+            renderItem={renderNexStepsItem} type={EVENT_SECTION} />
         </View>
       }
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
