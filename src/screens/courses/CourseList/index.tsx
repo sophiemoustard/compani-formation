@@ -6,21 +6,21 @@ import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../../api/courses';
+import SubPrograms from '../../../api/subPrograms';
 import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
+import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
-import styles from './styles';
-import { NavigationType } from '../../../types/NavigationType';
-import SubPrograms from '../../../api/subPrograms';
-import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import { CourseType } from '../../../types/CourseType';
+import { NavigationType } from '../../../types/NavigationType';
 import { CourseStepType } from '../../../types/StepType';
+import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import { SubProgramType } from '../../../types/SubProgramType';
+import styles from './styles';
 
 type CourseListProps = {
   setIsCourse: (value: boolean) => void,
