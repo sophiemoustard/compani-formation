@@ -7,7 +7,7 @@ import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 
 interface CalendarIconProps {
-  slots: Array<Date>,
+  slots: Date[],
   progress: number,
 }
 
@@ -15,7 +15,7 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
-  const [dates, setDates] = useState<Array<string>>([]);
+  const [dates, setDates] = useState<string[]>([]);
   const dateFormat = 'DD/MM/YYY';
 
   useEffect(() => {

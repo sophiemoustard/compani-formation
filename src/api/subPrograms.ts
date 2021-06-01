@@ -3,7 +3,7 @@ import getEnvVars from '../../environment';
 import { SubProgramType } from '../types/SubProgramType';
 
 export default {
-  getELearningDraftSubPrograms: async (): Promise<any> => {
+  getELearningDraftSubPrograms: async (): Promise<SubProgramType[]> => {
     const { baseURL } = getEnvVars();
     const response = await alenviAxios.get(`${baseURL}/subprograms/draft-e-learning`);
     return response.data.data.subPrograms;
