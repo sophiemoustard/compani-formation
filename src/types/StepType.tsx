@@ -1,9 +1,19 @@
 import { ActivityType } from './ActivityType';
 
-export interface StepType {
+interface StepInterface {
   _id: string,
-  activities?: Array<ActivityType>,
   name: string,
   type: string,
   progress: number,
+}
+
+export interface StepType extends StepInterface {
+  activities?: ActivityType[]
+}
+
+export interface CourseStepType extends StepInterface {
+  stepIndex: string,
+  firstSlot: Date,
+  slots: Date[],
+  courseId: string,
 }

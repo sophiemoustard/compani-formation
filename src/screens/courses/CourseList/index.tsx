@@ -1,5 +1,5 @@
 import 'array-flat-polyfill';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useMemo, useReducer } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
@@ -17,65 +17,84 @@ import styles from './styles';
 import { NavigationType } from '../../../types/NavigationType';
 import SubPrograms from '../../../api/subPrograms';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import CoursesSection from '../../../components/CoursesSection';
+import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
+import { CourseType } from '../../../types/CourseType';
+import { CourseStepType } from '../../../types/StepType';
+import { SubProgramType } from '../../../types/SubProgramType';
 
-interface CourseListProps {
+type CourseListProps = {
   setIsCourse: (value: boolean) => void,
   navigation: NavigationType,
   loggedUserId: string | null,
 }
 
-const formatCourseStep = (course) => {
+const formatCourseStep = (stepId: string, course: CourseType, stepSlots): CourseStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
-  const programName = get(course, 'subProgram.program.name');
+  const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate));
+  const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
+  const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
-  return Object.keys(stepSlots)
-    .map((stepId) => {
-      const nextSlots = stepSlots[stepId].filter(slot => moment().isSameOrBefore(slot.endDate));
-      const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
-      const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
-
-      if (!nextSlots.length) return null;
-
-      return {
-        name: programName,
-        stepIndex,
-        firstSlot: nextSlots[0].endDate,
-        type: nextSlots[0].step.type,
-        slots: slotsSorted.map(s => s.endDate),
-        _id: slotsSorted[0]._id,
-        progress: courseSteps[stepIndex].progress,
-        courseId: course._id,
-      };
-    })
-    .filter(step => !!step);
+  return {
+    name: get(course, 'subProgram.program.name'),
+    stepIndex,
+    firstSlot: nextSlots[0].endDate,
+    type: nextSlots[0].step.type,
+    slots: slotsSorted.map(s => s.endDate),
+    _id: slotsSorted[0]._id,
+    progress: courseSteps[stepIndex].progress,
+    courseId: course._id,
+  };
 };
 
-const formatNextSteps = courses => courses.map(formatCourseStep).flat()
-  .filter(step => step.slots.length)
+const formatNextSteps = (course: CourseType): CourseStepType[] => {
+  const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
+
+  return Object.keys(stepSlots)
+    .filter(stepId => stepSlots[stepId].some(slot => moment().isSameOrBefore(slot.endDate)))
+    .map(stepId => formatCourseStep(stepId, course, stepSlots));
+};
+
+const getNextSteps = (courses: CourseType[]): CourseStepType[] => courses.map(c => formatNextSteps(c))
+  .flat()
+  .filter(step => step.slots && step.slots.length)
   .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
 
+const SET_COURSES = 'SET_COURSES';
+const RESET_COURSES = 'RESET_COURSES';
+
+const courseReducer = (state, action) => {
+  switch (action.type) {
+    case SET_COURSES:
+      return {
+        onGoing: action.payload.filter(course => course.progress < 1),
+        achieved: action.payload.filter(course => course.progress === 1),
+      };
+    case RESET_COURSES:
+      return { onGoing: [], achieved: [] };
+    default:
+      return state;
+  }
+};
+
+const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+
 const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) => {
-  const [onGoingCourses, setOnGoingCourses] = useState(new Array(0));
-  const [achievedCourses, setAchievedCourses] = useState(new Array(0));
-  const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState(new Array(0));
+  const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
+  const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
   const { signOut } = useContext(AuthContext);
 
-  const getCourses = async () => {
+  const getCourses = useCallback(async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
-      setOnGoingCourses(fetchedCourses.filter(course => course.progress < 1));
-      setAchievedCourses(fetchedCourses.filter(course => course.progress === 1));
+      dispatch({ type: SET_COURSES, payload: fetchedCourses });
     } catch (e) {
       if (e.status === 401) signOut();
       console.error(e);
-      setOnGoingCourses([]);
-      setAchievedCourses([]);
+      dispatch({ type: RESET_COURSES });
     }
-  };
+  }, [signOut]);
 
-  const getElearningDraftSubPrograms = async () => {
+  const getElearningDraftSubPrograms = useCallback(async () => {
     try {
       const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
       setElearningDraftSubPrograms(fetchedSubPrograms);
@@ -84,7 +103,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       console.error(e);
       setElearningDraftSubPrograms([]);
     }
-  };
+  }, [signOut]);
 
   const isFocused = useIsFocused();
 
@@ -93,8 +112,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
     if (loggedUserId && isFocused) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId, isFocused]);
+  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
 
   const goToCourse = (id, isCourse) => {
     if (isCourse) navigation.navigate('CourseProfile', { courseId: id });
@@ -107,15 +125,12 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
   };
 
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} progress={course.progress}
-    misc={course.misc} />;
+    onPress={() => onPressProgramCell(true, course._id)} progress={course.progress} misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(false, subProgram._id)} />;
 
-  const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
-
-  const nextSteps = formatNextSteps(onGoingCourses);
+  const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
 
   return (
     <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
@@ -128,13 +143,13 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       }
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
         source={require('../../../../assets/images/yellow_section_background.png')}>
-        <CoursesSection items={onGoingCourses} title='Mes formations en cours' renderItem={renderCourseItem}
-          countStyle={styles.onGoingCoursesCount} showCatalogButton={!onGoingCourses.length} />
+        <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
+          countStyle={styles.onGoingCoursesCount} showCatalogButton={!courses.onGoing.length} />
       </ImageBackground>
-      {!!achievedCourses.length &&
+      {!!courses.achieved.length &&
         <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
           source={require('../../../../assets/images/green_section_background.png')}>
-          <CoursesSection items={achievedCourses} title='Mes formations terminées' renderItem={renderCourseItem}
+          <CoursesSection items={courses.achieved} title='Mes formations terminées' renderItem={renderCourseItem}
             countStyle={styles.achievedCoursesCount} />
         </ImageBackground>
       }

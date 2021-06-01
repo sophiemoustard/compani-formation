@@ -3,12 +3,12 @@ import { CourseSlotType } from './CourseSlotType';
 
 export interface CourseType {
   _id: string,
-  contact: ContactType,
+  contact?: ContactType,
   trainees: Array<string>,
   subProgram: SubProgramType,
   company: string,
   type: string,
-  trainer: string,
+  trainer?: string,
   slots: Array<CourseSlotType>
   misc: string,
   progress: number,
