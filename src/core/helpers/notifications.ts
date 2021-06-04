@@ -8,23 +8,25 @@ import Users from '../../api/users';
 import Courses from '../../api/courses';
 
 export const registerForPushNotificationsAsync = async () => {
+  let finalStatus;
+
   if (!Constants.isDevice) return { token: null, status: DENIED };
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
+  finalStatus = existingStatus;
 
   if (existingStatus !== GRANTED) {
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
   }
 
-  const token = (await Notifications.getExpoPushTokenAsync()).data;
+  const { data: token } = await Notifications.getExpoPushTokenAsync();
   await asyncStorage.setExpoToken(token);
 
   if (finalStatus !== GRANTED) return { token, status: DENIED };
 
   if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync(
+    await Notifications.setNotificationChannelAsync(
       'default',
       {
         name: 'default',

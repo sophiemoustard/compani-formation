@@ -5,11 +5,15 @@ import styles from './styles';
 import { SubProgramType } from '../../types/SubProgramType';
 import { CourseType } from '../../types/CourseType';
 import { ProgramType } from '../../types/ProgramType';
+import { CourseStepType } from '../../types/StepType';
 import { formatWordToPlural } from '../../core/helpers/utils';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 
+export const COURSE_SECTION = 'FORMATION';
+export const EVENT_SECTION = 'ÉVÉNEMENT';
+
 interface CoursesSectionProps {
-  items: Array<ProgramType | CourseType | SubProgramType>,
+  items: Array<ProgramType | CourseType | SubProgramType | CourseStepType>,
   title: string,
   type?: string,
   countStyle: StyleProp<ViewStyle>
@@ -20,7 +24,7 @@ interface CoursesSectionProps {
 const CoursesSection = ({
   items,
   title,
-  type = 'FORMATION',
+  type = COURSE_SECTION,
   countStyle,
   showCatalogButton = false,
   renderItem,
