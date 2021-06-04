@@ -14,7 +14,7 @@ import styles from './styles';
 
 interface OnSiteCellProps {
   step: StepType,
-  slots?: Array<CourseSlotType>,
+  slots?: CourseSlotType[],
   index: number,
   profileId: string,
 }
