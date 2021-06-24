@@ -51,7 +51,12 @@
     "android": {
       "package": "com.alenvi.compani",
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
-      "versionCode": 62,
+      "icon": "./assets/images/android_icon_old.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/android_icon.png",
+        "backgroundColor": "#005774"
+      },
+      "versionCode": 66,
       "googleServicesFile": "./google-services.json"
     }
   }
