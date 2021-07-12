@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -30,11 +30,11 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
   const navigation = useNavigation();
 
   type colorsType = { border: string, background: string, check?: string }
-  let colors: colorsType = { border: YELLOW[600], background: YELLOW[300] };
-  if (isCompleted && isAboveAverage) colors = { border: GREEN[600], background: GREEN[300], check: GREEN[500] };
-  else if (isCompleted) colors = { border: ORANGE[600], background: ORANGE[300], check: ORANGE[500] };
+  const colors = useRef<colorsType>({ border: YELLOW[600], background: YELLOW[300] });
+  if (isCompleted && isAboveAverage) colors.current = { border: GREEN[600], background: GREEN[300], check: GREEN[500] };
+  else if (isCompleted) colors.current = { border: ORANGE[600], background: ORANGE[300], check: ORANGE[500] };
 
-  const coloredStyle = styles(colors.check);
+  const coloredStyle = styles(colors.current.check);
 
   const getQuestionnaireAnswersList = () => {
     const activityHistory = activity.activityHistories[activity.activityHistories.length - 1];
@@ -53,8 +53,8 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
     <View style={coloredStyle.container}>
       <TouchableOpacity onPress={onPress} disabled={disabled}>
         <View style={coloredStyle.iconContainer}>
-          <ActivityIcon activity={activity} disabled={disabled} backgroundColor={colors.background}
-            borderColor={colors.border} />
+          <ActivityIcon activity={activity} disabled={disabled} backgroundColor={colors.current.background}
+            borderColor={colors.current.border} />
           {isCompleted && !isQuiz &&
             <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={coloredStyle.icon}
               backgroundColor={WHITE} />}

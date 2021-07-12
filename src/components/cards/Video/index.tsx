@@ -13,10 +13,10 @@ interface NiVideoProps {
 
 const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const isIos = Platform.OS === 'ios';
-  let isIosVersionWithPlayButton = false;
-  if (isIos) isIosVersionWithPlayButton = Platform.Version === '14.1';
+  const isIosVersionWithPlayButton = useRef<boolean>(false);
+  if (isIos) isIosVersionWithPlayButton.current = Platform.Version === '14.1';
 
-  const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
+  const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton.current);
   const [nativeControlsVisible, setNativeControlsVisible] = useState<boolean>(false);
   const videoRef = useRef<Video>(null);
 
@@ -25,7 +25,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   };
 
   const onPlaybackStatusUpdate = (playbackStatus) => {
-    if (isIosVersionWithPlayButton) {
+    if (isIosVersionWithPlayButton.current) {
       if (playbackStatus.isPlaying) setPlayVisible(false);
       else setPlayVisible(true);
     }
@@ -51,7 +51,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   return (
     // The View is needed to center the play button
     <View>
-      {isIosVersionWithPlayButton && playVisible &&
+      {isIosVersionWithPlayButton.current && playVisible &&
         <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
           style={styles.play} />}
       <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
