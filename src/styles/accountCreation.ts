@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_BOLD.LG,
     marginVertical: MARGIN.LG,
   },
-  keyboardAvoidingView: {
+  screenView: {
     flex: 1,
   },
   container: {
