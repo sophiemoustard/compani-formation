@@ -79,28 +79,34 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
     }
   };
 
+  const render = (
+    <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps='always'>
+      <Text style={accountCreationStyles.title}>{data[0].title}</Text>
+      {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
+        <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type} optional={!d.required}
+          onChangeText={text => onChangeText(text, i)} disabled={isLoading} required={d.required}
+          validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
+      </View>)}
+      <View style={accountCreationStyles.footer}>
+        {data.map((d, i) => <TouchableOpacity onPress={openModal} key={`modalText${i}`}>
+          {!!d.openModal && <Text style={styles.modalText}>
+            <Text>{d.openModal.text}</Text>
+            <Text style={styles.modalLink}>{d.openModal.link}</Text>
+          </Text>}
+        </TouchableOpacity>)}
+        <NiPrimaryButton caption="Valider" onPress={validData} loading={isLoading} />
+      </View>
+    </ScrollView>
+  );
+
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={accountCreationStyles.keyboardAvoidingView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps='always'>
-        <Text style={accountCreationStyles.title}>{data[0].title}</Text>
-        {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
-          <NiInput key={`content${i}`} caption={d.caption} value={d.value} type={d.type} optional={!d.required}
-            onChangeText={text => onChangeText(text, i)} disabled={isLoading} required={d.required}
-            validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
-        </View>)}
-        <View style={accountCreationStyles.footer}>
-          {data.map((d, i) => <TouchableOpacity onPress={openModal} key={`modalText${i}`}>
-            {!!d.openModal && <Text style={styles.modalText}>
-              <Text>{d.openModal.text}</Text>
-              <Text style={styles.modalLink}>{d.openModal.link}</Text>
-            </Text>}
-          </TouchableOpacity>)}
-          <NiPrimaryButton caption="Valider" onPress={validData} loading={isLoading} />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    isIOS
+      ? <KeyboardAvoidingView behavior='padding' style={accountCreationStyles.screenView}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
+        {render}
+      </KeyboardAvoidingView>
+      : <View style={accountCreationStyles.screenView}>{render}</View>
   );
 };
 
