@@ -13,9 +13,7 @@ interface NiVideoProps {
 
 const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const isIos = Platform.OS === 'ios';
-  let isIosVersionWithPlayButton = false;
-  if (isIos) isIosVersionWithPlayButton = Platform.Version === '14.1';
-
+  const isIosVersionWithPlayButton = isIos && Platform.Version === '14.1';
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
   const [nativeControlsVisible, setNativeControlsVisible] = useState<boolean>(false);
   const videoRef = useRef<Video>(null);

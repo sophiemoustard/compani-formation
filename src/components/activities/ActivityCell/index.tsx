@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +20,20 @@ interface ActivityCellProps {
   setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
 }
 
+const SET_TO_GREEN = 'SET_TO_GREEN';
+const SET_TO_ORANGE = 'SET_TO_ORANGE';
+
+const colorsReducer = (state, action) => {
+  switch (action) {
+    case SET_TO_GREEN:
+      return { border: GREEN[600], background: GREEN[300], check: GREEN[500] };
+    case SET_TO_ORANGE:
+      return { border: ORANGE[600], background: ORANGE[300], check: ORANGE[500] };
+    default:
+      return state;
+  }
+};
+
 const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersList }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
@@ -28,11 +42,12 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
   const isQuiz = activity.type === QUIZ;
   const isAboveAverage = isQuiz ? lastScore * 2 > quizCount : true;
   const navigation = useNavigation();
+  const [colors, dispatch] = useReducer(colorsReducer, { border: YELLOW[600], background: YELLOW[300] });
 
-  type colorsType = { border: string, background: string, check?: string }
-  let colors: colorsType = { border: YELLOW[600], background: YELLOW[300] };
-  if (isCompleted && isAboveAverage) colors = { border: GREEN[600], background: GREEN[300], check: GREEN[500] };
-  else if (isCompleted) colors = { border: ORANGE[600], background: ORANGE[300], check: ORANGE[500] };
+  useEffect(() => {
+    if (isCompleted && isAboveAverage) dispatch(SET_TO_GREEN);
+    else if (isCompleted) dispatch(SET_TO_ORANGE);
+  }, [isAboveAverage, isCompleted]);
 
   const coloredStyle = styles(colors.check);
 

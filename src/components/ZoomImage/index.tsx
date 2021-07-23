@@ -13,7 +13,7 @@ interface ZoomImageProps {
 }
 
 const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
-  let lastScale = 1;
+  const lastScale = useRef<number>(1);
   const baseScale = new Animated.Value(1);
   const pinchScale = new Animated.Value(1);
   const scale = Animated.multiply(baseScale, pinchScale);
@@ -29,8 +29,8 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
 
   const onPinchStateChange = (event) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
-      lastScale *= event.nativeEvent.scale;
-      baseScale.setValue(lastScale);
+      lastScale.current *= event.nativeEvent.scale;
+      baseScale.setValue(lastScale.current);
       pinchScale.setValue(1);
     }
   };
