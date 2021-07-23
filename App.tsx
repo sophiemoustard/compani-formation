@@ -66,6 +66,7 @@ Notifications.setNotificationHandler({
 const App = () => {
   const [appReady, setAppReady] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
+  const [canLoadApp, setCanLoadApp] = useState(false);
   const { signOut } = useContext(AuthContext);
 
   const shouldUpdate = async (nextState) => {
@@ -73,6 +74,7 @@ const App = () => {
       if (nextState === ACTIVE_STATE) {
         const { mustUpdate } = await Version.shouldUpdate();
         setModalOpened(mustUpdate);
+        setCanLoadApp(!mustUpdate);
       }
     } catch (error) {
       if (error.status === 401) signOut();
@@ -109,11 +111,11 @@ const App = () => {
   return (
     <>
       <UpdateAppModal visible={modalOpened} />
-      <AuthProvider>
+      {canLoadApp && <AuthProvider>
         <ReduxProvider store={store}>
           <AppContainer />
         </ReduxProvider>
-      </AuthProvider>
+      </AuthProvider>}
     </>
   );
 };
