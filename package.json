@@ -67,6 +67,7 @@
     "expo-updates": "~0.8.0",
     "mime": "^2.5.2",
     "moment": "^2.29.1",
+    "qs": "^6.10.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
