@@ -9,6 +9,7 @@ import getEnvVars from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
 import { alenviAxios } from '../src/api/ressources/alenviAxios';
+import moment from '../src/core/helpers/moment';
 
 describe('Authentication tests', () => {
   let axiosMock;
@@ -32,7 +33,7 @@ describe('Authentication tests', () => {
         200,
         { data: {
           token: 'token',
-          tokenExpireDate: '1871-03-18T01:00:00-05:00',
+          tokenExpireDate: moment().add(1, 'day').toISOString(),
           refreshToken: 'refresh-token',
           user: { _id: '321' },
         } }
@@ -42,10 +43,10 @@ describe('Authentication tests', () => {
         200,
         { data: {
           token: 'token',
-          tokenExpireDate: '1871-03-22T18:00:00-05:00',
+          tokenExpireDate: moment().add(1, 'day').toISOString(),
           refreshToken: 'refresh-token',
-          user: { _id: '321' } },
-        }
+          user: { _id: '321' },
+        } }
       );
     alenviAxiosMock.onGet(`${baseURL}/users/321`)
       .reply(200, { data: { user: { _id: '321' } } })
