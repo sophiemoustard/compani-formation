@@ -27,18 +27,38 @@ describe('Authentication tests', () => {
   test('user should authenticate and be redirected to Home page', async () => {
     const { baseURL } = getEnvVars();
     const store = createStore(reducers);
+    const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
     axiosMock.onPost(`${baseURL}/users/authenticate`)
       .reply(
         200,
-        { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
+        {
+          data: {
+            token: 'token',
+            tokenExpireDate: expirationDate,
+            refreshToken: 'refresh-token',
+            user: { _id: '321' },
+          },
+        }
       )
       .onPost(`${baseURL}/users/refreshToken`, { refreshToken: 'refresh-token' })
       .reply(
         200,
-        { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
+        {
+          data: {
+            token: 'token',
+            tokenExpireDate: expirationDate,
+            refreshToken: 'refresh-token',
+            user: { _id: '321' },
+          },
+        }
       );
-    alenviAxiosMock.onGet(`${baseURL}/users/321`).reply(200, { data: { user: { _id: '321' } } })
-      .onGet(`${baseURL}/courses/user`).reply(200, { data: { courses: [] } });
+    alenviAxiosMock.onGet(`${baseURL}/users/321`)
+      .reply(200, { data: { user: { _id: '321' } } })
+      .onGet(`${baseURL}/courses/user`)
+      .reply(200, { data: { courses: [] } })
+      .onGet(`${baseURL}/subprograms/draft-e-learning`)
+      .reply(200, { data: { subPrograms: [] } });
 
     const element = render(
       <AuthProvider>
