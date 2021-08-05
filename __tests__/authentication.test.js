@@ -9,7 +9,6 @@ import getEnvVars from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
 import { alenviAxios } from '../src/api/ressources/alenviAxios';
-import moment from '../src/core/helpers/moment';
 
 describe('Authentication tests', () => {
   let axiosMock;
@@ -28,25 +27,31 @@ describe('Authentication tests', () => {
   test('user should authenticate and be redirected to Home page', async () => {
     const { baseURL } = getEnvVars();
     const store = createStore(reducers);
+    const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
     axiosMock.onPost(`${baseURL}/users/authenticate`)
       .reply(
         200,
-        { data: {
-          token: 'token',
-          tokenExpireDate: moment().add(1, 'day').toISOString(),
-          refreshToken: 'refresh-token',
-          user: { _id: '321' },
-        } }
+        {
+          data: {
+            token: 'token',
+            tokenExpireDate: expirationDate,
+            refreshToken: 'refresh-token',
+            user: { _id: '321' },
+          },
+        }
       )
       .onPost(`${baseURL}/users/refreshToken`, { refreshToken: 'refresh-token' })
       .reply(
         200,
-        { data: {
-          token: 'token',
-          tokenExpireDate: moment().add(1, 'day').toISOString(),
-          refreshToken: 'refresh-token',
-          user: { _id: '321' },
-        } }
+        {
+          data: {
+            token: 'token',
+            tokenExpireDate: expirationDate,
+            refreshToken: 'refresh-token',
+            user: { _id: '321' },
+          },
+        }
       );
     alenviAxiosMock.onGet(`${baseURL}/users/321`)
       .reply(200, { data: { user: { _id: '321' } } })
