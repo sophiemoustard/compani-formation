@@ -3,7 +3,7 @@ import { DateTime, Settings } from 'luxon';
 Settings.defaultLocale = 'fr';
 
 export class CompaniDate {
-  date: DateTime | null;
+  date: DateTime;
 
   constructor(...args: any[]) {
     if (!args.length) {
@@ -13,16 +13,20 @@ export class CompaniDate {
     } else if (args.length === 2 && typeof args[0] === 'string' && typeof args[1] === 'string') {
       this.date = DateTime.fromFormat(args[0], args[1]);
     } else {
-      this.date = null;
+      this.date = DateTime.fromISO('invalid date');
     }
   }
 
+  isValid() {
+    return this.date.isValid;
+  }
+
   toString() {
-    return this.date?.toString();
+    return this.date.toString() || '';
   }
 
   format(fmt: string) {
-    return this.date?.toFormat(fmt) || '';
+    return this.date.toFormat(fmt) || '';
   }
 }
 
