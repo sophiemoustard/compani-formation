@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import moment from '../../core/helpers/moment';
+import { companiDate } from '../../core/helpers/dates';
 import { capitalize } from '../../core/helpers/utils';
 import Shadow from '../design/Shadow';
 import styles from './styles';
@@ -16,17 +17,17 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
-  const dateFormat = 'DD/MM/YYY';
+  const dateFormat = 'dd/LL/YYYY';
 
   useEffect(() => {
     if (slots.length) {
-      const slotsDates = [...new Set(slots.map(date => moment(date).format(dateFormat)))];
+      const slotsDates = [...new Set(slots.map(date => companiDate(date).format(dateFormat)))];
       const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
-      const date = nextSlots.length ? moment(nextSlots[0]).format(dateFormat) : slotsDates[0];
+      const date = nextSlots.length ? companiDate(nextSlots[0]).format(dateFormat) : slotsDates[0];
 
-      setDayOfWeek(capitalize(moment(date, dateFormat).format('ddd')));
-      setDayOfMonth(capitalize(moment(date, dateFormat).format('D')));
-      setMonth(capitalize(moment(date, dateFormat).format('MMM')));
+      setDayOfWeek(capitalize(companiDate(date, dateFormat).format('ccc')));
+      setDayOfMonth(capitalize(companiDate(date, dateFormat).format('d')));
+      setMonth(capitalize(companiDate(date, dateFormat).format('LLL')));
       setDates(slotsDates);
     }
   }, [slots]);
