@@ -8,6 +8,10 @@ export class CompaniDate {
   constructor(...args: any[]) {
     if (!args.length) {
       this.date = DateTime.now();
+    } else if (args.length === 1 && typeof args[0] === 'string') {
+      this.date = DateTime.fromISO(args[0]);
+    } else if (args.length === 2 && typeof args[0] === 'string' && typeof args[1] === 'string') {
+      this.date = DateTime.fromFormat(args[0], args[1]);
     } else {
       this.date = null;
     }
@@ -15,6 +19,10 @@ export class CompaniDate {
 
   toString() {
     return this.date?.toString();
+  }
+
+  format(fmt: string) {
+    return this.date?.toFormat(fmt) || '';
   }
 }
 
