@@ -1,3 +1,25 @@
+import { DateTime, Settings } from 'luxon';
+
+Settings.defaultLocale = 'fr';
+
+export class CompaniDate {
+  date: DateTime | null;
+
+  constructor(...args: any[]) {
+    if (!args.length) {
+      this.date = DateTime.now();
+    } else {
+      this.date = null;
+    }
+  }
+
+  toString() {
+    return this.date?.toString();
+  }
+}
+
+export const companiDate = (...args: any[]) => new CompaniDate(...args);
+
 export const isBetween = (date: Date, min: Date, max: Date): boolean => new Date(date) < new Date(max) &&
   new Date(date) > new Date(min);
 
