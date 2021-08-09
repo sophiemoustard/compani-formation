@@ -8,6 +8,10 @@ export class CompaniDate {
   constructor(...args: any[]) {
     if (!args.length) {
       this.date = DateTime.now();
+    } else if (args.length === 1 && args[0] instanceof CompaniDate) {
+      this.date = args[0]._getDate();
+    } else if (args.length === 1 && args[0] instanceof Date) {
+      this.date = DateTime.fromJSDate(args[0]);
     } else if (args.length === 1 && typeof args[0] === 'string') {
       this.date = DateTime.fromISO(args[0]);
     } else if (args.length === 2 && typeof args[0] === 'string' && typeof args[1] === 'string') {
@@ -15,6 +19,10 @@ export class CompaniDate {
     } else {
       this.date = DateTime.fromISO('invalid date');
     }
+  }
+
+  _getDate() {
+    return this.date;
   }
 
   isValid() {
@@ -27,6 +35,12 @@ export class CompaniDate {
 
   format(fmt: string) {
     return this.date.toFormat(fmt) || '';
+  }
+
+  isSameOrBefore(otherDate : Date | CompaniDate) {
+    const instancedOtherDate = new CompaniDate(otherDate);
+
+    return this.date <= instancedOtherDate._getDate() || false;
   }
 }
 

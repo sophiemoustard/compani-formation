@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import moment from '../../core/helpers/moment';
 import { companiDate } from '../../core/helpers/dates';
 import { capitalize } from '../../core/helpers/utils';
 import Shadow from '../design/Shadow';
@@ -22,7 +21,7 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
   useEffect(() => {
     if (slots.length) {
       const slotsDates = [...new Set(slots.map(date => companiDate(date).format(dateFormat)))];
-      const nextSlots = slots.filter(slot => moment().isSameOrBefore(slot));
+      const nextSlots = slots.filter(slot => companiDate().isSameOrBefore(slot));
       const date = nextSlots.length ? companiDate(nextSlots[0]).format(dateFormat) : slotsDates[0];
 
       setDayOfWeek(capitalize(companiDate(date, dateFormat).format('ccc')));
