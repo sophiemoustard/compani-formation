@@ -35,6 +35,11 @@
     ]
   },
   "dependencies": {
+    "@formatjs/intl-datetimeformat": "^4.2.1",
+    "@formatjs/intl-getcanonicallocales": "^1.7.2",
+    "@formatjs/intl-locale": "^2.4.35",
+    "@formatjs/intl-numberformat": "^7.2.1",
+    "@formatjs/intl-pluralrules": "^4.1.1",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/slider": "3.0.3",
