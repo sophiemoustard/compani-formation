@@ -16,7 +16,7 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
-  const dateFormat = 'dd/LL/YYYY';
+  const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {
     if (slots.length) {
