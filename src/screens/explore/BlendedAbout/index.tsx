@@ -4,7 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import { companiDate } from '../../../core/helpers/dates';
-import moment from '../../../core/helpers/moment';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
@@ -33,7 +32,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
 
   useEffect(() => {
     setDates(course.slots.length
-      ? course.slots.map(slot => slot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
+      ? course.slots.map(slot => slot.startDate).sort((a, b) => companiDate(a).diff(b, 'days'))
       : []);
   }, [course]);
 
