@@ -10,6 +10,8 @@ export class CompaniDate {
       this.date = DateTime.now();
     } else if (args.length === 1 && args[0] instanceof CompaniDate) {
       this.date = args[0]._getDate();
+    } else if (args.length === 1 && args[0] instanceof DateTime) {
+      this.date = args[0];
     } else if (args.length === 1 && args[0] instanceof Date) {
       this.date = DateTime.fromJSDate(args[0]);
     } else if (args.length === 1 && typeof args[0] === 'string') {
@@ -33,6 +35,10 @@ export class CompaniDate {
     return this.date.toString() || '';
   }
 
+  toISOString() {
+    return this.date.toUTC().toISO() || '';
+  }
+
   format(fmt: string) {
     return this.date.toFormat(fmt) || '';
   }
@@ -54,6 +60,18 @@ export class CompaniDate {
     const floatDiff = this.date.diff(instancedOtherDate._getDate(), unit).as(unit);
 
     return typeFloat ? floatDiff : Math.floor(floatDiff);
+  }
+
+  endOf(unit: string) {
+    const res = this.date.endOf(unit);
+
+    return new CompaniDate(res);
+  }
+
+  add(amount: number, unit: string) {
+    const res = this.date.plus({ [unit]: amount });
+
+    return new CompaniDate(res);
   }
 }
 
