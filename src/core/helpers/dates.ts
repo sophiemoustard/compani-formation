@@ -1,4 +1,4 @@
-import { DateTime, Settings } from 'luxon';
+import { DateTime, Settings, DurationObjectUnits } from 'luxon';
 
 Settings.defaultLocale = 'fr';
 
@@ -55,14 +55,15 @@ export class CompaniDate {
     return this.date < instancedOtherDate._getDate() || false;
   }
 
-  diff(otherDate : Date | CompaniDate, unit: string, typeFloat = false) {
+  diff(otherDate : Date | CompaniDate, unit: keyof DurationObjectUnits, typeFloat = false) {
     const instancedOtherDate = new CompaniDate(otherDate);
     const floatDiff = this.date.diff(instancedOtherDate._getDate(), unit).as(unit);
+    const roundedDiff = floatDiff > 0 ? Math.floor(floatDiff) : Math.ceil(floatDiff);
 
-    return typeFloat ? floatDiff : Math.floor(floatDiff);
+    return typeFloat ? floatDiff : roundedDiff;
   }
 
-  endOf(unit: string) {
+  endOf(unit: keyof DurationObjectUnits) {
     const res = this.date.endOf(unit);
 
     return new CompaniDate(res);

@@ -36,7 +36,7 @@ const getRefreshToken = async (): Promise<RefreshToken> => ({
 
 const setRefreshToken = async (refreshToken: string): Promise<void> => {
   await AsyncStorage.setItem('refresh_token', refreshToken);
-  await AsyncStorage.setItem('refresh_token_expiry_date', companiDate().endOf('d').add(1, 'year').toISOString());
+  await AsyncStorage.setItem('refresh_token_expiry_date', companiDate().endOf('days').add(1, 'year').toISOString());
 };
 
 const removeRefreshToken = async (): Promise<void> => {
