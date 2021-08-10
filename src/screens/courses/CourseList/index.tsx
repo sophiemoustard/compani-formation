@@ -12,7 +12,7 @@ import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import moment from '../../../core/helpers/moment';
-import { isSameOrBefore } from '../../../core/helpers/dates';
+import { companiDate } from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
@@ -31,7 +31,7 @@ type CourseListProps = {
 
 const formatCourseStep = (stepId: string, course: CourseType, stepSlots): CourseStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const nextSlots = stepSlots[stepId].filter(slot => isSameOrBefore(new Date(), slot.endDate));
+  const nextSlots = stepSlots[stepId].filter(slot => companiDate().isSameOrBefore(slot.endDate));
   const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
   const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
@@ -51,7 +51,7 @@ const formatNextSteps = (course: CourseType): CourseStepType[] => {
   const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
 
   return Object.keys(stepSlots)
-    .filter(stepId => stepSlots[stepId].some(slot => isSameOrBefore(new Date(), slot.endDate)))
+    .filter(stepId => stepSlots[stepId].some(slot => companiDate().isSameOrBefore(slot.endDate)))
     .map(stepId => formatCourseStep(stepId, course, stepSlots));
 };
 
