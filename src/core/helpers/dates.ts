@@ -48,6 +48,13 @@ export class CompaniDate {
 
     return this.date < instancedOtherDate._getDate() || false;
   }
+
+  diff(otherDate : Date | CompaniDate, unit: string, typeFloat = false) {
+    const instancedOtherDate = new CompaniDate(otherDate);
+    const floatDiff = this.date.diff(instancedOtherDate._getDate(), unit).as(unit);
+
+    return typeFloat ? floatDiff : Math.floor(floatDiff);
+  }
 }
 
 export const companiDate = (...args: any[]) => new CompaniDate(...args);

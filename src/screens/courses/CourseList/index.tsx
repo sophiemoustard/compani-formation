@@ -11,7 +11,6 @@ import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import { Context as AuthContext } from '../../../context/AuthContext';
-import moment from '../../../core/helpers/moment';
 import { companiDate } from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
@@ -32,7 +31,7 @@ type CourseListProps = {
 const formatCourseStep = (stepId: string, course: CourseType, stepSlots): CourseStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
   const nextSlots = stepSlots[stepId].filter(slot => companiDate().isSameOrBefore(slot.endDate));
-  const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
+  const slotsSorted = stepSlots[stepId].sort((a, b) => companiDate(a.endDate).diff(b.endDate, 'days'));
   const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
   return {
@@ -58,7 +57,7 @@ const formatNextSteps = (course: CourseType): CourseStepType[] => {
 const getNextSteps = (courses: CourseType[]): CourseStepType[] => courses.map(c => formatNextSteps(c))
   .flat()
   .filter(step => step.slots && step.slots.length)
-  .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
+  .sort((a, b) => companiDate(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
