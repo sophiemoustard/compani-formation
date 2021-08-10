@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import get from 'lodash/get';
 import { CourseSlotType } from '../../../types/CourseSlotType';
-import moment from '../../../core/helpers/moment';
+import { companiDate } from '../../../core/helpers/dates';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 import styles from './styles';
 
@@ -21,7 +21,7 @@ const OnSiteInfoItem = ({ info }: OnSiteInfoItemProps) => {
 
   return (
     <>
-      <Text style={styles.date}>{moment(info.slots[0].startDate).format('dddd Do MMMM')}</Text>
+      <Text style={styles.date}>{companiDate(info.slots[0].startDate).format('cccc d LLLL')}</Text>
       <FlatList horizontal ItemSeparatorComponent={() => <View style={styles.separator} />} data={info.slots}
         keyExtractor={item => item._id} renderItem={({ item }) => hoursItem(item)} />
       {!!address && (

@@ -37,10 +37,16 @@ export class CompaniDate {
     return this.date.toFormat(fmt) || '';
   }
 
-  isSameOrBefore(otherDate : Date | CompaniDate) {
+  isSameOrBefore(otherDate : Date | CompaniDate | string) {
     const instancedOtherDate = new CompaniDate(otherDate);
 
     return this.date <= instancedOtherDate._getDate() || false;
+  }
+
+  isBefore(otherDate : Date | CompaniDate | string) {
+    const instancedOtherDate = new CompaniDate(otherDate);
+
+    return this.date < instancedOtherDate._getDate() || false;
   }
 }
 
