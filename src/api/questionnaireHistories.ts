@@ -1,9 +1,9 @@
-import { alenviAxios } from './ressources/alenviAxios';
+import axiosLogged from './axios/logged';
 import getEnvVars from '../../environment';
 
 export default {
   createQuestionnaireHistories: async (payload) => {
     const { baseURL } = getEnvVars();
-    await alenviAxios.post(`${baseURL}/questionnairehistories`, payload);
+    await axiosLogged.post(`${baseURL}/questionnairehistories`, payload);
   },
 };
