@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { StepType } from '../../../types/StepType';
 import { CourseSlotType } from '../../../types/CourseSlotType';
-import moment from '../../../core/helpers/moment';
+import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -36,7 +36,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
 
   useEffect(() => {
     if (!stepSlots.length) setDates([]);
-    else setDates(stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => moment(a).diff(b, 'days')));
+    else setDates(stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => companiDate(a).diff(b, 'days')));
   }, [stepSlots]);
 
   const closeModal = () => setIsModalVisible(false);

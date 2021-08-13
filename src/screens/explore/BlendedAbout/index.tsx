@@ -3,7 +3,7 @@ import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-na
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
-import moment from '../../../core/helpers/moment';
+import companiDate from '../../../core/helpers/dates';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
@@ -32,19 +32,19 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
 
   useEffect(() => {
     setDates(course.slots.length
-      ? course.slots.map(slot => slot.startDate).sort((a, b) => moment(a).diff(b, 'days'))
+      ? course.slots.map(slot => slot.startDate).sort((a, b) => companiDate(a).diff(b, 'days'))
       : []);
   }, [course]);
 
   useEffect(() => {
     if (dates) {
-      const dateFormat = 'DD/MM/YYY';
-      const slotsDates = [...new Set(dates.map(date => moment(date).format(dateFormat)))];
+      const dateFormat = 'dd/LL/yyyy';
+      const slotsDates = [...new Set(dates.map(date => companiDate(date).format(dateFormat)))];
       setFormattedDates(slotsDates.map((date) => {
-        const dayOfWeek = capitalize(moment(date, dateFormat).format('ddd'));
-        const dayOfMonth = capitalize(moment(date, dateFormat).format('D'));
-        const month = capitalize(moment(date, dateFormat).format('MMM'));
-        const year = capitalize(moment(date, dateFormat).format('YYYY'));
+        const dayOfWeek = capitalize(companiDate(date, dateFormat).format('ccc'));
+        const dayOfMonth = capitalize(companiDate(date, dateFormat).format('d'));
+        const month = capitalize(companiDate(date, dateFormat).format('LLL'));
+        const year = capitalize(companiDate(date, dateFormat).format('yyyy'));
         return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
       }));
     }

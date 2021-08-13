@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { CourseSlotType } from '../../../types/CourseSlotType';
-import moment from '../../../core/helpers/moment';
+import companiDate from '../../../core/helpers/dates';
 import NiModal from '../../Modal';
 import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
@@ -18,7 +18,7 @@ interface OnSiteCellInfoModalProps {
 
 const formatStepSlotsForFlatList = (slots) => {
   const formattedSlots = slots.reduce((acc, slot) => {
-    const startDate = moment(slot.startDate).format('DD/MM/YYYY');
+    const startDate = companiDate(slot.startDate).format('dd/LL/yyyy');
     if (acc[startDate]) acc[startDate].push(slot);
     else acc[startDate] = [slot];
 
