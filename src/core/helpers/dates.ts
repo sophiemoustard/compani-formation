@@ -14,7 +14,7 @@ type CompaniDate = {
   _date: DateTime;
 }
 
-export const companiDate = (...args: any[]) => {
+const companiDate = (...args: any[]) => {
   const instancedDateTime = instantiateDateTimeFromMisc(...args);
 
   return companiDateFactory(instancedDateTime);
@@ -83,3 +83,5 @@ const instantiateDateTimeFromMisc = (...args: any[]) => {
   }
   return DateTime.invalid('wrong arguments');
 };
+
+export default companiDate;

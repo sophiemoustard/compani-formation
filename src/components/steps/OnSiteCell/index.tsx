@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { StepType } from '../../../types/StepType';
 import { CourseSlotType } from '../../../types/CourseSlotType';
-import { companiDate } from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
