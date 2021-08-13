@@ -61,12 +61,14 @@ const companiDateFactory = (_date: DateTime) => ({
 
 const instantiateDateTimeFromMisc = (...args: any[]) => {
   if (!args.length) return DateTime.now();
+
   if (args.length === 1) {
     if (args[0] instanceof Object && args[0]?._date instanceof DateTime) return args[0]._getDate();
     if (args[0] instanceof DateTime) return args[0];
     if (args[0] instanceof Date) return DateTime.fromJSDate(args[0]);
     if (typeof args[0] === 'string') return DateTime.fromISO(args[0]);
   }
+
   if (args.length === 2 && typeof args[0] === 'string' && typeof args[1] === 'string') {
     return DateTime.fromFormat(args[0], args[1]);
   }
