@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
-import { companiDate } from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates';
 import styles from './styles';
 
 interface OnSiteHoursDisplayProps {

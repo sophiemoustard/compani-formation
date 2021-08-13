@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { companiDate } from './dates';
+import companiDate from './dates';
 
 const isTokenValid = (token: string | null, expiryDate: string | null): boolean =>
   !!token && companiDate().isBefore(expiryDate || '');

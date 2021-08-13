@@ -11,7 +11,7 @@ import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import { Context as AuthContext } from '../../../context/AuthContext';
-import { companiDate } from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';

@@ -3,7 +3,7 @@ import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-na
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
-import { companiDate } from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
