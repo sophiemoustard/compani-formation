@@ -1,42 +1,22 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StatusBar, View } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
-import Analytics from '../core/helpers/analytics';
-import asyncStorage from '../core/helpers/asyncStorage';
-import ProfileEdition from '../screens/profile/ProfileEdition';
-import Camera from '../screens/Camera';
-import ImagePickerManager from '../screens/ImagePickerManager';
+import AppNavigation from '../navigation/AppNavigation';
 import { Context as AuthContext } from '../context/AuthContext';
-import { navigationRef } from '../navigationRef';
-import Authentication from '../screens/Authentication';
-import EmailForm from '../screens/EmailForm';
-import CreateAccount from '../screens/CreateAccount';
-import BlendedAbout from '../screens/explore/BlendedAbout';
-import ElearningAbout from '../screens/explore/ELearningAbout';
-import CourseProfile from '../screens/courses/CourseProfile';
-import SubProgramProfile from '../screens/courses/SubProgramProfile';
-import ActivityCardContainer from '../screens/courses/ActivityCardContainer';
-import QuestionnaireCardContainer from '../screens/courses/QuestionnaireCardContainer';
 import MainActions from '../store/main/actions';
-import { WHITE } from '../styles/colors';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import Users from '../api/users';
-import { UserType } from '../types/UserType';
-import styles from './styles';
-import PasswordEdition from '../screens/profile/PasswordEdition';
-import PasswordReset from '../screens/PasswordReset';
-import Home from '../Home';
+import asyncStorage from '../core/helpers/asyncStorage';
 import {
   registerForPushNotificationsAsync,
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-
-const MainStack = createStackNavigator();
+import { UserType } from '../types/UserType';
+import { WHITE } from '../styles/colors';
+import styles from './styles';
 
 interface AppContainerProps {
   setLoggedUser: (user: UserType) => void,
@@ -45,7 +25,6 @@ interface AppContainerProps {
 
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
-  const routeNameRef = useRef<string>();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
@@ -80,51 +59,15 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
-  const handleOnReadyNavigation = () => {
-    routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-  };
-
-  const handleNavigationStateChange = () => {
-    const prevRouteName = routeNameRef.current;
-    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
-
-    if (prevRouteName !== currentRouteName) {
-      Analytics.logScreenView(currentRouteName);
-      routeNameRef.current = currentRouteName;
-    }
-  };
-
   const style = styles(statusBarVisible, StatusBar.currentHeight);
 
-  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
-
-  const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
-  const Courses = { CourseProfile, SubProgramProfile };
-  const userScreens = {
-    Home,
-    ActivityCardContainer,
-    QuestionnaireCardContainer,
-    BlendedAbout,
-    ElearningAbout,
-    ...Profile,
-    ...Courses,
-  };
-  const undismissableScreens = ['ActivityCardContainer', 'QuestionnaireCardContainer'];
-
   return (
-    <NavigationContainer ref={navigationRef} onReady={handleOnReadyNavigation}
-      onStateChange={handleNavigationStateChange}>
+    <>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {Object.entries(alenviToken ? userScreens : authScreens)
-          .map(([name, component]) => (
-            <MainStack.Screen key={name} name={name} component={component}
-              options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
-          ))}
-      </MainStack.Navigator>
-    </NavigationContainer>
+      <AppNavigation />
+    </>
   );
 };
 

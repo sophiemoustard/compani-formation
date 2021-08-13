@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import CatalogIcon from '../../assets/icons/CatalogIcon';
-import CatalogSelectedIcon from '../../assets/icons/CatalogSelectedIcon';
-import CoursesIcon from '../../assets/icons/CoursesIcon';
-import CoursesSelectedIcon from '../../assets/icons/CoursesSelectedIcon';
-import ProfileIcon from '../../assets/icons/ProfileIcon';
-import ProfileSelectedIcon from '../../assets/icons/ProfileSelectedIcon';
-import CourseList from '../screens/courses/CourseList';
-import Catalog from '../screens/explore/Catalog';
-import ProfileDetails from '../screens/profile/Profile';
+import CatalogIcon from '../../../assets/icons/CatalogIcon';
+import CatalogSelectedIcon from '../../../assets/icons/CatalogSelectedIcon';
+import CoursesIcon from '../../../assets/icons/CoursesIcon';
+import CoursesSelectedIcon from '../../../assets/icons/CoursesSelectedIcon';
+import ProfileIcon from '../../../assets/icons/ProfileIcon';
+import ProfileSelectedIcon from '../../../assets/icons/ProfileSelectedIcon';
+import CourseList from '../../screens/courses/CourseList';
+import Catalog from '../../screens/explore/Catalog';
+import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
 
 const Tab = createBottomTabNavigator();
