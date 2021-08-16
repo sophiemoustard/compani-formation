@@ -7,7 +7,7 @@ import CardsActions from '../../../store/cards/actions';
 import { StateType } from '../../../types/store/StoreType';
 import { QuestionnaireAnswerType } from '../../../types/store/CardStoreType';
 import ActivityIcon from '../ActivityIcon';
-import { ActivityType } from '../../../types/ActivityType';
+import { ActivityType } from '../../../types/CourseType';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { QUIZ } from '../../../core/data/constants';

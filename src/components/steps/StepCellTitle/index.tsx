@@ -1,18 +1,19 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { StepType } from '../../../types/StepType';
+import { StepType } from '../../../types/CourseType';
 import { stepTypeOptions } from '../../../core/data/constants';
 import styles from './styles';
 
 interface StepCellTitleProps {
-  step: StepType,
+  name: StepType['name'],
+  type: StepType['type'],
   index: number,
 }
 
-const StepCellTitle = ({ step, index }: StepCellTitleProps) => (
+const StepCellTitle = ({ name, type, index }: StepCellTitleProps) => (
   <View style={styles.textContainer}>
-    <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[step.type]}`}</Text>
-    <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.stepName}>{step.name}</Text>
+    <Text style={styles.stepType}>{`ÉTAPE ${index + 1} - ${stepTypeOptions[type]}`}</Text>
+    <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.stepName}>{name}</Text>
   </View>
 );
 
