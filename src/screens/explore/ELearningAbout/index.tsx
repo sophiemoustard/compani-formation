@@ -10,7 +10,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import { ELearningProgramType } from '../../../types/CourseType';
 import About from '../../../components/About';
 
-interface ElearningAboutProps {
+type ElearningAboutProps = {
   route: { params: { program: ELearningProgramType } },
   navigation: {
     navigate: (path: string, params?: object) => {},

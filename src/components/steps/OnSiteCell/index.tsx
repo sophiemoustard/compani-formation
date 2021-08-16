@@ -11,7 +11,7 @@ import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
 import FeatherButton from '../../icons/FeatherButton';
 import styles from './styles';
 
-interface OnSiteCellProps {
+type OnSiteCellProps = {
   step: OnSiteStepType,
   slots?: SlotType[],
   index: number,

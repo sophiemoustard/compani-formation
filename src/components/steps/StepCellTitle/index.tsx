@@ -4,7 +4,7 @@ import { StepType } from '../../../types/CourseType';
 import { stepTypeOptions } from '../../../core/data/constants';
 import styles from './styles';
 
-interface StepCellTitleProps {
+type StepCellTitleProps = {
   name: StepType['name'],
   type: StepType['type'],
   index: number,

@@ -1,4 +1,6 @@
-import { LESSON, VIDEO, QUIZ, SHARING_EXPERIENCE } from '../core/data/constants';
+import { LESSON, VIDEO, QUIZ, SHARING_EXPERIENCE, E_LEARNING, ON_SITE } from '../core/data/constants';
+
+type QuestionnaireAnswersListType = { _id: string, card: string, answerList: string[] };
 
 type BaseActivityType = {
   _id: string,
@@ -6,7 +8,7 @@ type BaseActivityType = {
   cards: { _id: string, template: string }[],
   quizCount: number,
   activityHistories: {
-    questionnaireAnswersList: { _id: string, card: string, answerList: string[] }[],
+    questionnaireAnswersList: QuestionnaireAnswersListType[],
     score: number,
   }[],
 };
@@ -28,12 +30,12 @@ type BaseStepType = {
   name: string,
 }
 
-export type ELearningStepType = BaseStepType & { type: 'e_learning', activities: ActivityType[] }
-export type OnSiteStepType = BaseStepType & { type: 'on_site', activities: ActivityType[] }
+export type ELearningStepType = BaseStepType & { type: typeof E_LEARNING, activities: ActivityType[] }
+export type OnSiteStepType = BaseStepType & { type: typeof ON_SITE, activities: ActivityType[] }
 export type StepType = ELearningStepType | OnSiteStepType;
 
 export type NextSlotsStepType = BaseStepType & {
-  type: 'on_site',
+  type: typeof ON_SITE,
   stepIndex: string,
   firstSlot: Date,
   slots: Date[],
@@ -45,10 +47,7 @@ type AddressType = {
   street: string,
   city: string,
   zipCode: string,
-  location: {
-    coordinates: Array<number>,
-    type: string,
-  }
+  location: { coordinates: Array<number>, type: string }
 }
 
 export type SlotType = {
@@ -99,7 +98,7 @@ export type CourseType = {
   trainees?: String[],
 }
 
-export interface ContactType {
+export type ContactType = {
   name: string,
   phone: string,
   email: string,

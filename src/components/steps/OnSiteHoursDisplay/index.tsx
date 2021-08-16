@@ -7,7 +7,7 @@ import companiDate from '../../../core/helpers/dates';
 import { SlotType } from '../../../types/CourseType';
 import styles from './styles';
 
-interface OnSiteHoursDisplayProps {
+type OnSiteHoursDisplayProps = {
   startDate: SlotType['startDate'],
   endDate: SlotType['endDate'],
 }
