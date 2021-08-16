@@ -1,22 +1,22 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { CourseSlotType } from '../../../types/CourseSlotType';
 import companiDate from '../../../core/helpers/dates';
 import NiModal from '../../Modal';
 import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import OnSiteInfoItem from '../OnSiteInfoItem';
+import { SlotType } from '../../../types/CourseType';
 import styles from './styles';
 
 interface OnSiteCellInfoModalProps {
   visible: boolean,
   title: string,
-  stepSlots: Array<CourseSlotType>,
+  stepSlots: SlotType[],
   onRequestClose: () => void,
 }
 
-const formatStepSlotsForFlatList = (slots) => {
+const formatStepSlots = (slots): { startDate: string, slots: SlotType[] }[] => {
   const formattedSlots = slots.reduce((acc, slot) => {
     const startDate = companiDate(slot.startDate).format('dd/LL/yyyy');
     if (acc[startDate]) acc[startDate].push(slot);
@@ -37,7 +37,7 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
         style={styles.closeButton} />
     </View>
     <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={true}
-      data={formatStepSlotsForFlatList(stepSlots)} renderItem={({ item }) => <OnSiteInfoItem info={item} />}
+      data={formatStepSlots(stepSlots)} renderItem={({ item }) => <OnSiteInfoItem slots={item.slots} />}
       keyExtractor={item => item.startDate} />
   </NiModal>
 );

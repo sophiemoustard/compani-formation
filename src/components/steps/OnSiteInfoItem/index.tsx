@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import get from 'lodash/get';
-import { CourseSlotType } from '../../../types/CourseSlotType';
+import { SlotType } from '../../../types/CourseType';
 import companiDate from '../../../core/helpers/dates';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 import styles from './styles';
 
 interface OnSiteInfoItemProps {
-  info: { slots: Array<CourseSlotType> },
+  slots: SlotType[],
 }
 
 const openMaps = async add => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${add}`);
 
 const hoursItem = slot => <OnSiteHoursDisplay startDate={slot.startDate} endDate={slot.endDate} />;
 
-const OnSiteInfoItem = ({ info }: OnSiteInfoItemProps) => {
+const OnSiteInfoItem = ({ slots }: OnSiteInfoItemProps) => {
   const [address, setAddress] = useState<string>('');
 
-  useEffect(() => { setAddress(get(info, 'slots[0].address.fullAddress') || ''); }, [info]);
+  useEffect(() => { setAddress(get(slots[0], 'address.fullAddress') || ''); }, [slots]);
 
   return (
     <>
-      <Text style={styles.date}>{companiDate(info.slots[0].startDate).format('cccc d LLLL')}</Text>
-      <FlatList horizontal ItemSeparatorComponent={() => <View style={styles.separator} />} data={info.slots}
+      <Text style={styles.date}>{companiDate(slots[0].startDate).format('cccc d LLLL')}</Text>
+      <FlatList horizontal ItemSeparatorComponent={() => <View style={styles.separator} />} data={slots}
         keyExtractor={item => item._id} renderItem={({ item }) => hoursItem(item)} />
       {!!address && (
         <TouchableOpacity onPress={() => openMaps(address)}>

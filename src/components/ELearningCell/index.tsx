@@ -9,7 +9,7 @@ import ActivityList from '../activities/ActivityList';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 
-interface ELearningCellProps {
+type ELearningCellProps = {
   step: ELearningStepType,
   index: number,
   profileId: string,
