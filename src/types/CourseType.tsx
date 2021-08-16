@@ -25,15 +25,23 @@ export type ActivityType = QuizActivityType | VideoActivityType | SharingExperie
 
 type BaseStepType = {
   _id: string,
-  activities: ActivityType[],
-  progress: number, 
+  progress: number,
   type: string, 
   name: string,
 }
 
-export type ELearningStepType = BaseStepType & { type: 'e_learning' }
-export type OnSiteStepType = BaseStepType & { type: 'on_site' }
+export type ELearningStepType = BaseStepType & { type: 'e_learning', activities: ActivityType[] }
+export type OnSiteStepType = BaseStepType & { type: 'on_site', activities: ActivityType[] }
 export type StepType = ELearningStepType | OnSiteStepType;
+
+export type NextSlotsStepType = BaseStepType & {
+  type: 'on_site',
+  stepIndex: string,
+  firstSlot: Date,
+  slots: Date[],
+  courseId: string,
+}
+
 
 export type CourseType = {
   _id: string,
@@ -50,20 +58,7 @@ export type CourseType = {
     startDate: string,
     endDate: string,
     address: { fullAddress: string },
-    step: {
-      _id: string,
-      type: string,
-      progress: number,
-      name: string,
-      activities: {
-        _id: string,
-        name: string,
-        cards: [],
-        activityHistories: { score: number, questionnaireAnswersList: [] }[],
-        quizCount: number,
-        type: string,
-      }[],
-    },
+    step: OnSiteStepType,
   }[],
 
   trainees?: String[],
