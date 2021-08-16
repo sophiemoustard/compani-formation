@@ -12,7 +12,7 @@ import NiPrimaryButton from '../../components/form/PrimaryButton';
 import FeatherButton from '../../components/icons/FeatherButton';
 import CoursesActions from '../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
-import { ProgramType } from '../../types/ProgramType';
+import { ProgramType } from '../../types/CourseType';
 import FooterGradient from '../design/FooterGradient';
 
 interface AboutProps {

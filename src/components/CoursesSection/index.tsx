@@ -3,9 +3,7 @@ import { View, Text, FlatList, StyleProp, ViewStyle, TouchableOpacity, Image } f
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import { SubProgramType } from '../../types/SubProgramType';
-import { CourseType } from '../../types/CourseType';
-import { ProgramType } from '../../types/ProgramType';
-import { NextSlotsStepType } from '../../types/CourseType';
+import { NextSlotsStepType, CourseType, ProgramType } from '../../types/CourseType';
 import { formatWordToPlural } from '../../core/helpers/utils';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 
