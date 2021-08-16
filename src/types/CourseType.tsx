@@ -59,6 +59,25 @@ export type SlotType = {
   step: string,
 }
 
+// faut il separer avec et sans learningGoals
+export type ProgramType = {
+  _id: string,
+  name: string,
+  description: string,
+  image: { link: string },
+  learningGoals?: string,
+}
+
+export type ELearningSubProgramType = {
+  isStrictlyElearning: true,
+  courses: { _id: string, trainees: String[] }[],
+  steps: ELearningStepType[],
+}
+
+export type ELearningProgramType = ProgramType & {
+  subPrograms: ELearningSubProgramType[],
+}
+
 export type CourseType = {
   _id: string,
   trainer: { identity: { lastname: string, firstname: string }, _id: string, biography: string }
@@ -68,7 +87,7 @@ export type CourseType = {
   subProgram: {
     program: { image: { link: string }, name: string, description: string, eLearningGoals: string },
     isStrictlyELearning: string,
-    steps: { activities: { _id: string }[] }[],
+    steps: StepType[],
   },
   slots: {
     startDate: string,
