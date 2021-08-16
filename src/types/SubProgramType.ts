@@ -1,4 +1,4 @@
-import { StepType } from './StepType';
+import { StepType } from './CourseType';
 import { ProgramType } from './ProgramType';
 
 export interface SubProgramType {
