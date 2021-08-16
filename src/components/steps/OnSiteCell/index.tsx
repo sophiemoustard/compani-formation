@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { OnSiteStepType } from '../../../types/CourseType';
-import { CourseSlotType } from '../../../types/CourseSlotType';
+import { OnSiteStepType, SlotType } from '../../../types/CourseType';
 import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
@@ -14,7 +13,7 @@ import styles from './styles';
 
 interface OnSiteCellProps {
   step: OnSiteStepType,
-  slots?: CourseSlotType[],
+  slots?: SlotType[],
   index: number,
   profileId: string,
 }
@@ -22,7 +21,7 @@ interface OnSiteCellProps {
 const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [stepSlots, setStepSlots] = useState<Array<CourseSlotType>>([]);
+  const [stepSlots, setStepSlots] = useState<SlotType[]>([]);
   const [dates, setDates] = useState<Date[]>([]);
   const [modalTitle, setModalTitle] = useState('');
 

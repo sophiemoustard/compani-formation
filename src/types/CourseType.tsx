@@ -1,5 +1,3 @@
-import { SubProgramType } from './SubProgramType';
-import { CourseSlotType } from './CourseSlotType';
 import { LESSON, VIDEO, QUIZ, SHARING_EXPERIENCE } from '../core/data/constants';
 
 type BaseActivityType = {
@@ -26,7 +24,7 @@ export type ActivityType = QuizActivityType | VideoActivityType | SharingExperie
 type BaseStepType = {
   _id: string,
   progress: number,
-  type: string, 
+  type: string,
   name: string,
 }
 
@@ -42,6 +40,24 @@ export type NextSlotsStepType = BaseStepType & {
   courseId: string,
 }
 
+type AddressType = {
+  fullAddress: string,
+  street: string,
+  city: string,
+  zipCode: string,
+  location: {
+    coordinates: Array<number>,
+    type: string,
+  }
+}
+
+export type SlotType = {
+  _id: string,
+  startDate: Date,
+  endDate: Date,
+  address?: AddressType,
+  step: string,
+}
 
 export type CourseType = {
   _id: string,
