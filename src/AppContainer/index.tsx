@@ -31,7 +31,7 @@ interface AppContainerProps {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const [modalOpened, setModalOpened] = useState(false);
-  const axiosLoggedInterceptorId = useRef<number | null>(null);
+  const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
@@ -49,17 +49,17 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   useEffect(() => { tryLocalSignIn(); }, []);
 
   const initializeAxiosLogged = (token: string | null) => {
-    if (axiosLoggedInterceptorId.current !== null) {
-      axiosLogged.interceptors.request.eject(axiosLoggedInterceptorId.current);
+    if (axiosLoggedRequestInterceptorId.current !== null) {
+      axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
     }
 
-    axiosLoggedInterceptorId.current = axiosLogged.interceptors
+    axiosLoggedRequestInterceptorId.current = axiosLogged.interceptors
       .request
       .use(async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-        const loggedAxiosConfig = { ...config };
-        loggedAxiosConfig.headers.common['x-access-token'] = token;
+        const axiosLoggedConfig = { ...config };
+        axiosLoggedConfig.headers.common['x-access-token'] = token;
 
-        return loggedAxiosConfig;
+        return axiosLoggedConfig;
       }, err => Promise.reject(err));
   };
 
