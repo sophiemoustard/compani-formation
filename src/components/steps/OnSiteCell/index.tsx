@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { StepType } from '../../../types/StepType';
+import { OnSiteStepType } from '../../../types/CourseType';
 import { CourseSlotType } from '../../../types/CourseSlotType';
 import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
@@ -13,7 +13,7 @@ import FeatherButton from '../../icons/FeatherButton';
 import styles from './styles';
 
 interface OnSiteCellProps {
-  step: StepType,
+  step: OnSiteStepType,
   slots?: CourseSlotType[],
   index: number,
   profileId: string,
@@ -51,7 +51,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
         <TouchableOpacity onPress={openModal}>
           <CalendarIcon slots={dates} progress={step.progress} />
         </TouchableOpacity>
-        <StepCellTitle index={index} step={step} />
+        <StepCellTitle index={index} name={step.name} type={step.type} />
         <View style={styles.iconContainer}>
           <FeatherButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
             style={styles.infoButtonContainer} />
@@ -60,7 +60,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
         </View>
       </TouchableOpacity>
       {isOpen && <View style={[styles.container, styles.openedContainer]}>
-        <ActivityList step={step} profileId={profileId} />
+        <ActivityList activities={step.activities} profileId={profileId} />
       </View>}
     </>
   );
