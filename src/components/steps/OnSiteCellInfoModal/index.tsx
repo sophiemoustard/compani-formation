@@ -9,7 +9,7 @@ import OnSiteInfoItem from '../OnSiteInfoItem';
 import { SlotType } from '../../../types/CourseType';
 import styles from './styles';
 
-interface OnSiteCellInfoModalProps {
+type OnSiteCellInfoModalProps = {
   visible: boolean,
   title: string,
   stepSlots: SlotType[],

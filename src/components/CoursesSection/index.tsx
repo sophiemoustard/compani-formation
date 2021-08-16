@@ -10,7 +10,7 @@ import NiPrimaryButton from '../../components/form/PrimaryButton';
 export const COURSE_SECTION = 'FORMATION';
 export const EVENT_SECTION = 'ÉVÉNEMENT';
 
-interface CoursesSectionProps {
+type CoursesSectionProps = {
   items: Array<ProgramType | CourseType | SubProgramType | NextSlotsStepType>,
   title: string,
   type?: string,

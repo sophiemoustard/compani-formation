@@ -6,11 +6,11 @@ import StepCellTitle from '../StepCellTitle';
 import { StepType } from '../../../types/CourseType';
 import styles from './styles';
 
-interface NextStepCellProps {
+type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,
 }
 
-interface NextSlotsStepType {
+type NextSlotsStepType = {
   _id: string,
   name: string,
   slots: Array<Date>,

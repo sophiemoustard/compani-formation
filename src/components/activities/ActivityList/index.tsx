@@ -4,7 +4,7 @@ import { ActivityType } from '../../../types/CourseType';
 import ActivityCell from '../ActivityCell';
 import styles from './styles';
 
-interface ActivityListProps {
+type ActivityListProps = {
   activities: ActivityType[],
   profileId: string,
 }

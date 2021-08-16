@@ -6,7 +6,7 @@ import companiDate from '../../../core/helpers/dates';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 import styles from './styles';
 
-interface OnSiteInfoItemProps {
+type OnSiteInfoItemProps = {
   slots: SlotType[],
 }
 

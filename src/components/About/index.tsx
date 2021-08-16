@@ -15,7 +15,7 @@ import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import { ProgramType } from '../../types/CourseType';
 import FooterGradient from '../design/FooterGradient';
 
-interface AboutProps {
+type AboutProps = {
   program: ProgramType,
   buttonCaption?: string,
   children?: any,
