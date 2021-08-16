@@ -17,6 +17,7 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
+import alenvi from '../core/helpers/alenvi';
 import { ACTIVE_STATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import { UserType } from '../types/UserType';
@@ -32,6 +33,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const [modalOpened, setModalOpened] = useState(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
+  const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
@@ -61,6 +63,31 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
         return axiosLoggedConfig;
       }, err => Promise.reject(err));
+
+    if (axiosLoggedResponseInterceptorId.current !== null) {
+      axiosLogged.interceptors.request.eject(axiosLoggedResponseInterceptorId.current);
+    }
+
+    axiosLoggedResponseInterceptorId.current = axiosLogged.interceptors
+      .response
+      .use(
+        response => response,
+        async (error) => {
+          if (error.response.status === 401) {
+            await asyncStorage.removeAlenviToken();
+            await alenvi.refreshAlenviCookies();
+
+            const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
+            if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
+              const config = { ...error.config };
+              config.headers['x-access-token'] = newAlenviToken;
+              return axiosLogged.request(config);
+            }
+            return Promise.reject(error.response);
+          }
+          return Promise.reject(error.response);
+        }
+      );
   };
 
   useEffect(() => {
