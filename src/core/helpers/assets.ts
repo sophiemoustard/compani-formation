@@ -40,8 +40,7 @@ const fetchAssets = async () => {
 
 export const initializeAssets = async () => {
   try {
-    await fetchFonts();
-    await fetchAssets();
+    await Promise.all([fetchFonts(), fetchAssets()]);
   } catch (error) {
     console.error(error);
   }
