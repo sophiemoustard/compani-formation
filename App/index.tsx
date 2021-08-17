@@ -34,13 +34,11 @@ const App = () => {
   }
 
   return (
-    <>
-      <AuthProvider>
-        <ReduxProvider store={store}>
-          <AppContainer />
-        </ReduxProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <ReduxProvider store={store}>
+        <AppContainer />
+      </ReduxProvider>
+    </AuthProvider>
   );
 };
 
