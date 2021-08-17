@@ -3,7 +3,7 @@ import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
@@ -28,6 +28,27 @@ interface AppContainerProps {
   setLoggedUser: (user: UserType) => void,
   statusBarVisible: boolean,
 }
+
+const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string | null) => {
+  const axiosLoggedConfig = { ...config };
+  axiosLoggedConfig.headers.common['x-access-token'] = token;
+
+  return axiosLoggedConfig;
+};
+
+const handleUnauthorizedRequest = async (error: AxiosError) => {
+  await asyncStorage.removeAlenviToken();
+  await alenvi.refreshAlenviCookies();
+
+  const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
+  if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
+    const config = { ...error.config };
+    config.headers['x-access-token'] = newAlenviToken;
+    return axiosLogged.request(config);
+  }
+
+  return Promise.reject(error.response);
+};
 
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
@@ -57,12 +78,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
     axiosLoggedRequestInterceptorId.current = axiosLogged.interceptors
       .request
-      .use(async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
-        const axiosLoggedConfig = { ...config };
-        axiosLoggedConfig.headers.common['x-access-token'] = token;
-
-        return axiosLoggedConfig;
-      }, err => Promise.reject(err));
+      .use(
+        async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => getAxiosLoggedConfig(config, token),
+        err => Promise.reject(err)
+      );
 
     if (axiosLoggedResponseInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedResponseInterceptorId.current);
@@ -72,19 +91,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       .response
       .use(
         response => response,
-        async (error) => {
-          if (error.response.status === 401) {
-            await asyncStorage.removeAlenviToken();
-            await alenvi.refreshAlenviCookies();
-
-            const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
-            if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
-              const config = { ...error.config };
-              config.headers['x-access-token'] = newAlenviToken;
-              return axiosLogged.request(config);
-            }
-            return Promise.reject(error.response);
-          }
+        async (error: AxiosError) => {
+          if (error?.response?.status === 401) return handleUnauthorizedRequest(error);
           return Promise.reject(error.response);
         }
       );
@@ -114,7 +122,6 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
         setModalOpened(mustUpdate);
       }
     } catch (error) {
-      if (error.status === 401) signOut();
       console.error(error);
     }
   };
@@ -124,7 +131,6 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     AppState.addEventListener('change', shouldUpdate);
 
     return () => { AppState.removeEventListener('change', shouldUpdate); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!appIsReady) return null;
