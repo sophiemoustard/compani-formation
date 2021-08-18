@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
@@ -9,19 +8,20 @@ import getEnvVars from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
 import axiosLogged from '../src/api/axios/logged';
+import axiosNotLogged from '../src/api/axios/notLogged';
 
 describe('Authentication tests', () => {
-  let axiosMock;
   let axiosLoggedMock;
+  let axiosNotLoggedMock;
 
   beforeEach(() => {
-    axiosMock = new MockAdapter(axios);
     axiosLoggedMock = new MockAdapter(axiosLogged);
+    axiosNotLoggedMock = new MockAdapter(axiosNotLogged);
   });
 
   afterEach(() => {
-    axiosMock.restore();
     axiosLoggedMock.restore();
+    axiosNotLoggedMock.restore();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
@@ -29,7 +29,7 @@ describe('Authentication tests', () => {
     const store = createStore(reducers);
     const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
-    axiosMock.onPost(`${baseURL}/users/authenticate`)
+    axiosNotLoggedMock.onPost(`${baseURL}/users/authenticate`)
       .reply(
         200,
         {

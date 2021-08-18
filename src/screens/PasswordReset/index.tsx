@@ -1,22 +1,22 @@
 import React, { useContext } from 'react';
 import PasswordForm from '../../components/PasswordForm';
 import { NavigationType } from '../../types/NavigationType';
-import Users from '../../api/users';
+import Authentication from '../../api/authentication';
 import { Context as AuthContext } from '../../context/AuthContext';
 
-interface PasswordEditionProps {
+interface PasswordResetProps {
   route: { params: { userId: string, token: string, email?: string } },
   navigation: NavigationType,
 }
 
-const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
+const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
   const { userId, email, token } = route.params;
   const { signIn } = useContext(AuthContext);
 
   const goBack = () => { navigation.navigate('EmailForm'); };
 
   const savePassword = async (password) => {
-    await Users.updatePassword(userId, { local: { password } }, token);
+    await Authentication.updatePassword(userId, { local: { password } }, token);
     await signIn({ email, password });
   };
 
@@ -25,4 +25,4 @@ const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
   );
 };
 
-export default PasswordEdition;
+export default PasswordReset;
