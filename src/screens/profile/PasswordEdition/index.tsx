@@ -1,7 +1,7 @@
 import React from 'react';
 import PasswordForm from '../../../components/PasswordForm';
 import { NavigationType } from '../../../types/NavigationType';
-import Users from '../../../api/users';
+import Authentication from '../../../api/authentication';
 
 interface PasswordEditionProps {
   route: { params: { userId: string, email?: string } },
@@ -16,7 +16,7 @@ const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
   };
 
   const savePassword = async (password) => {
-    await Users.updatePassword(userId, { local: { password } });
+    await Authentication.updatePassword(userId, { local: { password } });
     goBack();
   };
 
