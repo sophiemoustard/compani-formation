@@ -8,20 +8,20 @@ import { Provider as AuthProvider } from '../src/context/AuthContext';
 import getEnvVars from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
-import { alenviAxios } from '../src/api/ressources/alenviAxios';
+import axiosLogged from '../src/api/axios/logged';
 
 describe('Authentication tests', () => {
   let axiosMock;
-  let alenviAxiosMock;
+  let axiosLoggedMock;
 
   beforeEach(() => {
     axiosMock = new MockAdapter(axios);
-    alenviAxiosMock = new MockAdapter(alenviAxios);
+    axiosLoggedMock = new MockAdapter(axiosLogged);
   });
 
   afterEach(() => {
     axiosMock.restore();
-    alenviAxiosMock.restore();
+    axiosLoggedMock.restore();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
@@ -41,6 +41,8 @@ describe('Authentication tests', () => {
           },
         }
       )
+      .onGet(`${baseURL}/version/should-update`)
+      .reply(200, { data: { mustUpdate: false } })
       .onPost(`${baseURL}/users/refreshToken`, { refreshToken: 'refresh-token' })
       .reply(
         200,
@@ -53,7 +55,7 @@ describe('Authentication tests', () => {
           },
         }
       );
-    alenviAxiosMock.onGet(`${baseURL}/users/321`)
+    axiosLoggedMock.onGet(`${baseURL}/users/321`)
       .reply(200, { data: { user: { _id: '321' } } })
       .onGet(`${baseURL}/courses/user`)
       .reply(200, { data: { courses: [] } })

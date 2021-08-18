@@ -1,51 +1,60 @@
-import React, { useEffect, useContext, useRef } from 'react';
-import { StatusBar, View } from 'react-native';
+import React, { useEffect, useContext, useState, useRef } from 'react';
+import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
-import Analytics from '../core/helpers/analytics';
-import asyncStorage from '../core/helpers/asyncStorage';
-import ProfileEdition from '../screens/profile/ProfileEdition';
-import Camera from '../screens/Camera';
-import ImagePickerManager from '../screens/ImagePickerManager';
+import { AxiosRequestConfig, AxiosError } from 'axios';
+import AppNavigation from '../navigation/AppNavigation';
 import { Context as AuthContext } from '../context/AuthContext';
-import { navigationRef } from '../navigationRef';
-import Authentication from '../screens/Authentication';
-import EmailForm from '../screens/EmailForm';
-import CreateAccount from '../screens/CreateAccount';
-import BlendedAbout from '../screens/explore/BlendedAbout';
-import ElearningAbout from '../screens/explore/ELearningAbout';
-import CourseProfile from '../screens/courses/CourseProfile';
-import SubProgramProfile from '../screens/courses/SubProgramProfile';
-import ActivityCardContainer from '../screens/courses/ActivityCardContainer';
-import QuestionnaireCardContainer from '../screens/courses/QuestionnaireCardContainer';
 import MainActions from '../store/main/actions';
-import { WHITE } from '../styles/colors';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
+import axiosLogged from '../api/axios/logged';
 import Users from '../api/users';
-import { UserType } from '../types/UserType';
-import styles from './styles';
-import PasswordEdition from '../screens/profile/PasswordEdition';
-import PasswordReset from '../screens/PasswordReset';
-import Home from '../Home';
+import Version from '../api/version';
+import asyncStorage from '../core/helpers/asyncStorage';
 import {
   registerForPushNotificationsAsync,
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-
-const MainStack = createStackNavigator();
+import alenvi from '../core/helpers/alenvi';
+import { ACTIVE_STATE } from '../core/data/constants';
+import UpdateAppModal from '../components/UpdateAppModal';
+import { UserType } from '../types/UserType';
+import { WHITE } from '../styles/colors';
+import styles from './styles';
 
 interface AppContainerProps {
   setLoggedUser: (user: UserType) => void,
   statusBarVisible: boolean,
 }
 
+const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string | null) => {
+  const axiosLoggedConfig = { ...config };
+  axiosLoggedConfig.headers.common['x-access-token'] = token;
+
+  return axiosLoggedConfig;
+};
+
+const handleUnauthorizedRequest = async (error: AxiosError) => {
+  await asyncStorage.removeAlenviToken();
+  await alenvi.refreshAlenviCookies();
+
+  const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
+  if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
+    const config = { ...error.config };
+    config.headers['x-access-token'] = newAlenviToken;
+    return axiosLogged.request(config);
+  }
+
+  return Promise.reject(error.response);
+};
+
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
-  const routeNameRef = useRef<string>();
+  const [modalOpened, setModalOpened] = useState(false);
+  const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
+  const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
@@ -62,6 +71,33 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
+  const initializeAxiosLogged = (token: string | null) => {
+    if (axiosLoggedRequestInterceptorId.current !== null) {
+      axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
+    }
+
+    axiosLoggedRequestInterceptorId.current = axiosLogged.interceptors
+      .request
+      .use(
+        async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => getAxiosLoggedConfig(config, token),
+        err => Promise.reject(err)
+      );
+
+    if (axiosLoggedResponseInterceptorId.current !== null) {
+      axiosLogged.interceptors.request.eject(axiosLoggedResponseInterceptorId.current);
+    }
+
+    axiosLoggedResponseInterceptorId.current = axiosLogged.interceptors
+      .response
+      .use(
+        response => response,
+        async (error: AxiosError) => {
+          if (error?.response?.status === 401) return handleUnauthorizedRequest(error);
+          return Promise.reject(error.response);
+        }
+      );
+  };
+
   useEffect(() => {
     async function setUser() {
       try {
@@ -74,57 +110,41 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       }
     }
 
+    initializeAxiosLogged(alenviToken);
     if (alenviToken) setUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alenviToken]);
 
-  if (!appIsReady) return null;
-
-  const handleOnReadyNavigation = () => {
-    routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-  };
-
-  const handleNavigationStateChange = () => {
-    const prevRouteName = routeNameRef.current;
-    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
-
-    if (prevRouteName !== currentRouteName) {
-      Analytics.logScreenView(currentRouteName);
-      routeNameRef.current = currentRouteName;
+  const shouldUpdate = async (nextState) => {
+    try {
+      if (nextState === ACTIVE_STATE) {
+        const { mustUpdate } = await Version.shouldUpdate();
+        setModalOpened(mustUpdate);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  useEffect(() => {
+    shouldUpdate(ACTIVE_STATE);
+    AppState.addEventListener('change', shouldUpdate);
+
+    return () => { AppState.removeEventListener('change', shouldUpdate); };
+  }, []);
+
+  if (!appIsReady) return null;
+
   const style = styles(statusBarVisible, StatusBar.currentHeight);
 
-  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
-
-  const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
-  const Courses = { CourseProfile, SubProgramProfile };
-  const userScreens = {
-    Home,
-    ActivityCardContainer,
-    QuestionnaireCardContainer,
-    BlendedAbout,
-    ElearningAbout,
-    ...Profile,
-    ...Courses,
-  };
-  const undismissableScreens = ['ActivityCardContainer', 'QuestionnaireCardContainer'];
-
   return (
-    <NavigationContainer ref={navigationRef} onReady={handleOnReadyNavigation}
-      onStateChange={handleNavigationStateChange}>
+    <>
+      <UpdateAppModal visible={modalOpened} />
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {Object.entries(alenviToken ? userScreens : authScreens)
-          .map(([name, component]) => (
-            <MainStack.Screen key={name} name={name} component={component}
-              options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
-          ))}
-      </MainStack.Navigator>
-    </NavigationContainer>
+      <AppNavigation />
+    </>
   );
 };
 

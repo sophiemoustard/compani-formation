@@ -56,9 +56,10 @@ const signIn = dispatch => async ({ email, password }) => {
 const signOut = dispatch => async () => {
   await Authentication.logOut();
 
-  const token = await asyncStorage.getExpoToken();
+  const expoToken = await asyncStorage.getExpoToken();
   const userId = await asyncStorage.getUserId();
-  if (token && userId) await Users.removeExpoToken(userId, token);
+
+  if (expoToken && userId) await Users.removeExpoToken(userId, expoToken);
 
   await asyncStorage.removeAlenviToken();
   await asyncStorage.removeRefreshToken();
