@@ -9,6 +9,7 @@ import { Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import axiosLogged from '../api/axios/logged';
+import axiosNotLogged from '../api/axios/notLogged';
 import Users from '../api/users';
 import Version from '../api/version';
 import asyncStorage from '../core/helpers/asyncStorage';
@@ -20,6 +21,7 @@ import {
 import alenvi from '../core/helpers/alenvi';
 import { ACTIVE_STATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
+import MaintenanceModal from '../components/MaintenanceModal';
 import { UserType } from '../types/UserType';
 import { WHITE } from '../styles/colors';
 import styles from './styles';
@@ -53,6 +55,7 @@ const handleUnauthorizedRequest = async (error: AxiosError) => {
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
   const [modalOpened, setModalOpened] = useState(false);
+  const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
@@ -70,6 +73,19 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
+
+  const initializeAxiosNotLogged = () => {
+    axiosNotLogged.interceptors.response.use(
+      (response) => {
+        setMaintenanceModalVisible(false);
+        return response;
+      },
+      async (error: AxiosError) => {
+        if (error?.response?.status === 502 || error?.response?.status === 503) setMaintenanceModalVisible(true);
+        return Promise.reject(error);
+      }
+    );
+  };
 
   const initializeAxiosLogged = (token: string | null) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
@@ -93,7 +109,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
         response => response,
         async (error: AxiosError) => {
           if (error?.response?.status === 401) return handleUnauthorizedRequest(error);
-          return Promise.reject(error.response);
+          if (error?.response?.status === 502 || error?.response?.status === 503) setMaintenanceModalVisible(true);
+          return Promise.reject(error);
         }
       );
   };
@@ -127,6 +144,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   };
 
   useEffect(() => {
+    initializeAxiosNotLogged();
     shouldUpdate(ACTIVE_STATE);
     AppState.addEventListener('change', shouldUpdate);
 
@@ -139,6 +157,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   return (
     <>
+      <MaintenanceModal visible={maintenanceModaleVisible} />
       <UpdateAppModal visible={modalOpened} />
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
