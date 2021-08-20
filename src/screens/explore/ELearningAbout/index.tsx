@@ -49,7 +49,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
         startActivity();
       } else goToCourse();
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
     }
   };
 

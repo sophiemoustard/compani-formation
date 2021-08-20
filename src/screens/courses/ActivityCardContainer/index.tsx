@@ -52,7 +52,7 @@ const ActivityCardContainer = ({
       setActivity(fetchedActivity);
       setCards(fetchedActivity.cards);
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
       setActivity(null);
       setCards([]);
     }

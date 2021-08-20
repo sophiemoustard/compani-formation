@@ -122,7 +122,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
         const user = await Users.getById(userId);
         setLoggedUser(user);
       } catch (e) {
-        if (e.status === 401) signOut();
+        if (e.response.status === 401) signOut();
         console.error(e);
       }
     }
