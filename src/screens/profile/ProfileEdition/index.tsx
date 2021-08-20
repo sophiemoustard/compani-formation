@@ -119,8 +119,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         goBack();
       }
     } catch (e) {
-      if (e.status === 401) signOut();
-      else if (e.status === 409) setErrorMessage('L\'email est déjà relié à un compte existant');
+      if (e.response.status === 401) signOut();
+      else if (e.response.status === 409) setErrorMessage('L\'email est déjà relié à un compte existant');
       else setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
       setError(true);
     } finally {

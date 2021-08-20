@@ -33,7 +33,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       setOnGoingCoursesCount(fetchedCourses.filter(course => course.progress < 1).length);
       setAchievedCoursesCount(fetchedCourses.filter(course => course.progress === 1).length);
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
       setOnGoingCoursesCount(0);
       setAchievedCoursesCount(0);
     }

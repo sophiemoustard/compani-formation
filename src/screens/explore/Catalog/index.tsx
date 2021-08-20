@@ -56,7 +56,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
       )).flat();
       setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
       console.error(e);
       setProgramsByCategories(() => {});
     }
