@@ -46,7 +46,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
       const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.subProgramId);
       setSubProgram(fetchedSubProgram);
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
       setSubProgram(null);
     }
   };

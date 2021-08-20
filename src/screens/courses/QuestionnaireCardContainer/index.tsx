@@ -51,7 +51,7 @@ const QuestionnaireCardContainer = ({
       setQuestionnaire(fetchedQuestionnaire);
       setCards(fetchedQuestionnaire.cards);
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
       setQuestionnaire(null);
       setCards([]);
     }

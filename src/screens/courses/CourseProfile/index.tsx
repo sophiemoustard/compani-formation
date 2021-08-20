@@ -86,7 +86,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       setCourse(fetchedCourse);
       setQuestionnaires(fetchedQuestionnaires);
     } catch (e) {
-      if (e.status === 401) signOut();
+      if (e.response.status === 401) signOut();
       setCourse(null);
     }
   }, [route.params.courseId, signOut]);
