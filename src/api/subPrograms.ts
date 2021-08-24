@@ -1,6 +1,6 @@
 import { alenviAxios } from './ressources/alenviAxios';
 import getEnvVars from '../../environment';
-import { SubProgramType } from '../types/SubProgramType';
+import { SubProgramType } from '../types/CourseType';
 
 export default {
   getELearningDraftSubPrograms: async (): Promise<SubProgramType[]> => {
