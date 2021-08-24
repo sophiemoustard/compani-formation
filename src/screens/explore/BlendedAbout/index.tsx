@@ -11,9 +11,10 @@ import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
+import { BlendedCourseType } from '../../../types/CourseType';
 
 interface BlendedAboutProps {
-  route: { params: { course } },
+  route: { params: { course: BlendedCourseType } },
   navigation: {
     goBack: () => {},
     navigate: (path: string, params: { courseId: string }) => {},

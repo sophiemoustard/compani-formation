@@ -7,11 +7,11 @@ import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { ELearningProgramType } from '../../../types/CourseType';
+import { ELearningCourseProgramType } from '../../../types/CourseType';
 import About from '../../../components/About';
 
 type ElearningAboutProps = {
-  route: { params: { program: ELearningProgramType } },
+  route: { params: { program: ELearningCourseProgramType } },
   navigation: {
     navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {},

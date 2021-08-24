@@ -16,7 +16,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
-import { CourseType, NextSlotsStepType } from '../../../types/CourseType';
+import { CourseType, NextSlotsStepType, BlendedCourseType } from '../../../types/CourseType';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import { SubProgramType } from '../../../types/SubProgramType';
 import styles from './styles';
@@ -46,14 +46,17 @@ const formatCourseStep = (stepId: string, course: CourseType, stepSlots): NextSl
 };
 
 const formatNextSteps = (course: CourseType): NextSlotsStepType[] => {
-  const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
+  if (course.subProgram.isStrictlyELearning) return [];
+
+  const { slots } = course as BlendedCourseType;
+  const stepSlots = groupBy(slots.filter(s => get(s, 'step._id')), s => s.step._id);
 
   return Object.keys(stepSlots)
     .filter(stepId => stepSlots[stepId].some(slot => companiDate().isSameOrBefore(slot.endDate)))
     .map(stepId => formatCourseStep(stepId, course, stepSlots));
 };
 
-const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(c => formatNextSteps(c))
+const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatNextSteps)
   .flat()
   .filter(step => step.slots && step.slots.length)
   .sort((a, b) => companiDate(a.firstSlot).diff(b.firstSlot, 'days'));
