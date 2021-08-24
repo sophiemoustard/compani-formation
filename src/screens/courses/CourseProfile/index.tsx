@@ -28,7 +28,7 @@ import ELearningCell from '../../../components/ELearningCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
-import { CourseType } from '../../../types/CourseType';
+import { CourseType, BlendedCourseType } from '../../../types/CourseType';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
@@ -131,6 +131,14 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const renderCells = item => renderStepCell(item, course, route);
 
+  const getTitle = () => {
+    if (!course) return '';
+    if (!course?.subProgram.isStrictlyELearning) return programName;
+
+    const { misc } = (course as BlendedCourseType);
+    return `${programName}${misc ? `- ${misc}` : ''}`;
+  };
+
   return course && has(course, 'subProgram.program') && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
@@ -139,7 +147,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         <View style={styles.header}>
           <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
             iconStyle={styles.arrowShadow} />
-          <Text style={styles.title}>{programName}{course.misc ? ` - ${course.misc}` : ''}</Text>
+          <Text style={styles.title}>{getTitle()}</Text>
         </View>
       </ImageBackground>
       <View style={styles.aboutContainer}>

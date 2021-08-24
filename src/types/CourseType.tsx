@@ -73,33 +73,26 @@ export type ELearningSubProgramType = {
   steps: ELearningStepType[],
 }
 
-export type ELearningProgramType = ProgramType & {
+export type ELearningCourseProgramType = ProgramType & {
   subPrograms: ELearningSubProgramType[],
 }
 
-export type CourseType = {
+type BaseCourseType = {
   _id: string,
-  trainer: { identity: { lastname: string, firstname: string }, _id: string, biography: string }
-  contact: { phone: string, email: string, name: string },
-  misc: string,
   progress: number,
-  subProgram: {
-    program: { image: { link: string }, name: string, description: string, eLearningGoals: string },
-    isStrictlyELearning: string,
-    steps: StepType[],
-  },
-  slots: {
-    startDate: string,
-    endDate: string,
-    address: { fullAddress: string },
-    step: OnSiteStepType,
-  }[],
+  subProgram: { isStrictlyELearning: boolean, program: ProgramType, steps: StepType[] },
+};
 
-  trainees?: String[],
+export type ELearningCourseType = BaseCourseType & {
+  subProgram: { isStrictlyELearning: true }
+};
+
+export type BlendedCourseType = BaseCourseType & {
+  subProgram: { isStrictlyELearning: false },
+  slots: SlotType[],
+  trainer: { _id: string, identity: { lastname: string, firstname: string }, picture: { link: '' }, biography: '' },
+  contact: { name: string, phone: string, email: string },
+  misc: string,
 }
 
-export type ContactType = {
-  name: string,
-  phone: string,
-  email: string,
-}
+export type CourseType = ELearningCourseType | BlendedCourseType;
