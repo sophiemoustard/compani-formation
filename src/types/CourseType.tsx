@@ -67,7 +67,7 @@ export type ProgramType = {
   learningGoals?: string,
 }
 
-export type ELearningSubProgramType = {
+export type ELearningSubProgramType = SubProgramType & {
   isStrictlyElearning: true,
   courses: { _id: string, trainees: String[] }[],
   steps: ELearningStepType[],
@@ -77,10 +77,16 @@ export type ELearningCourseProgramType = ProgramType & {
   subPrograms: ELearningSubProgramType[],
 }
 
+export type SubProgramType = {
+  _id: string,
+  steps: StepType[],
+  isStrictlyELearning: boolean,
+}
+
 type BaseCourseType = {
   _id: string,
   progress: number,
-  subProgram: { isStrictlyELearning: boolean, program: ProgramType, steps: StepType[] },
+  subProgram: SubProgramType & { program: ProgramType },
 };
 
 export type ELearningCourseType = BaseCourseType & {
