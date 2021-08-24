@@ -1,4 +1,5 @@
 import { LESSON, VIDEO, QUIZ, SHARING_EXPERIENCE, E_LEARNING, ON_SITE } from '../core/data/constants';
+import { CardType } from './CardType';
 
 type QuestionnaireAnswersListType = { _id: string, card: string, answerList: string[] };
 
@@ -22,6 +23,7 @@ type SharingExperienceActivityType = BaseActivityType & { type: typeof SHARING_E
 type LessonActivityType = BaseActivityType & { type: typeof LESSON };
 
 export type ActivityType = QuizActivityType | VideoActivityType | SharingExperienceActivityType | LessonActivityType;
+export type ActivityWithCardsType = ActivityType & { cards: CardType[] };
 
 type BaseStepType = {
   _id: string,
@@ -58,7 +60,6 @@ export type SlotType = {
   step: string,
 }
 
-// faut il separer avec et sans learningGoals
 export type ProgramType = {
   _id: string,
   name: string,

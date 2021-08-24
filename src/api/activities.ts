@@ -1,9 +1,9 @@
 import { alenviAxios } from './ressources/alenviAxios';
 import getEnvVars from '../../environment';
-import { ActivityType } from '../types/ActivityType';
+import { ActivityWithCardsType } from '../types/CourseType';
 
 export default {
-  getActivity: async (activityId): Promise<ActivityType> => {
+  getActivity: async (activityId): Promise<ActivityWithCardsType> => {
     const { baseURL } = getEnvVars();
     const response = await alenviAxios.get(`${baseURL}/activities/${activityId}`);
     return response.data.data.activity;

@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
-import { ActivityType } from '../../../types/ActivityType';
+import { ActivityWithCardsType } from '../../../types/CourseType';
 import { CardType } from '../../../types/CardType';
 import { NavigationType } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -40,7 +40,7 @@ const ActivityCardContainer = ({
   setStatusBarVisible,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
-  const [activity, setActivity] = useState<ActivityType | null>(null);
+  const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
 
   useEffect(() => {
     setStatusBarVisible(false);
