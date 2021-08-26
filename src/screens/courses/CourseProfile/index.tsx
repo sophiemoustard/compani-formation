@@ -65,7 +65,7 @@ const renderSeparator = () => <View style={styles.separator} />;
 
 const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
-  const [questionnaires, setQuestionnaires] = useState<Array<QuestionnaireType>>([]);
+  const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');

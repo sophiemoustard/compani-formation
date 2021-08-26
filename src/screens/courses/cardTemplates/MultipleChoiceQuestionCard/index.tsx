@@ -35,7 +35,7 @@ const MultipleChoiceQuestionCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: MultipleChoiceQuestionCardProps) => {
-  const [answers, setAnswers] = useState<Array<qcmAnswerType>>([]);
+  const [answers, setAnswers] = useState<qcmAnswerType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({

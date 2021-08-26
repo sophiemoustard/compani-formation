@@ -38,7 +38,7 @@ const OrderTheSequenceCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: OrderTheSequenceCardProps) => {
-  const [answers, setAnswers] = useState<Array<answerPositionType>>([]);
+  const [answers, setAnswers] = useState<answerPositionType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({

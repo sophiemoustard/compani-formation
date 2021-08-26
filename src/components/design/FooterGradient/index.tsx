@@ -5,7 +5,7 @@ import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT } from '../../../styles/metrics'
 import styles from './styles';
 
 interface FooterGradientProps {
-  colors?: Array<string>,
+  colors?: string[],
   bottomPosition?: number,
   height?: number,
 }

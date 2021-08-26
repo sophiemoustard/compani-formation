@@ -36,7 +36,7 @@ import QuestionAnswerCard from '../QuestionAnswerCard';
 
 interface CardTemplateProps {
   index: number,
-  cards: Array<CardType>,
+  cards: CardType[],
   setCardIndex: (number) => void,
   setIsRightSwipeEnabled: (boolean) => void,
   setIsLeftSwipeEnabled: (boolean) => void,
