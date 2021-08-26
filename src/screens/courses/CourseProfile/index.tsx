@@ -28,7 +28,7 @@ import ELearningCell from '../../../components/ELearningCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
-import { CourseType, BlendedCourseType } from '../../../types/CourseType';
+import { CourseType, BlendedCourseType } from '../../../types/CourseTypes';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';

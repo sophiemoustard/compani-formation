@@ -16,7 +16,8 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
 import { NavigationType } from '../../../types/NavigationType';
-import { CourseType, NextSlotsStepType, BlendedCourseType, SubProgramType } from '../../../types/CourseType';
+import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/CourseTypes';
+import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
 

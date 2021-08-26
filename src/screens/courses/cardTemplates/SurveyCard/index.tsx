@@ -9,15 +9,15 @@ import { StateType, ActionType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/cards/selectors';
 import Actions from '../../../../store/cards/actions';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
-import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
+import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import styles from './styles';
 
 interface SurveyCardProps {
   card: SurveyType,
   index: number,
-  questionnaireAnswer: QuestionnaireAnswerType,
+  questionnaireAnswer: QuestionnaireAnswersType,
   isLoading: boolean,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
   setIsRightSwipeEnabled: (boolean) => void,
 }
@@ -83,7 +83,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
   removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 

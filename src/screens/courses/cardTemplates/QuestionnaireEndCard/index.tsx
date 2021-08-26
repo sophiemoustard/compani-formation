@@ -8,14 +8,14 @@ import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import CardsActions from '../../../../store/cards/actions';
 import styles from '../../../../styles/endCard';
 import { achievementJingle } from '../../../../core/helpers/utils';
-import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
+import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import { StateType } from '../../../../types/store/StoreType';
 import QuestionnaireHistories from '../../../../api/questionnaireHistories';
 
 interface QuestionnaireEndCardProps {
   courseId: string
   questionnaire: QuestionnaireType,
-  questionnaireAnswersList: Array<QuestionnaireAnswerType>,
+  questionnaireAnswersList: QuestionnaireAnswersType[],
   goBack: () => void,
   setCardIndex: (number) => void,
 }

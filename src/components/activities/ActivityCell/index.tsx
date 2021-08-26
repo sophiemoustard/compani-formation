@@ -5,9 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import CardsActions from '../../../store/cards/actions';
 import { StateType } from '../../../types/store/StoreType';
-import { QuestionnaireAnswerType } from '../../../types/store/CardStoreType';
 import ActivityIcon from '../ActivityIcon';
-import { ActivityType } from '../../../types/CourseType';
+import { ActivityType, QuestionnaireAnswersType } from '../../../types/ActivityTypes';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { QUIZ } from '../../../core/data/constants';
@@ -17,7 +16,7 @@ interface ActivityCellProps {
   activity: ActivityType,
   profileId: string,
   isCourse: boolean,
-  setQuestionnaireAnswersList: (qalist: Array<QuestionnaireAnswerType>) => void,
+  setQuestionnaireAnswersList: (qalist: QuestionnaireAnswersType[]) => void,
 }
 
 const SET_TO_GREEN = 'SET_TO_GREEN';

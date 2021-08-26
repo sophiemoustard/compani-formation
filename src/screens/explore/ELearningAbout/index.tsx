@@ -7,7 +7,7 @@ import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { ELearningCourseProgramType } from '../../../types/CourseType';
+import { ELearningCourseProgramType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 
 type ElearningAboutProps = {

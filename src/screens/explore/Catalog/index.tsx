@@ -9,7 +9,7 @@ import commonStyles from '../../../styles/common';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
-import { ProgramType } from '../../../types/CourseType';
+import { ProgramType } from '../../../types/CourseTypes';
 import CoursesSection from '../../../components/CoursesSection';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter } from '../../../core/helpers/utils';

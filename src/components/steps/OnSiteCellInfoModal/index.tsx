@@ -6,7 +6,7 @@ import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import OnSiteInfoItem from '../OnSiteInfoItem';
-import { SlotType } from '../../../types/CourseType';
+import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
 
 type OnSiteCellInfoModalProps = {

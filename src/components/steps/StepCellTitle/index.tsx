@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { StepType } from '../../../types/CourseType';
+import { StepType } from '../../../types/StepTypes';
 import { stepTypeOptions } from '../../../core/data/constants';
 import styles from './styles';
 
