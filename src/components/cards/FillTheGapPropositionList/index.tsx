@@ -6,7 +6,7 @@ import styles from './styles';
 
 interface FillTheGapPropositionListProps {
   isValidated: boolean,
-  propositions: Array<FillTheGapAnswers>
+  propositions: FillTheGapAnswers[],
   setProposition: (event: any) => void,
   renderContent: (isVisible, item, text) => JSX.Element,
 }

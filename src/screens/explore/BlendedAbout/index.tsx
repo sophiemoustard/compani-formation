@@ -24,8 +24,8 @@ interface BlendedAboutProps {
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
   const program = course.subProgram?.program || null;
-  const [dates, setDates] = useState<Array<Date>>([]);
-  const [formattedDates, setFormattedDates] = useState<Array<string>>([]);
+  const [dates, setDates] = useState<Date[]>([]);
+  const [formattedDates, setFormattedDates] = useState<string[]>([]);
   const [trainerPictureSource, setTrainerPictureSource] = useState(
     require('../../../../assets/images/default_avatar.png')
   );

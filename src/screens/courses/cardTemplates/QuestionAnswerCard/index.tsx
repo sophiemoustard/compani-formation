@@ -37,7 +37,7 @@ const QuestionAnswerCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: QuestionAnswerCardProps) => {
-  const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<answerType[]>([]);
 
   useEffect(() => setIsRightSwipeEnabled(false));
 

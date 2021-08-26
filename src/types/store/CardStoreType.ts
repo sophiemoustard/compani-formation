@@ -12,7 +12,7 @@ export const SET_EXIT_CONFIRMATION_MODAL = 'SET_EXIT_CONFIRMATION_MODAL';
 
 // STATE
 export interface CardStateType {
-  cards: Array<CardType>,
+  cards: CardType[],
   cardIndex: number | null,
   questionnaireAnswersList: QuestionnaireAnswersType[],
   score: number,
@@ -22,7 +22,7 @@ export interface CardStateType {
 // ACTIONS
 export interface ResetCardReducerType { type: typeof RESET_CARD_REDUCER }
 
-export interface SetCardsType { type: typeof SET_CARDS, payload: Array<CardType> }
+export interface SetCardsType { type: typeof SET_CARDS, payload: CardType[] }
 
 export interface SetCardIndexType { type: typeof SET_CARD_INDEX, payload: number }
 

@@ -13,7 +13,7 @@ type NextStepCellProps = {
 type NextSlotsStepType = {
   _id: string,
   name: string,
-  slots: Array<Date>,
+  slots: Date[],
   type: StepType['type'],
   stepIndex: number,
   progress: number,

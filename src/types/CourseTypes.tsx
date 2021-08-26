@@ -5,7 +5,7 @@ type AddressType = {
   street: string,
   city: string,
   zipCode: string,
-  location: { coordinates: Array<number>, type: string }
+  location: { coordinates: number[], type: string }
 }
 
 export type SlotType = {

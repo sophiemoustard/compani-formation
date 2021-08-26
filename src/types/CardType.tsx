@@ -33,7 +33,7 @@ export interface SingleChoiceQuestionType {
   template: string,
   question: string,
   qcuGoodAnswer: string,
-  qcAnswers: Array<answerFromAPIType>,
+  qcAnswers: answerFromAPIType[],
   explanation: string,
 }
 
@@ -72,7 +72,7 @@ export interface MultipleChoiceQuestionType {
   _id: string,
   template: string,
   question: string,
-  qcAnswers: Array<qcmAnswerFromAPIType>,
+  qcAnswers: qcmAnswerFromAPIType[],
   explanation: string,
 }
 
@@ -99,7 +99,7 @@ export interface OrderTheSequenceType {
   _id: string,
   template: string,
   question: string,
-  orderedAnswers: Array<OrderedAnswerType>,
+  orderedAnswers: OrderedAnswerType[],
   explanation: string,
 }
 
@@ -112,7 +112,7 @@ export interface FillTheGapType {
   _id: string,
   template: string,
   gappedText: string,
-  falsyGapAnswers: Array<GapAnswerType>,
+  falsyGapAnswers: GapAnswerType[],
   explanation: string,
   canSwitchAnswers: boolean,
 }
@@ -126,7 +126,7 @@ export interface QuestionAnswerType {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
-  qcAnswers: Array<answerFromAPIType>,
+  qcAnswers: answerFromAPIType[],
   isMandatory: boolean,
 }
 
