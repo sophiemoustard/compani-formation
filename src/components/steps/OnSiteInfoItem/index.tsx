@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import get from 'lodash/get';
-import { SlotType } from '../../../types/CourseType';
+import { SlotType } from '../../../types/CourseTypes';
 import companiDate from '../../../core/helpers/dates';
 import OnSiteHoursDisplay from '../OnSiteHoursDisplay';
 import styles from './styles';

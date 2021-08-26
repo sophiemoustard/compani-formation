@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { OnSiteStepType, SlotType } from '../../../types/CourseType';
+import { SlotType } from '../../../types/CourseTypes';
+import { OnSiteStepType } from '../../../types/StepTypes';
 import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';

@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, FlatList, StyleProp, ViewStyle, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
-import { NextSlotsStepType, CourseType, ProgramType, SubProgramType } from '../../types/CourseType';
+import { CourseType, ProgramType, SubProgramType } from '../../types/CourseTypes';
+import { NextSlotsStepType } from '../../types/StepTypes';
 import { formatWordToPlural } from '../../core/helpers/utils';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 

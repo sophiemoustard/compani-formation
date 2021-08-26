@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import companiDate from '../../../core/helpers/dates';
-import { SlotType } from '../../../types/CourseType';
+import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
 
 type OnSiteHoursDisplayProps = {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { ELearningStepType } from '../../types/CourseType';
+import { ELearningStepType } from '../../types/StepTypes';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import FeatherButton from '../icons/FeatherButton';

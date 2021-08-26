@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
-import { ActivityType } from '../../../types/CourseType';
+import { ActivityType } from '../../../types/ActivityTypes';
 import ActivityCell from '../ActivityCell';
 import styles from './styles';
 

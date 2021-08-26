@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
-import { ActivityWithCardsType } from '../../../types/CourseType';
+import { ActivityWithCardsType } from '../../../types/ActivityTypes';
 import { CardType } from '../../../types/CardType';
 import { NavigationType } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';

@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
-import { StepType } from '../../../types/CourseType';
+import { StepType } from '../../../types/StepTypes';
 import styles from './styles';
 
 type NextStepCellProps = {

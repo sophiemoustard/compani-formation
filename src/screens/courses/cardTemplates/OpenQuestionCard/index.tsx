@@ -9,16 +9,16 @@ import { GREY, PINK } from '../../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
-import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
+import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import Actions from '../../../../store/cards/actions';
 import styles from './styles';
 
 interface OpenQuestionCardProps {
   card: OpenQuestionType,
   index: number,
-  questionnaireAnswer: QuestionnaireAnswerType,
+  questionnaireAnswer: QuestionnaireAnswersType,
   isLoading: boolean,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
   setIsRightSwipeEnabled: (boolean) => void,
 }
@@ -83,7 +83,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
   removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 

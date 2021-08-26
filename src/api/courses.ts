@@ -1,6 +1,6 @@
 import { alenviAxios } from './ressources/alenviAxios';
 import getEnvVars from '../../environment';
-import { CourseType } from '../types/CourseType';
+import { CourseType } from '../types/CourseTypes';
 
 export default {
   getUserCourses: async (): Promise<CourseType[]> => {
