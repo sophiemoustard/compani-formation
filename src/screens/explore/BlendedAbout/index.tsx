@@ -11,9 +11,10 @@ import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
+import { BlendedCourseType } from '../../../types/CourseTypes';
 
 interface BlendedAboutProps {
-  route: { params: { course } },
+  route: { params: { course: BlendedCourseType } },
   navigation: {
     goBack: () => {},
     navigate: (path: string, params: { courseId: string }) => {},
@@ -23,8 +24,8 @@ interface BlendedAboutProps {
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
   const program = course.subProgram?.program || null;
-  const [dates, setDates] = useState<Array<Date>>([]);
-  const [formattedDates, setFormattedDates] = useState<Array<string>>([]);
+  const [dates, setDates] = useState<Date[]>([]);
+  const [formattedDates, setFormattedDates] = useState<string[]>([]);
   const [trainerPictureSource, setTrainerPictureSource] = useState(
     require('../../../../assets/images/default_avatar.png')
   );

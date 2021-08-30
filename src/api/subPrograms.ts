@@ -1,6 +1,6 @@
 import axiosLogged from './axios/logged';
 import getEnvVars from '../../environment';
-import { SubProgramType } from '../types/SubProgramType';
+import { SubProgramType } from '../types/CourseTypes';
 
 export default {
   getELearningDraftSubPrograms: async (): Promise<SubProgramType[]> => {

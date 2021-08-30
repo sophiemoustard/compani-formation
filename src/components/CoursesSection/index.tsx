@@ -2,18 +2,16 @@ import React from 'react';
 import { View, Text, FlatList, StyleProp, ViewStyle, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
-import { SubProgramType } from '../../types/SubProgramType';
-import { CourseType } from '../../types/CourseType';
-import { ProgramType } from '../../types/ProgramType';
-import { CourseStepType } from '../../types/StepType';
+import { CourseType, ProgramType, SubProgramType } from '../../types/CourseTypes';
+import { NextSlotsStepType } from '../../types/StepTypes';
 import { formatWordToPlural } from '../../core/helpers/utils';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 
 export const COURSE_SECTION = 'FORMATION';
 export const EVENT_SECTION = 'ÉVÉNEMENT';
 
-interface CoursesSectionProps {
-  items: Array<ProgramType | CourseType | SubProgramType | CourseStepType>,
+type CoursesSectionProps = {
+  items: Array<ProgramType | CourseType | SubProgramType | NextSlotsStepType>,
   title: string,
   type?: string,
   countStyle: StyleProp<ViewStyle>

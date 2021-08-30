@@ -4,7 +4,7 @@ import Svg, { Path, Rect } from 'react-native-svg';
 import { GREY } from '../../src/styles/colors';
 import { ICON } from '../../src/styles/metrics';
 
-interface VideoIconProps {
+type VideoIconProps = {
   color?: string,
   style?: object,
   size?: number,

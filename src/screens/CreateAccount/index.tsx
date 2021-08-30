@@ -131,7 +131,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   const toggleModal = () => setIsModalVisible(isVisible => !isVisible);
 
-  const renderScreen = (fields: Array<any>, i: number) => (
+  const renderScreen = (fields: CreateAccountDataType[], i: number) => (
     <>
       <View style={styles.header}>
         <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}

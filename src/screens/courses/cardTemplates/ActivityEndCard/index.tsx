@@ -6,16 +6,15 @@ import asyncStorage from '../../../../core/helpers/asyncStorage';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { StateType } from '../../../../types/store/StoreType';
 import ActivityHistories from '../../../../api/activityHistories';
-import { ActivityType } from '../../../../types/ActivityType';
+import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import CardsActions from '../../../../store/cards/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
 import styles from '../../../../styles/endCard';
 import { achievementJingle } from '../../../../core/helpers/utils';
 
 interface ActivityEndCardProps {
   isCourse: boolean,
   activity: ActivityType,
-  questionnaireAnswersList: Array<QuestionnaireAnswerType>,
+  questionnaireAnswersList: QuestionnaireAnswersType[],
   score: number,
   setCardIndex: (number) => void,
   goBack: () => void,

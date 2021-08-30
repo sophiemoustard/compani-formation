@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import get from 'lodash/get';
-import { ProgramType } from '../../types/ProgramType';
+import { ProgramType } from '../../types/CourseTypes';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 

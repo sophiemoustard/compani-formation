@@ -4,7 +4,7 @@ import Svg, { Path, Rect, Circle } from 'react-native-svg';
 import { GREY } from '../../src/styles/colors';
 import { ICON } from '../../src/styles/metrics';
 
-interface SharingExperienceIconProps {
+type SharingExperienceIconProps = {
   color?: string,
   style?: object,
   size?: number,

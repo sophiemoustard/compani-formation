@@ -4,11 +4,12 @@ import { Feather } from '@expo/vector-icons';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import companiDate from '../../../core/helpers/dates';
+import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
 
-interface OnSiteHoursDisplayProps {
-  startDate: Date,
-  endDate: Date,
+type OnSiteHoursDisplayProps = {
+  startDate: SlotType['startDate'],
+  endDate: SlotType['endDate'],
 }
 
 const OnSiteHoursDisplay = ({ startDate, endDate }: OnSiteHoursDisplayProps) => (

@@ -25,7 +25,7 @@ import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import { SubProgramType } from '../../../types/SubProgramType';
+import { SubProgramType } from '../../../types/CourseTypes';
 import FeatherButton from '../../../components/icons/FeatherButton';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);

@@ -15,11 +15,10 @@ import companiDate from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
-import { CourseType } from '../../../types/CourseType';
 import { NavigationType } from '../../../types/NavigationType';
-import { CourseStepType } from '../../../types/StepType';
+import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/CourseTypes';
+import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { SubProgramType } from '../../../types/SubProgramType';
 import styles from './styles';
 
 type CourseListProps = {
@@ -28,7 +27,7 @@ type CourseListProps = {
   loggedUserId: string | null,
 }
 
-const formatCourseStep = (stepId: string, course: CourseType, stepSlots): CourseStepType => {
+const formatCourseStep = (stepId: string, course: CourseType, stepSlots): NextSlotsStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
   const nextSlots = stepSlots[stepId].filter(slot => companiDate().isSameOrBefore(slot.endDate));
   const slotsSorted = stepSlots[stepId].sort((a, b) => companiDate(a.endDate).diff(b.endDate, 'days'));
@@ -46,15 +45,18 @@ const formatCourseStep = (stepId: string, course: CourseType, stepSlots): Course
   };
 };
 
-const formatNextSteps = (course: CourseType): CourseStepType[] => {
-  const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
+const formatNextSteps = (course: CourseType): NextSlotsStepType[] => {
+  if (course.subProgram.isStrictlyELearning) return [];
+
+  const { slots } = course as BlendedCourseType;
+  const stepSlots = groupBy(slots.filter(s => get(s, 'step._id')), s => s.step._id);
 
   return Object.keys(stepSlots)
     .filter(stepId => stepSlots[stepId].some(slot => companiDate().isSameOrBefore(slot.endDate)))
     .map(stepId => formatCourseStep(stepId, course, stepSlots));
 };
 
-const getNextSteps = (courses: CourseType[]): CourseStepType[] => courses.map(c => formatNextSteps(c))
+const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatNextSteps)
   .flat()
   .filter(step => step.slots && step.slots.length)
   .sort((a, b) => companiDate(a.firstSlot).diff(b.firstSlot, 'days'));
@@ -76,7 +78,7 @@ const courseReducer = (state, action) => {
   }
 };
 
-const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = step => <NextStepCell nextSlotsStep={step} />;
 
 const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
@@ -138,7 +140,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       {!!nextSteps.length &&
         <View style={styles.nextSteps}>
           <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
-            renderItem={renderNexStepsItem} type={EVENT_SECTION} />
+            renderItem={renderNextStepsItem} type={EVENT_SECTION} />
         </View>
       }
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}

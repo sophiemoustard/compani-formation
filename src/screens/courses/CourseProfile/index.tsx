@@ -28,7 +28,7 @@ import ELearningCell from '../../../components/ELearningCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
-import { CourseType } from '../../../types/CourseType';
+import { CourseType, BlendedCourseType } from '../../../types/CourseTypes';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
@@ -65,7 +65,7 @@ const renderSeparator = () => <View style={styles.separator} />;
 
 const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
-  const [questionnaires, setQuestionnaires] = useState<Array<QuestionnaireType>>([]);
+  const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');
@@ -131,6 +131,14 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const renderCells = item => renderStepCell(item, course, route);
 
+  const getTitle = () => {
+    if (!course) return '';
+    if (!course?.subProgram.isStrictlyELearning) return programName;
+
+    const { misc } = (course as BlendedCourseType);
+    return `${programName}${misc ? `- ${misc}` : ''}`;
+  };
+
   return course && has(course, 'subProgram.program') && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
@@ -139,7 +147,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         <View style={styles.header}>
           <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
             iconStyle={styles.arrowShadow} />
-          <Text style={styles.title}>{programName}{course.misc ? ` - ${course.misc}` : ''}</Text>
+          <Text style={styles.title}>{getTitle()}</Text>
         </View>
       </ImageBackground>
       <View style={styles.aboutContainer}>

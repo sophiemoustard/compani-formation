@@ -12,13 +12,13 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import QuestionAnswerProposition from '../../../../components/cards/QuestionAnswerProposition';
 import Actions from '../../../../store/cards/actions';
-import { QuestionnaireAnswerType } from '../../../../types/store/CardStoreType';
+import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
   cardIndex: number,
-  questionnaireAnswer: QuestionnaireAnswerType,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => void,
+  questionnaireAnswer: QuestionnaireAnswersType,
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
@@ -37,7 +37,7 @@ const QuestionAnswerCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: QuestionAnswerCardProps) => {
-  const [selectedAnswers, setSelectedAnswers] = useState<Array<answerType>>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<answerType[]>([]);
 
   useEffect(() => setIsRightSwipeEnabled(false));
 
@@ -104,7 +104,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswerType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
+  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
   removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
 });
 

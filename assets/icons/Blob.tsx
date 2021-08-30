@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-interface blobProps {
+type blobProps = {
   color: string,
   style?: object,
   size?: number,

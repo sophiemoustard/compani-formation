@@ -7,10 +7,11 @@ import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { ELearningCourseProgramType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 
-interface ElearningAboutProps {
-  route: { params: { program } },
+type ElearningAboutProps = {
+  route: { params: { program: ELearningCourseProgramType } },
   navigation: {
     navigate: (path: string, params?: object) => {},
     dispatch: (action: CommonActions.Action | StackActionType) => {},
@@ -24,13 +25,15 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   const { signOut } = useContext(AuthContext);
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
-  const [courseId, setCourseId] = useState(null);
+  const [courseId, setCourseId] = useState<string>('');
 
   useEffect(() => {
     const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-    const course = subProgram && subProgram.courses ? subProgram.courses[0] : {};
-    setCourseId(course._id);
-    setHasAlreadySubscribed(course.trainees.includes(loggedUserId));
+    const course = subProgram?.courses ? subProgram.courses[0] : null;
+    if (course) {
+      setCourseId(course._id);
+      setHasAlreadySubscribed(course.trainees.includes(loggedUserId));
+    }
   }, [loggedUserId, program]);
 
   const goToCourse = () => navigation.navigate('CourseProfile', { courseId });

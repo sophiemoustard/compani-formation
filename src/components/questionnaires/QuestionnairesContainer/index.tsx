@@ -7,7 +7,7 @@ import { formatWordToPlural } from '../../../core/helpers/utils';
 import styles from './styles';
 
 interface QuestionnairesContainerProps {
-  questionnaires: Array<QuestionnaireType>,
+  questionnaires: QuestionnaireType[],
   profileId: string,
 }
 

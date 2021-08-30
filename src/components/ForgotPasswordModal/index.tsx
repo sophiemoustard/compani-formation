@@ -17,11 +17,11 @@ interface ForgotPasswordModalProps {
 }
 
 const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotPasswordModalProps) => {
-  const [code, setCode] = useState<Array<string>>(['', '', '', '']);
+  const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [invalidCode, setInvalidCode] = useState<boolean>(false);
-  const inputRefs: Array<any> = [
+  const inputRefs: any[] = [
     React.createRef(),
     React.createRef(),
     React.createRef(),
