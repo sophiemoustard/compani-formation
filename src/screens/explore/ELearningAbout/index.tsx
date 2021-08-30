@@ -25,11 +25,11 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   const { signOut } = useContext(AuthContext);
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
-  const [courseId, setCourseId] = useState<string | null>(null);
+  const [courseId, setCourseId] = useState<string>('');
 
   useEffect(() => {
     const subProgram = program.subPrograms ? program.subPrograms[0] : null;
-    const course = subProgram && subProgram.courses ? subProgram.courses[0] : null;
+    const course = subProgram?.courses ? subProgram.courses[0] : null;
     if (course) {
       setCourseId(course._id);
       setHasAlreadySubscribed(course.trainees.includes(loggedUserId));
