@@ -3,7 +3,7 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { ICON } from '../../src/styles/metrics';
 
-interface CoursesIconProps {
+type CoursesIconProps = {
   style?: object,
   size?: number,
 }

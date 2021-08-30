@@ -38,7 +38,7 @@ import {
 
 const MainStack = createStackNavigator();
 
-interface AppContainerProps {
+type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
   statusBarVisible: boolean,
 }

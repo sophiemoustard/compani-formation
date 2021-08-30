@@ -10,13 +10,13 @@ FlashCardType |
 OpenQuestionType |
 OrderTheSequenceType;
 
-export interface TransitionType {
+export type TransitionType = {
   _id: string,
   template: string,
   title: string,
 }
 
-export interface TitleTextMediaType {
+export type TitleTextMediaType = {
   _id: string,
   template: string,
   title: string,
@@ -28,7 +28,7 @@ export interface TitleTextMediaType {
   text: string,
 }
 
-export interface SingleChoiceQuestionType {
+export type SingleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
@@ -37,7 +37,7 @@ export interface SingleChoiceQuestionType {
   explanation: string,
 }
 
-export interface TextMediaType {
+export type TextMediaType = {
   _id: string,
   template: string,
   media: {
@@ -48,7 +48,7 @@ export interface TextMediaType {
   text: string,
 }
 
-export interface SurveyType {
+export type SurveyType = {
   _id: string,
   template: string,
   question: string,
@@ -56,19 +56,19 @@ export interface SurveyType {
   label?: { left: string, right: string},
 }
 
-export interface TitleTextType {
+export type TitleTextType = {
   _id: string,
   template: string,
   title: string,
   text: string,
 }
 
-export interface qcmAnswerFromAPIType {
+export type qcmAnswerFromAPIType = {
   correct: boolean,
   text: string,
 }
 
-export interface MultipleChoiceQuestionType {
+export type MultipleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
@@ -76,13 +76,13 @@ export interface MultipleChoiceQuestionType {
   explanation: string,
 }
 
-export interface FlashCardType {
+export type FlashCardType = {
   _id: string,
   template: string,
   text: string,
   backText: string,
 }
-export interface OpenQuestionType {
+export type OpenQuestionType = {
   _id: string,
   template: string,
   question: string,
@@ -90,12 +90,12 @@ export interface OpenQuestionType {
   answer?: string,
 }
 
-export interface OrderedAnswerType {
+export type OrderedAnswerType = {
   text: string,
   _id: string,
 }
 
-export interface OrderTheSequenceType {
+export type OrderTheSequenceType = {
   _id: string,
   template: string,
   question: string,
@@ -103,12 +103,12 @@ export interface OrderTheSequenceType {
   explanation: string,
 }
 
-export interface GapAnswerType {
+export type GapAnswerType = {
   text: string,
   _id: string,
 }
 
-export interface FillTheGapType {
+export type FillTheGapType = {
   _id: string,
   template: string,
   gappedText: string,
@@ -117,12 +117,12 @@ export interface FillTheGapType {
   canSwitchAnswers: boolean,
 }
 
-export interface answerFromAPIType {
+export type answerFromAPIType = {
   _id: string,
   text: string,
 }
 
-export interface QuestionAnswerType {
+export type QuestionAnswerType = {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
@@ -130,7 +130,7 @@ export interface QuestionAnswerType {
   isMandatory: boolean,
 }
 
-export interface footerColorsType {
+export type footerColorsType = {
   buttons: string,
   text: string,
   background: string,

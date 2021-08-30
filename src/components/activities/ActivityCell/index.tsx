@@ -12,7 +12,7 @@ import { ICON } from '../../../styles/metrics';
 import { QUIZ } from '../../../core/data/constants';
 import styles from './styles';
 
-interface ActivityCellProps {
+type ActivityCellProps = {
   activity: ActivityType,
   profileId: string,
   isCourse: boolean,
