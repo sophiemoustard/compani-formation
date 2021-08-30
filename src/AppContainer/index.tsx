@@ -26,7 +26,7 @@ import { UserType } from '../types/UserType';
 import { WHITE } from '../styles/colors';
 import styles from './styles';
 
-interface AppContainerProps {
+type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
   statusBarVisible: boolean,
 }

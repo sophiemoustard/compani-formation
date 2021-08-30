@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { BUTTON_HEIGHT, MARGIN } from '../../../styles/metrics';
 
-interface StylesProps {
+type StylesProps = {
   justifyContent: 'flex-end' | 'space-between' | 'flex-start',
 }
 

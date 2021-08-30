@@ -10,7 +10,7 @@ import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../../../core/data/cons
 import Shadow from '../../design/Shadow';
 import styles from './styles';
 
-interface ActivityIconProps {
+type ActivityIconProps = {
   activity: ActivityType,
   disabled: Boolean,
   borderColor: string,

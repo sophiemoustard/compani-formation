@@ -3,7 +3,7 @@ import React from 'react';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { ICON } from '../../src/styles/metrics';
 
-interface CatalogSelectedIconProps {
+type CatalogSelectedIconProps = {
   style?: object,
   size?: number,
 }
