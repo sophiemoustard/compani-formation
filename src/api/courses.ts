@@ -13,7 +13,7 @@ export default {
     const response = await axiosLogged.get(`${baseURL}/courses/${courseId}/user`);
     return response.data.data.course;
   },
-  registerToELearningCourse: async (courseId) => {
+  registerToELearningCourse: async (courseId): Promise<void> => {
     const baseURL = await Environment.getBaseUrl();
     await axiosLogged.post(`${baseURL}/courses/${courseId}/register-e-learning`);
   },
