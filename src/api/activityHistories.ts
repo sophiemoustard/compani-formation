@@ -1,9 +1,9 @@
 import axiosLogged from './axios/logged';
-import getEnvVars from '../../environment';
+import Environment from '../../environment';
 
 export default {
   createActivityHistories: async (payload) => {
-    const { baseURL } = getEnvVars();
+    const baseURL = await Environment.getBaseUrl();
     await axiosLogged.post(`${baseURL}/activityhistories`, payload);
   },
 };
