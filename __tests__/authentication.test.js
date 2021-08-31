@@ -2,30 +2,39 @@ import React from 'react';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
+import sinon from 'sinon';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
-import getEnvVars from '../environment';
+import Environment from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
 import axiosLogged from '../src/api/axios/logged';
 import axiosNotLogged from '../src/api/axios/notLogged';
 
 describe('Authentication tests', () => {
+  const baseURL = 'test';
   let axiosLoggedMock;
   let axiosNotLoggedMock;
+  let getEnvVarsStub;
+  let getBaseUrlStub;
 
   beforeEach(() => {
     axiosLoggedMock = new MockAdapter(axiosLogged);
     axiosNotLoggedMock = new MockAdapter(axiosNotLogged);
+    getEnvVarsStub = sinon.stub(Environment, 'getEnvVars');
+    getBaseUrlStub = sinon.stub(Environment, 'getBaseUrl');
   });
 
   afterEach(() => {
     axiosLoggedMock.restore();
     axiosNotLoggedMock.restore();
+    getEnvVarsStub.restore();
+    getBaseUrlStub.restore();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
-    const { baseURL } = getEnvVars();
+    getEnvVarsStub.returns({ baseURL: 'test' });
+    getBaseUrlStub.returns('test');
     const store = createStore(reducers);
     const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
