@@ -82,7 +82,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
 
         await onPress(password.newPassword);
       }
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       setError(true);
       setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');

@@ -110,7 +110,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
       setInvalidCode(false);
-    } catch (e) {
+    } catch (e: any) {
       setInvalidCode(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
       else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
@@ -126,7 +126,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
       setCodeRecipient(get(sms, 'phone'));
       setInvalidCode(false);
-    } catch (e) {
+    } catch (e: any) {
       setInvalidCode(true);
       if (e.response.status === 409) {
         setErrorMessage('Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte');

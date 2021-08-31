@@ -43,7 +43,7 @@ const signIn = dispatch => async ({ email, password }) => {
     await asyncStorage.setUserId(authentication.user._id);
 
     dispatch({ type: 'signin', payload: authentication.token });
-  } catch (e) {
+  } catch (e: any) {
     dispatch({
       type: 'signinError',
       payload: e.response.status === 401
