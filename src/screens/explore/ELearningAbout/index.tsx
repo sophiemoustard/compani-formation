@@ -51,7 +51,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
         await Courses.registerToELearningCourse(courseId);
         startActivity();
       } else goToCourse();
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
     }
   };

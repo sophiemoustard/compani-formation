@@ -89,7 +89,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     try {
       const fetchedCourses = await Courses.getUserCourses();
       dispatch({ type: SET_COURSES, payload: fetchedCourses });
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       console.error(e);
       dispatch({ type: RESET_COURSES });
@@ -100,7 +100,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     try {
       const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
       setElearningDraftSubPrograms(fetchedSubPrograms);
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       console.error(e);
       setElearningDraftSubPrograms([]);
