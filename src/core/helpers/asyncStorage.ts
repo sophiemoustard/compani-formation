@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import companiDate from './dates';
 
-const isTokenValid = (token: TokenType['token'], expiryDate: TokenType['expiryDate']): boolean =>
-  !!token && companiDate().isBefore(expiryDate || '');
-
 type TokenType = {
   token: string | null,
   expiryDate: string | Date | null,
 };
+
+const isTokenValid = (token: TokenType['token'], expiryDate: TokenType['expiryDate']): boolean =>
+  !!token && companiDate().isBefore(expiryDate || '');
 
 type AlenviTokenType = {
   alenviToken: TokenType['token'],
