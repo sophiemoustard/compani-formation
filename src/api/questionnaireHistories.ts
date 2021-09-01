@@ -1,9 +1,9 @@
 import axiosLogged from './axios/logged';
-import getEnvVars from '../../environment';
+import Environment from '../../environment';
 
 export default {
-  createQuestionnaireHistories: async (payload) => {
-    const { baseURL } = getEnvVars();
+  createQuestionnaireHistories: async (payload): Promise<void> => {
+    const baseURL = await Environment.getBaseUrl();
     await axiosLogged.post(`${baseURL}/questionnairehistories`, payload);
   },
 };

@@ -9,10 +9,10 @@ import { Provider as AuthProvider } from '../src/context/AuthContext';
 import AppContainer from '../src/AppContainer';
 import reducers from '../src/store/index';
 import tron from '../src/ReactotronConfig';
-import getEnvVars from '../environment';
+import Environment from '../environment';
 import { initializeAssets } from '../src/core/helpers/assets';
 
-const { sentryKey } = getEnvVars();
+const { sentryKey } = Environment.getEnvVars();
 Sentry.init({ dsn: sentryKey, debug: false });
 
 const store = createStore(reducers, tron.createEnhancer());

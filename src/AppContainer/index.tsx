@@ -119,8 +119,12 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     async function setUser() {
       try {
         const userId = await asyncStorage.getUserId();
-        const user = await Users.getById(userId);
-        setLoggedUser(user);
+
+        if (!userId) signOut();
+        else {
+          const user = await Users.getById(userId);
+          setLoggedUser(user);
+        }
       } catch (e: any) {
         if (e.response.status === 401) signOut();
         console.error(e);

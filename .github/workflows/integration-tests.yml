@@ -23,6 +23,7 @@ jobs:
       - run: mkdir env
       - run: touch env/env.local.ts
       - run: touch env/env.dev.ts
+      - run: touch env/env.staging.ts
       - run: touch env/env.prod.ts
 
       # Run tests

@@ -1,11 +1,13 @@
 import Constants from 'expo-constants';
 import axiosNotLogged from './axios/notLogged';
-import getEnvVars from '../../environment';
+import Environment from '../../environment';
 import { APP_NAME } from '../../src/core/data/constants';
 
+type ShouldUpdateType = { mustUpdate: boolean };
+
 export default {
-  shouldUpdate: async () => {
-    const { baseURL } = getEnvVars();
+  shouldUpdate: async (): Promise<ShouldUpdateType> => {
+    const baseURL = await Environment.getBaseUrl();
     const params = { mobileVersion: Constants.manifest?.version, appName: APP_NAME };
 
     const response = await axiosNotLogged.get(`${baseURL}/version/should-update`, { params });
