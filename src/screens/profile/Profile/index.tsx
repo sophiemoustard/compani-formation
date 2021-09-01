@@ -32,7 +32,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       const fetchedCourses = await Course.getUserCourses();
       setOnGoingCoursesCount(fetchedCourses.filter(course => course.progress < 1).length);
       setAchievedCoursesCount(fetchedCourses.filter(course => course.progress === 1).length);
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       setOnGoingCoursesCount(0);
       setAchievedCoursesCount(0);

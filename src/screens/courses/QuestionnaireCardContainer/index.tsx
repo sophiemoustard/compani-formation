@@ -50,7 +50,7 @@ const QuestionnaireCardContainer = ({
       const fetchedQuestionnaire = await Questionnaires.getQuestionnaire(route.params.questionnaireId);
       setQuestionnaire(fetchedQuestionnaire);
       setCards(fetchedQuestionnaire.cards);
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       setQuestionnaire(null);
       setCards([]);

@@ -122,7 +122,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       setIsLoading(true);
       await Users.create(formatCreationPayload(formList, email));
       signIn({ email, password: formList[3][0].value });
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
     } finally {
       setIsLoading(false);

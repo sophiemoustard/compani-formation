@@ -55,7 +55,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
         f.categories.map(category => ({ ...f, category: category.name }))
       )).flat();
       setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       console.error(e);
       setProgramsByCategories(() => {});

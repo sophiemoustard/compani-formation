@@ -85,7 +85,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
       setCourse(fetchedCourse);
       setQuestionnaires(fetchedQuestionnaires);
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       setCourse(null);
     }

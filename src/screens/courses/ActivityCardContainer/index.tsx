@@ -51,7 +51,7 @@ const ActivityCardContainer = ({
       const fetchedActivity = await Activities.getActivity(route.params.activityId);
       setActivity(fetchedActivity);
       setCards(fetchedActivity.cards);
-    } catch (e) {
+    } catch (e: any) {
       if (e.response.status === 401) signOut();
       setActivity(null);
       setCards([]);
