@@ -15,7 +15,7 @@ interface ValidationModalProps {
 
 const ValidationModal = ({ visible, company, onPressCancelButton, onPressConfirmButton }: ValidationModalProps) => (
   <NiModal visible={visible}>
-    <>
+    <View style={styles.container}>
       <Text style={styles.title}>Voulez-vous vraiment ajouter cette structure ?</Text>
       <View style={styles.companyContainer}>
         <Feather name={'home'} size={ICON.MD} color={GREY[600]} />
@@ -33,7 +33,7 @@ const ValidationModal = ({ visible, company, onPressCancelButton, onPressConfirm
           <Text style={styles.buttonText}>Ajouter la structure</Text>
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   </NiModal>
 );
 

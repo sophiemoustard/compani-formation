@@ -181,7 +181,8 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
         <Text style={styles.title}>Confirmez votre identité</Text>
         {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
       </View>
-    </BottomModal>);
+    </BottomModal>
+  );
 };
 
 export default ForgotPasswordModal;

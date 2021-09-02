@@ -12,7 +12,7 @@ interface NiBottomModalProps {
 }
 
 const BottomModal = ({ visible, children, onRequestClose }: NiBottomModalProps) => (
-  <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
+  <Modal visible={visible} transparent onRequestClose={onRequestClose}>
     <View style={styles.modalContainer}>
       <View style={styles.modalContent}>
         <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]}

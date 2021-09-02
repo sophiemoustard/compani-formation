@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, TextInput, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { TRANSPARENT_GRADIENT, WHITE } from '../../../styles/colors';
-import CompanyLinkRequest from '../../../api/companyLinkRequests';
+import CompanyLinkRequests from '../../../api/companyLinkRequests';
+import Companies from '../../../api/companies';
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
@@ -35,15 +36,14 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
 
   useEffect(() => {
     async function fetchData() {
-      const fetchCompanies = await CompanyLinkRequest.companyList();
+      const fetchCompanies = await Companies.list();
       setCompanyList(fetchCompanies);
     }
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setDisplayedCompanies = () => companyList
-    .filter(company => !!company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)));
+  const getDisplayedCompanies = () => companyList
+    .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)));
 
   const selectCompany = (name) => {
     setSelectedCompany(companyList.find(company => company.name === name) || { _id: '', name: '' });
@@ -52,7 +52,7 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
 
   const createCompanyLinkRequest = async () => {
     try {
-      await CompanyLinkRequest.createCompanyLinkRequest({ company: selectedCompany._id });
+      await CompanyLinkRequests.createCompanyLinkRequest({ company: selectedCompany._id });
       const user = await Users.getById(loggedUser._id);
       setLoggedUser(user);
     } catch (e) {
@@ -72,8 +72,8 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
   return (
     <BottomModal onRequestClose={resetModals} visible={visible}>
       <TextInput placeholder="Choisir une structure" value={answer} onChangeText={setAnswer}
-        style={!answer.length ? [styles.input, styles.placeholder] : styles.input} />
-      <FlatList keyExtractor={item => `${item._id}`} data={setDisplayedCompanies()}
+        style={!answer ? [styles.input, styles.placeholder] : styles.input} />
+      <FlatList keyExtractor={item => `${item._id}`} data={getDisplayedCompanies()}
         renderItem={({ item }) => renderCompany(item.name)} />
       <FooterGradient colors={[TRANSPARENT_GRADIENT, WHITE]} bottomPosition={0} height={INPUT_HEIGHT}/>
       <ValidationModal visible={isModalOpened} company={selectedCompany}

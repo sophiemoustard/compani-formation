@@ -4,6 +4,9 @@ import { MARGIN, BUTTON_HEIGHT, BORDER_WIDTH, BORDER_RADIUS, PADDING } from '../
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  container: {
+    padding: PADDING.MD,
+  },
   title: {
     ...FIRA_SANS_BOLD.LG,
     marginBottom: MARGIN.MD,
@@ -19,6 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   buttonText: {
+    ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
   },
   button: {
@@ -29,13 +33,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: BORDER_WIDTH,
-    borderRadius: BORDER_RADIUS.XL,
-    padding: PADDING.LG,
+    borderRadius: BORDER_RADIUS.MD,
+    padding: PADDING.MD,
     borderColor: GREY[300],
     marginBottom: MARGIN.MD,
   },
   companyName: {
-    ...FIRA_SANS_BOLD.LG,
+    ...FIRA_SANS_BOLD.MD,
     color: GREY[600],
     marginHorizontal: MARGIN.MD,
   },
