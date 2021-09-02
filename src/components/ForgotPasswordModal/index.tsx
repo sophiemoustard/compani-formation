@@ -177,8 +177,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
 
   return (
     <BottomModal onRequestClose={onRequestClose} visible={visible}>
-      <Text style={styles.title}>Confirmez votre identité</Text>
-      {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
+      <View style={styles.modalContent}>
+        <Text style={styles.title}>Confirmez votre identité</Text>
+        {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
+      </View>
     </BottomModal>);
 };
 

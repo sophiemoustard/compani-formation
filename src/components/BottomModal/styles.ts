@@ -18,10 +18,10 @@ export default StyleSheet.create({
     borderTopRightRadius: BORDER_RADIUS.MD,
     width: '100%',
     height: '100%',
-    paddingHorizontal: PADDING.LG,
     paddingTop: PADDING.LG,
   },
   goBack: {
     alignSelf: 'flex-end',
+    paddingHorizontal: PADDING.LG,
   },
 });

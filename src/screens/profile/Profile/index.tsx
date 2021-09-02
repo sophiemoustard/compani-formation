@@ -3,6 +3,7 @@ import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
+import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
@@ -13,6 +14,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
+import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
 
 interface ProfileProps {
   loggedUser: UserType,
@@ -26,6 +28,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
@@ -49,6 +52,23 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const renderCompanyLinkRequest = () => {
+    if (loggedUser.companyLinkRequest) {
+      return (
+        <Text style={styles.linkRequest}>
+          Demande de rattachement envoyée à
+          <Text style={styles.companyLinkRequest}> {loggedUser.companyLinkRequest.company.name}</Text>
+        </Text>
+      );
+    }
+
+    return (
+      <View style={styles.linkRequestButton}>
+        <NiPrimaryButton caption="Ajouter ma structure" onPress={() => setIsModalOpened(true)} />
+      </View>
+    );
+  };
+
   return (
     <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
       {!!loggedUser &&
@@ -63,7 +83,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
                   color={PINK[500]} style={styles.profileImageEdit} />
               </TouchableOpacity>
               <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
-              <Text style={styles.company}>{loggedUser.company?.name || ''}</Text>
+              {loggedUser.company?.name
+                ? <Text style={styles.company}>{loggedUser.company.name}</Text>
+                : renderCompanyLinkRequest()}
               <View style={styles.coursesContainer}>
                 <View style={styles.coursesContent}>
                   <Text style={styles.courses}>FORMATIONS EN COURS</Text>
@@ -99,6 +121,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       </View>
       <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
         setHasPhoto={setHasPhoto} />
+      <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
     </ScrollView>
   );
 };

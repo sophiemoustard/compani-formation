@@ -1,15 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN } from './metrics';
+import { MARGIN, PADDING } from './metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC, FIRA_SANS_MEDIUM } from './fonts';
 
 export default StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: MARGIN.MD,
+  content: {
+    paddingHorizontal: PADDING.LG,
   },
   title: {
     ...FIRA_SANS_BOLD.LG,
+    marginBottom: MARGIN.MD,
   },
   italicText: {
     ...FIRA_SANS_ITALIC.MD,
@@ -32,6 +31,6 @@ export default StyleSheet.create({
     marginBottom: MARGIN.MD,
   },
   lastContentText: {
-    marginBottom: MARGIN.LG,
+    marginBottom: MARGIN.XXXL,
   },
 });
