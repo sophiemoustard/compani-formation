@@ -1,24 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { GREY, MODAL_BACKDROP_GREY, ORANGE, WHITE } from '../../styles/colors';
-import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
+import { GREY, ORANGE } from '../../styles/colors';
+import { MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    flexGrow: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    flexDirection: 'column',
-    backgroundColor: MODAL_BACKDROP_GREY,
-  },
   modalContent: {
-    display: 'flex',
-    backgroundColor: WHITE,
-    borderTopLeftRadius: BORDER_RADIUS.MD,
-    borderTopRightRadius: BORDER_RADIUS.MD,
-    width: '100%',
-    height: '85%',
-    padding: PADDING.LG,
+    paddingHorizontal: PADDING.LG,
   },
   button: {
     marginHorizontal: MARGIN.SM,
