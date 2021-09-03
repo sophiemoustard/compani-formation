@@ -28,9 +28,9 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
   const [selectedCompany, setSelectedCompany] = useState<CompanyType>({ _id: '', name: '' });
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
-  const renderCompany = name => (
-    <TouchableOpacity style={styles.separator} onPress={() => selectCompany(name)}>
-      <Text style={styles.company}>{name}</Text>
+  const renderCompany = company => (
+    <TouchableOpacity style={styles.separator} onPress={() => selectCompany(company._id)}>
+      <Text style={styles.company}>{company.name}</Text>
     </TouchableOpacity>
   );
 
@@ -45,8 +45,8 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
   const getDisplayedCompanies = () => companyList
     .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)));
 
-  const selectCompany = (name) => {
-    setSelectedCompany(companyList.find(company => company.name === name) || { _id: '', name: '' });
+  const selectCompany = (companyId) => {
+    setSelectedCompany(companyList.find(company => company._id === companyId) || { _id: '', name: '' });
     setIsModalOpened(true);
   };
 
@@ -74,7 +74,7 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
       <TextInput placeholder="Choisir une structure" value={answer} onChangeText={setAnswer}
         style={!answer ? [styles.input, styles.placeholder] : styles.input} />
       <FlatList keyExtractor={item => `${item._id}`} data={getDisplayedCompanies()}
-        renderItem={({ item }) => renderCompany(item.name)} />
+        renderItem={({ item }) => renderCompany(item)} />
       <FooterGradient colors={[TRANSPARENT_GRADIENT, WHITE]} bottomPosition={0} height={INPUT_HEIGHT}/>
       <ValidationModal visible={isModalOpened} company={selectedCompany}
         onPressCancelButton={() => setIsModalOpened(false)} onPressConfirmButton={createCompanyLinkRequest} />
