@@ -55,13 +55,15 @@ const styles = StyleSheet.create({
     marginTop: MARGIN.SM,
     marginBottom: MARGIN.LG,
   },
-  linkRequest: {
+  linkRequestContainer: {
     width: 160,
-    ...FIRA_SANS_ITALIC.MD,
     textAlign: 'center',
     marginVertical: MARGIN.MD,
   },
-  companyLinkRequest: {
+  linkRequestText: {
+    ...FIRA_SANS_ITALIC.MD,
+  },
+  companyName: {
     ...FIRA_SANS_BOLD_ITALIC.MD,
   },
   coursesContainer: {

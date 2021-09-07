@@ -55,9 +55,9 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const renderCompanyLinkRequest = () => {
     if (loggedUser.companyLinkRequest) {
       return (
-        <Text style={styles.linkRequest}>
-          Demande de rattachement envoyée à
-          <Text style={styles.companyLinkRequest}> {loggedUser.companyLinkRequest.company.name}</Text>
+        <Text style={styles.linkRequestContainer}>
+          <Text style={styles.linkRequestText}>Demande de rattachement envoyée à </Text>
+          <Text style={styles.companyName}>{loggedUser.companyLinkRequest.company.name}</Text>
         </Text>
       );
     }
