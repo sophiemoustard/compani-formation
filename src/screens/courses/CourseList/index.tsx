@@ -11,16 +11,14 @@ import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import { Context as AuthContext } from '../../../context/AuthContext';
-import moment from '../../../core/helpers/moment';
-import { isSameOrBefore } from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
-import { CourseType } from '../../../types/CourseType';
 import { NavigationType } from '../../../types/NavigationType';
-import { CourseStepType } from '../../../types/StepType';
+import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/CourseTypes';
+import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { SubProgramType } from '../../../types/SubProgramType';
 import styles from './styles';
 
 type CourseListProps = {
@@ -29,10 +27,10 @@ type CourseListProps = {
   loggedUserId: string | null,
 }
 
-const formatCourseStep = (stepId: string, course: CourseType, stepSlots): CourseStepType => {
+const formatCourseStep = (stepId: string, course: CourseType, stepSlots): NextSlotsStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const nextSlots = stepSlots[stepId].filter(slot => isSameOrBefore(new Date(), slot.endDate));
-  const slotsSorted = stepSlots[stepId].sort((a, b) => moment(a.endDate).diff(b.endDate, 'days'));
+  const nextSlots = stepSlots[stepId].filter(slot => companiDate().isSameOrBefore(slot.endDate));
+  const slotsSorted = stepSlots[stepId].sort((a, b) => companiDate(a.endDate).diff(b.endDate, 'days'));
   const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
   return {
@@ -47,18 +45,21 @@ const formatCourseStep = (stepId: string, course: CourseType, stepSlots): Course
   };
 };
 
-const formatNextSteps = (course: CourseType): CourseStepType[] => {
-  const stepSlots = groupBy(course.slots.filter(s => get(s, 'step._id')), s => s.step._id);
+const formatNextSteps = (course: CourseType): NextSlotsStepType[] => {
+  if (course.subProgram.isStrictlyELearning) return [];
+
+  const { slots } = course as BlendedCourseType;
+  const stepSlots = groupBy(slots.filter(s => get(s, 'step._id')), s => s.step._id);
 
   return Object.keys(stepSlots)
-    .filter(stepId => stepSlots[stepId].some(slot => isSameOrBefore(new Date(), slot.endDate)))
+    .filter(stepId => stepSlots[stepId].some(slot => companiDate().isSameOrBefore(slot.endDate)))
     .map(stepId => formatCourseStep(stepId, course, stepSlots));
 };
 
-const getNextSteps = (courses: CourseType[]): CourseStepType[] => courses.map(c => formatNextSteps(c))
+const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatNextSteps)
   .flat()
   .filter(step => step.slots && step.slots.length)
-  .sort((a, b) => moment(a.firstSlot).diff(b.firstSlot, 'days'));
+  .sort((a, b) => companiDate(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
@@ -77,7 +78,7 @@ const courseReducer = (state, action) => {
   }
 };
 
-const renderNexStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = step => <NextStepCell nextSlotsStep={step} />;
 
 const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
@@ -88,8 +89,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     try {
       const fetchedCourses = await Courses.getUserCourses();
       dispatch({ type: SET_COURSES, payload: fetchedCourses });
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       console.error(e);
       dispatch({ type: RESET_COURSES });
     }
@@ -99,8 +100,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     try {
       const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
       setElearningDraftSubPrograms(fetchedSubPrograms);
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       console.error(e);
       setElearningDraftSubPrograms([]);
     }
@@ -139,7 +140,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
       {!!nextSteps.length &&
         <View style={styles.nextSteps}>
           <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
-            renderItem={renderNexStepsItem} type={EVENT_SECTION} />
+            renderItem={renderNextStepsItem} type={EVENT_SECTION} />
         </View>
       }
       <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}

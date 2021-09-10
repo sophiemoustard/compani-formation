@@ -13,6 +13,7 @@
 - [ ] Je n'ai pas changé de constante
 
 - J'ai ajouté une variable d'environnement :
-  - [ ] Je l'ai ajouté dans env.dev et env.prod aussi
+  - [ ] Je l'ai ajouté dans env.dev, env.stating et env.prod aussi
+  - [ ] J'ai ajouté un message sur le slite pour que la personne qui fait la MEP vérifie que son env.prod est à jour
 
 - Cas d'usage : 

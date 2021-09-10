@@ -27,6 +27,7 @@ export const main = (
           'company.name',
           'contact.phone',
           'role',
+          'companyLinkRequest',
         ]),
       };
     case SET_STATUS_BAR_VISIBLE:

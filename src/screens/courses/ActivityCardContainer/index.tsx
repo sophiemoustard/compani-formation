@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
-import { ActivityType } from '../../../types/ActivityType';
+import { ActivityWithCardsType } from '../../../types/ActivityTypes';
 import { CardType } from '../../../types/CardType';
 import { NavigationType } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -20,8 +20,8 @@ interface ActivityCardContainerProps {
   cardIndex: number | null,
   isCourse: boolean,
   exitConfirmationModal: boolean,
-  cards: Array<CardType>,
-  setCards: (activity: Array<CardType> | null) => void,
+  cards: CardType[],
+  setCards: (activity: CardType[] | null) => void,
   setExitConfirmationModal: (boolean) => void,
   resetCardReducer: () => void,
   setStatusBarVisible: (boolean) => void,
@@ -40,7 +40,7 @@ const ActivityCardContainer = ({
   setStatusBarVisible,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
-  const [activity, setActivity] = useState<ActivityType | null>(null);
+  const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
 
   useEffect(() => {
     setStatusBarVisible(false);
@@ -51,8 +51,8 @@ const ActivityCardContainer = ({
       const fetchedActivity = await Activities.getActivity(route.params.activityId);
       setActivity(fetchedActivity);
       setCards(fetchedActivity.cards);
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       setActivity(null);
       setCards([]);
     }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { StepType } from '../../types/StepType';
+import { ELearningStepType } from '../../types/StepTypes';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import FeatherButton from '../icons/FeatherButton';
@@ -9,8 +9,8 @@ import ActivityList from '../activities/ActivityList';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 
-interface ELearningCellProps {
-  step: StepType,
+type ELearningCellProps = {
+  step: ELearningStepType,
   index: number,
   profileId: string,
   endedActivity?: string,
@@ -37,12 +37,12 @@ const ELearningCell = ({ step, index, profileId, endedActivity = '' }: ELearning
       <TouchableOpacity activeOpacity={1} onPress={onPressChevron} style={styles.textContainer}>
         <View style={styles.topContainer}>
           <ProgressPieChart progress={step.progress} />
-          <StepCellTitle index={index} step={step} />
+          <StepCellTitle index={index} name={step.name} type={step.type} />
           <FeatherButton name={isOpen ? 'chevron-up' : 'chevron-down' } onPress={onPressChevron} size={ICON.MD}
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      {isOpen && <ActivityList step={step} profileId={profileId} />}
+      {isOpen && <ActivityList activities={step.activities} profileId={profileId} />}
     </View>
   );
 };

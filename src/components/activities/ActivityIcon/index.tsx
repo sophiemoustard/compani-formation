@@ -5,12 +5,12 @@ import LessonIcon from '../../../../assets/icons/LessonIcon';
 import QuizIcon from '../../../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../../../assets/icons/SharingExperienceIcon';
 import commonStyle from '../../../styles/common';
-import { ActivityType } from '../../../types/ActivityType';
+import { ActivityType } from '../../../types/ActivityTypes';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../../../core/data/constants';
 import Shadow from '../../design/Shadow';
 import styles from './styles';
 
-interface ActivityIconProps {
+type ActivityIconProps = {
   activity: ActivityType,
   disabled: Boolean,
   borderColor: string,

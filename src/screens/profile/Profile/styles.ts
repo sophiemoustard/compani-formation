@@ -1,7 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK, TRANSPARENT_GREY, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR, NUNITO_SEMI, NUNITO_LIGHT } from '../../../styles/fonts';
+import {
+  FIRA_SANS_BOLD,
+  FIRA_SANS_MEDIUM,
+  FIRA_SANS_REGULAR,
+  NUNITO_SEMI,
+  NUNITO_LIGHT,
+  FIRA_SANS_ITALIC,
+  FIRA_SANS_BOLD_ITALIC,
+} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +50,21 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_MEDIUM.MD,
     textAlign: 'center',
     marginBottom: MARGIN.LG,
+  },
+  linkRequestButton: {
+    marginTop: MARGIN.SM,
+    marginBottom: MARGIN.LG,
+  },
+  linkRequestContainer: {
+    width: 160,
+    textAlign: 'center',
+    marginVertical: MARGIN.MD,
+  },
+  linkRequestText: {
+    ...FIRA_SANS_ITALIC.MD,
+  },
+  companyName: {
+    ...FIRA_SANS_BOLD_ITALIC.MD,
   },
   coursesContainer: {
     flexDirection: 'row',

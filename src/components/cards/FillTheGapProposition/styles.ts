@@ -8,7 +8,7 @@ import {
 } from '../../../styles/metrics';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
-interface StylesProps {
+type StylesProps = {
   color: string,
   isGoodAnswer: boolean,
   isSelected: boolean,

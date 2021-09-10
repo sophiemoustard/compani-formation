@@ -1,11 +1,11 @@
-import { alenviAxios } from './ressources/alenviAxios';
-import getEnvVars from '../../environment';
-import { ActivityType } from '../types/ActivityType';
+import axiosLogged from './axios/logged';
+import Environment from '../../environment';
+import { ActivityWithCardsType } from '../types/ActivityTypes';
 
 export default {
-  getActivity: async (activityId): Promise<ActivityType> => {
-    const { baseURL } = getEnvVars();
-    const response = await alenviAxios.get(`${baseURL}/activities/${activityId}`);
+  getActivity: async (activityId): Promise<ActivityWithCardsType> => {
+    const baseURL = await Environment.getBaseUrl();
+    const response = await axiosLogged.get(`${baseURL}/activities/${activityId}`);
     return response.data.data.activity;
   },
 };

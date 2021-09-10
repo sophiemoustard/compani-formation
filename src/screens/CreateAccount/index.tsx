@@ -122,8 +122,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       setIsLoading(true);
       await Users.create(formatCreationPayload(formList, email));
       signIn({ email, password: formList[3][0].value });
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +131,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
 
   const toggleModal = () => setIsModalVisible(isVisible => !isVisible);
 
-  const renderScreen = (fields: Array<any>, i: number) => (
+  const renderScreen = (fields: CreateAccountDataType[], i: number) => (
     <>
       <View style={styles.header}>
         <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}

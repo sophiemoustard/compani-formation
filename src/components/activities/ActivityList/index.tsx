@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
-import { StepType } from '../../../types/StepType';
+import { ActivityType } from '../../../types/ActivityTypes';
 import ActivityCell from '../ActivityCell';
 import styles from './styles';
 
-interface ActivityListProps {
-  step: StepType,
+type ActivityListProps = {
+  activities: ActivityType[],
   profileId: string,
 }
 
-const ActivityList = ({ step, profileId }: ActivityListProps) => {
+const ActivityList = ({ activities, profileId }: ActivityListProps) => {
   const renderActivityCell = activity => (
     <ActivityCell activity={activity} profileId={profileId} />
   );
@@ -17,7 +17,7 @@ const ActivityList = ({ step, profileId }: ActivityListProps) => {
   const renderSeparator = () => <View style={styles.separator} />;
 
   return (
-    <FlatList horizontal data={step.activities} keyExtractor={item => item._id}
+    <FlatList horizontal data={activities} keyExtractor={item => item._id}
       renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
       contentContainerStyle={styles.cell} showsHorizontalScrollIndicator={false} />
   );

@@ -12,10 +12,10 @@ import NiPrimaryButton from '../../components/form/PrimaryButton';
 import FeatherButton from '../../components/icons/FeatherButton';
 import CoursesActions from '../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
-import { ProgramType } from '../../types/ProgramType';
+import { ProgramType } from '../../types/CourseTypes';
 import FooterGradient from '../design/FooterGradient';
 
-interface AboutProps {
+type AboutProps = {
   program: ProgramType,
   buttonCaption?: string,
   children?: any,

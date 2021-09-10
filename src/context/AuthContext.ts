@@ -38,12 +38,12 @@ const signIn = dispatch => async ({ email, password }) => {
     dispatch({ type: 'beforeSignin' });
     const authentication = await Authentication.authenticate({ email, password });
 
-    await asyncStorage.setAlenviToken(authentication.token, authentication.tokenExpireDate);
-    await asyncStorage.setRefreshToken(authentication.refreshToken);
     await asyncStorage.setUserId(authentication.user._id);
+    await asyncStorage.setRefreshToken(authentication.refreshToken);
+    await asyncStorage.setAlenviToken(authentication.token, authentication.tokenExpireDate);
 
     dispatch({ type: 'signin', payload: authentication.token });
-  } catch (e) {
+  } catch (e: any) {
     dispatch({
       type: 'signinError',
       payload: e.response.status === 401
@@ -56,9 +56,10 @@ const signIn = dispatch => async ({ email, password }) => {
 const signOut = dispatch => async () => {
   await Authentication.logOut();
 
-  const token = await asyncStorage.getExpoToken();
+  const expoToken = await asyncStorage.getExpoToken();
   const userId = await asyncStorage.getUserId();
-  if (token && userId) await Users.removeExpoToken(userId, token);
+
+  if (expoToken && userId) await Users.removeExpoToken(userId, expoToken);
 
   await asyncStorage.removeAlenviToken();
   await asyncStorage.removeRefreshToken();

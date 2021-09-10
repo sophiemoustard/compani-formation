@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT } from '../../styles/metrics';
 
-interface StylesProps {
+type StylesProps = {
   borderColor: string,
 }
 

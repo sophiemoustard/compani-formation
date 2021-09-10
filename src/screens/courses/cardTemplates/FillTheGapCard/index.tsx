@@ -31,9 +31,9 @@ export interface FillTheGapAnswers {
 }
 
 const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRightSwipeEnabled }: FillTheGap) => {
-  const [goodAnswers, setGoodAnswers] = useState<Array<string>>([]);
-  const [propositions, setPropositions] = useState<Array<FillTheGapAnswers>>([]);
-  const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([]);
+  const [goodAnswers, setGoodAnswers] = useState<string[]>([]);
+  const [propositions, setPropositions] = useState<FillTheGapAnswers[]>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const areGapsFilled = !selectedAnswers.filter(answer => answer === '').length;

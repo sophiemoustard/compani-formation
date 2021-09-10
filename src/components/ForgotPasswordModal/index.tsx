@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Modal, TextInput, Keyboard, ScrollView } from 'react-native';
+import { Text, View, TextInput, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import get from 'lodash/get';
+import BottomModal from '../BottomModal';
 import NiPrimaryButton from '../form/PrimaryButton';
-import FeatherButton from '../icons/FeatherButton';
 import Authentication from '../../api/authentication';
 import { EMAIL, MOBILE, PHONE } from '../../core/data/constants';
-import { ICON, IS_LARGE_SCREEN } from '../../styles/metrics';
-import { GREY } from '../../styles/colors';
+import { IS_LARGE_SCREEN } from '../../styles/metrics';
 import styles from './styles';
 
 interface ForgotPasswordModalProps {
@@ -17,11 +16,11 @@ interface ForgotPasswordModalProps {
 }
 
 const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotPasswordModalProps) => {
-  const [code, setCode] = useState<Array<string>>(['', '', '', '']);
+  const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [invalidCode, setInvalidCode] = useState<boolean>(false);
-  const inputRefs: Array<any> = [
+  const inputRefs: any[] = [
     React.createRef(),
     React.createRef(),
     React.createRef(),
@@ -110,7 +109,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
       setInvalidCode(false);
-    } catch (e) {
+    } catch (e: any) {
       setInvalidCode(true);
       if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
       else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
@@ -126,7 +125,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
       setCodeRecipient(get(sms, 'phone'));
       setInvalidCode(false);
-    } catch (e) {
+    } catch (e: any) {
       setInvalidCode(true);
       if (e.response.status === 409) {
         setErrorMessage('Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte');
@@ -177,16 +176,13 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   );
 
   return (
-    <Modal visible={visible} transparent={true} onRequestClose={onRequestClose}>
-      <ScrollView contentContainerStyle={styles.modalContainer} keyboardShouldPersistTaps='handled'>
-        <View style={styles.modalContent}>
-          <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
-            style={styles.goBack} />
-          <Text style={styles.title}>Confirmez votre identité</Text>
-          {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
-        </View>
-      </ScrollView>
-    </Modal>);
+    <BottomModal onRequestClose={onRequestClose} visible={visible}>
+      <View style={styles.modalContent}>
+        <Text style={styles.title}>Confirmez votre identité</Text>
+        {!codeRecipient ? beforeCodeSent() : afterCodeSent()}
+      </View>
+    </BottomModal>
+  );
 };
 
 export default ForgotPasswordModal;

@@ -1,8 +1,9 @@
 import { CardType } from './CardType';
 
-export interface QuestionnaireType {
+export type QuestionnaireType = {
   _id: string,
   name: string,
   type: 'expectations' | 'end_of_course',
-  cards: Array<CardType>,
-}
+};
+
+export type QuestionnaireWithCardsType = QuestionnaireType & { cards: CardType[] };

@@ -19,8 +19,8 @@ interface QuestionnaireCardContainerProps {
   navigation: NavigationType,
   cardIndex: number | null,
   exitConfirmationModal: boolean,
-  cards: Array<CardType>,
-  setCards: (questionnaire: Array<CardType> | null) => void,
+  cards: CardType[],
+  setCards: (questionnaire: CardType[] | null) => void,
   setExitConfirmationModal: (boolean) => void,
   resetCardReducer: () => void,
   setStatusBarVisible: (boolean) => void,
@@ -50,8 +50,8 @@ const QuestionnaireCardContainer = ({
       const fetchedQuestionnaire = await Questionnaires.getQuestionnaire(route.params.questionnaireId);
       setQuestionnaire(fetchedQuestionnaire);
       setCards(fetchedQuestionnaire.cards);
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       setQuestionnaire(null);
       setCards([]);
     }

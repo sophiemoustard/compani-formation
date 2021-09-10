@@ -82,8 +82,8 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
 
         await onPress(password.newPassword);
       }
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       setError(true);
       setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
     } finally {
@@ -99,8 +99,8 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
       <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
           color={GREY[600]} disabled={isLoading} />
-        <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal} title={'Êtes-vous sûr de cela ?'}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
+        <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
+          title={'Êtes-vous sûr(e) de cela ?'} onPressCancelButton={() => setExitConfirmationModal(false)}
           contentText={'Vos modifications ne seront pas enregistrées.'} />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>

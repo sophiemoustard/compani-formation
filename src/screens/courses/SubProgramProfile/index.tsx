@@ -25,7 +25,7 @@ import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import { SubProgramType } from '../../../types/SubProgramType';
+import { SubProgramType } from '../../../types/CourseTypes';
 import FeatherButton from '../../../components/icons/FeatherButton';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -45,8 +45,8 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
     try {
       const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.subProgramId);
       setSubProgram(fetchedSubProgram);
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       setSubProgram(null);
     }
   };

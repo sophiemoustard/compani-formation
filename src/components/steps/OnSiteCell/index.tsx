@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { StepType } from '../../../types/StepType';
-import { CourseSlotType } from '../../../types/CourseSlotType';
-import moment from '../../../core/helpers/moment';
+import { SlotType } from '../../../types/CourseTypes';
+import { OnSiteStepType } from '../../../types/StepTypes';
+import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -12,9 +12,9 @@ import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
 import FeatherButton from '../../icons/FeatherButton';
 import styles from './styles';
 
-interface OnSiteCellProps {
-  step: StepType,
-  slots?: CourseSlotType[],
+type OnSiteCellProps = {
+  step: OnSiteStepType,
+  slots?: SlotType[],
   index: number,
   profileId: string,
 }
@@ -22,7 +22,7 @@ interface OnSiteCellProps {
 const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [stepSlots, setStepSlots] = useState<Array<CourseSlotType>>([]);
+  const [stepSlots, setStepSlots] = useState<SlotType[]>([]);
   const [dates, setDates] = useState<Date[]>([]);
   const [modalTitle, setModalTitle] = useState('');
 
@@ -36,7 +36,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
 
   useEffect(() => {
     if (!stepSlots.length) setDates([]);
-    else setDates(stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => moment(a).diff(b, 'days')));
+    else setDates(stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => companiDate(a).diff(b, 'days')));
   }, [stepSlots]);
 
   const closeModal = () => setIsModalVisible(false);
@@ -51,7 +51,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
         <TouchableOpacity onPress={openModal}>
           <CalendarIcon slots={dates} progress={step.progress} />
         </TouchableOpacity>
-        <StepCellTitle index={index} step={step} />
+        <StepCellTitle index={index} name={step.name} type={step.type} />
         <View style={styles.iconContainer}>
           <FeatherButton name='info' onPress={openModal} size={ICON.LG} color={GREY[500]}
             style={styles.infoButtonContainer} />
@@ -60,7 +60,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
         </View>
       </TouchableOpacity>
       {isOpen && <View style={[styles.container, styles.openedContainer]}>
-        <ActivityList step={step} profileId={profileId} />
+        <ActivityList activities={step.activities} profileId={profileId} />
       </View>}
     </>
   );

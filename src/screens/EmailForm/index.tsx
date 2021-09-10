@@ -78,13 +78,13 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   return (
     <KeyboardAvoidingView behavior={behavior} style={accountCreationStyles.screenView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
+      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
       <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
           disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title={'Êtes-vous sûr de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
+          title={'Êtes-vous sûr(e) de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
       </View>
       <View style={accountCreationStyles.container}>
         <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>

@@ -1,22 +1,32 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from './moment';
+import companiDate from './dates';
 
-const isTokenValid = (token: string | null, expiryDate: string | null): boolean =>
-  !!token && moment().isBefore(expiryDate);
+type TokenType = {
+  token: string | null,
+  expiryDate: string | Date | null,
+};
 
-interface AlenviToken {
-  alenviToken: string | null,
-  alenviTokenExpiryDate: string | null,
+const isTokenValid = (token: TokenType['token'], expiryDate: TokenType['expiryDate']): boolean =>
+  !!token && companiDate().isBefore(expiryDate || '');
+
+type AlenviTokenType = {
+  alenviToken: TokenType['token'],
+  alenviTokenExpiryDate: TokenType['expiryDate'],
 }
 
-const getAlenviToken = async (): Promise<AlenviToken> => ({
+const getAlenviToken = async (): Promise<AlenviTokenType> => ({
   alenviToken: await AsyncStorage.getItem('alenvi_token'),
   alenviTokenExpiryDate: await AsyncStorage.getItem('alenvi_token_expiry_date'),
 });
 
-const setAlenviToken = async (token: string, tokenExpireDate: string): Promise<void> => {
-  await AsyncStorage.setItem('alenvi_token', token);
-  await AsyncStorage.setItem('alenvi_token_expiry_date', tokenExpireDate);
+const setAlenviToken = async (
+  token: AlenviTokenType['alenviToken'],
+  tokenExpireDate: AlenviTokenType['alenviTokenExpiryDate']
+): Promise<void> => {
+  if (token) await AsyncStorage.setItem('alenvi_token', token);
+  if (tokenExpireDate) {
+    await AsyncStorage.setItem('alenvi_token_expiry_date', companiDate(tokenExpireDate).toISOString());
+  }
 };
 
 const removeAlenviToken = async (): Promise<void> => {
@@ -24,19 +34,19 @@ const removeAlenviToken = async (): Promise<void> => {
   await AsyncStorage.removeItem('alenvi_token_expiry_date');
 };
 
-interface RefreshToken {
-  refreshToken: string | null,
-  refreshTokenExpiryDate: string | null,
+type RefreshTokenType = {
+  refreshToken: TokenType['token'],
+  refreshTokenExpiryDate: TokenType['expiryDate'],
 }
 
-const getRefreshToken = async (): Promise<RefreshToken> => ({
+const getRefreshToken = async (): Promise<RefreshTokenType> => ({
   refreshToken: await AsyncStorage.getItem('refresh_token'),
   refreshTokenExpiryDate: await AsyncStorage.getItem('refresh_token_expiry_date'),
 });
 
-const setRefreshToken = async (refreshToken: string): Promise<void> => {
-  await AsyncStorage.setItem('refresh_token', refreshToken);
-  await AsyncStorage.setItem('refresh_token_expiry_date', moment().endOf('d').add(1, 'year').toISOString());
+const setRefreshToken = async (refreshToken: RefreshTokenType['refreshToken']): Promise<void> => {
+  if (refreshToken) await AsyncStorage.setItem('refresh_token', refreshToken);
+  await AsyncStorage.setItem('refresh_token_expiry_date', companiDate().endOf('days').add(1, 'year').toISOString());
 };
 
 const removeRefreshToken = async (): Promise<void> => {

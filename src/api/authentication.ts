@@ -1,30 +1,49 @@
-import axios from 'axios';
-import getEnvVars from '../../environment';
+import axiosNotLogged from './axios/notLogged';
+import axiosLogged from './axios/logged';
+import Environment from '../../environment';
 import { MOBILE } from '../core/data/constants';
 
+type AuthenticationType = {
+  token: string,
+  tokenExpireDate: Date,
+  refreshToken: string,
+  user: { _id: string },
+};
+
+type ForgotPasswordType = { phone: string } | void;
+
+type PasswordTokenType = { token: string, user: { _id: string, email: string } };
+
 export default {
-  authenticate: async (payload: { email: string, password: string }) => {
-    const { baseURL } = getEnvVars();
-    const response = await axios.post(`${baseURL}/users/authenticate`, { ...payload, origin: MOBILE });
+  authenticate: async (payload: { email: string, password: string }): Promise<AuthenticationType> => {
+    const baseURL = await Environment.getBaseUrl({ email: payload.email });
+    const response = await axiosNotLogged.post(`${baseURL}/users/authenticate`, { ...payload, origin: MOBILE });
     return response.data.data;
   },
-  forgotPassword: async (payload: { email: string, origin: string, type: string }) => {
-    const { baseURL } = getEnvVars();
-    const code = await axios.post(`${baseURL}/users/forgot-password`, payload);
+  forgotPassword: async (payload: { email: string, origin: string, type: string }): Promise<ForgotPasswordType> => {
+    const baseURL = await Environment.getBaseUrl({ email: payload.email });
+    const code = await axiosNotLogged.post(`${baseURL}/users/forgot-password`, payload);
     return code.data.data.mailInfo;
   },
-  refreshToken: async (payload: { refreshToken: string }) => {
-    const { baseURL } = getEnvVars();
-    const refreshToken = await axios.post(`${baseURL}/users/refreshToken`, payload);
+  updatePassword: async (userId, data, token = ''): Promise<void> => {
+    const baseURL = await Environment.getBaseUrl({ userId });
+    if (!token) await axiosLogged.put(`${baseURL}/users/${userId}/password`, data);
+    else {
+      await axiosNotLogged.put(`${baseURL}/users/${userId}/password`, data, { headers: { 'x-access-token': token } });
+    }
+  },
+  refreshToken: async (payload: { refreshToken: string }): Promise<AuthenticationType> => {
+    const baseURL = await Environment.getBaseUrl();
+    const refreshToken = await axiosNotLogged.post(`${baseURL}/users/refreshToken`, payload);
     return refreshToken.data.data;
   },
-  logOut: async () => {
-    const { baseURL } = getEnvVars();
-    await axios.post(`${baseURL}/users/logout`);
+  logOut: async (): Promise<void> => {
+    const baseURL = await Environment.getBaseUrl();
+    await axiosNotLogged.post(`${baseURL}/users/logout`);
   },
-  passwordToken: async (email: string, token: string) => {
-    const { baseURL } = getEnvVars();
-    const checkToken = await axios.get(`${baseURL}/users/passwordtoken/${token}`, { params: { email } });
+  passwordToken: async (email: string, token: string): Promise<PasswordTokenType> => {
+    const baseURL = await Environment.getBaseUrl({ email });
+    const checkToken = await axiosNotLogged.get(`${baseURL}/users/passwordtoken/${token}`, { params: { email } });
     return checkToken.data.data;
   },
 };

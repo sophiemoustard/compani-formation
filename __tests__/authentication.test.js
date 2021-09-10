@@ -1,44 +1,75 @@
 import React from 'react';
-import axios from 'axios';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
+import sinon from 'sinon';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
-import getEnvVars from '../environment';
+import Environment from '../environment';
 import reducers from '../src/store/index';
 import AppContainer from '../src/AppContainer';
-import { alenviAxios } from '../src/api/ressources/alenviAxios';
+import axiosLogged from '../src/api/axios/logged';
+import axiosNotLogged from '../src/api/axios/notLogged';
 
 describe('Authentication tests', () => {
-  let axiosMock;
-  let alenviAxiosMock;
+  const baseURL = 'test';
+  let axiosLoggedMock;
+  let axiosNotLoggedMock;
+  let getEnvVarsStub;
+  let getBaseUrlStub;
 
   beforeEach(() => {
-    axiosMock = new MockAdapter(axios);
-    alenviAxiosMock = new MockAdapter(alenviAxios);
+    axiosLoggedMock = new MockAdapter(axiosLogged);
+    axiosNotLoggedMock = new MockAdapter(axiosNotLogged);
+    getEnvVarsStub = sinon.stub(Environment, 'getEnvVars');
+    getBaseUrlStub = sinon.stub(Environment, 'getBaseUrl');
   });
 
   afterEach(() => {
-    axiosMock.restore();
-    alenviAxiosMock.restore();
+    axiosLoggedMock.restore();
+    axiosNotLoggedMock.restore();
+    getEnvVarsStub.restore();
+    getBaseUrlStub.restore();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
-    const { baseURL } = getEnvVars();
+    getEnvVarsStub.returns({ baseURL: 'test' });
+    getBaseUrlStub.returns('test');
     const store = createStore(reducers);
-    axiosMock.onPost(`${baseURL}/users/authenticate`)
+    const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+    axiosNotLoggedMock.onPost(`${baseURL}/users/authenticate`)
       .reply(
         200,
-        { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
+        {
+          data: {
+            token: 'token',
+            tokenExpireDate: expirationDate,
+            refreshToken: 'refresh-token',
+            user: { _id: '321' },
+          },
+        }
       )
+      .onGet(`${baseURL}/version/should-update`)
+      .reply(200, { data: { mustUpdate: false } })
       .onPost(`${baseURL}/users/refreshToken`, { refreshToken: 'refresh-token' })
       .reply(
         200,
-        { data: { token: 'token', tokenExpireDate: '123', refreshToken: 'refresh-token', user: { _id: '321' } } }
+        {
+          data: {
+            token: 'token',
+            tokenExpireDate: expirationDate,
+            refreshToken: 'refresh-token',
+            user: { _id: '321' },
+          },
+        }
       );
-    alenviAxiosMock.onGet(`${baseURL}/users/321`).reply(200, { data: { user: { _id: '321' } } })
-      .onGet(`${baseURL}/courses/user`).reply(200, { data: { courses: [] } });
+    axiosLoggedMock.onGet(`${baseURL}/users/321`)
+      .reply(200, { data: { user: { _id: '321' } } })
+      .onGet(`${baseURL}/courses/user`)
+      .reply(200, { data: { courses: [] } })
+      .onGet(`${baseURL}/subprograms/draft-e-learning`)
+      .reply(200, { data: { subPrograms: [] } });
 
     const element = render(
       <AuthProvider>

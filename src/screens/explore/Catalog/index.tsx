@@ -9,7 +9,7 @@ import commonStyles from '../../../styles/common';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
-import { ProgramType } from '../../../types/ProgramType';
+import { ProgramType } from '../../../types/CourseTypes';
 import CoursesSection from '../../../components/CoursesSection';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter } from '../../../core/helpers/utils';
@@ -55,8 +55,8 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
         f.categories.map(category => ({ ...f, category: category.name }))
       )).flat();
       setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
-    } catch (e) {
-      if (e.status === 401) signOut();
+    } catch (e: any) {
+      if (e.response.status === 401) signOut();
       console.error(e);
       setProgramsByCategories(() => {});
     }
