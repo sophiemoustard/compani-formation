@@ -70,6 +70,8 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');
   const { signOut } = useContext(AuthContext);
+  const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
+  const [headerY, setHeaderY] = useState <number>(0);
 
   useEffect(() => {
     setProgramName(get(course, 'subProgram.program.name') || '');
@@ -139,8 +141,37 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     return `${programName}${misc ? `- ${misc}` : ''}`;
   };
 
+  const getHeader = () => course && has(course, 'subProgram.program') && (
+    <View onLayout={(event) => {
+      const { layout } = event.nativeEvent;
+      setHeaderY(layout.y);
+    }}>
+      {isHeaderSticky
+        ? <View style={styles.stickyHeader}>
+          <Text style={styles.headerTitle}>{getTitle()}</Text>
+          <View style={styles.progressBarHeaderContainer}>
+            <Text style={styles.stickyProgressBarText}>
+              {course?.subProgram.steps.filter(step => step.progress === 1).length}/{course.subProgram.steps.length}
+            </Text>
+            <View style={styles.stickyProgressBar}>
+              <ProgressBar progress={course.progress * 100} />
+            </View>
+          </View>
+        </View>
+        : <View style={styles.progressBarContainer}>
+          <Text style={styles.progressBarText}>ÉTAPES</Text>
+          <ProgressBar progress={course.progress * 100} />
+          <Text style={styles.progressBarText}>{(course.progress * 100).toFixed(0)}%</Text>
+        </View>}
+    </View>
+  );
+
   return course && has(course, 'subProgram.program') && (
-    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[2]} onScroll={(event) => {
+        const { y } = event.nativeEvent.contentOffset;
+        setIsHeaderSticky(y >= headerY);
+      }} scrollEventThrottle={16}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
@@ -157,11 +188,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         </TouchableOpacity>
       </View>
       {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
-      <View style={styles.progressBarContainer}>
-        <Text style={styles.progressBarText}>ÉTAPES</Text>
-        <ProgressBar progress={course.progress * 100} />
-        <Text style={styles.progressBarText}>{(course.progress * 100).toFixed(0)}%</Text>
-      </View>
+      {getHeader()}
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
     </ScrollView>
