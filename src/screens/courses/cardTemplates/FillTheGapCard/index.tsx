@@ -78,20 +78,28 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    const dropTargetIsGap = Number.isInteger(gapIndex);
+    const isActionClick = event.dragged.dragTranslationRatio.x === 0 && event.dragged.dragTranslationRatio.y === 0;
+    const targetIsGap = isActionClick ? !Number.isInteger(gapIndex) : Number.isInteger(gapIndex);
     const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
     const payloadIdx = selectedAnswers.indexOf(payload);
 
-    tempPropositions[selectedPropIdx].visible = !dropTargetIsGap;
-
-    if (dropTargetIsGap && selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload) {
-      const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
-      tempPropositions[previousAnswerIdx].visible = true;
+    if (payloadIdx > -1) {
+      setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
+      tempPropositions[selectedPropIdx].visible = true;
     }
 
-    if (payloadIdx > -1) setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
+    if (targetIsGap) {
+      const targetId = isActionClick ? selectedAnswers.indexOf('') : gapIndex;
+      if (targetId > -1) {
+        if (selectedAnswers[targetId] && selectedAnswers[targetId] !== payload) {
+          const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[targetId]);
+          tempPropositions[previousAnswerIdx].visible = true;
+        }
 
-    if (dropTargetIsGap) setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
+        setSelectedAnswers(array => Object.assign([], array, { [targetId]: payload }));
+        tempPropositions[selectedPropIdx].visible = false;
+      }
+    }
 
     setPropositions(tempPropositions);
   };
