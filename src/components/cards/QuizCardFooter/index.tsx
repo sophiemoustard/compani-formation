@@ -35,11 +35,9 @@ const QuizCardFooter = ({
           <Text style={style.explanationText}>{explanation}</Text>
         </View>
       )}
-      {(!hideButton || isValidated) &&
       <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
         arrowColor={footerColors.buttons} index={cardIndex} buttonDisabled={buttonDisabled}
-        buttonColor={!buttonDisabled ? footerColors.buttons : GREY[300]} />
-      }
+        buttonColor={!buttonDisabled ? footerColors.buttons : GREY[300]} buttonVisible={!hideButton || isValidated} />
     </>);
 };
 
