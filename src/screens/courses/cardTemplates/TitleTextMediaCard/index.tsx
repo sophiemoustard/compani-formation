@@ -19,7 +19,7 @@ import NiAudio from '../../../../components/cards/Audio';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
-  index: number,
+  index: number | null,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
   setIsLeftSwipeEnabled: (boolean) => void,

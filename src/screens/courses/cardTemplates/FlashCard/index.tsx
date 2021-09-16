@@ -11,7 +11,7 @@ import styles from './styles';
 
 interface FlashCardProps {
   card: FlashCardType,
-  index: number,
+  index: number | null,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
 }

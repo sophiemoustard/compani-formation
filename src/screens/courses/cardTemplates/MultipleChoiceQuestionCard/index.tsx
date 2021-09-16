@@ -18,7 +18,7 @@ import { quizJingle } from '../../../../core/helpers/utils';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
-  cardIndex: number,
+  cardIndex: number | null,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
@@ -89,7 +89,7 @@ const MultipleChoiceQuestionCard = ({
       return setIsValidated(true);
     }
 
-    return navigation.navigate(`card-${cardIndex + 1}`);
+    return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
   const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}

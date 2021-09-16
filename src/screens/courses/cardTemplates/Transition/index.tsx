@@ -10,7 +10,7 @@ import { StateType } from '../../../../types/store/StoreType';
 import styles from './styles';
 
 interface TransitionProps {
-  index: number,
+  index: number | null,
   card: TransitionType,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,

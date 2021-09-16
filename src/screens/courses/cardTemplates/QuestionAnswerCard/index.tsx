@@ -16,7 +16,7 @@ import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
-  cardIndex: number,
+  cardIndex: number | null,
   questionnaireAnswer: QuestionnaireAnswersType | null,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
