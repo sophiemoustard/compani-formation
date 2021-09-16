@@ -11,7 +11,6 @@ import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import cardsStyle from '../../../../styles/cards';
-import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import { quizJingle } from '../../../../core/helpers/utils';
 
@@ -83,10 +82,9 @@ const SingleChoiceQuestionCard = ({
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        {!isPressed && <FooterGradient /> }
         <QuizCardFooter isValidated={isPressed} isValid={answers[selectedAnswerIndex] === card.qcuGoodAnswer}
           cardIndex={index} footerColors={footerColors} explanation={card.explanation}
-          buttonDisabled={!isPressed} />
+          buttonDisabled={!isPressed} hideButton />
       </View>
     </>
   );
