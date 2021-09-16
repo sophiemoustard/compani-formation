@@ -15,7 +15,7 @@ import styles from './styles';
 interface SurveyCardProps {
   card: SurveyType,
   index: number,
-  questionnaireAnswer: QuestionnaireAnswersType,
+  questionnaireAnswer: QuestionnaireAnswersType | null,
   isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,

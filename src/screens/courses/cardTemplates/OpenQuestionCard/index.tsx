@@ -16,7 +16,7 @@ import styles from './styles';
 interface OpenQuestionCardProps {
   card: OpenQuestionType,
   index: number,
-  questionnaireAnswer: QuestionnaireAnswersType,
+  questionnaireAnswer: QuestionnaireAnswersType | null,
   isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
