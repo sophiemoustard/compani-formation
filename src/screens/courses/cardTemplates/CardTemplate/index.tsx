@@ -37,7 +37,7 @@ import QuestionAnswerCard from '../QuestionAnswerCard';
 interface CardTemplateProps {
   index: number,
   cards: CardType[],
-  setCardIndex: (number) => void,
+  setCardIndex: (index : number | null) => void,
   setIsRightSwipeEnabled: (boolean) => void,
   setIsLeftSwipeEnabled: (boolean) => void,
 }
@@ -101,7 +101,7 @@ const CardTemplate = ({
 const mapStateToProps = (state: StateType) => ({ cards: state.cards.cards });
 
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
-  setCardIndex: index => dispatch(Actions.setCardIndex(index)),
+  setCardIndex: (index: number | null) => dispatch(Actions.setCardIndex(index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardTemplate);
