@@ -24,7 +24,7 @@ export type ResetCardReducerType = { type: typeof RESET_CARD_REDUCER }
 
 export type SetCardsType = { type: typeof SET_CARDS, payload: CardType[] }
 
-export type SetCardIndexType = { type: typeof SET_CARD_INDEX, payload: number }
+export type SetCardIndexType = { type: typeof SET_CARD_INDEX, payload: number | null }
 
 export type AddQuestionnaireAnswerType = { type: typeof ADD_QUESTIONNAIRE_ANSWER, payload: QuestionnaireAnswersType }
 

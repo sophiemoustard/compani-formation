@@ -22,7 +22,7 @@ const resetCardReducer = (): ActionWithoutPayloadType => ({ type: RESET_CARD_RED
 
 const setCards = (cards: CardType[]): SetCardsType => ({ type: SET_CARDS, payload: cards });
 
-const setCardIndex = (index: number): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
+const setCardIndex = (index: number | null): SetCardIndexType => ({ type: SET_CARD_INDEX, payload: index });
 
 const setQuestionnaireAnswersList =
 (questionnaireAnswersList: QuestionnaireAnswersType[]): SetQuestionnaireAnswersListType =>

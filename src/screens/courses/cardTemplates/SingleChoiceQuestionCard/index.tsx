@@ -17,7 +17,7 @@ import { quizJingle } from '../../../../core/helpers/utils';
 
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
-  index: number,
+  index: number | null,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,

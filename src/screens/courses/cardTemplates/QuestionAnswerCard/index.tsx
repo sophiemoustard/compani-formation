@@ -16,8 +16,8 @@ import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 
 interface QuestionAnswerCardProps {
   card: QuestionAnswerType,
-  cardIndex: number,
-  questionnaireAnswer: QuestionnaireAnswersType,
+  cardIndex: number | null,
+  questionnaireAnswer: QuestionnaireAnswersType | null,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
@@ -44,7 +44,7 @@ const QuestionAnswerCard = ({
   useEffect(() => {
     if (!isLoading) {
       setSelectedAnswers(card.qcAnswers.map(answer =>
-        ({ ...answer, isSelected: questionnaireAnswer?.answerList.includes(answer._id) })));
+        ({ ...answer, isSelected: !!questionnaireAnswer?.answerList.includes(answer._id) })));
     }
   }, [card, isLoading, questionnaireAnswer]);
 

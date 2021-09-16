@@ -8,7 +8,7 @@ import NiPrimaryButton from '../../form/PrimaryButton';
 import styles from './styles';
 
 interface QuestionCardFooterProps {
-  index: number,
+  index: number | null,
   buttonVisible?: boolean,
   arrowColor: string,
   buttonColor: string,
@@ -38,13 +38,13 @@ const QuestionCardFooter = ({
     if (onPressButton) onPressButton();
     else {
       if (validateCard) validateCard();
-      navigation.navigate(`card-${index + 1}`);
+      if (index !== null) navigation.navigate(`card-${index + 1}`);
     }
   };
 
   const goBack = () => {
     if (onPressArrow) onPressArrow();
-    navigation.navigate(`card-${index - 1}`);
+    if (index !== null) navigation.navigate(`card-${index - 1}`);
   };
 
   return (

@@ -92,8 +92,8 @@ const ActivityCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator();
 
-  return cards.length > 0 && activity && (
-    <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+  return cards.length > 0 && activity
+    ? (<Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
       <Tab.Screen key={0} name={'startCard'} >
         {() => <StartCard title={activity.name} goBack={goBack} />}
       </Tab.Screen>
@@ -105,8 +105,8 @@ const ActivityCardContainer = ({
       <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
         {() => <ActivityEndCard goBack={goBack} activity={activity} />}
       </Tab.Screen>
-    </Tab.Navigator>
-  );
+    </Tab.Navigator>)
+    : null;
 };
 
 const mapStateToProps = (state: StateType) => ({

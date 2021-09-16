@@ -19,7 +19,7 @@ import { quizJingle } from '../../../../core/helpers/utils';
 
 interface FillTheGap {
   card: FillTheGapType,
-  index: number,
+  index: number | null,
   isLoading: boolean,
   incGoodAnswersCount: () => void,
   setIsRightSwipeEnabled: (boolean) => void,
@@ -128,7 +128,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
 
       return setIsValidated(true);
     }
-    return navigation.navigate(`card-${index + 1}`);
+    return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
   };
 
   return (

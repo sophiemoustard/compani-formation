@@ -8,7 +8,7 @@ import { GREY } from '../../../styles/colors';
 interface QuizCardFooterProps {
   isValidated: boolean,
   isValid: boolean,
-  cardIndex: number,
+  cardIndex: number | null,
   footerColors,
   explanation: string,
   buttonDisabled?: boolean,

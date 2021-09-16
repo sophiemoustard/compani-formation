@@ -88,7 +88,7 @@
     "react-native-svg": "12.1.1",
     "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^3.0.1",
-    "react-redux": "7.2.2",
+    "react-redux": "^7.2.5",
     "redux": "^4.0.5",
     "sentry-expo": "^4.0.0",
     "sharp-cli": "^1.14.1"
