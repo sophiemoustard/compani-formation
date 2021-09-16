@@ -83,10 +83,10 @@ const SingleChoiceQuestionCard = ({
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        {!isPressed && <FooterGradient /> }
+        {!isPressed && <FooterGradient />}
         <QuizCardFooter isValidated={isPressed} isValid={answers[selectedAnswerIndex] === card.qcuGoodAnswer}
           cardIndex={index} footerColors={footerColors} explanation={card.explanation}
-          buttonDisabled={!isPressed} />
+          buttonDisabled={!isPressed} hideButton />
       </View>
     </>
   );
