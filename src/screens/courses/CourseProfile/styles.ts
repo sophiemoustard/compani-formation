@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../../styles/fonts';
+import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 const imageHeight = 200;
 const styles = StyleSheet.create({
@@ -49,34 +49,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: MARGIN.XL,
-  },
-  progressBarHeaderContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-    paddingHorizontal: PADDING.LG,
-  },
-  stickyProgressBar: {
-    width: 120,
-  },
-  stickyProgressBarText: {
-    ...FIRA_SANS_REGULAR.SM,
-    color: GREY[600],
-    marginHorizontal: MARGIN.MD,
-    marginVertical: MARGIN.XS,
-  },
-  stickyHeader: {
-    flexDirection: 'row',
-    display: 'flex',
-    backgroundColor: WHITE,
-    paddingVertical: PADDING.LG,
-    paddingLeft: PADDING.LG,
-    alignItems: 'center',
-    borderBottomWidth: 2 * BORDER_WIDTH,
-    borderColor: GREY[200],
-  },
-  headerTitle: {
-    ...FIRA_SANS_MEDIUM.MD,
-    color: GREY[800],
   },
   progressBarText: {
     ...NUNITO_SEMI.XS,
