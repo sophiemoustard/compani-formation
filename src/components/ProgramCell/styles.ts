@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, TRANSPARENT_GREY, GREY, GREEN } from '../../styles/colors';
-import { BORDER_RADIUS, PADDING, PROGRAM_CELL_WIDTH, BORDER_WIDTH, ICON, MARGIN } from '../../styles/metrics';
+import { BORDER_RADIUS, PADDING, SCREEN_WIDTH, BORDER_WIDTH, ICON, MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const imageHeight = 128;
@@ -8,7 +8,7 @@ const containerHeight = 288;
 const styles = StyleSheet.create({
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
-    width: PROGRAM_CELL_WIDTH,
+    width: SCREEN_WIDTH - 2 * MARGIN.MD,
     borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
     overflow: 'hidden',

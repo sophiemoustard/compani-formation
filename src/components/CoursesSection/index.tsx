@@ -37,9 +37,9 @@ const CoursesSection = ({
       <Text style={[countStyle, styles.countContainer]}>
         {items.length} {formatWordToPlural(items, type).toUpperCase()}
       </Text>
-      <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`} style={styles.container}
-        renderItem={({ item }) => renderItem(item)} showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={renderSeparator} />
+      <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`}
+        contentContainerStyle={styles.container} renderItem={({ item }) => renderItem(item)}
+        showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
       {showCatalogButton &&
         <TouchableOpacity style={styles.courseContainer} onPress={() => navigation.navigate('Catalog')}>
           <Text style={styles.text}>Vous n’avez pas de formation en cours...</Text>
