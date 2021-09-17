@@ -76,43 +76,42 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   const style = styles(footerColors.background);
 
   const setAnswersAndPropositions = (event, gapIndex?) => {
-    const { payload } = event.dragged;
-    const tempPropositions = [...propositions];
-    const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
+    const { payload: movedProp } = event.dragged;
+    const newPropositions = [...propositions];
+    const selectedPropIdx = newPropositions.map(prop => prop.text).indexOf(movedProp);
     const isActionClick = Math.abs(event.dragged.dragTranslationRatio.x) < 0.1 &&
       Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
-    const payloadIdx = selectedAnswers.indexOf(payload);
+    const selectedAnswerIdx = selectedAnswers.indexOf(movedProp);
 
-    const moveSelectedAnswer = payloadIdx > -1;
+    const moveSelectedAnswer = selectedAnswerIdx > -1;
     if (moveSelectedAnswer) {
-      setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
-      tempPropositions[selectedPropIdx].visible = true;
+      setSelectedAnswers(array => Object.assign([], array, { [selectedAnswerIdx]: '' }));
+      newPropositions[selectedPropIdx].visible = true;
     }
 
-    const moveUnselectedAnswer = selectedPropIdx > -1 && !moveSelectedAnswer;
-    const fillGapByClicking = isActionClick && moveUnselectedAnswer;
+    const fillGapByClicking = isActionClick && !moveSelectedAnswer;
     if (fillGapByClicking) {
-      const targetId = selectedAnswers.indexOf('');
+      const emptyGapIdx = selectedAnswers.indexOf('');
 
-      if (targetId > -1) {
-        setSelectedAnswers(array => Object.assign([], array, { [targetId]: payload }));
-        tempPropositions[selectedPropIdx].visible = false;
+      if (emptyGapIdx > -1) {
+        setSelectedAnswers(array => Object.assign([], array, { [emptyGapIdx]: movedProp }));
+        newPropositions[selectedPropIdx].visible = false;
       }
     }
 
     const fillGapByDroping = !isActionClick && Number.isInteger(gapIndex);
     if (fillGapByDroping) {
-      const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload;
+      const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
       if (isGapAlreadyFilled) {
-        const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
-        tempPropositions[previousAnswerIdx].visible = true;
+        const previousAnswerIdx = newPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
+        newPropositions[previousAnswerIdx].visible = true;
       }
 
-      setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
-      tempPropositions[selectedPropIdx].visible = false;
+      setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: movedProp }));
+      newPropositions[selectedPropIdx].visible = false;
     }
 
-    setPropositions(tempPropositions);
+    setPropositions(newPropositions);
   };
 
   const isGoodAnswer = (text, idx) => {
