@@ -167,7 +167,8 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   return course && has(course, 'subProgram.program') && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
-      stickyHeaderIndices={[2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE} onScroll={isProgressBarOnTop}>
+      stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+      onScroll={isProgressBarOnTop}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />

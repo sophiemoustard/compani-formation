@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY } from '../../styles/colors';
-import { BORDER_WIDTH, MARGIN, PADDING } from '../../styles/metrics';
+import { BORDER_WIDTH, MARGIN, PADDING, SCREEN_WIDTH } from '../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   title: {
     ...FIRA_SANS_MEDIUM.MD,
     color: GREY[800],
+    maxWidth: SCREEN_WIDTH / 2,
   },
   progressBarContainer: {
     flex: 1,
