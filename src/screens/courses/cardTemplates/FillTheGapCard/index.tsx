@@ -83,32 +83,27 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
       Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
     const selectedAnswerIdx = selectedAnswers.indexOf(movedProp);
 
-    const moveSelectedAnswer = selectedAnswerIdx > -1;
-    if (moveSelectedAnswer) {
-      setSelectedAnswers(array => Object.assign([], array, { [selectedAnswerIdx]: '' }));
-      newPropositions[selectedPropIdx].visible = true;
-    }
+    const updateAnswer = (gapIdx: number, newGapValue: string) => {
+      setSelectedAnswers(array => Object.assign([], array, { [gapIdx]: newGapValue }));
+      newPropositions[selectedPropIdx].visible = !newGapValue;
+    };
 
-    const fillGapByClicking = isActionClick && !moveSelectedAnswer;
-    if (fillGapByClicking) {
-      const emptyGapIdx = selectedAnswers.indexOf('');
+    const isMovingSelectedAnswer = selectedAnswerIdx > -1;
+    if (isMovingSelectedAnswer) updateAnswer(selectedAnswerIdx, '');
 
-      if (emptyGapIdx > -1) {
-        setSelectedAnswers(array => Object.assign([], array, { [emptyGapIdx]: movedProp }));
-        newPropositions[selectedPropIdx].visible = false;
-      }
-    }
+    const isFillingGapByClicking = isActionClick && !isMovingSelectedAnswer;
+    const emptyGapIdx = selectedAnswers.indexOf('');
+    if (isFillingGapByClicking && emptyGapIdx > -1) updateAnswer(emptyGapIdx, movedProp);
 
-    const fillGapByDroping = !isActionClick && Number.isInteger(gapIndex);
-    if (fillGapByDroping) {
+    const isFillingGapByDroping = !isActionClick && Number.isInteger(gapIndex);
+    if (isFillingGapByDroping) {
       const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
       if (isGapAlreadyFilled) {
         const previousAnswerIdx = newPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
         newPropositions[previousAnswerIdx].visible = true;
       }
 
-      setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: movedProp }));
-      newPropositions[selectedPropIdx].visible = false;
+      updateAnswer(gapIndex, movedProp);
     }
 
     setPropositions(newPropositions);
