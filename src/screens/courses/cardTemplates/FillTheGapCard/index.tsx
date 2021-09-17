@@ -78,7 +78,8 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
-    const isActionClick = event.dragged.dragTranslationRatio.x === 0 && event.dragged.dragTranslationRatio.y === 0;
+    const isActionClick = Math.abs(event.dragged.dragTranslationRatio.x) < 0.1 &&
+      Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
     const targetIsGap = isActionClick ? !Number.isInteger(gapIndex) : Number.isInteger(gapIndex);
     const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
     const payloadIdx = selectedAnswers.indexOf(payload);
