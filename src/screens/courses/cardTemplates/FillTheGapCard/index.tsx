@@ -78,28 +78,38 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload } = event.dragged;
     const tempPropositions = [...propositions];
+    const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
     const isActionClick = Math.abs(event.dragged.dragTranslationRatio.x) < 0.1 &&
       Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
-    const targetIsGap = isActionClick ? !Number.isInteger(gapIndex) : Number.isInteger(gapIndex);
-    const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
     const payloadIdx = selectedAnswers.indexOf(payload);
 
-    if (payloadIdx > -1) {
+    const moveSelectedAnswer = payloadIdx > -1;
+    if (moveSelectedAnswer) {
       setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
       tempPropositions[selectedPropIdx].visible = true;
     }
 
-    if (targetIsGap) {
-      const targetId = isActionClick ? selectedAnswers.indexOf('') : gapIndex;
-      if (targetId > -1) {
-        if (selectedAnswers[targetId] && selectedAnswers[targetId] !== payload) {
-          const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[targetId]);
-          tempPropositions[previousAnswerIdx].visible = true;
-        }
+    const moveUnselectedAnswer = selectedPropIdx > -1 && !moveSelectedAnswer;
+    const fillGapByClicking = isActionClick && moveUnselectedAnswer;
+    if (fillGapByClicking) {
+      const targetId = selectedAnswers.indexOf('');
 
+      if (targetId > -1) {
         setSelectedAnswers(array => Object.assign([], array, { [targetId]: payload }));
         tempPropositions[selectedPropIdx].visible = false;
       }
+    }
+
+    const fillGapByDroping = !isActionClick && Number.isInteger(gapIndex);
+    if (fillGapByDroping) {
+      const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload;
+      if (isGapAlreadyFilled) {
+        const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
+        tempPropositions[previousAnswerIdx].visible = true;
+      }
+
+      setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
+      tempPropositions[selectedPropIdx].visible = false;
     }
 
     setPropositions(tempPropositions);
