@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { NavigationType } from '../../types/NavigationType';
+import commonStyle from '../../styles/common';
 import styles from './styles';
 import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
@@ -136,7 +137,9 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       <View style={styles.header}>
         <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
           disabled={isLoading} />
-        <ProgressBar progress={((i + 1) / formList.length) * 100} />
+        <View style={commonStyle.progressBarContainer}>
+          <ProgressBar progress={((i + 1) / formList.length) * 100} />
+        </View>
       </View>
       <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
         create={create} openModal={toggleModal} />

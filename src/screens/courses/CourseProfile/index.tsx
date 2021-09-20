@@ -22,7 +22,7 @@ import { NavigationType } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
 import Questionnaires from '../../../api/questionnaires';
 import { GREY, WHITE } from '../../../styles/colors';
-import { ICON } from '../../../styles/metrics';
+import { ICON, SCROLL_EVENT_THROTTLE } from '../../../styles/metrics';
 import OnSiteCell from '../../../components/steps/OnSiteCell';
 import ELearningCell from '../../../components/ELearningCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -34,6 +34,7 @@ import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
+import CourseProfileStickyHeader from '../../../components/CourseProfileStickyHeader';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import QuestionnairesContainer from '../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
@@ -70,6 +71,8 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');
   const { signOut } = useContext(AuthContext);
+  const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
+  const [progressBarY, setProgressBarY] = useState <number>(0);
 
   useEffect(() => {
     setProgramName(get(course, 'subProgram.program.name') || '');
@@ -139,8 +142,35 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     return `${programName}${misc ? `- ${misc}` : ''}`;
   };
 
+  const isProgressBarOnTop = (event) => {
+    const { y } = event.nativeEvent.contentOffset;
+    setIsHeaderSticky(y >= progressBarY);
+  };
+
+  const getProgressBarY = (event) => {
+    const { layout } = event.nativeEvent;
+    setProgressBarY(layout.y);
+  };
+
+  const getHeader = () => course && has(course, 'subProgram.program') && (
+    <View onLayout={getProgressBarY}>
+      {isHeaderSticky
+        ? <CourseProfileStickyHeader course={course} title={getTitle()} />
+        : <View style={styles.progressBarContainer}>
+          <Text style={styles.progressBarText}>ÉTAPES</Text>
+          <View style={commonStyles.progressBarContainer}>
+            <ProgressBar progress={course.progress * 100} />
+          </View>
+          <Text style={styles.progressBarText}>{(course.progress * 100).toFixed(0)}%</Text>
+        </View>
+      }
+    </View>
+  );
+
   return course && has(course, 'subProgram.program') && (
-    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
+      stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+      onScroll={isProgressBarOnTop}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
@@ -157,11 +187,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         </TouchableOpacity>
       </View>
       {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
-      <View style={styles.progressBarContainer}>
-        <Text style={styles.progressBarText}>ÉTAPES</Text>
-        <ProgressBar progress={course.progress * 100} />
-        <Text style={styles.progressBarText}>{(course.progress * 100).toFixed(0)}%</Text>
-      </View>
+      {getHeader()}
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
     </ScrollView>

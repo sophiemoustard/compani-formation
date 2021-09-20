@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { GREY, YELLOW } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PROGRESS_BAR_HEIGHT } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, PROGRESS_BAR_HEIGHT } from '../../../styles/metrics';
 
 const styles = (progressPercentage: number) => StyleSheet.create({
   container: {
-    marginHorizontal: MARGIN.MD,
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: GREY[200],
