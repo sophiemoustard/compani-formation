@@ -6,16 +6,16 @@ import styles from './styles';
 
 interface CourseProfileStickyHeaderProps {
   course: CourseType,
-  getTitle: () => string
+  title: string
 }
 
-const CourseProfileStickyHeader = ({ course, getTitle }: CourseProfileStickyHeaderProps) => {
+const CourseProfileStickyHeader = ({ course, title }: CourseProfileStickyHeaderProps) => {
   const getStepRatio = steps =>
     `${steps.filter(step => step.progress === 1).length}/${course.subProgram.steps.length}`;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{getTitle()}</Text>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.progressBarContainer}>
         <Text style={styles.stepRatio}>{getStepRatio(course.subProgram.steps)}</Text>
         <View style={styles.progressBar}>

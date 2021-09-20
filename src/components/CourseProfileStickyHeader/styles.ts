@@ -1,22 +1,22 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY } from '../../styles/colors';
 import { BORDER_WIDTH, MARGIN, PADDING, SCREEN_WIDTH } from '../../styles/metrics';
-import { FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM } from '../../styles/fonts';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: WHITE,
-    paddingVertical: PADDING.MD,
-    paddingHorizontal: PADDING.LG,
+    paddingVertical: PADDING.LG,
+    paddingHorizontal: PADDING.XL,
     alignItems: 'center',
     borderBottomWidth: 2 * BORDER_WIDTH,
     borderColor: GREY[200],
   },
   title: {
-    ...FIRA_SANS_MEDIUM.MD,
+    ...FIRA_SANS_BOLD.MD,
     color: GREY[800],
-    maxWidth: SCREEN_WIDTH / 2,
+    maxWidth: (2 * SCREEN_WIDTH) / 3,
   },
   progressBarContainer: {
     flex: 1,
@@ -25,11 +25,10 @@ const styles = StyleSheet.create({
   stepRatio: {
     ...FIRA_SANS_REGULAR.SM,
     color: GREY[600],
-    marginHorizontal: MARGIN.MD,
     marginVertical: MARGIN.XS,
   },
   progressBar: {
-    width: 120,
+    width: 64,
   },
 });
 
