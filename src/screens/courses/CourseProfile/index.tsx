@@ -155,7 +155,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const getHeader = () => course && has(course, 'subProgram.program') && (
     <View onLayout={getProgressBarY}>
       {isHeaderSticky
-        ? <CourseProfileStickyHeader course={course} title={getTitle()} />
+        ? <CourseProfileStickyHeader progress={course.progress} title={getTitle()} />
         : <View style={styles.progressBarContainer}>
           <Text style={styles.progressBarText}>ÉTAPES</Text>
           <View style={commonStyles.progressBarContainer}>
