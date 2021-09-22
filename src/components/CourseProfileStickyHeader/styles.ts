@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
   },
-  stepRatio: {
+  progressPercentage: {
     ...FIRA_SANS_REGULAR.SM,
     color: GREY[600],
     marginVertical: MARGIN.XS,
