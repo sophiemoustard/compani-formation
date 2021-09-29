@@ -13,7 +13,7 @@ import styles from './styles';
 
 interface TitleTextCardProps {
   card: TitleTextType,
-  index: number,
+  index: number | null,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
 }

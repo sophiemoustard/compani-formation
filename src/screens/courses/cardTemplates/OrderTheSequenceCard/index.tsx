@@ -20,7 +20,7 @@ import styles from './styles';
 
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
-  index: number,
+  index: number | null,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
@@ -79,7 +79,7 @@ const OrderTheSequenceCard = ({
 
       return setIsValidated(true);
     }
-    return navigation.navigate(`card-${index + 1}`);
+    return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
   };
 
   const setAnswersArray = ({ data }) => {

@@ -16,7 +16,7 @@ interface ActivityEndCardProps {
   activity: ActivityType,
   questionnaireAnswersList: QuestionnaireAnswersType[],
   score: number,
-  setCardIndex: (number) => void,
+  setCardIndex: (index: number | null) => void,
   goBack: () => void,
 }
 

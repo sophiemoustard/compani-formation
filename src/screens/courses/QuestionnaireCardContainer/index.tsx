@@ -89,8 +89,8 @@ const QuestionnaireCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator();
 
-  return cards.length > 0 && questionnaire && (
-    <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+  return cards.length > 0 && questionnaire
+    ? (<Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
       <Tab.Screen key={0} name={'startCard'} >
         {() => <StartCard title={questionnaire.name} goBack={goBack} />}
       </Tab.Screen>
@@ -102,8 +102,8 @@ const QuestionnaireCardContainer = ({
       <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
         {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
       </Tab.Screen>
-    </Tab.Navigator>
-  );
+    </Tab.Navigator>)
+    : null;
 };
 
 const mapStateToProps = (state: StateType) => ({

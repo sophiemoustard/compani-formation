@@ -17,7 +17,7 @@ interface QuestionnaireEndCardProps {
   questionnaire: QuestionnaireType,
   questionnaireAnswersList: QuestionnaireAnswersType[],
   goBack: () => void,
-  setCardIndex: (number) => void,
+  setCardIndex: (index: number | null) => void,
 }
 
 const QuestionnaireEndCard = ({
@@ -61,7 +61,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCardIndex: index => dispatch(CardsActions.setCardIndex(index)),
+  setCardIndex: (index: number | null) => dispatch(CardsActions.setCardIndex(index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireEndCard);

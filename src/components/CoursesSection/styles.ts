@@ -5,7 +5,7 @@ import { TRANSPARENT_GREY, WHITE } from '../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: MAIN_MARGIN_LEFT,
+    paddingHorizontal: PADDING.LG,
   },
   separator: {
     marginRight: MARGIN.SM,

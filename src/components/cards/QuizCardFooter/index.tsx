@@ -8,10 +8,11 @@ import { GREY } from '../../../styles/colors';
 interface QuizCardFooterProps {
   isValidated: boolean,
   isValid: boolean,
-  cardIndex: number,
+  cardIndex: number | null,
   footerColors,
   explanation: string,
   buttonDisabled?: boolean,
+  hideButton?: boolean,
   onPressFooterButton?: () => void,
 }
 
@@ -22,6 +23,7 @@ const QuizCardFooter = ({
   footerColors,
   explanation,
   buttonDisabled = false,
+  hideButton = false,
   onPressFooterButton,
 }: QuizCardFooterProps) => {
   const style = styles(footerColors.text, footerColors.background);
@@ -35,7 +37,7 @@ const QuizCardFooter = ({
       )}
       <QuestionCardFooter onPressButton={onPressFooterButton} buttonCaption={isValidated ? 'Continuer' : 'Valider'}
         arrowColor={footerColors.buttons} index={cardIndex} buttonDisabled={buttonDisabled}
-        buttonColor={!buttonDisabled ? footerColors.buttons : GREY[300]} />
+        buttonColor={!buttonDisabled ? footerColors.buttons : GREY[300]} buttonVisible={!hideButton || isValidated} />
     </>);
 };
 

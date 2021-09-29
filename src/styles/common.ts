@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, MAIN_MARGIN_LEFT } from './metrics';
+import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT } from './metrics';
 import { WHITE, PINK } from './colors';
 import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
 
@@ -19,6 +19,11 @@ export default StyleSheet.create({
   },
   iconButton: {
     zIndex: 100,
+  },
+  progressBarContainer: {
+    marginHorizontal: MARGIN.MD,
+    flex: 1,
+    height: PROGRESS_BAR_HEIGHT,
   },
 });
 

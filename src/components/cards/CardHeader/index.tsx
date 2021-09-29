@@ -7,6 +7,7 @@ import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import { ActionType, StateType } from '../../../types/store/StoreType';
 import styles from './styles';
+import commonStyle from '../../../styles/common';
 import ProgressBar from '../ProgressBar';
 import Selectors from '../../../store/cards/selectors';
 import { FeatherType } from '../../../types/FeatherType';
@@ -40,7 +41,9 @@ const CardHeader = ({
   return (
     <View style={styles.container}>
       <FeatherButton name={icon} onPress={iconButtonOnPress} size={ICON.LG} color={color} style={styles.closeButton} />
-      {displayProgressBar && <ProgressBar progress={progressPercentage} />}
+      {displayProgressBar && <View style={commonStyle.progressBarContainer}>
+        <ProgressBar progress={progressPercentage} />
+      </View>}
     </View>
   );
 };

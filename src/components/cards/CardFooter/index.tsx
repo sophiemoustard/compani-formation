@@ -6,7 +6,7 @@ import { LEFT, RIGHT } from '../../../core/data/constants';
 import styles from './styles';
 
 interface CardFooterProps {
-  index: number,
+  index: number | null,
   color?: string,
   removeRight?: boolean
 }
@@ -20,14 +20,14 @@ const CardFooter = ({ index, color, removeRight }: CardFooterProps) => {
   else if (removeRight) justifyContent = 'flex-start';
   else justifyContent = 'space-between';
 
-  return (
-    <View style={styles({ justifyContent }).container}>
+  return index !== null
+    ? (<View style={styles({ justifyContent }).container}>
       {!removeLeft && <ArrowButton color={color} direction={LEFT}
         onPress={() => navigation.navigate(`card-${index - 1}`)} />}
       {!removeRight && <ArrowButton color={color} direction={RIGHT}
         onPress={() => navigation.navigate(`card-${index + 1}`)} />}
-    </View>
-  );
+    </View>)
+    : null;
 };
 
 export default CardFooter;

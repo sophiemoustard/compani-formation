@@ -17,7 +17,7 @@ import { quizJingle } from '../../../../core/helpers/utils';
 
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
-  index: number,
+  index: number | null,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean) => void,
@@ -83,10 +83,10 @@ const SingleChoiceQuestionCard = ({
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
-        {!isPressed && <FooterGradient /> }
+        {!isPressed && <FooterGradient />}
         <QuizCardFooter isValidated={isPressed} isValid={answers[selectedAnswerIndex] === card.qcuGoodAnswer}
           cardIndex={index} footerColors={footerColors} explanation={card.explanation}
-          buttonDisabled={!isPressed} />
+          buttonDisabled={!isPressed} hideButton />
       </View>
     </>
   );

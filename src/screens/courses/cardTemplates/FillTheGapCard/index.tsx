@@ -19,7 +19,7 @@ import { quizJingle } from '../../../../core/helpers/utils';
 
 interface FillTheGap {
   card: FillTheGapType,
-  index: number,
+  index: number | null,
   isLoading: boolean,
   incGoodAnswersCount: () => void,
   setIsRightSwipeEnabled: (boolean) => void,
@@ -76,24 +76,37 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   const style = styles(footerColors.background);
 
   const setAnswersAndPropositions = (event, gapIndex?) => {
-    const { payload } = event.dragged;
-    const tempPropositions = [...propositions];
-    const dropTargetIsGap = Number.isInteger(gapIndex);
-    const selectedPropIdx = tempPropositions.map(prop => prop.text).indexOf(payload);
-    const payloadIdx = selectedAnswers.indexOf(payload);
+    const { payload: movedProp } = event.dragged;
+    const newPropositions = [...propositions];
+    const selectedPropIdx = newPropositions.map(prop => prop.text).indexOf(movedProp);
+    const isActionClick = Math.abs(event.dragged.dragTranslationRatio.x) < 0.1 &&
+      Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
+    const selectedAnswerIdx = selectedAnswers.indexOf(movedProp);
 
-    tempPropositions[selectedPropIdx].visible = !dropTargetIsGap;
+    const updateAnswer = (gapIdx: number, newGapValue: string) => {
+      setSelectedAnswers(array => Object.assign([], array, { [gapIdx]: newGapValue }));
+      newPropositions[selectedPropIdx].visible = !newGapValue;
+    };
 
-    if (dropTargetIsGap && selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== payload) {
-      const previousAnswerIdx = tempPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
-      tempPropositions[previousAnswerIdx].visible = true;
+    const isMovingSelectedAnswer = selectedAnswerIdx > -1;
+    if (isMovingSelectedAnswer) updateAnswer(selectedAnswerIdx, '');
+
+    const isFillingGapByClicking = isActionClick && !isMovingSelectedAnswer;
+    const emptyGapIdx = selectedAnswers.indexOf('');
+    if (isFillingGapByClicking && emptyGapIdx > -1) updateAnswer(emptyGapIdx, movedProp);
+
+    const isFillingGapByDroping = !isActionClick && Number.isInteger(gapIndex);
+    if (isFillingGapByDroping) {
+      const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
+      if (isGapAlreadyFilled) {
+        const previousAnswerIdx = newPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
+        newPropositions[previousAnswerIdx].visible = true;
+      }
+
+      updateAnswer(gapIndex, movedProp);
     }
 
-    if (payloadIdx > -1) setSelectedAnswers(array => Object.assign([], array, { [payloadIdx]: '' }));
-
-    if (dropTargetIsGap) setSelectedAnswers(array => Object.assign([], array, { [gapIndex]: payload }));
-
-    setPropositions(tempPropositions);
+    setPropositions(newPropositions);
   };
 
   const isGoodAnswer = (text, idx) => {
@@ -128,7 +141,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
 
       return setIsValidated(true);
     }
-    return navigation.navigate(`card-${index + 1}`);
+    return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
   };
 
   return (
