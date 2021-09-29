@@ -4,7 +4,7 @@
     "slug": "compani",
     "description": "Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain",
     "platforms": ["ios", "android"],
-    "version": "2.1.0",
+    "version": "2.2.0",
     "orientation": "portrait",
     "primaryColor": "#005774",
     "icon": "./assets/images/ios_icon.png",
@@ -39,7 +39,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "2.1.0",
+      "buildNumber": "2.2.0",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
@@ -56,7 +56,7 @@
         "foregroundImage": "./assets/images/android_icon.png",
         "backgroundColor": "#005774"
       },
-      "versionCode": 69,
+      "versionCode": 70,
       "googleServicesFile": "./google-services.json"
     }
   }
