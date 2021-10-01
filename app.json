@@ -39,7 +39,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.alenvi.compani",
-      "buildNumber": "2.2.0",
+      "buildNumber": "2.2.1",
       "requireFullScreen": true,
       "icon": "./assets/images/ios_icon.png",
       "infoPlist": {
