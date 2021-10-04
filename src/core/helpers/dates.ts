@@ -1,4 +1,4 @@
-import { Settings, DateTime, DurationObjectUnits } from 'luxon';
+import { Settings, DateTime, DurationObjectUnits, DateTimeUnit } from 'luxon';
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-locale/polyfill';
 import '@formatjs/intl-pluralrules/polyfill';
@@ -51,7 +51,7 @@ const companiDateFactory = (_date: DateTime) => ({
 
     return typeFloat ? floatDiff : roundedDiff;
   },
-  endOf(unit: keyof DurationObjectUnits) {
+  endOf(unit: DateTimeUnit) {
     return companiDateFactory(this._date.endOf(unit));
   },
   add(amount: number, unit: string) {
