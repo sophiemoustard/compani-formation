@@ -9,9 +9,11 @@ import { GREY } from '../../../styles/colors';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
+  onLoadStart?: () => void,
+  onLoad?: () => void,
 }
 
-const NiVideo = ({ mediaSource }: NiVideoProps) => {
+const NiVideo = ({ mediaSource, onLoadStart, onLoad }: NiVideoProps) => {
   const isIos = Platform.OS === 'ios';
   const isIosVersionWithPlayButton = isIos && Platform.Version === '14.1';
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
@@ -54,7 +56,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
           style={styles.play} />}
       <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
         onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate} style={styles.media}
-        onReadyForDisplay={onReadyForDisplay} />
+        onReadyForDisplay={onReadyForDisplay} onLoadStart={onLoadStart} onLoad={onLoad} />
     </View>
   );
 };
