@@ -9,11 +9,12 @@ import { GREY } from '../../../styles/colors';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
+  style: object,
   onLoadStart: () => void,
   onLoad: () => void,
 }
 
-const NiVideo = ({ mediaSource, onLoadStart, onLoad }: NiVideoProps) => {
+const NiVideo = ({ mediaSource, style, onLoadStart, onLoad }: NiVideoProps) => {
   const isIos = Platform.OS === 'ios';
   const isIosVersionWithPlayButton = isIos && Platform.Version === '14.1';
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
@@ -55,8 +56,8 @@ const NiVideo = ({ mediaSource, onLoadStart, onLoad }: NiVideoProps) => {
         <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
           style={styles.play} />}
       <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
-        onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate} style={styles.media}
-        onReadyForDisplay={onReadyForDisplay} onLoadStart={onLoadStart} onLoad={onLoad} />
+        onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
+        style={[style, styles.media]} onReadyForDisplay={onReadyForDisplay} onLoadStart={onLoadStart} onLoad={onLoad} />
     </View>
   );
 };

@@ -63,12 +63,12 @@ const TitleTextMediaCard = ({
 
   if (isLoading) return null;
 
-  const styleWithHeight = styles(mediaHeight);
+  const style = styles(mediaHeight, isMediaLoading);
 
   return (
     <>
       <CardHeader />
-      <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {isMediaLoading && <View style={commonStyle.spinner}>
@@ -76,10 +76,10 @@ const TitleTextMediaCard = ({
         </View>}
         {mediaType === IMAGE && !!mediaSource &&
           <TouchableOpacity onPress={() => setZoomImage(true)}>
-            <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]}
+            <Image source={mediaSource} style={[cardsStyle.media, style.media]}
               onLoadStart={() => setIsMediaLoading(true)} onLoadEnd={() => setIsMediaLoading(false)} />
           </TouchableOpacity>}
-        {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource}
+        {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} style={style.media}
           onLoadStart={() => setIsMediaLoading(true)} onLoad={() => setIsMediaLoading(false)} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource}/>}
       </ScrollView>
