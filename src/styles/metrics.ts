@@ -70,3 +70,4 @@ export const TAB_BAR_HEIGHT = 72;
 export const TAB_BAR_LABEL_WIDTH = 110;
 export const QUESTIONNAIRE_WIDTH = 96;
 export const SCROLL_EVENT_THROTTLE = 16;
+export const SPINNER_BACKGROUND_HEIGHT = 160;

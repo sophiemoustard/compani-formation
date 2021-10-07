@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT, SCREEN_WIDTH } from './metrics';
+import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT, SCREEN_WIDTH, SPINNER_BACKGROUND_HEIGHT } from './metrics';
 import { WHITE, PINK, GREY } from './colors';
 import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
 
@@ -28,7 +28,7 @@ export default StyleSheet.create({
   spinner: {
     backgroundColor: GREY[200],
     width: SCREEN_WIDTH - 2 * MARGIN.MD,
-    height: 160,
+    height: SPINNER_BACKGROUND_HEIGHT,
     justifyContent: 'center',
   },
 });

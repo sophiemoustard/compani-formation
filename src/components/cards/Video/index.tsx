@@ -9,8 +9,8 @@ import { GREY } from '../../../styles/colors';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
-  onLoadStart?: () => void,
-  onLoad?: () => void,
+  onLoadStart: () => void,
+  onLoad: () => void,
 }
 
 const NiVideo = ({ mediaSource, onLoadStart, onLoad }: NiVideoProps) => {
