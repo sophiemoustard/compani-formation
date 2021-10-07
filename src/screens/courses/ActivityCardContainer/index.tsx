@@ -69,16 +69,11 @@ const ActivityCardContainer = ({
 
   useEffect(() => {
     async function prefetchImages() {
-      if (cards.length) {
-        const prefetchedImages: Promise<boolean>[] = [];
-        cards.forEach((card) => {
-          if (get(card, 'media.type') === 'image') {
-            prefetchedImages.push(Image.prefetch(get(card, 'media.link')));
-          }
-        });
+      const imagesToPrefetch: Promise<boolean>[] = cards
+        .filter(c => get(c, 'media.type') === 'image')
+        .map(c => Image.prefetch(get(c, 'media.link')));
 
-        await Promise.all(prefetchedImages.map(i => i.catch(e => e)));
-      }
+      if (imagesToPrefetch.length) await Promise.all(imagesToPrefetch.map(i => i.catch(e => e)));
     }
     prefetchImages();
   }, [cards]);
