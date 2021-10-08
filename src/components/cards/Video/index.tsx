@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { Platform, View, ActivityIndicator } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Video } from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import { GREY } from '../../../styles/colors';
-import commonStyle from '../../../styles/common';
+import Spinner from '../../Spinner';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
@@ -51,9 +51,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
 
   return (
     <>
-      {isMediaLoading && <View style={commonStyle.spinner}>
-        <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />
-      </View>}
+      {isMediaLoading && <Spinner />}
       <View>
         {isIosVersionWithPlayButton && playVisible &&
         <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
