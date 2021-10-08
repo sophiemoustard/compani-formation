@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -7,8 +7,7 @@ import CardFooter from '../../../../components/cards/CardFooter';
 import ZoomImage from '../../../../components/ZoomImage';
 import Selectors from '../../../../store/cards/selectors';
 import cardsStyle from '../../../../styles/cards';
-import commonStyle, { markdownStyle } from '../../../../styles/common';
-import { GREY } from '../../../../styles/colors';
+import { markdownStyle } from '../../../../styles/common';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
 import { CacheType } from '../../../../types/CacheType';
@@ -18,6 +17,7 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import { IMAGE, VIDEO, AUDIO } from '../../../../core/data/constants';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
+import NiImage from '../../../../components/cards/Image';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -38,7 +38,6 @@ const TextMediaCard = ({
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string, cache?: CacheType } | undefined>();
   const [zoomImage, setZoomImage] = useState<boolean>(false);
-  const [isMediaLoading, setIsMediaLoading] = useState(false);
 
   useEffect(() => setIsRightSwipeEnabled(true));
   useEffect(() => {
@@ -62,23 +61,14 @@ const TextMediaCard = ({
 
   if (isLoading) return null;
 
-  const style = styles(mediaHeight, isMediaLoading);
-
   return (
     <>
       <CardHeader />
-      <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
-        {isMediaLoading && <View style={commonStyle.spinner}>
-          <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />
-        </View>}
         {mediaType === IMAGE && !!mediaSource &&
-          <TouchableOpacity onPress={() => setZoomImage(true)}>
-            <Image source={mediaSource} style={[cardsStyle.media, style.media]}
-              onLoadStart={() => setIsMediaLoading(true)} onLoadEnd={() => setIsMediaLoading(false)} />
-          </TouchableOpacity>}
-        {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} style={style.media}
-          onLoadStart={() => setIsMediaLoading(true)} onLoad={() => setIsMediaLoading(false)} />}
+          <NiImage onPress={() => setZoomImage(true)} source={mediaSource} imgHeight={mediaHeight} />}
+        {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource} />}
       </ScrollView>
       <FooterGradient />

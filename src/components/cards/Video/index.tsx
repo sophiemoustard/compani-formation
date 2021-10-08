@@ -1,25 +1,24 @@
 import React, { useState, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { Platform, View } from 'react-native';
+import { Platform, View, ActivityIndicator } from 'react-native';
 import { Video } from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import { GREY } from '../../../styles/colors';
+import commonStyle from '../../../styles/common';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
-  style: object,
-  onLoadStart: () => void,
-  onLoad: () => void,
 }
 
-const NiVideo = ({ mediaSource, style, onLoadStart, onLoad }: NiVideoProps) => {
+const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const isIos = Platform.OS === 'ios';
   const isIosVersionWithPlayButton = isIos && Platform.Version === '14.1';
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
   const [nativeControlsVisible, setNativeControlsVisible] = useState<boolean>(false);
   const videoRef = useRef<Video>(null);
+  const [isMediaLoading, setIsMediaLoading] = useState(false);
 
   const displayFullscreen = () => {
     videoRef.current?.playAsync();
@@ -48,17 +47,23 @@ const NiVideo = ({ mediaSource, style, onLoadStart, onLoad }: NiVideoProps) => {
   const onReadyForDisplay = ({ status }) => {
     if (status.isLoaded) setNativeControlsVisible(true);
   };
+  const style = styles(isMediaLoading);
 
   return (
-    // The View is needed to center the play button
-    <View>
-      {isIosVersionWithPlayButton && playVisible &&
+    <>
+      {isMediaLoading && <View style={commonStyle.spinner}>
+        <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />
+      </View>}
+      <View>
+        {isIosVersionWithPlayButton && playVisible &&
         <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
-          style={styles.play} />}
-      <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
-        onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
-        style={[style, styles.media]} onReadyForDisplay={onReadyForDisplay} onLoadStart={onLoadStart} onLoad={onLoad} />
-    </View>
+          style={style.play} />}
+        <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
+          onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
+          style={style.media} onReadyForDisplay={onReadyForDisplay}
+          onLoadStart={() => setIsMediaLoading(true)} onLoad={() => setIsMediaLoading(false)} />
+      </View>
+    </>
   );
 };
 
