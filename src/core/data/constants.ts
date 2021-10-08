@@ -5,9 +5,11 @@ export const STRICTLY_E_LEARNING = 'strictly_e_learning';
 
 // STEPS
 export const ON_SITE = 'on_site';
+export const REMOTE = 'remote';
 export const E_LEARNING = 'e_learning';
 export const stepTypeOptions = {
   [ON_SITE]: 'Présentiel',
+  [REMOTE]: 'Distanciel',
   [E_LEARNING]: 'eLearning',
 };
 

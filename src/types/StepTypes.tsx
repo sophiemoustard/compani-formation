@@ -1,4 +1,4 @@
-import { E_LEARNING, ON_SITE } from '../core/data/constants';
+import { E_LEARNING, ON_SITE, REMOTE } from '../core/data/constants';
 import { ActivityType } from './ActivityTypes';
 
 type BaseStepType = {
@@ -9,11 +9,11 @@ type BaseStepType = {
 }
 
 export type ELearningStepType = BaseStepType & { type: typeof E_LEARNING, activities: ActivityType[] }
-export type OnSiteStepType = BaseStepType & { type: typeof ON_SITE, activities: ActivityType[] }
-export type StepType = ELearningStepType | OnSiteStepType;
+export type LiveStepType = BaseStepType & { type: typeof ON_SITE | typeof REMOTE, activities: ActivityType[] }
+export type StepType = ELearningStepType | LiveStepType;
 
 export type NextSlotsStepType = BaseStepType & {
-  type: typeof ON_SITE,
+  type: typeof ON_SITE | typeof REMOTE,
   stepIndex: string,
   firstSlot: Date,
   slots: Date[],
