@@ -12,15 +12,21 @@ interface NiImageProps {
 
 const NiImage = ({ source, imgHeight, onPress }: NiImageProps) => {
   const [isMediaLoading, setIsMediaLoading] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const style = styles(imgHeight, isMediaLoading);
+
+  const loadImage = () => {
+    setIsMediaLoading(true);
+    setIsFirstLoad(false);
+  };
 
   return (
     <>
       {isMediaLoading && <Spinner />}
       <TouchableOpacity onPress={onPress}>
         <Image source={source} style={[cardsStyle.media, style.media]}
-          onLoadStart={() => setIsMediaLoading(true)} onLoadEnd={() => setIsMediaLoading(false)} />
+          onLoadStart={() => isFirstLoad && loadImage()} onLoad={() => setIsMediaLoading(false)} />
       </TouchableOpacity>
     </>
   );
