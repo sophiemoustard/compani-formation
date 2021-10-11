@@ -6,6 +6,7 @@ import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import { GREY } from '../../../styles/colors';
+import Spinner from '../../Spinner';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
@@ -17,6 +18,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
   const [nativeControlsVisible, setNativeControlsVisible] = useState<boolean>(false);
   const videoRef = useRef<Video>(null);
+  const [isMediaLoading, setIsMediaLoading] = useState(false);
 
   const displayFullscreen = () => {
     videoRef.current?.playAsync();
@@ -45,17 +47,21 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const onReadyForDisplay = ({ status }) => {
     if (status.isLoaded) setNativeControlsVisible(true);
   };
+  const style = styles(isMediaLoading);
 
   return (
-    // The View is needed to center the play button
-    <View>
-      {isIosVersionWithPlayButton && playVisible &&
+    <>
+      {isMediaLoading && <Spinner />}
+      <View>
+        {isIosVersionWithPlayButton && playVisible &&
         <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
-          style={styles.play} />}
-      <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
-        onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate} style={styles.media}
-        onReadyForDisplay={onReadyForDisplay} />
-    </View>
+          style={style.play} />}
+        <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
+          onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
+          style={style.media} onReadyForDisplay={onReadyForDisplay}
+          onLoadStart={() => setIsMediaLoading(true)} onLoad={() => setIsMediaLoading(false)} />
+      </View>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { BackHandler } from 'react-native';
+import get from 'lodash/get';
+import { BackHandler, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
@@ -65,6 +66,17 @@ const ActivityCardContainer = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    async function prefetchImages() {
+      const imagesToPrefetch: Promise<boolean>[] = cards
+        .filter(c => get(c, 'media.type') === 'image')
+        .map(c => Image.prefetch(get(c, 'media.link')));
+
+      if (imagesToPrefetch.length) await Promise.all(imagesToPrefetch.map(i => i.catch(e => e)));
+    }
+    prefetchImages();
+  }, [cards]);
 
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
