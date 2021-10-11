@@ -7,12 +7,12 @@ import companiDate from '../../../core/helpers/dates';
 import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
 
-type OnSiteHoursDisplayProps = {
+type LiveHoursDisplayProps = {
   startDate: SlotType['startDate'],
   endDate: SlotType['endDate'],
 }
 
-const OnSiteHoursDisplay = ({ startDate, endDate }: OnSiteHoursDisplayProps) => (
+const LiveHoursDisplay = ({ startDate, endDate }: LiveHoursDisplayProps) => (
   <View style={styles.datesAndArrowContainer}>
     <Text style={styles.hours}>{companiDate(startDate).format('HH:mm')}</Text>
     <View style={styles.arrow}>
@@ -22,4 +22,4 @@ const OnSiteHoursDisplay = ({ startDate, endDate }: OnSiteHoursDisplayProps) => 
   </View>
 );
 
-export default OnSiteHoursDisplay;
+export default LiveHoursDisplay;

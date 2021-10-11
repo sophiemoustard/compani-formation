@@ -23,10 +23,10 @@ import Courses from '../../../api/courses';
 import Questionnaires from '../../../api/questionnaires';
 import { GREY, WHITE } from '../../../styles/colors';
 import { ICON, SCROLL_EVENT_THROTTLE } from '../../../styles/metrics';
-import OnSiteCell from '../../../components/steps/OnSiteCell';
+import LiveCell from '../../../components/steps/LiveCell';
 import ELearningCell from '../../../components/ELearningCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
-import { ON_SITE, E_LEARNING } from '../../../core/data/constants';
+import { ON_SITE, E_LEARNING, REMOTE } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import { CourseType, BlendedCourseType } from '../../../types/CourseTypes';
 import styles from './styles';
@@ -50,8 +50,8 @@ interface CourseProfileProps {
 }
 
 const renderStepCell = ({ item, index }, course, route) => {
-  if (item.type === ON_SITE) {
-    return <OnSiteCell step={item} slots={course?.slots} index={index} profileId={route.params.courseId} />;
+  if ([ON_SITE, REMOTE].includes(item.type)) {
+    return <LiveCell step={item} slots={course?.slots} index={index} profileId={route.params.courseId} />;
   }
 
   if (item.type === E_LEARNING) {
