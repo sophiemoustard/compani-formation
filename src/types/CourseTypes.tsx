@@ -14,8 +14,7 @@ export type SlotType = {
   endDate: Date,
   address?: AddressType,
   meetingLink?: string,
-  step: string,
-  stepType: string,
+  step: { _id: string, type: string },
 }
 
 export type ProgramType = {

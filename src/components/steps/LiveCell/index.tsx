@@ -31,7 +31,7 @@ const LiveCell = ({ step, slots = [], index, profileId }: LiveCellProps) => {
   useEffect(() => { setModalTitle(`Etape ${index + 1} - ${step.name}`); }, [step, index]);
 
   useEffect(() => {
-    setStepSlots(slots.filter(slot => slot.step === step._id).map(slot => ({ ...slot, stepType: step.type })));
+    setStepSlots(slots.filter(slot => slot.step._id === step._id));
   }, [slots, step]);
 
   useEffect(() => {
