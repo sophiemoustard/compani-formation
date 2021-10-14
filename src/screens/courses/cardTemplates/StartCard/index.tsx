@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, ImageBackground, ScrollView } from 'react-native';
+import { View, Text, Image, ImageBackground, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { PINK, WHITE } from '../../../../styles/colors';
@@ -8,11 +8,13 @@ import styles from './styles';
 
 interface StartCardProps {
   title: string,
+  isLoading: boolean,
   goBack: () => void,
 }
 
 const StartCard = ({
   title,
+  isLoading,
   goBack,
 }: StartCardProps) => {
   const navigation = useNavigation();
@@ -27,10 +29,12 @@ const StartCard = ({
             source={require('../../../../../assets/images/start_card_background.png')}>
             <Image source={require('../../../../../assets/images/doct_liste.png')} style={styles.image} />
           </ImageBackground>
-          <Text style={styles.text}>{title}</Text>
+          {isLoading
+            ? <ActivityIndicator style={styles.loader} color={WHITE} size="large" />
+            : <Text style={styles.text}>{title}</Text>}
         </View>
-        <NiPrimaryButton customStyle={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
-          onPress={() => navigation.navigate('card-0')} />
+        {!isLoading && <NiPrimaryButton customStyle={styles.button} bgColor={WHITE} color={PINK[500]} caption="Démarrer"
+          onPress={() => navigation.navigate('card-0')} />}
       </View>
     </ScrollView>
   );
