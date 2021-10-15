@@ -5,11 +5,11 @@ import NiModal from '../../Modal';
 import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
-import OnSiteInfoItem from '../OnSiteInfoItem';
+import LiveInfoItem from '../LiveInfoItem';
 import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
 
-type OnSiteCellInfoModalProps = {
+type LiveCellInfoModalProps = {
   visible: boolean,
   title: string,
   stepSlots: SlotType[],
@@ -29,7 +29,7 @@ const formatStepSlots = (slots): { startDate: string, slots: SlotType[] }[] => {
   return Object.keys(formattedSlots).map(key => ({ startDate: key, slots: formattedSlots[key] }));
 };
 
-const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSiteCellInfoModalProps) => (
+const LiveCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: LiveCellInfoModalProps) => (
   <NiModal visible={visible}>
     <View style={styles.header}>
       <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={3}>{title}</Text>
@@ -37,9 +37,9 @@ const OnSiteCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: OnSi
         style={styles.closeButton} />
     </View>
     <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={true}
-      data={formatStepSlots(stepSlots)} renderItem={({ item }) => <OnSiteInfoItem slots={item.slots} />}
+      data={formatStepSlots(stepSlots)} renderItem={({ item }) => <LiveInfoItem slots={item.slots} />}
       keyExtractor={item => item.startDate} />
   </NiModal>
 );
 
-export default OnSiteCellInfoModal;
+export default LiveCellInfoModal;

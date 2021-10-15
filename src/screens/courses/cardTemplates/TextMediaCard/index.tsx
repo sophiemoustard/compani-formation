@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -10,12 +10,14 @@ import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
 import { StateType } from '../../../../types/store/StoreType';
 import { TextMediaType } from '../../../../types/CardType';
+import { CacheType } from '../../../../types/CacheType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import { IMAGE, VIDEO, AUDIO } from '../../../../core/data/constants';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
+import NiImage from '../../../../components/cards/Image';
 
 interface TextMediaCardProps {
   card: TextMediaType,
@@ -34,7 +36,7 @@ const TextMediaCard = ({
 }: TextMediaCardProps) => {
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
-  const [mediaSource, setMediaSource] = useState<{ uri: string } | undefined>();
+  const [mediaSource, setMediaSource] = useState<{ uri: string, cache?: CacheType } | undefined>();
   const [zoomImage, setZoomImage] = useState<boolean>(false);
 
   useEffect(() => setIsRightSwipeEnabled(true));
@@ -51,23 +53,21 @@ const TextMediaCard = ({
         });
       }
       setMediaType(card?.media?.type);
-      setMediaSource(card.media?.link ? { uri: card.media.link } : undefined);
+      setMediaSource(card.media?.link
+        ? { uri: card.media.link, ...(card?.media?.type === IMAGE && { cache: 'force-cache' }) }
+        : undefined);
     }
   }, [card, isLoading]);
 
   if (isLoading) return null;
 
-  const styleWithHeight = styles(mediaHeight);
-
   return (
     <>
       <CardHeader />
-      <ScrollView style={styleWithHeight.container} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
         {mediaType === IMAGE && !!mediaSource &&
-          <TouchableOpacity onPress={() => setZoomImage(true)}>
-            <Image source={mediaSource} style={[cardsStyle.media, styleWithHeight.media]} />
-          </TouchableOpacity>}
+          <NiImage onPress={() => setZoomImage(true)} source={mediaSource} imgHeight={mediaHeight} />}
         {mediaType === VIDEO && !!mediaSource && <NiVideo mediaSource={mediaSource} />}
         {mediaType === AUDIO && !!mediaSource && <NiAudio mediaSource={mediaSource} />}
       </ScrollView>

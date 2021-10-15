@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: MARGIN.XL,
   },
+  loader: {
+    marginTop: MARGIN.XXL,
+  },
 });
 
 export default styles;

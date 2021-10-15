@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { BackHandler } from 'react-native';
+import get from 'lodash/get';
+import { BackHandler, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
@@ -66,6 +67,17 @@ const ActivityCardContainer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    async function prefetchImages() {
+      const imagesToPrefetch: Promise<boolean>[] = cards
+        .filter(c => get(c, 'media.type') === 'image')
+        .map(c => Image.prefetch(get(c, 'media.link')));
+
+      if (imagesToPrefetch.length) await Promise.all(imagesToPrefetch.map(i => i.catch(e => e)));
+    }
+    prefetchImages();
+  }, [cards]);
+
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
@@ -92,21 +104,23 @@ const ActivityCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator();
 
-  return cards.length > 0 && activity
-    ? (<Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
-      <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={activity.name} goBack={goBack} />}
-      </Tab.Screen>
-      {cards.map((_, index) => (
-        <Tab.Screen key={index} name={`card-${index}`}>
-          {() => <CardScreen index={index} goBack={goBack} />}
+  return <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+    <Tab.Screen key={0} name={'startCard'} >
+      {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
+    </Tab.Screen>
+    {cards.length > 0 && activity
+      ? <>
+        {cards.map((_, index) => (
+          <Tab.Screen key={index} name={`card-${index}`}>
+            {() => <CardScreen index={index} goBack={goBack} />}
+          </Tab.Screen>
+        ))}
+        <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+          {() => <ActivityEndCard goBack={goBack} activity={activity} />}
         </Tab.Screen>
-      ))}
-      <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-        {() => <ActivityEndCard goBack={goBack} activity={activity} />}
-      </Tab.Screen>
-    </Tab.Navigator>)
-    : null;
+      </>
+      : null}
+  </Tab.Navigator>;
 };
 
 const mapStateToProps = (state: StateType) => ({

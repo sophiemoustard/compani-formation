@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { SlotType } from '../../../types/CourseTypes';
-import { OnSiteStepType } from '../../../types/StepTypes';
+import { LiveStepType } from '../../../types/StepTypes';
 import companiDate from '../../../core/helpers/dates';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
 import ActivityList from '../../activities/ActivityList';
-import OnSiteCellInfoModal from '../OnSiteCellInfoModal';
+import LiveCellInfoModal from '../LiveCellInfoModal';
 import FeatherButton from '../../icons/FeatherButton';
 import styles from './styles';
 
-type OnSiteCellProps = {
-  step: OnSiteStepType,
+type LiveCellProps = {
+  step: LiveStepType,
   slots?: SlotType[],
   index: number,
   profileId: string,
 }
 
-const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => {
+const LiveCell = ({ step, slots = [], index, profileId }: LiveCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [stepSlots, setStepSlots] = useState<SlotType[]>([]);
@@ -31,7 +31,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
   useEffect(() => { setModalTitle(`Etape ${index + 1} - ${step.name}`); }, [step, index]);
 
   useEffect(() => {
-    setStepSlots(slots.filter(slot => slot.step === step._id));
+    setStepSlots(slots.filter(slot => slot.step._id === step._id));
   }, [slots, step]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
 
   return (
     <>
-      <OnSiteCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
+      <LiveCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
       <TouchableOpacity style={[styles.container, styles.upperContainer, isOpen && styles.openedContainer]}
         onPress={onPressChevron} disabled={!step.activities?.length}>
@@ -66,4 +66,4 @@ const OnSiteCell = ({ step, slots = [], index, profileId }: OnSiteCellProps) => 
   );
 };
 
-export default OnSiteCell;
+export default LiveCell;
