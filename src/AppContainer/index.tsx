@@ -31,9 +31,9 @@ type AppContainerProps = {
   statusBarVisible: boolean,
 }
 
-const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string | null) => {
+const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   const axiosLoggedConfig = { ...config };
-  axiosLoggedConfig.headers.common['x-access-token'] = token;
+  if (axiosLoggedConfig.headers) axiosLoggedConfig.headers.common['x-access-token'] = token;
 
   return axiosLoggedConfig;
 };
@@ -45,7 +45,8 @@ const handleUnauthorizedRequest = async (error: AxiosError) => {
   const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
   if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
     const config = { ...error.config };
-    config.headers['x-access-token'] = newAlenviToken;
+    if (config.headers) config.headers['x-access-token'] = newAlenviToken || '';
+
     return axiosLogged.request(config);
   }
 
@@ -87,7 +88,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     );
   };
 
-  const initializeAxiosLogged = (token: string | null) => {
+  const initializeAxiosLogged = (token: string) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
     }

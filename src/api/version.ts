@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import Constants from 'expo-constants';
 import axiosNotLogged from './axios/notLogged';
 import Environment from '../../environment';
@@ -10,7 +11,7 @@ export default {
     const baseURL = await Environment.getBaseUrl();
     const params = { mobileVersion: Constants.manifest?.version, appName: APP_NAME };
 
-    const response = await axiosNotLogged.get(`${baseURL}/version/should-update`, { params });
+    const response: AxiosResponse<any> = await axiosNotLogged.get(`${baseURL}/version/should-update`, { params });
     return response.data.data;
   },
 };
