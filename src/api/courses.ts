@@ -1,16 +1,20 @@
+import { AxiosResponse } from 'axios';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { CourseType } from '../types/CourseTypes';
+import { CourseListResponseType, CourseResponseType } from '../types/AxiosTypes';
 
 export default {
   getUserCourses: async (): Promise<CourseType[]> => {
     const baseURL = await Environment.getBaseUrl();
-    const response = await axiosLogged.get(`${baseURL}/courses/user`);
+    const response: AxiosResponse<CourseListResponseType> = await axiosLogged.get(`${baseURL}/courses/user`);
+
     return response.data.data.courses;
   },
   getCourse: async (courseId): Promise<CourseType> => {
     const baseURL = await Environment.getBaseUrl();
-    const response = await axiosLogged.get(`${baseURL}/courses/${courseId}/user`);
+    const response: AxiosResponse<CourseResponseType> = await axiosLogged.get(`${baseURL}/courses/${courseId}/user`);
+
     return response.data.data.course;
   },
   registerToELearningCourse: async (courseId): Promise<void> => {

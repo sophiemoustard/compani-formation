@@ -1,20 +1,21 @@
+import { AxiosResponse } from 'axios';
 import Environment from '../../environment';
 import { MOBILE } from '../core/data/constants';
 import { UserType } from '../types/UserType';
 import axiosLogged from './axios/logged';
 import axiosNotLogged from './axios/notLogged';
-
-type ExistsType = { exists: boolean, user: { _id?: string, company?: string, role?: string } };
-type UserCreationType = {
-  identity: { lastname: UserType['identity']['lastname'], firstname?: UserType['identity']['firstname'] }
-  contact: UserType['contact'],
-  local: UserType['local'] & { password: string },
-};
+import {
+  ExistsType,
+  UserCreationType,
+  UserResponseType,
+  ExistsResponseType,
+} from '../types/AxiosTypes';
 
 export default {
   getById: async (userId: string): Promise<UserType> => {
     const baseURL = await Environment.getBaseUrl({ userId });
-    const user = await axiosLogged.get(`${baseURL}/users/${userId}`);
+    const user: AxiosResponse<UserResponseType> = await axiosLogged.get(`${baseURL}/users/${userId}`);
+
     return user.data.data.user;
   },
   updateById: async (userId: string, data): Promise<void> => {
@@ -23,12 +24,15 @@ export default {
   },
   exists: async (params: { email: string }): Promise<ExistsType> => {
     const baseURL = await Environment.getBaseUrl();
-    const exists = await axiosNotLogged.get(`${baseURL}/users/exists`, { params });
+    const exists: AxiosResponse<ExistsResponseType> = await axiosNotLogged.get(`${baseURL}/users/exists`, { params });
+
     return exists.data.data.exists;
   },
   create: async (data: UserCreationType): Promise<UserType> => {
     const baseURL = await Environment.getBaseUrl();
-    const newUser = await axiosLogged.post(`${baseURL}/users`, { ...data, origin: MOBILE });
+    const newUser: AxiosResponse<UserResponseType> =
+      await axiosLogged.post(`${baseURL}/users`, { ...data, origin: MOBILE });
+
     return newUser.data.data.user;
   },
   uploadImage: async (userId: string, data): Promise<void> => {
