@@ -3,7 +3,7 @@ import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
-import { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
@@ -55,7 +55,7 @@ const handleUnauthorizedRequest = async (error: AxiosError) => {
 
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
-  const [modalOpened, setModalOpened] = useState(false);
+  const [updateModaleVisible, setUpdateModaleVisible] = useState(false);
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
@@ -75,7 +75,17 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
-  const initializeAxiosNotLogged = () => {
+  const initializeAxiosNotLogged = (noAPICall: Boolean) => {
+    axiosNotLogged.interceptors.request.use(
+      config => ({
+        ...config,
+        ...(noAPICall &&
+          { cancelToken: new axios.CancelToken(cancel => cancel('Cancel request: API maintenance or app update')) }
+        ),
+      }),
+      err => Promise.reject(err)
+    );
+
     axiosNotLogged.interceptors.response.use(
       (response) => {
         setMaintenanceModalVisible(false);
@@ -88,7 +98,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     );
   };
 
-  const initializeAxiosLogged = (token: string) => {
+  const initializeAxiosLogged = (token: string, noAPICall: Boolean) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
     }
@@ -96,12 +106,20 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     axiosLoggedRequestInterceptorId.current = axiosLogged.interceptors
       .request
       .use(
-        async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => getAxiosLoggedConfig(config, token),
+        async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => getAxiosLoggedConfig(
+          {
+            ...config,
+            ...(noAPICall &&
+              { cancelToken: new axios.CancelToken(cancel => cancel('Cancel request: API maintenance or app update')) }
+            ),
+          },
+          token
+        ),
         err => Promise.reject(err)
       );
 
     if (axiosLoggedResponseInterceptorId.current !== null) {
-      axiosLogged.interceptors.request.eject(axiosLoggedResponseInterceptorId.current);
+      axiosLogged.interceptors.response.eject(axiosLoggedResponseInterceptorId.current);
     }
 
     axiosLoggedResponseInterceptorId.current = axiosLogged.interceptors
@@ -132,16 +150,16 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       }
     }
 
-    initializeAxiosLogged(alenviToken);
+    initializeAxiosLogged(alenviToken, updateModaleVisible || maintenanceModaleVisible);
     if (alenviToken) setUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alenviToken]);
+  }, [alenviToken, updateModaleVisible, maintenanceModaleVisible]);
 
   const shouldUpdate = async (nextState) => {
     try {
       if (nextState === ACTIVE_STATE) {
         const { mustUpdate } = await Version.shouldUpdate();
-        setModalOpened(mustUpdate);
+        setUpdateModaleVisible(mustUpdate);
       }
     } catch (error) {
       console.error(error);
@@ -149,12 +167,12 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   };
 
   useEffect(() => {
-    initializeAxiosNotLogged();
+    initializeAxiosNotLogged(updateModaleVisible || maintenanceModaleVisible);
     shouldUpdate(ACTIVE_STATE);
     AppState.addEventListener('change', shouldUpdate);
 
     return () => { AppState.removeEventListener('change', shouldUpdate); };
-  }, []);
+  }, [updateModaleVisible, maintenanceModaleVisible]);
 
   if (!appIsReady) return null;
 
@@ -163,7 +181,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   return (
     <>
       <MaintenanceModal visible={maintenanceModaleVisible} />
-      <UpdateAppModal visible={modalOpened} />
+      <UpdateAppModal visible={updateModaleVisible} />
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
