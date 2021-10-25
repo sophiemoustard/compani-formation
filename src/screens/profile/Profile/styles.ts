@@ -125,6 +125,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 'auto',
   },
+  legalNoticeContainer: {
+    marginVertical: MARGIN.SM,
+    marginHorizontal: MARGIN.XL,
+    alignItems: 'center',
+  },
+  legalNotice: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: PINK[500],
+  },
 });
 
 export default styles;

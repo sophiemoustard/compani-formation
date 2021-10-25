@@ -15,9 +15,9 @@ interface CreateAccountFormProps {
   setData: (data: any, i: number) => void,
   goBack: (index: number) => void,
   create: () => void,
-  openModal: () => void,
+  openUrl: () => void,
 }
-const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openModal }: CreateAccountFormProps) => {
+const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openUrl }: CreateAccountFormProps) => {
   const isIOS = Platform.OS === 'ios';
   const navigation = useNavigation();
 
@@ -89,10 +89,10 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
           validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
       </View>)}
       <View style={accountCreationStyles.footer}>
-        {data.map((d, i) => <TouchableOpacity onPress={openModal} key={`modalText${i}`}>
-          {!!d.openModal && <Text style={styles.modalText}>
-            <Text>{d.openModal.text}</Text>
-            <Text style={styles.modalLink}>{d.openModal.link}</Text>
+        {data.map((d, i) => <TouchableOpacity onPress={openUrl} key={`footer${i}`}>
+          {!!d.openUrl && <Text style={styles.modalText}>
+            <Text>{d.openUrl.text}</Text>
+            <Text style={styles.modalLink}>{d.openUrl.link}</Text>
           </Text>}
         </TouchableOpacity>)}
         <NiPrimaryButton caption="Valider" onPress={validData} loading={isLoading} />
