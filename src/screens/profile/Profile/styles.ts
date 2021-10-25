@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
   },
   legalNoticeContainer: {
+    marginVertical: MARGIN.SM,
+    marginHorizontal: MARGIN.XL,
     alignItems: 'center',
-    marginTop: MARGIN.MD,
   },
   legalNotice: {
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
-    marginBottom: MARGIN.MD,
   },
 });
 

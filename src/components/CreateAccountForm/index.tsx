@@ -89,7 +89,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
           validationMessage={!d.isValid && d.isValidationAttempted ? d.errorMessage : ''} />
       </View>)}
       <View style={accountCreationStyles.footer}>
-        {data.map((d, i) => <TouchableOpacity onPress={openUrl} key={`modalText${i}`}>
+        {data.map((d, i) => <TouchableOpacity onPress={openUrl} key={`footer${i}`}>
           {!!d.openUrl && <Text style={styles.modalText}>
             <Text>{d.openUrl.text}</Text>
             <Text style={styles.modalLink}>{d.openUrl.link}</Text>
