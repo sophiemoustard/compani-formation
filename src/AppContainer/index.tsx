@@ -19,7 +19,7 @@ import {
   handleExpoToken,
 } from '../core/helpers/notifications';
 import alenvi from '../core/helpers/alenvi';
-import { ACTIVE_STATE } from '../core/data/constants';
+import { ACTIVE_STATE, CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
 import { UserType } from '../types/UserType';
@@ -59,6 +59,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
+  const axiosNotLoggedRequestInterceptorId = useRef<number | null>(null);
+  const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
@@ -76,17 +78,25 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   useEffect(() => { tryLocalSignIn(); }, []);
 
   const initializeAxiosNotLogged = (noAPICall: Boolean) => {
-    axiosNotLogged.interceptors.request.use(
+    if (axiosNotLoggedRequestInterceptorId.current !== null) {
+      axiosNotLogged.interceptors.request.eject(axiosNotLoggedRequestInterceptorId.current);
+    }
+
+    axiosNotLoggedRequestInterceptorId.current = axiosNotLogged.interceptors.request.use(
       config => ({
         ...config,
         ...(noAPICall &&
-          { cancelToken: new axios.CancelToken(cancel => cancel('Cancel request: API maintenance or app update')) }
+          { cancelToken: new axios.CancelToken(cancel => cancel(CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE)) }
         ),
       }),
       err => Promise.reject(err)
     );
 
-    axiosNotLogged.interceptors.response.use(
+    if (axiosNotLoggedResponseInterceptorId.current !== null) {
+      axiosNotLogged.interceptors.response.eject(axiosNotLoggedResponseInterceptorId.current);
+    }
+
+    axiosNotLoggedResponseInterceptorId.current = axiosNotLogged.interceptors.response.use(
       (response) => {
         setMaintenanceModalVisible(false);
         return response;
@@ -110,7 +120,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
           {
             ...config,
             ...(noAPICall &&
-              { cancelToken: new axios.CancelToken(cancel => cancel('Cancel request: API maintenance or app update')) }
+              { cancelToken: new axios.CancelToken(cancel => cancel(CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE)) }
             ),
           },
           token
