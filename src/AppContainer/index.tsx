@@ -83,12 +83,16 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     }
 
     axiosNotLoggedRequestInterceptorId.current = axiosNotLogged.interceptors.request.use(
-      config => ({
-        ...config,
-        ...(noAPICall &&
-          { cancelToken: new axios.CancelToken(cancel => cancel(CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE)) }
-        ),
-      }),
+      (config) => {
+        const cancelRequestExceptShouldUpdate = noAPICall && !config.url?.includes('/version/should-update');
+
+        return {
+          ...config,
+          ...(cancelRequestExceptShouldUpdate &&
+            { cancelToken: new axios.CancelToken(cancel => cancel(CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE)) }
+          ),
+        };
+      },
       err => Promise.reject(err)
     );
 
