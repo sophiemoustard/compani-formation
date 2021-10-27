@@ -73,6 +73,3 @@ export const SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED = 22;
 export const DENIED = 'denied';
 export const GRANTED = 'granted';
 export const BLENDED_COURSE_REGISTRATION = 'blended_course_registration';
-
-// API
-export const CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE = 'Cancel request: API maintenance or app update';

@@ -3,7 +3,7 @@ import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
@@ -19,7 +19,7 @@ import {
   handleExpoToken,
 } from '../core/helpers/notifications';
 import alenvi from '../core/helpers/alenvi';
-import { ACTIVE_STATE, CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE } from '../core/data/constants';
+import { ACTIVE_STATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
 import { UserType } from '../types/UserType';
@@ -59,7 +59,6 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
-  const axiosNotLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
@@ -77,25 +76,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
 
-  const initializeAxiosNotLogged = (noAPICall: Boolean) => {
-    if (axiosNotLoggedRequestInterceptorId.current !== null) {
-      axiosNotLogged.interceptors.request.eject(axiosNotLoggedRequestInterceptorId.current);
-    }
-
-    axiosNotLoggedRequestInterceptorId.current = axiosNotLogged.interceptors.request.use(
-      (config) => {
-        const cancelRequestExceptShouldUpdate = noAPICall && !config.url?.includes('/version/should-update');
-
-        return {
-          ...config,
-          ...(cancelRequestExceptShouldUpdate &&
-            { cancelToken: new axios.CancelToken(cancel => cancel(CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE)) }
-          ),
-        };
-      },
-      err => Promise.reject(err)
-    );
-
+  const initializeAxiosNotLogged = () => {
     if (axiosNotLoggedResponseInterceptorId.current !== null) {
       axiosNotLogged.interceptors.response.eject(axiosNotLoggedResponseInterceptorId.current);
     }
@@ -112,7 +93,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     );
   };
 
-  const initializeAxiosLogged = (token: string, noAPICall: Boolean) => {
+  const initializeAxiosLogged = (token: string) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
     }
@@ -120,15 +101,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     axiosLoggedRequestInterceptorId.current = axiosLogged.interceptors
       .request
       .use(
-        async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => getAxiosLoggedConfig(
-          {
-            ...config,
-            ...(noAPICall &&
-              { cancelToken: new axios.CancelToken(cancel => cancel(CANCEL_REQUEST_DUE_TO_MAINTENANCE_OR_UPDATE)) }
-            ),
-          },
-          token
-        ),
+        async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => getAxiosLoggedConfig(config, token),
         err => Promise.reject(err)
       );
 
@@ -164,10 +137,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       }
     }
 
-    initializeAxiosLogged(alenviToken, updateModaleVisible || maintenanceModaleVisible);
+    initializeAxiosLogged(alenviToken);
     if (alenviToken) setUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alenviToken, updateModaleVisible, maintenanceModaleVisible]);
+  }, [alenviToken]);
 
   const shouldUpdate = async (nextState) => {
     try {
@@ -181,21 +154,22 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   };
 
   useEffect(() => {
-    initializeAxiosNotLogged(updateModaleVisible || maintenanceModaleVisible);
+    initializeAxiosNotLogged();
     shouldUpdate(ACTIVE_STATE);
     AppState.addEventListener('change', shouldUpdate);
 
     return () => { AppState.removeEventListener('change', shouldUpdate); };
-  }, [updateModaleVisible, maintenanceModaleVisible]);
+  }, []);
 
   if (!appIsReady) return null;
 
   const style = styles(statusBarVisible, StatusBar.currentHeight);
 
+  if (maintenanceModaleVisible) return <MaintenanceModal />;
+  if (updateModaleVisible) return <UpdateAppModal />;
+
   return (
     <>
-      <MaintenanceModal visible={maintenanceModaleVisible} />
-      <UpdateAppModal visible={updateModaleVisible} />
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
