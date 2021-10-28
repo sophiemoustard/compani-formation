@@ -55,10 +55,11 @@ const handleUnauthorizedRequest = async (error: AxiosError) => {
 
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
-  const [modalOpened, setModalOpened] = useState(false);
+  const [updateModaleVisible, setUpdateModaleVisible] = useState(false);
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
+  const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
@@ -76,7 +77,11 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   useEffect(() => { tryLocalSignIn(); }, []);
 
   const initializeAxiosNotLogged = () => {
-    axiosNotLogged.interceptors.response.use(
+    if (axiosNotLoggedResponseInterceptorId.current !== null) {
+      axiosNotLogged.interceptors.response.eject(axiosNotLoggedResponseInterceptorId.current);
+    }
+
+    axiosNotLoggedResponseInterceptorId.current = axiosNotLogged.interceptors.response.use(
       (response) => {
         setMaintenanceModalVisible(false);
         return response;
@@ -101,7 +106,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       );
 
     if (axiosLoggedResponseInterceptorId.current !== null) {
-      axiosLogged.interceptors.request.eject(axiosLoggedResponseInterceptorId.current);
+      axiosLogged.interceptors.response.eject(axiosLoggedResponseInterceptorId.current);
     }
 
     axiosLoggedResponseInterceptorId.current = axiosLogged.interceptors
@@ -141,7 +146,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     try {
       if (nextState === ACTIVE_STATE) {
         const { mustUpdate } = await Version.shouldUpdate();
-        setModalOpened(mustUpdate);
+        setUpdateModaleVisible(mustUpdate);
       }
     } catch (error) {
       console.error(error);
@@ -160,10 +165,11 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   const style = styles(statusBarVisible, StatusBar.currentHeight);
 
+  if (maintenanceModaleVisible) return <MaintenanceModal />;
+  if (updateModaleVisible) return <UpdateAppModal />;
+
   return (
     <>
-      <MaintenanceModal visible={maintenanceModaleVisible} />
-      <UpdateAppModal visible={modalOpened} />
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>

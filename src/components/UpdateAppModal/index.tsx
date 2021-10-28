@@ -4,17 +4,13 @@ import NiModal from '../Modal';
 import NiPrimaryButton from '../form/PrimaryButton';
 import styles from './styles';
 
-interface UpdateAppModalProps {
-  visible: boolean
-}
-
-const UpdateAppModal = ({ visible }: UpdateAppModalProps) => {
+const UpdateAppModal = () => {
   const appUrl = Platform.OS === 'ios'
     ? 'https://apps.apple.com/app/id/1516691161'
     : 'market://details?id=com.alenvi.compani';
 
   return (
-    <NiModal visible={visible}>
+    <NiModal visible={true}>
       <Text style={styles.title}>Nouvelle version de l&apos;app disponible !</Text>
       <Text style={styles.contentText}>
         Merci de mettre à jour votre application pour pouvoir continuer à l&apos;utiliser :)
