@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
@@ -11,7 +11,7 @@ import Course from '../../../api/courses';
 import { PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { NavigationType } from '../../../types/NavigationType';
-import { ICON } from '../../../styles/metrics';
+import { HIT_SLOP, ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
@@ -115,6 +115,14 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         </>
       }
       <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter" onPress={signOut} />
+      <TouchableOpacity hitSlop={HIT_SLOP} onPress={() => Linking.openURL('https://www.compani.fr/rgpd')}
+        style={styles.legalNoticeContainer}>
+        <Text style={styles.legalNotice}>Politique de confidentialité</Text>
+      </TouchableOpacity>
+      <TouchableOpacity hitSlop={HIT_SLOP} onPress={() => Linking.openURL('https://www.compani.fr/cgu-cgv')}
+        style={styles.legalNoticeContainer}>
+        <Text style={styles.legalNotice}>Conditions d’utilisation</Text>
+      </TouchableOpacity>
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux_joie.png')} style={styles.fellow} />

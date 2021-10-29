@@ -58,7 +58,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     } catch (e: any) {
       if (e.response.status === 401) signOut();
       console.error(e);
-      setProgramsByCategories(() => {});
+      setProgramsByCategories({});
     }
   };
 

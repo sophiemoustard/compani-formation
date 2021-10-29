@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View } from 'react-native';
+import { View, Linking } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
@@ -12,7 +12,6 @@ import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { Context as AuthContext } from '../../context/AuthContext';
-import TermoOfUseModal from '../../components/TermOfUseModal';
 
 interface CreateAccountProps {
   route: { params: { email: string } },
@@ -29,7 +28,7 @@ type CreateAccountDataType = {
   errorMessage: string,
   isValidationAttempted: boolean,
   required: boolean,
-  openModal?: { text: string, link: string },
+  openUrl?: { text: string, link: string },
 }
 
 const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
@@ -50,7 +49,6 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
   const { signIn, signOut } = useContext(AuthContext);
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [formList, setFormList] = useState<CreateAccountDataType[][]>([
     [{
       type: 'text',
@@ -106,7 +104,10 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       errorMessage: 'Votre mot de passe et sa confirmation ne correspondent pas',
       isValidationAttempted: false,
       required: true,
-      openModal: { text: 'En continuant, vous vous engagez à respecter nos ', link: 'conditions d\'utilisation' },
+      openUrl: {
+        text: 'En continuant, vous acceptez nos ',
+        link: 'conditions d\'utilisation et notre politique de confidentialité',
+      },
     }],
   ]);
 
@@ -130,8 +131,6 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     }
   };
 
-  const toggleModal = () => setIsModalVisible(isVisible => !isVisible);
-
   const renderScreen = (fields: CreateAccountDataType[], i: number) => (
     <>
       <View style={styles.header}>
@@ -142,8 +141,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
         </View>
       </View>
       <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
-        create={create} openModal={toggleModal} />
-      <TermoOfUseModal visible={isModalVisible} onRequestClose={toggleModal} />
+        create={create} openUrl={() => Linking.openURL('https://www.compani.fr/cgu-cgv')} />
     </>
   );
 
