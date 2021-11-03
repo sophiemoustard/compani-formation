@@ -23,7 +23,6 @@ interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
   setExitConfirmationModal: (boolean) => void,
-  resetCardReducer: () => void,
   setStatusBarVisible: (boolean) => void,
 }
 
@@ -36,7 +35,6 @@ const ActivityCardContainer = ({
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
-  resetCardReducer,
   setStatusBarVisible,
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
@@ -83,8 +81,6 @@ const ActivityCardContainer = ({
     const { profileId } = route.params;
     if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity?._id });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
-
-    resetCardReducer();
   };
 
   const hardwareBackPress = () => {
@@ -132,7 +128,6 @@ const mapStateToProps = (state: StateType) => ({
 const mapDispatchToProps = dispatch => ({
   setCards: cards => dispatch(CardsActions.setCards(cards)),
   setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 

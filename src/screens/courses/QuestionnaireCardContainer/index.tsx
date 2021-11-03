@@ -21,7 +21,6 @@ interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackPara
   cards: CardType[],
   setCards: (questionnaire: CardType[] | null) => void,
   setExitConfirmationModal: (boolean) => void,
-  resetCardReducer: () => void,
   setStatusBarVisible: (boolean) => void,
 }
 
@@ -33,7 +32,6 @@ const QuestionnaireCardContainer = ({
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
-  resetCardReducer,
   setStatusBarVisible,
 }: QuestionnaireCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
@@ -68,8 +66,6 @@ const QuestionnaireCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
     navigation.navigate('CourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
-
-    resetCardReducer();
   };
 
   const hardwareBackPress = () => {
@@ -117,7 +113,6 @@ const mapStateToProps = (state: StateType) => ({
 const mapDispatchToProps = dispatch => ({
   setCards: cards => dispatch(CardsActions.setCards(cards)),
   setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
