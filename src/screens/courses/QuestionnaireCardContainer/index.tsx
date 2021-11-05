@@ -89,7 +89,7 @@ const QuestionnaireCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator<dynamicKeyParam>();
 
-  return <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+  return <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
     <Tab.Screen key={0} name={'startCard'} >
       {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
         isLoading={!(cards.length > 0 && questionnaire)} />}

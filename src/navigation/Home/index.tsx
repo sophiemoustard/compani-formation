@@ -41,7 +41,8 @@ const profileIcon = ({ focused }: tabBarProps) => (focused
   : <ProfileIcon style={styles.iconContainer} />);
 
 const Home = () => (
-  <Tab.Navigator tabBarOptions={{ showLabel: false, style: styles.tabBar }} initialRouteName="Courses">
+  <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
+    initialRouteName="Courses">
     <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon }} />
     <Tab.Screen name="Courses" component={CourseList} options={{ tabBarIcon: courseIcon }} />
     <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon }} />
