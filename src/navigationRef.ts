@@ -1,8 +1,8 @@
-import React from 'react';
-import { NavigationContainerRef } from '@react-navigation/native';
+import { createNavigationContainerRef } from '@react-navigation/native';
+import { RootStackParamList } from './types/NavigationType';
 
-export const navigationRef = React.createRef<NavigationContainerRef>();
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
-export const navigate = (name: string, params?: Object) => {
+export const navigate = (name: keyof RootStackParamList, params?: any) => {
   if (navigationRef.current) navigationRef.current.navigate(name, params);
 };

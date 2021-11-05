@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { connect } from 'react-redux';
 import Questionnaires from '../../../api/questionnaires';
 import { CardType } from '../../../types/CardType';
-import { NavigationType } from '../../../types/NavigationType';
+import { NavigationType, dynamicKeyParam } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
@@ -87,7 +87,7 @@ const QuestionnaireCardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator<dynamicKeyParam>();
 
   return <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
     <Tab.Screen key={0} name={'startCard'} >

@@ -19,8 +19,9 @@ import Camera from '../../screens/Camera';
 import ImagePickerManager from '../../screens/ImagePickerManager';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
+import { RootStackParamList } from '../../types/NavigationType';
 
-const MainStack = createStackNavigator();
+const MainStack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
   const { alenviToken } = useContext(AuthContext);

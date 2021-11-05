@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
 import { ActivityWithCardsType } from '../../../types/ActivityTypes';
 import { CardType } from '../../../types/CardType';
-import { NavigationType } from '../../../types/NavigationType';
+import { NavigationType, dynamicKeyParam } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
@@ -102,7 +102,7 @@ const ActivityCardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator<dynamicKeyParam>();
 
   return <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
     <Tab.Screen key={0} name={'startCard'} >

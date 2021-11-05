@@ -11,8 +11,9 @@ import CourseList from '../../screens/courses/CourseList';
 import Catalog from '../../screens/explore/Catalog';
 import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
+import { RootBottomTabParamList } from '../../types/NavigationType';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootBottomTabParamList>();
 
 interface tabBarProps {
   focused: boolean
