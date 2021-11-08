@@ -18,7 +18,8 @@ import get from 'lodash/get';
 import has from 'lodash/has';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
-import { NavigationType } from '../../../types/NavigationType';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
 import Questionnaires from '../../../api/questionnaires';
 import { GREY, WHITE } from '../../../styles/colors';
@@ -41,9 +42,7 @@ import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-interface CourseProfileProps {
-  route: { params: { courseId: string, endedActivity?: string} },
-  navigation: NavigationType,
+interface CourseProfileProps extends StackScreenProps<RootStackParamList, 'CourseProfile'> {
   userId: string,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,

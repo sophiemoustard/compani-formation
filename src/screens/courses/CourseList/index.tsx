@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext, useCallback, useMemo, useReduce
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import Courses from '../../../api/courses';
@@ -15,15 +16,14 @@ import companiDate from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
-import { NavigationType } from '../../../types/NavigationType';
+import { RootBottomTabParamList } from '../../../types/NavigationType';
 import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
 
-type CourseListProps = {
+interface CourseListProps extends StackScreenProps<RootBottomTabParamList, 'Courses'> {
   setIsCourse: (value: boolean) => void,
-  navigation: NavigationType,
   loggedUserId: string | null,
 }
 

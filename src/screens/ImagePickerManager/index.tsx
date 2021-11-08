@@ -3,17 +3,17 @@ import { Alert, View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/NavigationType';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import commonStyle from '../../styles/common';
 import { GREY } from '../../styles/colors';
 import styles from './styles';
-import { NavigationType } from '../../types/NavigationType';
 import { savePhoto } from '../../core/helpers/pictures';
 
-interface ImagePickerManagerProps {
-  navigation: NavigationType;
+interface ImagePickerManagerProps extends StackScreenProps<RootStackParamList, 'ImagePickerManager'> {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 }

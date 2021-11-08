@@ -1,12 +1,13 @@
 import React, { useEffect, useContext, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
 import { ActivityWithCardsType } from '../../../types/ActivityTypes';
 import { CardType } from '../../../types/CardType';
-import { NavigationType, dynamicKeyParam } from '../../../types/NavigationType';
+import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
@@ -15,9 +16,7 @@ import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 
-interface ActivityCardContainerProps {
-  route: { params: { activityId: string, profileId: string } },
-  navigation: NavigationType,
+interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
   isCourse: boolean,
   exitConfirmationModal: boolean,
@@ -102,7 +101,7 @@ const ActivityCardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const Tab = createMaterialTopTabNavigator<dynamicKeyParam>();
+  const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
   return <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
     <Tab.Screen key={0} name={'startCard'} >

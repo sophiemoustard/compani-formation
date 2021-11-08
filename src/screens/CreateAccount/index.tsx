@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { View, Linking } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
-import { NavigationType } from '../../types/NavigationType';
+import { RootCreateAccountParamList, RootStackParamList } from '../../types/NavigationType';
 import commonStyle from '../../styles/common';
 import styles from './styles';
 import { GREY } from '../../styles/colors';
@@ -13,10 +13,7 @@ import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { Context as AuthContext } from '../../context/AuthContext';
 
-interface CreateAccountProps {
-  route: { params: { email: string } },
-  navigation: NavigationType,
-}
+interface CreateAccountProps extends StackScreenProps<RootStackParamList, 'CreateAccount'> {}
 
 type CreateAccountDataType = {
   type: string,
@@ -145,7 +142,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     </>
   );
 
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<RootCreateAccountParamList>();
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

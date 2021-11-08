@@ -12,9 +12,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { LinearGradient } from 'expo-linear-gradient';
-import { NavigationType } from '../../../types/NavigationType';
+import { RootStackParamList } from '../../../types/NavigationType';
+import { SubProgramType } from '../../../types/CourseTypes';
 import SubPrograms from '../../../api/subPrograms';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
@@ -25,14 +27,11 @@ import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import { SubProgramType } from '../../../types/CourseTypes';
 import FeatherButton from '../../../components/icons/FeatherButton';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-interface SubProgramProfileProps {
-  route: { params: { subProgramId: string } },
-  navigation: NavigationType,
+interface SubProgramProfileProps extends StackScreenProps<RootStackParamList, 'SubProgramProfile'> {
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
 }

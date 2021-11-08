@@ -1,22 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
 import get from 'lodash/get';
+import { StackActions } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { ELearningCourseProgramType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 
-type ElearningAboutProps = {
-  route: { params: { program: ELearningCourseProgramType } },
-  navigation: {
-    navigate: (path: string, params?: object) => {},
-    dispatch: (action: CommonActions.Action | StackActionType) => {},
-    goBack: () => {},
-  },
+interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }

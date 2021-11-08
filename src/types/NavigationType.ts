@@ -5,12 +5,12 @@ import { QuestionnaireType } from './QuestionnaireType';
 export type RootStackParamList = {
   Home: undefined;
   Authentication: undefined;
-  EmailForm: undefined;
+  EmailForm: { firstConnection?: Boolean };
   CreateAccount: { email: string };
   PasswordReset: { userId: string, email: string, token: string }
   ActivityCardContainer: { activityId: string, profileId: string };
   QuestionnaireCardContainer: { questionnaireId: number, profileId: number };
-  BlendedAbout: { course: CourseType | null }
+  BlendedAbout: { course: CourseType }
   ElearningAbout: { program: ProgramType }
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
@@ -30,14 +30,19 @@ export type RootBottomTabParamList = {
   Profile: undefined;
 }
 
-// create-account-screen-[i] and card-[i]
-export type dynamicKeyParam = {
-  [key: string|number]: undefined;
+export type RootCreateAccountParamList = {
+  [key: `create-account-screen-${number}`]: undefined;
+}
+
+export type RootCardParamList = {
+  [key: `card-${number}`]: undefined;
+  'startCard': undefined;
 }
 
 export interface NavigationType {
   navigate: (
-    path: keyof RootBottomTabParamList | keyof RootStackParamList | keyof dynamicKeyParam,
+    path: keyof RootBottomTabParamList | keyof RootStackParamList | keyof RootCreateAccountParamList
+    | keyof RootCardParamList,
     params?: any
   ) => {},
   dispatch: (action: any) => {},
@@ -47,6 +52,7 @@ declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
     interface RootParamList extends RootBottomTabParamList {}
-    interface RootParamList extends dynamicKeyParam {}
+    interface RootParamList extends RootCreateAccountParamList {}
+    interface RootParamList extends RootCardParamList {}
   }
 }

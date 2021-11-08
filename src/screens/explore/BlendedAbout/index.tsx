@@ -3,6 +3,8 @@ import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-na
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/NavigationType';
 import companiDate from '../../../core/helpers/dates';
 import About from '../../../components/About';
 import styles from './styles';
@@ -11,15 +13,8 @@ import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
-import { BlendedCourseType } from '../../../types/CourseTypes';
 
-interface BlendedAboutProps {
-  route: { params: { course: BlendedCourseType } },
-  navigation: {
-    goBack: () => {},
-    navigate: (path: string, params: { courseId: string }) => {},
-  },
-}
+interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationType } from '../../types/NavigationType';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -13,8 +14,7 @@ import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreTyp
 import MainActions from '../../store/main/actions';
 import { savePhoto } from '../../core/helpers/pictures';
 
-interface CameraProps {
-  navigation: NavigationType,
+interface CameraProps extends StackScreenProps<RootStackParamList, 'PasswordEdition'> {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 }

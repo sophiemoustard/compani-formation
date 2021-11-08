@@ -1,12 +1,10 @@
 import React from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/NavigationType';
 import PasswordForm from '../../../components/PasswordForm';
-import { NavigationType } from '../../../types/NavigationType';
 import Authentication from '../../../api/authentication';
 
-interface PasswordEditionProps {
-  route: { params: { userId: string, email?: string } },
-  navigation: NavigationType,
-}
+interface PasswordEditionProps extends StackScreenProps<RootStackParamList, 'PasswordEdition'> {}
 
 const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
   const { userId } = route.params;
