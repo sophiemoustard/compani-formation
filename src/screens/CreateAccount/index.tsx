@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Linking } from 'react-native';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
+import { CompositeScreenProps } from '@react-navigation/native';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { RootCreateAccountParamList, RootStackParamList } from '../../types/NavigationType';
@@ -13,7 +14,10 @@ import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { Context as AuthContext } from '../../context/AuthContext';
 
-interface CreateAccountProps extends StackScreenProps<RootStackParamList, 'CreateAccount'> {}
+interface CreateAccountProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'CreateAccount'>,
+StackScreenProps<RootCreateAccountParamList>
+> {}
 
 type CreateAccountDataType = {
   type: string,

@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootBottomTabParamList } from '../../../types/NavigationType';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
@@ -17,7 +18,10 @@ import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
 
-interface ProfileProps extends StackScreenProps<RootBottomTabParamList, 'Profile'> {
+interface ProfileProps extends CompositeScreenProps<
+StackScreenProps<RootBottomTabParamList, 'Profile'>,
+StackScreenProps<RootStackParamList>
+> {
   loggedUser: UserType,
 }
 

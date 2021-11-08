@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, CompositeScreenProps } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/NavigationType';
+import { RootStackParamList, RootBottomTabParamList } from '../../types/NavigationType';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
@@ -13,7 +13,10 @@ import { GREY } from '../../styles/colors';
 import styles from './styles';
 import { savePhoto } from '../../core/helpers/pictures';
 
-interface ImagePickerManagerProps extends StackScreenProps<RootStackParamList, 'ImagePickerManager'> {
+interface ImagePickerManagerProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'ImagePickerManager'>,
+StackScreenProps<RootBottomTabParamList>
+> {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 }

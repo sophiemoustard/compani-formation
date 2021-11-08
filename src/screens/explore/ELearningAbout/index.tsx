@@ -27,7 +27,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
     const course = subProgram?.courses ? subProgram.courses[0] : null;
     if (course) {
       setCourseId(course._id);
-      setHasAlreadySubscribed(course.trainees.includes(loggedUserId));
+      setHasAlreadySubscribed(course?.trainees?.includes(loggedUserId) || false);
     }
   }, [loggedUserId, program]);
 

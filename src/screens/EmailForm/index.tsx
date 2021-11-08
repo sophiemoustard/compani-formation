@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import get from 'lodash/get';
 import ExitModal from '../../components/ExitModal';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
@@ -55,7 +56,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
-        else if (!route.params.firstConnection) {
+        else if (!get(route, 'params.firstConnection')) {
           setInvalidEmail(true);
           setErrorMessage('Oups ! Cet e-mail n\'est pas reconnu.');
         } else navigation.navigate('CreateAccount', { email });

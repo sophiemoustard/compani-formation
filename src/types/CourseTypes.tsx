@@ -23,6 +23,7 @@ export type ProgramType = {
   description: string,
   image: { link: string },
   learningGoals?: string,
+  subPrograms?: SubProgramType[],
 }
 
 export type ELearningSubProgramType = SubProgramType & {
@@ -39,6 +40,7 @@ export type SubProgramType = {
   _id: string,
   steps: StepType[],
   isStrictlyELearning: boolean,
+  courses?: CourseType[],
 }
 
 type BaseCourseType = {
@@ -48,7 +50,8 @@ type BaseCourseType = {
 };
 
 export type ELearningCourseType = BaseCourseType & {
-  subProgram: { isStrictlyELearning: true }
+  subProgram: { isStrictlyELearning: true },
+  trainees?: string[],
 };
 
 export type BlendedCourseType = BaseCourseType & {

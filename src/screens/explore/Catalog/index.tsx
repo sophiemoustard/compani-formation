@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootBottomTabParamList } from '../../../types/NavigationType';
+import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import Programs from '../../../api/programs';
 import { ProgramType } from '../../../types/CourseTypes';
 import { Context as AuthContext } from '../../../context/AuthContext';
@@ -16,7 +16,10 @@ import CoursesSection from '../../../components/CoursesSection';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter } from '../../../core/helpers/utils';
 
-interface CatalogProps extends StackScreenProps<RootBottomTabParamList, 'Catalog'> {
+interface CatalogProps extends CompositeScreenProps<
+StackScreenProps<RootBottomTabParamList, 'Catalog'>,
+StackScreenProps<RootStackParamList>
+> {
   loggedUserId: string | null,
 }
 

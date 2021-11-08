@@ -2,7 +2,7 @@ import 'array-flat-polyfill';
 import React, { useState, useEffect, useContext, useCallback, useMemo, useReducer } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
@@ -16,13 +16,16 @@ import companiDate from '../../../core/helpers/dates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
-import { RootBottomTabParamList } from '../../../types/NavigationType';
+import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
 
-interface CourseListProps extends StackScreenProps<RootBottomTabParamList, 'Courses'> {
+interface CourseListProps extends CompositeScreenProps<
+StackScreenProps<RootBottomTabParamList, 'Courses'>,
+StackScreenProps<RootStackParamList>
+> {
   setIsCourse: (value: boolean) => void,
   loggedUserId: string | null,
 }
@@ -116,12 +119,12 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     if (loggedUserId && isFocused) fetchData();
   }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
 
-  const goToCourse = (id, isCourse) => {
+  const goToCourse = (id: string, isCourse: boolean) => {
     if (isCourse) navigation.navigate('CourseProfile', { courseId: id });
     else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
-  const onPressProgramCell = (isCourse, id) => {
+  const onPressProgramCell = (isCourse: boolean, id: string) => {
     setIsCourse(isCourse);
     goToCourse(id, isCourse);
   };

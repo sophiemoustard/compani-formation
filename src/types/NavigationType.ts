@@ -1,15 +1,13 @@
 import { CourseType, ProgramType } from './CourseTypes';
-import { ActivityWithCardsType } from './ActivityTypes';
-import { QuestionnaireType } from './QuestionnaireType';
 
 export type RootStackParamList = {
   Home: undefined;
   Authentication: undefined;
-  EmailForm: { firstConnection?: Boolean };
+  EmailForm: { firstConnection: Boolean } | undefined;
   CreateAccount: { email: string };
   PasswordReset: { userId: string, email: string, token: string }
   ActivityCardContainer: { activityId: string, profileId: string };
-  QuestionnaireCardContainer: { questionnaireId: number, profileId: number };
+  QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
   BlendedAbout: { course: CourseType }
   ElearningAbout: { program: ProgramType }
   ProfileEdition: undefined;
@@ -18,8 +16,8 @@ export type RootStackParamList = {
   ImagePickerManager: undefined;
   CourseProfile: {
     courseId: string,
-    endedActivity?: ActivityWithCardsType | null,
-    endedQuestionnaire?: QuestionnaireType | null,
+    endedActivity?: string | null,
+    endedQuestionnaire?: string | null,
   };
   SubProgramProfile: { subProgramId: string };
 }
