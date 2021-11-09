@@ -1,7 +1,8 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { CourseType, ProgramType } from './CourseTypes';
 
 export type RootStackParamList = {
-  Home: undefined;
+  Home: NavigatorScreenParams<RootBottomTabParamList>;
   Authentication: undefined;
   EmailForm: { firstConnection: Boolean } | undefined;
   CreateAccount: { email: string };
@@ -24,8 +25,8 @@ export type RootStackParamList = {
 
 export type RootBottomTabParamList = {
   Catalog: undefined;
-  Courses: undefined;
-  Profile: undefined;
+  Courses: { screen: string } | undefined;
+  Profile: { screen: string } | undefined;
 }
 
 export type RootCreateAccountParamList = {
