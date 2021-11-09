@@ -1,5 +1,37 @@
 import { StepType, ELearningStepType } from './StepTypes';
 
+// Program
+export type BaseProgramType = {
+  _id: string,
+  name: string,
+  image: { link: string },
+  description?: string,
+  learningGoals?: string,
+  subPrograms?: SubProgramType[],
+}
+
+export type ELearningProgramType = BaseProgramType & {
+  subPrograms: ELearningSubProgramType[],
+}
+
+export type ProgramType = BaseProgramType | ELearningProgramType;
+
+// Sub-program
+export type SubProgramType = {
+  _id: string,
+  steps: StepType[],
+  isStrictlyELearning: boolean,
+  courses?: CourseType[],
+}
+
+export type ELearningSubProgramType = SubProgramType & {
+  isStrictlyElearning: true,
+  courses: { _id: string, trainees: String[] }[],
+  steps: ELearningStepType[],
+  program?: BaseProgramType,
+}
+
+// Course
 type AddressType = {
   fullAddress: string,
   street: string,
@@ -15,39 +47,6 @@ export type SlotType = {
   address?: AddressType,
   meetingLink?: string,
   step: { _id: string, type: string },
-}
-
-export type ProgramType = BaseProgramType | ELearningProgramType;
-
-export type BaseProgramType = {
-  _id: string,
-  name: string,
-  image: { link: string },
-  description?: string,
-  learningGoals?: string,
-  subPrograms?: SubProgramType[],
-}
-
-export type ELearningProgramType = BaseProgramType & {
-  subPrograms: ELearningSubProgramType[],
-}
-
-export type ELearningSubProgramType = SubProgramType & {
-  isStrictlyElearning: true,
-  courses: { _id: string, trainees: String[] }[],
-  steps: ELearningStepType[],
-  program?: BaseProgramType,
-}
-
-export type ELearningCourseProgramType = BaseProgramType & {
-  subPrograms: ELearningSubProgramType[],
-}
-
-export type SubProgramType = {
-  _id: string,
-  steps: StepType[],
-  isStrictlyELearning: boolean,
-  courses?: CourseType[],
 }
 
 type BaseCourseType = {

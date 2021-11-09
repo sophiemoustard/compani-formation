@@ -124,16 +124,16 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
-  const onPressProgramCell = (isCourse: boolean, id: string) => {
+  const onPressProgramCell = (id: string, isCourse: boolean) => {
     setIsCourse(isCourse);
     goToCourse(id, isCourse);
   };
 
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(true, course._id)} progress={course.progress} misc={course.misc} />;
+    onPress={() => onPressProgramCell(course._id, true)} progress={course.progress} misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
-    onPress={() => onPressProgramCell(false, subProgram._id)} />;
+    onPress={() => onPressProgramCell(subProgram._id, false)} />;
 
   const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
 
