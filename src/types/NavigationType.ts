@@ -1,5 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { CourseType, ProgramType } from './CourseTypes';
+import { BlendedCourseType, ELearningProgramType } from './CourseTypes';
 
 export type RootStackParamList = {
   Home: NavigatorScreenParams<RootBottomTabParamList>;
@@ -9,8 +9,8 @@ export type RootStackParamList = {
   PasswordReset: { userId: string, email: string, token: string }
   ActivityCardContainer: { activityId: string, profileId: string };
   QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
-  BlendedAbout: { course: CourseType }
-  ElearningAbout: { program: ProgramType }
+  BlendedAbout: { course: BlendedCourseType }
+  ElearningAbout: { program: ELearningProgramType }
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   Camera: undefined;

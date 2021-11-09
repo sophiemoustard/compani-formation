@@ -6,7 +6,7 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import Programs from '../../../api/programs';
-import { ProgramType } from '../../../types/CourseTypes';
+import { ELearningProgramType } from '../../../types/CourseTypes';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import commonStyles from '../../../styles/common';
 import { getLoggedUserId } from '../../../store/main/selectors';
@@ -72,7 +72,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = (program: ProgramType) => navigation.navigate('ElearningAbout', { program });
+  const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 

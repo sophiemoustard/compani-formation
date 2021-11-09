@@ -29,7 +29,7 @@ import ELearningCell from '../../../components/ELearningCell';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING, REMOTE } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
-import { CourseType, BlendedCourseType } from '../../../types/CourseTypes';
+import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../types/CourseTypes';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
@@ -127,8 +127,10 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         ...program,
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
-      navigation.navigate('ElearningAbout', { program: eLearningProgram });
-    } else navigation.navigate('BlendedAbout', { course });
+      navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
+    } else {
+      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+    }
   };
 
   const renderCells = item => renderStepCell(item, course, route);

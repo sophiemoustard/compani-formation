@@ -9,6 +9,7 @@ import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
@@ -27,7 +28,9 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
     const course = subProgram?.courses ? subProgram.courses[0] : null;
     if (course) {
       setCourseId(course._id);
-      setHasAlreadySubscribed(course?.trainees?.includes(loggedUserId) || false);
+
+      const { trainees } = course as ELearningCourseType;
+      setHasAlreadySubscribed(trainees?.includes(loggedUserId) || false);
     }
   }, [loggedUserId, program]);
 

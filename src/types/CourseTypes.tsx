@@ -17,22 +17,29 @@ export type SlotType = {
   step: { _id: string, type: string },
 }
 
-export type ProgramType = {
+export type ProgramType = BaseProgramType | ELearningProgramType;
+
+export type BaseProgramType = {
   _id: string,
   name: string,
-  description: string,
   image: { link: string },
+  description?: string,
   learningGoals?: string,
   subPrograms?: SubProgramType[],
+}
+
+export type ELearningProgramType = BaseProgramType & {
+  subPrograms: ELearningSubProgramType[],
 }
 
 export type ELearningSubProgramType = SubProgramType & {
   isStrictlyElearning: true,
   courses: { _id: string, trainees: String[] }[],
   steps: ELearningStepType[],
+  program?: BaseProgramType,
 }
 
-export type ELearningCourseProgramType = ProgramType & {
+export type ELearningCourseProgramType = BaseProgramType & {
   subPrograms: ELearningSubProgramType[],
 }
 
