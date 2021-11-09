@@ -40,7 +40,7 @@ const CoursesSection = ({
       <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`}
         contentContainerStyle={styles.container} renderItem={({ item }) => renderItem(item)}
         showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-      {true &&
+      {showCatalogButton &&
         <TouchableOpacity style={styles.courseContainer} onPress={() => navigation.navigate('Catalog')}>
           <Text style={styles.text}>Vous n’avez pas de formation en cours...</Text>
           <NiPrimaryButton caption="Chercher une formation" onPress={() => navigation.navigate('Catalog')} />
