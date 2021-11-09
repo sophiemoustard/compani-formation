@@ -30,7 +30,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
+  const goBack = () => navigation.navigate('Profile');
 
   const pickImage = async () => {
     try {
@@ -66,7 +66,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
         'Veuillez réessayer',
         [{
           text: 'OK',
-          onPress: () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } }),
+          onPress: () => navigation.navigate('Profile'),
         }],
         { cancelable: false }
       );

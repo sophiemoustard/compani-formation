@@ -24,9 +24,9 @@ export type RootStackParamList = {
 }
 
 export type RootBottomTabParamList = {
-  Catalog: { screen: string };
+  Catalog: undefined;
   Courses: { screen: string };
-  Profile: { screen: string };
+  Profile: undefined;
 }
 
 export type RootCreateAccountParamList = {

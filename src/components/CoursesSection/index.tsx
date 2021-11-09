@@ -40,12 +40,10 @@ const CoursesSection = ({
       <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`}
         contentContainerStyle={styles.container} renderItem={({ item }) => renderItem(item)}
         showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
-      {showCatalogButton &&
-        <TouchableOpacity style={styles.courseContainer}
-          onPress={() => navigation.navigate('Home', { screen: 'Catalog', params: { screen: 'Catalog' } })}>
+      {true &&
+        <TouchableOpacity style={styles.courseContainer} onPress={() => navigation.navigate('Catalog')}>
           <Text style={styles.text}>Vous n’avez pas de formation en cours...</Text>
-          <NiPrimaryButton caption="Chercher une formation"
-            onPress={() => navigation.navigate('Home', { screen: 'Catalog', params: { screen: 'Catalog' } })} />
+          <NiPrimaryButton caption="Chercher une formation" onPress={() => navigation.navigate('Catalog')} />
           <Image source={require('../../../assets/images/aux_detective.png')} style={styles.image}
             resizeMode='contain' />
         </TouchableOpacity>

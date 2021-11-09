@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/NavigationType';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { RootStackParamList, RootBottomTabParamList } from '../../types/NavigationType';
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -14,7 +15,10 @@ import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreTyp
 import MainActions from '../../store/main/actions';
 import { savePhoto } from '../../core/helpers/pictures';
 
-interface CameraProps extends StackScreenProps<RootStackParamList, 'PasswordEdition'> {
+interface CameraProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'PasswordEdition'>,
+StackScreenProps<RootBottomTabParamList>
+> {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 }
@@ -24,7 +28,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
+  const goBack = () => navigation.navigate('Profile');
 
   const hardwareBackPress = () => {
     goBack();
