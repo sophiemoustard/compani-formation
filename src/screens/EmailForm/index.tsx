@@ -55,7 +55,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
-        else if (route.params?.firstConnection) {
+        else if (!route.params?.firstConnection) {
           setInvalidEmail(true);
           setErrorMessage('Oups ! Cet e-mail n\'est pas reconnu.');
         } else navigation.navigate('CreateAccount', { email });

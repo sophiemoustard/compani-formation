@@ -64,10 +64,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
       Alert.alert(
         'Echec de l\'enregistrement',
         'Veuillez réessayer',
-        [{
-          text: 'OK',
-          onPress: () => navigation.navigate('Profile'),
-        }],
+        [{ text: 'OK', onPress: () => navigation.navigate('Profile') }],
         { cancelable: false }
       );
     } finally {
