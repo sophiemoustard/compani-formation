@@ -1,10 +1,11 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { StackScreenProps } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import Questionnaires from '../../../api/questionnaires';
 import { CardType } from '../../../types/CardType';
-import { NavigationType } from '../../../types/NavigationType';
+import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
@@ -14,9 +15,7 @@ import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
-interface QuestionnaireCardContainerProps {
-  route: { params: { questionnaireId: string, profileId: string } },
-  navigation: NavigationType,
+interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {
   cardIndex: number | null,
   exitConfirmationModal: boolean,
   cards: CardType[],
@@ -87,9 +86,9 @@ const QuestionnaireCardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
-  return <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
+  return <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
     <Tab.Screen key={0} name={'startCard'} >
       {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
         isLoading={!(cards.length > 0 && questionnaire)} />}

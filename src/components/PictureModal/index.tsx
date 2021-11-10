@@ -61,7 +61,7 @@ const PictureModal = ({
   const requestPermissionsForCamera = async () => {
     try {
       setIsLoading(true);
-      const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === 'granted') navigation.navigate('Camera');
       else alert('l\'appareil photo');
     } catch {

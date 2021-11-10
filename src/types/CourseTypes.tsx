@@ -1,5 +1,37 @@
 import { StepType, ELearningStepType } from './StepTypes';
 
+// Program
+export type BaseProgramType = {
+  _id: string,
+  name: string,
+  image: { link: string },
+  description?: string,
+  learningGoals?: string,
+  subPrograms?: SubProgramType[],
+}
+
+export type ELearningProgramType = BaseProgramType & {
+  subPrograms: ELearningSubProgramType[],
+}
+
+export type ProgramType = BaseProgramType | ELearningProgramType;
+
+// Sub-program
+export type SubProgramType = {
+  _id: string,
+  steps: StepType[],
+  isStrictlyELearning: boolean,
+  courses?: CourseType[],
+}
+
+export type ELearningSubProgramType = SubProgramType & {
+  isStrictlyElearning: true,
+  courses: { _id: string, trainees: String[] }[],
+  steps: ELearningStepType[],
+  program?: BaseProgramType,
+}
+
+// Course
 type AddressType = {
   fullAddress: string,
   street: string,
@@ -17,30 +49,6 @@ export type SlotType = {
   step: { _id: string, type: string },
 }
 
-export type ProgramType = {
-  _id: string,
-  name: string,
-  description: string,
-  image: { link: string },
-  learningGoals?: string,
-}
-
-export type ELearningSubProgramType = SubProgramType & {
-  isStrictlyElearning: true,
-  courses: { _id: string, trainees: String[] }[],
-  steps: ELearningStepType[],
-}
-
-export type ELearningCourseProgramType = ProgramType & {
-  subPrograms: ELearningSubProgramType[],
-}
-
-export type SubProgramType = {
-  _id: string,
-  steps: StepType[],
-  isStrictlyELearning: boolean,
-}
-
 type BaseCourseType = {
   _id: string,
   progress: number,
@@ -48,7 +56,8 @@ type BaseCourseType = {
 };
 
 export type ELearningCourseType = BaseCourseType & {
-  subProgram: { isStrictlyELearning: true }
+  subProgram: { isStrictlyELearning: true },
+  trainees?: string[],
 };
 
 export type BlendedCourseType = BaseCourseType & {

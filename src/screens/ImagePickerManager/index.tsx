@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, CompositeScreenProps } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList, RootBottomTabParamList } from '../../types/NavigationType';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import commonStyle from '../../styles/common';
 import { GREY } from '../../styles/colors';
 import styles from './styles';
-import { NavigationType } from '../../types/NavigationType';
 import { savePhoto } from '../../core/helpers/pictures';
 
-interface ImagePickerManagerProps {
-  navigation: NavigationType;
+interface ImagePickerManagerProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList>,
+StackScreenProps<RootBottomTabParamList>
+> {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 }
@@ -27,7 +30,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const goBack = () => navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
+  const goBack = () => navigation.navigate('Profile');
 
   const pickImage = async () => {
     try {
@@ -61,7 +64,8 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
       Alert.alert(
         'Echec de l\'enregistrement',
         'Veuillez réessayer',
-        [{ text: 'OK', onPress: () => navigation.navigate('Profile') }], { cancelable: false }
+        [{ text: 'OK', onPress: () => navigation.navigate('Profile') }],
+        { cancelable: false }
       );
     } finally {
       setIsLoading(false);

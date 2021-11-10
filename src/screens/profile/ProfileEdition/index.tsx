@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { StackScreenProps } from '@react-navigation/stack';
+import { CompositeScreenProps } from '@react-navigation/native';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
@@ -18,7 +20,7 @@ import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import { UserType } from '../../../types/UserType';
 import styles from './styles';
 import NiInput from '../../../components/form/Input';
-import { NavigationType } from '../../../types/NavigationType';
+import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
@@ -29,9 +31,11 @@ import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 
-interface ProfileEditionProps {
+interface ProfileEditionProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList>,
+StackScreenProps<RootBottomTabParamList>
+> {
   loggedUser: UserType,
-  navigation: NavigationType,
   setLoggedUser: (user: UserType) => void,
 }
 
@@ -99,7 +103,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Home', { screen: 'Profile', params: { screen: 'Profile' } });
+    navigation.navigate('Profile');
   };
 
   const saveData = async () => {

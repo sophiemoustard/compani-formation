@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 import ExitModal from '../../components/ExitModal';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
-import { NavigationType } from '../../types/NavigationType';
+import { RootStackParamList } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
@@ -13,10 +14,7 @@ import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 
-interface EmailFormProps {
-  route: { params: { firstConnection: string } },
-  navigation: NavigationType,
-}
+interface EmailFormProps extends StackScreenProps<RootStackParamList, 'EmailForm'> {}
 
 const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [behavior, setBehavior] = useState<'padding' | 'height'>('padding');
@@ -57,7 +55,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
-        else if (!route.params.firstConnection) {
+        else if (!route.params?.firstConnection) {
           setInvalidEmail(true);
           setErrorMessage('Oups ! Cet e-mail n\'est pas reconnu.');
         } else navigation.navigate('CreateAccount', { email });

@@ -6,6 +6,7 @@ import { navigationRef } from '../../navigationRef';
 import asyncStorage from './asyncStorage';
 import Users from '../../api/users';
 import Courses from '../../api/courses';
+import { BlendedCourseType } from '../../types/CourseTypes';
 
 export const registerForPushNotificationsAsync = async () => {
   let finalStatus;
@@ -46,7 +47,7 @@ export const handleNotificationResponse = async (response) => {
 
   switch (type) {
     case BLENDED_COURSE_REGISTRATION:
-      return navigationRef.current?.navigate('BlendedAbout', { course });
+      return navigationRef.current?.navigate('BlendedAbout', { course: course as BlendedCourseType });
     default:
       return null;
   }
