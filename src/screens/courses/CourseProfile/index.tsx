@@ -13,13 +13,13 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../types/NavigationType';
+import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
 import Questionnaires from '../../../api/questionnaires';
 import { GREY, WHITE } from '../../../styles/colors';
@@ -42,7 +42,10 @@ import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-interface CourseProfileProps extends StackScreenProps<RootStackParamList, 'CourseProfile'> {
+interface CourseProfileProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'CourseProfile'>,
+StackScreenProps<RootBottomTabParamList>
+> {
   userId: string,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
@@ -105,7 +108,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const goBack = useCallback(() => {
     resetCourseReducer();
-    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+    navigation.navigate('Courses');
   }, [navigation, resetCourseReducer]);
 
   const hardwareBackPress = useCallback(() => {

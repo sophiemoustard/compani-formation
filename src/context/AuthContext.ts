@@ -88,7 +88,7 @@ const localSignIn = async (dispatch) => {
   const { alenviToken } = await asyncStorage.getAlenviToken();
   dispatch({ type: 'signin', payload: alenviToken });
 
-  navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+  navigate('Courses');
   dispatch({ type: 'render' });
 };
 

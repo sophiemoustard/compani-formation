@@ -11,11 +11,11 @@ import {
   BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { LinearGradient } from 'expo-linear-gradient';
-import { RootStackParamList } from '../../../types/NavigationType';
+import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import { SubProgramType } from '../../../types/CourseTypes';
 import SubPrograms from '../../../api/subPrograms';
 import { WHITE } from '../../../styles/colors';
@@ -31,7 +31,10 @@ import FeatherButton from '../../../components/icons/FeatherButton';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-interface SubProgramProfileProps extends StackScreenProps<RootStackParamList, 'SubProgramProfile'> {
+interface SubProgramProfileProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
+StackScreenProps<RootBottomTabParamList>
+> {
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
 }
@@ -86,7 +89,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
 
   const goBack = () => {
     resetCourseReducer();
-    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+    navigation.navigate('Courses');
   };
 
   const renderCells = ({ item, index }) => {

@@ -1,8 +1,6 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
 import { BlendedCourseType, ELearningProgramType } from './CourseTypes';
 
 export type RootStackParamList = {
-  Home: NavigatorScreenParams<RootBottomTabParamList>;
   Authentication: undefined;
   EmailForm: { firstConnection: Boolean } | undefined;
   CreateAccount: { email: string };
@@ -25,7 +23,7 @@ export type RootStackParamList = {
 
 export type RootBottomTabParamList = {
   Catalog: undefined;
-  Courses: { screen: string };
+  Courses: undefined;
   Profile: undefined;
 }
 
@@ -36,15 +34,6 @@ export type RootCreateAccountParamList = {
 export type RootCardParamList = {
   [key: `card-${number}`]: undefined;
   'startCard': undefined;
-}
-
-export interface NavigationType {
-  navigate: (
-    path: keyof RootBottomTabParamList | keyof RootStackParamList | keyof RootCreateAccountParamList
-    | keyof RootCardParamList,
-    params?: any
-  ) => {},
-  dispatch: (action: any) => {},
 }
 
 declare global {

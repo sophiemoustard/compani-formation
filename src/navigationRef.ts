@@ -1,8 +1,8 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { RootStackParamList } from './types/NavigationType';
+import { RootStackParamList, RootBottomTabParamList } from './types/NavigationType';
 
-export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+export const navigationRef = createNavigationContainerRef();
 
-export const navigate = (name: keyof RootStackParamList, params?: any) => {
+export const navigate = (name: keyof RootStackParamList | keyof RootBottomTabParamList, params?: any) => {
   if (navigationRef.current) navigationRef.current.navigate(name, params);
 };

@@ -9,7 +9,8 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationType } from '../../types/NavigationType';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/NavigationType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import NiInput from '../../components/form/Input';
 import NiSecondaryButton from '../../components/form/SecondaryButton';
@@ -19,8 +20,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
 import Actions from '../../store/actions';
 
-interface AuthenticationProps {
-  navigation: NavigationType,
+interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
   resetAllReducers: () => void,
 }
 
