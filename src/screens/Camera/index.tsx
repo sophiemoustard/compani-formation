@@ -16,7 +16,7 @@ import MainActions from '../../store/main/actions';
 import { savePhoto } from '../../core/helpers/pictures';
 
 interface CameraProps extends CompositeScreenProps<
-StackScreenProps<RootStackParamList, 'PasswordEdition'>,
+StackScreenProps<RootStackParamList>,
 StackScreenProps<RootBottomTabParamList>
 > {
   loggedUser: UserType,

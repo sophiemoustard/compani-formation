@@ -19,7 +19,7 @@ import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
 
 interface ProfileProps extends CompositeScreenProps<
-StackScreenProps<RootBottomTabParamList, 'Profile'>,
+StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUser: UserType,

@@ -17,7 +17,7 @@ import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter } from '../../../core/helpers/utils';
 
 interface CatalogProps extends CompositeScreenProps<
-StackScreenProps<RootBottomTabParamList, 'Catalog'>,
+StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUserId: string | null,

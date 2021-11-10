@@ -32,7 +32,7 @@ import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 
 interface ProfileEditionProps extends CompositeScreenProps<
-StackScreenProps<RootStackParamList, 'ProfileEdition'>,
+StackScreenProps<RootStackParamList>,
 StackScreenProps<RootBottomTabParamList>
 > {
   loggedUser: UserType,

@@ -14,7 +14,7 @@ import styles from './styles';
 import { savePhoto } from '../../core/helpers/pictures';
 
 interface ImagePickerManagerProps extends CompositeScreenProps<
-StackScreenProps<RootStackParamList, 'ImagePickerManager'>,
+StackScreenProps<RootStackParamList>,
 StackScreenProps<RootBottomTabParamList>
 > {
   loggedUser: UserType,

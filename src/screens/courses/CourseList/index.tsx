@@ -23,7 +23,7 @@ import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
 
 interface CourseListProps extends CompositeScreenProps<
-StackScreenProps<RootBottomTabParamList, 'Courses'>,
+StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   setIsCourse: (value: boolean) => void,
