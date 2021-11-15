@@ -21,6 +21,7 @@ interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackPara
   cards: CardType[],
   setCards: (questionnaire: CardType[] | null) => void,
   setExitConfirmationModal: (boolean) => void,
+  resetCardReducer: () => void,
   setStatusBarVisible: (boolean) => void,
 }
 
@@ -32,10 +33,12 @@ const QuestionnaireCardContainer = ({
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
+  resetCardReducer,
   setStatusBarVisible,
 }: QuestionnaireCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
   const [questionnaire, setQuestionnaire] = useState<QuestionnaireType | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId } = route.params;
 
   useEffect(() => {
@@ -66,6 +69,9 @@ const QuestionnaireCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
     navigation.navigate('CourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
+
+    setIsActive(false);
+    resetCardReducer();
   };
 
   const hardwareBackPress = () => {
@@ -84,24 +90,26 @@ const QuestionnaireCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
-  return <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-    <Tab.Screen key={0} name={'startCard'} >
-      {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
-        isLoading={!(cards.length > 0 && questionnaire)} />}
-    </Tab.Screen>
-    {cards.length > 0 && questionnaire
-      ? <>
-        {cards.map((_, index) => (
-          <Tab.Screen key={index} name={`card-${index}`}>
-            {() => <CardScreen index={index} goBack={goBack} />}
-          </Tab.Screen>
-        ))}
-        <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-          {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
-        </Tab.Screen>
-      </>
-      : null}
-  </Tab.Navigator>;
+  return isActive
+    ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
+      <Tab.Screen key={0} name={'startCard'} >
+        {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
+          isLoading={!(cards.length > 0 && questionnaire)} />}
+      </Tab.Screen>
+      {cards.length > 0 && questionnaire &&
+       <>
+         {cards.map((_, index) => (
+           <Tab.Screen key={index} name={`card-${index}`}>
+             {() => <CardScreen index={index} goBack={goBack} />}
+           </Tab.Screen>
+         ))}
+         <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+           {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
+         </Tab.Screen>
+       </>
+      }
+    </Tab.Navigator>
+    : null;
 };
 
 const mapStateToProps = (state: StateType) => ({
@@ -113,6 +121,7 @@ const mapStateToProps = (state: StateType) => ({
 const mapDispatchToProps = dispatch => ({
   setCards: cards => dispatch(CardsActions.setCards(cards)),
   setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
+  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 

@@ -27,7 +27,6 @@ import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import CardsActions from '../../../store/cards/actions';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import { SubProgramType } from '../../../types/CourseTypes';
 
@@ -39,16 +38,9 @@ StackScreenProps<RootBottomTabParamList>
 > {
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
-  resetCardReducer: () => void,
 }
 
-const SubProgramProfile = ({
-  route,
-  navigation,
-  setStatusBarVisible,
-  resetCourseReducer,
-  resetCardReducer,
-}: SubProgramProfileProps) => {
+const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
@@ -56,13 +48,12 @@ const SubProgramProfile = ({
   const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
-    resetCardReducer();
     setProgramName(get(subProgram, 'program.name') || '');
 
     const programImage = get(subProgram, 'program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
     else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
-  }, [subProgram, resetCardReducer]);
+  }, [subProgram]);
 
   const getSubProgram = useCallback(async () => {
     try {
@@ -130,7 +121,6 @@ const SubProgramProfile = ({
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
   resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
 export default connect(null, mapDispatchToProps)(SubProgramProfile);

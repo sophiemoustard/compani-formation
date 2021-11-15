@@ -33,7 +33,6 @@ import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../ty
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import CardsActions from '../../../store/cards/actions';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import ProgressBar from '../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../components/CourseProfileStickyHeader';
@@ -50,7 +49,6 @@ StackScreenProps<RootBottomTabParamList>
   userId: string,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
-  resetCardReducer: () => void,
 }
 
 const renderStepCell = ({ item, index }, course, route) => {
@@ -68,14 +66,7 @@ const renderStepCell = ({ item, index }, course, route) => {
 
 const renderSeparator = () => <View style={styles.separator} />;
 
-const CourseProfile = ({
-  route,
-  navigation,
-  userId,
-  setStatusBarVisible,
-  resetCourseReducer,
-  resetCardReducer,
-}: CourseProfileProps) => {
+const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
@@ -86,13 +77,12 @@ const CourseProfile = ({
   const [progressBarY, setProgressBarY] = useState <number>(0);
 
   useEffect(() => {
-    resetCardReducer();
     setProgramName(get(course, 'subProgram.program.name') || '');
 
     const programImage = get(course, 'subProgram.program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
     else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
-  }, [course, resetCardReducer]);
+  }, [course]);
 
   const getCourse = useCallback(async () => {
     try {
@@ -213,7 +203,6 @@ const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
   resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CourseProfile);
