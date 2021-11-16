@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   View,
   Text,
@@ -9,25 +9,26 @@ import {
   ViewStyle,
   LogBox,
   BackHandler,
+  ImageSourcePropType,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { LinearGradient } from 'expo-linear-gradient';
-import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
-import { SubProgramType } from '../../../types/CourseTypes';
 import SubPrograms from '../../../api/subPrograms';
 import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import ELearningCell from '../../../components/ELearningCell';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
-import FeatherButton from '../../../components/icons/FeatherButton';
+import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
+import { SubProgramType } from '../../../types/CourseTypes';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -41,9 +42,20 @@ StackScreenProps<RootBottomTabParamList>
 
 const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
+  const [source, setSource] =
+    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
+  const [programName, setProgramName] = useState<string>('');
   const { signOut } = useContext(AuthContext);
 
-  const getSubProgram = async () => {
+  useEffect(() => {
+    setProgramName(get(subProgram, 'program.name') || '');
+
+    const programImage = get(subProgram, 'program.image.link') || '';
+    if (programImage) setSource({ uri: programImage });
+    else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
+  }, [subProgram]);
+
+  const getSubProgram = useCallback(async () => {
     try {
       const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.subProgramId);
       setSubProgram(fetchedSubProgram);
@@ -51,46 +63,33 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
       if (e.response.status === 401) signOut();
       setSubProgram(null);
     }
-  };
+  }, [route.params.subProgramId, signOut]);
 
-  useEffect(() => {
-    async function fetchData() { await getSubProgram(); }
-    fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { getSubProgram(); }, [getSubProgram]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
-    async function fetchData() { await getSubProgram(); }
     if (isFocused) {
       setStatusBarVisible(true);
-      fetchData();
+      getSubProgram();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, [getSubProgram, isFocused, setStatusBarVisible]);
 
-  const hardwareBackPress = () => {
+  const goBack = useCallback(() => {
+    resetCourseReducer();
+    navigation.navigate('Courses');
+  }, [navigation, resetCourseReducer]);
+
+  const hardwareBackPress = useCallback(() => {
     goBack();
     return true;
-  };
+  }, [goBack]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const programImage = get(subProgram, 'program.image.link') || '';
-  const programName = get(subProgram, 'program.name') || '';
-  const source = programImage
-    ? { uri: programImage }
-    : require('../../../../assets/images/authentication_background_image.jpg');
-
-  const goBack = () => {
-    resetCourseReducer();
-    navigation.navigate('Courses');
-  };
+  }, [hardwareBackPress]);
 
   const renderCells = ({ item, index }) => {
     if (item.type === E_LEARNING) {
@@ -102,7 +101,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
 
   const renderSeparator = () => <View style={styles.separator} />;
 
-  return subProgram && (
+  return subProgram && subProgram.steps && (
     <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
       <ImageBackground source={source} imageStyle={styles.image}
         style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
@@ -113,7 +112,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
           <Text style={styles.title}>{programName}</Text>
         </View>
       </ImageBackground>
-      <FlatList style={styles.flatList} data={subProgram?.steps} keyExtractor={item => item._id}
+      <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
     </ScrollView>
   );

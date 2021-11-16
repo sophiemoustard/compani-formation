@@ -41,6 +41,7 @@ const ActivityCardContainer = ({
 }: ActivityCardContainerProps) => {
   const { signOut } = useContext(AuthContext);
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(true);
 
   useEffect(() => {
     setStatusBarVisible(false);
@@ -84,6 +85,7 @@ const ActivityCardContainer = ({
     if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity?._id });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
 
+    setIsActive(false);
     resetCardReducer();
   };
 
@@ -103,23 +105,25 @@ const ActivityCardContainer = ({
 
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
-  return <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-    <Tab.Screen key={0} name={'startCard'} >
-      {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
-    </Tab.Screen>
-    {cards.length > 0 && activity
-      ? <>
-        {cards.map((_, index) => (
-          <Tab.Screen key={index} name={`card-${index}`}>
-            {() => <CardScreen index={index} goBack={goBack} />}
-          </Tab.Screen>
-        ))}
-        <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-          {() => <ActivityEndCard goBack={goBack} activity={activity} />}
-        </Tab.Screen>
-      </>
-      : null}
-  </Tab.Navigator>;
+  return isActive
+    ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
+      <Tab.Screen key={0} name={'startCard'} >
+        {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
+      </Tab.Screen>
+      {cards.length > 0 && activity &&
+         <>
+           {cards.map((_, index) => (
+             <Tab.Screen key={index} name={`card-${index}`}>
+               {() => <CardScreen index={index} goBack={goBack} />}
+             </Tab.Screen>
+           ))}
+           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+             {() => <ActivityEndCard goBack={goBack} activity={activity} />}
+           </Tab.Screen>
+         </>
+      }
+    </Tab.Navigator>
+    : null;
 };
 
 const mapStateToProps = (state: StateType) => ({
