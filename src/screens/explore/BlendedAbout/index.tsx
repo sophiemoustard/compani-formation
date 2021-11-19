@@ -35,12 +35,19 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   useEffect(() => {
     if (dates) {
       const dateFormat = 'dd/LL/yyyy';
-      const slotsDates = [...new Set(dates.map(date => companiDate(date).format(dateFormat)))];
-      setFormattedDates(slotsDates.map((date) => {
-        const dayOfWeek = capitalize(companiDate(date, dateFormat).format('ccc'));
-        const dayOfMonth = capitalize(companiDate(date, dateFormat).format('d'));
-        const month = capitalize(companiDate(date, dateFormat).format('LLL'));
-        const year = capitalize(companiDate(date, dateFormat).format('yyyy'));
+      const datesFirstSlots = dates.reduce((newDatesSlots: Date[], date) => {
+        if (!newDatesSlots
+          .some(slotDate => companiDate(slotDate).format(dateFormat) === companiDate(date).format(dateFormat))) {
+          newDatesSlots.push(date);
+        }
+        return newDatesSlots;
+      }, []);
+
+      setFormattedDates(datesFirstSlots.map((date) => {
+        const dayOfWeek = capitalize(companiDate(date).format('ccc'));
+        const dayOfMonth = capitalize(companiDate(date).format('d'));
+        const month = capitalize(companiDate(date).format('LLL'));
+        const year = capitalize(companiDate(date).format('yyyy'));
         return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
       }));
     }
