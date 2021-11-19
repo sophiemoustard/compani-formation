@@ -39,6 +39,11 @@ const companiDateFactory = (_date: DateTime) => ({
 
     return this._date <= otherDate;
   },
+  hasSame(miscTypeOtherDate : Date | CompaniDate | string, unit: DateTimeUnit) {
+    const otherDate = instantiateDateTimeFromMisc(miscTypeOtherDate);
+
+    return this._date.hasSame(otherDate, unit);
+  },
   isBefore(miscTypeOtherDate : Date | CompaniDate | string) {
     const otherDate = instantiateDateTimeFromMisc(miscTypeOtherDate);
 

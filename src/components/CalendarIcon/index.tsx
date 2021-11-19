@@ -22,11 +22,11 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
     if (slots.length) {
       const slotsDates = [...new Set(slots.map(date => companiDate(date).format(dateFormat)))];
       const nextSlots = slots.filter(slot => companiDate().isSameOrBefore(slot));
-      const date = nextSlots.length ? companiDate(nextSlots[0]).format(dateFormat) : slotsDates[0];
+      const date = nextSlots.length ? nextSlots[0] : slots[0];
 
-      setDayOfWeek(capitalize(companiDate(date, dateFormat).format('ccc')));
-      setDayOfMonth(capitalize(companiDate(date, dateFormat).format('d')));
-      setMonth(capitalize(companiDate(date, dateFormat).format('LLL')));
+      setDayOfWeek(capitalize(companiDate(date).format('ccc')));
+      setDayOfMonth(capitalize(companiDate(date).format('d')));
+      setMonth(capitalize(companiDate(date).format('LLL')));
       setDates(slotsDates);
     }
   }, [slots]);
