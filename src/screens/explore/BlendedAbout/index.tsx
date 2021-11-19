@@ -34,12 +34,9 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
 
   useEffect(() => {
     if (dates) {
-      const dateFormat = 'dd/LL/yyyy';
       const datesFirstSlots = dates.reduce((newDatesSlots: Date[], date) => {
-        if (!newDatesSlots
-          .some(slotDate => companiDate(slotDate).format(dateFormat) === companiDate(date).format(dateFormat))) {
-          newDatesSlots.push(date);
-        }
+        if (!newDatesSlots.some(slotDate => companiDate(date).hasSame(slotDate, 'day'))) newDatesSlots.push(date);
+
         return newDatesSlots;
       }, []);
 
