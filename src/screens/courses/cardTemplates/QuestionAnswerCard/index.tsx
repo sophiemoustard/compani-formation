@@ -59,8 +59,11 @@ const QuestionAnswerCard = ({
         ? answer
         : { ...answer, isSelected: false })));
     }
-    setSelectedAnswers(array => Object.assign([], array,
-      { [index]: { ...array[index], isSelected: !array[index].isSelected } }));
+    setSelectedAnswers(array => Object.assign(
+      [],
+      array,
+      { [index]: { ...array[index], isSelected: !array[index].isSelected } }
+    ));
   };
 
   const validateQuestionnaireAnswer = () => {

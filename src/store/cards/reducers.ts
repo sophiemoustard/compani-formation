@@ -40,7 +40,12 @@ const applyRemoveQuestionnaireAnswer = (state, action) => {
   return { ...state, questionnaireAnswersList: state.questionnaireAnswersList.filter(qa => qa.card !== card) };
 };
 
-export const cards = (state: CardStateType = initialState, action: CardActionType | CardActionWithoutPayloadType) => {
+export const cards = (
+  overloadedState: CardStateType,
+  action: CardActionType | CardActionWithoutPayloadType
+) => {
+  const state = overloadedState || initialState;
+
   switch (action.type) {
     case SET_CARDS:
       return { ...state, cards: action.payload };

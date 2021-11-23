@@ -54,6 +54,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error', // eslint ne gère pas les types, typescript les gère à sa place
     'no-unused-vars': 'off', // Pour ne pas avoir l'erreur en doublon
     'prefer-destructuring': ['error', { VariableDeclarator: { object: true, array: false } }],
+    'function-paren-newline': ['error', 'consistent'],
   },
   globals: {
     __DEV__: true,

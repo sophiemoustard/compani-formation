@@ -48,7 +48,8 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
       Alert.alert(
         'La galerie ne répond pas',
         'Veuillez réessayer',
-        [{ text: 'OK', onPress: () => navigation.dispatch(CommonActions.goBack()) }], { cancelable: false }
+        [{ text: 'OK', onPress: () => navigation.dispatch(CommonActions.goBack()) }],
+        { cancelable: false }
       );
     }
   };

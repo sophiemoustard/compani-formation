@@ -52,7 +52,8 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
       Alert.alert(
         'Echec de l\'enregistrement',
         'Essayez de reprendre la photo',
-        [{ text: 'OK', onPress: () => navigation.navigate('Camera') }], { cancelable: false }
+        [{ text: 'OK', onPress: () => navigation.navigate('Camera') }],
+        { cancelable: false }
       );
     } finally {
       setIsLoading(false);

@@ -11,9 +11,11 @@ import {
 const initialState: MainStateType = { loggedUser: null, statusBarVisible: true };
 
 export const main = (
-  state: MainStateType = initialState,
+  overloadedState: MainStateType,
   action: MainActionType | ResetMainReducer
 ): MainStateType => {
+  const state = overloadedState || initialState;
+
   switch (action.type) {
     case SET_LOGGED_USER:
       return {
