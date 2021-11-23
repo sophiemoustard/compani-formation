@@ -73,3 +73,11 @@ export const SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED = 22;
 export const DENIED = 'denied';
 export const GRANTED = 'granted';
 export const BLENDED_COURSE_REGISTRATION = 'blended_course_registration';
+
+// CONTEXT
+export const BEFORE_SIGNIN = 'beforeSignin';
+export const SIGNIN = 'signin';
+export const SIGNIN_ERROR = 'signinError';
+export const RESET_ERROR = 'resetError';
+export const SIGNOUT = 'signout';
+export const RENDER = 'render';
