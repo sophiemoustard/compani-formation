@@ -8,10 +8,10 @@ import {
 const initialState: CourseStateType = { isCourse: true };
 
 export const courses = (
-  overloadedState: CourseStateType,
+  inputState: CourseStateType,
   action: CourseActionWithoutPayloadType
 ): CourseStateType => {
-  const state = overloadedState || initialState;
+  const state = inputState || initialState;
 
   switch (action.type) {
     case SET_IS_COURSE:

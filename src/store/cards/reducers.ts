@@ -41,10 +41,10 @@ const applyRemoveQuestionnaireAnswer = (state, action) => {
 };
 
 export const cards = (
-  overloadedState: CardStateType,
+  inputState: CardStateType,
   action: CardActionType | CardActionWithoutPayloadType
 ) => {
-  const state = overloadedState || initialState;
+  const state = inputState || initialState;
 
   switch (action.type) {
     case SET_CARDS:
