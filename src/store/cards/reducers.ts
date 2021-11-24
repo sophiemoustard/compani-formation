@@ -20,6 +20,8 @@ const initialState: CardStateType = {
   exitConfirmationModal: false,
 };
 
+const defaultAction = { type: null };
+
 const applyAddQuestionnaireAnswer = (state, action) => {
   const questionnaireAnswer = action.payload;
   const indexOfAnswer = state.questionnaireAnswersList
@@ -41,11 +43,9 @@ const applyRemoveQuestionnaireAnswer = (state, action) => {
 };
 
 export const cards = (
-  inputState: CardStateType,
-  action: CardActionType | CardActionWithoutPayloadType
+  state: CardStateType = initialState,
+  action: CardActionType | CardActionWithoutPayloadType | typeof defaultAction = defaultAction
 ) => {
-  const state = inputState || initialState;
-
   switch (action.type) {
     case SET_CARDS:
       return { ...state, cards: action.payload };

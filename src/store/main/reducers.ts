@@ -9,13 +9,12 @@ import {
 } from '../../types/store/MainStoreType';
 
 const initialState: MainStateType = { loggedUser: null, statusBarVisible: true };
+const defaultAction = { type: null };
 
 export const main = (
-  inputState: MainStateType,
-  action: MainActionType | ResetMainReducer
+  state: MainStateType = initialState,
+  action: MainActionType | ResetMainReducer | typeof defaultAction = defaultAction
 ): MainStateType => {
-  const state = inputState || initialState;
-
   switch (action.type) {
     case SET_LOGGED_USER:
       return {

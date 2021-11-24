@@ -6,13 +6,12 @@ import {
 } from '../../types/store/CourseStoreType';
 
 const initialState: CourseStateType = { isCourse: true };
+const defaultAction = { type: null };
 
 export const courses = (
-  inputState: CourseStateType,
-  action: CourseActionWithoutPayloadType
+  state: CourseStateType = initialState,
+  action: CourseActionWithoutPayloadType | typeof defaultAction = defaultAction
 ): CourseStateType => {
-  const state = inputState || initialState;
-
   switch (action.type) {
     case SET_IS_COURSE:
       return { ...state, isCourse: action.value };
