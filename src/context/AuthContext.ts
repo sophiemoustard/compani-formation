@@ -3,6 +3,7 @@ import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
 import { navigate } from '../navigationRef';
 import Users from '../api/users';
+import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
 
 export interface StateType {
   alenviToken: string | null,
@@ -14,17 +15,17 @@ export interface StateType {
 
 const authReducer = (state: StateType, actions): StateType => {
   switch (actions.type) {
-    case 'beforeSignin':
+    case BEFORE_SIGNIN:
       return { ...state, error: false, errorMessage: '', loading: true };
-    case 'signin':
+    case SIGNIN:
       return { ...state, loading: false, alenviToken: actions.payload };
-    case 'signinError':
+    case SIGNIN_ERROR:
       return { ...state, loading: false, error: true, errorMessage: actions.payload };
-    case 'resetError':
+    case RESET_ERROR:
       return { ...state, loading: false, error: false, errorMessage: '' };
-    case 'signout':
+    case SIGNOUT:
       return { ...state, alenviToken: null, loading: false, error: false, errorMessage: '' };
-    case 'render':
+    case RENDER:
       return { ...state, appIsReady: true };
     default:
       return state;
@@ -35,17 +36,17 @@ const signIn = dispatch => async ({ email, password }) => {
   try {
     if (!email || !password) return;
 
-    dispatch({ type: 'beforeSignin' });
+    dispatch({ type: BEFORE_SIGNIN });
     const authentication = await Authentication.authenticate({ email, password });
 
     await asyncStorage.setUserId(authentication.user._id);
     await asyncStorage.setRefreshToken(authentication.refreshToken);
     await asyncStorage.setAlenviToken(authentication.token, authentication.tokenExpireDate);
 
-    dispatch({ type: 'signin', payload: authentication.token });
+    dispatch({ type: SIGNIN, payload: authentication.token });
   } catch (e: any) {
     dispatch({
-      type: 'signinError',
+      type: SIGNIN_ERROR,
       payload: e.response.status === 401
         ? 'L\'e-mail et/ou le mot de passe est incorrect.'
         : 'Impossible de se connecter',
@@ -66,7 +67,7 @@ const signOut = dispatch => async () => {
   await asyncStorage.removeUserId();
   await asyncStorage.removeExpoToken();
 
-  dispatch({ type: 'signout' });
+  dispatch({ type: SIGNOUT });
   navigate('Authentication');
 };
 
@@ -78,7 +79,7 @@ const refreshAlenviToken = dispatch => async (refreshToken) => {
     await asyncStorage.setRefreshToken(token.refreshToken);
     await asyncStorage.setUserId(token.user._id);
 
-    dispatch({ type: 'signin', payload: token.token });
+    dispatch({ type: SIGNIN, payload: token.token });
   } catch (e) {
     signOut(dispatch)();
   }
@@ -86,10 +87,10 @@ const refreshAlenviToken = dispatch => async (refreshToken) => {
 
 const localSignIn = async (dispatch) => {
   const { alenviToken } = await asyncStorage.getAlenviToken();
-  dispatch({ type: 'signin', payload: alenviToken });
+  dispatch({ type: SIGNIN, payload: alenviToken });
 
   navigate('Courses');
-  dispatch({ type: 'render' });
+  dispatch({ type: RENDER });
 };
 
 const tryLocalSignIn = dispatch => async () => {
@@ -103,12 +104,12 @@ const tryLocalSignIn = dispatch => async () => {
     return localSignIn(dispatch);
   }
 
-  dispatch({ type: 'render' });
+  dispatch({ type: RENDER });
   return signOut(dispatch)();
 };
 
 const resetError = dispatch => () => {
-  dispatch({ type: 'resetError' });
+  dispatch({ type: RESET_ERROR });
 };
 
 export const { Provider, Context }: any = createDataContext(
