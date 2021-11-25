@@ -11,6 +11,7 @@ import {
   SET_EXIT_CONFIRMATION_MODAL,
   CardActionWithoutPayloadType,
 } from '../../types/store/CardStoreType';
+import { defaultAction, DefaultActionType } from '../../types/store/StoreType';
 
 const initialState: CardStateType = {
   cards: [],
@@ -40,7 +41,10 @@ const applyRemoveQuestionnaireAnswer = (state, action) => {
   return { ...state, questionnaireAnswersList: state.questionnaireAnswersList.filter(qa => qa.card !== card) };
 };
 
-export const cards = (state: CardStateType = initialState, action: CardActionType | CardActionWithoutPayloadType) => {
+export const cards = (
+  state: CardStateType = initialState,
+  action: CardActionType | CardActionWithoutPayloadType | DefaultActionType = defaultAction
+) => {
   switch (action.type) {
     case SET_CARDS:
       return { ...state, cards: action.payload };

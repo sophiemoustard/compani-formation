@@ -7,12 +7,13 @@ import {
   ResetMainReducer,
   SET_STATUS_BAR_VISIBLE,
 } from '../../types/store/MainStoreType';
+import { defaultAction, DefaultActionType } from '../../types/store/StoreType';
 
 const initialState: MainStateType = { loggedUser: null, statusBarVisible: true };
 
 export const main = (
   state: MainStateType = initialState,
-  action: MainActionType | ResetMainReducer
+  action: MainActionType | ResetMainReducer | DefaultActionType = defaultAction
 ): MainStateType => {
   switch (action.type) {
     case SET_LOGGED_USER:
