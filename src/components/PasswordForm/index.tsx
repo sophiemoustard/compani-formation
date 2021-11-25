@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -17,6 +17,7 @@ import NiInput from '../form/Input';
 import { Context as AuthContext } from '../../context/AuthContext';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
 
 interface PasswordFormProps {
   goBack: () => void,
@@ -32,8 +33,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
   const [unvalid, setUnvalid] = useState({ newPassword: false, confirmedPassword: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [state, dispatch] = useReducer(errorReducer, initialErrorState);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
 
@@ -77,15 +77,16 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
       setIsValidationAttempted(true);
       if (isValid) {
         setIsLoading(true);
-        setError(false);
-        setErrorMessage('');
+        dispatch({ type: RESET_ERROR });
 
         await onPress(password.newPassword);
       }
     } catch (e: any) {
       if (e.response.status === 401) signOut();
-      setError(true);
-      setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
+      dispatch({
+        type: SET_ERROR,
+        payload: 'Erreur, si le problème persiste, contactez le support technique.',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -120,7 +121,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
               : ''} />
         </View>
         <View style={styles.footer}>
-          <NiErrorMessage message={errorMessage} show={error} />
+          <NiErrorMessage message={state.errorMessage} show={state.error} />
           <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
         </View>
       </ScrollView>

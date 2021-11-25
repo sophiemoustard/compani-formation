@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useReducer } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import ExitModal from '../../components/ExitModal';
@@ -13,6 +13,7 @@ import { GREY } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
 
 interface EmailFormProps extends StackScreenProps<RootStackParamList, 'EmailForm'> {}
 
@@ -24,7 +25,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [state, dispatch] = useReducer(errorReducer, initialErrorState);
 
   const hardwareBackPress = useCallback(() => {
     if (!isLoading) setExitConfirmationModal(true);
@@ -44,8 +45,9 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   useEffect(() => {
     setInvalidEmail(!email.match(EMAIL_REGEX));
-    if (!email.match(EMAIL_REGEX) && isValidationAttempted) setErrorMessage('Votre e-mail n\'est pas valide.');
-    else setErrorMessage('');
+    if (!email.match(EMAIL_REGEX) && isValidationAttempted) {
+      dispatch({ type: SET_ERROR, payload: 'Votre e-mail n\'est pas valide.' });
+    } else dispatch({ type: RESET_ERROR });
   }, [email, isValidationAttempted]);
 
   const validateEmail = async () => {
@@ -56,12 +58,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!route.params?.firstConnection) {
-          setInvalidEmail(true);
-          setErrorMessage('Oups ! Cet e-mail n\'est pas reconnu.');
+          dispatch({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu.' });
         } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
-      setErrorMessage('Oops, erreur lors de la vérification de l\'e-mail.');
+      dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail.' });
     } finally {
       setIsLoading(false);
     }
@@ -87,8 +88,8 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       <View style={accountCreationStyles.container}>
         <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
         <View style={accountCreationStyles.input}>
-          <NiInput caption="E-mail" value={email} type="email" validationMessage={errorMessage} disabled={isLoading}
-            onChangeText={enterEmail} />
+          <NiInput caption="E-mail" value={email} type="email" validationMessage={state.errorMessage}
+            disabled={isLoading} onChangeText={enterEmail} />
         </View>
         <View style={accountCreationStyles.footer}>
           <NiPrimaryButton caption="Valider" onPress={validateEmail} loading={isLoading} />

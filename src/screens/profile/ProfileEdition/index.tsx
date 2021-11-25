@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -30,6 +30,7 @@ import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -55,8 +56,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [state, dispatch] = useReducer(errorReducer, initialErrorState);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
@@ -111,8 +111,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       setIsValidationAttempted(true);
       if (isValid) {
         setIsLoading(true);
-        setError(false);
-        setErrorMessage('');
+        dispatch({ type: RESET_ERROR });
         await Users.updateById(loggedUser._id, {
           ...editedUser,
           contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
@@ -124,9 +123,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       }
     } catch (e: any) {
       if (e.response.status === 401) signOut();
-      else if (e.response.status === 409) setErrorMessage('L\'email est déjà relié à un compte existant');
-      else setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
-      setError(true);
+      else if (e.response.status === 409) {
+        dispatch({ type: SET_ERROR, payload: 'L\'email est déjà relié à un compte existant' });
+      } else dispatch({ type: SET_ERROR, payload: 'Erreur, si le problème persiste, contactez le support technique.' });
     } finally {
       setIsLoading(false);
     }
@@ -185,7 +184,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
         </View>
         <View style={styles.footer}>
-          <NiErrorMessage message={errorMessage} show={error} />
+          <NiErrorMessage message={state.errorMessage} show={state.error} />
           <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
         </View>
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
