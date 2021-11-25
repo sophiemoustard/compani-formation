@@ -4,13 +4,13 @@ import {
   CourseActionWithoutPayloadType,
   RESET_COURSE_REDUCER,
 } from '../../types/store/CourseStoreType';
+import { defaultAction, DefaultActionType } from '../../types/store/StoreType';
 
 const initialState: CourseStateType = { isCourse: true };
-const defaultAction = { type: null };
 
 export const courses = (
   state: CourseStateType = initialState,
-  action: CourseActionWithoutPayloadType | typeof defaultAction = defaultAction
+  action: CourseActionWithoutPayloadType | DefaultActionType = defaultAction
 ): CourseStateType => {
   switch (action.type) {
     case SET_IS_COURSE:
