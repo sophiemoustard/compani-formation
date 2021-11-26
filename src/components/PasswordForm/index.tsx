@@ -110,14 +110,14 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
             type="password" onChangeText={text => setPasswordField(text, 'newPassword')}
             validationMessage={unvalid.newPassword && isValidationAttempted
-              ? 'Le mot de passe doit comporter au minimum 6 caractères'
+              ? 'Le mot de passe doit comporter au minimum 6 caractères.'
               : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
             type="password" onChangeText={text => setPasswordField(text, 'confirmedPassword')}
             validationMessage={unvalid.confirmedPassword && isValidationAttempted
-              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
+              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas.'
               : ''} />
         </View>
         <View style={styles.footer}>

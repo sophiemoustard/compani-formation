@@ -20,7 +20,6 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
-  const [invalidCode, setInvalidCode] = useState<boolean>(false);
   const [state, dispatch] = useReducer(errorReducer, initialErrorState);
 
   const inputRefs: any[] = [
@@ -48,11 +47,9 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
 
   useEffect(() => {
     const isCodeInvalid = !(code.every(char => char !== '' && Number.isInteger(Number(char))));
-    setInvalidCode(isCodeInvalid);
-
-    if (isCodeInvalid && isValidationAttempted) {
-      dispatch({ type: SET_ERROR, payload: 'Le format du code est incorrect' });
-    } else dispatch({ type: RESET_ERROR });
+    dispatch(isCodeInvalid
+      ? { type: SET_ERROR, payload: isValidationAttempted ? 'Le format du code est incorrect' : '' }
+      : { type: RESET_ERROR });
   }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
@@ -78,14 +75,13 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
     Keyboard.dismiss();
     const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
     setIsValidationAttempted(true);
-    if (!invalidCode) sendCode(formattedCode);
+    if (!state.error) sendCode(formattedCode);
   };
 
   const onRequestClose = () => {
     setCode(['', '', '', '']);
     setIsKeyboardOpen(false);
     setIsValidationAttempted(false);
-    setInvalidCode(false);
     dispatch({ type: RESET_ERROR });
     setCodeRecipient('');
     setChosenMethod('');
@@ -99,7 +95,6 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       onRequestClose();
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
-      setInvalidCode(true);
       dispatch({ type: SET_ERROR, payload: 'Oops, le code n\'est pas valide.' });
     } finally {
       setIsLoading(false);
@@ -112,11 +107,9 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setChosenMethod(EMAIL);
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
-      setInvalidCode(false);
       dispatch({ type: RESET_ERROR });
     } catch (e: any) {
-      setInvalidCode(true);
-      if (e.response.status === 404) dispatch({ type: SET_ERROR, payload: 'Oops, on ne reconnaît pas cet e-mail.' });
+      if (e.response.status === 404) dispatch({ type: SET_ERROR, payload: 'Oops, on ne recccconnaît pas cet e-mail.' });
       else dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission de l\'e-mail.' });
     } finally {
       setIsLoading(false);
@@ -129,10 +122,8 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setChosenMethod(PHONE);
       const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
       setCodeRecipient(get(sms, 'phone'));
-      setInvalidCode(false);
       dispatch({ type: RESET_ERROR });
     } catch (e: any) {
-      setInvalidCode(true);
       if (e.response.status === 409) {
         dispatch({
           type: SET_ERROR,

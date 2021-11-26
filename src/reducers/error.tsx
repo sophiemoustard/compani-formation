@@ -7,11 +7,11 @@ export interface ErrorStateType {
   errorMessage: string
 }
 
-export type ErrorActionType = SetErrorType | ResetErrorType
-
 export type SetErrorType = { type: typeof SET_ERROR, payload: string };
 
 export type ResetErrorType = { type: typeof RESET_ERROR };
+
+export type ErrorActionType = SetErrorType | ResetErrorType
 
 export const errorReducer = (
   state: ErrorStateType,

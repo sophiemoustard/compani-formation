@@ -21,7 +21,6 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [behavior, setBehavior] = useState<'padding' | 'height'>('padding');
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
-  const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
@@ -45,17 +44,15 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   useEffect(() => {
     const isEmailInvalid = !email.match(EMAIL_REGEX);
-    setInvalidEmail(isEmailInvalid);
-
-    if (isEmailInvalid && isValidationAttempted) {
-      dispatch({ type: SET_ERROR, payload: 'Votre e-mail n\'est pas valide.' });
-    } else dispatch({ type: RESET_ERROR });
+    dispatch(isEmailInvalid
+      ? { type: SET_ERROR, payload: isValidationAttempted ? 'Votre e-mail n\'est pas valide.' : '' }
+      : { type: RESET_ERROR });
   }, [email, isValidationAttempted]);
 
   const validateEmail = async () => {
     try {
       setIsValidationAttempted(true);
-      if (!invalidEmail) {
+      if (!state.error) {
         setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
