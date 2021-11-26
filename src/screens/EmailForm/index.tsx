@@ -44,8 +44,10 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   }, []);
 
   useEffect(() => {
-    setInvalidEmail(!email.match(EMAIL_REGEX));
-    if (!email.match(EMAIL_REGEX) && isValidationAttempted) {
+    const isEmailInvalid = !email.match(EMAIL_REGEX);
+    setInvalidEmail(isEmailInvalid);
+
+    if (isEmailInvalid && isValidationAttempted) {
       dispatch({ type: SET_ERROR, payload: 'Votre e-mail n\'est pas valide.' });
     } else dispatch({ type: RESET_ERROR });
   }, [email, isValidationAttempted]);
