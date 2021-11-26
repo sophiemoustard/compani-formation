@@ -123,11 +123,10 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       }
     } catch (e: any) {
       if (e.response.status === 401) signOut();
-      else if (e.response.status === 409) {
-        dispatchError({ type: SET_ERROR, payload: 'L\'email est déjà relié à un compte existant' });
-      } else {
-        dispatchError({ type: SET_ERROR, payload: 'Erreur, si le problème persiste, contactez le support technique' });
-      }
+      const payload = e.response.status === 409
+        ? 'L\'email est déjà relié à un compte existant'
+        : 'Erreur, si le problème persiste, contactez le support technique';
+      dispatchError({ type: SET_ERROR, payload });
     } finally {
       setIsLoading(false);
     }
@@ -155,7 +154,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title={'Êtes-vous sûr(e) de cela ?'} contentText={'Vos modifications ne seront pas enregistrées.'} />
+          title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mes informations</Text>

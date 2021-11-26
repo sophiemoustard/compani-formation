@@ -101,8 +101,8 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
           color={GREY[600]} disabled={isLoading} />
         <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
-          title={'Êtes-vous sûr(e) de cela ?'} onPressCancelButton={() => setExitConfirmationModal(false)}
-          contentText={'Vos modifications ne seront pas enregistrées'} />
+          title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
+          contentText="Vos modifications ne seront pas enregistrées" />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>

@@ -13,10 +13,7 @@ export type ResetErrorType = { type: typeof RESET_ERROR };
 
 export type ErrorActionType = SetErrorType | ResetErrorType
 
-export const errorReducer = (
-  state: ErrorStateType,
-  action: ErrorActionType
-): ErrorStateType => {
+export const errorReducer = (state: ErrorStateType, action: ErrorActionType): ErrorStateType => {
   switch (action.type) {
     case SET_ERROR:
       return { value: true, message: action.payload };

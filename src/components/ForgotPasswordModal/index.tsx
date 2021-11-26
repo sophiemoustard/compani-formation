@@ -46,9 +46,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
 
   useEffect(() => {
     const isCodeInvalid = !(code.every(char => char !== '' && Number.isInteger(Number(char))));
-    dispatchError(isCodeInvalid
-      ? { type: SET_ERROR, payload: isValidationAttempted ? 'Le format du code est incorrect' : '' }
-      : { type: RESET_ERROR });
+    if (isCodeInvalid) {
+      const payload = isValidationAttempted ? 'Le format du code est incorrect' : '';
+      dispatchError({ type: SET_ERROR, payload });
+    } else { dispatchError({ type: RESET_ERROR }); }
   }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
@@ -108,9 +109,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setCodeRecipient(email);
       dispatchError({ type: RESET_ERROR });
     } catch (e: any) {
-      if (e.response.status === 404) {
-        dispatchError({ type: SET_ERROR, payload: 'Oops, on ne reconnaît pas cet e-mail' });
-      } else dispatchError({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission de l\'e-mail' });
+      const payload = e.response.status === 404
+        ? 'Oops, on ne reconnaît pas cet e-mail'
+        : 'Oops, erreur lors de la transmission de l\'e-mail';
+      dispatchError({ type: SET_ERROR, payload });
     } finally {
       setIsLoading(false);
     }
@@ -124,14 +126,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setCodeRecipient(get(sms, 'phone'));
       dispatchError({ type: RESET_ERROR });
     } catch (e: any) {
-      if (e.response.status === 409) {
-        dispatchError({
-          type: SET_ERROR,
-          payload: 'Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte',
-        });
-      } else {
-        dispatchError({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission du numéro de téléphone' });
-      }
+      const payload = e.response.status === 409
+        ? 'Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte'
+        : 'Oops, erreur lors de la transmission du numéro de téléphone';
+      dispatchError({ type: SET_ERROR, payload });
     } finally {
       setIsLoading(false);
     }

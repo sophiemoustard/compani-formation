@@ -44,9 +44,10 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   useEffect(() => {
     const isEmailInvalid = !email.match(EMAIL_REGEX);
-    dispatchError(isEmailInvalid
-      ? { type: SET_ERROR, payload: isValidationAttempted ? 'Votre e-mail n\'est pas valide' : '' }
-      : { type: RESET_ERROR });
+    if (isEmailInvalid) {
+      const payload = isValidationAttempted ? 'Votre e-mail n\'est pas valide' : '';
+      dispatchError({ type: SET_ERROR, payload });
+    } else dispatchError({ type: RESET_ERROR });
   }, [email, isValidationAttempted]);
 
   const validateEmail = async () => {
@@ -82,7 +83,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
           disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title={'Êtes-vous sûr(e) de cela ?'} contentText={'Vous reviendrez à la page d\'accueil.'} />
+          title="Êtes-vous sûr(e) de cela ?" contentText="Vous reviendrez à la page d\'accueil." />
       </View>
       <View style={accountCreationStyles.container}>
         <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
