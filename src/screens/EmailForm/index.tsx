@@ -45,7 +45,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   useEffect(() => {
     const isEmailInvalid = !email.match(EMAIL_REGEX);
     dispatch(isEmailInvalid
-      ? { type: SET_ERROR, payload: isValidationAttempted ? 'Votre e-mail n\'est pas valide.' : '' }
+      ? { type: SET_ERROR, payload: isValidationAttempted ? 'Votre e-mail n\'est pas valide' : '' }
       : { type: RESET_ERROR });
   }, [email, isValidationAttempted]);
 
@@ -57,11 +57,11 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!route.params?.firstConnection) {
-          dispatch({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu.' });
+          dispatch({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu' });
         } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
-      dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail.' });
+      dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail' });
     } finally {
       setIsLoading(false);
     }

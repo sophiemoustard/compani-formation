@@ -125,7 +125,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       if (e.response.status === 401) signOut();
       else if (e.response.status === 409) {
         dispatch({ type: SET_ERROR, payload: 'L\'email est déjà relié à un compte existant' });
-      } else dispatch({ type: SET_ERROR, payload: 'Erreur, si le problème persiste, contactez le support technique.' });
+      } else dispatch({ type: SET_ERROR, payload: 'Erreur, si le problème persiste, contactez le support technique' });
     } finally {
       setIsLoading(false);
     }

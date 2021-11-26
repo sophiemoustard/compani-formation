@@ -21,7 +21,6 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [state, dispatch] = useReducer(errorReducer, initialErrorState);
-
   const inputRefs: any[] = [
     React.createRef(),
     React.createRef(),
@@ -95,7 +94,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       onRequestClose();
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
-      dispatch({ type: SET_ERROR, payload: 'Oops, le code n\'est pas valide.' });
+      dispatch({ type: SET_ERROR, payload: 'Oops, le code n\'est pas valide' });
     } finally {
       setIsLoading(false);
     }
@@ -109,8 +108,8 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setCodeRecipient(email);
       dispatch({ type: RESET_ERROR });
     } catch (e: any) {
-      if (e.response.status === 404) dispatch({ type: SET_ERROR, payload: 'Oops, on ne recccconnaît pas cet e-mail.' });
-      else dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission de l\'e-mail.' });
+      if (e.response.status === 404) dispatch({ type: SET_ERROR, payload: 'Oops, on ne reconnaît pas cet e-mail' });
+      else dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission de l\'e-mail' });
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +129,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
           payload: 'Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte',
         });
       } else {
-        dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission du numéro de téléphone.' });
+        dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la transmission du numéro de téléphone' });
       }
     } finally {
       setIsLoading(false);
