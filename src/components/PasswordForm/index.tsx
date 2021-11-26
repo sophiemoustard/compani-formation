@@ -33,7 +33,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
   const [unvalid, setUnvalid] = useState({ newPassword: false, confirmedPassword: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [state, dispatch] = useReducer(errorReducer, initialErrorState);
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
 
@@ -77,13 +77,13 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
       setIsValidationAttempted(true);
       if (isValid) {
         setIsLoading(true);
-        dispatch({ type: RESET_ERROR });
+        dispatchError({ type: RESET_ERROR });
 
         await onPress(password.newPassword);
       }
     } catch (e: any) {
       if (e.response.status === 401) signOut();
-      dispatch({
+      dispatchError({
         type: SET_ERROR,
         payload: 'Erreur, si le problème persiste, contactez le support technique',
       });
@@ -121,7 +121,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
               : ''} />
         </View>
         <View style={styles.footer}>
-          <NiErrorMessage message={state.errorMessage} show={state.error} />
+          <NiErrorMessage message={error.message} show={error.value} />
           <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
         </View>
       </ScrollView>

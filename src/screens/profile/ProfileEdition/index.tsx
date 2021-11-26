@@ -56,7 +56,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [state, dispatch] = useReducer(errorReducer, initialErrorState);
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
@@ -111,7 +111,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       setIsValidationAttempted(true);
       if (isValid) {
         setIsLoading(true);
-        dispatch({ type: RESET_ERROR });
+        dispatchError({ type: RESET_ERROR });
         await Users.updateById(loggedUser._id, {
           ...editedUser,
           contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
@@ -124,8 +124,10 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     } catch (e: any) {
       if (e.response.status === 401) signOut();
       else if (e.response.status === 409) {
-        dispatch({ type: SET_ERROR, payload: 'L\'email est déjà relié à un compte existant' });
-      } else dispatch({ type: SET_ERROR, payload: 'Erreur, si le problème persiste, contactez le support technique' });
+        dispatchError({ type: SET_ERROR, payload: 'L\'email est déjà relié à un compte existant' });
+      } else {
+        dispatchError({ type: SET_ERROR, payload: 'Erreur, si le problème persiste, contactez le support technique' });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -184,7 +186,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
         </View>
         <View style={styles.footer}>
-          <NiErrorMessage message={state.errorMessage} show={state.error} />
+          <NiErrorMessage message={error.message} show={error.value} />
           <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
         </View>
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}

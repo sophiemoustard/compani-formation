@@ -24,7 +24,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [forgotPasswordModal, setForgotPasswordModal] = useState<boolean>(false);
-  const [state, dispatch] = useReducer(errorReducer, initialErrorState);
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
 
   const hardwareBackPress = useCallback(() => {
     if (!isLoading) setExitConfirmationModal(true);
@@ -44,7 +44,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   useEffect(() => {
     const isEmailInvalid = !email.match(EMAIL_REGEX);
-    dispatch(isEmailInvalid
+    dispatchError(isEmailInvalid
       ? { type: SET_ERROR, payload: isValidationAttempted ? 'Votre e-mail n\'est pas valide' : '' }
       : { type: RESET_ERROR });
   }, [email, isValidationAttempted]);
@@ -52,16 +52,16 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const validateEmail = async () => {
     try {
       setIsValidationAttempted(true);
-      if (!state.error) {
+      if (!error.value) {
         setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!route.params?.firstConnection) {
-          dispatch({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu' });
+          dispatchError({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu' });
         } else navigation.navigate('CreateAccount', { email });
       }
     } catch (e) {
-      dispatch({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail' });
+      dispatchError({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail' });
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +87,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
       <View style={accountCreationStyles.container}>
         <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
         <View style={accountCreationStyles.input}>
-          <NiInput caption="E-mail" value={email} type="email" validationMessage={state.errorMessage}
+          <NiInput caption="E-mail" value={email} type="email" validationMessage={error.message}
             disabled={isLoading} onChangeText={enterEmail} />
         </View>
         <View style={accountCreationStyles.footer}>
