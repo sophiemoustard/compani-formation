@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -30,6 +30,7 @@ import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -55,8 +56,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [unvalid, setUnvalid] = useState({ lastName: false, phone: false, email: false, emptyEmail: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
@@ -111,8 +111,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       setIsValidationAttempted(true);
       if (isValid) {
         setIsLoading(true);
-        setError(false);
-        setErrorMessage('');
+        dispatchError({ type: RESET_ERROR });
         await Users.updateById(loggedUser._id, {
           ...editedUser,
           contact: { phone: formatPhoneForPayload(editedUser.contact.phone) },
@@ -124,9 +123,10 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       }
     } catch (e: any) {
       if (e.response.status === 401) signOut();
-      else if (e.response.status === 409) setErrorMessage('L\'email est déjà relié à un compte existant');
-      else setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
-      setError(true);
+      const payload = e.response.status === 409
+        ? 'L\'email est déjà relié à un compte existant'
+        : 'Erreur, si le problème persiste, contactez le support technique';
+      dispatchError({ type: SET_ERROR, payload });
     } finally {
       setIsLoading(false);
     }
@@ -154,7 +154,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           color={GREY[600]} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
-          title={'Êtes-vous sûr(e) de cela ?'} contentText={'Vos modifications ne seront pas enregistrées.'} />
+          title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mes informations</Text>
@@ -185,7 +185,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
         </View>
         <View style={styles.footer}>
-          <NiErrorMessage message={errorMessage} show={error} />
+          <NiErrorMessage message={error.message} show={error.value} />
           <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
         </View>
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Text, View, TextInput, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -8,6 +8,7 @@ import Authentication from '../../api/authentication';
 import { EMAIL, MOBILE, PHONE } from '../../core/data/constants';
 import { IS_LARGE_SCREEN } from '../../styles/metrics';
 import styles from './styles';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
 
 interface ForgotPasswordModalProps {
   visible: boolean,
@@ -19,7 +20,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
-  const [invalidCode, setInvalidCode] = useState<boolean>(false);
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const inputRefs: any[] = [
     React.createRef(),
     React.createRef(),
@@ -28,7 +29,6 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   ];
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigation = useNavigation();
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [codeRecipient, setCodeRecipient] = useState<string>('');
   const [chosenMethod, setChosenMethod] = useState<string>('');
 
@@ -46,9 +46,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
 
   useEffect(() => {
     const isCodeInvalid = !(code.every(char => char !== '' && Number.isInteger(Number(char))));
-    setInvalidCode(isCodeInvalid);
-    if (isCodeInvalid && isValidationAttempted) setErrorMessage('Le format du code est incorrect');
-    else setErrorMessage('');
+    if (isCodeInvalid) {
+      const payload = isValidationAttempted ? 'Le format du code est incorrect' : '';
+      dispatchError({ type: SET_ERROR, payload });
+    } else { dispatchError({ type: RESET_ERROR }); }
   }, [code, isValidationAttempted]);
 
   const onChangeText = (char, index) => {
@@ -74,15 +75,14 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
     Keyboard.dismiss();
     const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
     setIsValidationAttempted(true);
-    if (!invalidCode) sendCode(formattedCode);
+    if (!error.value) sendCode(formattedCode);
   };
 
   const onRequestClose = () => {
     setCode(['', '', '', '']);
     setIsKeyboardOpen(false);
     setIsValidationAttempted(false);
-    setInvalidCode(false);
-    setErrorMessage('');
+    dispatchError({ type: RESET_ERROR });
     setCodeRecipient('');
     setChosenMethod('');
     setForgotPasswordModal(false);
@@ -95,8 +95,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       onRequestClose();
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
-      setInvalidCode(true);
-      setErrorMessage('Oops, le code n\'est pas valide');
+      dispatchError({ type: SET_ERROR, payload: 'Oops, le code n\'est pas valide' });
     } finally {
       setIsLoading(false);
     }
@@ -108,11 +107,12 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setChosenMethod(EMAIL);
       await Authentication.forgotPassword({ email, origin: MOBILE, type: EMAIL });
       setCodeRecipient(email);
-      setInvalidCode(false);
+      dispatchError({ type: RESET_ERROR });
     } catch (e: any) {
-      setInvalidCode(true);
-      if (e.response.status === 404) setErrorMessage('Oops, on ne reconnaît pas cet e-mail');
-      else setErrorMessage('Oops, erreur lors de la transmission de l\'e-mail.');
+      const payload = e.response.status === 404
+        ? 'Oops, on ne reconnaît pas cet e-mail'
+        : 'Oops, erreur lors de la transmission de l\'e-mail';
+      dispatchError({ type: SET_ERROR, payload });
     } finally {
       setIsLoading(false);
     }
@@ -124,12 +124,12 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setChosenMethod(PHONE);
       const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
       setCodeRecipient(get(sms, 'phone'));
-      setInvalidCode(false);
+      dispatchError({ type: RESET_ERROR });
     } catch (e: any) {
-      setInvalidCode(true);
-      if (e.response.status === 409) {
-        setErrorMessage('Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte');
-      } else setErrorMessage('Oops, erreur lors de la transmission du numéro de téléphone.');
+      const payload = e.response.status === 409
+        ? 'Oops, nous n\'avons pas trouvé de numéro de téléphone associé à votre compte'
+        : 'Oops, erreur lors de la transmission du numéro de téléphone';
+      dispatchError({ type: SET_ERROR, payload });
     } finally {
       setIsLoading(false);
     }
@@ -144,7 +144,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
         loading={isLoading && chosenMethod === EMAIL} />
       <NiPrimaryButton caption='Recevoir le code par SMS' customStyle={styles.button} onPress={sendSMS}
         loading={isLoading && chosenMethod === PHONE} />
-      <Text style={styles.unvalid}>{errorMessage}</Text>
+      <Text style={styles.unvalid}>{error.message}</Text>
     </>);
 
   const afterCodeSent = () => (
@@ -171,7 +171,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
             maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} />))}
       </View>
       <NiPrimaryButton caption='Valider' customStyle={styles.button} onPress={() => formatCode()} loading={isLoading} />
-      {invalidCode && isValidationAttempted && <Text style={styles.unvalid}>{errorMessage}</Text>}
+      {error.value && <Text style={styles.unvalid}>{error.message}</Text>}
     </>
   );
 
