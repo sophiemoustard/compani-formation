@@ -86,29 +86,26 @@ const renderNextStepsItem = step => <NextStepCell nextSlotsStep={step} />;
 const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
-  const { signOut } = useContext(AuthContext);
 
   const getCourses = useCallback(async () => {
     try {
       const fetchedCourses = await Courses.getUserCourses();
       dispatch({ type: SET_COURSES, payload: fetchedCourses });
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
       console.error(e);
       dispatch({ type: RESET_COURSES });
     }
-  }, [signOut]);
+  }, []);
 
   const getElearningDraftSubPrograms = useCallback(async () => {
     try {
       const fetchedSubPrograms = await SubPrograms.getELearningDraftSubPrograms();
       setElearningDraftSubPrograms(fetchedSubPrograms);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
       console.error(e);
       setElearningDraftSubPrograms([]);
     }
-  }, [signOut]);
+  }, []);
 
   const isFocused = useIsFocused();
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
@@ -7,7 +7,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import Programs from '../../../api/programs';
 import { ELearningProgramType } from '../../../types/CourseTypes';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import commonStyles from '../../../styles/common';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
@@ -48,7 +47,6 @@ const CategoriesStyleList = [
 
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
-  const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const style = styles();
 
@@ -60,7 +58,6 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
       )).flat();
       setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
       console.error(e);
       setProgramsByCategories({});
     }

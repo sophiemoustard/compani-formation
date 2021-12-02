@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -8,7 +8,6 @@ import Activities from '../../../api/activities';
 import { ActivityWithCardsType } from '../../../types/ActivityTypes';
 import { CardType } from '../../../types/CardType';
 import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
@@ -39,7 +38,6 @@ const ActivityCardContainer = ({
   resetCardReducer,
   setStatusBarVisible,
 }: ActivityCardContainerProps) => {
-  const { signOut } = useContext(AuthContext);
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
 
@@ -53,7 +51,6 @@ const ActivityCardContainer = ({
       setActivity(fetchedActivity);
       setCards(fetchedActivity.cards);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
       setActivity(null);
       setCards([]);
     }

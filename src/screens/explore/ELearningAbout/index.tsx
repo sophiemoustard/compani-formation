@@ -1,10 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackActions } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
@@ -18,7 +17,6 @@ interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'Elea
 }
 
 const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: ElearningAboutProps) => {
-  const { signOut } = useContext(AuthContext);
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
@@ -50,7 +48,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
         startActivity();
       } else goToCourse();
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
     }
   };
 

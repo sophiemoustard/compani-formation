@@ -18,7 +18,6 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-import alenvi from '../core/helpers/alenvi';
 import { ACTIVE_STATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
@@ -38,23 +37,8 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const handleUnauthorizedRequest = async (error: AxiosError) => {
-  await asyncStorage.removeAlenviToken();
-  await alenvi.refreshAlenviCookies();
-
-  const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
-  if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
-    const config = { ...error.config };
-    if (config.headers) config.headers['x-access-token'] = newAlenviToken || '';
-
-    return axiosLogged.request(config);
-  }
-
-  return Promise.reject(error.response);
-};
-
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
-  const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
+  const { tryLocalSignIn, alenviToken, appIsReady, signOut, refreshAlenviToken } = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState(false);
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
@@ -91,6 +75,28 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
         return Promise.reject(error);
       }
     );
+  };
+
+  const handleUnauthorizedRequest = async (error: AxiosError) => {
+    const storedTokens = await asyncStorage.getAlenviToken();
+    if (asyncStorage.isTokenValid(storedTokens.alenviToken, storedTokens.alenviTokenExpiryDate)) {
+      await signOut();
+      return Promise.reject(error);
+    } // handle invalid refreshToken reception from api which trigger infinite 401 calls
+
+    await asyncStorage.removeAlenviToken();
+    await refreshAlenviToken();
+
+    const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
+    if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
+      const config = { ...error.config };
+      if (config.headers) config.headers['x-access-token'] = newAlenviToken || '';
+
+      return axiosLogged.request(config);
+    }
+
+    await signOut();
+    return Promise.reject(error.response);
   };
 
   const initializeAxiosLogged = (token: string) => {
@@ -132,7 +138,6 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
           setLoggedUser(user);
         }
       } catch (e: any) {
-        if (e.response.status === 401) signOut();
         console.error(e);
       }
     }

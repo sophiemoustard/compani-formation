@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -26,7 +26,6 @@ import { GREY, WHITE } from '../../../styles/colors';
 import { ICON, SCROLL_EVENT_THROTTLE } from '../../../styles/metrics';
 import LiveCell from '../../../components/steps/LiveCell';
 import ELearningCell from '../../../components/ELearningCell';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING, REMOTE } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../types/CourseTypes';
@@ -72,7 +71,6 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');
-  const { signOut } = useContext(AuthContext);
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
 
@@ -91,10 +89,9 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       setCourse(fetchedCourse);
       setQuestionnaires(fetchedQuestionnaires);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
       setCourse(null);
     }
-  }, [route.params.courseId, signOut]);
+  }, [route.params.courseId]);
 
   useEffect(() => { getCourse(); }, [getCourse]);
 
