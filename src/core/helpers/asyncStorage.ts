@@ -9,29 +9,29 @@ type TokenType = {
 const isTokenValid = (token: TokenType['token'], expiryDate: TokenType['expiryDate']): boolean =>
   !!token && companiDate().isBefore(expiryDate || '');
 
-type AlenviTokenType = {
-  alenviToken: TokenType['token'],
-  alenviTokenExpiryDate: TokenType['expiryDate'],
+type CompaniTokenType = {
+  companiToken: TokenType['token'],
+  companiTokenExpiryDate: TokenType['expiryDate'],
 }
 
-const getAlenviToken = async (): Promise<AlenviTokenType> => ({
-  alenviToken: await AsyncStorage.getItem('alenvi_token'),
-  alenviTokenExpiryDate: await AsyncStorage.getItem('alenvi_token_expiry_date'),
+const getCompaniToken = async (): Promise<CompaniTokenType> => ({
+  companiToken: await AsyncStorage.getItem('compani_token'),
+  companiTokenExpiryDate: await AsyncStorage.getItem('compani_token_expiry_date'),
 });
 
-const setAlenviToken = async (
-  token: AlenviTokenType['alenviToken'],
-  tokenExpireDate: AlenviTokenType['alenviTokenExpiryDate']
+const setCompaniToken = async (
+  token: CompaniTokenType['companiToken'],
+  tokenExpireDate: CompaniTokenType['companiTokenExpiryDate']
 ): Promise<void> => {
-  if (token) await AsyncStorage.setItem('alenvi_token', token);
+  if (token) await AsyncStorage.setItem('compani_token', token);
   if (tokenExpireDate) {
-    await AsyncStorage.setItem('alenvi_token_expiry_date', companiDate(tokenExpireDate).toISOString());
+    await AsyncStorage.setItem('compani_token_expiry_date', companiDate(tokenExpireDate).toISOString());
   }
 };
 
-const removeAlenviToken = async (): Promise<void> => {
-  await AsyncStorage.removeItem('alenvi_token');
-  await AsyncStorage.removeItem('alenvi_token_expiry_date');
+const removeCompaniToken = async (): Promise<void> => {
+  await AsyncStorage.removeItem('compani_token');
+  await AsyncStorage.removeItem('compani_token_expiry_date');
 };
 
 type RefreshTokenType = {
@@ -68,9 +68,9 @@ const removeExpoToken = async (): Promise<void> => AsyncStorage.removeItem('expo
 
 export default {
   isTokenValid,
-  getAlenviToken,
-  setAlenviToken,
-  removeAlenviToken,
+  getCompaniToken,
+  setCompaniToken,
+  removeCompaniToken,
   getRefreshToken,
   setRefreshToken,
   removeRefreshToken,

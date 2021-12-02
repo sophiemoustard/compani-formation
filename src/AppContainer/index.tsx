@@ -38,7 +38,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
 };
 
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
-  const { tryLocalSignIn, alenviToken, appIsReady, signOut, refreshAlenviToken } = useContext(AuthContext);
+  const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState(false);
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
@@ -48,14 +48,14 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(async (data) => {
-      if (!alenviToken) return;
+      if (!companiToken) return;
       await handleExpoToken(data);
     });
 
     const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
       get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-    if (alenviToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
-  }, [alenviToken, lastNotificationResponse]);
+    if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+  }, [companiToken, lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
@@ -78,19 +78,19 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   };
 
   const handleUnauthorizedRequest = async (error: AxiosError) => {
-    const storedTokens = await asyncStorage.getAlenviToken();
-    if (asyncStorage.isTokenValid(storedTokens.alenviToken, storedTokens.alenviTokenExpiryDate)) {
+    const storedTokens = await asyncStorage.getCompaniToken();
+    if (asyncStorage.isTokenValid(storedTokens.companiToken, storedTokens.companiTokenExpiryDate)) {
       await signOut();
       return Promise.reject(error);
     } // handle invalid refreshToken reception from api which trigger infinite 401 calls
 
-    await asyncStorage.removeAlenviToken();
-    await refreshAlenviToken();
+    await asyncStorage.removeCompaniToken();
+    await refreshCompaniToken();
 
-    const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
-    if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
+    const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
+    if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
       const config = { ...error.config };
-      if (config.headers) config.headers['x-access-token'] = newAlenviToken || '';
+      if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
 
       return axiosLogged.request(config);
     }
@@ -142,10 +142,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       }
     }
 
-    initializeAxiosLogged(alenviToken);
-    if (alenviToken) setUser();
+    initializeAxiosLogged(companiToken);
+    if (companiToken) setUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alenviToken]);
+  }, [companiToken]);
 
   const shouldUpdate = async (nextState) => {
     try {
