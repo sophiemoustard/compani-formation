@@ -85,7 +85,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     } // handle invalid refreshToken reception from api which trigger infinite 401 calls
 
     await asyncStorage.removeCompaniToken();
-    await refreshCompaniToken();
+    const { refreshToken } = await asyncStorage.getRefreshToken();
+    await refreshCompaniToken(refreshToken);
 
     const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
     if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
