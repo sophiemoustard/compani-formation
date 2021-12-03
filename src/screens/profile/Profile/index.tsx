@@ -40,6 +40,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       setOnGoingCoursesCount(fetchedCourses.filter(course => course.progress < 1).length);
       setAchievedCoursesCount(fetchedCourses.filter(course => course.progress === 1).length);
     } catch (e: any) {
+      console.error(e);
       setOnGoingCoursesCount(0);
       setAchievedCoursesCount(0);
     }

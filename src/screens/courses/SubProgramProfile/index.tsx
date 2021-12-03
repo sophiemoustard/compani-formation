@@ -58,6 +58,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
       const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.subProgramId);
       setSubProgram(fetchedSubProgram);
     } catch (e: any) {
+      console.error(e);
       setSubProgram(null);
     }
   }, [route.params.subProgramId]);

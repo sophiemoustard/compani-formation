@@ -120,6 +120,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         goBack();
       }
     } catch (e: any) {
+      console.error(e);
       const payload = e.response.status === 409
         ? 'L\'email est déjà relié à un compte existant'
         : 'Erreur, si le problème persiste, contactez le support technique';

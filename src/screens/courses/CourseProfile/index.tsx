@@ -89,6 +89,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       setCourse(fetchedCourse);
       setQuestionnaires(fetchedQuestionnaires);
     } catch (e: any) {
+      console.error(e);
       setCourse(null);
     }
   }, [route.params.courseId]);

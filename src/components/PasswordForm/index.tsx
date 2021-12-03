@@ -80,6 +80,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
         await onPress(password.newPassword);
       }
     } catch (e: any) {
+      console.error(e);
       dispatchError({
         type: SET_ERROR,
         payload: 'Erreur, si le problème persiste, contactez le support technique',

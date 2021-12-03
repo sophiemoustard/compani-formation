@@ -51,6 +51,7 @@ const ActivityCardContainer = ({
       setActivity(fetchedActivity);
       setCards(fetchedActivity.cards);
     } catch (e: any) {
+      console.error(e);
       setActivity(null);
       setCards([]);
     }

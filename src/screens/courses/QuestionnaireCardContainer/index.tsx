@@ -49,6 +49,7 @@ const QuestionnaireCardContainer = ({
       setQuestionnaire(fetchedQuestionnaire);
       setCards(fetchedQuestionnaire.cards);
     } catch (e: any) {
+      console.error(e);
       setQuestionnaire(null);
       setCards([]);
     }
