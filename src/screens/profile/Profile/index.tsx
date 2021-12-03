@@ -49,6 +49,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
 
   const editPassword = () => navigation.navigate('PasswordEdition', { userId: loggedUser._id });
 
+  const clearExpoTokenAndSignOut = () => signOut(true);
+
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
     fetchData();
@@ -117,7 +119,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
           <View style={styles.sectionDelimiter} />
         </>
       }
-      <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter" onPress={signOut} />
+      <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter"
+        onPress={clearExpoTokenAndSignOut} />
       <TouchableOpacity hitSlop={HIT_SLOP} onPress={() => Linking.openURL('https://www.compani.fr/rgpd')}
         style={styles.legalNoticeContainer}>
         <Text style={styles.legalNotice}>Politique de confidentialité</Text>

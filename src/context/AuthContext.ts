@@ -54,13 +54,13 @@ const signIn = dispatch => async ({ email, password }) => {
   }
 };
 
-const signOut = dispatch => async () => {
+const signOut = dispatch => async (removeExpoToken: boolean = false) => {
   await Authentication.logOut();
 
   const expoToken = await asyncStorage.getExpoToken();
   const userId = await asyncStorage.getUserId();
 
-  if (expoToken && userId) await Users.removeExpoToken(userId, expoToken);
+  if (removeExpoToken && expoToken && userId) await Users.removeExpoToken(userId, expoToken);
 
   await asyncStorage.removeCompaniToken();
   await asyncStorage.removeRefreshToken();
