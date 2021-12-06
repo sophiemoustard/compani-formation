@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';
@@ -77,7 +77,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     );
   };
 
-  const handleUnauthorizedRequest = async (error: AxiosError) => {
+  const handleUnauthorizedRequest = useCallback(async (error: AxiosError) => {
     const storedTokens = await asyncStorage.getCompaniToken();
     if (asyncStorage.isTokenValid(storedTokens.companiToken, storedTokens.companiTokenExpiryDate)) {
       await signOut();
@@ -98,9 +98,9 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
     await signOut();
     return Promise.reject(error.response);
-  };
+  }, [signOut, refreshCompaniToken]);
 
-  const initializeAxiosLogged = (token: string) => {
+  const initializeAxiosLogged = useCallback((token: string) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
     }
@@ -126,7 +126,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
           return Promise.reject(error);
         }
       );
-  };
+  }, [handleUnauthorizedRequest]);
 
   useEffect(() => {
     async function setUser() {
@@ -145,8 +145,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
     initializeAxiosLogged(companiToken);
     if (companiToken) setUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companiToken]);
+  }, [companiToken, initializeAxiosLogged, setLoggedUser, signOut]);
 
   const shouldUpdate = async (nextState) => {
     try {
