@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import Questionnaires from '../../../api/questionnaires';
 import { CardType } from '../../../types/CardType';
 import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import StartCard from '../cardTemplates/StartCard';
 import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
 import { StateType } from '../../../types/store/StoreType';
@@ -36,7 +35,6 @@ const QuestionnaireCardContainer = ({
   resetCardReducer,
   setStatusBarVisible,
 }: QuestionnaireCardContainerProps) => {
-  const { signOut } = useContext(AuthContext);
   const [questionnaire, setQuestionnaire] = useState<QuestionnaireType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId } = route.params;
@@ -51,7 +49,7 @@ const QuestionnaireCardContainer = ({
       setQuestionnaire(fetchedQuestionnaire);
       setCards(fetchedQuestionnaire.cards);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       setQuestionnaire(null);
       setCards([]);
     }

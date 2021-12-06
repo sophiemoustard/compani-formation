@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -14,7 +14,6 @@ import { GREY } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
 import NiInput from '../form/Input';
-import { Context as AuthContext } from '../../context/AuthContext';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
@@ -26,7 +25,6 @@ interface PasswordFormProps {
 
 const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
   const isIOS = Platform.OS === 'ios';
-  const { signOut } = useContext(AuthContext);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [password, setPassword] =
     useState<{ newPassword: string, confirmedPassword: string }>({ newPassword: '', confirmedPassword: '' });
@@ -82,7 +80,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
         await onPress(password.newPassword);
       }
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       dispatchError({
         type: SET_ERROR,
         payload: 'Erreur, si le problème persiste, contactez le support technique',

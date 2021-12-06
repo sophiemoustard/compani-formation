@@ -49,7 +49,7 @@ const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
-  const { signIn, signOut } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const [formList, setFormList] = useState<CreateAccountDataType[][]>([
     [{
       type: 'text',
@@ -126,7 +126,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       await Users.create(formatCreationPayload(formList, email));
       signIn({ email, password: formList[3][0].value });
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
     } finally {
       setIsLoading(false);
     }

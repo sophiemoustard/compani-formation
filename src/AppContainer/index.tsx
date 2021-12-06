@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';
@@ -18,7 +18,6 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-import alenvi from '../core/helpers/alenvi';
 import { ACTIVE_STATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
@@ -38,23 +37,8 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const handleUnauthorizedRequest = async (error: AxiosError) => {
-  await asyncStorage.removeAlenviToken();
-  await alenvi.refreshAlenviCookies();
-
-  const { alenviToken: newAlenviToken, alenviTokenExpiryDate } = await asyncStorage.getAlenviToken();
-  if (asyncStorage.isTokenValid(newAlenviToken, alenviTokenExpiryDate)) {
-    const config = { ...error.config };
-    if (config.headers) config.headers['x-access-token'] = newAlenviToken || '';
-
-    return axiosLogged.request(config);
-  }
-
-  return Promise.reject(error.response);
-};
-
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
-  const { tryLocalSignIn, alenviToken, appIsReady, signOut } = useContext(AuthContext);
+  const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState(false);
   const [maintenanceModaleVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
@@ -64,14 +48,14 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(async (data) => {
-      if (!alenviToken) return;
+      if (!companiToken) return;
       await handleExpoToken(data);
     });
 
     const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
       get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-    if (alenviToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
-  }, [alenviToken, lastNotificationResponse]);
+    if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+  }, [companiToken, lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
@@ -93,7 +77,30 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     );
   };
 
-  const initializeAxiosLogged = (token: string) => {
+  const handleUnauthorizedRequest = useCallback(async (error: AxiosError) => {
+    const storedTokens = await asyncStorage.getCompaniToken();
+    if (asyncStorage.isTokenValid(storedTokens.companiToken, storedTokens.companiTokenExpiryDate)) {
+      await signOut();
+      return Promise.reject(error);
+    } // handle invalid refreshToken reception from api which trigger infinite 401 calls
+
+    await asyncStorage.removeCompaniToken();
+    const { refreshToken } = await asyncStorage.getRefreshToken();
+    await refreshCompaniToken(refreshToken);
+
+    const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
+    if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
+      const config = { ...error.config };
+      if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
+
+      return axiosLogged.request(config);
+    }
+
+    await signOut();
+    return Promise.reject(error.response);
+  }, [signOut, refreshCompaniToken]);
+
+  const initializeAxiosLogged = useCallback((token: string) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
     }
@@ -119,7 +126,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
           return Promise.reject(error);
         }
       );
-  };
+  }, [handleUnauthorizedRequest]);
 
   useEffect(() => {
     async function setUser() {
@@ -132,15 +139,13 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
           setLoggedUser(user);
         }
       } catch (e: any) {
-        if (e.response.status === 401) signOut();
         console.error(e);
       }
     }
 
-    initializeAxiosLogged(alenviToken);
-    if (alenviToken) setUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alenviToken]);
+    initializeAxiosLogged(companiToken);
+    if (companiToken) setUser();
+  }, [companiToken, initializeAxiosLogged, setLoggedUser, signOut]);
 
   const shouldUpdate = async (nextState) => {
     try {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext, useReducer } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -24,7 +24,6 @@ import { RootStackParamList, RootBottomTabParamList } from '../../../types/Navig
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
@@ -42,7 +41,6 @@ StackScreenProps<RootBottomTabParamList>
 
 const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
   const isIOS = Platform.OS === 'ios';
-  const { signOut } = useContext(AuthContext);
 
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
@@ -122,7 +120,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         goBack();
       }
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       const payload = e.response.status === 409
         ? 'L\'email est déjà relié à un compte existant'
         : 'Erreur, si le problème persiste, contactez le support technique';

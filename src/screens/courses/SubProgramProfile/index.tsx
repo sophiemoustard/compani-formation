@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -21,7 +21,6 @@ import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import ELearningCell from '../../../components/ELearningCell';
 import FeatherButton from '../../../components/icons/FeatherButton';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import { E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
@@ -45,7 +44,6 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');
-  const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
     setProgramName(get(subProgram, 'program.name') || '');
@@ -60,10 +58,10 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
       const fetchedSubProgram = await SubPrograms.getSubProgram(route.params.subProgramId);
       setSubProgram(fetchedSubProgram);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       setSubProgram(null);
     }
-  }, [route.params.subProgramId, signOut]);
+  }, [route.params.subProgramId]);
 
   useEffect(() => { getSubProgram(); }, [getSubProgram]);
 
