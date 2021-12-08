@@ -73,6 +73,7 @@ export const SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED = 22;
 export const DENIED = 'denied';
 export const GRANTED = 'granted';
 export const BLENDED_COURSE_REGISTRATION = 'blended_course_registration';
+export const NEW_ELEARNING_COURSE = 'new_elearning_course';
 
 // CONTEXT
 export const BEFORE_SIGNIN = 'beforeSignin';
