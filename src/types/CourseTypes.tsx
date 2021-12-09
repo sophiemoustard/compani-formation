@@ -64,7 +64,12 @@ export type BlendedCourseType = BaseCourseType & {
   subProgram: { isStrictlyELearning: false },
   slots: SlotType[],
   trainer: { _id: string, identity: { lastname: string, firstname: string }, picture: { link: '' }, biography: '' },
-  contact: { name: string, phone: string, email: string },
+  contact: {
+    _id: string,
+    identity: { lastname: string, firstname: string },
+    contact: {phone: string},
+    local: { email: string}
+  },
   misc: string,
 }
 
