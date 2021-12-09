@@ -1,12 +1,13 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { BLENDED_COURSE_REGISTRATION, GRANTED, DENIED } from '../data/constants';
+import { BLENDED_COURSE_REGISTRATION, GRANTED, DENIED, NEW_ELEARNING_COURSE } from '../data/constants';
 import { navigationRef } from '../../navigationRef';
 import asyncStorage from './asyncStorage';
 import Users from '../../api/users';
 import Courses from '../../api/courses';
-import { BlendedCourseType } from '../../types/CourseTypes';
+import Programs from '../../api/programs';
+import { BlendedCourseType, ELearningProgramType } from '../../types/CourseTypes';
 
 export const registerForPushNotificationsAsync = async () => {
   let finalStatus;
@@ -43,11 +44,17 @@ export const registerForPushNotificationsAsync = async () => {
 
 export const handleNotificationResponse = async (response) => {
   const { type, _id } = response.notification.request.content.data;
-  const course = await Courses.getCourse(_id);
-
   switch (type) {
-    case BLENDED_COURSE_REGISTRATION:
+    case BLENDED_COURSE_REGISTRATION: {
+      const course = await Courses.getCourse(_id);
+
       return navigationRef.current?.navigate('BlendedAbout', { course: course as BlendedCourseType });
+    }
+    case NEW_ELEARNING_COURSE: {
+      const program = await Programs.getELearningPrograms({ _id });
+
+      return navigationRef.current?.navigate('ElearningAbout', { program: program[0] as ELearningProgramType });
+    }
     default:
       return null;
   }
