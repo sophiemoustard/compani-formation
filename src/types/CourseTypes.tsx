@@ -67,7 +67,7 @@ export type BlendedCourseType = BaseCourseType & {
   contact: {
     _id: string,
     identity: { lastname: string, firstname: string },
-    contact: {phone: string},
+    contact: { phone: string },
     local: { email: string}
   },
   misc: string,
