@@ -3,7 +3,7 @@ import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
 import sinon from 'sinon';
-import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act, cleanup } from '@testing-library/react-native';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
 import Environment from '../environment';
 import reducers from '../src/store/index';
@@ -30,6 +30,7 @@ describe('Authentication tests', () => {
     axiosNotLoggedMock.restore();
     getEnvVarsStub.restore();
     getBaseUrlStub.restore();
+    cleanup();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
@@ -79,18 +80,22 @@ describe('Authentication tests', () => {
       </AuthProvider>
     );
 
-    const emailInput = await waitFor(() => element.getByTestId('Email'));
+    let emailInput;
+    let sendButton;
+    let passwordInput;
+
+    await waitFor(() => {
+      emailInput = element.getByTestId('Email');
+      passwordInput = element.getByTestId('Mot de passe');
+      sendButton = element.getByTestId('Se connecter');
+    });
     const changeEmail = async () => fireEvent.changeText(emailInput, 'test@alenvi.io');
-
-    const passwordInput = await waitFor(() => element.getByTestId('Mot de passe'));
     const changePassword = async () => fireEvent.changeText(passwordInput, '123456');
-
-    const sendButton = await waitFor(() => element.getByTestId('Se connecter'));
     const press = async () => fireEvent.press(sendButton);
 
-    act(() => changeEmail())
-      .then(() => act(() => changePassword())
-        .then(() => act(() => press())
+    act(changeEmail)
+      .then(() => act(changePassword)
+        .then(() => act(press)
           .then(async () => {
             const header = await waitFor(() => element.getByTestId('header'));
 
