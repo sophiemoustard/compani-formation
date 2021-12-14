@@ -1,22 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import Programs from '../../../api/programs';
-import { Context as AuthContext } from '../../../context/AuthContext';
+import { ELearningProgramType } from '../../../types/CourseTypes';
 import commonStyles from '../../../styles/common';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
-import { ProgramType } from '../../../types/CourseTypes';
 import CoursesSection from '../../../components/CoursesSection';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter } from '../../../core/helpers/utils';
 
-interface CatalogProps {
+interface CatalogProps extends CompositeScreenProps<
+StackScreenProps<RootBottomTabParamList>,
+StackScreenProps<RootStackParamList>
+> {
   loggedUserId: string | null,
-  navigation: { navigate: (path: string, params: { program: ProgramType }) => {} },
 }
 
 const CategoriesStyleList = [
@@ -44,7 +47,6 @@ const CategoriesStyleList = [
 
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
-  const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const style = styles();
 
@@ -56,7 +58,6 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
       )).flat();
       setProgramsByCategories(groupBy(splittedByCategoryPrograms, f => f.category));
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
       console.error(e);
       setProgramsByCategories({});
     }
@@ -68,7 +69,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = program => navigation.navigate('ElearningAbout', { program });
+  const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
   const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
 

@@ -1,28 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { CommonActions, StackActions, StackActionType } from '@react-navigation/native';
 import get from 'lodash/get';
-import { Context as AuthContext } from '../../../context/AuthContext';
+import { StackActions } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { ELearningCourseProgramType } from '../../../types/CourseTypes';
+import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 
-type ElearningAboutProps = {
-  route: { params: { program: ELearningCourseProgramType } },
-  navigation: {
-    navigate: (path: string, params?: object) => {},
-    dispatch: (action: CommonActions.Action | StackActionType) => {},
-    goBack: () => {},
-  },
+interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
   setIsCourse: (value: boolean) => void,
 }
 
 const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: ElearningAboutProps) => {
-  const { signOut } = useContext(AuthContext);
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
@@ -32,7 +26,9 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
     const course = subProgram?.courses ? subProgram.courses[0] : null;
     if (course) {
       setCourseId(course._id);
-      setHasAlreadySubscribed(course.trainees.includes(loggedUserId));
+
+      const { trainees } = course as ELearningCourseType;
+      setHasAlreadySubscribed(trainees?.includes(loggedUserId) || false);
     }
   }, [loggedUserId, program]);
 
@@ -52,7 +48,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
         startActivity();
       } else goToCourse();
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
     }
   };
 

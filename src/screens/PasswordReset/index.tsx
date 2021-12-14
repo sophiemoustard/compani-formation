@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/NavigationType';
 import PasswordForm from '../../components/PasswordForm';
-import { NavigationType } from '../../types/NavigationType';
 import Authentication from '../../api/authentication';
 import { Context as AuthContext } from '../../context/AuthContext';
 
-interface PasswordResetProps {
-  route: { params: { userId: string, token: string, email?: string } },
-  navigation: NavigationType,
-}
+interface PasswordResetProps extends StackScreenProps<RootStackParamList, 'PasswordReset'> {}
 
 const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
   const { userId, email, token } = route.params;

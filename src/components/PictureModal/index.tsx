@@ -43,7 +43,8 @@ const PictureModal = ({
     Alert.alert(
       'Accès refusé',
       `Vérifie que l'application a bien l'autorisation d'accéder à  ${component}`,
-      [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+      [{ text: 'OK', onPress: () => setPictureModal(false) }],
+      { cancelable: false }
     );
   };
 
@@ -61,7 +62,7 @@ const PictureModal = ({
   const requestPermissionsForCamera = async () => {
     try {
       setIsLoading(true);
-      const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === 'granted') navigation.navigate('Camera');
       else alert('l\'appareil photo');
     } catch {
@@ -106,7 +107,8 @@ const PictureModal = ({
       Alert.alert(
         'Echec de la suppression',
         'Réessaie plus tard',
-        [{ text: 'OK', onPress: () => setPictureModal(false) }], { cancelable: false }
+        [{ text: 'OK', onPress: () => setPictureModal(false) }],
+        { cancelable: false }
       );
     } finally {
       setIsLoading(false);

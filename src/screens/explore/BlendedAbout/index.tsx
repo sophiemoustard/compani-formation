@@ -3,6 +3,8 @@ import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-na
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../types/NavigationType';
 import companiDate from '../../../core/helpers/dates';
 import About from '../../../components/About';
 import styles from './styles';
@@ -11,15 +13,8 @@ import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
-import { BlendedCourseType } from '../../../types/CourseTypes';
 
-interface BlendedAboutProps {
-  route: { params: { course: BlendedCourseType } },
-  navigation: {
-    goBack: () => {},
-    navigate: (path: string, params: { courseId: string }) => {},
-  },
-}
+interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
@@ -80,17 +75,19 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           </View>
           {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
         </>}
-        {!!course.contact?.name && <>
+        {!!course.contact?.identity && <>
           <View style={styles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
-          <Text style={styles.subSectionTitle}>{course.contact.name}</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.phone}`)} style={styles.contact}>
+          <Text style={styles.subSectionTitle}>{formatIdentity(course.contact.identity, 'FL')}</Text>
+          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.contact.phone}`)}
+            style={styles.contact}>
             <Feather name='phone' size={ICON.MD} color={GREY[600]} />
-            <Text style={styles.contactContent}>{course.contact.phone}</Text>
+            <Text style={styles.contactContent}>{course.contact.contact.phone}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.email}`)} style={styles.contact}>
+          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.local.email}`)}
+            style={styles.contact}>
             <Feather name='mail' size={ICON.MD} color={GREY[600]}/>
-            <Text style={styles.contactContent}>{course.contact.email}</Text>
+            <Text style={styles.contactContent}>{course.contact.local.email}</Text>
           </TouchableOpacity>
         </>}
       </View>

@@ -1,11 +1,11 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { StackScreenProps } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import Questionnaires from '../../../api/questionnaires';
 import { CardType } from '../../../types/CardType';
-import { NavigationType } from '../../../types/NavigationType';
-import { Context as AuthContext } from '../../../context/AuthContext';
+import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
 import StartCard from '../cardTemplates/StartCard';
 import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
 import { StateType } from '../../../types/store/StoreType';
@@ -14,9 +14,7 @@ import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
-interface QuestionnaireCardContainerProps {
-  route: { params: { questionnaireId: string, profileId: string } },
-  navigation: NavigationType,
+interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {
   cardIndex: number | null,
   exitConfirmationModal: boolean,
   cards: CardType[],
@@ -37,8 +35,8 @@ const QuestionnaireCardContainer = ({
   resetCardReducer,
   setStatusBarVisible,
 }: QuestionnaireCardContainerProps) => {
-  const { signOut } = useContext(AuthContext);
   const [questionnaire, setQuestionnaire] = useState<QuestionnaireType | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId } = route.params;
 
   useEffect(() => {
@@ -51,7 +49,7 @@ const QuestionnaireCardContainer = ({
       setQuestionnaire(fetchedQuestionnaire);
       setCards(fetchedQuestionnaire.cards);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       setQuestionnaire(null);
       setCards([]);
     }
@@ -70,6 +68,7 @@ const QuestionnaireCardContainer = ({
 
     navigation.navigate('CourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
 
+    setIsActive(false);
     resetCardReducer();
   };
 
@@ -87,26 +86,28 @@ const QuestionnaireCardContainer = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardIndex]);
 
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
-  return <Tab.Navigator tabBar={() => <></>} swipeEnabled={false}>
-    <Tab.Screen key={0} name={'startCard'} >
-      {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
-        isLoading={!(cards.length > 0 && questionnaire)} />}
-    </Tab.Screen>
-    {cards.length > 0 && questionnaire
-      ? <>
-        {cards.map((_, index) => (
-          <Tab.Screen key={index} name={`card-${index}`}>
-            {() => <CardScreen index={index} goBack={goBack} />}
-          </Tab.Screen>
-        ))}
-        <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-          {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
-        </Tab.Screen>
-      </>
-      : null}
-  </Tab.Navigator>;
+  return isActive
+    ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
+      <Tab.Screen key={0} name={'startCard'} >
+        {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
+          isLoading={!(cards.length > 0 && questionnaire)} />}
+      </Tab.Screen>
+      {cards.length > 0 && questionnaire &&
+       <>
+         {cards.map((_, index) => (
+           <Tab.Screen key={index} name={`card-${index}`}>
+             {() => <CardScreen index={index} goBack={goBack} />}
+           </Tab.Screen>
+         ))}
+         <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+           {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
+         </Tab.Screen>
+       </>
+      }
+    </Tab.Navigator>
+    : null;
 };
 
 const mapStateToProps = (state: StateType) => ({

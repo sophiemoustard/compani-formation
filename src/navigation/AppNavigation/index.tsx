@@ -19,11 +19,12 @@ import Camera from '../../screens/Camera';
 import ImagePickerManager from '../../screens/ImagePickerManager';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
+import { RootStackParamList } from '../../types/NavigationType';
 
-const MainStack = createStackNavigator();
+const MainStack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
-  const { alenviToken } = useContext(AuthContext);
+  const { companiToken } = useContext(AuthContext);
   const routeNameRef = useRef<string>();
 
   const handleOnReadyNavigation = () => {
@@ -59,9 +60,9 @@ const AppNavigation = () => {
     <NavigationContainer ref={navigationRef} onReady={handleOnReadyNavigation}
       onStateChange={handleNavigationStateChange}>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
-        {Object.entries(alenviToken ? userScreens : authScreens)
+        {Object.entries(companiToken ? userScreens : authScreens)
           .map(([name, component]) => (
-            <MainStack.Screen key={name} name={name} component={component}
+            <MainStack.Screen key={name} name={name as keyof RootStackParamList} component={component}
               options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
           ))}
       </MainStack.Navigator>

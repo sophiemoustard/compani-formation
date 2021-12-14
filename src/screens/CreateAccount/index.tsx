@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { View, Linking } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
+import { CompositeScreenProps } from '@react-navigation/native';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
-import { NavigationType } from '../../types/NavigationType';
+import { RootCreateAccountParamList, RootStackParamList } from '../../types/NavigationType';
 import commonStyle from '../../styles/common';
 import styles from './styles';
 import { GREY } from '../../styles/colors';
@@ -13,10 +14,10 @@ import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { Context as AuthContext } from '../../context/AuthContext';
 
-interface CreateAccountProps {
-  route: { params: { email: string } },
-  navigation: NavigationType,
-}
+interface CreateAccountProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'CreateAccount'>,
+StackScreenProps<RootCreateAccountParamList>
+> {}
 
 type CreateAccountDataType = {
   type: string,
@@ -48,7 +49,7 @@ const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
-  const { signIn, signOut } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const [formList, setFormList] = useState<CreateAccountDataType[][]>([
     [{
       type: 'text',
@@ -125,7 +126,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       await Users.create(formatCreationPayload(formList, email));
       signIn({ email, password: formList[3][0].value });
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
     } finally {
       setIsLoading(false);
     }
@@ -145,7 +146,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     </>
   );
 
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<RootCreateAccountParamList>();
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

@@ -44,8 +44,8 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
     }
   };
 
-  const onReadyForDisplay = ({ status }) => {
-    if (status.isLoaded) setNativeControlsVisible(true);
+  const onReadyForDisplay = (event) => {
+    if (event.status?.isLoaded) setNativeControlsVisible(true);
   };
   const style = styles(isMediaLoading);
 

@@ -8,9 +8,9 @@ export interface createDataContextType {
 
 export default (reducer: (state: StateType, actions) => StateType, actions, defaultValue): createDataContextType => {
   const Provider = ({ children }: {children: React.ReactNode}) => {
-    const [{ alenviToken, loading, error, errorMessage, appIsReady },
+    const [{ companiToken, loading, error, errorMessage, appIsReady },
       dispatch] = useReducer(reducer, defaultValue);
-    const state = { alenviToken, loading, error, errorMessage, appIsReady };
+    const state = { companiToken, loading, error, errorMessage, appIsReady };
 
     const boundActions = {};
     // eslint-disable-next-line guard-for-in, no-restricted-syntax

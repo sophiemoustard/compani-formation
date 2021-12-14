@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { StackScreenProps } from '@react-navigation/stack';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
@@ -10,15 +13,16 @@ import styles from './styles';
 import Course from '../../../api/courses';
 import { PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
-import { NavigationType } from '../../../types/NavigationType';
 import { HIT_SLOP, ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
 
-interface ProfileProps {
+interface ProfileProps extends CompositeScreenProps<
+StackScreenProps<RootBottomTabParamList>,
+StackScreenProps<RootStackParamList>
+> {
   loggedUser: UserType,
-  navigation: NavigationType,
 }
 
 const Profile = ({ loggedUser, navigation }: ProfileProps) => {
@@ -36,7 +40,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       setOnGoingCoursesCount(fetchedCourses.filter(course => course.progress < 1).length);
       setAchievedCoursesCount(fetchedCourses.filter(course => course.progress === 1).length);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       setOnGoingCoursesCount(0);
       setAchievedCoursesCount(0);
     }
@@ -45,6 +49,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const editProfile = () => navigation.navigate('ProfileEdition');
 
   const editPassword = () => navigation.navigate('PasswordEdition', { userId: loggedUser._id });
+
+  const clearExpoTokenAndSignOut = () => signOut(true);
 
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
@@ -114,7 +120,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
           <View style={styles.sectionDelimiter} />
         </>
       }
-      <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter" onPress={signOut} />
+      <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter"
+        onPress={clearExpoTokenAndSignOut} />
       <TouchableOpacity hitSlop={HIT_SLOP} onPress={() => Linking.openURL('https://www.compani.fr/rgpd')}
         style={styles.legalNoticeContainer}>
         <Text style={styles.legalNotice}>Politique de confidentialité</Text>

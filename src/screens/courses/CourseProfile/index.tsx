@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -13,22 +13,22 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
-import { NavigationType } from '../../../types/NavigationType';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
 import Questionnaires from '../../../api/questionnaires';
 import { GREY, WHITE } from '../../../styles/colors';
 import { ICON, SCROLL_EVENT_THROTTLE } from '../../../styles/metrics';
 import LiveCell from '../../../components/steps/LiveCell';
 import ELearningCell from '../../../components/ELearningCell';
-import { Context as AuthContext } from '../../../context/AuthContext';
 import { ON_SITE, E_LEARNING, REMOTE } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
-import { CourseType, BlendedCourseType } from '../../../types/CourseTypes';
+import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../types/CourseTypes';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import CoursesActions from '../../../store/courses/actions';
@@ -41,9 +41,10 @@ import { QuestionnaireType } from '../../../types/QuestionnaireType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-interface CourseProfileProps {
-  route: { params: { courseId: string, endedActivity?: string} },
-  navigation: NavigationType,
+interface CourseProfileProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'CourseProfile'>,
+StackScreenProps<RootBottomTabParamList>
+> {
   userId: string,
   setStatusBarVisible: (boolean) => void,
   resetCourseReducer: () => void,
@@ -70,7 +71,6 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
   const [programName, setProgramName] = useState<string>('');
-  const { signOut } = useContext(AuthContext);
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
 
@@ -89,10 +89,10 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       setCourse(fetchedCourse);
       setQuestionnaires(fetchedQuestionnaires);
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
+      console.error(e);
       setCourse(null);
     }
-  }, [route.params.courseId, signOut]);
+  }, [route.params.courseId]);
 
   useEffect(() => { getCourse(); }, [getCourse]);
 
@@ -106,7 +106,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const goBack = useCallback(() => {
     resetCourseReducer();
-    navigation.navigate('Home', { screen: 'Courses', params: { screen: 'CourseList' } });
+    navigation.navigate('Courses');
   }, [navigation, resetCourseReducer]);
 
   const hardwareBackPress = useCallback(() => {
@@ -128,8 +128,10 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
         ...program,
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
-      navigation.navigate('ElearningAbout', { program: eLearningProgram });
-    } else navigation.navigate('BlendedAbout', { course });
+      navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
+    } else {
+      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+    }
   };
 
   const renderCells = item => renderStepCell(item, course, route);

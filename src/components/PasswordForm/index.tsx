@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -14,9 +14,9 @@ import { GREY } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
 import NiInput from '../form/Input';
-import { Context as AuthContext } from '../../context/AuthContext';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
 
 interface PasswordFormProps {
   goBack: () => void,
@@ -25,15 +25,13 @@ interface PasswordFormProps {
 
 const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
   const isIOS = Platform.OS === 'ios';
-  const { signOut } = useContext(AuthContext);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [password, setPassword] =
     useState<{ newPassword: string, confirmedPassword: string }>({ newPassword: '', confirmedPassword: '' });
   const [unvalid, setUnvalid] = useState({ newPassword: false, confirmedPassword: false });
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
 
@@ -77,15 +75,16 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
       setIsValidationAttempted(true);
       if (isValid) {
         setIsLoading(true);
-        setError(false);
-        setErrorMessage('');
+        dispatchError({ type: RESET_ERROR });
 
         await onPress(password.newPassword);
       }
     } catch (e: any) {
-      if (e.response.status === 401) signOut();
-      setError(true);
-      setErrorMessage('Erreur, si le problème persiste, contactez le support technique.');
+      console.error(e);
+      dispatchError({
+        type: SET_ERROR,
+        payload: 'Erreur, si le problème persiste, contactez le support technique',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -100,8 +99,8 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
           color={GREY[600]} disabled={isLoading} />
         <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
-          title={'Êtes-vous sûr(e) de cela ?'} onPressCancelButton={() => setExitConfirmationModal(false)}
-          contentText={'Vos modifications ne seront pas enregistrées.'} />
+          title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
+          contentText="Vos modifications ne seront pas enregistrées" />
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
@@ -120,7 +119,7 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
               : ''} />
         </View>
         <View style={styles.footer}>
-          <NiErrorMessage message={errorMessage} show={error} />
+          <NiErrorMessage message={error.message} show={error.value} />
           <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
         </View>
       </ScrollView>
