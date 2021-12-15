@@ -89,17 +89,12 @@ describe('Authentication tests', () => {
       passwordInput = element.getByTestId('Mot de passe');
       sendButton = element.getByTestId('Se connecter');
     });
-    const changeEmail = async () => fireEvent.changeText(emailInput, 'test@alenvi.io');
-    const changePassword = async () => fireEvent.changeText(passwordInput, '123456');
-    const press = async () => fireEvent.press(sendButton);
 
-    act(changeEmail)
-      .then(() => act(changePassword)
-        .then(() => act(press)
-          .then(async () => {
-            const header = await waitFor(() => element.getByTestId('header'));
+    await act(async () => fireEvent.changeText(emailInput, 'test@alenvi.io'));
+    await act(async () => fireEvent.changeText(passwordInput, '123456'));
+    await act(async () => fireEvent.press(sendButton));
 
-            expect(header).toBeTruthy();
-          })));
+    const header = element.getByTestId('header');
+    expect(header).toBeTruthy();
   });
 });
