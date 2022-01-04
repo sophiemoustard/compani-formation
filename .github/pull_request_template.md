@@ -5,7 +5,7 @@
 
 </details>
 
-- [ ] Je replie cette section car mes modifications n'ont pas besoin d'être testé sur appareil
+- [ ] Je replie cette section car mes modifications n'ont pas besoin d'être testées sur appareil
 
 ---
 
