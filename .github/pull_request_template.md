@@ -1,19 +1,24 @@
+### TESTS  :computer:
+
 - [ ] J'ai testé sur iphone
 - [ ] J'ai testé sur android
 
-- [ ] La nouvelle version de l'app est compatible avec l'ancienne version de l'API ? (J'ai teste en me mettant sur
-  master en api)
-  - Oui parce que
-  - Non parce que
+---
 
-- [ ] Je n'envoie pas de nouveau paramètre dans une route
-    - Si j'en envoie un nouveau, explication et gestion de la compatibilite:
-- [ ] J'attends un nouveau champs en retour de l'api: j'ai géré le cas où il n'y est pas
-- [ ] J'appelle une nouvelle route: j'ai géré le cas ou la route n'existe pas.
-- [ ] Je n'ai pas changé de constante
+### POINTS D'ATTENTION POUR CETTE PR  :warning:
 
-- J'ai ajouté une variable d'environnement :
-  - [ ] Je l'ai ajouté dans env.dev, env.stating et env.prod aussi
-  - [ ] J'ai ajouté un message sur le slite pour que la personne qui fait la MEP vérifie que son env.prod est à jour
+- [ ] J'ai ajouté une variable d'environnement
+  - [ ] Si oui, J'ai précisé sur le [slite de déploiement](https://alenvi.slite.com/app/channels/K4ziWiq5eN/notes/qSsdyBwQsC) ce qu'il fallait mettre à jour
+- [ ] Mes changements entrainent une incompatibilité avec l'ancienne version de l'api
+  - [ ] Si oui, j'ai noté dans le [slite de déploiement](https://alenvi.slite.com/app/channels/K4ziWiq5eN/notes/qSsdyBwQsC) qu'il faut fusionner l'api dans staging avant d'envoyer le build
 
-- Cas d'usage : 
+---
+
+### POUR TESTER LA PR  :white_check_mark:
+- Périmètre interfaces / rôles :
+
+- Cas d'usage :
+
+- Comment tester ? :
+
+_Si tu as lu cette description, pense a réagir avec un :eye:_
