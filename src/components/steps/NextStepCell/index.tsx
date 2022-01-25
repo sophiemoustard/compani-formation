@@ -16,7 +16,7 @@ type NextSlotsStepType = {
   slots: Date[],
   type: StepType['type'],
   stepIndex: number,
-  progress: number,
+  progress: { live: number },
   courseId: string,
 }
 
@@ -28,7 +28,7 @@ const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress}/>
+      <CalendarIcon slots={slots} progress={progress.live}/>
       <StepCellTitle index={stepIndex} name={nextSlotsStep.name} type={nextSlotsStep.type} />
     </TouchableOpacity>
   );

@@ -38,6 +38,7 @@ import CourseProfileStickyHeader from '../../../components/CourseProfileStickyHe
 import { getLoggedUserId } from '../../../store/main/selectors';
 import QuestionnairesContainer from '../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
+import { getCourseProgress } from '../../../core/helpers/utils';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -157,13 +158,13 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const getHeader = () => course && has(course, 'subProgram.program') && (
     <View onLayout={getProgressBarY}>
       {isHeaderSticky
-        ? <CourseProfileStickyHeader progress={course.progress} title={getTitle()} />
+        ? <CourseProfileStickyHeader progress={getCourseProgress(course)} title={getTitle()} />
         : <View style={styles.progressBarContainer}>
           <Text style={styles.progressBarText}>ÉTAPES</Text>
           <View style={commonStyles.progressBarContainer}>
-            <ProgressBar progress={course.progress * 100} />
+            <ProgressBar progress={getCourseProgress(course) * 100} />
           </View>
-          <Text style={styles.progressBarText}>{(course.progress * 100).toFixed(0)}%</Text>
+          <Text style={styles.progressBarText}>{(getCourseProgress(course) * 100).toFixed(0)}%</Text>
         </View>
       }
     </View>
