@@ -3,7 +3,7 @@ import { ActivityType } from './ActivityTypes';
 
 type BaseStepType = {
   _id: string,
-  progress: number,
+  progress: { live:number, eLearning: number },
   type: string,
   name: string,
 }

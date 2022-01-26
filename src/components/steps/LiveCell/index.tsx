@@ -49,7 +49,7 @@ const LiveCell = ({ step, slots = [], index, profileId }: LiveCellProps) => {
       <TouchableOpacity style={[styles.container, styles.upperContainer, isOpen && styles.openedContainer]}
         onPress={onPressChevron} disabled={!step.activities?.length}>
         <TouchableOpacity onPress={openModal}>
-          <CalendarIcon slots={dates} progress={step.progress} />
+          <CalendarIcon slots={dates} progress={step.progress.live} />
         </TouchableOpacity>
         <StepCellTitle index={index} name={step.name} type={step.type} />
         <View style={styles.iconContainer}>

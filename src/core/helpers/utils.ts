@@ -1,4 +1,5 @@
 import { Audio } from 'expo-av';
+import { STRICTLY_E_LEARNING } from '../data/constants';
 
 export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
@@ -48,4 +49,9 @@ export const formatIdentity = (identity, format) => {
   }
 
   return values.join(' ');
+};
+export const getCourseProgress = (course) => {
+  if (course.format === STRICTLY_E_LEARNING) return course.progress.eLearning;
+
+  return course.progress.blended;
 };
