@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
-import { formatPhone } from '../../../core/helpers/utils';
+import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
@@ -37,8 +37,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const getUserCourses = async () => {
     try {
       const fetchedCourses = await Course.getUserCourses();
-      setOnGoingCoursesCount(fetchedCourses.filter(course => course.progress < 1).length);
-      setAchievedCoursesCount(fetchedCourses.filter(course => course.progress === 1).length);
+      setOnGoingCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) < 1).length);
+      setAchievedCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) === 1).length);
     } catch (e: any) {
       console.error(e);
       setOnGoingCoursesCount(0);

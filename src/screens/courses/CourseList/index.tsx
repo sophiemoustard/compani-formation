@@ -20,6 +20,7 @@ import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/Co
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
+import { getCourseProgress } from '../../../core/helpers/utils';
 
 interface CourseListProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -70,8 +71,8 @@ const courseReducer = (state, action) => {
   switch (action.type) {
     case SET_COURSES:
       return {
-        onGoing: action.payload.filter(course => course.progress < 1),
-        achieved: action.payload.filter(course => course.progress === 1),
+        onGoing: action.payload.filter(course => getCourseProgress(course) < 1),
+        achieved: action.payload.filter(course => getCourseProgress(course) === 1),
       };
     case RESET_COURSES:
       return { onGoing: [], achieved: [] };
@@ -126,7 +127,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
   };
 
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(course._id, true)} progress={course.progress} misc={course.misc} />;
+    onPress={() => onPressProgramCell(course._id, true)} progress={getCourseProgress(course)} misc={course.misc} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
     onPress={() => onPressProgramCell(subProgram._id, false)} />;
