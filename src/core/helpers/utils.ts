@@ -55,3 +55,12 @@ export const getCourseProgress = (course) => {
 
   return course.progress.blended;
 };
+
+export const formatDuration = (durationHours) => {
+  const hours = Math.floor(durationHours);
+  const minutes = Math.round((durationHours % 1) * 60);
+  if (!hours) return `${minutes}min`;
+  if (!minutes) return `${hours}h`;
+
+  return `${hours}h ${minutes.toString().padStart(2, '0')}min`;
+};
