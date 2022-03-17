@@ -4,7 +4,7 @@ import { BORDER_RADIUS, PADDING, PROGRAM_CELL_WIDTH, BORDER_WIDTH, ICON, MARGIN 
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const imageHeight = 128;
-const containerHeight = 296;
+const containerHeight = 304;
 const styles = StyleSheet.create({
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
@@ -32,8 +32,13 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_REGULAR.MD,
     padding: PADDING.MD,
   },
+  eLearning: {
+    paddingLeft: PADDING.MD,
+    color: GREY[500],
+  },
   theoreticalHours: {
-    padding: PADDING.MD,
+    paddingLeft: PADDING.MD,
+    paddingBottom: PADDING.MD,
     color: PINK[500],
   },
   progressContainer: {
