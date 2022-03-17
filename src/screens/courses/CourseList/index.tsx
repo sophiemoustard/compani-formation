@@ -20,7 +20,7 @@ import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/Co
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
-import { getCourseProgress } from '../../../core/helpers/utils';
+import { getCourseProgress, getTheoreticalHours } from '../../../core/helpers/utils';
 
 interface CourseListProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -126,11 +126,12 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     goToCourse(id, isCourse);
   };
 
-  const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(course._id, true)} progress={getCourseProgress(course)} misc={course.misc} />;
+  const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} misc={course.misc}
+    theoreticalHours={getTheoreticalHours(get(course, 'subProgram.steps'))} progress={getCourseProgress(course)}
+    onPress={() => onPressProgramCell(course._id, true)} />;
 
-  const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
-    onPress={() => onPressProgramCell(subProgram._id, false)} />;
+  const renderSubProgramItem = subProgram => <ProgramCell onPress={() => onPressProgramCell(subProgram._id, false)}
+    theoreticalHours={getTheoreticalHours(subProgram.steps)}program={get(subProgram, 'program') || {}} />;
 
   const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
 
