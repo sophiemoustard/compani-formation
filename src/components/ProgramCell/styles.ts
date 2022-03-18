@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, TRANSPARENT_GREY, GREY, GREEN } from '../../styles/colors';
+import { WHITE, TRANSPARENT_GREY, GREY, GREEN, PINK } from '../../styles/colors';
 import { BORDER_RADIUS, PADDING, PROGRAM_CELL_WIDTH, BORDER_WIDTH, ICON, MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const imageHeight = 128;
-const containerHeight = 288;
+const containerHeight = 304;
 const styles = StyleSheet.create({
   courseContainer: {
     borderRadius: BORDER_RADIUS.SM,
@@ -31,6 +31,15 @@ const styles = StyleSheet.create({
   description: {
     ...FIRA_SANS_REGULAR.MD,
     padding: PADDING.MD,
+  },
+  eLearning: {
+    paddingLeft: PADDING.MD,
+    color: GREY[500],
+  },
+  theoreticalHours: {
+    paddingLeft: PADDING.MD,
+    paddingBottom: PADDING.MD,
+    color: PINK[500],
   },
   progressContainer: {
     margin: MARGIN.SM,

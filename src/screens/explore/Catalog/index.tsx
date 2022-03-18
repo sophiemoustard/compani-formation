@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import get from 'lodash/get';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import Programs from '../../../api/programs';
 import { ELearningProgramType } from '../../../types/CourseTypes';
@@ -13,7 +14,7 @@ import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import CoursesSection from '../../../components/CoursesSection';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
-import { capitalizeFirstLetter } from '../../../core/helpers/utils';
+import { capitalizeFirstLetter, getTheoreticalHours } from '../../../core/helpers/utils';
 
 interface CatalogProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -71,7 +72,8 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
-  const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)} />;
+  const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)}
+    theoreticalHours={getTheoreticalHours(get(program, 'subPrograms[0].steps'))} />;
 
   return (
     <ScrollView style={commonStyles.container} contentContainerStyle={style.container}>

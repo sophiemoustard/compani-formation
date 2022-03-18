@@ -1,4 +1,5 @@
 import { Audio } from 'expo-av';
+import BigNumber from 'bignumber.js';
 import { STRICTLY_E_LEARNING } from '../data/constants';
 
 export const capitalize = (s) => {
@@ -64,3 +65,10 @@ export const formatDuration = (durationHours) => {
 
   return `${hours}h ${minutes.toString().padStart(2, '0')}min`;
 };
+
+export const add = (...nums) => nums.reduce((acc, n) => new BigNumber(acc).plus(n).toNumber(), 0);
+
+export const getTheoreticalHours = steps => (
+  steps.length
+    ? steps.reduce((acc, value) => add(acc, value.theoreticalHours || 0), 0)
+    : 0);
