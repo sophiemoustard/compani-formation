@@ -4,15 +4,17 @@ import get from 'lodash/get';
 import { ProgramType } from '../../types/CourseTypes';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
+import { formatDuration } from '../../core/helpers/utils';
 
 interface ProgramCellProps {
   program: ProgramType,
+  theoreticalHours: number,
   progress?: number | null,
   misc?: string | null,
   onPress: () => void,
 }
 
-const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCellProps) => {
+const ProgramCell = ({ program, theoreticalHours, progress = null, misc = '', onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
   const programDescription = program.description || '';
@@ -43,6 +45,11 @@ const ProgramCell = ({ program, progress = null, misc = '', onPress }: ProgramCe
         {programName}{misc ? ` - ${misc}` : ''}
       </Text>
       <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
+      {!!theoreticalHours &&
+        <View>
+          <Text style={styles.eLearning}>E-LEARNING</Text>
+          <Text style={styles.theoreticalHours}>{formatDuration(theoreticalHours)}</Text>
+        </View>}
     </TouchableOpacity>
   );
 };

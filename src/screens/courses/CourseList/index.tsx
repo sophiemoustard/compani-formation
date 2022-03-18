@@ -20,7 +20,8 @@ import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/Co
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import styles from './styles';
-import { getCourseProgress } from '../../../core/helpers/utils';
+import { getCourseProgress, getTheoreticalHours } from '../../../core/helpers/utils';
+import { E_LEARNING } from '../../../core/data/constants';
 
 interface CourseListProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -126,11 +127,15 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
     goToCourse(id, isCourse);
   };
 
-  const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    onPress={() => onPressProgramCell(course._id, true)} progress={getCourseProgress(course)} misc={course.misc} />;
+  const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
 
-  const renderSubProgramItem = subProgram => <ProgramCell program={get(subProgram, 'program') || {}}
-    onPress={() => onPressProgramCell(subProgram._id, false)} />;
+  const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} misc={course.misc}
+    theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
+    progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} />;
+
+  const renderSubProgramItem = subProgram => <ProgramCell onPress={() => onPressProgramCell(subProgram._id, false)}
+    theoreticalHours={getTheoreticalHours(getElearningSteps(subProgram.steps))}
+    program={get(subProgram, 'program') || {}} />;
 
   const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
 
