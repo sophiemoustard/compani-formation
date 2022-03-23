@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, GREY } from '../../../styles/colors';
+import { WHITE, GREY, PINK } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
@@ -71,6 +71,28 @@ const styles = StyleSheet.create({
   aboutText: {
     ...FIRA_SANS_MEDIUM.LG,
     color: GREY[600],
+    paddingLeft: PADDING.MD,
+  },
+  buttonContainer: {
+    marginVertical: MARGIN.LG,
+    alignItems: 'center',
+  },
+  buttonContent: {
+    borderRadius: BORDER_RADIUS.SM,
+    paddingVertical: PADDING.MD,
+    paddingHorizontal: PADDING.XXL,
+    backgroundColor: PINK[500],
+    minWidth: 200,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  certificateContent: {
+    flexDirection: 'row',
+  },
+  certificateText: {
+    ...FIRA_SANS_MEDIUM.LG,
+    color: WHITE,
     paddingLeft: PADDING.MD,
   },
 });

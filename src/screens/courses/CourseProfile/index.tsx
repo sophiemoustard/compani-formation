@@ -11,13 +11,19 @@ import {
   BackHandler,
   TouchableOpacity,
   ImageSourcePropType,
+  Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as IntentLauncher from 'expo-intent-launcher';
+import { Buffer } from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
@@ -74,6 +80,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const [programName, setProgramName] = useState<string>('');
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setProgramName(get(course, 'subProgram.program.name') || '');
@@ -135,6 +142,30 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     }
   };
 
+  const downloadCompletionCertificate = async () => {
+    if (!course) return;
+
+    setIsLoading(true);
+    const data = await Courses.downloadCertificate(course._id);
+
+    const buffer = Buffer.from(data, 'base64');
+    const pdf = buffer.toString('base64');
+    const fileUri = `${FileSystem.documentDirectory}${encodeURI('attestation')}.pdf`;
+    await FileSystem.writeAsStringAsync(fileUri, pdf, { encoding: FileSystem.EncodingType.Base64 });
+
+    if (Platform.OS === 'ios') {
+      await Sharing.shareAsync(fileUri);
+    } else {
+      FileSystem.getContentUriAsync(fileUri).then((cUri) => {
+        IntentLauncher.startActivityAsync('android.intent.action.VIEW' as IntentLauncher.ActivityAction, {
+          data: cUri,
+          flags: 1,
+        });
+      });
+    }
+    setIsLoading(false);
+  };
+
   const renderCells = item => renderStepCell(item, course, route);
 
   const getTitle = () => {
@@ -193,6 +224,17 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       {getHeader()}
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      {!course.subProgram.isStrictlyELearning && <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
+          disabled={isLoading}>
+          {isLoading
+            ? <ActivityIndicator color={WHITE} size="small" />
+            : <View style={styles.certificateContent}>
+              <Ionicons name='ribbon' color={WHITE} size={ICON.MD} />
+              <Text style={styles.certificateText}>Attestation</Text>
+            </View>}
+        </TouchableOpacity>
+      </View>}
     </ScrollView>
   );
 };
