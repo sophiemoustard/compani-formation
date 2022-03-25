@@ -23,7 +23,7 @@ import * as Sharing from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { Buffer } from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
@@ -230,7 +230,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
           {isLoading
             ? <ActivityIndicator color={WHITE} size="small" />
             : <View style={styles.certificateContent}>
-              <Ionicons name='ribbon' color={WHITE} size={ICON.MD} />
+              <Feather name='award' color={WHITE} size={ICON.MD} />
               <Text style={styles.certificateText}>Attestation</Text>
             </View>}
         </TouchableOpacity>
