@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY, PINK } from '../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
+import {
+  BORDER_RADIUS,
+  BORDER_WIDTH,
+  BUTTON_HEIGHT,
+  MAIN_MARGIN_LEFT,
+  MARGIN, PADDING,
+} from '../../../styles/metrics';
 import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 const imageHeight = 200;
@@ -75,15 +81,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: MARGIN.LG,
-    alignItems: 'center',
+    marginHorizontal: MARGIN.XL,
   },
   buttonContent: {
     borderRadius: BORDER_RADIUS.SM,
     paddingVertical: PADDING.MD,
     paddingHorizontal: PADDING.XXL,
+    marginHorizontal: MARGIN.MD,
     backgroundColor: PINK[500],
-    minWidth: 200,
-    minHeight: 44,
+    height: BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
   },
