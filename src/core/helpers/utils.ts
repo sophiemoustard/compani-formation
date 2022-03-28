@@ -19,19 +19,26 @@ export const formatWordToPlural = (items, text) => (items.length > 1 ? `${text}s
 
 export const capitalizeFirstLetter = s => `${s.charAt(0).toUpperCase()}${s.substr(1)}`;
 
+const loadPlayAndUnloadAudio = async (track) => {
+  const { sound } = await Audio.Sound.createAsync(track);
+
+  await sound.playAsync();
+  sound.setOnPlaybackStatusUpdate((status) => {
+    if (!status.isLoaded || !status.didJustFinish) return;
+    sound.unloadAsync();
+  });
+};
+
 export const quizJingle = async (isGoodAnswer) => {
-  if (isGoodAnswer) {
-    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/good-answer.mp3'));
-    await sound.playAsync();
-  } else {
-    const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/wrong-answer.mp3'));
-    await sound.playAsync();
-  }
+  const track = isGoodAnswer
+    ? require('../../../assets/sounds/good-answer.mp3')
+    : require('../../../assets/sounds/wrong-answer.mp3');
+  loadPlayAndUnloadAudio(track);
 };
 
 export const achievementJingle = async () => {
-  const { sound } = await Audio.Sound.createAsync(require('../../../assets/sounds/ended-activity.mp3'));
-  await sound.playAsync();
+  const track = require('../../../assets/sounds/ended-activity.mp3');
+  loadPlayAndUnloadAudio(track);
 };
 export const formatIdentity = (identity, format) => {
   if (!identity) return '';
