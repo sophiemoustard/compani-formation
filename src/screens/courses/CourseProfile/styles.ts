@@ -5,7 +5,8 @@ import {
   BORDER_WIDTH,
   BUTTON_HEIGHT,
   MAIN_MARGIN_LEFT,
-  MARGIN, PADDING,
+  MARGIN,
+  PADDING,
 } from '../../../styles/metrics';
 import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
