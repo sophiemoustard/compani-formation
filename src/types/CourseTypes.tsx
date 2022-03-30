@@ -53,7 +53,7 @@ type BaseCourseType = {
   _id: string,
   progress: number,
   subProgram: SubProgramType & { program: ProgramType },
-  canAccessCompletionCertificate?: boolean,
+  areLastSlotAttendancesValidated?: boolean,
 };
 
 export type ELearningCourseType = BaseCourseType & {
