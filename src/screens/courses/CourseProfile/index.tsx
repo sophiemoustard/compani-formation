@@ -224,7 +224,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
       {getHeader()}
       <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
         renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
-      {!course.subProgram.isStrictlyELearning && !!get(course, 'slots.length') && <View style={styles.buttonContainer}>
+      {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
           disabled={isLoading}>
           {isLoading
