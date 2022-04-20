@@ -86,7 +86,7 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
-    "react-native-svg": "12.1.1",
+    "react-native-svg": "^12.3.0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-tab-view": "^3.0.1",
     "react-redux": "^8.0.0",
