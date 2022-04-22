@@ -13,6 +13,7 @@ interface NiAudioProps {
 }
 
 const NiAudio = ({ mediaSource }: NiAudioProps) => {
+  // eslint-disable-next-line react/hook-use-state
   const [soundObject] = useState(new Audio.Sound()); // state needed because of the useEffect
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
