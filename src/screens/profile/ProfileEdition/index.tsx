@@ -180,7 +180,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         </View>
         <View style={styles.input}>
           <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
-            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text } })} />
+            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })} />
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={error.message} show={error.value} />
