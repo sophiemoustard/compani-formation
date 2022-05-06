@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { WHITE } from '../../../styles/colors';
+import { GREY, WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import styles from './styles';
 import Shadow from '../../design/Shadow';
@@ -16,6 +16,8 @@ interface InputProps {
   required?: boolean,
   optional?: boolean,
   disabled?: boolean,
+  placeholder?: string,
+  borderColor?: string,
   isKeyboardOpen?: (value: boolean) => void,
 }
 
@@ -29,6 +31,8 @@ const Input = ({
   required = false,
   optional = false,
   disabled = false,
+  placeholder = '',
+  borderColor = GREY[600],
   isKeyboardOpen,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +43,7 @@ const Input = ({
   const showPasswordIcon = showPassword ? 'eye' : 'eye-off';
   const secureTextEntry = isPassword && !showPassword;
   const togglePassword = () => { setShowPassword(previousShowPassword => !previousShowPassword); };
-  const style = styles(isSelected);
+  const style = styles(isSelected, borderColor);
   const textStyle = darkMode ? { ...style.text, color: WHITE } : { ...style.text };
 
   const keyboardDidShow = () => {
@@ -72,7 +76,7 @@ const Input = ({
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
             style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType}
-            textContentType='oneTimeCode' editable={!disabled} />
+            textContentType='oneTimeCode' editable={!disabled} placeholder={placeholder} />
           {isPassword &&
           <TouchableOpacity style={style.inputIcon} onPress={togglePassword}>
             <Feather name={showPasswordIcon} size={ICON.XS} />

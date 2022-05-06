@@ -3,14 +3,14 @@ import { BORDER_RADIUS, MARGIN, PADDING, INPUT_HEIGHT, BORDER_WIDTH } from '../.
 import { GREY, ORANGE, PINK, TRANSPARENT_PINK, WHITE } from '../../../styles/colors';
 import { FIRA_SANS_REGULAR, FIRA_SANS_MEDIUM, FIRA_SANS_ITALIC } from '../../../styles/fonts';
 
-const styles = (isSelected: boolean) => StyleSheet.create({
+const styles = (isSelected: boolean, borderColor: string) => StyleSheet.create({
   container: {
     position: 'relative',
     marginHorizontal: MARGIN.XS,
   },
   input: {
     borderWidth: BORDER_WIDTH,
-    borderColor: isSelected ? PINK[500] : GREY[600],
+    borderColor: isSelected ? PINK[500] : borderColor,
     height: INPUT_HEIGHT,
     alignItems: 'center',
     borderRadius: BORDER_RADIUS.MD,

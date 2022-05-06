@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
@@ -17,6 +18,8 @@ import { HIT_SLOP, ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
+import DeletionModal from '../../../components/DeletionModal';
+import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -33,6 +36,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const [deletionModal, setDeletionModal] = useState<boolean>(false);
+  const [deletionConfirmationModal, setDeletionConfirmationModal] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
@@ -130,6 +135,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         style={styles.legalNoticeContainer}>
         <Text style={styles.legalNotice}>Conditions d’utilisation</Text>
       </TouchableOpacity>
+      {!get(loggedUser, 'company') &&
+        <TouchableOpacity hitSlop={HIT_SLOP} onPress={() => setDeletionModal(true)}
+          style={styles.legalNoticeContainer}>
+          <Text style={styles.legalNotice}>Supprimer mon compte</Text>
+        </TouchableOpacity>}
       <View style={styles.footer}>
         <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
         <Image source={require('../../../../assets/images/aux_joie.png')} style={styles.fellow} />
@@ -137,6 +147,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
         setHasPhoto={setHasPhoto} />
       <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
+      <DeletionModal visible={deletionModal} setVisible={() => setDeletionModal(false)}
+        loggedUserId={get(loggedUser, '_id')}
+        setConfirmationModal={() => setDeletionConfirmationModal(true)} />
+      <DeletionConfirmationModal visible={deletionConfirmationModal} name={get(loggedUser, 'identity.firstname')}
+        logout={clearExpoTokenAndSignOut} />
     </ScrollView>
   );
 };
