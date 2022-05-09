@@ -9,7 +9,7 @@ import Shadow from '../../design/Shadow';
 interface InputProps {
   value: string,
   onChangeText: (string) => void,
-  caption: string,
+  caption?: string,
   type: string,
   darkMode?: boolean,
   validationMessage?: string,
@@ -24,7 +24,7 @@ interface InputProps {
 const Input = ({
   value,
   onChangeText,
-  caption,
+  caption = '',
   type,
   darkMode = false,
   validationMessage = '',

@@ -76,8 +76,8 @@ const DeletionConfirmationModal = ({
           </Text>
         </View>
         <Text style={styles.body}>Veuillez écrire “{CONFIRMATION_WORD}” pour confirmer cette action.</Text>
-        <NiInput value={confirmationInput} onChangeText={setConfirmationInput} caption=""
-          placeholder={CONFIRMATION_WORD} type="text" borderColor={GREY[200]} validationMessage={error.message} />
+        <NiInput value={confirmationInput} onChangeText={setConfirmationInput} placeholder={CONFIRMATION_WORD}
+          type="text" borderColor={GREY[200]} validationMessage={error.message} />
         <View style={styles.buttonContainer}>
           <TouchableOpacity hitSlop={HIT_SLOP} onPress={onRequestClose}>
             <Text style={styles.button}>Annuler</Text>
