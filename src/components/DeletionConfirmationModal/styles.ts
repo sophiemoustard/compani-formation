@@ -6,7 +6,7 @@ import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: MARGIN.SM,
     paddingHorizontal: PADDING.MD,
   },
