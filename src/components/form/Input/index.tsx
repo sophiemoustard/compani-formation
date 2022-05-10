@@ -75,8 +75,8 @@ const Input = ({
         <View style={style.input}>
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}
-            style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType}
-            textContentType='oneTimeCode' editable={!disabled} placeholder={placeholder} />
+            style={style.innerInput} autoCapitalize={autoCapitalize} keyboardType={keyboradType} editable={!disabled}
+            textContentType='oneTimeCode' placeholder={placeholder} placeholderTextColor={GREY[400]} />
           {isPassword &&
           <TouchableOpacity style={style.inputIcon} onPress={togglePassword}>
             <Feather name={showPasswordIcon} size={ICON.XS} />
