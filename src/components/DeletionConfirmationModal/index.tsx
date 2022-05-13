@@ -49,8 +49,9 @@ const DeletionConfirmationModal = ({
         setVisible(false);
         setConfirmationModal();
       }
-    } catch (e) {
-      dispatchError({ type: SET_ERROR, payload: 'Oops, une erreur est survenue' });
+    } catch (e: any) {
+      if (e.response.status === 403) dispatchError({ type: SET_ERROR, payload: e.response.data.message });
+      else dispatchError({ type: SET_ERROR, payload: 'Oops, une erreur est survenue' });
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +67,7 @@ const DeletionConfirmationModal = ({
     <NiModal visible={visible}>
       <>
         <View style={styles.header}>
-          <Text style={styles.title}>Êtes vous sûr de vouloir {CONFIRMATION_WORD} votre compte ?</Text>
+          <Text style={styles.title}>Êtes vous sûr de vouloir supprimer votre compte ?</Text>
           <FeatherButton name="x" onPress={onRequestClose} size={ICON.MD} color={GREY[600]} />
         </View>
         <View style={styles.warningMessage}>
