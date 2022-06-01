@@ -80,6 +80,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
     );
   };
 
+  const logout = () => {
+    setUserAccountDeletedModal(false);
+    signOut();
+  };
+
   return (
     <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
       {!!loggedUser &&
@@ -151,7 +156,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         setVisible={() => setDeletionConfirmationModal(false)}
         setConfirmationModal={() => setUserAccountDeletedModal(true)} />
       <UserAccountDeletedModal visible={userAccountDeletedModal} name={get(loggedUser, 'identity.firstname')}
-        logout={clearExpoTokenAndSignOut} />
+        logout={logout} />
     </ScrollView>
   );
 };
