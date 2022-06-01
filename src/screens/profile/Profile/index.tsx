@@ -38,6 +38,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const [deletionConfirmationModal, setDeletionConfirmationModal] = useState<boolean>(false);
   const [userAccountDeletedModal, setUserAccountDeletedModal] = useState<boolean>(false);
+  const [userFirstName, setUserFirstName] = useState<string>('');
 
   const getUserCourses = async () => {
     try {
@@ -60,6 +61,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
     fetchData();
+    setUserFirstName(get(loggedUser, 'identity.firstname'));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -150,8 +152,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
       <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
         setVisible={() => setDeletionConfirmationModal(false)}
         setConfirmationModal={() => setUserAccountDeletedModal(true)} />
-      <UserAccountDeletedModal visible={userAccountDeletedModal} name={get(loggedUser, 'identity.firstname')}
-        logout={clearExpoTokenAndSignOut} />
+      <UserAccountDeletedModal visible={userAccountDeletedModal} name={userFirstName} logout={() => signOut()} />
     </ScrollView>
   );
 };

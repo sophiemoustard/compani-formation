@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { ORANGE, PINK } from '../../styles/colors';
-import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
+import { BORDER_RADIUS, IS_SMALL_SCREEN, MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     justifyContent: 'space-between',
-    marginHorizontal: MARGIN.LG,
+    marginHorizontal: IS_SMALL_SCREEN ? MARGIN.SM : MARGIN.LG,
     marginVertical: MARGIN.MD,
     flexDirection: 'row',
   },
