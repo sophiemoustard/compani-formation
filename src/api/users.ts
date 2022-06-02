@@ -51,4 +51,8 @@ export default {
     const baseURL = await Environment.getBaseUrl({ userId });
     await axiosLogged.delete(`${baseURL}/users/${userId}/expo-token/${expoToken}`);
   },
+  deleteAccount: async (userId: string): Promise<void> => {
+    const baseURL = await Environment.getBaseUrl({ userId });
+    await axiosLogged.delete(`${baseURL}/users/${userId}`);
+  },
 };
