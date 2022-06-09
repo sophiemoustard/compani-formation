@@ -47,7 +47,10 @@ const DeletionConfirmationModal = ({
       if (!error.value) {
         setIsLoading(true);
         await Users.deleteAccount(loggedUserId);
+        await asyncStorage.removeCompaniToken();
+        await asyncStorage.removeRefreshToken();
         await asyncStorage.removeUserId();
+        await asyncStorage.removeExpoToken();
         setVisible(false);
         setConfirmationModal();
       }
