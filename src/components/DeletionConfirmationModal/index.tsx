@@ -5,6 +5,7 @@ import styles from './styles';
 import NiModal from '../Modal';
 import NiInput from '../form/Input';
 import Users from '../../api/users';
+import asyncStorage from '../../core/helpers/asyncStorage';
 import FeatherButton from '../icons/FeatherButton';
 import { HIT_SLOP, ICON } from '../../styles/metrics';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
@@ -46,6 +47,10 @@ const DeletionConfirmationModal = ({
       if (!error.value) {
         setIsLoading(true);
         await Users.deleteAccount(loggedUserId);
+        await asyncStorage.removeCompaniToken();
+        await asyncStorage.removeRefreshToken();
+        await asyncStorage.removeUserId();
+        await asyncStorage.removeExpoToken();
         setVisible(false);
         setConfirmationModal();
       }
