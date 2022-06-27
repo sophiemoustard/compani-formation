@@ -142,11 +142,10 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     }
   };
 
-  const composeCourseName = (c) => {
-    const possiblyCompanyName = c.company ? `${c.company.name} - ` : '';
-    const possiblyMisc = c.misc ? ` - ${c.misc}` : '';
+  const getPdfName = (c) => {
+    const misc = c.misc ? `_${c.misc}` : '';
 
-    return possiblyCompanyName + c.subProgram.program.name + possiblyMisc;
+    return `attestation_${c.subProgram.program.name}${misc}`.replace(/ /g, '_').replace(/'/g, '_');
   };
 
   const downloadCompletionCertificate = async () => {
@@ -157,7 +156,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
     const buffer = Buffer.from(data, 'base64');
     const pdf = buffer.toString('base64');
-    const pdfName = `attestation_${composeCourseName(course)}`;
+    const pdfName = getPdfName(course);
     const fileUri = `${FileSystem.documentDirectory}${encodeURI(pdfName)}.pdf`;
     await FileSystem.writeAsStringAsync(fileUri, pdf, { encoding: FileSystem.EncodingType.Base64 });
 
