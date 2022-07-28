@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import commonStyle from '../../../styles/common';
 import styles, { ButtonStyleType } from './styles';

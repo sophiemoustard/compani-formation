@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';

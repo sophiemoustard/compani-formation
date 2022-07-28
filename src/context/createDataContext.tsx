@@ -1,4 +1,5 @@
-import React, { useReducer, createContext, ContextType } from 'react';
+import { useReducer, createContext, ContextType } from 'react';
+import * as React from 'react';
 import { StateType } from './AuthContext';
 
 export interface createDataContextType {

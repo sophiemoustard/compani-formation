@@ -1,5 +1,5 @@
 import 'array-flat-polyfill';
-import React, { useState, useEffect, useCallback, useMemo, useReducer } from 'react';
+import { useState, useEffect, useCallback, useMemo, useReducer } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';

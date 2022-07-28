@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { SlotType } from '../../../types/CourseTypes';
 import { LiveStepType } from '../../../types/StepTypes';

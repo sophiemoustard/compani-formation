@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { ProgressCircle } from 'react-native-svg-charts';

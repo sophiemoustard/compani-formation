@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import Shadow from '../../design/Shadow';
 import styles from './styles';

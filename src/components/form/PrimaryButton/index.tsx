@@ -1,4 +1,3 @@
-import React from 'react';
 import NiButton from '../Button';
 import { PINK, WHITE } from '../../../styles/colors';
 

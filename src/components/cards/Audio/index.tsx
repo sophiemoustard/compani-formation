@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Audio, AVPlaybackStatus } from 'expo-av';

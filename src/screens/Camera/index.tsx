@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, BackHandler, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';

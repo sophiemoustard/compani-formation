@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { GREY, GREEN, ORANGE, PINK } from '../../../styles/colors';

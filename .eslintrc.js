@@ -56,6 +56,8 @@ module.exports = {
     'no-unused-vars': 'off', // Pour ne pas avoir l'erreur en doublon
     'prefer-destructuring': ['error', { VariableDeclarator: { object: true, array: false } }],
     'function-paren-newline': ['error', 'consistent'],
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
   globals: {
     __DEV__: true,

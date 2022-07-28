@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { createStore } from 'redux';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Notifications from 'expo-notifications';

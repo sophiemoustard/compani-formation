@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Image, ImageBackground, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';

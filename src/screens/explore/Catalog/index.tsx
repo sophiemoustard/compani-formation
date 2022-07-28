@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';

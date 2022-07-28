@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Image, Text, View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';

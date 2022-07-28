@@ -1,4 +1,3 @@
-import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GREY, TRANSPARENT_GRADIENT } from '../../../styles/colors';
 import { ABSOLUTE_BOTTOM_POSITION, INPUT_HEIGHT } from '../../../styles/metrics';
