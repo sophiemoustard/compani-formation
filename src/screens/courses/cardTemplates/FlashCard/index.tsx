@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { StateType } from '../../../../types/store/StoreType';

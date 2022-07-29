@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, ImageBackground } from 'react-native';
 import NiPrimaryButton from '../../form/PrimaryButton';
 import NiSecondaryButton from '../../form/SecondaryButton';

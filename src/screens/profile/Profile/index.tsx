@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import get from 'lodash/get';

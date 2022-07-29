@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/NavigationType';
 import PasswordForm from '../../components/PasswordForm';

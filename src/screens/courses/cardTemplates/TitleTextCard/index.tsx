@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';

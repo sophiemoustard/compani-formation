@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import CatalogIcon from '../../../assets/icons/CatalogIcon';

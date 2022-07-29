@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react';
+import { useRef, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Context as AuthContext } from '../../context/AuthContext';

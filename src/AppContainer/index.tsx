@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef, useCallback } from 'react';
+import { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';

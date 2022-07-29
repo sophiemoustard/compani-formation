@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';

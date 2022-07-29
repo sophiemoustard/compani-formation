@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';

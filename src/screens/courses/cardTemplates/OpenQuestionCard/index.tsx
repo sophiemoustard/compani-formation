@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';

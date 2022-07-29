@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Platform, View } from 'react-native';
 import { Video } from 'expo-av';

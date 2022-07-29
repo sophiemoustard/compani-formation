@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useReducer } from 'react';
+import { useEffect, useState, useCallback, useReducer } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import ExitModal from '../../components/ExitModal';

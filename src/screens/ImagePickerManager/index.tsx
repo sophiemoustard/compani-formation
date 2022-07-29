@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert, View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { CommonActions, CompositeScreenProps } from '@react-navigation/native';

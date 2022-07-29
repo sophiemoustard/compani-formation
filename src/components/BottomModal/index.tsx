@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Modal } from 'react-native';
 import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';

@@ -6,9 +6,7 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
-  },
-  draggableContainer: {
-    flexGrow: 1,
+    justifyContent: 'space-between',
     paddingBottom: PADDING.XL,
   },
   questionContainer: {

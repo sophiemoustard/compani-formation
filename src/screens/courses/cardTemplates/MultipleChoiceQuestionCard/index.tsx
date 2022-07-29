@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';

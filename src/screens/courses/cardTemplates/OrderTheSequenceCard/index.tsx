@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
@@ -88,12 +88,6 @@ const OrderTheSequenceCard = ({
     })));
   };
 
-  const renderListHeaderComponent = () => <>
-    <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-    <Text style={cardsStyle.informativeText}>
-      Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
-    </Text>
-  </>;
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   if (isLoading) return null;
@@ -103,12 +97,19 @@ const OrderTheSequenceCard = ({
   return (
     <>
       <CardHeader />
-      <View style={style.container}>
-        <DraggableFlatList contentContainerStyle={style.draggableContainer} showsVerticalScrollIndicator={false}
-          data={answers} ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
-          ListHeaderComponent={renderListHeaderComponent} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
-      </View>
+      <ScrollView alwaysBounceVertical={false} contentContainerStyle={style.container}
+        showsVerticalScrollIndicator={false}>
+        <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+        <View>
+          <Text style={cardsStyle.informativeText}>
+            Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
+          </Text>
+          <DraggableFlatList showsVerticalScrollIndicator={false} data={answers}
+            ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
+            keyExtractor={(_, answerIndex) => answerIndex.toString()} renderItem={renderItem}
+            activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
+        </View>
+      </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}

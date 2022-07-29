@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 import { StepType } from '../../../types/StepTypes';
 import { stepTypeOptions, E_LEARNING } from '../../../core/data/constants';

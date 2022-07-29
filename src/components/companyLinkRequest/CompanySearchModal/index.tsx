@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { TouchableOpacity, TextInput, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { TRANSPARENT_GRADIENT, WHITE } from '../../../styles/colors';

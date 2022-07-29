@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
