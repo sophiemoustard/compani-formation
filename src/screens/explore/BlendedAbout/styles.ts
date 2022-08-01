@@ -1,9 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK, TRANSPARENT_GREY } from '../../../styles/colors';
+import { GREY, PINK, TRANSPARENT_GREY, WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, NUNITO_SEMI } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
   content: {
     marginHorizontal: MARGIN.MD,
   },
