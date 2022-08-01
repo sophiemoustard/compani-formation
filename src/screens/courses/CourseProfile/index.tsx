@@ -14,6 +14,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -209,40 +210,42 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   );
 
   return course && has(course, 'subProgram.program') && (
-    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
-      stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
-      onScroll={isProgressBarOnTop}>
-      <ImageBackground source={source} imageStyle={styles.image}
-        style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
-        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
-        <View style={styles.header}>
-          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
-            iconStyle={styles.arrowShadow} />
-          <Text style={styles.title}>{getTitle()}</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+        onScroll={isProgressBarOnTop}>
+        <ImageBackground source={source} imageStyle={styles.image}
+          style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
+          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
+          <View style={styles.header}>
+            <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
+              iconStyle={styles.arrowShadow} />
+            <Text style={styles.title}>{getTitle()}</Text>
+          </View>
+        </ImageBackground>
+        <View style={styles.aboutContainer}>
+          <TouchableOpacity style={styles.aboutContent} onPress={goToAbout}>
+            <Feather name='info' color={GREY[600]} size={ICON.MD} />
+            <Text style={styles.aboutText}>A propos</Text>
+          </TouchableOpacity>
         </View>
-      </ImageBackground>
-      <View style={styles.aboutContainer}>
-        <TouchableOpacity style={styles.aboutContent} onPress={goToAbout}>
-          <Feather name='info' color={GREY[600]} size={ICON.MD} />
-          <Text style={styles.aboutText}>A propos</Text>
-        </TouchableOpacity>
-      </View>
-      {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
-      {getHeader()}
-      <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
-        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
-      {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
-          disabled={isLoading}>
-          {isLoading
-            ? <ActivityIndicator color={WHITE} size="small" />
-            : <View style={styles.certificateContent}>
-              <Feather name='award' color={WHITE} size={ICON.MD} />
-              <Text style={styles.certificateText}>Attestation</Text>
-            </View>}
-        </TouchableOpacity>
-      </View>}
-    </ScrollView>
+        {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
+        {getHeader()}
+        <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+        {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
+            disabled={isLoading}>
+            {isLoading
+              ? <ActivityIndicator color={WHITE} size="small" />
+              : <View style={styles.certificateContent}>
+                <Feather name='award' color={WHITE} size={ICON.MD} />
+                <Text style={styles.certificateText}>Attestation</Text>
+              </View>}
+          </TouchableOpacity>
+        </View>}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
