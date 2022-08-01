@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import get from 'lodash/get';
 import { StackActions } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -10,6 +11,7 @@ import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
+import styles from './styles';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
@@ -53,9 +55,10 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   };
 
   const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
-
   return (
-    <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} />
+    <SafeAreaView style={styles.safeArea}>
+      <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} />
+    </SafeAreaView>
   );
 };
 
