@@ -1,8 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { WHITE } from '../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
 
 const styles = (count = { color: '', background: '' }) => StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
   container: {
     flexGrow: 1,
   },

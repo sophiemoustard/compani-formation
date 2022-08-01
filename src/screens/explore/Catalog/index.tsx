@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -76,19 +77,21 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     theoreticalHours={getTheoreticalHours(get(program, 'subPrograms[0].steps'))} />;
 
   return (
-    <ScrollView style={commonStyles.container} contentContainerStyle={style.container}>
-      <Text style={commonStyles.title}>Explorer</Text>
-      {Object.keys(programsByCategories).map((key, i) =>
-        <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
-          key={`program${i}`} source={CategoriesStyleList[i % 4].imageBackground}>
-          <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
-            countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
-        </ImageBackground>)}
-      <View style={style.footer}>
-        <Image style={style.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-        <Image source={require('../../../../assets/images/aux_detective.png')} style={style.fellow} />
-      </View>
-    </ScrollView>
+    <SafeAreaView style={style.safeArea} edges={['top', 'right', 'left']}>
+      <ScrollView style={commonStyles.container} contentContainerStyle={style.container}>
+        <Text style={commonStyles.title}>Explorer</Text>
+        {Object.keys(programsByCategories).map((key, i) =>
+          <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
+            key={`program${i}`} source={CategoriesStyleList[i % 4].imageBackground}>
+            <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
+              countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
+          </ImageBackground>)}
+        <View style={style.footer}>
+          <Image style={style.elipse} source={require('../../../../assets/images/log_out_background.png')} />
+          <Image source={require('../../../../assets/images/aux_detective.png')} style={style.fellow} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
