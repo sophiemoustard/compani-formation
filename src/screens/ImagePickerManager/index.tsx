@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Alert, View, ActivityIndicator, Text } from 'react-native';
+import { Alert, ActivityIndicator, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { CommonActions, CompositeScreenProps } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -76,10 +77,10 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
 
   return (
     <>
-      {isLoading && <View style={styles.loader}>
+      {isLoading && <SafeAreaView style={styles.loader}>
         {isSaving && <Text style={styles.text}>Enregistrement en cours...</Text>}
         <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
-      </View>}
+      </SafeAreaView>}
     </>
   );
 };
