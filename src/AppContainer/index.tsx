@@ -175,12 +175,14 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   if (updateModaleVisible) return <UpdateAppModal />;
 
   return (
-    <SafeAreaProvider>
+    <>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <AppNavigation />
-    </SafeAreaProvider>
+      <SafeAreaProvider>
+        <AppNavigation />
+      </SafeAreaProvider>
+    </>
   );
 };
 
