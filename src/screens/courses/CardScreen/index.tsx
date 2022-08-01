@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Actions from '../../../store/cards/actions';
@@ -34,18 +33,16 @@ const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, go
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
-        activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
-        <View style={styles.cardScreen}>
-          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr(e) de cela ?'}
-            onPressCancelButton={() => setExitConfirmationModal(false)}
-            contentText={'Tous vos progrès seront perdus'} />
-          <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
-            setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
-        </View>
-      </PanGestureHandler>
-    </SafeAreaView>
+    <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
+      activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
+      <View style={styles.cardScreen}>
+        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr(e) de cela ?'}
+          onPressCancelButton={() => setExitConfirmationModal(false)}
+          contentText={'Tous vos progrès seront perdus'} />
+        <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
+          setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
+      </View>
+    </PanGestureHandler>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ import { StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
+import styles from '../../EmailForm/styles';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
@@ -104,23 +106,25 @@ const ActivityCardContainer = ({
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
   return isActive
-    ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
-      </Tab.Screen>
-      {cards.length > 0 && activity &&
-         <>
-           {cards.map((_, index) => (
-             <Tab.Screen key={index} name={`card-${index}`}>
-               {() => <CardScreen index={index} goBack={goBack} />}
-             </Tab.Screen>
-           ))}
-           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-             {() => <ActivityEndCard goBack={goBack} activity={activity} />}
-           </Tab.Screen>
-         </>
-      }
-    </Tab.Navigator>
+    ? <SafeAreaView style={styles.safeArea}>
+      <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
+        <Tab.Screen key={0} name={'startCard'} >
+          {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
+        </Tab.Screen>
+        {cards.length > 0 && activity &&
+          <>
+            {cards.map((_, index) => (
+              <Tab.Screen key={index} name={`card-${index}`}>
+                {() => <CardScreen index={index} goBack={goBack} />}
+              </Tab.Screen>
+            ))}
+            <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+              {() => <ActivityEndCard goBack={goBack} activity={activity} />}
+            </Tab.Screen>
+          </>
+        }
+      </Tab.Navigator>
+    </SafeAreaView>
     : null;
 };
 
