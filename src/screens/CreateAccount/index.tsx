@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { View, Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -133,7 +134,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   };
 
   const renderScreen = (fields: CreateAccountDataType[], i: number) => (
-    <>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.header}>
         <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
           disabled={isLoading} />
@@ -143,7 +144,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
       </View>
       <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
         create={create} openUrl={() => Linking.openURL('https://www.compani.fr/cgu-cgv')} />
-    </>
+    </SafeAreaView>
   );
 
   const Stack = createStackNavigator<RootCreateAccountParamList>();
