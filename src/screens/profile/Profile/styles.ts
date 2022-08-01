@@ -14,6 +14,7 @@ import {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: WHITE,
   },
   container: {
     flexGrow: 1,

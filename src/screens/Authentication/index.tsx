@@ -45,7 +45,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   const firstConnection = () => navigation.navigate('EmailForm', { firstConnection: true });
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea}>
       <ImageBackground
         style={{ ...styles.image, height: useWindowDimensions().height }}
         source={require('../../../assets/images/authentication_background_image.jpg')}

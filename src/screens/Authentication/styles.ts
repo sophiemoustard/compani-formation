@@ -4,6 +4,10 @@ import { MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
   image: {
     resizeMode: 'cover',
   },

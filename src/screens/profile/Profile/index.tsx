@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -20,7 +21,6 @@ import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
 import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -84,7 +84,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['right', 'left', 'bottom']}>
+    <SafeAreaView style={styles.safeArea}>
       <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
         {!!loggedUser &&
           <>

@@ -8,6 +8,7 @@ import {
   Platform,
   BackHandler,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import FeatherButton from '../icons/FeatherButton';
 import NiPrimaryButton from '../form/PrimaryButton';
 import { GREY } from '../../styles/colors';
@@ -17,7 +18,6 @@ import NiInput from '../form/Input';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PasswordFormProps {
   goBack: () => void,
