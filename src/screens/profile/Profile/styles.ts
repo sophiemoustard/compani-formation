@@ -12,6 +12,9 @@ import {
 } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flexGrow: 1,
   },
