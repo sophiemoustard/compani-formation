@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
+import { WHITE } from '../../styles/colors';
 import { MARGIN } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: WHITE,
   },
   goBack: {
     position: 'absolute',
-    left: 0,
-    top: 0,
+    alignItems: 'flex-start',
     margin: MARGIN.MD,
   },
 });

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { View, BackHandler, Alert } from 'react-native';
+import { BackHandler, Alert } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -7,7 +8,7 @@ import { RootStackParamList, RootBottomTabParamList } from '../../types/Navigati
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
 import FeatherButton from '../../components/icons/FeatherButton';
-import { ICON } from '../../styles/metrics';
+import { ICON, PADDING } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
 import styles from './styles';
 import { UserType } from '../../types/UserType';
@@ -28,6 +29,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const insets = useSafeAreaInsets();
   const goBack = () => navigation.navigate('Profile');
 
   const hardwareBackPress = () => {
@@ -66,14 +68,15 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
           loading={isLoading} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
-      <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />
-    </View>
+      <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE}
+        style={{ ...styles.goBack, paddingTop: Math.max(insets.top, PADDING.MD) }} />
+    </SafeAreaView>
   );
 };
 
