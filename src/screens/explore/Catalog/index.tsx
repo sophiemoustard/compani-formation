@@ -77,7 +77,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     theoreticalHours={getTheoreticalHours(get(program, 'subPrograms[0].steps'))} />;
 
   return (
-    <SafeAreaView style={style.safeArea} edges={['top', 'right', 'left']}>
+    <SafeAreaView style={commonStyles.container} edges={['top', 'right', 'left']}>
       <ScrollView style={commonStyles.container} contentContainerStyle={style.container}>
         <Text style={commonStyles.title}>Explorer</Text>
         {Object.keys(programsByCategories).map((key, i) =>

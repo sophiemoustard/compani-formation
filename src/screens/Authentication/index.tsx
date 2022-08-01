@@ -18,6 +18,7 @@ import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
 import { Context as AuthContext } from '../../context/AuthContext';
+import commonStyles from '../../styles/common';
 import styles from './styles';
 import Actions from '../../store/actions';
 
@@ -45,7 +46,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   const firstConnection = () => navigation.navigate('EmailForm', { firstConnection: true });
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={commonStyles.container}>
       <ImageBackground
         style={{ ...styles.image, height: useWindowDimensions().height }}
         source={require('../../../assets/images/authentication_background_image.jpg')}

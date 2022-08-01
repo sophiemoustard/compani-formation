@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { WHITE } from '../../styles/colors';
+import { GREY } from '../../../styles/colors';
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: GREY[100],
   },
 });
 

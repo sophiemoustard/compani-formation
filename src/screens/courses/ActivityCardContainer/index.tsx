@@ -15,7 +15,7 @@ import { StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
-import styles from '../../EmailForm/styles';
+import styles from './styles';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,

@@ -10,11 +10,12 @@ import NiCamera from '../../components/camera/Camera';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON, PADDING } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
-import styles from './styles';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import { savePhoto } from '../../core/helpers/pictures';
+import commonStyles from '../../styles/common';
+import styles from './styles';
 
 interface CameraProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -68,7 +69,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={commonStyles.container}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
           loading={isLoading} />

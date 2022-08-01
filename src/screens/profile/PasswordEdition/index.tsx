@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import PasswordForm from '../../../components/PasswordForm';
 import Authentication from '../../../api/authentication';
-import styles from './styles';
+import commonStyles from '../../../styles/common';
 
 interface PasswordEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'PasswordEdition'>,
@@ -24,7 +24,7 @@ const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={commonStyles.container}>
       <PasswordForm goBack={goBack} onPress={savePassword} />
     </SafeAreaView>
   );

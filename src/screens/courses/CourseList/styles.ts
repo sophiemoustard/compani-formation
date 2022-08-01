@@ -1,13 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
-import { GREEN, GREY, PINK, PURPLE, WHITE, YELLOW } from '../../../styles/colors';
+import { GREEN, GREY, PINK, PURPLE, YELLOW } from '../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: WHITE,
-  },
   container: {
     flexGrow: 1,
   },

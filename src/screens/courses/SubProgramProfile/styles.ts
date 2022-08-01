@@ -5,10 +5,6 @@ import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 
 const imageHeight = 200;
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: WHITE,
-  },
   image: {
     height: imageHeight,
     position: 'relative',

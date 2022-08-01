@@ -10,7 +10,7 @@ import companiDate from '../../../core/helpers/dates';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
-import { markdownStyle } from '../../../styles/common';
+import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -57,7 +57,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   };
 
   return program && (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={commonStyles.container}>
       <About program={program} onPress={goToCourse}>
         <View style={styles.content}>
           {course.slots.length > 0 &&

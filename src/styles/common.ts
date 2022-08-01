@@ -4,7 +4,10 @@ import { WHITE, PINK } from './colors';
 import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
 
 export default StyleSheet.create({
-  container: { flex: 1, backgroundColor: WHITE },
+  container: {
+    flex: 1,
+    backgroundColor: WHITE,
+  },
   disabled: {
     opacity: 0.6,
   },

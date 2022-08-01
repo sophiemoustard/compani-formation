@@ -37,8 +37,7 @@ const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, go
       activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
       <View style={styles.cardScreen}>
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr(e) de cela ?'}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
-          contentText={'Tous vos progrès seront perdus'} />
+          onPressCancelButton={() => setExitConfirmationModal(false)} contentText={'Tous vos progrès seront perdus'} />
         <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
           setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
       </View>

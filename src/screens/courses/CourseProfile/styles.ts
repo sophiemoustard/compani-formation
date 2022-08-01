@@ -12,10 +12,6 @@ import { FIRA_SANS_BLACK, NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/
 
 const imageHeight = 200;
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: WHITE,
-  },
   image: {
     height: imageHeight,
     position: 'relative',

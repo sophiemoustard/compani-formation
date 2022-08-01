@@ -11,7 +11,7 @@ import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
-import styles from './styles';
+import commonStyles from '../../../styles/common';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
@@ -56,7 +56,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
 
   const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={commonStyles.container}>
       <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} />
     </SafeAreaView>
   );

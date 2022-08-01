@@ -101,7 +101,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   const renderSeparator = () => <View style={styles.separator} />;
 
   return subProgram && subProgram.steps && (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={commonStyles.container}>
       <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <ImageBackground source={source} imageStyle={styles.image}
           style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>

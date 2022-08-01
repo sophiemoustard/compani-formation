@@ -1,15 +1,14 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN } from '../../styles/metrics';
+import { GREY } from '../../styles/colors';
+import { PADDING } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   header: {
-    marginTop: MARGIN.MD,
-    marginHorizontal: MARGIN.MD,
+    paddingTop: PADDING.LG,
+    paddingHorizontal: PADDING.LG,
     alignItems: 'center',
     flexDirection: 'row',
+    backgroundColor: GREY[100],
   },
 });
 
