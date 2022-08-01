@@ -11,6 +11,7 @@ import {
   BackHandler,
   ImageSourcePropType,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -100,19 +101,21 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   const renderSeparator = () => <View style={styles.separator} />;
 
   return subProgram && subProgram.steps && (
-    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-      <ImageBackground source={source} imageStyle={styles.image}
-        style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
-        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
-        <View style={styles.header}>
-          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
-            iconStyle={styles.arrowShadow} />
-          <Text style={styles.title}>{programName}</Text>
-        </View>
-      </ImageBackground>
-      <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
-        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
-    </ScrollView>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+        <ImageBackground source={source} imageStyle={styles.image}
+          style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
+          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
+          <View style={styles.header}>
+            <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
+              iconStyle={styles.arrowShadow} />
+            <Text style={styles.title}>{programName}</Text>
+          </View>
+        </ImageBackground>
+        <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
