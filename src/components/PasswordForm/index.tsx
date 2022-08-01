@@ -17,6 +17,7 @@ import NiInput from '../form/Input';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PasswordFormProps {
   goBack: () => void,
@@ -93,37 +94,39 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
   const setPasswordField = (text, key) => { setPassword({ ...password, [key]: text }); };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
-      <View style={styles.goBack}>
-        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
-          color={GREY[600]} disabled={isLoading} />
-        <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
-          title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
-          contentText="Vos modifications ne seront pas enregistrées" />
-      </View>
-      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Modifier mon mot de passe</Text>
-        <View style={styles.input}>
-          <NiInput caption="Nouveau mot de passe" value={password.newPassword}
-            type="password" onChangeText={text => setPasswordField(text, 'newPassword')}
-            validationMessage={unvalid.newPassword && isValidationAttempted
-              ? 'Le mot de passe doit comporter au minimum 6 caractères'
-              : ''} />
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
+        <View style={styles.goBack}>
+          <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
+            color={GREY[600]} disabled={isLoading} />
+          <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
+            title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
+            contentText="Vos modifications ne seront pas enregistrées" />
         </View>
-        <View style={styles.input}>
-          <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
-            type="password" onChangeText={text => setPasswordField(text, 'confirmedPassword')}
-            validationMessage={unvalid.confirmedPassword && isValidationAttempted
-              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
-              : ''} />
-        </View>
-        <View style={styles.footer}>
-          <NiErrorMessage message={error.message} show={error.value} />
-          <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>Modifier mon mot de passe</Text>
+          <View style={styles.input}>
+            <NiInput caption="Nouveau mot de passe" value={password.newPassword}
+              type="password" onChangeText={text => setPasswordField(text, 'newPassword')}
+              validationMessage={unvalid.newPassword && isValidationAttempted
+                ? 'Le mot de passe doit comporter au minimum 6 caractères'
+                : ''} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
+              type="password" onChangeText={text => setPasswordField(text, 'confirmedPassword')}
+              validationMessage={unvalid.confirmedPassword && isValidationAttempted
+                ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
+                : ''} />
+          </View>
+          <View style={styles.footer}>
+            <NiErrorMessage message={error.message} show={error.value} />
+            <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
