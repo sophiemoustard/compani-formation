@@ -169,7 +169,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
-  const style = styles(statusBarVisible, StatusBar.currentHeight);
+  const style = styles(statusBarVisible);
 
   if (maintenanceModalVisible) return <MaintenanceModal />;
   if (updateModaleVisible) return <UpdateAppModal />;

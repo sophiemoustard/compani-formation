@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
@@ -48,13 +49,15 @@ const ActivityEndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.png')}>
-        <Text style={styles.text}>Activité terminée</Text>
-        <Image source={require('../../../../../assets/images/aux_fierte.png')} style={styles.image} />
-      </ImageBackground>
-      <NiPrimaryButton customStyle={styles.button} caption="Terminer" onPress={goBack} />
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.png')}>
+          <Text style={styles.text}>Activité terminée</Text>
+          <Image source={require('../../../../../assets/images/aux_fierte.png')} style={styles.image} />
+        </ImageBackground>
+        <NiPrimaryButton customStyle={styles.button} caption="Terminer" onPress={goBack} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StackScreenProps } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -14,7 +13,6 @@ import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
-import styles from './styles';
 
 interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {
   cardIndex: number | null,
@@ -91,26 +89,24 @@ const QuestionnaireCardContainer = ({
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
   return isActive
-    ? <SafeAreaView style={styles.safeArea}>
-      <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-        <Tab.Screen key={0} name={'startCard'} >
-          {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
-            isLoading={!(cards.length > 0 && questionnaire)} />}
-        </Tab.Screen>
-        {cards.length > 0 && questionnaire &&
-        <>
-          {cards.map((_, index) => (
-            <Tab.Screen key={index} name={`card-${index}`}>
-              {() => <CardScreen index={index} goBack={goBack} />}
-            </Tab.Screen>
-          ))}
-          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
+    ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
+      <Tab.Screen key={0} name={'startCard'} >
+        {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
+          isLoading={!(cards.length > 0 && questionnaire)} />}
+      </Tab.Screen>
+      {cards.length > 0 && questionnaire &&
+      <>
+        {cards.map((_, index) => (
+          <Tab.Screen key={index} name={`card-${index}`}>
+            {() => <CardScreen index={index} goBack={goBack} />}
           </Tab.Screen>
-        </>
-        }
-      </Tab.Navigator>
-    </SafeAreaView>
+        ))}
+        <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+          {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
+        </Tab.Screen>
+      </>
+      }
+    </Tab.Navigator>
     : null;
 };
 

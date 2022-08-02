@@ -5,6 +5,7 @@ import { PINK, WHITE } from '../../../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: PINK[500],
   },
   contentContainer: {

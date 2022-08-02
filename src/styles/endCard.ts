@@ -5,6 +5,7 @@ import { FIRA_SANS_BLACK } from './fonts';
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: YELLOW[100],
   },
   contentContainer: {
