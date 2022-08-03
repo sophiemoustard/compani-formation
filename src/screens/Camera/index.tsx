@@ -69,7 +69,7 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
           loading={isLoading} />

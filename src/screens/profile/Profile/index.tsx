@@ -84,8 +84,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container} edges={['top', 'left', 'right']}>
-      <ScrollView contentContainerStyle={styles.container}>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView>
         {!!loggedUser &&
           <>
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
