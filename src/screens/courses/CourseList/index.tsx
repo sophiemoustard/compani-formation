@@ -141,8 +141,8 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
   const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
 
   return (
-    <SafeAreaView style={commonStyles.container} edges={['top', 'left', 'right']}>
-      <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView>
         <Text style={commonStyles.title} testID='header'>Mes formations</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>

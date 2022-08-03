@@ -4,9 +4,6 @@ import { GREEN, GREY, PINK, PURPLE, YELLOW } from '../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
   courseContainer: {
     paddingHorizontal: MAIN_MARGIN_LEFT,
   },
