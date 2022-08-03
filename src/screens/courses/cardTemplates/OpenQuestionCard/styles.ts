@@ -4,6 +4,10 @@ import { GREY } from '../../../../styles/colors';
 import { MARGIN, PADDING } from '../../../../styles/metrics';
 
 const styles = (isSelected: boolean) => StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: GREY[100],
+  },
   keyboardAvoidingView: {
     flex: 1,
   },

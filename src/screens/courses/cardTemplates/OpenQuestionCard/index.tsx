@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
@@ -59,20 +60,22 @@ const OpenQuestionCard = ({
   const onFocusTextInput = contentHeight => scrollRef.current?.scrollTo({ y: contentHeight, animated: true });
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
-      {!isSelected && <CardHeader />}
-      <ScrollView contentContainerStyle={style.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <Text style={style.question}>{card.question}</Text>
-        <View style={style.inputContainer}>
-          <AnswerTextArea onChangeText={setAnswer} scrollTo={onFocusTextInput}
-            onSelect={setIsSelected} answer={answer}/>
-        </View>
-      </ScrollView>
-      <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
-        arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
-        onPressArrow={() => setIsSelected(false)} validateCard={validateQuestionnaireAnswer} />
-    </KeyboardAvoidingView>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
+        {!isSelected && <CardHeader />}
+        <ScrollView contentContainerStyle={style.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+          <Text style={style.question}>{card.question}</Text>
+          <View style={style.inputContainer}>
+            <AnswerTextArea onChangeText={setAnswer} scrollTo={onFocusTextInput}
+              onSelect={setIsSelected} answer={answer}/>
+          </View>
+        </ScrollView>
+        <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
+          arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
+          onPressArrow={() => setIsSelected(false)} validateCard={validateQuestionnaireAnswer} />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

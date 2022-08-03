@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { SurveyType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -53,7 +54,7 @@ const SurveyCard = ({
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
       <View style={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
@@ -72,7 +73,7 @@ const SurveyCard = ({
       <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
         arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
         validateCard={validateSurvey} />
-    </>
+    </SafeAreaView>
   );
 };
 

@@ -4,8 +4,11 @@ import { GREY, PINK } from '../../../../styles/colors';
 import { MARGIN, PADDING } from '../../../../styles/metrics';
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
+    backgroundColor: GREY[100],
+  },
+  container: {
     marginHorizontal: MARGIN.LG,
   },
   surveyScoreContainer: {
