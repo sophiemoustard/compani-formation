@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN } from './metrics';
 import { FIRA_SANS_BOLD } from './fonts';
-import { GREY } from './colors';
 
 const styles = StyleSheet.create({
   title: {
@@ -10,7 +9,6 @@ const styles = StyleSheet.create({
   },
   screenView: {
     flex: 1,
-    backgroundColor: GREY[100],
   },
   container: {
     flexGrow: 1,

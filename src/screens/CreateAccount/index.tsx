@@ -134,7 +134,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   };
 
   const renderScreen = (fields: CreateAccountDataType[], i: number) => (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <View style={styles.header}>
         <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
           disabled={isLoading} />

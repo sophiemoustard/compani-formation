@@ -4,13 +4,16 @@ import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 import { GREY, PINK, TRANSPARENT_GREY } from '../../../styles/colors';
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: GREY[100],
+  },
   title: {
     ...FIRA_SANS_BOLD.LG,
     marginVertical: MARGIN.LG,
   },
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: GREY[100],
   },
   container: {
     flexGrow: 1,

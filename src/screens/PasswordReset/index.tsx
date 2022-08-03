@@ -5,7 +5,7 @@ import { RootStackParamList } from '../../types/NavigationType';
 import PasswordForm from '../../components/PasswordForm';
 import Authentication from '../../api/authentication';
 import { Context as AuthContext } from '../../context/AuthContext';
-import commonStyles from '../../styles/common';
+import styles from './styles';
 
 interface PasswordResetProps extends StackScreenProps<RootStackParamList, 'PasswordReset'> {}
 
@@ -21,7 +21,7 @@ const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
   };
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <PasswordForm goBack={goBack} onPress={savePassword} />
     </SafeAreaView>
   );

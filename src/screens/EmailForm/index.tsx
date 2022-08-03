@@ -14,7 +14,6 @@ import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
-import commonStyles from '../../styles/common';
 import styles from './styles';
 
 interface EmailFormProps extends StackScreenProps<RootStackParamList, 'EmailForm'> {}
@@ -78,7 +77,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const enterEmail = text => setEmail(text.trim());
 
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView behavior={behavior} style={accountCreationStyles.screenView}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         <View style={styles.goBack}>
