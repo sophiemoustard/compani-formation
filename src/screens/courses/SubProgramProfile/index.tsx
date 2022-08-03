@@ -101,8 +101,8 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   const renderSeparator = () => <View style={styles.separator} />;
 
   return subProgram && subProgram.steps && (
-    <SafeAreaView style={commonStyles.container}>
-      <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <ImageBackground source={source} imageStyle={styles.image}
           style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
           <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />

@@ -210,8 +210,8 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   );
 
   return course && has(course, 'subProgram.program') && (
-    <SafeAreaView style={commonStyles.container}>
-      <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
         onScroll={isProgressBarOnTop}>
         <ImageBackground source={source} imageStyle={styles.image}

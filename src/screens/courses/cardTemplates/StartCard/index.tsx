@@ -20,9 +20,8 @@ const StartCard = ({
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
         <CardHeader color={WHITE} onPress={goBack} icon='arrow-left' />
         <View style={styles.wrapper}>
           <View>
