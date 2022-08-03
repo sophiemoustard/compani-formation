@@ -14,7 +14,6 @@ import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import { savePhoto } from '../../core/helpers/pictures';
-import commonStyles from '../../styles/common';
 import styles from './styles';
 
 interface CameraProps extends CompositeScreenProps<

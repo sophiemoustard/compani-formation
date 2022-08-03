@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: GREY[100],
   },
   container: {
+    flex: 1,
     marginHorizontal: MARGIN.LG,
   },
   surveyScoreContainer: {

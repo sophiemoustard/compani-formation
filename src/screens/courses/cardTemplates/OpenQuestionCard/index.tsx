@@ -61,7 +61,7 @@ const OpenQuestionCard = ({
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
-      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'}
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         {!isSelected && <CardHeader />}
         <ScrollView contentContainerStyle={style.container} ref={scrollRef} showsVerticalScrollIndicator={false}>

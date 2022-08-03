@@ -57,7 +57,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   };
 
   return program && (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
       <About program={program} onPress={goToCourse}>
         <View style={styles.content}>
           {course.slots.length > 0 &&

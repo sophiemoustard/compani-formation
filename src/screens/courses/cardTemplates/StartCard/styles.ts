@@ -4,7 +4,7 @@ import { FIRA_SANS_BLACK } from '../../../../styles/fonts';
 import { PINK, WHITE } from '../../../../styles/colors';
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: PINK[500],
   },

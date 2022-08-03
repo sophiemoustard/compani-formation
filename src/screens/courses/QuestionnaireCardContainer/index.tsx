@@ -95,16 +95,16 @@ const QuestionnaireCardContainer = ({
           isLoading={!(cards.length > 0 && questionnaire)} />}
       </Tab.Screen>
       {cards.length > 0 && questionnaire &&
-      <>
-        {cards.map((_, index) => (
-          <Tab.Screen key={index} name={`card-${index}`}>
-            {() => <CardScreen index={index} goBack={goBack} />}
+        <>
+          {cards.map((_, index) => (
+            <Tab.Screen key={index} name={`card-${index}`}>
+              {() => <CardScreen index={index} goBack={goBack} />}
+            </Tab.Screen>
+          ))}
+          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+            {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
           </Tab.Screen>
-        ))}
-        <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-          {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
-        </Tab.Screen>
-      </>
+        </>
       }
     </Tab.Navigator>
     : null;

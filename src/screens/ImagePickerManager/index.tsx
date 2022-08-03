@@ -77,7 +77,7 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
 
   return (
     <>
-      {isLoading && <SafeAreaView style={styles.loader}>
+      {isLoading && <SafeAreaView style={styles.loader} edges={['top']}>
         {isSaving && <Text style={styles.text}>Enregistrement en cours...</Text>}
         <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
       </SafeAreaView>}

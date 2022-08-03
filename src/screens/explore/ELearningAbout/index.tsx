@@ -56,7 +56,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
 
   const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
   return (
-    <SafeAreaView style={commonStyles.container}>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
       <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} />
     </SafeAreaView>
   );

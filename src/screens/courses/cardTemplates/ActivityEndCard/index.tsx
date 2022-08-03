@@ -49,7 +49,7 @@ const ActivityEndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.png')}>
           <Text style={styles.text}>Activité terminée</Text>
