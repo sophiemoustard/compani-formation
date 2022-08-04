@@ -1,5 +1,4 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "prestart": "source $HOME/.nvm/nvm.sh; nvm use 12.13.0",
     "start": "expo start",
@@ -107,7 +106,9 @@
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "axios-mock-adapter": "^1.19.0",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "babel-preset-expo": "^9.1.0",
+    "dotenv": "^16.0.1",
     "eslint": "^8.13.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
