@@ -1,13 +1,4 @@
-/* eslint-disable import/extensions */
 import Constants from 'expo-constants';
-// @ts-ignore
-import localEnv from './env/env.local';
-// @ts-ignore
-import devEnv from './env/env.dev';
-// @ts-ignore
-import stagingEnv from './env/env.staging';
-// @ts-ignore
-import prodEnv from './env/env.prod';
 import asyncStorage from './src/core/helpers/asyncStorage';
 
 type EnvVarsType = {
@@ -18,15 +9,13 @@ type EnvVarsType = {
   testId: string,
 }
 
-const getEnvVars = (): EnvVarsType => {
-  const env = Constants.manifest?.releaseChannel || '';
-
-  if (__DEV__) return localEnv;
-  if (/dev/.test(env)) return devEnv;
-  if (/staging/.test(env)) return stagingEnv;
-  if (/prod/.test(env)) return prodEnv;
-  return localEnv;
-};
+const getEnvVars = (): EnvVarsType => ({
+  baseURL: Constants.manifest?.extra?.BASE_URL || '',
+  sentryKey: Constants.manifest?.extra?.SENTRY_KEY || '',
+  baseURLStaging: Constants.manifest?.extra?.BASE_URL_STAGING || '',
+  testEmail: Constants.manifest?.extra?.TEST_EMAIL || '',
+  testId: Constants.manifest?.extra?.TEST_ID || '',
+});
 
 const getBaseUrl = async (payload?: { email?: string, userId?: string }): Promise<string> => {
   const { baseURLStaging, baseURL, testEmail, testId } = getEnvVars();
