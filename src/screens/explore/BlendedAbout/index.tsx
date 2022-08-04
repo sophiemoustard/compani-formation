@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
@@ -10,7 +9,7 @@ import companiDate from '../../../core/helpers/dates';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
-import commonStyles, { markdownStyle } from '../../../styles/common';
+import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -57,48 +56,46 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   };
 
   return program && (
-    <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <About program={program} onPress={goToCourse}>
-        <View style={styles.content}>
-          {course.slots.length > 0 &&
-            <>
-              <View style={styles.sectionDelimiter} />
-              <Text style={styles.sectionTitle}>Dates de formation</Text>
-              <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
-                renderItem={({ item }) =>
-                  <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
-            </>}
-          {!!course.trainer && <>
+    <About program={program} onPress={goToCourse}>
+      <View style={styles.content}>
+        {course.slots.length > 0 &&
+          <>
             <View style={styles.sectionDelimiter} />
-            <Text style={styles.sectionTitle}>Intervenant(e)</Text>
-            <View style={styles.subSectionContainer}>
-              <Image style={styles.trainerPicture} source={trainerPictureSource} />
-              <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
-            </View>
-            {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+            <Text style={styles.sectionTitle}>Dates de formation</Text>
+            <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
+              renderItem={({ item }) =>
+                <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
           </>}
-          {!!course.contact?.identity && <>
-            <View style={styles.sectionDelimiter} />
-            <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
-            <Text style={styles.subSectionTitle}>{formatIdentity(course.contact.identity, 'FL')}</Text>
-            <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.contact.phone}`)}
-              style={styles.contact}>
-              <Feather name='phone' size={ICON.MD} color={GREY[600]} />
-              <Text style={styles.contactContent}>{course.contact.contact.phone}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.local.email}`)}
-              style={styles.contact}>
-              <Feather name='mail' size={ICON.MD} color={GREY[600]}/>
-              <Text style={styles.contactContent}>{course.contact.local.email}</Text>
-            </TouchableOpacity>
-          </>}
-        </View>
-        <TouchableOpacity style={styles.internalRulesContainer} onPress={() => setIsModalOpened(true)}>
-          <Text style={styles.internalRules}>RÈGLEMENT INTÉRIEUR</Text>
-        </TouchableOpacity>
-        <InternalRulesModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
-      </About>
-    </SafeAreaView>
+        {!!course.trainer && <>
+          <View style={styles.sectionDelimiter} />
+          <Text style={styles.sectionTitle}>Intervenant(e)</Text>
+          <View style={styles.subSectionContainer}>
+            <Image style={styles.trainerPicture} source={trainerPictureSource} />
+            <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
+          </View>
+          {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+        </>}
+        {!!course.contact?.identity && <>
+          <View style={styles.sectionDelimiter} />
+          <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
+          <Text style={styles.subSectionTitle}>{formatIdentity(course.contact.identity, 'FL')}</Text>
+          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.contact.phone}`)}
+            style={styles.contact}>
+            <Feather name='phone' size={ICON.MD} color={GREY[600]} />
+            <Text style={styles.contactContent}>{course.contact.contact.phone}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.local.email}`)}
+            style={styles.contact}>
+            <Feather name='mail' size={ICON.MD} color={GREY[600]}/>
+            <Text style={styles.contactContent}>{course.contact.local.email}</Text>
+          </TouchableOpacity>
+        </>}
+      </View>
+      <TouchableOpacity style={styles.internalRulesContainer} onPress={() => setIsModalOpened(true)}>
+        <Text style={styles.internalRules}>RÈGLEMENT INTÉRIEUR</Text>
+      </TouchableOpacity>
+      <InternalRulesModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
+    </About>
   );
 };
 
