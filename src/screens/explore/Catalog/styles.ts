@@ -3,6 +3,9 @@ import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
 import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
 
 const styles = (count = { color: '', background: '' }) => StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
   programsCount: {
     ...FIRA_SANS_REGULAR.SM,
     color: count.color || undefined,

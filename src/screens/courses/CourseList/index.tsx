@@ -142,7 +142,7 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={commonStyles.title} testID='header'>Mes formations</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>

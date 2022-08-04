@@ -12,6 +12,9 @@ import {
 } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
   title: {
     paddingHorizontal: PADDING.LG,
   },

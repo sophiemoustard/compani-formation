@@ -78,7 +78,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={style.container}>
         <Text style={commonStyles.title}>Explorer</Text>
         {Object.keys(programsByCategories).map((key, i) =>
           <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
