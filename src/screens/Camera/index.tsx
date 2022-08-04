@@ -8,7 +8,7 @@ import { RootStackParamList, RootBottomTabParamList } from '../../types/Navigati
 import NiCameraPreview from '../../components/camera/CameraPreview';
 import NiCamera from '../../components/camera/Camera';
 import FeatherButton from '../../components/icons/FeatherButton';
-import { ICON, PADDING } from '../../styles/metrics';
+import { ICON } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
@@ -28,8 +28,9 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const insets = useSafeAreaInsets();
+  const style = styles(insets.top);
+
   const goBack = () => navigation.navigate('Profile');
 
   const hardwareBackPress = () => {
@@ -68,14 +69,14 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
           loading={isLoading} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
       <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE}
-        style={{ ...styles.goBack, paddingTop: Math.max(insets.top, PADDING.MD) }} />
+        style={style.goBack} />
     </SafeAreaView>
   );
 };
