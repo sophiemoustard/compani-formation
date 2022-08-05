@@ -53,6 +53,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
   };
 
   const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
+
   return (
     <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} />
   );

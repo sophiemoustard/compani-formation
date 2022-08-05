@@ -10,6 +10,7 @@ import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import CardsActions from '../../../../store/cards/actions';
 import styles from '../../../../styles/endCard';
+import commonStyles from '../../../../styles/common';
 import { achievementJingle } from '../../../../core/helpers/utils';
 
 interface ActivityEndCardProps {
@@ -49,7 +50,7 @@ const ActivityEndCard = ({
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.png')}>
           <Text style={styles.text}>Activité terminée</Text>
