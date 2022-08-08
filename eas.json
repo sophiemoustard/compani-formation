@@ -4,11 +4,11 @@
     "requireCommit": "true"
   },
   "build": {
-    "development": {
+    "local": {
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
+    "dev": {
       "distribution": "internal"
     }
   },
