@@ -1,6 +1,7 @@
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback, useMemo, useReducer } from 'react';
 import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -140,38 +141,40 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
   const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
 
   return (
-    <ScrollView style={commonStyles.container} contentContainerStyle={styles.container}>
-      <Text style={commonStyles.title} testID='header'>Mes formations</Text>
-      {!!nextSteps.length &&
-        <View style={styles.nextSteps}>
-          <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
-            renderItem={renderNextStepsItem} type={EVENT_SECTION} />
-        </View>
-      }
-      <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-        source={require('../../../../assets/images/yellow_section_background.png')}>
-        <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
-          countStyle={styles.onGoingCoursesCount} showCatalogButton={!courses.onGoing.length} />
-      </ImageBackground>
-      {!!courses.achieved.length &&
-        <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/green_section_background.png')}>
-          <CoursesSection items={courses.achieved} title='Mes formations terminées' renderItem={renderCourseItem}
-            countStyle={styles.achievedCoursesCount} />
-        </ImageBackground>
-      }
-      {!!elearningDraftSubPrograms.length &&
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={commonStyles.title} testID='header'>Mes formations</Text>
+        {!!nextSteps.length &&
+          <View style={styles.nextSteps}>
+            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
+              renderItem={renderNextStepsItem} type={EVENT_SECTION} />
+          </View>
+        }
         <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/purple_section_background.png')}>
-          <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
-            countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
+          source={require('../../../../assets/images/yellow_section_background.png')}>
+          <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
+            countStyle={styles.onGoingCoursesCount} showCatalogButton={!courses.onGoing.length} />
         </ImageBackground>
-      }
-      <View style={styles.footer}>
-        <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-        <Image source={require('../../../../assets/images/pa_aidant_balade.png')} style={styles.fellow} />
-      </View>
-    </ScrollView>
+        {!!courses.achieved.length &&
+          <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
+            source={require('../../../../assets/images/green_section_background.png')}>
+            <CoursesSection items={courses.achieved} title='Mes formations terminées' renderItem={renderCourseItem}
+              countStyle={styles.achievedCoursesCount} />
+          </ImageBackground>
+        }
+        {!!elearningDraftSubPrograms.length &&
+          <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+            source={require('../../../../assets/images/purple_section_background.png')}>
+            <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
+              countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
+          </ImageBackground>
+        }
+        <View style={styles.footer}>
+          <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
+          <Image source={require('../../../../assets/images/pa_aidant_balade.png')} style={styles.fellow} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

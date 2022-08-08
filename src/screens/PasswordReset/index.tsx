@@ -1,9 +1,11 @@
 import { useContext } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/NavigationType';
 import PasswordForm from '../../components/PasswordForm';
 import Authentication from '../../api/authentication';
 import { Context as AuthContext } from '../../context/AuthContext';
+import styles from './styles';
 
 interface PasswordResetProps extends StackScreenProps<RootStackParamList, 'PasswordReset'> {}
 
@@ -19,7 +21,9 @@ const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
   };
 
   return (
-    <PasswordForm goBack={goBack} onPress={savePassword} />
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <PasswordForm goBack={goBack} onPress={savePassword} />
+    </SafeAreaView>
   );
 };
 

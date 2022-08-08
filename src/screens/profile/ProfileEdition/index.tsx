@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import FeatherButton from '../../../components/icons/FeatherButton';
@@ -145,51 +146,53 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   };
 
   return !!loggedUser && (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <View style={styles.goBack}>
-        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
-          color={GREY[600]} />
-        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
-          title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
-      </View>
-      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Modifier mes informations</Text>
-        <View style={styles.imageContainer}>
-          <Image style={styles.profileImage} source={source} />
-          <TouchableOpacity onPress={() => setPictureModal(true)}>
-            <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
-          </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
+        <View style={styles.goBack}>
+          <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
+            color={GREY[600]} />
+          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
+            title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
         </View>
-        <View style={styles.input}>
-          <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
-            onChangeText={text => onChangeIdentity('firstname', text)} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Nom" value={editedUser.identity.lastname}
-            type="lastname" onChangeText={text => onChangeIdentity('lastname', text)}
-            validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
-            onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
-            validationMessage={unvalid.phone && isValidationAttempted
-              ? 'Votre numéro de téléphone n\'est pas valide'
-              : ''} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
-            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })} />
-        </View>
-        <View style={styles.footer}>
-          <NiErrorMessage message={error.message} show={error.value} />
-          <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
-        </View>
-        <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
-          setHasPhoto={setHasPhoto} goBack={goBack} />
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>Modifier mes informations</Text>
+          <View style={styles.imageContainer}>
+            <Image style={styles.profileImage} source={source} />
+            <TouchableOpacity onPress={() => setPictureModal(true)}>
+              <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
+              onChangeText={text => onChangeIdentity('firstname', text)} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Nom" value={editedUser.identity.lastname}
+              type="lastname" onChangeText={text => onChangeIdentity('lastname', text)}
+              validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
+              onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
+              validationMessage={unvalid.phone && isValidationAttempted
+                ? 'Votre numéro de téléphone n\'est pas valide'
+                : ''} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
+              onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })} />
+          </View>
+          <View style={styles.footer}>
+            <NiErrorMessage message={error.message} show={error.value} />
+            <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
+          </View>
+          <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
+            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

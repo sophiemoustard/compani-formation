@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Image, Text, View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
-import { markdownStyle } from '../../styles/common';
+import commonStyles, { markdownStyle } from '../../styles/common';
 import { GREY, TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
@@ -46,28 +47,30 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
 
   return (
     <>
-      <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-        <View style={styles.header} />
-        <View style={styles.content}>
-          <FeatherButton name='arrow-left' onPress={navigation.goBack} size={ICON.MD} color={WHITE} />
-          <View style={styles.titleContainer}>
-            <Text style={styles.aboutTitle}>A PROPOS</Text>
-            <Text style={styles.programTitle}>{program.name}</Text>
+      <SafeAreaView style={commonStyles.container} edges={['top']}>
+        <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+          <View style={styles.header} />
+          <View style={styles.content}>
+            <FeatherButton name='arrow-left' onPress={navigation.goBack} size={ICON.MD} color={WHITE} />
+            <View style={styles.titleContainer}>
+              <Text style={styles.aboutTitle}>A PROPOS</Text>
+              <Text style={styles.programTitle}>{program.name}</Text>
+            </View>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={source} />
+            </View>
+            {!!program.description && <>
+              <Text style={styles.sectionTitle}>Description</Text>
+              <Text style={styles.sectionContent}>{program.description}</Text>
+            </>}
+            {!!program.learningGoals && <>
+              <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
+              <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
+            </>}
           </View>
-          <View style={styles.imageContainer}>
-            <Image style={styles.image} source={source} />
-          </View>
-          {!!program.description && <>
-            <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.sectionContent}>{program.description}</Text>
-          </>}
-          {!!program.learningGoals && <>
-            <Text style={styles.sectionTitle}>Objectifs pédagogiques</Text>
-            <Markdown style={markdownStyle(styles.sectionContent)}>{program.learningGoals}</Markdown>
-          </>}
-        </View>
-        {children}
-      </ScrollView>
+          {children}
+        </ScrollView>
+      </SafeAreaView>
       <View style={styles.footer}>
         <FooterGradient colors={[TRANSPARENT_GRADIENT, GREY[0]]} />
         <NiPrimaryButton caption={buttonCaption} onPress={onPress} />

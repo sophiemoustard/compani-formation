@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
@@ -145,9 +146,9 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   };
 
   return (
-    <>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <DraxProvider>
           <FillTheGapQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
           <FillTheGapPropositionList isValidated={isValidated} propositions={propositions}
@@ -159,7 +160,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
           buttonDisabled={!areGapsFilled} footerColors={footerColors} explanation={card.explanation}
           onPressFooterButton={onPressFooterButton} />
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

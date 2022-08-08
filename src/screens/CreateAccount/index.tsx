@@ -1,11 +1,12 @@
 import { useContext, useState } from 'react';
 import { View, Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { RootCreateAccountParamList, RootStackParamList } from '../../types/NavigationType';
-import commonStyle from '../../styles/common';
+import commonStyles from '../../styles/common';
 import styles from './styles';
 import { GREY } from '../../styles/colors';
 import CreateAccountForm from '../../components/CreateAccountForm';
@@ -133,17 +134,17 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   };
 
   const renderScreen = (fields: CreateAccountDataType[], i: number) => (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <View style={styles.header}>
         <FeatherButton name='arrow-left' onPress={() => goBack(i)} size={ICON.MD} color={GREY[600]}
           disabled={isLoading} />
-        <View style={commonStyle.progressBarContainer}>
+        <View style={commonStyles.progressBarContainer}>
           <ProgressBar progress={((i + 1) / formList.length) * 100} />
         </View>
       </View>
       <CreateAccountForm isLoading={isLoading} data={fields} setData={setForm} index={i} goBack={goBack}
         create={create} openUrl={() => Linking.openURL('https://www.compani.fr/cgu-cgv')} />
-    </>
+    </SafeAreaView>
   );
 
   const Stack = createStackNavigator<RootCreateAccountParamList>();

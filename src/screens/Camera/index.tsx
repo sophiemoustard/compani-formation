@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { View, BackHandler, Alert } from 'react-native';
+import { BackHandler, Alert } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -9,11 +10,11 @@ import NiCamera from '../../components/camera/Camera';
 import FeatherButton from '../../components/icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { WHITE } from '../../styles/colors';
-import styles from './styles';
 import { UserType } from '../../types/UserType';
 import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
 import MainActions from '../../store/main/actions';
 import { savePhoto } from '../../core/helpers/pictures';
+import styles from './styles';
 
 interface CameraProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -27,6 +28,8 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const insets = useSafeAreaInsets();
+  const style = styles(insets.top);
 
   const goBack = () => navigation.navigate('Profile');
 
@@ -66,14 +69,15 @@ const Camera = ({ navigation, loggedUser, setLoggedUser }: CameraProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
       {previewVisible && capturedImage ? (
         <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
           loading={isLoading} />
       ) : (
         <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
-      <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} style={styles.goBack} />
-    </View>
+      <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE}
+        style={style.goBack} />
+    </SafeAreaView>
   );
 };
 

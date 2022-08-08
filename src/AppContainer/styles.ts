@@ -1,16 +1,9 @@
-import { Platform, StyleSheet } from 'react-native';
-import { WHITE } from '../styles/colors';
+import { StyleSheet } from 'react-native';
 
-const styles = (statusBarVisible: boolean = false, StatusBarHeight: number = 20) => {
-  const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBarHeight;
-
-  return StyleSheet.create({
-    statusBar: {
-      display: statusBarVisible ? 'flex' : 'none',
-      backgroundColor: WHITE,
-      height: STATUSBAR_HEIGHT,
-    },
-  });
-};
+const styles = (statusBarVisible: boolean = false) => StyleSheet.create({
+  statusBar: {
+    display: statusBarVisible ? 'flex' : 'none',
+  },
+});
 
 export default styles;

@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
-import { YELLOW, GREY } from './colors';
+import { GREY, YELLOW } from './colors';
 import { MARGIN } from './metrics';
 import { FIRA_SANS_BLACK } from './fonts';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: YELLOW[100],
+    flex: 1,
   },
   contentContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
+    backgroundColor: YELLOW[100],
   },
   text: {
     ...FIRA_SANS_BLACK.XL,

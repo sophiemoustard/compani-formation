@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -63,7 +64,7 @@ const TitleTextMediaCard = ({
   if (isLoading) return null;
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
@@ -77,7 +78,7 @@ const TitleTextMediaCard = ({
       <CardFooter index={index} />
       {zoomImage && mediaSource &&
         <ZoomImage image={mediaSource} setZoomImage={setZoomImage} />}
-    </>
+    </SafeAreaView>
   );
 };
 

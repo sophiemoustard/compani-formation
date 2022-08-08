@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
@@ -95,7 +96,7 @@ const OrderTheSequenceCard = ({
   const style = styles(footerColors.background);
 
   return (
-    <>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
       <ScrollView alwaysBounceVertical={false} contentContainerStyle={style.container}
         showsVerticalScrollIndicator={false}>
@@ -116,7 +117,7 @@ const OrderTheSequenceCard = ({
           buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
           onPressFooterButton={onPressFooterButton} />
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

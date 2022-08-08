@@ -1,17 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN } from '../../styles/metrics';
+import { BLACK } from '../../styles/colors';
+import { MARGIN, PADDING } from '../../styles/metrics';
 
-const styles = StyleSheet.create({
-  container: {
+const styles = (insetTop: number) => StyleSheet.create({
+  safeArea: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: BLACK,
   },
   goBack: {
     position: 'absolute',
-    left: 0,
-    top: 0,
+    alignItems: 'flex-start',
     margin: MARGIN.MD,
+    paddingTop: Math.max(insetTop, PADDING.MD),
   },
 });
 

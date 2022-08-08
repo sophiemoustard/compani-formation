@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
@@ -72,7 +73,7 @@ const SingleChoiceQuestionCard = ({
   const style = styles(isPressed, footerColors.background);
 
   return (
-    <>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
       <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
@@ -88,7 +89,7 @@ const SingleChoiceQuestionCard = ({
           cardIndex={index} footerColors={footerColors} explanation={card.explanation}
           buttonDisabled={!isPressed} hideButton />
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

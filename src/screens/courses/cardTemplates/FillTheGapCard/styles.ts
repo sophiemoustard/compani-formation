@@ -3,9 +3,9 @@ import { GREY } from '../../../../styles/colors';
 import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, GAP_WIDTH } from '../../../../styles/metrics';
 
 const styles = (backgroundColor: string) => StyleSheet.create({
-  container: {
-    justifyContent: 'flex-start',
-    flexGrow: 1,
+  safeArea: {
+    flex: 1,
+    backgroundColor: GREY[100],
   },
   gapContainer: {
     backgroundColor: GREY[200],
