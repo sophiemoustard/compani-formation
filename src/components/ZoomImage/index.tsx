@@ -1,5 +1,6 @@
 import { useRef } from 'react';
-import { View, Animated } from 'react-native';
+import { Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
 import { WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
@@ -17,7 +18,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
   const baseScale = new Animated.Value(1);
   const pinchScale = new Animated.Value(1);
   const scale = Animated.multiply(baseScale, pinchScale);
-  const translate = new Animated.ValueXY({ x: 0, y: 0 });
+  const translate = new Animated.ValueXY({ x: 0, y: -75 });
   const pan = useRef<PanGestureHandler>(null);
   const pinch = useRef<PinchGestureHandler>(null);
 
@@ -46,7 +47,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
   const transform = [{ scale }, { translateX: translate.x }, { translateY: translate.y }];
 
   return (
-    <View style={styles.container} >
+    <SafeAreaView style={styles.container} edges={['top']}>
       <FeatherButton name='x-circle' onPress={() => setZoomImage(false)} size={ICON.LG} color={WHITE}
         style={styles.goBack} />
       <PanGestureHandler onGestureEvent={handlePan} onHandlerStateChange={onPanStateChange} ref={pan}
@@ -57,7 +58,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
             <Animated.Image source={image} style={[cardsStyle.media, styles.media, { transform }]} />}
         </PinchGestureHandler>
       </PanGestureHandler>
-    </View>);
+    </SafeAreaView>);
 };
 
 export default ZoomImage;
