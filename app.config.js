@@ -11,7 +11,7 @@ const ENVIRONMENT_VARIABLES = {
 
 export default {
   expo: {
-    name: 'Compani',
+    name: process.env.APP_ENV === 'development' ? 'Compani - Test' : 'Compani',
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
@@ -50,7 +50,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      bundleIdentifier: 'com.alenvi.compani',
+      bundleIdentifier: process.env.APP_ENV === 'development' ? 'com.alenvi.compani.dev' : 'com.alenvi.compani',
       buildNumber: '2.11.0',
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -61,7 +61,7 @@ export default {
       googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
-      package: 'com.alenvi.compani',
+      package: process.env.APP_ENV === 'development' ? 'com.alenvi.compani.dev' : 'com.alenvi.compani',
       permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'],
       icon: './assets/images/android_icon_old.png',
       adaptiveIcon: {
