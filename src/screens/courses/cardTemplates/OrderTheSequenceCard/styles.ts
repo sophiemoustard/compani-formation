@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
-import { MARGIN, PADDING } from '../../../../styles/metrics';
+import { MARGIN } from '../../../../styles/metrics';
 
 const styles = (backgroundColor: string) => StyleSheet.create({
   safeArea: {
@@ -12,7 +12,9 @@ const styles = (backgroundColor: string) => StyleSheet.create({
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
     justifyContent: 'space-between',
-    paddingBottom: PADDING.XL,
+  },
+  flatListContainer: {
+    marginBottom: '50%',
   },
   questionContainer: {
     justifyContent: 'space-between',
@@ -23,6 +25,9 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   },
   footerContainer: {
     backgroundColor,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
   },
 });
 
