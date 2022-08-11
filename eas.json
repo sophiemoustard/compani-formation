@@ -11,10 +11,22 @@
         "APP_ENV": "development"
       }
     },
+    "local-simulator": {
+      "extends": "local",
+      "ios": {
+        "simulator": true
+      }
+    },
     "dev": {
       "distribution": "internal",
       "env": {
         "APP_ENV": "development"
+      }
+    },
+    "dev-simulator": {
+      "extends": "dev",
+      "ios": {
+        "simulator": true
       }
     },
     "prod": {
