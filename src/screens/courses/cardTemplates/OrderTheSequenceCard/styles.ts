@@ -3,7 +3,7 @@ import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { MARGIN } from '../../../../styles/metrics';
 
-const styles = (backgroundColor: string, addMargin: boolean) => StyleSheet.create({
+const styles = (backgroundColor: string) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: GREY[100],
@@ -11,10 +11,8 @@ const styles = (backgroundColor: string, addMargin: boolean) => StyleSheet.creat
   container: {
     marginHorizontal: MARGIN.LG,
     flex: 1,
-    justifyContent: 'space-between',
-  },
-  flatListContainer: {
-    marginBottom: addMargin ? '30%' : '0%',
+    justifyContent: 'flex-end',
+    marginBottom: MARGIN.SM,
   },
   questionContainer: {
     justifyContent: 'space-between',
@@ -22,6 +20,7 @@ const styles = (backgroundColor: string, addMargin: boolean) => StyleSheet.creat
   },
   question: {
     ...FIRA_SANS_REGULAR.MD,
+    marginHorizontal: MARGIN.LG,
   },
   footerContainer: {
     backgroundColor,

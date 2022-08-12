@@ -49,11 +49,6 @@ const OrderTheSequenceCard = ({
   });
   const navigation = useNavigation();
 
-  const [questionHeight, setQuestionHeight] = useState(0);
-  const [scrollViewHeight, setScrollViewHeight] = useState(0);
-  const [contentHeight, setContentHeight] = useState(0);
-  const [addMargin, setAddMargin] = useState(false);
-
   useEffect(() => {
     if (!isLoading && !isValidated) {
       const shuffledCards = shuffle(card.orderedAnswers
@@ -62,12 +57,6 @@ const OrderTheSequenceCard = ({
     }
     setIsRightSwipeEnabled(isValidated || false);
   }, [card, isValidated, isLoading, setIsRightSwipeEnabled]);
-
-  useEffect(() => {
-    if (questionHeight && scrollViewHeight && contentHeight) {
-      setAddMargin(questionHeight + scrollViewHeight > contentHeight);
-    }
-  }, [questionHeight, scrollViewHeight, contentHeight]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -104,24 +93,20 @@ const OrderTheSequenceCard = ({
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.background, addMargin);
+  const style = styles(footerColors.background);
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <View style={style.container} onLayout={(event) => { setContentHeight(event.nativeEvent.layout.height); }}>
-        <Text style={[cardsStyle.question, style.question]}
-          onLayout={(event) => { setQuestionHeight(event.nativeEvent.layout.height); }}>
-          {card.question}
-        </Text>
-        <NestableScrollContainer showsVerticalScrollIndicator={false}
-          onLayout={(event) => { setScrollViewHeight(event.nativeEvent.layout.height); }}>
+      <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+      <View style={style.container}>
+        <NestableScrollContainer showsVerticalScrollIndicator={false}>
           <Text style={cardsStyle.informativeText}>
             Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
           </Text>
           <NestableDraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
             keyExtractor={(_, answerIndex) => answerIndex.toString()} renderItem={renderItem}
-            activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} style={style.flatListContainer}/>
+            activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
         </NestableScrollContainer>
       </View>
       <View style={style.footerContainer}>
