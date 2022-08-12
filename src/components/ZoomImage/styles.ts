@@ -7,21 +7,17 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     paddingRight: PADDING.LG,
     paddingTop: PADDING.LG,
-    position: 'absolute',
   },
   media: {
-    height: SCREEN_HEIGHT,
+    height: SCREEN_HEIGHT * 0.85,
   },
   container: {
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: MODAL_BACKDROP_GREY,
+    width: '100%',
+    height: SCREEN_HEIGHT,
+    position: 'absolute',
     zIndex: 100,
-  },
-  content: {
-    justifyContent: 'center',
   },
 });
 
