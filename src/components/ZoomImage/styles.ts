@@ -9,12 +9,13 @@ const styles = StyleSheet.create({
     paddingTop: PADDING.LG,
   },
   media: {
-    height: SCREEN_HEIGHT,
+    height: SCREEN_HEIGHT * 0.85,
   },
   container: {
     flex: 1,
     backgroundColor: MODAL_BACKDROP_GREY,
     width: '100%',
+    height: SCREEN_HEIGHT,
     position: 'absolute',
     zIndex: 100,
   },

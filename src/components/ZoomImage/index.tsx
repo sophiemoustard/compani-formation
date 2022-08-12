@@ -18,7 +18,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
   const baseScale = new Animated.Value(1);
   const pinchScale = new Animated.Value(1);
   const scale = Animated.multiply(baseScale, pinchScale);
-  const translate = new Animated.ValueXY({ x: 0, y: -75 });
+  const translate = new Animated.ValueXY({ x: 0, y: 0 });
   const pan = useRef<PanGestureHandler>(null);
   const pinch = useRef<PinchGestureHandler>(null);
 
