@@ -3,18 +3,18 @@ import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { MARGIN } from '../../../../styles/metrics';
 
-const styles = (backgroundColor: string) => StyleSheet.create({
+const styles = (backgroundColor: string, addMargin: boolean) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: GREY[100],
   },
   container: {
     marginHorizontal: MARGIN.LG,
-    flexGrow: 1,
+    flex: 1,
     justifyContent: 'space-between',
   },
   flatListContainer: {
-    marginBottom: '50%',
+    marginBottom: addMargin ? '30%' : '0%',
   },
   questionContainer: {
     justifyContent: 'space-between',
@@ -25,9 +25,6 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   },
   footerContainer: {
     backgroundColor,
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
   },
 });
 
