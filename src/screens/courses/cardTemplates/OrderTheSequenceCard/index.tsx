@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import DraggableFlatList from 'react-native-draggable-flatlist';
+import { NestableScrollContainer, NestableDraggableFlatList } from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
@@ -98,19 +98,17 @@ const OrderTheSequenceCard = ({
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView alwaysBounceVertical={false} contentContainerStyle={style.container}
-        showsVerticalScrollIndicator={false}>
-        <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-        <View>
+      <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+      <View style={style.container}>
+        <NestableScrollContainer showsVerticalScrollIndicator={false}>
           <Text style={cardsStyle.informativeText}>
             Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
           </Text>
-          <DraggableFlatList showsVerticalScrollIndicator={false} data={answers}
-            ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
+          <NestableDraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
             keyExtractor={(_, answerIndex) => answerIndex.toString()} renderItem={renderItem}
             activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
-        </View>
-      </ScrollView>
+        </NestableScrollContainer>
+      </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}
