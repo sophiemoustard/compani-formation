@@ -93,7 +93,8 @@
     "redux": "^4.2.0",
     "sentry-expo": "^4.0.0",
     "sharp-cli": "^1.14.1",
-    "expo-dev-client": "~0.8.6"
+    "expo-dev-client": "~0.8.6",
+    "expo-system-ui": "~1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
