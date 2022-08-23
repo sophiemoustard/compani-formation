@@ -8,7 +8,8 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "APP_ENV": "development"
+        "APP_ENV": "development",
+        "PROFILE": "development"
       }
     },
     "local-simulator": {
@@ -20,7 +21,8 @@
     "dev": {
       "distribution": "internal",
       "env": {
-        "APP_ENV": "development"
+        "APP_ENV": "development",
+        "PROFILE": "development"
       }
     },
     "dev-simulator": {
@@ -29,9 +31,16 @@
         "simulator": true
       }
     },
+    "staging": {
+      "env": {
+        "APP_ENV": "development",
+        "PROFILE": "staging"
+      }
+    },
     "prod": {
       "env": {
-        "APP_ENV": "production"
+        "APP_ENV": "production",
+        "PROFILE": "production"
       }
     }
   },

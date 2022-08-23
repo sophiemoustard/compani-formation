@@ -1,21 +1,26 @@
 /* eslint-disable max-len */
 import 'dotenv/config';
 
+const APP_VERSION = '2.11.0';
+const IS_PRODUCTION = process.env.APP_ENV === 'production';
 const ENVIRONMENT_VARIABLES = {
-  BASE_URL: process.env.BASE_URL,
-  SENTRY_KEY: process.env.SENTRY_KEY,
+  BASE_URL_DEV: process.env.BASE_URL_DEV,
   BASE_URL_STAGING: process.env.BASE_URL_STAGING,
-  TEST_EMAIL: process.env.TEST_EMAIL,
-  TEST_ID: process.env.TEST_ID,
+  BASE_URL_PROD: process.env.BASE_URL_PROD,
+  PROFILE: process.env.PROFILE,
+  SENTRY_KEY: process.env.SENTRY_KEY,
+  TEST_EMAILS: process.env.TEST_EMAILS,
+  TEST_IDS: process.env.TEST_IDS,
+  PLATFORM: process.env.PLATFORM,
 };
 
 export default {
   expo: {
-    name: process.env.APP_ENV === 'development' ? 'Compani - Test' : 'Compani',
+    name: IS_PRODUCTION ? 'Compani' : 'Compani - Test',
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.11.0',
+    version: APP_VERSION,
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -50,8 +55,8 @@ export default {
       color: '#005774',
     },
     ios: {
-      bundleIdentifier: process.env.APP_ENV === 'development' ? 'com.alenvi.compani.dev' : 'com.alenvi.compani',
-      buildNumber: '2.11.0',
+      bundleIdentifier: IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev',
+      buildNumber: APP_VERSION,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
@@ -61,7 +66,7 @@ export default {
       googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
-      package: process.env.APP_ENV === 'development' ? 'com.alenvi.compani.dev' : 'com.alenvi.compani',
+      package: IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev',
       permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'],
       icon: './assets/images/android_icon_old.png',
       adaptiveIcon: {

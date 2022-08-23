@@ -12,8 +12,7 @@ import tron from '../ReactotronConfig';
 import Environment from '../../environment';
 import { initializeAssets } from '../core/helpers/assets';
 
-const { sentryKey } = Environment.getEnvVars();
-Sentry.init({ dsn: sentryKey, debug: false });
+Sentry.init({ dsn: Environment.getSentryKey(), debug: false });
 
 const store = createStore(reducers, tron.createEnhancer());
 
