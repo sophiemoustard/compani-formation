@@ -10,19 +10,17 @@ import Programs from '../../api/programs';
 import { BlendedCourseType, ELearningProgramType } from '../../types/CourseTypes';
 
 export const registerForPushNotificationsAsync = async () => {
-  let finalStatus;
-
   if (!Constants.isDevice) return { token: null, status: DENIED };
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  finalStatus = existingStatus;
+  let finalStatus = existingStatus;
 
   if (existingStatus !== GRANTED) {
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
   }
 
-  const { data: token } = await Notifications.getExpoPushTokenAsync();
+  const { data: token } = await Notifications.getExpoPushTokenAsync({ experienceId: process.env.EXPERIENCE_ID });
   await asyncStorage.setExpoToken(token);
 
   if (finalStatus !== GRANTED) return { token, status: DENIED };
