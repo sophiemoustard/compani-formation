@@ -23,6 +23,9 @@
       "env": {
         "APP_ENV": "development",
         "PROFILE": "development"
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
     "dev-simulator": {
