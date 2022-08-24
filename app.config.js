@@ -66,7 +66,7 @@ export default {
       googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
-      package: IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev',
+      package: 'com.alenvi.compani',
       permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'],
       icon: './assets/images/android_icon_old.png',
       adaptiveIcon: {
