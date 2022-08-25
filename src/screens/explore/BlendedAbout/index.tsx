@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from 'react';
 import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
-import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
 import companiDate from '../../../core/helpers/dates/companiDates';
