@@ -12,7 +12,7 @@ import SubPrograms from '../../../api/subPrograms';
 import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
-import companiDate from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates/companiDates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';

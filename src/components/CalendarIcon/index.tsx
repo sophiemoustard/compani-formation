@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import companiDate from '../../core/helpers/dates';
+import companiDate from '../../core/helpers/dates/companiDates';
 import { capitalize } from '../../core/helpers/utils';
 import Shadow from '../design/Shadow';
 import styles from './styles';

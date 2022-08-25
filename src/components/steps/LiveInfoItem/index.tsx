@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import get from 'lodash/get';
 import { SlotType } from '../../../types/CourseTypes';
-import companiDate from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates/companiDates';
 import LiveHoursDisplay from '../LiveHoursDisplay';
 import styles from './styles';
 import { ON_SITE } from '../../../core/data/constants';

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
-import companiDate from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates/companiDates';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
@@ -16,40 +16,35 @@ import { GREY } from '../../../styles/colors';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
+const formatDate = (date) => {
+  const dayOfWeek = capitalize(companiDate(date).format('ccc'));
+  const dayOfMonth = capitalize(companiDate(date).format('d'));
+  const month = capitalize(companiDate(date).format('LLL'));
+  const year = capitalize(companiDate(date).format('yyyy'));
+  return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
+};
+
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
   const program = course.subProgram?.program || null;
-  const [dates, setDates] = useState<Date[]>([]);
-  const [formattedDates, setFormattedDates] = useState<string[]>([]);
   const [trainerPictureSource, setTrainerPictureSource] = useState(
     require('../../../../assets/images/default_avatar.png')
   );
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
-  useEffect(() => {
-    setDates(course.slots.length
-      ? course.slots.map(slot => slot.startDate).sort((a, b) => companiDate(a).diff(b, 'days'))
-      : []);
-  }, [course]);
+  const formattedDates = useMemo(() => {
+    if (!course.slots.length) return [];
+
+    const formattedSlots = course.slots
+      .sort((a, b) => companiDate(a.startDate).diff(b.startDate, 'days'))
+      .map(slot => formatDate(slot.startDate));
+
+    return [...new Set(formattedSlots)];
+  }, [course.slots]);
 
   useEffect(() => {
-    if (dates) {
-      const datesFirstSlots = dates.reduce((newDatesSlots: Date[], date) => {
-        if (!newDatesSlots.some(slotDate => companiDate(date).hasSame(slotDate, 'day'))) newDatesSlots.push(date);
-
-        return newDatesSlots;
-      }, []);
-
-      setFormattedDates(datesFirstSlots.map((date) => {
-        const dayOfWeek = capitalize(companiDate(date).format('ccc'));
-        const dayOfMonth = capitalize(companiDate(date).format('d'));
-        const month = capitalize(companiDate(date).format('LLL'));
-        const year = capitalize(companiDate(date).format('yyyy'));
-        return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
-      }));
-    }
-    if (get(course, 'trainer.picture.link')) setTrainerPictureSource({ uri: course.trainer.picture.link });
-  }, [dates, course]);
+    if (course?.trainer?.picture?.link) setTrainerPictureSource({ uri: course.trainer.picture.link });
+  }, [course?.trainer?.picture?.link]);
 
   const goToCourse = () => {
     if (course._id) navigation.navigate('CourseProfile', { courseId: course._id });

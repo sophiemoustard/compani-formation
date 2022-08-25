@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from 'react-native';
-import companiDate from '../../../core/helpers/dates';
+import companiDate from '../../../core/helpers/dates/companiDates';
 import NiModal from '../../Modal';
 import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
@@ -16,8 +16,9 @@ type LiveCellInfoModalProps = {
 }
 
 const formatStepSlots = (slots): { startDate: string, slots: SlotType[] }[] => {
-  const formattedSlots = slots.reduce((acc, slot) => {
-    const startDate = companiDate(slot.startDate).format('dd/LL/yyyy');
+  const sortedSlots = slots.sort((a, b) => companiDate(a.startDate).diff(b.startDate, 'minutes'));
+  const formattedSlots = sortedSlots.reduce((acc, slot) => {
+    const startDate = companiDate(slot.startDate).format('yyyy-LL-dd');
     if (acc[startDate]) acc[startDate].push(slot);
     else acc[startDate] = [slot];
 
