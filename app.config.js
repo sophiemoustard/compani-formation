@@ -33,17 +33,6 @@ export default {
     assetBundlePatterns: ['assets/images/*'],
     extra: {
       ...ENVIRONMENT_VARIABLES,
-      hooks: {
-        postPublish: [
-          {
-            file: 'sentry-expo/upload-sourcemaps',
-            config: {
-              organization: 'alenvi',
-              project: 'mobile',
-            },
-          },
-        ],
-      },
     },
     updates: {
       enabled: true,
