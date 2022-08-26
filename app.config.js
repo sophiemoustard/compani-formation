@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import 'dotenv/config';
 
-const APP_VERSION = '2.11.1';
 const IS_PRODUCTION = process.env.APP_ENV === 'production';
 const ENVIRONMENT_VARIABLES = {
   BASE_URL_LOCAL: process.env.BASE_URL_LOCAL,
@@ -21,7 +20,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: APP_VERSION,
+    version: '2.11.1',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -49,7 +48,7 @@ export default {
     },
     ios: {
       bundleIdentifier: IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev',
-      buildNumber: APP_VERSION,
+      buildNumber: '2.11.1',
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
