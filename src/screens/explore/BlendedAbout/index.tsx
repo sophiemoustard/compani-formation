@@ -5,6 +5,7 @@ import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
+import { ascendingSort } from '../../../core/helpers/dates/utils';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
@@ -35,7 +36,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
     if (!course.slots.length) return [];
 
     const formattedSlots = course.slots
-      .sort((a, b) => CompaniDate(a.startDate).diff(b.startDate, 'days'))
+      .sort(ascendingSort('startDate'))
       .map(slot => formatDate(slot.startDate));
 
     return [...new Set(formattedSlots)];
