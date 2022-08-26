@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { SlotType } from '../../../types/CourseTypes';
 import { LiveStepType } from '../../../types/StepTypes';
-import companiDate from '../../../core/helpers/dates';
+import { ascendingSort } from '../../../core/helpers/dates/utils';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -36,7 +36,7 @@ const LiveCell = ({ step, slots = [], index, profileId }: LiveCellProps) => {
 
   useEffect(() => {
     if (!stepSlots.length) setDates([]);
-    else setDates(stepSlots.map(stepSlot => stepSlot.endDate).sort((a, b) => companiDate(a).diff(b, 'days')));
+    else setDates(stepSlots.sort(ascendingSort('endDate')).map(stepSlot => stepSlot.endDate));
   }, [stepSlots]);
 
   const closeModal = () => setIsModalVisible(false);
