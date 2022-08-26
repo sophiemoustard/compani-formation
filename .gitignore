@@ -12,6 +12,7 @@ web-report/
 env/*
 api-*
 .idea/*
+.env
 
 # macOS
 .DS_Store

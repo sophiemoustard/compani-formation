@@ -5,17 +5,15 @@ import * as Notifications from 'expo-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
 import AppLoading from 'expo-app-loading';
 import * as Sentry from 'sentry-expo';
-import { Provider as AuthProvider } from '../src/context/AuthContext';
-import AppContainer from '../src/AppContainer';
-import reducers from '../src/store/index';
-import tron from '../src/ReactotronConfig';
-import Environment from '../environment';
-import { initializeAssets } from '../src/core/helpers/assets';
+import { Provider as AuthProvider } from '../context/AuthContext';
+import AppContainer from '../AppContainer';
+import reducers from '../store/index';
+import Environment from '../../environment';
+import { initializeAssets } from '../core/helpers/assets';
 
-const { sentryKey } = Environment.getEnvVars();
-Sentry.init({ dsn: sentryKey, debug: false });
+Sentry.init({ dsn: Environment.getSentryKey(), debug: false });
 
-const store = createStore(reducers, tron.createEnhancer());
+const store = createStore(reducers);
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),

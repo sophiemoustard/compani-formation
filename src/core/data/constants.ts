@@ -1,4 +1,7 @@
 export const APP_NAME = 'formation';
+export const DEVELOPMENT = 'development';
+export const STAGING = 'staging';
+export const PRODUCTION = 'production';
 
 // COURSES
 export const STRICTLY_E_LEARNING = 'strictly_e_learning';
