@@ -12,7 +12,7 @@ import SubPrograms from '../../../api/subPrograms';
 import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
-import companiDate from '../../../core/helpers/dates/companiDates';
+import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
@@ -34,8 +34,8 @@ StackScreenProps<RootStackParamList>
 
 const formatCourseStep = (stepId: string, course: CourseType, stepSlots): NextSlotsStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const nextSlots = stepSlots[stepId].filter(slot => companiDate().isSameOrBefore(slot.endDate));
-  const slotsSorted = stepSlots[stepId].sort((a, b) => companiDate(a.endDate).diff(b.endDate, 'days'));
+  const nextSlots = stepSlots[stepId].filter(slot => CompaniDate().isSameOrBefore(slot.endDate));
+  const slotsSorted = stepSlots[stepId].sort((a, b) => CompaniDate(a.endDate).diff(b.endDate, 'days'));
   const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
   return {
@@ -57,14 +57,14 @@ const formatNextSteps = (course: CourseType): NextSlotsStepType[] => {
   const stepSlots = groupBy(slots.filter(s => get(s, 'step._id')), s => s.step._id);
 
   return Object.keys(stepSlots)
-    .filter(stepId => stepSlots[stepId].some(slot => companiDate().isSameOrBefore(slot.endDate)))
+    .filter(stepId => stepSlots[stepId].some(slot => CompaniDate().isSameOrBefore(slot.endDate)))
     .map(stepId => formatCourseStep(stepId, course, stepSlots));
 };
 
 const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatNextSteps)
   .flat()
   .filter(step => step.slots && step.slots.length)
-  .sort((a, b) => companiDate(a.firstSlot).diff(b.firstSlot, 'days'));
+  .sort((a, b) => CompaniDate(a.firstSlot).diff(b.firstSlot, 'days'));
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';

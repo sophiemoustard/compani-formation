@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
-import companiDate from '../../../core/helpers/dates/companiDates';
+import CompaniDate from '../../../core/helpers/dates/companiDates';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
@@ -16,10 +16,10 @@ import { GREY } from '../../../styles/colors';
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
 const formatDate = (date) => {
-  const dayOfWeek = capitalize(companiDate(date).format('ccc'));
-  const dayOfMonth = capitalize(companiDate(date).format('d'));
-  const month = capitalize(companiDate(date).format('LLL'));
-  const year = capitalize(companiDate(date).format('yyyy'));
+  const dayOfWeek = capitalize(CompaniDate(date).format('ccc'));
+  const dayOfMonth = capitalize(CompaniDate(date).format('d'));
+  const month = capitalize(CompaniDate(date).format('LLL'));
+  const year = capitalize(CompaniDate(date).format('yyyy'));
   return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
 };
 
@@ -35,7 +35,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
     if (!course.slots.length) return [];
 
     const formattedSlots = course.slots
-      .sort((a, b) => companiDate(a.startDate).diff(b.startDate, 'days'))
+      .sort((a, b) => CompaniDate(a.startDate).diff(b.startDate, 'days'))
       .map(slot => formatDate(slot.startDate));
 
     return [...new Set(formattedSlots)];
