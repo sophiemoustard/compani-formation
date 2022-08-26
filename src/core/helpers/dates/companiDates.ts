@@ -19,7 +19,6 @@ type CompaniDateType = {
   isSameOrBefore: (date: DateTypes) => boolean,
   startOf: (unit: DateTimeUnit) => CompaniDateType,
   endOf: (unit: DateTimeUnit) => CompaniDateType,
-  diff: (date: DateTypes, unit: keyof DurationObjectUnits, typeFloat?: boolean) => number,
   add: (amount: number, unit: keyof DurationObjectUnits) => CompaniDateType,
   set: (values: ObjectDateType) => CompaniDateType,
 }
@@ -83,14 +82,6 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
 
     endOf(unit: DateTimeUnit) {
       return CompaniDateFactory(_date.endOf(unit));
-    },
-
-    diff(miscTypeOtherDate : DateTypes, unit: keyof DurationObjectUnits, typeFloat = false) {
-      const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
-      const floatedDiff = _date.diff(otherDate, unit).as(unit);
-      const roundedDiff = floatedDiff > 0 ? Math.floor(floatedDiff) : Math.ceil(floatedDiff);
-
-      return typeFloat ? floatedDiff : roundedDiff;
     },
 
     add(amount: number, unit: keyof DurationObjectUnits) {

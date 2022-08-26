@@ -7,6 +7,7 @@ import { GREY } from '../../../styles/colors';
 import LiveInfoItem from '../LiveInfoItem';
 import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
+import { ascendingSort } from '../../../core/helpers/dates/utils';
 
 type LiveCellInfoModalProps = {
   visible: boolean,
@@ -16,7 +17,7 @@ type LiveCellInfoModalProps = {
 }
 
 const formatStepSlots = (slots): { startDate: string, slots: SlotType[] }[] => {
-  const sortedSlots = slots.sort((a, b) => CompaniDate(a.startDate).diff(b.startDate, 'minutes'));
+  const sortedSlots = slots.sort(ascendingSort('startDate'));
   const formattedSlots = sortedSlots.reduce((acc, slot) => {
     const startDate = CompaniDate(slot.startDate).format('yyyy-LL-dd');
     if (acc[startDate]) acc[startDate].push(slot);

@@ -13,6 +13,7 @@ import NextStepCell from '../../../components/steps/NextStepCell';
 import ProgramCell from '../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
+import { ascendingSort } from '../../../core/helpers/dates/utils';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import commonStyles from '../../../styles/common';
@@ -35,7 +36,7 @@ StackScreenProps<RootStackParamList>
 const formatCourseStep = (stepId: string, course: CourseType, stepSlots): NextSlotsStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
   const nextSlots = stepSlots[stepId].filter(slot => CompaniDate().isSameOrBefore(slot.endDate));
-  const slotsSorted = stepSlots[stepId].sort((a, b) => CompaniDate(a.endDate).diff(b.endDate, 'days'));
+  const slotsSorted = stepSlots[stepId].sort(ascendingSort('endDate'));
   const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
   return {
@@ -64,7 +65,7 @@ const formatNextSteps = (course: CourseType): NextSlotsStepType[] => {
 const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatNextSteps)
   .flat()
   .filter(step => step.slots && step.slots.length)
-  .sort((a, b) => CompaniDate(a.firstSlot).diff(b.firstSlot, 'days'));
+  .sort(ascendingSort('firstSlot'));
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
