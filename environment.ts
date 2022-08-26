@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { DEVELOPMENT, STAGING, PRODUCTION } from './src/core/data/constants';
+import { LOCAL, DEVELOPMENT, STAGING, PRODUCTION } from './src/core/data/constants';
 import asyncStorage from './src/core/helpers/asyncStorage';
 
 const getSentryKey = (): string => Constants.manifest?.extra?.SENTRY_KEY || '';
@@ -7,7 +7,24 @@ const getSentryKey = (): string => Constants.manifest?.extra?.SENTRY_KEY || '';
 const _getBaseUrlForProfile = (): string => {
   if (!Constants?.manifest?.extra) return '';
 
+  /**
+   * Pour utiliser expo build:...
+   * Il faudra l'enlever quand on aura totalement migrer vers EAS build
+   */
+  if (Constants.manifest.releaseChannel) {
+    if (__DEV__) return Constants.manifest.extra.BASE_URL_LOCAL;
+    if (/dev/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.BASE_URL_DEV;
+    if (/staging/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.BASE_URL_STAGING;
+    if (/prod/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.BASE_URL_PROD;
+    return '';
+  }
+
+  /**
+   * Pour utiliser eas build
+   */
   switch (Constants.manifest.extra.PROFILE) {
+    case LOCAL:
+      return Constants.manifest.extra.BASE_URL_LOCAL || '';
     case DEVELOPMENT:
       return Constants.manifest.extra.BASE_URL_DEV || '';
     case STAGING:
