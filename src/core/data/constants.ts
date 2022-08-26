@@ -1,4 +1,5 @@
 export const APP_NAME = 'formation';
+export const LOCAL = 'local';
 export const DEVELOPMENT = 'development';
 export const STAGING = 'staging';
 export const PRODUCTION = 'production';

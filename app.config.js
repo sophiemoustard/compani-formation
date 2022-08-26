@@ -4,6 +4,7 @@ import 'dotenv/config';
 const APP_VERSION = '2.11.1';
 const IS_PRODUCTION = process.env.APP_ENV === 'production';
 const ENVIRONMENT_VARIABLES = {
+  BASE_URL_LOCAL: process.env.BASE_URL_LOCAL,
   BASE_URL_DEV: process.env.BASE_URL_DEV,
   BASE_URL_STAGING: process.env.BASE_URL_STAGING,
   BASE_URL_PROD: process.env.BASE_URL_PROD,
