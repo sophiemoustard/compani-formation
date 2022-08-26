@@ -8,13 +8,12 @@ import * as Sentry from 'sentry-expo';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import AppContainer from '../AppContainer';
 import reducers from '../store/index';
-import tron from '../ReactotronConfig';
 import Environment from '../../environment';
 import { initializeAssets } from '../core/helpers/assets';
 
 Sentry.init({ dsn: Environment.getSentryKey(), debug: false });
 
-const store = createStore(reducers, tron.createEnhancer());
+const store = createStore(reducers);
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),
