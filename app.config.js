@@ -33,6 +33,9 @@ export default {
     assetBundlePatterns: ['assets/images/*'],
     extra: {
       ...ENVIRONMENT_VARIABLES,
+      eas: {
+        projectId: process.env.PROJECT_ID,
+      },
     },
     updates: {
       enabled: true,
