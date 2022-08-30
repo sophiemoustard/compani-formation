@@ -34,7 +34,7 @@ export default {
     extra: {
       ...ENVIRONMENT_VARIABLES,
       eas: {
-        projectId: process.env.PROJECT_ID,
+        projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
       },
     },
     updates: {
