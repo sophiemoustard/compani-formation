@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import 'dotenv/config';
 
-const IS_PRODUCTION = process.env.APP_ENV === 'production';
 const ENVIRONMENT_VARIABLES = {
   BASE_URL_LOCAL: process.env.BASE_URL_LOCAL,
   BASE_URL_DEV: process.env.BASE_URL_DEV,
@@ -16,7 +15,7 @@ const ENVIRONMENT_VARIABLES = {
 
 export default {
   expo: {
-    name: IS_PRODUCTION ? 'Compani' : 'Compani - Test',
+    name: 'Compani', // eas build -> IS_PRODUCTION ? 'Compani' : 'Compani - Test'
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
@@ -36,16 +35,14 @@ export default {
       eas: {
         projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
       },
-      hooks: { // to be removed when using eas build - waiting for eas updates to be configures
-        postPublish: [
-          {
-            file: 'sentry-expo/upload-sourcemaps',
-            config: {
-              organization: 'alenvi',
-              project: 'mobile',
-            },
+      hooks: { // eas build -> to be removed when using eas build - waiting for eas updates to be configures
+        postPublish: [{
+          file: 'sentry-expo/upload-sourcemaps',
+          config: {
+            organization: 'alenvi',
+            project: 'mobile',
           },
-        ],
+        }],
       },
     },
     updates: {
@@ -58,8 +55,8 @@ export default {
       color: '#005774',
     },
     ios: {
-      bundleIdentifier: IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev',
-      buildNumber: '2.11.1',
+      bundleIdentifier: 'com.alenvi.compani', // eas build -> IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev'
+      buildNumber: '2.11.1.1',
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
