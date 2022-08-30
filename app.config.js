@@ -36,6 +36,17 @@ export default {
       eas: {
         projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
       },
+      hooks: { // to be removed when using eas build - waiting for eas updates to be configures
+        postPublish: [
+          {
+            file: 'sentry-expo/upload-sourcemaps',
+            config: {
+              organization: 'alenvi',
+              project: 'mobile',
+            },
+          },
+        ],
+      },
     },
     updates: {
       enabled: true,
