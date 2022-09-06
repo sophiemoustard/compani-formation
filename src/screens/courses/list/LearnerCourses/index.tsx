@@ -172,7 +172,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
         }
         <View style={styles.footer}>
           <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
-          <Image source={require('../../../../../assets/images/pa_aidant_balade.png')} style={styles.fellow} />
+          <Image source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} style={styles.fellow} />
         </View>
       </ScrollView>
     </SafeAreaView>
