@@ -115,7 +115,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const goBack = useCallback(() => {
     resetCourseReducer();
-    navigation.navigate('Courses');
+    navigation.navigate('LearnerCourses');
   }, [navigation, resetCourseReducer]);
 
   const hardwareBackPress = useCallback(() => {

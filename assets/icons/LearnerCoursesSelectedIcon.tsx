@@ -2,12 +2,12 @@
 import Svg, { Path, Rect } from 'react-native-svg';
 import { ICON } from '../../src/styles/metrics';
 
-type CoursesSelectedIconProps = {
+type LeanerCoursesSelectedIconProps = {
   style?: object,
   size?: number,
 }
 
-const CoursesSelectedIcon = ({ style, size = ICON.MD }: CoursesSelectedIconProps) => (
+const LeanerCoursesSelectedIcon = ({ style, size = ICON.MD }: LeanerCoursesSelectedIconProps) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style}>
     <Rect x="4" y="4" width="16" height="16" fill="#FBB8D2"/>
     <Rect x="8" y="4" width="8" height="10" fill="#FFEBF1"/>
@@ -15,4 +15,4 @@ const CoursesSelectedIcon = ({ style, size = ICON.MD }: CoursesSelectedIconProps
   </Svg>
 );
 
-export default CoursesSelectedIcon;
+export default LeanerCoursesSelectedIcon;

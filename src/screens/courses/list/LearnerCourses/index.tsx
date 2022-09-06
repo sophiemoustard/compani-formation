@@ -7,25 +7,25 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
-import Courses from '../../../api/courses';
-import SubPrograms from '../../../api/subPrograms';
-import NextStepCell from '../../../components/steps/NextStepCell';
-import ProgramCell from '../../../components/ProgramCell';
-import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
-import CompaniDate from '../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../core/helpers/dates/utils';
-import { getLoggedUserId } from '../../../store/main/selectors';
-import CoursesActions from '../../../store/courses/actions';
-import commonStyles from '../../../styles/common';
-import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
-import { CourseType, BlendedCourseType, SubProgramType } from '../../../types/CourseTypes';
-import { NextSlotsStepType } from '../../../types/StepTypes';
-import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import styles from './styles';
-import { getCourseProgress, getTheoreticalHours } from '../../../core/helpers/utils';
-import { E_LEARNING } from '../../../core/data/constants';
+import Courses from '../../../../api/courses';
+import SubPrograms from '../../../../api/subPrograms';
+import NextStepCell from '../../../../components/steps/NextStepCell';
+import ProgramCell from '../../../../components/ProgramCell';
+import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
+import CompaniDate from '../../../../core/helpers/dates/companiDates';
+import { ascendingSort } from '../../../../core/helpers/dates/utils';
+import { getLoggedUserId } from '../../../../store/main/selectors';
+import CoursesActions from '../../../../store/courses/actions';
+import commonStyles from '../../../../styles/common';
+import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
+import { CourseType, BlendedCourseType, SubProgramType } from '../../../../types/CourseTypes';
+import { NextSlotsStepType } from '../../../../types/StepTypes';
+import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
+import styles from '../styles';
+import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
+import { E_LEARNING } from '../../../../core/data/constants';
 
-interface CourseListProps extends CompositeScreenProps<
+interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
@@ -86,7 +86,7 @@ const courseReducer = (state, action) => {
 
 const renderNextStepsItem = step => <NextStepCell nextSlotsStep={step} />;
 
-const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) => {
+const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -152,27 +152,27 @@ const CourseList = ({ setIsCourse, navigation, loggedUserId }: CourseListProps) 
           </View>
         }
         <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-          source={require('../../../../assets/images/yellow_section_background.png')}>
+          source={require('../../../../../assets/images/yellow_section_background.png')}>
           <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
             countStyle={styles.onGoingCoursesCount} showCatalogButton={!courses.onGoing.length} />
         </ImageBackground>
         {!!courses.achieved.length &&
           <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
-            source={require('../../../../assets/images/green_section_background.png')}>
+            source={require('../../../../../assets/images/green_section_background.png')}>
             <CoursesSection items={courses.achieved} title='Mes formations terminées' renderItem={renderCourseItem}
               countStyle={styles.achievedCoursesCount} />
           </ImageBackground>
         }
         {!!elearningDraftSubPrograms.length &&
           <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
-            source={require('../../../../assets/images/purple_section_background.png')}>
+            source={require('../../../../../assets/images/purple_section_background.png')}>
             <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
               countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
           </ImageBackground>
         }
         <View style={styles.footer}>
-          <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-          <Image source={require('../../../../assets/images/pa_aidant_balade.png')} style={styles.fellow} />
+          <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
+          <Image source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} style={styles.fellow} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -185,4 +185,4 @@ const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => vo
   setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CourseList);
+export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourses);
