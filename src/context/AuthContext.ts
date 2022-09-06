@@ -89,7 +89,7 @@ const localSignIn = async (dispatch) => {
   const { companiToken } = await asyncStorage.getCompaniToken();
   dispatch({ type: SIGNIN, payload: companiToken });
 
-  navigate('Courses');
+  navigate('LearnerCourses');
   dispatch({ type: RENDER });
 };
 
