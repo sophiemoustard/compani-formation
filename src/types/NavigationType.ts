@@ -24,6 +24,7 @@ export type RootStackParamList = {
 export type RootBottomTabParamList = {
   Catalog: undefined;
   LearnerCourses: undefined;
+  TrainerCourses: undefined;
   Profile: undefined;
 }
 
