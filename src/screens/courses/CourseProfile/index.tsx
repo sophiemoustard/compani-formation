@@ -60,7 +60,7 @@ StackScreenProps<RootBottomTabParamList>
 
 const renderStepCell = ({ item, index }, course, route) => {
   if ([ON_SITE, REMOTE].includes(item.type)) {
-    return <LiveCell step={item} slots={course?.slots} index={index} profileId={route.params.courseId} />;
+    return <LiveCell step={item} slots={course?.slots} index={index} />;
   }
 
   if (item.type === E_LEARNING) {
