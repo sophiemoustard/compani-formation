@@ -36,11 +36,11 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const keyboardDidShow = () => setIsKeyboardOpen(true);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
-    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const showListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
     return () => {
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
-      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
+      hideListener.remove();
+      showListener.remove();
     };
   });
 

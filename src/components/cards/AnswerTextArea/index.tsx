@@ -18,9 +18,9 @@ const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQues
   const style = styles(isSelected);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
     return () => {
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      hideListener.remove();
     };
   });
 

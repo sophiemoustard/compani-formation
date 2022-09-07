@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Platform, View } from 'react-native';
-import { Video } from 'expo-av';
+import { Video, VideoFullscreenUpdate, ResizeMode } from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
@@ -35,9 +35,9 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   const onFullscreenUpdate = async ({ fullscreenUpdate }) => {
     if (Platform.OS === 'android') {
       switch (fullscreenUpdate) {
-        case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
+        case VideoFullscreenUpdate.PLAYER_DID_PRESENT:
           return ScreenOrientation.unlockAsync();
-        case Video.FULLSCREEN_UPDATE_PLAYER_WILL_DISMISS:
+        case VideoFullscreenUpdate.PLAYER_WILL_DISMISS:
           return ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
         default:
       }
@@ -56,10 +56,10 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
         {isIosVersionWithPlayButton && playVisible &&
         <FeatherButton name='play-circle' size={ICON.XXL} onPress={displayFullscreen} color={GREY[100]}
           style={style.play} />}
-        <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode='contain' source={mediaSource}
-          onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
-          style={style.media} onReadyForDisplay={onReadyForDisplay}
-          onLoadStart={() => setIsMediaLoading(true)} onLoad={() => setIsMediaLoading(false)} />
+        <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode={ResizeMode.CONTAIN}
+          source={mediaSource} onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
+          style={style.media} onReadyForDisplay={onReadyForDisplay} onLoadStart={() => setIsMediaLoading(true)}
+          onLoad={() => setIsMediaLoading(false)} />
       </View>
     </>
   );
