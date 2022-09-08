@@ -19,7 +19,10 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.11.1',
+    runtimeVersion: {
+      policy: 'sdkVersion',
+    },
+    version: '2.11.4',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -49,6 +52,7 @@ export default {
       enabled: true,
       checkAutomatically: 'ON_LOAD',
       fallbackToCacheTimeout: 3000,
+      url: 'https://u.expo.dev/861a9cc8-74bd-4278-9bad-783086e74994',
     },
     notification: {
       icon: './assets/images/android_notification_icon.png',

@@ -19,6 +19,7 @@
       }
     },
     "dev": {
+      "channel": "dev",
       "distribution": "internal",
       "env": {
         "APP_ENV": "development",
@@ -35,12 +36,14 @@
       }
     },
     "staging": {
+      "channel": "staging",
       "env": {
         "APP_ENV": "development",
         "PROFILE": "staging"
       }
     },
     "prod": {
+      "channel": "production",
       "env": {
         "APP_ENV": "production",
         "PROFILE": "production"
