@@ -53,11 +53,17 @@ const isInProgress = (course: BlendedCourseType) => {
 };
 const isCompleted = (course: BlendedCourseType) => !isForthcoming(course) && !isInProgress(course);
 
-const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => [
-  { ...CategoriesStyleList[0], courses: courses.filter(c => isInProgress(c)) },
-  { ...CategoriesStyleList[1], courses: courses.filter(c => isForthcoming(c)) },
-  { ...CategoriesStyleList[2], courses: courses.filter(c => isCompleted(c)) },
-];
+const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => {
+  const coursesInProgress = courses.filter(c => isInProgress(c));
+  const coursesForthcoming = courses.filter(c => isForthcoming(c));
+  const coursesCompleted = courses.filter(c => isCompleted(c));
+
+  return [
+    ...(coursesInProgress.length ? [{ ...CategoriesStyleList[0], courses: coursesInProgress }] : []),
+    ...(coursesForthcoming.length ? [{ ...CategoriesStyleList[1], courses: coursesForthcoming }] : []),
+    ...(coursesCompleted.length ? [{ ...CategoriesStyleList[2], courses: coursesCompleted }] : []),
+  ];
+};
 
 const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
 
