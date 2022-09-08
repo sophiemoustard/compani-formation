@@ -3,9 +3,18 @@ import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { CourseType } from '../types/CourseTypes';
 import { CourseListResponseType, CourseResponseType, PdfResponseType } from '../types/AxiosTypes';
-import { MOBILE } from '../core/data/constants';
+import { MOBILE, OPERATION, BLENDED } from '../core/data/constants';
 
 export default {
+  getTrainerCourses: async (userId: string): Promise<CourseType[]> => {
+    const baseURL = await Environment.getBaseUrl();
+    const response: AxiosResponse<CourseListResponseType> = await axiosLogged.get(
+      `${baseURL}/courses`,
+      { params: { action: OPERATION, origin: MOBILE, format: BLENDED, trainer: userId } }
+    );
+
+    return response.data.data.courses;
+  },
   getUserCourses: async (): Promise<CourseType[]> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<CourseListResponseType> = await axiosLogged.get(`${baseURL}/courses/user`);
