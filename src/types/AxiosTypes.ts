@@ -1,6 +1,6 @@
 import { ActivityWithCardsType } from './ActivityTypes';
 import { CompanyType } from './CompanyType';
-import { CourseType, ProgramType, SubProgramType } from './CourseTypes';
+import { BlendedCourseType, CourseType, ProgramType, SubProgramType } from './CourseTypes';
 import { QuestionnaireType, QuestionnaireWithCardsType } from './QuestionnaireType';
 import { UserType } from './UserType';
 
@@ -25,6 +25,7 @@ export type CompanyListResponseType = { message: string, data: { companies: Comp
 
 // COURSE
 export type CourseListResponseType = { message: string, data: { courses: CourseType[] } }
+export type BlendedCourseListResponseType = { message: string, data: { courses: BlendedCourseType[] } }
 export type CourseResponseType = { message: string, data: { course: CourseType } }
 export type PdfResponseType = { data: string }
 

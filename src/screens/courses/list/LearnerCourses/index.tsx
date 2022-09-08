@@ -147,27 +147,27 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
         <Text style={commonStyles.title} testID='header'>Mes formations</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>
-            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.nextEventsCount}
+            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.pinkCount}
               renderItem={renderNextStepsItem} type={EVENT_SECTION} />
           </View>
         }
-        <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+        <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
           source={require('../../../../../assets/images/yellow_section_background.png')}>
           <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
-            countStyle={styles.onGoingCoursesCount} showCatalogButton={!courses.onGoing.length} />
+            countStyle={styles.yellowCount} showCatalogButton={!courses.onGoing.length} />
         </ImageBackground>
         {!!courses.achieved.length &&
-          <ImageBackground imageStyle={styles.achievedBackground} style={styles.sectionContainer}
+          <ImageBackground imageStyle={styles.rightBackground} style={styles.sectionContainer}
             source={require('../../../../../assets/images/green_section_background.png')}>
             <CoursesSection items={courses.achieved} title='Mes formations terminées' renderItem={renderCourseItem}
-              countStyle={styles.achievedCoursesCount} />
+              countStyle={styles.greenCount} />
           </ImageBackground>
         }
         {!!elearningDraftSubPrograms.length &&
-          <ImageBackground imageStyle={styles.onGoingAndDraftBackground} style={styles.sectionContainer}
+          <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
             source={require('../../../../../assets/images/purple_section_background.png')}>
             <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
-              countStyle={styles.subProgramsCount} renderItem={renderSubProgramItem} />
+              countStyle={styles.purpleCount} renderItem={renderSubProgramItem} />
           </ImageBackground>
         }
         <View style={styles.footer}>

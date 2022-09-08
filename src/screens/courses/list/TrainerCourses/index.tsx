@@ -1,16 +1,64 @@
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback } from 'react';
-import { Text, View, ScrollView, Image } from 'react-native';
+import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
-import { getLoggedUserId } from '../../../../store/main/selectors';
+import get from 'lodash/get';
 import Courses from '../../../../api/courses';
-import commonStyles from '../../../../styles/common';
-import { CourseType } from '../../../../types/CourseTypes';
+import CoursesSection from '../../../../components/CoursesSection';
+import ProgramCell from '../../../../components/ProgramCell';
+import companiDates from '../../../../core/helpers/dates/companiDates';
+import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
+import { getLoggedUserId } from '../../../../store/main/selectors';
+import commonStyles from '../../../../styles/common';
 import styles from '../styles';
+
+const CategoriesStyleList = [
+  {
+    title: 'En cours',
+    source: require('../../../../../assets/images/yellow_section_background.png'),
+    imageStyle: styles.leftBackground,
+    countStyle: styles.yellowCount,
+  },
+  {
+    title: 'À venir',
+    source: require('../../../../../assets/images/purple_section_background.png'),
+    imageStyle: styles.rightBackground,
+    countStyle: styles.purpleCount,
+  },
+  {
+    title: 'Terminées',
+    source: require('../../../../../assets/images/green_section_background.png'),
+    imageStyle: styles.leftBackground,
+    countStyle: styles.greenCount,
+  },
+];
+
+const isForthcoming = (course: BlendedCourseType) => {
+  const noSlotPlanned = !course.slots.length && course.slotsToPlan.length;
+  const noSlotHasBeenStarted = !course.slots.some(slot => companiDates().isSameOrAfter(slot.startDate));
+
+  return noSlotPlanned || noSlotHasBeenStarted;
+};
+const isInProgress = (course: BlendedCourseType) => {
+  const notEverySlotsHappened = course.slots.some(slot => companiDates().isSameOrBefore(slot.endDate));
+  const slotsToPlan = course.slotsToPlan.length;
+
+  return !isForthcoming(course) && (notEverySlotsHappened || slotsToPlan);
+};
+const isCompleted = (course: BlendedCourseType) => !isForthcoming(course) && !isInProgress(course);
+
+const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => [
+  { ...CategoriesStyleList[0], courses: courses.filter(c => isInProgress(c)) },
+  { ...CategoriesStyleList[1], courses: courses.filter(c => isForthcoming(c)) },
+  { ...CategoriesStyleList[2], courses: courses.filter(c => isCompleted(c)) },
+];
+
+const renderCourseItem = course => <ProgramCell onPress={() => {}} program={get(course, 'subProgram.program') || {}}
+  misc={course.misc} theoreticalHours={0} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -20,18 +68,19 @@ StackScreenProps<RootStackParamList>
 }
 
 const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
-  const [courses, setCourses] = useState<CourseType[]>([]);
+  const [coursesDisplayContent, setCoursesDisplayContent] = useState<any[]>([]);
   const isFocused = useIsFocused();
 
   const getCourses = useCallback(async () => {
     try {
       if (loggedUserId) {
-        const fetchedCourses: CourseType[] = await Courses.getTrainerCourses(loggedUserId);
-        setCourses(fetchedCourses);
+        const fetchedCourses: BlendedCourseType[] = await Courses.getTrainerCourses(loggedUserId);
+        const formatedCourses = formatCoursesDiplayContents(fetchedCourses);
+        setCoursesDisplayContent(formatedCourses);
       }
     } catch (e: any) {
       console.error(e);
-      // dispatch({ type: RESET_COURSES });
+      setCoursesDisplayContent([]);
     }
   }, [loggedUserId]);
 
@@ -41,9 +90,15 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <Text>{JSON.stringify(courses)}</Text>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
+        { coursesDisplayContent.map(content => (
+          <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
+            key={content.title} source={content.source}>
+            <CoursesSection items={content.courses} title={content.title}
+              countStyle={content.countStyle} renderItem={renderCourseItem} />
+          </ImageBackground>
+        ))}
         <View style={styles.footer}>
           <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
           <Image source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} style={styles.fellow} />

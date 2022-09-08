@@ -1,14 +1,19 @@
 import { AxiosResponse } from 'axios';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
-import { CourseType } from '../types/CourseTypes';
-import { CourseListResponseType, CourseResponseType, PdfResponseType } from '../types/AxiosTypes';
+import { BlendedCourseType, CourseType } from '../types/CourseTypes';
+import {
+  CourseListResponseType,
+  BlendedCourseListResponseType,
+  CourseResponseType,
+  PdfResponseType,
+} from '../types/AxiosTypes';
 import { MOBILE, OPERATION, BLENDED } from '../core/data/constants';
 
 export default {
-  getTrainerCourses: async (userId: string): Promise<CourseType[]> => {
+  getTrainerCourses: async (userId: string): Promise<BlendedCourseType[]> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CourseListResponseType> = await axiosLogged.get(
+    const response: AxiosResponse<BlendedCourseListResponseType> = await axiosLogged.get(
       `${baseURL}/courses`,
       { params: { action: OPERATION, origin: MOBILE, format: BLENDED, trainer: userId } }
     );
