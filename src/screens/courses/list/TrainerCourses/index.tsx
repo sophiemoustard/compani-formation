@@ -10,11 +10,13 @@ import Courses from '../../../../api/courses';
 import CoursesSection from '../../../../components/CoursesSection';
 import ProgramCell from '../../../../components/ProgramCell';
 import companiDates from '../../../../core/helpers/dates/companiDates';
+import { getTheoreticalHours } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
 import styles from '../styles';
+import { E_LEARNING } from '../../../../core/data/constants';
 
 const CategoriesStyleList = [
   {
@@ -57,8 +59,10 @@ const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => [
   { ...CategoriesStyleList[2], courses: courses.filter(c => isCompleted(c)) },
 ];
 
+const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
+
 const renderCourseItem = course => <ProgramCell onPress={() => {}} program={get(course, 'subProgram.program') || {}}
-  misc={course.misc} theoreticalHours={0} />;
+  misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,

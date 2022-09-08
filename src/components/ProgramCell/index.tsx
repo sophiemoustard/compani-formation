@@ -43,7 +43,7 @@ const ProgramCell = ({ program, theoreticalHours, progress = null, misc = '', on
       <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={2}>
         {programName}{misc ? ` - ${misc}` : ''}
       </Text>
-      <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
+      <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={3}>{programDescription}</Text>
       {!!theoreticalHours &&
         <View>
           <Text style={styles.eLearning}>E-LEARNING</Text>
