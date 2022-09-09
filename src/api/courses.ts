@@ -8,14 +8,14 @@ import {
   CourseResponseType,
   PdfResponseType,
 } from '../types/AxiosTypes';
-import { MOBILE, OPERATION, BLENDED } from '../core/data/constants';
+import { MOBILE, OPERATIONS, BLENDED } from '../core/data/constants';
 
 export default {
   getTrainerCourses: async (userId: string): Promise<BlendedCourseType[]> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<BlendedCourseListResponseType> = await axiosLogged.get(
       `${baseURL}/courses`,
-      { params: { action: OPERATION, origin: MOBILE, format: BLENDED, trainer: userId } }
+      { params: { action: OPERATIONS, origin: MOBILE, format: BLENDED, trainer: userId } }
     );
 
     return response.data.data.courses;
