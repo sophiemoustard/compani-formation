@@ -39,11 +39,12 @@ const CategoriesStyleList = [
   },
 ];
 
+const noSlot = (course: BlendedCourseType) => !course.slots.length && !course.slotsToPlan.length;
 const isForthcoming = (course: BlendedCourseType) => {
-  const noSlotPlanned = !course.slots.length && course.slotsToPlan.length;
+  const noSlotPlannedAndSlotToPlan = !course.slots.length && course.slotsToPlan.length;
   const noSlotHasBeenStarted = !course.slots.some(slot => companiDates().isSameOrAfter(slot.startDate));
 
-  return noSlotPlanned || noSlotHasBeenStarted;
+  return noSlotPlannedAndSlotToPlan || noSlotHasBeenStarted;
 };
 const isInProgress = (course: BlendedCourseType) => {
   const notEverySlotsHappened = course.slots.some(slot => companiDates().isSameOrBefore(slot.endDate));
@@ -51,7 +52,7 @@ const isInProgress = (course: BlendedCourseType) => {
 
   return !isForthcoming(course) && (notEverySlotsHappened || slotsToPlan);
 };
-const isCompleted = (course: BlendedCourseType) => !isForthcoming(course) && !isInProgress(course);
+const isCompleted = (course: BlendedCourseType) => !noSlot(course) && !isForthcoming(course) && !isInProgress(course);
 
 const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
