@@ -16,6 +16,7 @@ import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps } from '../helper';
+import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 
 const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -66,8 +67,12 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
   const getCourses = useCallback(async () => {
     try {
       if (loggedUserId) {
-        const fetchedCourses: BlendedCourseType[] = await Courses.getTrainerCourses(loggedUserId);
-        const formatedCourses = formatCoursesDiplayContents(fetchedCourses);
+        const fetchedCourses = await Courses.getCourseList({
+          action: OPERATIONS,
+          format: BLENDED,
+          trainer: loggedUserId,
+        });
+        const formatedCourses: any[] = formatCoursesDiplayContents(fetchedCourses);
         setCoursesDisplayContent(formatedCourses);
       }
     } catch (e: any) {
@@ -84,7 +89,7 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
-        { coursesDisplayContent.map(content => (
+        {coursesDisplayContent.map(content => (
           <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
             key={content.title} source={content.source}>
             <CoursesSection items={content.courses} title={content.title}
