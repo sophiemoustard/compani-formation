@@ -9,64 +9,45 @@ import get from 'lodash/get';
 import Courses from '../../../../api/courses';
 import CoursesSection from '../../../../components/CoursesSection';
 import ProgramCell from '../../../../components/ProgramCell';
-import companiDates from '../../../../core/helpers/dates/companiDates';
 import { getTheoreticalHours } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
 import styles from '../styles';
-import { E_LEARNING } from '../../../../core/data/constants';
-
-const CategoriesStyleList = [
-  {
-    title: 'En cours',
-    source: require('../../../../../assets/images/yellow_section_background.png'),
-    imageStyle: styles.leftBackground,
-    countStyle: styles.yellowCount,
-  },
-  {
-    title: 'À venir',
-    source: require('../../../../../assets/images/purple_section_background.png'),
-    imageStyle: styles.rightBackground,
-    countStyle: styles.purpleCount,
-  },
-  {
-    title: 'Terminées',
-    source: require('../../../../../assets/images/green_section_background.png'),
-    imageStyle: styles.leftBackground,
-    countStyle: styles.greenCount,
-  },
-];
-
-const noSlot = (course: BlendedCourseType) => !course.slots.length && !course.slotsToPlan.length;
-const isForthcoming = (course: BlendedCourseType) => {
-  const noSlotPlannedAndSlotToPlan = !course.slots.length && course.slotsToPlan.length;
-  const noSlotHasBeenStarted = !course.slots.some(slot => companiDates().isSameOrAfter(slot.startDate));
-
-  return noSlotPlannedAndSlotToPlan || noSlotHasBeenStarted;
-};
-const isInProgress = (course: BlendedCourseType) => {
-  const notEverySlotsHappened = course.slots.some(slot => companiDates().isSameOrBefore(slot.endDate));
-  const slotsToPlan = course.slotsToPlan.length;
-
-  return !isForthcoming(course) && (notEverySlotsHappened || slotsToPlan);
-};
-const isCompleted = (course: BlendedCourseType) => !noSlot(course) && !isForthcoming(course) && !isInProgress(course);
+import { isInProgress, isForthcoming, isCompleted, getElearningSteps } from '../helper';
 
 const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
   const coursesForthcoming = courses.filter(c => isForthcoming(c));
   const coursesCompleted = courses.filter(c => isCompleted(c));
 
-  return [
-    ...(coursesInProgress.length ? [{ ...CategoriesStyleList[0], courses: coursesInProgress }] : []),
-    ...(coursesForthcoming.length ? [{ ...CategoriesStyleList[1], courses: coursesForthcoming }] : []),
-    ...(coursesCompleted.length ? [{ ...CategoriesStyleList[2], courses: coursesCompleted }] : []),
+  const contents = [
+    {
+      title: 'En cours',
+      source: require('../../../../../assets/images/yellow_section_background.png'),
+      imageStyle: styles.leftBackground,
+      countStyle: styles.yellowCount,
+      courses: coursesInProgress,
+    },
+    {
+      title: 'À venir',
+      source: require('../../../../../assets/images/purple_section_background.png'),
+      imageStyle: styles.rightBackground,
+      countStyle: styles.purpleCount,
+      courses: coursesForthcoming,
+    },
+    {
+      title: 'Terminées',
+      source: require('../../../../../assets/images/green_section_background.png'),
+      imageStyle: styles.leftBackground,
+      countStyle: styles.greenCount,
+      courses: coursesCompleted,
+    },
   ];
-};
 
-const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
+  return contents.filter(section => section.courses.length);
+};
 
 const renderCourseItem = course => <ProgramCell onPress={() => {}} program={get(course, 'subProgram.program') || {}}
   misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))} />;
