@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
   onGoingAndDraftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    left: -208,
+    left: '-70%',
     top: -32,
   },
   achievedBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    right: -264,
+    right: '-70%',
     top: -32,
   },
   sectionContainer: {
