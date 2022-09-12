@@ -15,33 +15,33 @@ const styles = StyleSheet.create({
     paddingVertical: PADDING.XL,
     marginBottom: MARGIN.XL,
   },
-  onGoingCoursesCount: {
+  yellowCount: {
     ...FIRA_SANS_REGULAR.SM,
     color: YELLOW[900],
     backgroundColor: YELLOW[200],
   },
-  achievedCoursesCount: {
+  greenCount: {
     ...FIRA_SANS_REGULAR.SM,
     color: GREEN[900],
     backgroundColor: GREEN[200],
   },
-  subProgramsCount: {
+  purpleCount: {
     ...FIRA_SANS_REGULAR.SM,
     color: PURPLE[800],
     backgroundColor: PURPLE[200],
   },
-  nextEventsCount: {
+  pinkCount: {
     ...FIRA_SANS_REGULAR.SM,
     color: PINK[600],
     backgroundColor: PINK[200],
   },
-  onGoingAndDraftBackground: {
+  leftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
     left: '-70%',
     top: -32,
   },
-  achievedBackground: {
+  rightBackground: {
     resizeMode: 'contain',
     position: 'absolute',
     right: '-70%',

@@ -16,6 +16,7 @@ type CompaniDateType = {
   isSame: (miscTypeOtherDate: DateTypes, unit : DateTimeUnit) => boolean,
   isBefore: (date: DateTypes) => boolean,
   isAfter: (date: DateTypes) => boolean,
+  isSameOrAfter: (date: DateTypes) => boolean,
   isSameOrBefore: (date: DateTypes) => boolean,
   startOf: (unit: DateTimeUnit) => CompaniDateType,
   endOf: (unit: DateTimeUnit) => CompaniDateType,
@@ -67,6 +68,12 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
       return _date > otherDate;
+    },
+
+    isSameOrAfter(miscTypeOtherDate : DateTypes) {
+      const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
+
+      return _date >= otherDate;
     },
 
     isSameOrBefore(miscTypeOtherDate : DateTypes) {

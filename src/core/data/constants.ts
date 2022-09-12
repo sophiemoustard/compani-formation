@@ -6,6 +6,8 @@ export const PRODUCTION = 'production';
 
 // COURSES
 export const STRICTLY_E_LEARNING = 'strictly_e_learning';
+export const BLENDED = 'blended';
+export const OPERATIONS = 'operations';
 
 // STEPS
 export const ON_SITE = 'on_site';

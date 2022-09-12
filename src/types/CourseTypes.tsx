@@ -49,6 +49,13 @@ export type SlotType = {
   step: { _id: string, type: string },
 }
 
+export type SlotToPlanType = {
+  _id: string,
+  address?: AddressType,
+  meetingLink?: string,
+  step: { _id: string, type: string },
+}
+
 type BaseCourseType = {
   _id: string,
   progress: number,
@@ -64,6 +71,7 @@ export type ELearningCourseType = BaseCourseType & {
 export type BlendedCourseType = BaseCourseType & {
   subProgram: { isStrictlyELearning: false },
   slots: SlotType[],
+  slotsToPlan: SlotToPlanType[],
   trainer: { _id: string, identity: { lastname: string, firstname: string }, picture: { link: '' }, biography: '' },
   contact: {
     _id: string,
