@@ -21,9 +21,10 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../../types/Na
 import { CourseType, BlendedCourseType, SubProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
-import styles from '../styles';
 import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
 import { E_LEARNING } from '../../../../core/data/constants';
+import styles from '../styles';
+import LearnerEmptyState from '../LearnerEmptyState';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -151,11 +152,14 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
               renderItem={renderNextStepsItem} type={EVENT_SECTION} />
           </View>
         }
-        <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
-          source={require('../../../../../assets/images/yellow_section_background.png')}>
-          <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
-            countStyle={styles.yellowCount} showCatalogButton={!courses.onGoing.length} />
-        </ImageBackground>
+        {courses.onGoing.length
+          ? <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
+            source={require('../../../../../assets/images/yellow_section_background.png')}>
+            <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
+              countStyle={styles.yellowCount} />
+          </ImageBackground>
+          : <LearnerEmptyState />
+        }
         {!!courses.achieved.length &&
           <ImageBackground imageStyle={styles.rightBackground} style={styles.sectionContainer}
             source={require('../../../../../assets/images/green_section_background.png')}>

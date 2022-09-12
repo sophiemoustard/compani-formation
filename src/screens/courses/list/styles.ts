@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { MAIN_MARGIN_LEFT, MARGIN, PADDING } from '../../../styles/metrics';
-import { GREEN, GREY, PINK, PURPLE, YELLOW } from '../../../styles/colors';
-import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
+import { MAIN_MARGIN_LEFT, MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS } from '../../../styles/metrics';
+import { GREEN, GREY, PINK, PURPLE, YELLOW, TRANSPARENT_GREY, WHITE } from '../../../styles/colors';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +64,28 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
     marginTop: 'auto',
+  },
+  emptyStateContainer: {
+    borderRadius: BORDER_RADIUS.SM,
+    borderWidth: BORDER_WIDTH,
+    borderColor: TRANSPARENT_GREY,
+    overflow: 'hidden',
+    backgroundColor: WHITE,
+    marginHorizontal: MAIN_MARGIN_LEFT,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 176,
+    padding: PADDING.LG,
+  },
+  emptyStateImage: {
+    position: 'absolute',
+    right: -160,
+    bottom: 8,
+    height: 144,
+  },
+  emptyStateText: {
+    ...FIRA_SANS_BOLD.MD,
+    textAlign: 'center',
   },
 });
 
