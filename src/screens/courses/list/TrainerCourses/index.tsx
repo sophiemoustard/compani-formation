@@ -14,16 +14,17 @@ import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
+import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps } from '../helper';
-import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
+import { CourseDisplayType } from '../types';
 
-const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => {
+const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
-  const coursesForthcoming = courses.filter(c => isForthcoming(c));
-  const coursesCompleted = courses.filter(c => isCompleted(c));
+  const forthcomingCourses = courses.filter(c => isForthcoming(c));
+  const completedCourses = courses.filter(c => isCompleted(c));
 
-  const contents = [
+  const contents: CourseDisplayType[] = [
     {
       title: 'En cours',
       source: require('../../../../../assets/images/yellow_section_background.png'),
@@ -36,22 +37,23 @@ const formatCoursesDiplayContents = (courses: BlendedCourseType[]) => {
       source: require('../../../../../assets/images/purple_section_background.png'),
       imageStyle: styles.rightBackground,
       countStyle: styles.purpleCount,
-      courses: coursesForthcoming,
+      courses: forthcomingCourses,
     },
     {
       title: 'Terminées',
       source: require('../../../../../assets/images/green_section_background.png'),
       imageStyle: styles.leftBackground,
       countStyle: styles.greenCount,
-      courses: coursesCompleted,
+      courses: completedCourses,
     },
   ];
 
   return contents.filter(section => section.courses.length);
 };
 
-const renderCourseItem = course => <ProgramCell onPress={() => {}} program={get(course, 'subProgram.program') || {}}
-  misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))} />;
+const renderCourseItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
+  misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
+  onPress={() => {}} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -61,7 +63,7 @@ StackScreenProps<RootStackParamList>
 }
 
 const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
-  const [coursesDisplayContent, setCoursesDisplayContent] = useState<any[]>([]);
+  const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const isFocused = useIsFocused();
 
   const getCourses = useCallback(async () => {
@@ -72,12 +74,12 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
           format: BLENDED,
           trainer: loggedUserId,
         });
-        const formatedCourses: any[] = formatCoursesDiplayContents(fetchedCourses);
-        setCoursesDisplayContent(formatedCourses);
+        const formatedCourses = formatCoursesDiplaysContent(fetchedCourses);
+        setCoursesDisplays(formatedCourses);
       }
     } catch (e: any) {
       console.error(e);
-      setCoursesDisplayContent([]);
+      setCoursesDisplays([]);
     }
   }, [loggedUserId]);
 
@@ -89,7 +91,7 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
-        {coursesDisplayContent.map(content => (
+        {coursesDisplays.map(content => (
           <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
             key={content.title} source={content.source}>
             <CoursesSection items={content.courses} title={content.title}

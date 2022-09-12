@@ -10,18 +10,18 @@ import {
 } from '../types/AxiosTypes';
 import { MOBILE } from '../core/data/constants';
 
-type getCourseListType = {
+type GetCourseListType = {
   action: string,
   format?: string,
   trainer?: string
 }
 
 export default {
-  getCourseList: async ({ action, format, trainer }: getCourseListType): Promise<BlendedCourseType[]> => {
+  getCourseList: async (params: GetCourseListType): Promise<BlendedCourseType[]> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<BlendedCourseListResponseType> = await axiosLogged.get(
       `${baseURL}/courses`,
-      { params: { action, format, trainer, origin: MOBILE } }
+      { params: { ...params, origin: MOBILE } }
     );
 
     return response.data.data.courses;
