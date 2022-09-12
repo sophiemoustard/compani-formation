@@ -23,13 +23,13 @@ const styles = (count = { color: '', background: '' }) => StyleSheet.create({
   rightBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    right: -360,
+    right: '-70%',
     top: -32,
   },
   leftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    left: -144,
+    left: '-70%',
     top: -32,
   },
   elipse: {
