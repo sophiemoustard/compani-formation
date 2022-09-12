@@ -10,7 +10,7 @@ const LearnerEmptyState = () => {
     <TouchableOpacity style={styles.emptyStateContainer} onPress={() => navigation.navigate('Catalog')}>
       <Text style={styles.emptyStateText}>Vous n’avez pas de formation en cours...</Text>
       <NiPrimaryButton caption="Chercher une formation" onPress={() => navigation.navigate('Catalog')} />
-      <Image source={require('../../../../../assets/images/aux_detective.png')} style={styles.emptyStateImage}
+      <Image source={require('../../../../../assets/images/aux_detective.png')} style={styles.emptyStateLearnerImage}
         resizeMode='contain' />
     </TouchableOpacity>
   );

@@ -18,6 +18,7 @@ import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps } from '../helper';
 import { CourseDisplayType } from '../types';
+import TrainerEmptyState from '../TrainerEmptyState';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -91,13 +92,16 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
-        {coursesDisplays.map(content => (
-          <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
-            key={content.title} source={content.source}>
-            <CoursesSection items={content.courses} title={content.title}
-              countStyle={content.countStyle} renderItem={renderCourseItem} />
-          </ImageBackground>
-        ))}
+        {coursesDisplays.length
+          ? coursesDisplays.map(content => (
+            <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
+              key={content.title} source={content.source}>
+              <CoursesSection items={content.courses} title={content.title}
+                countStyle={content.countStyle} renderItem={renderCourseItem} />
+            </ImageBackground>
+          ))
+          : <TrainerEmptyState />
+        }
         <View style={styles.footer}>
           <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
           <Image source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} style={styles.fellow} />

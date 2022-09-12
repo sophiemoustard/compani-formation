@@ -77,11 +77,17 @@ const styles = StyleSheet.create({
     height: 176,
     padding: PADDING.LG,
   },
-  emptyStateImage: {
+  emptyStateLearnerImage: {
     position: 'absolute',
     right: -160,
     bottom: 8,
     height: 144,
+  },
+  emptyStateTrainerImage: {
+    position: 'absolute',
+    right: -180,
+    bottom: 0,
+    height: 108,
   },
   emptyStateText: {
     ...FIRA_SANS_BOLD.MD,
