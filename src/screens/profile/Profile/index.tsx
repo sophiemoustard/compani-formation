@@ -21,6 +21,7 @@ import PictureModal from '../../../components/PictureModal';
 import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
 import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
+import TabScreenFooter from '../../../components/TabScreenFooter';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -144,10 +145,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
             style={styles.legalNoticeContainer}>
             <Text style={styles.legalNotice}>Supprimer mon compte</Text>
           </TouchableOpacity>}
-        <View style={styles.footer}>
-          <Image style={styles.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-          <Image source={require('../../../../assets/images/aux_joie.png')} style={styles.fellow} />
-        </View>
+        <TabScreenFooter drawingSource={require('../../../../assets/images/aux_joie.png')} />
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
           setHasPhoto={setHasPhoto} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />

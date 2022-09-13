@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback, useMemo, useReducer } from 'react';
-import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { Text, View, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -11,6 +11,9 @@ import SubPrograms from '../../../../api/subPrograms';
 import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
+import TabScreenFooter from '../../../../components/TabScreenFooter';
+import CompaniDate from '../../../../core/helpers/dates/companiDates';
+import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CoursesActions from '../../../../store/courses/actions';
 import commonStyles from '../../../../styles/common';
@@ -136,10 +139,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
               countStyle={styles.purpleCount} renderItem={renderSubProgramItem} />
           </ImageBackground>
         }
-        <View style={styles.footer}>
-          <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
-          <Image source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} style={styles.fellow} />
-        </View>
+        <TabScreenFooter drawingSource={require('../../../../../assets/images/pa_aidant_balade_rose.png')} />
       </ScrollView>
     </SafeAreaView>
   );

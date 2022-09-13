@@ -32,22 +32,6 @@ const styles = (count = { color: '', background: '' }) => StyleSheet.create({
     left: '-70%',
     top: -32,
   },
-  elipse: {
-    width: '100%',
-    position: 'absolute',
-    bottom: -120,
-    resizeMode: 'contain',
-  },
-  fellow: {
-    width: 152,
-    height: 168,
-    resizeMode: 'contain',
-    marginVertical: MARGIN.XL,
-  },
-  footer: {
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
 });
 
 export default styles;
