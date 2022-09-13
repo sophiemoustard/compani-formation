@@ -13,6 +13,7 @@ type CoursesSectionProps = {
   type?: string,
   countStyle: StyleProp<ViewStyle>
   renderItem: (item) => JSX.Element,
+  renderEmptyState?: () => JSX.Element,
 }
 
 const CoursesSection = ({
@@ -21,6 +22,7 @@ const CoursesSection = ({
   type = COURSE_SECTION,
   countStyle,
   renderItem,
+  renderEmptyState = () => <></>,
 }: CoursesSectionProps) => {
   const renderSeparator = () => <View style={styles.separator} />;
 
@@ -30,9 +32,13 @@ const CoursesSection = ({
       <Text style={[countStyle, styles.countContainer]}>
         {items.length} {formatWordToPlural(items, type).toUpperCase()}
       </Text>
-      <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`}
-        contentContainerStyle={styles.container} renderItem={({ item }) => renderItem(item)}
-        showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+      {
+        items.length
+          ? <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`}
+            contentContainerStyle={styles.container} renderItem={({ item }) => renderItem(item)}
+            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+          : renderEmptyState()
+      }
     </>
   );
 };

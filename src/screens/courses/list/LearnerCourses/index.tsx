@@ -116,14 +116,11 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
               renderItem={renderNextStepsItem} type={EVENT_SECTION} />
           </View>
         }
-        {courses.onGoing.length
-          ? <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
-            source={require('../../../../../assets/images/yellow_section_background.png')}>
-            <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
-              countStyle={styles.yellowCount} />
-          </ImageBackground>
-          : <LearnerEmptyState />
-        }
+        <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
+          source={require('../../../../../assets/images/yellow_section_background.png')}>
+          <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
+            countStyle={styles.yellowCount} renderEmptyState={() => <LearnerEmptyState />}/>
+        </ImageBackground>
         {!!courses.achieved.length &&
           <ImageBackground imageStyle={styles.rightBackground} style={styles.sectionContainer}
             source={require('../../../../../assets/images/green_section_background.png')}>
