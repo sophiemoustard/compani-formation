@@ -53,7 +53,7 @@ const formatCourseStepsList = (course: CourseType): NextSlotsStepType[] => {
     .map(stepId => formatCourseStep(stepId, blendedCourse, stepSlots));
 };
 
-export const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatCourseStepsList)
+export const formatNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatCourseStepsList)
   .flat()
   .filter(step => step.slots && step.slots.length)
   .sort(ascendingSort('firstSlot'));

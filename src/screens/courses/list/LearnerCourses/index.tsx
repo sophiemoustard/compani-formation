@@ -21,7 +21,7 @@ import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
 import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
 import { E_LEARNING } from '../../../../core/data/constants';
 import styles from '../styles';
-import { getNextSteps } from '../helper';
+import { formatNextSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
@@ -49,7 +49,7 @@ const courseReducer = (state, action) => {
   }
 };
 
-const renderNextStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
 
 const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
@@ -104,7 +104,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
     theoreticalHours={getTheoreticalHours(getElearningSteps(subProgram.steps))}
     program={get(subProgram, 'program') || {}} />;
 
-  const nextSteps: NextSlotsStepType[] = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
+  const nextSteps: NextSlotsStepType[] = useMemo(() => formatNextSteps(courses.onGoing), [courses.onGoing]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
