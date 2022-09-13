@@ -2,33 +2,19 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
-import { StepType } from '../../../types/StepTypes';
+import { NextSlotsStepType } from '../../../types/StepTypes';
 import styles from './styles';
 
-type NextStepCellProps = {
-  nextSlotsStep: NextSlotsStepType,
-}
-
-type NextSlotsStepType = {
-  _id: string,
-  name: string,
-  slots: Date[],
-  type: StepType['type'],
-  stepIndex: number,
-  progress: { live: number },
-  courseId: string,
-}
-
-const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
+const NextStepCell = ({ nextSlotsStep }: { nextSlotsStep: NextSlotsStepType }) => {
+  const { stepIndex, slots, progress, courseId, name, type } = nextSlotsStep;
   const navigation = useNavigation();
-  const { stepIndex, slots, progress, courseId } = nextSlotsStep;
 
   const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress.live}/>
-      <StepCellTitle index={stepIndex} name={nextSlotsStep.name} type={nextSlotsStep.type} />
+      <CalendarIcon slots={slots} progress={progress?.live}/>
+      <StepCellTitle index={stepIndex} name={name} type={type} />
     </TouchableOpacity>
   );
 };
