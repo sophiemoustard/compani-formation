@@ -2,20 +2,23 @@ import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import CompaniDate from '../../core/helpers/dates/companiDates';
 import { capitalize } from '../../core/helpers/utils';
+import { PINK } from '../../styles/colors';
 import Shadow from '../design/Shadow';
-import styles from './styles';
+import getStyles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 
 interface CalendarIconProps {
   slots: Date[],
   progress: number,
+  color?: string
 }
 
-const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
+const CalendarIcon = ({ slots, progress = 0, color = PINK[500] }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
+  const styles = getStyles(color);
   const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {

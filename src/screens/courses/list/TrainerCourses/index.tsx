@@ -16,6 +16,7 @@ import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
+import { PURPLE } from '../../../../styles/colors';
 import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
@@ -58,7 +59,7 @@ const renderCourseItem = (course: BlendedCourseType) => <ProgramCell program={ge
   misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
   onPress={() => {}} />;
 
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} color={PURPLE[800]} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -102,7 +103,7 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>
-            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.pinkCount}
+            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.purpleCount}
               renderItem={renderNextStepsItem} type={EVENT_SECTION} />
           </View>
         }

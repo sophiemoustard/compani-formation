@@ -5,7 +5,12 @@ import StepCellTitle from '../StepCellTitle';
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import styles from './styles';
 
-const NextStepCell = ({ nextSlotsStep }: { nextSlotsStep: NextSlotsStepType }) => {
+type NextStepCellProps = {
+  nextSlotsStep: NextSlotsStepType,
+  color: string,
+}
+
+const NextStepCell = ({ nextSlotsStep, color }: NextStepCellProps) => {
   const { stepIndex, slots, progress, courseId, name, type } = nextSlotsStep;
   const navigation = useNavigation();
 
@@ -13,7 +18,7 @@ const NextStepCell = ({ nextSlotsStep }: { nextSlotsStep: NextSlotsStepType }) =
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress?.live}/>
+      <CalendarIcon slots={slots} progress={progress?.live} color={color}/>
       <StepCellTitle index={stepIndex} name={name} type={type} />
     </TouchableOpacity>
   );
