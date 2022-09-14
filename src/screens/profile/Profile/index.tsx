@@ -145,7 +145,7 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
             style={styles.legalNoticeContainer}>
             <Text style={styles.legalNotice}>Supprimer mon compte</Text>
           </TouchableOpacity>}
-        <TabScreenFooter drawingSource={require('../../../../assets/images/aux_joie.png')} />
+        <TabScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
           setHasPhoto={setHasPhoto} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />

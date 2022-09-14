@@ -139,7 +139,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
               countStyle={styles.purpleCount} renderItem={renderSubProgramItem} />
           </ImageBackground>
         }
-        <TabScreenFooter drawingSource={require('../../../../../assets/images/pa_aidant_balade_rose.png')} />
+        <TabScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -87,7 +87,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
             <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
               countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
           </ImageBackground>)}
-        <TabScreenFooter drawingSource={require('../../../../assets/images/aux_detective.png')} />
+        <TabScreenFooter source={require('../../../../assets/images/aux_detective.png')} />
       </ScrollView>
     </SafeAreaView>
   );
