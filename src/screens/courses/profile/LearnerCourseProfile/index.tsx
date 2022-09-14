@@ -70,42 +70,39 @@ const LearnerCourseProfile = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
 
-  const getTitle = useCallback(() => {
-    if (!course) return '';
-    const programName = get(course, 'subProgram.program.name') || '';
-    if (course?.subProgram.isStrictlyELearning) return programName;
-
-    const { misc } = (course as BlendedCourseType);
-    return `${programName}${misc ? `- ${misc}` : ''}`;
-  }, [course]);
-
+  const isFocused = useIsFocused();
   useEffect(() => {
+    const getCourse = async () => {
+      try {
+        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        setCourse(fetchedCourse);
+        setQuestionnaires(fetchedQuestionnaires);
+      } catch (e: any) {
+        console.error(e);
+        setCourse(null);
+      }
+    };
+
+    const getTitle = () => {
+      if (!course) return '';
+      const programName = get(course, 'subProgram.program.name') || '';
+      if (course?.subProgram.isStrictlyELearning) return programName;
+
+      const { misc } = (course as BlendedCourseType);
+      return `${programName}${misc ? `- ${misc}` : ''}`;
+    };
+
+    if (isFocused) {
+      setStatusBarVisible(true);
+      getCourse();
+    }
     setTitle(getTitle);
 
     const programImage = get(course, 'subProgram.program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
     else setSource(require('../../../../../assets/images/authentication_background_image.jpg'));
-  }, [course, getTitle]);
-
-  const getCourse = useCallback(async () => {
-    try {
-      const fetchedCourse = await Courses.getCourse(route.params.courseId);
-      const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
-      setCourse(fetchedCourse);
-      setQuestionnaires(fetchedQuestionnaires);
-    } catch (e: any) {
-      console.error(e);
-      setCourse(null);
-    }
-  }, [route.params.courseId]);
-
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (isFocused) {
-      setStatusBarVisible(true);
-      getCourse();
-    }
-  }, [isFocused, getCourse, setStatusBarVisible]);
+  }, [isFocused, setStatusBarVisible, course, route.params.courseId]);
 
   const goBack = useCallback(() => {
     resetCourseReducer();
