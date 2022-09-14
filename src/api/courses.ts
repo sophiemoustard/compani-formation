@@ -8,7 +8,7 @@ import {
   CourseResponseType,
   PdfResponseType,
 } from '../types/AxiosTypes';
-import { MOBILE } from '../core/data/constants';
+import { MOBILE, PEDAGOGY } from '../core/data/constants';
 
 type GetCourseListType = {
   action: string,
@@ -34,7 +34,10 @@ export default {
   },
   getCourse: async (courseId): Promise<CourseType> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CourseResponseType> = await axiosLogged.get(`${baseURL}/courses/${courseId}/user`);
+    const response: AxiosResponse<CourseResponseType> = await axiosLogged.get(
+      `${baseURL}/courses/${courseId}`,
+      { params: { action: PEDAGOGY } }
+    );
 
     return response.data.data.course;
   },

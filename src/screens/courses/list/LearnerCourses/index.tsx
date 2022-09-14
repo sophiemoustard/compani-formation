@@ -30,6 +30,7 @@ StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   setIsCourse: (value: boolean) => void,
+  setIsLearner: (value: boolean) => void,
   loggedUserId: string | null,
 }
 
@@ -52,7 +53,7 @@ const courseReducer = (state, action) => {
 
 const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} color={PINK[800]} />;
 
-const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCoursesProps) => {
+const LearnerCourses = ({ setIsCourse, setIsLearner, navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -83,10 +84,11 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
     if (loggedUserId && isFocused) fetchData();
-  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
+    setIsLearner(true);
+  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms, setIsLearner]);
 
   const goToCourse = (id: string, isCourse: boolean) => {
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: id });
+    if (isCourse) navigation.navigate('LearnerCourseProfile', { courseId: id });
     else navigation.navigate('SubProgramProfile', { subProgramId: id });
   };
 
@@ -149,6 +151,7 @@ const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
   setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
+  setIsLearner: (isLearner: boolean) => dispatch(CoursesActions.setIsLearner(isLearner)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourses);

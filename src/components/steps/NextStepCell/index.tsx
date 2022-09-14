@@ -14,7 +14,7 @@ const NextStepCell = ({ nextSlotsStep, color }: NextStepCellProps) => {
   const { stepIndex, slots, progress, courseId, name, type } = nextSlotsStep;
   const navigation = useNavigation();
 
-  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
+  const goToCourse = () => navigation.navigate('LearnerCourseProfile', { courseId });
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>

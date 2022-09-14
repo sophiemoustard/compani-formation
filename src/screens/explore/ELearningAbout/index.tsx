@@ -32,11 +32,11 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
     }
   }, [loggedUserId, program]);
 
-  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
+  const goToCourse = () => navigation.navigate('LearnerCourseProfile', { courseId });
 
   const startActivity = () => {
     const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
-    navigation.dispatch(StackActions.replace('CourseProfile', { courseId }));
+    navigation.dispatch(StackActions.replace('LearnerCourseProfile', { courseId }));
     navigation.navigate('ActivityCardContainer', { activityId: firstActivity._id, profileId: courseId });
   };
 

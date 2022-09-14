@@ -10,7 +10,8 @@ import EmailForm from '../../screens/EmailForm';
 import CreateAccount from '../../screens/CreateAccount';
 import BlendedAbout from '../../screens/explore/BlendedAbout';
 import ElearningAbout from '../../screens/explore/ELearningAbout';
-import CourseProfile from '../../screens/courses/CourseProfile';
+import LearnerCourseProfile from '../../screens/courses/CourseProfile/LearnerCourseProfile';
+import TrainerCourseProfile from '../../screens/courses/CourseProfile/TrainerCourseProfile';
 import SubProgramProfile from '../../screens/courses/SubProgramProfile';
 import ActivityCardContainer from '../../screens/courses/ActivityCardContainer';
 import QuestionnaireCardContainer from '../../screens/courses/QuestionnaireCardContainer';
@@ -44,7 +45,7 @@ const AppNavigation = () => {
   const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
   const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
-  const Courses = { CourseProfile, SubProgramProfile };
+  const Courses = { LearnerCourseProfile, SubProgramProfile, TrainerCourseProfile };
   const userScreens = {
     Home,
     ActivityCardContainer,

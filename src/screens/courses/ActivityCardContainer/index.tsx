@@ -18,6 +18,7 @@ import CardScreen from '../CardScreen';
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
   isCourse: boolean,
+  isLearner: boolean,
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
@@ -32,6 +33,7 @@ const ActivityCardContainer = ({
   cards,
   cardIndex,
   isCourse,
+  isLearner,
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
@@ -80,8 +82,10 @@ const ActivityCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
     const { profileId } = route.params;
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity?._id });
-    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
+    if (!isLearner) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
+    else if (isCourse) {
+      navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
+    } else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
 
     setIsActive(false);
     resetCardReducer();
@@ -129,6 +133,7 @@ const mapStateToProps = (state: StateType) => ({
   cardIndex: state.cards.cardIndex,
   exitConfirmationModal: state.cards.exitConfirmationModal,
   isCourse: state.courses.isCourse,
+  isLearner: state.courses.isLearner,
 });
 
 const mapDispatchToProps = dispatch => ({
