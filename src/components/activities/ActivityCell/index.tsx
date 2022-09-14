@@ -16,6 +16,7 @@ type ActivityCellProps = {
   activity: ActivityType,
   profileId: string,
   isCourse: boolean,
+  isLearner: boolean,
   setQuestionnaireAnswersList: (qalist: QuestionnaireAnswersType[]) => void,
 }
 
@@ -33,7 +34,7 @@ const colorsReducer = (state, action) => {
   }
 };
 
-const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersList }: ActivityCellProps) => {
+const ActivityCell = ({ activity, profileId, isCourse, isLearner, setQuestionnaireAnswersList }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
@@ -58,7 +59,7 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
   };
 
   const onPress = () => {
-    if (isCourse) getQuestionnaireAnswersList();
+    if (isCourse && isLearner) getQuestionnaireAnswersList();
 
     navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId });
   };
@@ -87,6 +88,7 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
 
 const mapStateToProps = (state: StateType) => ({
   isCourse: state.courses.isCourse,
+  isLearner: state.courses.isLearner,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,21 +6,19 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
-import Courses from '../../../api/courses';
-import { WHITE, GREY } from '../../../styles/colors';
-import LiveCell from '../../../components/steps/LiveCell';
-import ELearningCell from '../../../components/ELearningCell';
-import { ON_SITE, E_LEARNING, REMOTE } from '../../../core/data/constants';
-import commonStyles from '../../../styles/common';
-import { CourseType, BlendedCourseType } from '../../../types/CourseTypes';
-import styles from './styles';
-import MainActions from '../../../store/main/actions';
-import CoursesActions from '../../../store/courses/actions';
-import NiSecondaryButton from '../../../components/form/SecondaryButton';
-import { getLoggedUserId } from '../../../store/main/selectors';
-import CourseProfileHeader from './CourseProfileHeader';
-import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
+import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
+import Courses from '../../../../api/courses';
+import { WHITE, GREY } from '../../../../styles/colors';
+import commonStyles from '../../../../styles/common';
+import { CourseType, BlendedCourseType } from '../../../../types/CourseTypes';
+import styles from '../styles';
+import MainActions from '../../../../store/main/actions';
+import CoursesActions from '../../../../store/courses/actions';
+import NiSecondaryButton from '../../../../components/form/SecondaryButton';
+import { getLoggedUserId } from '../../../../store/main/selectors';
+import CourseProfileHeader from '../../CourseProfileHeader';
+import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
+import { renderStepCell, renderSeparator } from '../helper';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -33,20 +31,6 @@ StackScreenProps<RootBottomTabParamList>
   resetCourseReducer: () => void,
 }
 
-const renderStepCell = ({ item, index }, course, route) => {
-  if ([ON_SITE, REMOTE].includes(item.type)) {
-    return <LiveCell step={item} slots={course?.slots} index={index} />;
-  }
-
-  if (item.type === E_LEARNING) {
-    return <ELearningCell step={item} index={index} profileId={route.params.courseId} />;
-  }
-
-  return null;
-};
-
-const renderSeparator = () => <View style={styles.separator} />;
-
 const TrainerCourseProfile = ({
   route,
   navigation,
@@ -55,16 +39,24 @@ const TrainerCourseProfile = ({
 }: TrainerCourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
-  const [programName, setProgramName] = useState<string>('');
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.jpg'));
+  const [title, setTitle] = useState<string>('');
+
+  const getTitle = useCallback(() => {
+    if (!course) return '';
+
+    const programName = get(course, 'subProgram.program.name') || '';
+    const { misc } = (course as BlendedCourseType);
+    return `${programName}${misc ? `- ${misc}` : ''}`;
+  }, [course]);
 
   useEffect(() => {
-    setProgramName(get(course, 'subProgram.program.name') || '');
+    setTitle(getTitle);
 
     const programImage = get(course, 'subProgram.program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
-    else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
-  }, [course]);
+    else setSource(require('../../../../../assets/images/authentication_background_image.jpg'));
+  }, [course, getTitle]);
 
   const getCourse = useCallback(async () => {
     try {
@@ -75,8 +67,6 @@ const TrainerCourseProfile = ({
       setCourse(null);
     }
   }, [route.params.courseId]);
-
-  useEffect(() => { getCourse(); }, [getCourse]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -104,14 +94,6 @@ const TrainerCourseProfile = ({
 
   const renderCells = item => renderStepCell(item, course, route);
 
-  const getTitle = () => {
-    if (!course) return '';
-    if (!course?.subProgram.isStrictlyELearning) return programName;
-
-    const { misc } = (course as BlendedCourseType);
-    return `${programName}${misc ? `- ${misc}` : ''}`;
-  };
-
   const goToAbout = () => {
     if (!course) return;
     navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
@@ -120,9 +102,9 @@ const TrainerCourseProfile = ({
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-        <CourseProfileHeader source={source} goBack={goBack} title={getTitle()} />
+        <CourseProfileHeader source={source} goBack={goBack} title={title} />
         <View style={styles.aboutContainer}>
-          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon={'info'} borderColor={GREY[200]}
+          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
         <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}

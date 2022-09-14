@@ -1,8 +1,8 @@
 import { View, Text, ImageBackground, StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import FeatherButton from '../../../../components/icons/FeatherButton';
-import { WHITE } from '../../../../styles/colors';
-import { ICON } from '../../../../styles/metrics';
+import FeatherButton from '../../../components/icons/FeatherButton';
+import { WHITE } from '../../../styles/colors';
+import { ICON } from '../../../styles/metrics';
 import styles from './styles';
 
 interface CourseProfileHeaderProps {

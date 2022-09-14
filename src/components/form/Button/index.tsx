@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import commonStyle from '../../../styles/common';
 import { ICON } from '../../../styles/metrics';
 import { FontType } from '../../../types/FontType';
-import styles, { ButtonStyleType } from './styles';
+import styles from './styles';
 
 interface ButtonProps {
   customStyle?: Object,
@@ -31,9 +30,7 @@ const Button = ({
   icon,
   disabled,
 }: ButtonProps) => {
-  const [style, setStyle] = useState<ButtonStyleType>(styles(bgColor, borderColor, color, font));
-
-  useEffect(() => { setStyle(styles(bgColor, borderColor, color, font)); }, [bgColor, borderColor, color, font]);
+  const style = styles(bgColor, borderColor, color, font);
 
   return (
     <TouchableOpacity style={[style.button, customStyle]} onPress={onPress} disabled={loading || disabled}

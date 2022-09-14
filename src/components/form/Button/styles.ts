@@ -1,12 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN } from '../../../styles/metrics';
 
-export interface ButtonStyleType {
-  button: object,
-  textButton: object,
-  icon: object,
-}
-
 const styles = (backgroundColor, borderColor, color, font) => StyleSheet.create({
   button: {
     backgroundColor,
