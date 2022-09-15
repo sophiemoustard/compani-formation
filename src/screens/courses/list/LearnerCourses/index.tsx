@@ -6,24 +6,24 @@ import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
-import groupBy from 'lodash/groupBy';
 import Courses from '../../../../api/courses';
 import SubPrograms from '../../../../api/subPrograms';
 import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
-import CompaniDate from '../../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CoursesActions from '../../../../store/courses/actions';
 import commonStyles from '../../../../styles/common';
+import { PINK } from '../../../../styles/colors';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
-import { CourseType, BlendedCourseType, SubProgramType } from '../../../../types/CourseTypes';
+import { SubProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
-import styles from '../styles';
 import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
 import { E_LEARNING } from '../../../../core/data/constants';
+import styles from '../styles';
+import { formatNextSteps } from '../helper';
+import LearnerEmptyState from '../LearnerEmptyState';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -32,40 +32,6 @@ StackScreenProps<RootStackParamList>
   setIsCourse: (value: boolean) => void,
   loggedUserId: string | null,
 }
-
-const formatCourseStep = (stepId: string, course: CourseType, stepSlots): NextSlotsStepType => {
-  const courseSteps = get(course, 'subProgram.steps') || [];
-  const nextSlots = stepSlots[stepId].filter(slot => CompaniDate().isSameOrBefore(slot.endDate));
-  const slotsSorted = stepSlots[stepId].sort(ascendingSort('endDate'));
-  const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
-
-  return {
-    name: get(course, 'subProgram.program.name'),
-    stepIndex,
-    firstSlot: nextSlots[0].endDate,
-    type: nextSlots[0].step.type,
-    slots: slotsSorted.map(s => s.endDate),
-    _id: slotsSorted[0]._id,
-    progress: courseSteps[stepIndex].progress,
-    courseId: course._id,
-  };
-};
-
-const formatNextSteps = (course: CourseType): NextSlotsStepType[] => {
-  if (course.subProgram.isStrictlyELearning) return [];
-
-  const { slots } = course as BlendedCourseType;
-  const stepSlots = groupBy(slots.filter(s => get(s, 'step._id')), s => s.step._id);
-
-  return Object.keys(stepSlots)
-    .filter(stepId => stepSlots[stepId].some(slot => CompaniDate().isSameOrBefore(slot.endDate)))
-    .map(stepId => formatCourseStep(stepId, course, stepSlots));
-};
-
-const getNextSteps = (courses: CourseType[]): NextSlotsStepType[] => courses.map(formatNextSteps)
-  .flat()
-  .filter(step => step.slots && step.slots.length)
-  .sort(ascendingSort('firstSlot'));
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
@@ -84,7 +50,7 @@ const courseReducer = (state, action) => {
   }
 };
 
-const renderNextStepsItem = step => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} color={PINK[800]} />;
 
 const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
@@ -139,7 +105,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
     theoreticalHours={getTheoreticalHours(getElearningSteps(subProgram.steps))}
     program={get(subProgram, 'program') || {}} />;
 
-  const nextSteps = useMemo(() => getNextSteps(courses.onGoing), [courses.onGoing]);
+  const nextSteps: NextSlotsStepType[] = useMemo(() => formatNextSteps(courses.onGoing), [courses.onGoing]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -154,7 +120,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
         <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
           source={require('../../../../../assets/images/yellow_section_background.png')}>
           <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
-            countStyle={styles.yellowCount} showCatalogButton={!courses.onGoing.length} />
+            countStyle={styles.yellowCount} renderEmptyState={() => <LearnerEmptyState />}/>
         </ImageBackground>
         {!!courses.achieved.length &&
           <ImageBackground imageStyle={styles.rightBackground} style={styles.sectionContainer}

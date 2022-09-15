@@ -7,17 +7,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import Courses from '../../../../api/courses';
-import CoursesSection from '../../../../components/CoursesSection';
+import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
+import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import { getTheoreticalHours } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
+import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
+import { PURPLE } from '../../../../styles/colors';
 import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 import styles from '../styles';
-import { isInProgress, isForthcoming, isCompleted, getElearningSteps } from '../helper';
+import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
 import { CourseDisplayType } from '../types';
+import TrainerEmptyState from '../TrainerEmptyState';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -55,6 +59,8 @@ const renderCourseItem = (course: BlendedCourseType) => <ProgramCell program={ge
   misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
   onPress={() => {}} />;
 
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} color={PURPLE[800]} />;
+
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
@@ -64,6 +70,7 @@ StackScreenProps<RootStackParamList>
 
 const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
+  const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
 
   const getCourses = useCallback(async () => {
@@ -76,6 +83,9 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
         });
         const formatedCourses = formatCoursesDiplaysContent(fetchedCourses);
         setCoursesDisplays(formatedCourses);
+
+        const formatedNextSteps = formatNextSteps(fetchedCourses);
+        setNextSteps(formatedNextSteps);
       }
     } catch (e: any) {
       console.error(e);
@@ -91,13 +101,22 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
-        {coursesDisplays.map(content => (
-          <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
-            key={content.title} source={content.source}>
-            <CoursesSection items={content.courses} title={content.title}
-              countStyle={content.countStyle} renderItem={renderCourseItem} />
-          </ImageBackground>
-        ))}
+        {!!nextSteps.length &&
+          <View style={styles.nextSteps}>
+            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.purpleCount}
+              renderItem={renderNextStepsItem} type={EVENT_SECTION} />
+          </View>
+        }
+        {coursesDisplays.length
+          ? coursesDisplays.map(content => (
+            <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
+              key={content.title} source={content.source}>
+              <CoursesSection items={content.courses} title={content.title}
+                countStyle={content.countStyle} renderItem={renderCourseItem} />
+            </ImageBackground>
+          ))
+          : <TrainerEmptyState />
+        }
         <View style={styles.footer}>
           <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
           <Image source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} style={styles.fellow} />

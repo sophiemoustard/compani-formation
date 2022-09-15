@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import CompaniDate from '../../core/helpers/dates/companiDates';
 import { capitalize } from '../../core/helpers/utils';
+import { PINK } from '../../styles/colors';
 import Shadow from '../design/Shadow';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
@@ -9,13 +10,15 @@ import ProgressPieChart from '../ProgressPieChart';
 interface CalendarIconProps {
   slots: Date[],
   progress: number,
+  color?: string
 }
 
-const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
+const CalendarIcon = ({ slots, progress = 0, color = PINK[500] }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
+  const style = styles(color);
   const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {
@@ -36,39 +39,39 @@ const CalendarIcon = ({ slots, progress = 0 }: CalendarIconProps) => {
 
     if (!progress) {
       return (
-        <View style={styles.datesLengthContainer}>
-          <Text style={styles.datesLength}>{dates.length}</Text>
+        <View style={style.datesLengthContainer}>
+          <Text style={style.datesLength}>{dates.length}</Text>
         </View>
       );
     }
 
     return (
-      <View style={progress < 1 ? styles.progressContainer : styles.finishedContainer}>
+      <View style={progress < 1 ? style.progressContainer : style.finishedContainer}>
         <ProgressPieChart progress={progress} />
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.dateContainer}>
+    <View style={style.container}>
+      <View style={style.dateContainer}>
         {dates.length
           ? <>
-            <Text style={styles.dayOfWeek}>{dayOfWeek}</Text>
-            <Text style={styles.dayOfMonth}>{dayOfMonth}</Text>
-            <Text style={styles.month}>{month}</Text>
+            <Text style={style.dayOfWeek}>{dayOfWeek}</Text>
+            <Text style={style.dayOfMonth}>{dayOfMonth}</Text>
+            <Text style={style.month}>{month}</Text>
           </>
           : <>
-            <View style={styles.dayOfWeek} />
-            <Text style={styles.toPlan}>?</Text>
+            <View style={style.dayOfWeek} />
+            <Text style={style.toPlan}>?</Text>
           </> }
       </View>
       {dates.length > 1
         ? <>
-          <Shadow customStyle={styles.shadowHeader} relativePosition={{ top: 3, left: 3, right: -3, bottom: 0 }}/>
-          <Shadow customStyle={styles.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
+          <Shadow customStyle={style.shadowHeader} relativePosition={{ top: 3, left: 3, right: -3, bottom: 0 }}/>
+          <Shadow customStyle={style.manyDatesShadow} relativePosition={{ top: 3, left: 3, right: -3, bottom: -3 }} />
         </>
-        : <Shadow customStyle={styles.shadow} />}
+        : <Shadow customStyle={style.shadow} />}
       {renderProgress()}
     </View>
   );
