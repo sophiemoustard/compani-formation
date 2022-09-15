@@ -12,8 +12,6 @@ import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
 import TabScreenFooter from '../../../../components/TabScreenFooter';
-import CompaniDate from '../../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CoursesActions from '../../../../store/courses/actions';
 import commonStyles from '../../../../styles/common';
