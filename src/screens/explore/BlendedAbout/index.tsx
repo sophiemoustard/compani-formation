@@ -52,8 +52,7 @@ const BlendedAbout = ({ isLearner, route, navigation }: BlendedAboutProps) => {
 
   const goToCourse = () => {
     if (course._id) {
-      if (isLearner) navigation.navigate('LearnerCourseProfile', { courseId: course._id });
-      else navigation.navigate('TrainerCourseProfile', { courseId: course._id });
+      navigation.navigate(isLearner ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId: course._id });
     }
   };
 

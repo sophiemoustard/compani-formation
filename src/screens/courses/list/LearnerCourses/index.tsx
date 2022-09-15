@@ -83,8 +83,10 @@ const LearnerCourses = ({ setIsCourse, setIsLearner, navigation, loggedUserId }:
     async function fetchData() {
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
-    if (loggedUserId && isFocused) fetchData();
-    setIsLearner(true);
+    if (loggedUserId && isFocused) {
+      fetchData();
+      setIsLearner(true);
+    }
   }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms, setIsLearner]);
 
   const goToCourse = (id: string, isCourse: boolean) => {

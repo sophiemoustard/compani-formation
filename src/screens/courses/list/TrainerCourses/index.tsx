@@ -101,8 +101,10 @@ const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCours
     onPress={() => goToCourse(course._id)} />;
 
   useEffect(() => {
-    if (isFocused) getCourses();
-    setIsLearner(false);
+    if (isFocused) {
+      getCourses();
+      setIsLearner(false);
+    }
   }, [isFocused, getCourses, loggedUserId, setIsLearner]);
 
   return (
@@ -111,8 +113,8 @@ const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCours
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>
-            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.purpleCount}
-              renderItem={renderNextStepsItem} type={EVENT_SECTION} />
+            <CoursesSection items={nextSteps} title="Les prochaines sessions que j'anime"
+              countStyle={styles.purpleCount} renderItem={renderNextStepsItem} type={EVENT_SECTION} />
           </View>
         }
         {coursesDisplays.length
