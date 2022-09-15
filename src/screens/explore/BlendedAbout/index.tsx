@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
@@ -13,8 +14,11 @@ import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
+import { StateType } from '../../../types/store/StoreType';
 
-interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
+interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {
+  isLearner: boolean,
+}
 
 const formatDate = (date) => {
   const dayOfWeek = capitalize(CompaniDate(date).format('ccc'));
@@ -24,7 +28,7 @@ const formatDate = (date) => {
   return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
 };
 
-const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
+const BlendedAbout = ({ isLearner, route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
   const program = course.subProgram?.program || null;
   const [trainerPictureSource, setTrainerPictureSource] = useState(
@@ -47,7 +51,9 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   }, [course?.trainer?.picture?.link]);
 
   const goToCourse = () => {
-    if (course._id) navigation.navigate('CourseProfile', { courseId: course._id });
+    if (course._id) {
+      navigation.navigate(isLearner ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId: course._id });
+    }
   };
 
   return program && (
@@ -94,4 +100,6 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   );
 };
 
-export default BlendedAbout;
+const mapStateToProps = (state: StateType) => ({ isLearner: state.courses.isLearner });
+
+export default connect(mapStateToProps)(BlendedAbout);

@@ -66,7 +66,7 @@ const QuestionnaireCardContainer = ({
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
-    navigation.navigate('CourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
+    navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
 
     setIsActive(false);
     resetCardReducer();

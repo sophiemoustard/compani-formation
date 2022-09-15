@@ -16,12 +16,13 @@ import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
-import { PURPLE } from '../../../../styles/colors';
 import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
 import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
+import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
+import CoursesActions from '../../../../store/courses/actions';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -55,20 +56,17 @@ const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   return contents.filter(section => section.courses.length);
 };
 
-const renderCourseItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
-  misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
-  onPress={() => {}} />;
-
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} color={PURPLE[800]} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
+  setIsLearner: (value: boolean) => void,
   loggedUserId: string | null,
 }
 
-const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
+const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCoursesProps) => {
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
@@ -93,9 +91,20 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
     }
   }, [loggedUserId]);
 
+  const goToCourse = (id: string) => {
+    navigation.navigate('TrainerCourseProfile', { courseId: id });
+  };
+
+  const renderCourseItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
+    misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
+    onPress={() => goToCourse(course._id)} />;
+
   useEffect(() => {
-    if (isFocused) getCourses();
-  }, [isFocused, getCourses, loggedUserId]);
+    if (isFocused) {
+      getCourses();
+      setIsLearner(false);
+    }
+  }, [isFocused, getCourses, loggedUserId, setIsLearner]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -103,8 +112,8 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>
-            <CoursesSection items={nextSteps} title='Mes prochains rendez-vous' countStyle={styles.purpleCount}
-              renderItem={renderNextStepsItem} type={EVENT_SECTION} />
+            <CoursesSection items={nextSteps} title="Les prochaines sessions que j'anime"
+              countStyle={styles.purpleCount} renderItem={renderNextStepsItem} type={EVENT_SECTION} />
           </View>
         }
         {coursesDisplays.length
@@ -128,4 +137,8 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(TrainerCourses);
+const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
+  setIsLearner: (isLearner: boolean) => dispatch(CoursesActions.setIsLearner(isLearner)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrainerCourses);

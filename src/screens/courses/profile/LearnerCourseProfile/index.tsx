@@ -2,11 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
-  ImageBackground,
   FlatList,
   ScrollView,
-  StyleProp,
-  ViewStyle,
   LogBox,
   BackHandler,
   TouchableOpacity,
@@ -23,34 +20,33 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as IntentLauncher from 'expo-intent-launcher';
 import { Buffer } from 'buffer';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
-import Courses from '../../../api/courses';
-import Questionnaires from '../../../api/questionnaires';
-import { GREY, WHITE } from '../../../styles/colors';
-import { ICON, SCROLL_EVENT_THROTTLE } from '../../../styles/metrics';
-import LiveCell from '../../../components/steps/LiveCell';
-import ELearningCell from '../../../components/ELearningCell';
-import { ON_SITE, E_LEARNING, REMOTE } from '../../../core/data/constants';
-import commonStyles from '../../../styles/common';
-import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../types/CourseTypes';
-import styles from './styles';
-import MainActions from '../../../store/main/actions';
-import CoursesActions from '../../../store/courses/actions';
-import FeatherButton from '../../../components/icons/FeatherButton';
-import ProgressBar from '../../../components/cards/ProgressBar';
-import CourseProfileStickyHeader from '../../../components/CourseProfileStickyHeader';
-import { getLoggedUserId } from '../../../store/main/selectors';
-import QuestionnairesContainer from '../../../components/questionnaires/QuestionnairesContainer';
-import { QuestionnaireType } from '../../../types/QuestionnaireType';
-import { getCourseProgress } from '../../../core/helpers/utils';
+import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
+import Courses from '../../../../api/courses';
+import Questionnaires from '../../../../api/questionnaires';
+import { WHITE, GREY } from '../../../../styles/colors';
+import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
+import commonStyles from '../../../../styles/common';
+import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
+import styles from '../styles';
+import MainActions from '../../../../store/main/actions';
+import CoursesActions from '../../../../store/courses/actions';
+import ProgressBar from '../../../../components/cards/ProgressBar';
+import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
+import NiSecondaryButton from '../../../../components/form/SecondaryButton';
+import { getLoggedUserId } from '../../../../store/main/selectors';
+import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
+import { QuestionnaireType } from '../../../../types/QuestionnaireType';
+import { getCourseProgress } from '../../../../core/helpers/utils';
+import CourseProfileHeader from '../../../../components/CourseProfileHeader';
+import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
+import { renderStepCell, renderSeparator, getTitle } from '../helper';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-interface CourseProfileProps extends CompositeScreenProps<
-StackScreenProps<RootStackParamList, 'CourseProfile'>,
+interface LearnerCourseProfileProps extends CompositeScreenProps<
+StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
   userId: string,
@@ -58,60 +54,45 @@ StackScreenProps<RootBottomTabParamList>
   resetCourseReducer: () => void,
 }
 
-const renderStepCell = ({ item, index }, course, route) => {
-  if ([ON_SITE, REMOTE].includes(item.type)) {
-    return <LiveCell step={item} slots={course?.slots} index={index} />;
-  }
-
-  if (item.type === E_LEARNING) {
-    return <ELearningCell step={item} index={index} profileId={route.params.courseId}
-      endedActivity={route.params.endedActivity} />;
-  }
-
-  return null;
-};
-
-const renderSeparator = () => <View style={styles.separator} />;
-
-const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCourseReducer }: CourseProfileProps) => {
+const LearnerCourseProfile = ({
+  route,
+  navigation,
+  userId,
+  setStatusBarVisible,
+  resetCourseReducer,
+}: LearnerCourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
-  const [programName, setProgramName] = useState<string>('');
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.jpg'));
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setProgramName(get(course, 'subProgram.program.name') || '');
-
-    const programImage = get(course, 'subProgram.program.image.link') || '';
-    if (programImage) setSource({ uri: programImage });
-    else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
-  }, [course]);
-
-  const getCourse = useCallback(async () => {
-    try {
-      const fetchedCourse = await Courses.getCourse(route.params.courseId);
-      const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
-      setCourse(fetchedCourse);
-      setQuestionnaires(fetchedQuestionnaires);
-    } catch (e: any) {
-      console.error(e);
-      setCourse(null);
-    }
-  }, [route.params.courseId]);
-
-  useEffect(() => { getCourse(); }, [getCourse]);
+  const [title, setTitle] = useState<string>('');
 
   const isFocused = useIsFocused();
   useEffect(() => {
+    const getCourse = async () => {
+      try {
+        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        setCourse(fetchedCourse);
+        setQuestionnaires(fetchedQuestionnaires);
+        setTitle(getTitle(fetchedCourse));
+
+        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
+        if (programImage) setSource({ uri: programImage });
+      } catch (e: any) {
+        console.error(e);
+        setCourse(null);
+      }
+    };
+
     if (isFocused) {
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, getCourse, setStatusBarVisible]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId]);
 
   const goBack = useCallback(() => {
     resetCourseReducer();
@@ -128,20 +109,6 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
-
-  const goToAbout = () => {
-    if (!course) return;
-    if (course.subProgram.isStrictlyELearning) {
-      const { program } = course.subProgram;
-      const eLearningProgram = {
-        ...program,
-        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
-      };
-      navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
-    } else {
-      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
-    }
-  };
 
   const getPdfName = (c) => {
     const misc = c.misc ? `_${c.misc}` : '';
@@ -176,14 +143,6 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
 
   const renderCells = item => renderStepCell(item, course, route);
 
-  const getTitle = () => {
-    if (!course) return '';
-    if (!course?.subProgram.isStrictlyELearning) return programName;
-
-    const { misc } = (course as BlendedCourseType);
-    return `${programName}${misc ? `- ${misc}` : ''}`;
-  };
-
   const isProgressBarOnTop = (event) => {
     const { y } = event.nativeEvent.contentOffset;
     setIsHeaderSticky(y >= progressBarY);
@@ -197,7 +156,7 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
   const getHeader = () => course && has(course, 'subProgram.program') && (
     <View onLayout={getProgressBarY}>
       {isHeaderSticky
-        ? <CourseProfileStickyHeader progress={getCourseProgress(course)} title={getTitle()} />
+        ? <CourseProfileStickyHeader progress={getCourseProgress(course)} title={title} />
         : <View style={styles.progressBarContainer}>
           <Text style={styles.progressBarText}>ÉTAPES</Text>
           <View style={commonStyles.progressBarContainer}>
@@ -209,25 +168,29 @@ const CourseProfile = ({ route, navigation, userId, setStatusBarVisible, resetCo
     </View>
   );
 
+  const goToAbout = () => {
+    if (!course) return;
+    if (course.subProgram.isStrictlyELearning) {
+      const { program } = course.subProgram;
+      const eLearningProgram = {
+        ...program,
+        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
+      };
+      navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
+    } else {
+      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+    }
+  };
+
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
         onScroll={isProgressBarOnTop}>
-        <ImageBackground source={source} imageStyle={styles.image}
-          style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
-          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
-          <View style={styles.header}>
-            <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
-              iconStyle={styles.arrowShadow} />
-            <Text style={styles.title}>{getTitle()}</Text>
-          </View>
-        </ImageBackground>
+        <CourseProfileHeader source={source} goBack={goBack} title={title} />
         <View style={styles.aboutContainer}>
-          <TouchableOpacity style={styles.aboutContent} onPress={goToAbout}>
-            <Feather name='info' color={GREY[600]} size={ICON.MD} />
-            <Text style={styles.aboutText}>A propos</Text>
-          </TouchableOpacity>
+          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
+            bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
         {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
         {getHeader()}
@@ -256,4 +219,4 @@ const mapDispatchToProps = dispatch => ({
   resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CourseProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourseProfile);

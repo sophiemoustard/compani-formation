@@ -1,5 +1,8 @@
 import NiButton from '../Button';
 import { PINK, WHITE } from '../../../styles/colors';
+import { FontType } from '../../../types/FontType';
+import { FIRA_SANS_BLACK } from '../../../styles/fonts';
+import { FeatherType } from '../../../types/FeatherType';
 
 interface PrimaryButtonProps {
   customStyle?: Object,
@@ -8,6 +11,8 @@ interface PrimaryButtonProps {
   loading?: boolean,
   bgColor?: string,
   color?: string,
+  font?: FontType,
+  icon?: FeatherType,
   disabled?: boolean,
 }
 
@@ -18,10 +23,12 @@ const PrimaryButton = ({
   loading = false,
   bgColor = PINK[500],
   color = WHITE,
+  font = FIRA_SANS_BLACK.MD,
+  icon,
   disabled = false,
 }: PrimaryButtonProps) => (
   <NiButton customStyle={customStyle} caption={caption} onPress={onPress} loading={loading} disabled={disabled}
-    bgColor={bgColor} borderColor={bgColor} color={color} />
+    bgColor={bgColor} borderColor={bgColor} color={color} font={font} icon={icon} />
 );
 
 export default PrimaryButton;

@@ -1,13 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 
-export interface ButtonStyleType {
-  button: object,
-  textButton: object,
-}
-
-const styles = (backgroundColor, borderColor, color) => StyleSheet.create({
+const styles = (backgroundColor, borderColor, color, font) => StyleSheet.create({
   button: {
     backgroundColor,
     borderColor,
@@ -19,11 +13,14 @@ const styles = (backgroundColor, borderColor, color) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: 100,
+    paddingHorizontal: MARGIN.MD,
   },
   textButton: {
     color,
-    ...FIRA_SANS_BLACK.MD,
-    marginHorizontal: MARGIN.SM,
+    ...font,
+  },
+  icon: {
+    marginRight: MARGIN.SM,
   },
 });
 

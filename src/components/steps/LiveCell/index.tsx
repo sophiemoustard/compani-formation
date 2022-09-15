@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import get from 'lodash/get';
 import { SlotType } from '../../../types/CourseTypes';
 import { LiveStepType } from '../../../types/StepTypes';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
@@ -42,7 +43,7 @@ const LiveCell = ({ step, slots = [], index }: LiveCellProps) => {
       <LiveCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
       <TouchableOpacity style={[styles.container, styles.upperContainer]} onPress={openModal}>
-        <CalendarIcon slots={dates} progress={step.progress.live} />
+        <CalendarIcon slots={dates} progress={get(step, 'progress.live')} />
         <StepCellTitle index={index} name={step.name} type={step.type} />
         <View style={styles.iconContainer}>
           <Feather name='info' size={ICON.LG} color={GREY[500]} style={styles.infoButtonContainer} />
