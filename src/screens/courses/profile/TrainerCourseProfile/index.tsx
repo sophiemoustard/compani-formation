@@ -16,7 +16,7 @@ import MainActions from '../../../../store/main/actions';
 import CoursesActions from '../../../../store/courses/actions';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import { getLoggedUserId } from '../../../../store/main/selectors';
-import CourseProfileHeader from '../../CourseProfileHeader';
+import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator } from '../helper';
 

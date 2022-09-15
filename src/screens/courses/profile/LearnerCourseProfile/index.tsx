@@ -39,7 +39,7 @@ import { getLoggedUserId } from '../../../../store/main/selectors';
 import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
-import CourseProfileHeader from '../../CourseProfileHeader';
+import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator } from '../helper';
 

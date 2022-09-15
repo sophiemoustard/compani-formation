@@ -4,6 +4,7 @@ import commonStyle from '../../../styles/common';
 import { ICON } from '../../../styles/metrics';
 import { FontType } from '../../../types/FontType';
 import styles from './styles';
+import { FeatherType } from '../../../types/FeatherType';
 
 interface ButtonProps {
   customStyle?: Object,
@@ -14,7 +15,7 @@ interface ButtonProps {
   borderColor: string,
   color: string,
   font: FontType,
-  icon?: any,
+  icon?: FeatherType,
   disabled: boolean,
 }
 

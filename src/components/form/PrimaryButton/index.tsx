@@ -2,6 +2,7 @@ import NiButton from '../Button';
 import { PINK, WHITE } from '../../../styles/colors';
 import { FontType } from '../../../types/FontType';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
+import { FeatherType } from '../../../types/FeatherType';
 
 interface PrimaryButtonProps {
   customStyle?: Object,
@@ -11,7 +12,7 @@ interface PrimaryButtonProps {
   bgColor?: string,
   color?: string,
   font?: FontType,
-  icon?: any,
+  icon?: FeatherType,
   disabled?: boolean,
 }
 
