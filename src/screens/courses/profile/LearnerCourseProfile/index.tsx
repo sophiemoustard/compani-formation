@@ -41,7 +41,7 @@ import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderStepCell, renderSeparator } from '../helper';
+import { renderStepCell, renderSeparator, getTitle } from '../helper';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -84,24 +84,14 @@ const LearnerCourseProfile = ({
       }
     };
 
-    const getTitle = () => {
-      if (!course) return '';
-      const programName = get(course, 'subProgram.program.name') || '';
-      if (course?.subProgram.isStrictlyELearning) return programName;
-
-      const { misc } = (course as BlendedCourseType);
-      return `${programName}${misc ? `- ${misc}` : ''}`;
-    };
-
     if (isFocused) {
       setStatusBarVisible(true);
       getCourse();
     }
-    setTitle(getTitle);
+    setTitle(getTitle(course));
 
     const programImage = get(course, 'subProgram.program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
-    else setSource(require('../../../../../assets/images/authentication_background_image.jpg'));
   }, [isFocused, setStatusBarVisible, course, route.params.courseId]);
 
   const goBack = useCallback(() => {

@@ -18,7 +18,7 @@ import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderStepCell, renderSeparator } from '../helper';
+import { renderStepCell, renderSeparator, getTitle } from '../helper';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -54,24 +54,15 @@ const TrainerCourseProfile = ({
       }
     };
 
-    const getTitle = () => {
-      if (!course) return '';
-
-      const programName = get(course, 'subProgram.program.name') || '';
-      const { misc } = (course as BlendedCourseType);
-      return `${programName}${misc ? `- ${misc}` : ''}`;
-    };
-
     if (isFocused) {
       setStatusBarVisible(true);
       getCourse();
     }
 
-    setTitle(getTitle);
+    setTitle(getTitle(course));
 
     const programImage = get(course, 'subProgram.program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
-    else setSource(require('../../../../../assets/images/authentication_background_image.jpg'));
   }, [course, isFocused, route.params.courseId, setStatusBarVisible]);
 
   const goBack = useCallback(() => {
