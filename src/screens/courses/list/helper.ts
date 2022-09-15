@@ -9,10 +9,10 @@ import { E_LEARNING } from '../../../core/data/constants';
 export const getElearningSteps = (steps: StepType[]): StepType[] => steps.filter(step => step.type === E_LEARNING);
 
 export const isForthcoming = (course: BlendedCourseType): boolean => {
-  const noSlotPlannedAndSlotToPlan = !course.slots.length && course.slotsToPlan.length;
+  const noSlotPlannedAndSlotToPlan = !course.slots.length && !!course.slotsToPlan.length;
   const everySlotsToBeStarted = course.slots.every(slot => CompaniDate().isBefore(slot.startDate));
 
-  return !!noSlotPlannedAndSlotToPlan || everySlotsToBeStarted;
+  return noSlotPlannedAndSlotToPlan || everySlotsToBeStarted;
 };
 
 export const isCompleted = (course: BlendedCourseType): boolean => {
