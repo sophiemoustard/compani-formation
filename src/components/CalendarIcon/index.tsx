@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import CompaniDate from '../../core/helpers/dates/companiDates';
 import { capitalize } from '../../core/helpers/utils';
-import { PINK } from '../../styles/colors';
+import { PINK, PURPLE } from '../../styles/colors';
 import Shadow from '../design/Shadow';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
+import { StateType } from '../../types/store/StoreType';
 
 interface CalendarIconProps {
   slots: Date[],
   progress: number,
-  color?: string
+  isLearner: boolean,
 }
 
-const CalendarIcon = ({ slots, progress = 0, color = PINK[500] }: CalendarIconProps) => {
+const CalendarIcon = ({ slots, progress = 0, isLearner }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
-  const style = styles(color);
+  const style = styles(isLearner ? PINK[500] : PURPLE[800]);
   const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {
@@ -77,4 +79,6 @@ const CalendarIcon = ({ slots, progress = 0, color = PINK[500] }: CalendarIconPr
   );
 };
 
-export default CalendarIcon;
+const mapStateToProps = (state: StateType) => ({ isLearner: state.courses.isLearner });
+
+export default connect(mapStateToProps)(CalendarIcon);

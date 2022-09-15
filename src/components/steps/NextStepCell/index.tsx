@@ -9,11 +9,10 @@ import styles from './styles';
 
 type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,
-  color: string,
   isLearner: boolean,
 }
 
-const NextStepCell = ({ nextSlotsStep, color, isLearner }: NextStepCellProps) => {
+const NextStepCell = ({ nextSlotsStep, isLearner }: NextStepCellProps) => {
   const { stepIndex, slots, progress, courseId, name, type } = nextSlotsStep;
   const navigation = useNavigation();
 
@@ -23,7 +22,7 @@ const NextStepCell = ({ nextSlotsStep, color, isLearner }: NextStepCellProps) =>
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress?.live} color={color}/>
+      <CalendarIcon slots={slots} progress={progress?.live} />
       <StepCellTitle index={stepIndex} name={name} type={type} />
     </TouchableOpacity>
   );

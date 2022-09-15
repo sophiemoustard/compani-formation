@@ -16,7 +16,6 @@ import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
-import { PURPLE } from '../../../../styles/colors';
 import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
@@ -57,7 +56,7 @@ const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   return contents.filter(section => section.courses.length);
 };
 
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} color={PURPLE[800]} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
