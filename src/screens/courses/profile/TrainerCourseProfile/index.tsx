@@ -48,6 +48,10 @@ const TrainerCourseProfile = ({
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId);
         setCourse(fetchedCourse);
+        setTitle(getTitle(fetchedCourse));
+
+        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
+        if (programImage) setSource({ uri: programImage });
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -58,12 +62,7 @@ const TrainerCourseProfile = ({
       setStatusBarVisible(true);
       getCourse();
     }
-
-    setTitle(getTitle(course));
-
-    const programImage = get(course, 'subProgram.program.image.link') || '';
-    if (programImage) setSource({ uri: programImage });
-  }, [course, isFocused, route.params.courseId, setStatusBarVisible]);
+  }, [isFocused, route.params.courseId, setStatusBarVisible]);
 
   const goBack = useCallback(() => {
     resetCourseReducer();
