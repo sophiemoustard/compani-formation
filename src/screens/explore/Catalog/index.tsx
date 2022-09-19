@@ -14,7 +14,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import CoursesSection from '../../../components/CoursesSection';
-import TabScreenFooter from '../../../components/TabScreenFooter';
+import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter, getTheoreticalHours } from '../../../core/helpers/utils';
 
@@ -87,7 +87,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
             <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
               countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
           </ImageBackground>)}
-        <TabScreenFooter source={require('../../../../assets/images/aux_detective.png')} />
+        <HomeScreenFooter source={require('../../../../assets/images/aux_detective.png')} />
       </ScrollView>
     </SafeAreaView>
   );

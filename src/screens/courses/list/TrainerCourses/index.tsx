@@ -10,7 +10,7 @@ import Courses from '../../../../api/courses';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
 import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
-import TabScreenFooter from '../../../../components/TabScreenFooter';
+import HomeScreenFooter from '../../../../components/HomeScreenFooter';
 import { getTheoreticalHours } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
@@ -118,7 +118,7 @@ const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
           ))
           : <TrainerEmptyState />
         }
-        <TabScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} />
+        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} />
       </ScrollView>
     </SafeAreaView>
   );

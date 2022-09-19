@@ -25,7 +25,7 @@ const fetchAssets = async () => {
     require('../../../assets/images/doct_liste.png'),
     require('../../../assets/images/end_card_background.png'),
     require('../../../assets/images/green_section_background.png'),
-    require('../../../assets/images/log_out_background.png'),
+    require('../../../assets/images/home_footer_ellipse.png'),
     require('../../../assets/images/pa_aidant_balade_bleu.png'),
     require('../../../assets/images/pa_aidant_balade_rose.png'),
     require('../../../assets/images/pink_section_background.png'),

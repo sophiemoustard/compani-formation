@@ -11,7 +11,7 @@ import SubPrograms from '../../../../api/subPrograms';
 import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
-import TabScreenFooter from '../../../../components/TabScreenFooter';
+import HomeScreenFooter from '../../../../components/HomeScreenFooter';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CoursesActions from '../../../../store/courses/actions';
 import commonStyles from '../../../../styles/common';
@@ -137,7 +137,7 @@ const LearnerCourses = ({ setIsCourse, navigation, loggedUserId }: LearnerCourse
               countStyle={styles.purpleCount} renderItem={renderSubProgramItem} />
           </ImageBackground>
         }
-        <TabScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} />
+        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} />
       </ScrollView>
     </SafeAreaView>
   );
