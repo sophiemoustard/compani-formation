@@ -32,6 +32,7 @@ const formatCourseStep = (stepId: string, course: BlendedCourseType, stepSlots):
 
   return {
     name: get(course, 'subProgram.program.name'),
+    misc: course.misc || '',
     stepIndex,
     firstSlot: nextSlots[0].endDate,
     type: nextSlots[0].step.type,

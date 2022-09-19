@@ -13,7 +13,7 @@ type NextStepCellProps = {
 }
 
 const NextStepCell = ({ nextSlotsStep, isLearner }: NextStepCellProps) => {
-  const { stepIndex, slots, progress, courseId, name, type } = nextSlotsStep;
+  const { stepIndex, slots, progress, courseId, name, type, misc } = nextSlotsStep;
   const navigation = useNavigation();
 
   const goToCourse = () => {
@@ -23,7 +23,7 @@ const NextStepCell = ({ nextSlotsStep, isLearner }: NextStepCellProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
       <CalendarIcon slots={slots} progress={progress?.live} />
-      <StepCellTitle index={stepIndex} name={name} type={type} />
+      <StepCellTitle index={stepIndex} name={name} type={type} misc={misc} />
     </TouchableOpacity>
   );
 };

@@ -19,4 +19,5 @@ export type NextSlotsStepType = BaseStepType & {
   firstSlot: Date,
   slots: Date[],
   courseId: string,
+  misc?: string,
 };
