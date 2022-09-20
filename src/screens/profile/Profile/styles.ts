@@ -110,21 +110,6 @@ const styles = StyleSheet.create({
   passwordButton: {
     marginTop: MARGIN.SM,
   },
-  elipse: {
-    width: '100%',
-    position: 'absolute',
-    top: 16,
-    resizeMode: 'contain',
-  },
-  fellow: {
-    width: 104,
-    height: 152,
-    marginVertical: MARGIN.XL,
-  },
-  footer: {
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
   legalNoticeContainer: {
     marginVertical: MARGIN.SM,
     marginHorizontal: MARGIN.XL,

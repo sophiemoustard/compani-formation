@@ -50,21 +50,6 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginVertical: MARGIN.XL,
   },
-  elipse: {
-    width: '100%',
-    position: 'absolute',
-    top: 64,
-    resizeMode: 'contain',
-  },
-  fellow: {
-    width: 152,
-    height: 168,
-    marginVertical: MARGIN.XL,
-  },
-  footer: {
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
   emptyStateContainer: {
     borderRadius: BORDER_RADIUS.SM,
     borderWidth: BORDER_WIDTH,

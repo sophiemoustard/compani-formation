@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { Text, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
@@ -14,6 +14,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import CoursesSection from '../../../components/CoursesSection';
+import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter, getTheoreticalHours } from '../../../core/helpers/utils';
 
@@ -86,10 +87,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
             <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
               countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
           </ImageBackground>)}
-        <View style={style.footer}>
-          <Image style={style.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-          <Image source={require('../../../../assets/images/aux_detective.png')} style={style.fellow} />
-        </View>
+        <HomeScreenFooter source={require('../../../../assets/images/aux_detective.png')} />
       </ScrollView>
     </SafeAreaView>
   );

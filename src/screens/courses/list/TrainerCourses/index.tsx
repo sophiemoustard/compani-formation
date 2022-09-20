@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback } from 'react';
-import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { Text, View, ScrollView, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ import Courses from '../../../../api/courses';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
 import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
+import HomeScreenFooter from '../../../../components/HomeScreenFooter';
 import { getTheoreticalHours } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
@@ -126,10 +127,7 @@ const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCours
           ))
           : <TrainerEmptyState />
         }
-        <View style={styles.footer}>
-          <Image style={styles.elipse} source={require('../../../../../assets/images/log_out_background.png')} />
-          <Image source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} style={styles.fellow} />
-        </View>
+        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} />
       </ScrollView>
     </SafeAreaView>
   );
