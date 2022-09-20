@@ -31,6 +31,8 @@ import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
+import { formatImagePayload } from '../../../core/helpers/pictures';
+import CameraContainer from '../../CameraContainer';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -60,6 +62,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
+  const [camera, setCamera] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -145,6 +148,18 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     return '';
   };
 
+  const savePicture = async (picture) => {
+    const { firstname, lastname } = loggedUser.identity;
+    const fileName = `photo_${firstname}_${lastname}`;
+    const data = await formatImagePayload(picture, fileName);
+
+    if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
+    await Users.uploadImage(loggedUser._id, data);
+
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
+  };
+
   return !!loggedUser && (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
@@ -189,7 +204,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
           </View>
           <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
-            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} />
+            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} setCamera={setCamera} />
+          <CameraContainer onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

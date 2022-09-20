@@ -2,16 +2,15 @@ import { StyleSheet } from 'react-native';
 import { BLACK } from '../../styles/colors';
 import { MARGIN, PADDING } from '../../styles/metrics';
 
-const styles = (insetTop: number) => StyleSheet.create({
-  safeArea: {
-    flex: 1,
+const styles = StyleSheet.create({
+  modal: {
     backgroundColor: BLACK,
   },
   goBack: {
     position: 'absolute',
     alignItems: 'flex-start',
     margin: MARGIN.MD,
-    paddingTop: Math.max(insetTop, PADDING.MD),
+    paddingTop: PADDING.MD,
   },
 });
 

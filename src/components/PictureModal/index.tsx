@@ -24,6 +24,7 @@ interface PictureModalProps {
   setHasPhoto: (value) => void,
   setLoggedUser: (user: UserType) => void,
   goBack?: () => void,
+  setCamera: (value) => void,
 }
 
 const PictureModal = ({
@@ -35,6 +36,7 @@ const PictureModal = ({
   setHasPhoto,
   setLoggedUser,
   goBack,
+  setCamera,
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigation = useNavigation();
@@ -63,7 +65,7 @@ const PictureModal = ({
     try {
       setIsLoading(true);
       const { status } = await Camera.requestCameraPermissionsAsync();
-      if (status === 'granted') navigation.navigate('Camera');
+      if (status === 'granted') setCamera(true);
       else alert('l\'appareil photo');
     } catch {
       setPictureModal(false);
