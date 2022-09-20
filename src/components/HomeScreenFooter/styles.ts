@@ -1,23 +1,24 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../styles/metrics';
 
-const ELIPSE_WIDTH = 720;
+const ELLIPSE_WIDTH = 720;
+const ELLIPSE_HEIGHT = 295;
 
 const styles = StyleSheet.create({
   footer: {
-    height: 140 + SCREEN_HEIGHT / 7,
+    height: ELLIPSE_HEIGHT / 2 + SCREEN_HEIGHT / 7,
     alignItems: 'center',
     marginTop: 'auto',
   },
-  elipse: {
+  ellipse: {
     width: '100%',
     position: 'absolute',
-    top: SCREEN_HEIGHT / 7,
-    resizeMode: SCREEN_WIDTH < ELIPSE_WIDTH ? 'contain' : 'stretch',
+    top: SCREEN_HEIGHT / 8,
+    resizeMode: SCREEN_WIDTH < ELLIPSE_WIDTH ? 'contain' : 'stretch',
   },
   drawing: {
     position: 'absolute',
-    height: 100 + SCREEN_HEIGHT / 9,
+    height: ELLIPSE_HEIGHT / 3 + SCREEN_HEIGHT / 9,
     resizeMode: 'contain',
     marginVertical: MARGIN.XL,
   },
