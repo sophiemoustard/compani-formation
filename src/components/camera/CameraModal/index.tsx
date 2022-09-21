@@ -15,15 +15,13 @@ interface CameraModalProps {
 }
 
 const CameraModal = ({ visible, savePicture, onRequestClose }: CameraModalProps) => {
-  const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<CameraCapturedPicture | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const goBack = useCallback(() => {
     setCapturedImage(null);
-    setPreviewVisible(false);
-    onRequestClose();
     setIsLoading(false);
+    onRequestClose();
   }, [onRequestClose]);
 
   const hardwareBackPress = useCallback(() => {
@@ -46,25 +44,22 @@ const CameraModal = ({ visible, savePicture, onRequestClose }: CameraModalProps)
       Alert.alert(
         'Echec de l\'enregistrement',
         'Essayez de reprendre la photo',
-        [{ text: 'OK', onPress: () => {} }],
+        [{ text: 'OK', onPress: goBack }],
         { cancelable: false }
       );
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const onRetakePicture = () => {
     setCapturedImage(null);
-    setPreviewVisible(false);
   };
 
   return (
     <Modal visible={visible} onRequestClose={goBack} style={styles.modal}>
-      {previewVisible && capturedImage
+      {capturedImage
         ? (<NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
           loading={isLoading} />)
-        : (<NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
+        : (<NiCamera setCapturedImage={setCapturedImage} />)}
       <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} disabled={isLoading}
         style={styles.goBack} />
     </Modal>

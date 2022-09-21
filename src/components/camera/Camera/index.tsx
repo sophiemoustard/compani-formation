@@ -8,11 +8,10 @@ import { WHITE } from '../../../styles/colors';
 import IoniconsButton from '../../icons/IoniconsButton';
 
 interface NiCameraProps {
-  setPreviewVisible: (visible: boolean) => void,
   setCapturedImage: (photo: CameraCapturedPicture) => void,
 }
 
-const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
+const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
   const { front, back } = CameraType;
   const { on, off } = FlashMode;
   const camera = useRef<Camera>(null);
@@ -52,7 +51,6 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
 
   const onTakePicture = async () => {
     const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
-    setPreviewVisible(true);
     setCapturedImage(cameraType === back ? photo : await flipPhoto(photo));
   };
 
