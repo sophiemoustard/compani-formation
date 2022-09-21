@@ -26,7 +26,7 @@ import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { formatImagePayload } from '../../../core/helpers/pictures';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
-import CameraContainer from '../../CameraContainer';
+import CameraModal from '../../../components/camera/CameraModal';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -167,8 +167,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
         <HomeScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
           setHasPhoto={setHasPhoto} setCamera={setCamera} />
-        <Text>{String(camera)}</Text>
-        <CameraContainer onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+        <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
           setVisible={() => setDeletionConfirmationModal(false)}

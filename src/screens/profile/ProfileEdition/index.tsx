@@ -32,7 +32,7 @@ import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 import { formatImagePayload } from '../../../core/helpers/pictures';
-import CameraContainer from '../../CameraContainer';
+import CameraModal from '../../../components/camera/CameraModal';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -205,7 +205,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           </View>
           <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
             setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} setCamera={setCamera} />
-          <CameraContainer onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
 
         </ScrollView>
       </KeyboardAvoidingView>

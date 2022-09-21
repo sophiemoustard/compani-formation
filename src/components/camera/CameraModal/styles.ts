@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { BLACK } from '../../styles/colors';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { BLACK } from '../../../styles/colors';
+import { MARGIN, PADDING } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
   modal: {

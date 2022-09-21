@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import { BackHandler, Alert, Modal } from 'react-native';
-import NiCameraPreview from '../../components/camera/CameraPreview';
-import NiCamera from '../../components/camera/Camera';
-import FeatherButton from '../../components/icons/FeatherButton';
-import { ICON } from '../../styles/metrics';
-import { WHITE } from '../../styles/colors';
+import NiCameraPreview from '../CameraPreview';
+import NiCamera from '../Camera';
+import FeatherButton from '../../icons/FeatherButton';
+import { ICON } from '../../../styles/metrics';
+import { WHITE } from '../../../styles/colors';
 import styles from './styles';
 
-interface CameraContainerProps {
+interface CameraModalProps {
   visible: boolean,
   savePicture: (image) => void,
   onRequestClose: () => void,
 }
 
-const CameraContainer = ({ visible, savePicture, onRequestClose }: CameraContainerProps) => {
+const CameraModal = ({ visible, savePicture, onRequestClose }: CameraModalProps) => {
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
   const [capturedImage, setCapturedImage] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -72,4 +72,4 @@ const CameraContainer = ({ visible, savePicture, onRequestClose }: CameraContain
   );
 };
 
-export default CameraContainer;
+export default CameraModal;
