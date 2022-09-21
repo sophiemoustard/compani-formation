@@ -166,7 +166,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
           </TouchableOpacity>}
         <HomeScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
-          setHasPhoto={setHasPhoto} setCamera={setCamera} />
+          setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)} />
         <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}

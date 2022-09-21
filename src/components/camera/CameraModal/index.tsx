@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BackHandler, Alert, Modal } from 'react-native';
+import { CameraCapturedPicture } from 'expo-camera';
 import NiCameraPreview from '../CameraPreview';
 import NiCamera from '../Camera';
 import FeatherButton from '../../icons/FeatherButton';
@@ -9,33 +10,32 @@ import styles from './styles';
 
 interface CameraModalProps {
   visible: boolean,
-  savePicture: (image) => void,
+  savePicture: (image: CameraCapturedPicture) => void,
   onRequestClose: () => void,
 }
 
 const CameraModal = ({ visible, savePicture, onRequestClose }: CameraModalProps) => {
   const [previewVisible, setPreviewVisible] = useState<boolean>(false);
-  const [capturedImage, setCapturedImage] = useState<any>(null);
+  const [capturedImage, setCapturedImage] = useState<CameraCapturedPicture | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const navigation = useNavigation();
 
-  const goBack = () => {
-    setCapturedImage(false);
+  const goBack = useCallback(() => {
+    setCapturedImage(null);
     setPreviewVisible(false);
     onRequestClose();
-  };
+    setIsLoading(false);
+  }, [onRequestClose]);
 
-  const hardwareBackPress = () => {
+  const hardwareBackPress = useCallback(() => {
     goBack();
     return true;
-  };
+  }, [goBack]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hardwareBackPress]);
 
   const onSavePhoto = async (photo) => {
     try {
@@ -61,11 +61,10 @@ const CameraModal = ({ visible, savePicture, onRequestClose }: CameraModalProps)
 
   return (
     <Modal visible={visible} onRequestClose={goBack} style={styles.modal}>
-      {previewVisible && capturedImage ? (
-        <NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
-          loading={isLoading} />
-      ) : (
-        <NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
+      {previewVisible && capturedImage
+        ? (<NiCameraPreview photo={capturedImage} onSavePhoto={onSavePhoto} onRetakePicture={onRetakePicture}
+          loading={isLoading} />)
+        : (<NiCamera setPreviewVisible={setPreviewVisible} setCapturedImage={setCapturedImage} />)}
       <FeatherButton name={'x-circle'} onPress={goBack} size={ICON.XL} color={WHITE} disabled={isLoading}
         style={styles.goBack} />
     </Modal>

@@ -204,7 +204,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
           </View>
           <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
-            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} setCamera={setCamera} />
+            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} openCamera={() => setCamera(true)} />
           <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
 
         </ScrollView>
