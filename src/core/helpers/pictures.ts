@@ -1,6 +1,7 @@
 import mime from 'mime';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
+import { CameraCapturedPicture } from 'expo-camera';
 import { IMAGE_MAX_SIZE } from '../data/constants';
 import Users from '../../api/users';
 
@@ -35,7 +36,7 @@ export const savePhoto = async (photo, loggedUser) => {
   return Users.getById(loggedUser._id);
 };
 
-export const formatImagePayload = async (image, fileName) => {
+export const formatImagePayload = async (image: CameraCapturedPicture, fileName: string) => {
   const fileInfos = await FileSystem.getInfoAsync(image.uri);
   const uri = (fileInfos.size && ((fileInfos.size / IMAGE_MAX_SIZE) > 1))
     ? await compressPhoto(image.uri, fileInfos.size)

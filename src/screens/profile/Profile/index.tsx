@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { CameraCapturedPicture } from 'expo-camera';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
@@ -91,7 +92,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
     );
   };
 
-  const savePicture = async (picture) => {
+  const savePicture = async (picture: CameraCapturedPicture) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
     const data = await formatImagePayload(picture, fileName);

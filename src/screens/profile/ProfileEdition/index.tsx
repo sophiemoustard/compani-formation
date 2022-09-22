@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { CameraCapturedPicture } from 'expo-camera';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
@@ -148,7 +149,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     return '';
   };
 
-  const savePicture = async (picture) => {
+  const savePicture = async (picture: CameraCapturedPicture) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
     const data = await formatImagePayload(picture, fileName);
