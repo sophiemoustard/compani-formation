@@ -34,7 +34,7 @@ import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 import { formatImagePayload } from '../../../core/helpers/pictures';
 import CameraModal from '../../../components/camera/CameraModal';
-import ImagePickerManagerModal from '../../ImagePickerManager';
+import ImagePickerManagerModal from '../../../components/ImagePickerManagerModal';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,

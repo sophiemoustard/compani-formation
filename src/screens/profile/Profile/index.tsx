@@ -28,7 +28,7 @@ import { formatImagePayload } from '../../../core/helpers/pictures';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
-import ImagePickerManagerModal from '../../ImagePickerManager';
+import ImagePickerManagerModal from '../../../components/ImagePickerManagerModal';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
