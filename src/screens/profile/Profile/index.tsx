@@ -4,10 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
-import { CompositeScreenProps } from '@react-navigation/native';
 import { CameraCapturedPicture } from 'expo-camera';
+import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
+import CoursesActions from '../../../store/courses/actions';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
@@ -35,10 +36,12 @@ StackScreenProps<RootStackParamList>
 > {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
+  resetCourseReducer: () => void,
 }
 
-const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
+const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
+  const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
   const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();
   const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
@@ -70,10 +73,13 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
-    fetchData();
-    setUserFirstName(get(loggedUser, 'identity.firstname'));
+    if (loggedUser && isFocused) {
+      fetchData();
+      setUserFirstName(get(loggedUser, 'identity.firstname'));
+      resetCourseReducer();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFocused]);
 
   const renderCompanyLinkRequest = () => {
     if (loggedUser.companyLinkRequest) {
@@ -183,6 +189,7 @@ const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

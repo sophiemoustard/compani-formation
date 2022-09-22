@@ -7,6 +7,7 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
+import CoursesActions from '../../../store/courses/actions';
 import Programs from '../../../api/programs';
 import { ELearningProgramType } from '../../../types/CourseTypes';
 import commonStyles from '../../../styles/common';
@@ -23,6 +24,7 @@ StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUserId: string | null,
+  resetCourseReducer: () => void,
 }
 
 const CategoriesStyleList = [
@@ -48,7 +50,7 @@ const CategoriesStyleList = [
   },
 ];
 
-const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
+const Catalog = ({ loggedUserId, navigation, resetCourseReducer }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const isFocused = useIsFocused();
   const style = styles();
@@ -68,7 +70,10 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   useEffect(() => {
     async function fetchData() { await getPrograms(); }
-    if (loggedUserId && isFocused) fetchData();
+    if (loggedUserId && isFocused) {
+      resetCourseReducer();
+      fetchData();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedUserId, isFocused]);
 
@@ -95,4 +100,8 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(Catalog);
+const mapDispatchToProps = dispatch => ({
+  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

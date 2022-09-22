@@ -84,7 +84,6 @@ const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesPro
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
     if (loggedUserId && isFocused) {
-      console.log('set mode to LEARNER from LearnerCourse');
       setMode(LEARNER);
       fetchData();
     }

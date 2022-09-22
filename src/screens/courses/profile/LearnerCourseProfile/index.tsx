@@ -51,7 +51,6 @@ StackScreenProps<RootBottomTabParamList>
 > {
   userId: string,
   setStatusBarVisible: (boolean) => void,
-  resetCourseReducer: () => void,
 }
 
 const LearnerCourseProfile = ({
@@ -59,7 +58,6 @@ const LearnerCourseProfile = ({
   navigation,
   userId,
   setStatusBarVisible,
-  resetCourseReducer,
 }: LearnerCourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -95,9 +93,8 @@ const LearnerCourseProfile = ({
   }, [isFocused, setStatusBarVisible, route.params.courseId]);
 
   const goBack = useCallback(() => {
-    resetCourseReducer();
     navigation.navigate('LearnerCourses');
-  }, [navigation, resetCourseReducer]);
+  }, [navigation]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();
@@ -216,7 +213,6 @@ const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourseProfile);
