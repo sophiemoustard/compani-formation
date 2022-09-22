@@ -206,7 +206,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           </View>
           <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
             setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} openCamera={() => setCamera(true)} />
-          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
+            goBack={() => navigation.navigate('Profile')}/>
 
         </ScrollView>
       </KeyboardAvoidingView>
