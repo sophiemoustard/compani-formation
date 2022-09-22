@@ -23,7 +23,8 @@ const CameraModal = ({ visible, savePicture, onRequestClose, goBack }: CameraMod
     setCapturedImage(null);
     setIsLoading(false);
     onRequestClose();
-  }, [onRequestClose]);
+    if (goBack) goBack();
+  }, [onRequestClose, goBack]);
 
   const hardwareBackPress = useCallback(() => {
     unmount();
