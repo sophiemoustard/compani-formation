@@ -97,7 +97,7 @@ const TrainerCourses = ({ setMode, navigation, loggedUserId }: TrainerCoursesPro
     navigation.navigate('TrainerCourseProfile', { courseId: id });
   };
 
-  const renderCourseItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
+  const renderItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
     misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
     onPress={() => goToCourse(course._id)} />;
 
@@ -123,7 +123,7 @@ const TrainerCourses = ({ setMode, navigation, loggedUserId }: TrainerCoursesPro
             <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
               key={content.title} source={content.source}>
               <CoursesSection items={content.courses} title={content.title}
-                countStyle={content.countStyle} renderItem={renderCourseItem} />
+                countStyle={content.countStyle} renderItem={renderItem} />
             </ImageBackground>
           ))
           : <TrainerEmptyState />

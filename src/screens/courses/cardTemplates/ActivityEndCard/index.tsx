@@ -35,18 +35,18 @@ const ActivityEndCard = ({
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    async function fetchData() {
+    async function saveHistory() {
       const userId = await asyncStorage.getUserId();
       const payload = questionnaireAnswersList?.length
         ? { user: userId, activity: activity._id, score, questionnaireAnswersList }
         : { user: userId, activity: activity._id, score };
 
       await ActivityHistories.createActivityHistories(payload);
-      setCardIndex(null);
     }
 
     if (isFocused) {
-      if (mode === LEARNER) fetchData();
+      if (mode === LEARNER) saveHistory();
+      setCardIndex(null);
       achievementJingle();
     }
   }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, mode]);
