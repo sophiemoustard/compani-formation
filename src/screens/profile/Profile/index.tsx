@@ -28,6 +28,7 @@ import { formatImagePayload } from '../../../core/helpers/pictures';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
+import ImagePickerManagerModal from '../../ImagePickerManager';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -49,6 +50,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const [userAccountDeletedModal, setUserAccountDeletedModal] = useState<boolean>(false);
   const [userFirstName, setUserFirstName] = useState<string>('');
   const [camera, setCamera] = useState<boolean>(false);
+  const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
@@ -167,8 +169,11 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
           </TouchableOpacity>}
         <HomeScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
-          setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)} />
+          setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)}
+          openImagePickerManager={() => setImagePickerManager(true)} />
         <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+        <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)}savePicture={savePicture}
+          visible={imagePickerManager} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
           setVisible={() => setDeletionConfirmationModal(false)}

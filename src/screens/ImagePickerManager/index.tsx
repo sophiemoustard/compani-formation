@@ -1,37 +1,32 @@
-import { useState, useEffect } from 'react';
-import { Alert, ActivityIndicator, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
-import { CommonActions, CompositeScreenProps } from '@react-navigation/native';
+import { useState, useEffect, useCallback } from 'react';
+import { Alert, ActivityIndicator, Text, Modal, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList, RootBottomTabParamList } from '../../types/NavigationType';
-import { UserType } from '../../types/UserType';
-import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
-import MainActions from '../../store/main/actions';
+import { CameraCapturedPicture } from 'expo-camera';
 import commonStyle from '../../styles/common';
 import { GREY } from '../../styles/colors';
 import styles from './styles';
-import { savePhoto } from '../../core/helpers/pictures';
 
-interface ImagePickerManagerProps extends CompositeScreenProps<
-StackScreenProps<RootStackParamList>,
-StackScreenProps<RootBottomTabParamList>
-> {
-  loggedUser: UserType,
-  setLoggedUser: (user: UserType) => void,
+interface ImagePickerManagerModalProps {
+  visible: boolean,
+  savePicture: (image: CameraCapturedPicture) => void,
+  onRequestClose: () => void,
+  goBack?: () => void,
 }
 
-const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePickerManagerProps) => {
+const ImagePickerManagerModal = ({ visible, savePicture, onRequestClose, goBack }: ImagePickerManagerModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   useEffect(() => {
-    pickImage();
+    if (visible) setTimeout(() => pickImage(), 0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [visible]);
 
-  const goBack = () => navigation.navigate('Profile');
+  const unmount = useCallback(() => {
+    setIsLoading(false);
+    setIsSaving(false);
+    onRequestClose();
+  }, [onRequestClose]);
 
   const pickImage = async () => {
     try {
@@ -44,12 +39,12 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
       });
       setIsLoading(false);
       if (!result.cancelled) onSavePhoto(result);
-      else navigation.dispatch(CommonActions.goBack());
+      else unmount();
     } catch (e) {
       Alert.alert(
         'La galerie ne répond pas',
         'Veuillez réessayer',
-        [{ text: 'OK', onPress: () => navigation.dispatch(CommonActions.goBack()) }],
+        [{ text: 'OK', onPress: unmount }],
         { cancelable: false }
       );
     }
@@ -59,36 +54,27 @@ const ImagePickerManager = ({ navigation, loggedUser, setLoggedUser }: ImagePick
     try {
       setIsSaving(true);
       setIsLoading(true);
-      const user = await savePhoto(photo, loggedUser);
-      setLoggedUser(user);
-      goBack();
+      await savePicture(photo);
+      unmount();
+      if (goBack) goBack();
     } catch (e) {
       Alert.alert(
         'Echec de l\'enregistrement',
         'Veuillez réessayer',
-        [{ text: 'OK', onPress: () => navigation.navigate('Profile') }],
+        [{ text: 'OK', onPress: unmount }],
         { cancelable: false }
       );
-    } finally {
-      setIsLoading(false);
-      setIsSaving(false);
     }
   };
 
   return (
-    <>
-      {isLoading && <SafeAreaView style={styles.loader} edges={['top']}>
+    <Modal visible={visible}>
+      {isLoading && <View style={styles.loader}>
         {isSaving && <Text style={styles.text}>Enregistrement en cours...</Text>}
         <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
-      </SafeAreaView>}
-    </>
+      </View>}
+    </Modal>
   );
 };
 
-const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ImagePickerManager);
+export default ImagePickerManagerModal;

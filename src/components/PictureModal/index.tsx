@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Camera from 'expo-camera';
@@ -25,6 +24,7 @@ interface PictureModalProps {
   setLoggedUser: (user: UserType) => void,
   goBack?: () => void,
   openCamera: () => void,
+  openImagePickerManager: () => void,
 }
 
 const PictureModal = ({
@@ -37,9 +37,9 @@ const PictureModal = ({
   setLoggedUser,
   goBack,
   openCamera,
+  openImagePickerManager,
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigation = useNavigation();
 
   const alert = (component) => {
     Alert.alert(
@@ -83,7 +83,7 @@ const PictureModal = ({
     try {
       setIsLoading(true);
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status === 'granted') navigation.navigate('ImagePickerManager');
+      if (status === 'granted') openImagePickerManager();
       else alert('la galerie');
     } catch {
       if (goBack) goBack();
