@@ -11,7 +11,6 @@ export type RootStackParamList = {
   ElearningAbout: { program: ELearningProgramType }
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
-  Camera: undefined;
   ImagePickerManager: undefined;
   LearnerCourseProfile: {
     courseId: string,

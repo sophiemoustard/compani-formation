@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { CameraCapturedPicture } from 'expo-camera';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
@@ -12,7 +13,8 @@ import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
-import Course from '../../../api/courses';
+import Courses from '../../../api/courses';
+import Users from '../../../api/users';
 import { PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { HIT_SLOP, ICON } from '../../../styles/metrics';
@@ -22,15 +24,20 @@ import CompanySearchModal from '../../../components/companyLinkRequest/CompanySe
 import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
+import { formatImagePayload } from '../../../core/helpers/pictures';
+import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import MainActions from '../../../store/main/actions';
+import CameraModal from '../../../components/camera/CameraModal';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUser: UserType,
+  setLoggedUser: (user: UserType) => void,
 }
 
-const Profile = ({ loggedUser, navigation }: ProfileProps) => {
+const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
   const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();
@@ -41,10 +48,11 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
   const [deletionConfirmationModal, setDeletionConfirmationModal] = useState<boolean>(false);
   const [userAccountDeletedModal, setUserAccountDeletedModal] = useState<boolean>(false);
   const [userFirstName, setUserFirstName] = useState<string>('');
+  const [camera, setCamera] = useState<boolean>(false);
 
   const getUserCourses = async () => {
     try {
-      const fetchedCourses = await Course.getUserCourses();
+      const fetchedCourses = await Courses.getUserCourses();
       setOnGoingCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) < 1).length);
       setAchievedCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) === 1).length);
     } catch (e: any) {
@@ -82,6 +90,18 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
         <NiPrimaryButton caption="Ajouter ma structure" onPress={() => setIsModalOpened(true)} />
       </View>
     );
+  };
+
+  const savePicture = async (picture: CameraCapturedPicture) => {
+    const { firstname, lastname } = loggedUser.identity;
+    const fileName = `photo_${firstname}_${lastname}`;
+    const data = await formatImagePayload(picture, fileName);
+
+    if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
+    await Users.uploadImage(loggedUser._id, data);
+
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
   };
 
   return (
@@ -147,7 +167,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
           </TouchableOpacity>}
         <HomeScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
         <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
-          setHasPhoto={setHasPhoto} />
+          setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)} />
+        <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
           setVisible={() => setDeletionConfirmationModal(false)}
@@ -160,4 +181,8 @@ const Profile = ({ loggedUser, navigation }: ProfileProps) => {
 
 const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
+  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

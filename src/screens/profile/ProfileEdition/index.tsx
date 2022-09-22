@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { CameraCapturedPicture } from 'expo-camera';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
@@ -31,6 +32,8 @@ import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
+import { formatImagePayload } from '../../../core/helpers/pictures';
+import CameraModal from '../../../components/camera/CameraModal';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -60,6 +63,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
+  const [camera, setCamera] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -145,6 +149,18 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     return '';
   };
 
+  const savePicture = async (picture: CameraCapturedPicture) => {
+    const { firstname, lastname } = loggedUser.identity;
+    const fileName = `photo_${firstname}_${lastname}`;
+    const data = await formatImagePayload(picture, fileName);
+
+    if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
+    await Users.uploadImage(loggedUser._id, data);
+
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
+  };
+
   return !!loggedUser && (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
@@ -189,7 +205,10 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
           </View>
           <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
-            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} />
+            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} openCamera={() => setCamera(true)} />
+          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
+            goBack={() => navigation.navigate('Profile')}/>
+
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

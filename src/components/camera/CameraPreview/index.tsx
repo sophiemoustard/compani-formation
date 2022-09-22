@@ -1,12 +1,13 @@
+import { CameraCapturedPicture } from 'expo-camera';
 import { View, ImageBackground } from 'react-native';
 import NiPrimaryButton from '../../form/PrimaryButton';
 import NiSecondaryButton from '../../form/SecondaryButton';
 import styles from './style';
 
 interface NiCameraPreviewProps {
-  photo: any,
+  photo: CameraCapturedPicture,
   loading: boolean,
-  onSavePhoto: (photo) => void,
+  onSavePhoto: (photo: CameraCapturedPicture) => void,
   onRetakePicture: () => void,
 }
 
