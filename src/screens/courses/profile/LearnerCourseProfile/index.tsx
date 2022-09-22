@@ -31,7 +31,6 @@ import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import MainActions from '../../../../store/main/actions';
-import CoursesActions from '../../../../store/courses/actions';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';

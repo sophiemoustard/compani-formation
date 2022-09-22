@@ -26,7 +26,6 @@ import { E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
-import CoursesActions from '../../../store/courses/actions';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import { SubProgramType } from '../../../types/CourseTypes';
 

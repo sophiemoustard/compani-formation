@@ -13,7 +13,6 @@ import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import MainActions from '../../../../store/main/actions';
-import CoursesActions from '../../../../store/courses/actions';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
