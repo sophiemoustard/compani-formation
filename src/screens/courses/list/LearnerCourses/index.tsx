@@ -83,14 +83,16 @@ const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesPro
     async function fetchData() {
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
-    if (loggedUserId && isFocused) fetchData();
+    if (loggedUserId && isFocused) {
+      console.log('set mode to LEARNER from LearnerCourse');
+      setMode(LEARNER);
+      fetchData();
+    }
   }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms, setMode]);
 
   const onPressProgramCell = (id: string, isCourse: boolean) => {
-    if (isCourse) {
-      setMode(LEARNER);
-      navigation.navigate('LearnerCourseProfile', { courseId: id });
-    } else {
+    if (isCourse) navigation.navigate('LearnerCourseProfile', { courseId: id });
+    else {
       setMode(TESTER);
       navigation.navigate('SubProgramProfile', { subProgramId: id });
     }
