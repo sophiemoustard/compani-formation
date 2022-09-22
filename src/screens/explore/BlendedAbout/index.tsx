@@ -15,9 +15,11 @@ import InternalRulesModal from '../../../components/InternalRulesModal';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import { StateType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
+import { LEARNER } from '../../../core/data/constants';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {
-  isLearner: boolean,
+  mode: CourseModeType,
 }
 
 const formatDate = (date) => {
@@ -28,7 +30,7 @@ const formatDate = (date) => {
   return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
 };
 
-const BlendedAbout = ({ isLearner, route, navigation }: BlendedAboutProps) => {
+const BlendedAbout = ({ mode, route, navigation }: BlendedAboutProps) => {
   const { course } = route.params;
   const program = course.subProgram?.program || null;
   const [trainerPictureSource, setTrainerPictureSource] = useState(
@@ -52,7 +54,7 @@ const BlendedAbout = ({ isLearner, route, navigation }: BlendedAboutProps) => {
 
   const goToCourse = () => {
     if (course._id) {
-      navigation.navigate(isLearner ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId: course._id });
+      navigation.navigate(mode === LEARNER ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId: course._id });
     }
   };
 
@@ -100,6 +102,6 @@ const BlendedAbout = ({ isLearner, route, navigation }: BlendedAboutProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ isLearner: state.courses.isLearner });
+const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
 
 export default connect(mapStateToProps)(BlendedAbout);

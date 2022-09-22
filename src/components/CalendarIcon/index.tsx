@@ -8,19 +8,21 @@ import Shadow from '../design/Shadow';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 import { StateType } from '../../types/store/StoreType';
+import { CourseModeType } from '../../types/store/CourseStoreType';
+import { TRAINER } from '../../core/data/constants';
 
 interface CalendarIconProps {
   slots: Date[],
   progress: number,
-  isLearner: boolean,
+  mode: CourseModeType,
 }
 
-const CalendarIcon = ({ slots, progress = 0, isLearner }: CalendarIconProps) => {
+const CalendarIcon = ({ slots, progress = 0, mode }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
-  const style = styles(isLearner ? PINK[500] : PURPLE[800]);
+  const style = styles(mode === TRAINER ? PURPLE[800] : PINK[500]);
   const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {
@@ -79,6 +81,6 @@ const CalendarIcon = ({ slots, progress = 0, isLearner }: CalendarIconProps) => 
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ isLearner: state.courses.isLearner });
+const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
 
 export default connect(mapStateToProps)(CalendarIcon);

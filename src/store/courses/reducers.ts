@@ -1,23 +1,21 @@
 import {
   CourseStateType,
-  SET_IS_COURSE,
-  SET_IS_LEARNER,
+  SET_MODE,
   CourseActionWithoutPayloadType,
   RESET_COURSE_REDUCER,
 } from '../../types/store/CourseStoreType';
 import { defaultAction, DefaultActionType } from '../../types/store/StoreType';
+import { LEARNER } from '../../core/data/constants';
 
-const initialState: CourseStateType = { isCourse: true, isLearner: true };
+const initialState: CourseStateType = { mode: LEARNER };
 
 export const courses = (
   state: CourseStateType = initialState,
   action: CourseActionWithoutPayloadType | DefaultActionType = defaultAction
 ): CourseStateType => {
   switch (action.type) {
-    case SET_IS_COURSE:
-      return { ...state, isCourse: action.value };
-    case SET_IS_LEARNER:
-      return { ...state, isLearner: action.value };
+    case SET_MODE:
+      return { ...state, mode: action.value };
     case RESET_COURSE_REDUCER:
       return initialState;
     default:

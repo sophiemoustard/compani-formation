@@ -19,8 +19,9 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../../types/Na
 import { SubProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
+import { CourseModeType } from '../../../../types/store/CourseStoreType';
 import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
-import { E_LEARNING } from '../../../../core/data/constants';
+import { E_LEARNING, LEARNER, TESTER } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
@@ -29,8 +30,7 @@ interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
-  setIsCourse: (value: boolean) => void,
-  setIsLearner: (value: boolean) => void,
+  setMode: (value: CourseModeType) => void,
   loggedUserId: string | null,
 }
 
@@ -53,7 +53,7 @@ const courseReducer = (state, action) => {
 
 const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
 
-const LearnerCourses = ({ setIsCourse, setIsLearner, navigation, loggedUserId }: LearnerCoursesProps) => {
+const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -83,20 +83,17 @@ const LearnerCourses = ({ setIsCourse, setIsLearner, navigation, loggedUserId }:
     async function fetchData() {
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
-    if (loggedUserId && isFocused) {
-      fetchData();
-      setIsLearner(true);
-    }
-  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms, setIsLearner]);
-
-  const goToCourse = (id: string, isCourse: boolean) => {
-    if (isCourse) navigation.navigate('LearnerCourseProfile', { courseId: id });
-    else navigation.navigate('SubProgramProfile', { subProgramId: id });
-  };
+    if (loggedUserId && isFocused) fetchData();
+  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms, setMode]);
 
   const onPressProgramCell = (id: string, isCourse: boolean) => {
-    setIsCourse(isCourse);
-    goToCourse(id, isCourse);
+    if (isCourse) {
+      setMode(LEARNER);
+      navigation.navigate('LearnerCourseProfile', { courseId: id });
+    } else {
+      setMode(TESTER);
+      navigation.navigate('SubProgramProfile', { subProgramId: id });
+    }
   };
 
   const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
@@ -149,8 +146,7 @@ const LearnerCourses = ({ setIsCourse, setIsLearner, navigation, loggedUserId }:
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
-  setIsLearner: (isLearner: boolean) => dispatch(CoursesActions.setIsLearner(isLearner)),
+  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourses);

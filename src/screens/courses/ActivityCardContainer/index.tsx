@@ -11,14 +11,15 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
+import { LEARNER, TRAINER } from '../../../core/data/constants';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
-  isCourse: boolean,
-  isLearner: boolean,
+  mode: CourseModeType,
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
@@ -32,8 +33,7 @@ const ActivityCardContainer = ({
   navigation,
   cards,
   cardIndex,
-  isCourse,
-  isLearner,
+  mode,
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
@@ -82,10 +82,10 @@ const ActivityCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
     const { profileId } = route.params;
-    if (!isLearner) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
-    else if (isCourse) {
+    if (mode === LEARNER) {
       navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
-    } else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
+    } else if (mode === TRAINER) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
+    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
 
     setIsActive(false);
     resetCardReducer();
@@ -132,8 +132,7 @@ const mapStateToProps = (state: StateType) => ({
   cards: state.cards.cards,
   cardIndex: state.cards.cardIndex,
   exitConfirmationModal: state.cards.exitConfirmationModal,
-  isCourse: state.courses.isCourse,
-  isLearner: state.courses.isLearner,
+  mode: state.courses.mode,
 });
 
 const mapDispatchToProps = dispatch => ({

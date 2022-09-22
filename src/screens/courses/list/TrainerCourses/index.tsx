@@ -17,12 +17,13 @@ import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
-import { BLENDED, OPERATIONS } from '../../../../core/data/constants';
+import { BLENDED, OPERATIONS, TRAINER } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
 import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
 import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
+import { CourseModeType } from '../../../../types/store/CourseStoreType';
 import CoursesActions from '../../../../store/courses/actions';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
@@ -63,11 +64,11 @@ interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
-  setIsLearner: (value: boolean) => void,
+  setMode: (value: CourseModeType) => void,
   loggedUserId: string | null,
 }
 
-const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCoursesProps) => {
+const TrainerCourses = ({ setMode, navigation, loggedUserId }: TrainerCoursesProps) => {
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
@@ -103,9 +104,9 @@ const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCours
   useEffect(() => {
     if (isFocused) {
       getCourses();
-      setIsLearner(false);
+      setMode(TRAINER);
     }
-  }, [isFocused, getCourses, loggedUserId, setIsLearner]);
+  }, [isFocused, getCourses, loggedUserId, setMode]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -136,7 +137,7 @@ const TrainerCourses = ({ setIsLearner, navigation, loggedUserId }: TrainerCours
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setIsLearner: (isLearner: boolean) => dispatch(CoursesActions.setIsLearner(isLearner)),
+  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainerCourses);

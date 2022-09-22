@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Image, Text, View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
 import { useNavigation } from '@react-navigation/native';
@@ -11,8 +10,6 @@ import { GREY, TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import FeatherButton from '../../components/icons/FeatherButton';
-import CoursesActions from '../../store/courses/actions';
-import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import { ProgramType } from '../../types/CourseTypes';
 import FooterGradient from '../design/FooterGradient';
 
@@ -79,8 +76,4 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
   );
 };
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
-});
-
-export default connect(null, mapDispatchToProps)(About);
+export default About;

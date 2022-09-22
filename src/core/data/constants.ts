@@ -52,6 +52,10 @@ export const VENDOR_ADMIN = 'vendor_admin';
 export const TRAINING_ORGANISATION_MANAGER = 'training_organisation_manager';
 export const TRAINER = 'trainer';
 
+// COURSE MODE
+export const LEARNER = 'learner';
+export const TESTER = 'tester';
+
 // REGEX
 export const PHONE_REGEX = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}(?:[\s]*)$/;
 export const EMAIL_REGEX = /^[\w-.+]+@([\w-]+\.)+[\w-]{2,4}$/;
