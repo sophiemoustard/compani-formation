@@ -8,8 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "APP_ENV": "development",
-        "PROFILE": "development"
+        "PROFILE": "local"
       }
     },
     "local-simulator": {
@@ -18,34 +17,25 @@
         "simulator": true
       }
     },
-    "dev": {
-      "channel": "dev",
+    "development": {
+      "channel": "development",
       "distribution": "internal",
       "env": {
-        "APP_ENV": "development",
         "PROFILE": "development"
       },
       "android": {
         "buildType": "apk"
       }
     },
-    "dev-simulator": {
-      "extends": "dev",
+    "development-simulator": {
+      "extends": "development",
       "ios": {
         "simulator": true
-      }
-    },
-    "staging": {
-      "channel": "staging",
-      "env": {
-        "APP_ENV": "development",
-        "PROFILE": "staging"
       }
     },
     "prod": {
       "channel": "production",
       "env": {
-        "APP_ENV": "production",
         "PROFILE": "production"
       }
     }
