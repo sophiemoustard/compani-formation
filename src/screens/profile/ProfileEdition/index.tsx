@@ -34,7 +34,7 @@ import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 import { formatImagePayload } from '../../../core/helpers/pictures';
 import CameraModal from '../../../components/camera/CameraModal';
-import ImagePickerManagerModal from '../../../components/ImagePickerManagerModal';
+import ImagePickerManager from '../../../components/ImagePickerManager';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -211,8 +211,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             openImagePickerManager={() => setImagePickerManager(true)} />
           <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
             goBack={() => navigation.navigate('Profile')} />
-          <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)} savePicture={savePicture}
-            visible={imagePickerManager} goBack={() => navigation.navigate('Profile')} />
+          {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
+            savePicture={savePicture} goBack={() => navigation.navigate('Profile')} />}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

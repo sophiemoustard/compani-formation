@@ -28,7 +28,7 @@ import { formatImagePayload } from '../../../core/helpers/pictures';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
-import ImagePickerManagerModal from '../../../components/ImagePickerManagerModal';
+import ImagePickerManager from '../../../components/ImagePickerManager';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -172,8 +172,8 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
           setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)}
           openImagePickerManager={() => setImagePickerManager(true)} />
         <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
-        <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)} savePicture={savePicture}
-          visible={imagePickerManager} />
+        {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
+          savePicture={savePicture} />}
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
           setVisible={() => setDeletionConfirmationModal(false)}

@@ -5,7 +5,6 @@ import { MARGIN } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
   loader: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
