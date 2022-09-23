@@ -70,12 +70,11 @@ const Catalog = ({ loggedUserId, navigation, resetCourseReducer }: CatalogProps)
 
   useEffect(() => {
     async function fetchData() { await getPrograms(); }
-    if (loggedUserId && isFocused) {
+    if (isFocused) {
       resetCourseReducer();
       fetchData();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId, isFocused]);
+  }, [loggedUserId, isFocused, resetCourseReducer]);
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 

@@ -73,13 +73,12 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
 
   useEffect(() => {
     async function fetchData() { await getUserCourses(); }
-    if (loggedUser && isFocused) {
+    if (isFocused) {
       fetchData();
       setUserFirstName(get(loggedUser, 'identity.firstname'));
       resetCourseReducer();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, [isFocused, loggedUser, resetCourseReducer]);
 
   const renderCompanyLinkRequest = () => {
     if (loggedUser.companyLinkRequest) {
