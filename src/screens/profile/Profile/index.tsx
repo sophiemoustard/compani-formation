@@ -172,7 +172,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
           setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)}
           openImagePickerManager={() => setImagePickerManager(true)} />
         <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
-        <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)}savePicture={savePicture}
+        <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)} savePicture={savePicture}
           visible={imagePickerManager} />
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}

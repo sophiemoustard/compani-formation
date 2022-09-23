@@ -211,7 +211,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             openImagePickerManager={() => setImagePickerManager(true)} />
           <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
             goBack={() => navigation.navigate('Profile')} />
-          <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)}savePicture={savePicture}
+          <ImagePickerManagerModal onRequestClose={() => setImagePickerManager(false)} savePicture={savePicture}
             visible={imagePickerManager} goBack={() => navigation.navigate('Profile')} />
         </ScrollView>
       </KeyboardAvoidingView>
