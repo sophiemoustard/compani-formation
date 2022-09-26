@@ -72,6 +72,13 @@ export type ELearningCourseType = BaseCourseType & {
   trainees?: string[],
 };
 
+export type TraineeType = {
+  _id: string,
+  identity: { lastname: string, firstname: string },
+  picture: { link: '' },
+  firstMobileConnection: 'string',
+}
+
 export type BlendedCourseType = BaseCourseType & {
   subProgram: { isStrictlyELearning: false },
   slots: SlotType[],
@@ -84,6 +91,7 @@ export type BlendedCourseType = BaseCourseType & {
     local: { email: string}
   },
   misc: string,
+  trainees?: TraineeType[],
 }
 
 export type CourseType = ELearningCourseType | BlendedCourseType;

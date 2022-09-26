@@ -7,7 +7,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import commonStyles from '../../../../styles/common';
-import { CourseType } from '../../../../types/CourseTypes';
+import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
@@ -21,14 +21,14 @@ const AdminCourseProfile = ({
   route,
   navigation,
 }: AdminCourseProfileProps) => {
-  const [course, setCourse] = useState<CourseType | null>(null);
+  const [course, setCourse] = useState<BlendedCourseType | null>(null);
   const [title, setTitle] = useState<string>('');
 
   useEffect(() => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
-        setCourse(fetchedCourse);
+        setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
       } catch (e: any) {
         console.error(e);
@@ -49,7 +49,7 @@ const AdminCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderTrainee = (person) => <PersonCell person={person} />;
+  const renderTrainee = (person: TraineeType) => <PersonCell person={person} />;
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
