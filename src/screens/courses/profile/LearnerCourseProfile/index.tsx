@@ -184,7 +184,7 @@ const LearnerCourseProfile = ({
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
         onScroll={isProgressBarOnTop}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.aboutContainer}>
+        <View style={styles.buttonsContainer}>
           <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>

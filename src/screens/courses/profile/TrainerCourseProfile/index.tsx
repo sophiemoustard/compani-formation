@@ -20,6 +20,8 @@ import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+const ADMIN = 'admin';
+const ABOUT = 'admin';
 
 interface TrainerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
@@ -78,17 +80,20 @@ const TrainerCourseProfile = ({
 
   const renderCells = item => renderStepCell(item, course, route);
 
-  const goToAbout = () => {
+  const goTo = (screen: typeof ABOUT | typeof ADMIN) => {
     if (!course) return;
-    navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+    if (screen === ABOUT) navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+    if (screen === ADMIN) navigation.navigate('AdminCourseProfile', { courseId: course._id });
   };
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.aboutContainer}>
-          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
+        <View style={styles.buttonsContainer}>
+          <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN)} icon='x'
+            borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
+          <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
         <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}

@@ -9,6 +9,7 @@ export type RootStackParamList = {
   QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
   BlendedAbout: { course: BlendedCourseType }
   ElearningAbout: { program: ELearningProgramType }
+  AdminCourseProfile: { courseId: string }
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   ImagePickerManager: undefined;

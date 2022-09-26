@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     ...NUNITO_SEMI.XS,
     color: GREY[600],
   },
-  aboutContainer: {
+  buttonsContainer: {
     marginVertical: MARGIN.LG,
     justifyContent: 'center',
     alignItems: 'center',
@@ -46,6 +46,15 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_MEDIUM.LG,
     color: WHITE,
     paddingLeft: PADDING.MD,
+  },
+  adminHeader: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    zIndex: -1,
+    backgroundColor: PINK[600],
+    height: 200,
   },
 });
 
