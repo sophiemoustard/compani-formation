@@ -49,8 +49,8 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
           quality: 1,
         });
 
-        if (!result.cancelled) onSavePhoto(result);
-        else unmount();
+        if (result.cancelled) unmount();
+        else onSavePhoto(result);
       } catch (e) {
         Alert.alert(
           'La galerie ne répond pas',
@@ -66,14 +66,12 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
   }, []);
 
   return (
-    <>
-      <NiModal visible={isSaving}>
-        <View style={styles.loader}>
-          <Text style={styles.text}>Enregistrement en cours...</Text>
-          <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
-        </View>
-      </NiModal>
-    </>
+    <NiModal visible={isSaving}>
+      <View style={styles.loader}>
+        <Text style={styles.text}>Enregistrement en cours...</Text>
+        <ActivityIndicator style={commonStyle.disabled} color={GREY[300]} size='large' />
+      </View>
+    </NiModal>
   );
 };
 
