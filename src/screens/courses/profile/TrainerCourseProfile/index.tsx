@@ -21,7 +21,7 @@ import { renderStepCell, renderSeparator, getTitle } from '../helper';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN = 'admin';
-const ABOUT = 'admin';
+const ABOUT = 'about';
 
 interface TrainerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
@@ -82,8 +82,9 @@ const TrainerCourseProfile = ({
 
   const goTo = (screen: typeof ABOUT | typeof ADMIN) => {
     if (!course) return;
+
     if (screen === ABOUT) navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
-    if (screen === ADMIN) navigation.navigate('AdminCourseProfile', { courseId: course._id });
+    else navigation.navigate('AdminCourseProfile', { courseId: course._id });
   };
 
   return course && has(course, 'subProgram.program') && (
@@ -92,7 +93,7 @@ const TrainerCourseProfile = ({
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
         <View style={styles.buttonsContainer}>
           <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN)} icon='x'
-            borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
+            customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
           <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>

@@ -9,6 +9,7 @@ import commonStyles from '../../../../styles/common';
 import { CourseType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
+import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -34,14 +35,10 @@ const AdminCourseProfile = ({
     getCourse();
   }, [route.params.courseId]);
 
-  const goBack = useCallback(() => {
-    navigation.navigate('TrainerCourses');
-  }, [navigation]);
-
   const hardwareBackPress = useCallback(() => {
-    goBack();
+    navigation.goBack();
     return true;
-  }, [goBack]);
+  }, [navigation]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
@@ -52,6 +49,7 @@ const AdminCourseProfile = ({
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <View style={styles.adminHeader} />
+      <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} onGoBack={navigation.goBack} />
     </SafeAreaView>
   );
 };

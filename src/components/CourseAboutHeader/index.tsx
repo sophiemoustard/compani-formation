@@ -5,19 +5,19 @@ import { ICON } from '../../styles/metrics';
 import FeatherButton from '../../components/icons/FeatherButton';
 
 type CourseAboutHeaderProps = {
-  title: string,
-  courseName: string,
+  screenTitle: string,
+  courseTitle: string,
   onGoBack: () => void,
 }
 
-const CourseAboutHeader = ({ title, courseName, onGoBack }: CourseAboutHeaderProps) => (
+const CourseAboutHeader = ({ screenTitle, courseTitle, onGoBack }: CourseAboutHeaderProps) => (
   <>
     <View style={styles.header} />
     <View style={styles.content}>
       <FeatherButton name='arrow-left' onPress={onGoBack} size={ICON.MD} color={WHITE} />
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.courseName}>{courseName}</Text>
+        <Text style={styles.screenTitle}>{screenTitle}</Text>
+        <Text style={styles.courseTitle}>{courseTitle}</Text>
       </View>
     </View>
   </>

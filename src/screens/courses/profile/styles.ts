@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
     backgroundColor: PINK[600],
     height: 200,
   },
+  adminButton: {
+    width: '95%',
+    marginBottom: 24,
+  },
 });
 
 export default styles;

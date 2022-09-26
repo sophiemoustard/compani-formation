@@ -20,11 +20,11 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginTop: MARGIN.LG,
   },
-  title: {
+  screenTitle: {
     ...NUNITO_SEMI.MD,
     color: PINK[200],
   },
-  courseName: {
+  courseTitle: {
     ...FIRA_SANS_BLACK.XL,
     color: WHITE,
   },
