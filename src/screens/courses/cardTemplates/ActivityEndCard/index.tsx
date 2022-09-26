@@ -6,15 +6,17 @@ import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { StateType } from '../../../../types/store/StoreType';
+import { CourseModeType } from '../../../../types/store/CourseStoreType';
 import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import CardsActions from '../../../../store/cards/actions';
 import styles from '../../../../styles/endCard';
 import commonStyles from '../../../../styles/common';
 import { achievementJingle } from '../../../../core/helpers/utils';
+import { LEARNER } from '../../../../core/data/constants';
 
 interface ActivityEndCardProps {
-  isCourse: boolean,
+  mode: CourseModeType,
   activity: ActivityType,
   questionnaireAnswersList: QuestionnaireAnswersType[],
   score: number,
@@ -23,7 +25,7 @@ interface ActivityEndCardProps {
 }
 
 const ActivityEndCard = ({
-  isCourse,
+  mode,
   activity,
   questionnaireAnswersList,
   score,
@@ -33,21 +35,21 @@ const ActivityEndCard = ({
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    async function fetchData() {
+    async function saveHistory() {
       const userId = await asyncStorage.getUserId();
       const payload = questionnaireAnswersList?.length
         ? { user: userId, activity: activity._id, score, questionnaireAnswersList }
         : { user: userId, activity: activity._id, score };
 
       await ActivityHistories.createActivityHistories(payload);
-      setCardIndex(null);
     }
 
     if (isFocused) {
-      if (isCourse) fetchData();
+      if (mode === LEARNER) saveHistory();
+      setCardIndex(null);
       achievementJingle();
     }
-  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, isCourse]);
+  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, mode]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -65,7 +67,7 @@ const ActivityEndCard = ({
 const mapStateToProps = (state: StateType) => ({
   questionnaireAnswersList: state.cards.questionnaireAnswersList,
   score: state.cards.score,
-  isCourse: state.courses.isCourse,
+  mode: state.courses.mode,
 });
 
 const mapDispatchToProps = dispatch => ({

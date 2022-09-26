@@ -5,19 +5,21 @@ import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { StateType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
+import { LEARNER } from '../../../core/data/constants';
 import styles from './styles';
 
 type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,
-  isLearner: boolean,
+  mode: CourseModeType,
 }
 
-const NextStepCell = ({ nextSlotsStep, isLearner }: NextStepCellProps) => {
+const NextStepCell = ({ nextSlotsStep, mode }: NextStepCellProps) => {
   const { stepIndex, slots, progress, courseId, name, type, misc } = nextSlotsStep;
   const navigation = useNavigation();
 
   const goToCourse = () => {
-    navigation.navigate(isLearner ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId });
+    navigation.navigate(mode === LEARNER ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId });
   };
 
   return (
@@ -28,6 +30,6 @@ const NextStepCell = ({ nextSlotsStep, isLearner }: NextStepCellProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ isLearner: state.courses.isLearner });
+const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
 
 export default connect(mapStateToProps)(NextStepCell);

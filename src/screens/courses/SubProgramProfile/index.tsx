@@ -26,7 +26,6 @@ import { E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
-import CoursesActions from '../../../store/courses/actions';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import { SubProgramType } from '../../../types/CourseTypes';
 
@@ -37,10 +36,9 @@ StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
   setStatusBarVisible: (boolean) => void,
-  resetCourseReducer: () => void,
 }
 
-const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: SubProgramProfileProps) => {
+const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
@@ -75,9 +73,8 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   }, [getSubProgram, isFocused, setStatusBarVisible]);
 
   const goBack = useCallback(() => {
-    resetCourseReducer();
     navigation.navigate('LearnerCourses');
-  }, [navigation, resetCourseReducer]);
+  }, [navigation]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();
@@ -121,7 +118,6 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 export default connect(null, mapDispatchToProps)(SubProgramProfile);
