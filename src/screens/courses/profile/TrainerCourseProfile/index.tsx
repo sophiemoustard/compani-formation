@@ -92,7 +92,7 @@ const TrainerCourseProfile = ({
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
         <View style={styles.buttonsContainer}>
-          <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN)} icon='x'
+          <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN)} icon='book-open'
             customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
           <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
