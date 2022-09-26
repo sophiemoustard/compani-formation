@@ -16,7 +16,6 @@ import SubProgramProfile from '../../screens/courses/SubProgramProfile';
 import ActivityCardContainer from '../../screens/courses/ActivityCardContainer';
 import QuestionnaireCardContainer from '../../screens/courses/QuestionnaireCardContainer';
 import ProfileEdition from '../../screens/profile/ProfileEdition';
-import ImagePickerManager from '../../screens/ImagePickerManager';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
 import { RootStackParamList } from '../../types/NavigationType';
@@ -43,7 +42,7 @@ const AppNavigation = () => {
 
   const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
-  const Profile = { ProfileEdition, PasswordEdition, ImagePickerManager };
+  const Profile = { ProfileEdition, PasswordEdition };
   const Courses = { LearnerCourseProfile, SubProgramProfile, TrainerCourseProfile };
   const userScreens = {
     Home,

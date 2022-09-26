@@ -34,6 +34,7 @@ import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 import { formatImagePayload } from '../../../core/helpers/pictures';
 import CameraModal from '../../../components/camera/CameraModal';
+import ImagePickerManager from '../../../components/ImagePickerManager';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -64,6 +65,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [camera, setCamera] = useState<boolean>(false);
+  const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
@@ -205,10 +207,12 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
           </View>
           <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
-            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} openCamera={() => setCamera(true)} />
+            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} openCamera={() => setCamera(true)}
+            openImagePickerManager={() => setImagePickerManager(true)} />
           <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
-            goBack={() => navigation.navigate('Profile')}/>
-
+            goBack={() => navigation.navigate('Profile')} />
+          {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
+            savePicture={savePicture} goBack={() => navigation.navigate('Profile')} />}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
