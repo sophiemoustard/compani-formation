@@ -24,8 +24,10 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
   const onSavePhoto = async (photo) => {
     try {
       setIsSaving(true);
+
       await savePicture(photo);
       unmount();
+
       if (goBack) goBack();
     } catch (e) {
       Alert.alert(
@@ -46,6 +48,7 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
           aspect: [1, 1],
           quality: 1,
         });
+
         if (!result.cancelled) onSavePhoto(result);
         else unmount();
       } catch (e) {
@@ -57,6 +60,7 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
         );
       }
     }
+
     pickImage();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
