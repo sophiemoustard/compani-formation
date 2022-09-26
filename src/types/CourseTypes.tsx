@@ -1,4 +1,8 @@
 import { StepType, ELearningStepType } from './StepTypes';
+import { OPERATIONS, PEDAGOGY } from '../core/data/constants';
+
+// query
+export type actionQueryCourseType = typeof PEDAGOGY | typeof OPERATIONS;
 
 // Program
 export type BaseProgramType = {

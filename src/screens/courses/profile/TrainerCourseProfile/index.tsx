@@ -18,6 +18,7 @@ import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
+import { PEDAGOGY } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN = 'admin';
@@ -45,7 +46,7 @@ const TrainerCourseProfile = ({
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
         setCourse(fetchedCourse);
         setTitle(getTitle(fetchedCourse));
 

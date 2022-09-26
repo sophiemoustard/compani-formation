@@ -10,6 +10,7 @@ import { CourseType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
+import { OPERATIONS } from '../../../../core/data/constants';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -24,7 +25,7 @@ const AdminCourseProfile = ({
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         setCourse(fetchedCourse);
         setTitle(getTitle(fetchedCourse));
       } catch (e: any) {
