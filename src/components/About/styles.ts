@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   content: {
-    marginTop: MARGIN.MD,
     marginHorizontal: MARGIN.MD,
   },
   header: {
