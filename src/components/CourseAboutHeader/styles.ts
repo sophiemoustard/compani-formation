@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   content: {
     marginTop: MARGIN.MD,
     marginHorizontal: MARGIN.MD,
+    minHeight: 200,
   },
   header: {
     position: 'absolute',
