@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { View, BackHandler } from 'react-native';
+import { View, BackHandler, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList } from 'react-native-gesture-handler';
 import has from 'lodash/has';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
@@ -11,6 +12,7 @@ import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import { OPERATIONS } from '../../../../core/data/constants';
+import PersonCell from '../../../../components/PersonCell';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -47,10 +49,18 @@ const AdminCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
+  const renderTrainee = (person) => <PersonCell person={person} />;
+
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <View style={styles.adminHeader} />
-      <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} onGoBack={navigation.goBack} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} onGoBack={navigation.goBack} />
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Stagiaires</Text>
+          <FlatList data={course.trainees} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderTrainee(item)}/>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
