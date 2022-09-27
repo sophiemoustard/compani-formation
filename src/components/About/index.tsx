@@ -45,7 +45,7 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
     <>
       <SafeAreaView style={commonStyles.container} edges={['top']}>
         <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-          <CourseAboutHeader screenTitle='A PROPOS' courseTitle={program.name} onGoBack={navigation.goBack} />
+          <CourseAboutHeader screenTitle='A PROPOS' courseTitle={program.name} goBack={navigation.goBack} />
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={source} />

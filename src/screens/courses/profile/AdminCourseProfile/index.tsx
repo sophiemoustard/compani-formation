@@ -54,7 +54,7 @@ const AdminCourseProfile = ({
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} onGoBack={navigation.goBack} />
+        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Stagiaires</Text>
           <FlatList data={course.trainees} keyExtractor={item => item._id}
