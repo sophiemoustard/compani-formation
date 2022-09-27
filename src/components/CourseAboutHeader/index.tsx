@@ -11,15 +11,13 @@ type CourseAboutHeaderProps = {
 }
 
 const CourseAboutHeader = ({ screenTitle, courseTitle, goBack }: CourseAboutHeaderProps) => (
-  <>
-    <View style={styles.content}>
-      <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
-      <View style={styles.titleContainer}>
-        <Text style={styles.screenTitle}>{screenTitle}</Text>
-        <Text style={styles.courseTitle}>{courseTitle}</Text>
-      </View>
+  <View style={styles.content}>
+    <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
+    <View style={styles.titleContainer}>
+      <Text style={styles.screenTitle}>{screenTitle}</Text>
+      <Text style={styles.courseTitle}>{courseTitle}</Text>
     </View>
-  </>
+  </View>
 );
 
 export default CourseAboutHeader;

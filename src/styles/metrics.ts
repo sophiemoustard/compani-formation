@@ -7,7 +7,6 @@ export const MARGIN = {
   XXS: 2,
   XS: 4,
   SM: 8,
-  MS: 12,
   MD: 16,
   LG: 24,
   XL: 32,

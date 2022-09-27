@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: MARGIN.MD,
     paddingHorizontal: MARGIN.MD,
-    paddingBottom: MARGIN.LG,
+    paddingBottom: MARGIN.XL,
     backgroundColor: PINK[600],
   },
   titleContainer: {
