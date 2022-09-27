@@ -21,8 +21,6 @@ import { renderStepCell, renderSeparator, getTitle } from '../helper';
 import { PEDAGOGY } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-const ADMIN = 'admin';
-const ABOUT = 'about';
 
 interface TrainerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
@@ -81,11 +79,11 @@ const TrainerCourseProfile = ({
 
   const renderCells = item => renderStepCell(item, course, route);
 
-  const goTo = (screen: typeof ABOUT | typeof ADMIN) => {
+  const goTo = (screen: 'BlendedAbout' | 'AdminCourseProfile') => {
     if (!course) return;
 
-    if (screen === ABOUT) navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
-    else navigation.navigate('AdminCourseProfile', { courseId: course._id });
+    if (screen === 'BlendedAbout') navigation.navigate(screen, { course: course as BlendedCourseType });
+    else navigation.navigate(screen, { courseId: course._id });
   };
 
   return course && has(course, 'subProgram.program') && (
@@ -93,9 +91,9 @@ const TrainerCourseProfile = ({
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
         <View style={styles.buttonsContainer}>
-          <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN)} icon='folder'
+          <NiSecondaryButton caption='Espace admin' onPress={() => goTo('AdminCourseProfile')} icon='folder'
             customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
-          <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT)} icon='info' borderColor={GREY[200]}
+          <NiSecondaryButton caption='A propos' onPress={() => goTo('BlendedAbout')} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
         <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}

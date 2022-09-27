@@ -12,7 +12,7 @@ const PersonCell = ({ person }: PersonCellProps) => {
   const image = person?.picture?.link || '';
   const email = person?.local?.email || '';
   const source = image ? { uri: image } : require('../../../assets/images/default_avatar.png');
-  const hasBeenConnected = person?.firstMobileConnection && 'Connecté(e) à l\'app';
+  const isConnected = person?.firstMobileConnection && 'Connecté(e) à l\'app';
 
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ const PersonCell = ({ person }: PersonCellProps) => {
       <View>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.email}>{email}</Text>
-        {hasBeenConnected && <Text style={styles.connected}>{hasBeenConnected}</Text>}
+        {isConnected && <Text style={styles.connected}>{isConnected}</Text>}
       </View>
     </View>
   );

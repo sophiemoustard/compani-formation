@@ -35,6 +35,7 @@ const AdminCourseProfile = ({
         setCourse(null);
       }
     };
+
     getCourse();
   }, [route.params.courseId]);
 
