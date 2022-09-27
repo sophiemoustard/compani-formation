@@ -1,18 +1,18 @@
 import { Text, View, Image } from 'react-native';
-import get from 'lodash/get';
 import { formatIdentity } from '../../core/helpers/utils';
 import styles from './styles';
+import { UserType } from '../../types/UserType';
 
 interface PersonCellProps {
-  person: any,
+  person: UserType,
 }
 
 const PersonCell = ({ person }: PersonCellProps) => {
   const name = formatIdentity(person.identity, 'FL') || '';
-  const image = get(person, 'picture.link') || '';
-  const email = get(person, 'local.email') || '';
+  const image = person?.picture?.link || '';
+  const email = person?.local?.email || '';
   const source = image ? { uri: image } : require('../../../assets/images/default_avatar.png');
-  const hasBeenConnected = !!get(person, 'firstMobileConnection') && 'Connecté(e) à l\'app';
+  const hasBeenConnected = person?.firstMobileConnection && 'Connecté(e) à l\'app';
 
   return (
     <View style={styles.container}>

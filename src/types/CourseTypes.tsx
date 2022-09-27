@@ -75,8 +75,9 @@ export type ELearningCourseType = BaseCourseType & {
 export type TraineeType = {
   _id: string,
   identity: { lastname: string, firstname: string },
+  local: { email: string },
   picture: { link: '' },
-  firstMobileConnection: 'string',
+  firstMobileConnection: string,
 }
 
 export type BlendedCourseType = BaseCourseType & {
