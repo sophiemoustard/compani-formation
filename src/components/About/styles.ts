@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     color: GREY[900],
   },
   imageContainer: {
-    marginVertical: MARGIN.MD,
+    marginTop: -MARGIN.MS,
+    marginBottom: MARGIN.MD,
     height: 160,
   },
   image: {

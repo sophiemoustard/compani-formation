@@ -12,7 +12,6 @@ type CourseAboutHeaderProps = {
 
 const CourseAboutHeader = ({ screenTitle, courseTitle, goBack }: CourseAboutHeaderProps) => (
   <>
-    <View style={styles.header} />
     <View style={styles.content}>
       <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={WHITE} />
       <View style={styles.titleContainer}>
