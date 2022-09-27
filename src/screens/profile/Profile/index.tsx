@@ -55,18 +55,6 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
 
-  const getUserCourses = async () => {
-    try {
-      const fetchedCourses = await Courses.getUserCourses();
-      setOnGoingCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) < 1).length);
-      setAchievedCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) === 1).length);
-    } catch (e: any) {
-      console.error(e);
-      setOnGoingCoursesCount(0);
-      setAchievedCoursesCount(0);
-    }
-  };
-
   const editProfile = () => navigation.navigate('ProfileEdition');
 
   const editPassword = () => navigation.navigate('PasswordEdition', { userId: loggedUser._id });
@@ -74,13 +62,35 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
   const clearExpoTokenAndSignOut = () => signOut(true);
 
   useEffect(() => {
-    async function fetchData() { await getUserCourses(); }
+    async function fetchData() {
+      try {
+        const fetchedCourses = await Courses.getUserCourses();
+        setOnGoingCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) < 1).length);
+        setAchievedCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) === 1).length);
+      } catch (e: any) {
+        console.error(e);
+        setOnGoingCoursesCount(0);
+        setAchievedCoursesCount(0);
+      }
+    }
+
     if (isFocused) {
       fetchData();
-      setUserFirstName(get(loggedUser, 'identity.firstname'));
       resetCourseReducer();
     }
   }, [isFocused, loggedUser, resetCourseReducer]);
+
+  useEffect(() => {
+    setUserFirstName(get(loggedUser, 'identity.firstname'));
+
+    if (loggedUser?.picture?.link) {
+      setSource({ uri: loggedUser.picture.link });
+      setHasPhoto(true);
+    } else {
+      setSource(require('../../../../assets/images/default_avatar.png'));
+      setHasPhoto(false);
+    }
+  }, [loggedUser]);
 
   const renderCompanyLinkRequest = () => {
     if (loggedUser.companyLinkRequest) {
@@ -109,6 +119,13 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
 
     const user = await Users.getById(loggedUser._id);
     setLoggedUser(user);
+  };
+
+  const deletePicture = async () => {
+    await Users.deleteImage(loggedUser._id);
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
+    setPictureModal(false);
   };
 
   return (
@@ -173,8 +190,8 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
             <Text style={styles.legalNotice}>Supprimer mon compte</Text>
           </TouchableOpacity>}
         <HomeScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
-        <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
-          setHasPhoto={setHasPhoto} openCamera={() => setCamera(true)}
+        <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
+          openCamera={() => setCamera(true)} deletePicture={deletePicture}
           openImagePickerManager={() => setImagePickerManager(true)} />
         <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
         {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}

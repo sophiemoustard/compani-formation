@@ -101,14 +101,23 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     if (lastName || phone || email || emptyEmail) {
       setIsValid(false);
     } else setIsValid(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unvalid]);
+
+  useEffect(() => {
+    if (loggedUser?.picture?.link) {
+      setSource({ uri: loggedUser.picture.link });
+      setHasPhoto(true);
+    } else {
+      setSource(require('../../../../assets/images/default_avatar.png'));
+      setHasPhoto(false);
+    }
+  }, [loggedUser]);
 
   const scrollRef = useRef<ScrollView>(null);
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Profile');
+    navigation.goBack();
   };
 
   const saveData = async () => {
@@ -163,6 +172,14 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     setLoggedUser(user);
   };
 
+  const deletePicture = async () => {
+    await Users.deleteImage(loggedUser._id);
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
+    setPictureModal(false);
+    goBack();
+  };
+
   return !!loggedUser && (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
@@ -206,13 +223,13 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             <NiErrorMessage message={error.message} show={error.value} />
             <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
           </View>
-          <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal}
-            setSource={setSource} setHasPhoto={setHasPhoto} goBack={goBack} openCamera={() => setCamera(true)}
+          <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
+            deletePicture={deletePicture} openCamera={() => setCamera(true)}
             openImagePickerManager={() => setImagePickerManager(true)} />
           <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
-            goBack={() => navigation.navigate('Profile')} />
+            goBack={goBack} />
           {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
-            savePicture={savePicture} goBack={() => navigation.navigate('Profile')} />}
+            savePicture={savePicture} goBack={goBack} />}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

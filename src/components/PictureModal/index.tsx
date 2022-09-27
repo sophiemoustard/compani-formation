@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Alert } from 'react-native';
-import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import * as Camera from 'expo-camera';
 import NiModal from '../Modal';
@@ -9,57 +8,34 @@ import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { PINK, WHITE } from '../../styles/colors';
 import styles from './styles';
-import { UserType } from '../../types/UserType';
-import Users from '../../api/users';
-import { ActionType, ActionWithoutPayloadType } from '../../types/store/StoreType';
-import MainActions from '../../store/main/actions';
 
 interface PictureModalProps {
   visible: boolean,
-  hasPhoto: boolean,
-  loggedUser: UserType
-  setPictureModal: (value) => void,
-  setSource: (value) => void,
-  setHasPhoto: (value) => void,
-  setLoggedUser: (user: UserType) => void,
-  goBack?: () => void,
+  canDelete?: boolean,
+  closePictureModal: () => void,
   openCamera: () => void,
   openImagePickerManager: () => void,
+  deletePicture: () => void,
 }
 
 const PictureModal = ({
   visible,
-  hasPhoto,
-  loggedUser,
-  setPictureModal,
-  setSource,
-  setHasPhoto,
-  setLoggedUser,
-  goBack,
+  canDelete = false,
+  closePictureModal,
   openCamera,
   openImagePickerManager,
+  deletePicture,
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const alert = (component) => {
     Alert.alert(
       'Accès refusé',
-      `Vérifie que l'application a bien l'autorisation d'accéder à  ${component}`,
-      [{ text: 'OK', onPress: () => setPictureModal(false) }],
+      `Vérifie que l'application a bien l'autorisation d'accéder à ${component}`,
+      [{ text: 'OK' }],
       { cancelable: false }
     );
   };
-
-  useEffect(() => {
-    if (loggedUser?.picture?.link) {
-      setSource({ uri: loggedUser.picture.link });
-      setHasPhoto(true);
-    } else {
-      setSource(require('../../../assets/images/default_avatar.png'));
-      setHasPhoto(false);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUser]);
 
   const requestPermissionsForCamera = async () => {
     try {
@@ -67,15 +43,13 @@ const PictureModal = ({
       const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === 'granted') openCamera();
       else alert('l\'appareil photo');
-    } catch {
-      setPictureModal(false);
     } finally {
       setIsLoading(false);
     }
   };
 
   const takePicture = () => {
-    setPictureModal(false);
+    closePictureModal();
     requestPermissionsForCamera();
   };
 
@@ -85,31 +59,25 @@ const PictureModal = ({
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status === 'granted') openImagePickerManager();
       else alert('la galerie');
-    } catch {
-      if (goBack) goBack();
     } finally {
       setIsLoading(false);
     }
   };
 
   const addPictureFromGallery = () => {
-    setPictureModal(false);
+    closePictureModal();
     requestPermissionsForImagePicker();
   };
 
-  const deletePicture = async () => {
+  const onDeletePicture = async () => {
     try {
       setIsLoading(true);
-      await Users.deleteImage(loggedUser._id);
-      const user = await Users.getById(loggedUser._id);
-      setLoggedUser(user);
-      setPictureModal(false);
-      if (goBack) goBack();
+      await deletePicture();
     } catch (e) {
       Alert.alert(
         'Echec de la suppression',
         'Réessaie plus tard',
-        [{ text: 'OK', onPress: () => setPictureModal(false) }],
+        [{ text: 'OK', onPress: closePictureModal }],
         { cancelable: false }
       );
     } finally {
@@ -118,23 +86,17 @@ const PictureModal = ({
   };
 
   return (
-    <NiModal visible={visible} onRequestClose={() => setPictureModal(false)}>
-      <FeatherButton name={'x-circle'} onPress={() => setPictureModal(false)} size={ICON.LG} color={PINK[500]}
+    <NiModal visible={visible} onRequestClose={closePictureModal}>
+      <FeatherButton name={'x-circle'} onPress={closePictureModal} size={ICON.LG} color={PINK[500]}
         style={styles.goBack} />
       <NiPrimaryButton caption='Prendre une photo' customStyle={styles.button} onPress={takePicture}
         disabled={isLoading} bgColor={WHITE} color={PINK[500]} />
       <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} onPress={addPictureFromGallery}
         disabled={isLoading} bgColor={WHITE} color={PINK[500]} />
-      {hasPhoto &&
-        <NiPrimaryButton caption='Supprimer la photo' customStyle={styles.button} onPress={deletePicture}
+      {canDelete &&
+        <NiPrimaryButton caption='Supprimer la photo' customStyle={styles.button} onPress={onDeletePicture}
           disabled={isLoading} bgColor={WHITE} color={PINK[500]} loading={isLoading} />}
     </NiModal>);
 };
 
-const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PictureModal);
+export default PictureModal;
