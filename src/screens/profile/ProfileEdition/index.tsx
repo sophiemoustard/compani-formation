@@ -117,7 +117,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Profile');
+    navigation.goBack();
   };
 
   const saveData = async () => {
@@ -177,7 +177,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     const user = await Users.getById(loggedUser._id);
     setLoggedUser(user);
     setPictureModal(false);
-    navigation.navigate('Profile');
+    goBack();
   };
 
   return !!loggedUser && (
@@ -227,9 +227,9 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             deletePicture={deletePicture} openCamera={() => setCamera(true)}
             openImagePickerManager={() => setImagePickerManager(true)} />
           <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
-            goBack={() => navigation.navigate('Profile')} />
+            goBack={goBack} />
           {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
-            savePicture={savePicture} goBack={() => navigation.navigate('Profile')} />}
+            savePicture={savePicture} goBack={goBack} />}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
