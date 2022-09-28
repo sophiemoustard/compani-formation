@@ -6,12 +6,11 @@ import get from 'lodash/get';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import commonStyles, { markdownStyle } from '../../styles/common';
-import { GREY, TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
-import { ICON } from '../../styles/metrics';
+import { GREY, TRANSPARENT_GRADIENT } from '../../styles/colors';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
-import FeatherButton from '../../components/icons/FeatherButton';
 import { ProgramType } from '../../types/CourseTypes';
 import FooterGradient from '../design/FooterGradient';
+import CourseAboutHeader from '../CourseAboutHeader';
 
 type AboutProps = {
   program: ProgramType,
@@ -46,13 +45,8 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
     <>
       <SafeAreaView style={commonStyles.container} edges={['top']}>
         <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-          <View style={styles.header} />
+          <CourseAboutHeader screenTitle='A PROPOS' courseTitle={program.name} goBack={navigation.goBack} />
           <View style={styles.content}>
-            <FeatherButton name='arrow-left' onPress={navigation.goBack} size={ICON.MD} color={WHITE} />
-            <View style={styles.titleContainer}>
-              <Text style={styles.aboutTitle}>A PROPOS</Text>
-              <Text style={styles.programTitle}>{program.name}</Text>
-            </View>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={source} />
             </View>

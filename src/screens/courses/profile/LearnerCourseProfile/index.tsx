@@ -41,6 +41,7 @@ import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
+import { PEDAGOGY } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -71,7 +72,7 @@ const LearnerCourseProfile = ({
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
         const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
@@ -184,7 +185,7 @@ const LearnerCourseProfile = ({
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
         onScroll={isProgressBarOnTop}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.aboutContainer}>
+        <View style={styles.buttonsContainer}>
           <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>

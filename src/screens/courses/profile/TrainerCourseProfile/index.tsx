@@ -18,8 +18,11 @@ import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
+import { PEDAGOGY } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+const ADMIN_SCREEN = 'AdminCourseProfile';
+const ABOUT_SCREEN = 'BlendedAbout';
 
 interface TrainerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
@@ -43,7 +46,7 @@ const TrainerCourseProfile = ({
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId);
+        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
         setCourse(fetchedCourse);
         setTitle(getTitle(fetchedCourse));
 
@@ -78,17 +81,21 @@ const TrainerCourseProfile = ({
 
   const renderCells = item => renderStepCell(item, course, route);
 
-  const goToAbout = () => {
+  const goTo = (screen: typeof ABOUT_SCREEN | typeof ADMIN_SCREEN) => {
     if (!course) return;
-    navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+
+    if (screen === ABOUT_SCREEN) navigation.navigate(screen, { course: course as BlendedCourseType });
+    else navigation.navigate(screen, { courseId: course._id });
   };
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.aboutContainer}>
-          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
+        <View style={styles.buttonsContainer}>
+          <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN_SCREEN)} icon='folder'
+            customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
+          <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
         <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
