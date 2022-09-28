@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK, TRANSPARENT_GREY } from '../../../styles/colors';
+import { GREY, TRANSPARENT_GREY } from '../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../../styles/metrics';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, NUNITO_SEMI } from '../../../styles/fonts';
 
@@ -42,12 +42,6 @@ const styles = StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
   },
-  contactContent: {
-    ...FIRA_SANS_REGULAR.MD,
-    color: PINK[500],
-    marginLeft: MARGIN.MD,
-    textDecorationLine: 'underline',
-  },
   internalRulesContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -59,11 +53,6 @@ const styles = StyleSheet.create({
     ...NUNITO_SEMI.XS,
     color: GREY[600],
     textDecorationLine: 'underline',
-  },
-  contact: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: MARGIN.SM,
   },
 });
 

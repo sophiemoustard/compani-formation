@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -12,8 +11,7 @@ import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
 import { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
-import { ICON } from '../../../styles/metrics';
-import { GREY } from '../../../styles/colors';
+import ContactInfoContainer from '../../../components/ContactInfoContainer';
 import { StateType } from '../../../types/store/StoreType';
 import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { LEARNER } from '../../../core/data/constants';
@@ -80,18 +78,7 @@ const BlendedAbout = ({ mode, route, navigation }: BlendedAboutProps) => {
         </>}
         {!!course.contact?.identity && <>
           <View style={styles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
-          <Text style={styles.subSectionTitle}>{formatIdentity(course.contact.identity, 'FL')}</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.contact.phone}`)}
-            style={styles.contact}>
-            <Feather name='phone' size={ICON.MD} color={GREY[600]} />
-            <Text style={styles.contactContent}>{course.contact.contact.phone}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.local.email}`)}
-            style={styles.contact}>
-            <Feather name='mail' size={ICON.MD} color={GREY[600]}/>
-            <Text style={styles.contactContent}>{course.contact.local.email}</Text>
-          </TouchableOpacity>
+          <ContactInfoContainer contact={course.contact} title={'Votre contact pour la formation'} />
         </>}
       </View>
       <TouchableOpacity style={styles.internalRulesContainer} onPress={() => setIsModalOpened(true)}>
