@@ -56,7 +56,7 @@ export const formatIdentity = (identity, format) => {
     values.push(value);
   }
 
-  return values.join(' ');
+  return values.join(' ').trim();
 };
 export const getCourseProgress = (course) => {
   if (course.format === STRICTLY_E_LEARNING) return course.progress.eLearning;
