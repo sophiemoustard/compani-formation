@@ -21,7 +21,7 @@ import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
 import { CourseModeType } from '../../../../types/store/CourseStoreType';
 import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
-import { E_LEARNING, LEARNER, TESTER } from '../../../../core/data/constants';
+import { E_LEARNING, LEARNER, PEDAGOGY, TESTER } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
@@ -59,7 +59,7 @@ const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesPro
 
   const getCourses = useCallback(async () => {
     try {
-      const fetchedCourses = await Courses.getUserCourses();
+      const fetchedCourses = await Courses.getCourseList({ action: PEDAGOGY });
       dispatch({ type: SET_COURSES, payload: fetchedCourses });
     } catch (e: any) {
       console.error(e);

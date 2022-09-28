@@ -2,12 +2,7 @@ import { AxiosResponse } from 'axios';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { CourseType, BlendedCourseType, actionQueryCourseType } from '../types/CourseTypes';
-import {
-  CourseListResponseType,
-  BlendedCourseListResponseType,
-  CourseResponseType,
-  PdfResponseType,
-} from '../types/AxiosTypes';
+import { BlendedCourseListResponseType, CourseResponseType, PdfResponseType } from '../types/AxiosTypes';
 import { MOBILE, OPERATIONS } from '../core/data/constants';
 
 type GetCourseListType = {
@@ -23,12 +18,6 @@ export default {
       `${baseURL}/courses`,
       { params: { ...params, origin: MOBILE } }
     );
-
-    return response.data.data.courses;
-  },
-  getUserCourses: async (): Promise<CourseType[]> => {
-    const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CourseListResponseType> = await axiosLogged.get(`${baseURL}/courses/user`);
 
     return response.data.data.courses;
   },

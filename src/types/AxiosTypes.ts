@@ -24,7 +24,6 @@ export type PasswordTokenResponseType = { message: string, data: PasswordTokenTy
 export type CompanyListResponseType = { message: string, data: { companies: CompanyType[] } }
 
 // COURSE
-export type CourseListResponseType = { message: string, data: { courses: CourseType[] } }
 export type BlendedCourseListResponseType = { message: string, data: { courses: BlendedCourseType[] } }
 export type CourseResponseType = { message: string, data: { course: CourseType } }
 export type PdfResponseType = { data: string }
