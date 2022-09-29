@@ -64,7 +64,8 @@ const AdminCourseProfile = ({
         </View>
         {!!course.companyRepresentative?.identity && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
-          <ContactInfoContainer contact={course.companyRepresentative} title={'Votre contact pour la formation'} />
+          <ContactInfoContainer contact={course.companyRepresentative}
+            title={'Votre référent structure pour cette formation'} />
         </View>}
         <View style={styles.footer} />
       </ScrollView>

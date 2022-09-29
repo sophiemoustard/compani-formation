@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
     marginLeft: MARGIN.MD,
+    marginRight: MARGIN.LG,
     textDecorationLine: 'underline',
   },
 });
