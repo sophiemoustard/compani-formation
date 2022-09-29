@@ -30,6 +30,7 @@ import { ActionType, ActionWithoutPayloadType } from '../../../types/store/Store
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
 import ImagePickerManager from '../../../components/ImagePickerManager';
+import { PEDAGOGY } from '../../../core/data/constants';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -64,7 +65,7 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
   useEffect(() => {
     async function fetchData() {
       try {
-        const fetchedCourses = await Courses.getUserCourses();
+        const fetchedCourses = await Courses.getCourseList({ action: PEDAGOGY });
         setOnGoingCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) < 1).length);
         setAchievedCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) === 1).length);
       } catch (e: any) {
