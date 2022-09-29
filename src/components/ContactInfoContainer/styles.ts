@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.SM,
   },
   contactContent: {
+    flex: 1,
     ...FIRA_SANS_REGULAR.MD,
     color: PINK[500],
     marginLeft: MARGIN.MD,
-    marginRight: MARGIN.LG,
     textDecorationLine: 'underline',
   },
 });
