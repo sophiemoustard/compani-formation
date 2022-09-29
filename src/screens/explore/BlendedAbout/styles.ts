@@ -28,12 +28,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flex: 1,
   },
-  sectionDelimiter: {
-    borderWidth: BORDER_WIDTH,
-    borderColor: GREY[200],
-    marginBottom: MARGIN.MD,
-    justifyContent: 'center',
-  },
   trainerPicture: {
     height: ICON.XXL,
     width: ICON.XXL,

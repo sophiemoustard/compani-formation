@@ -82,10 +82,6 @@ const styles = StyleSheet.create({
     ...NUNITO_LIGHT.XL,
     color: PINK[500],
   },
-  sectionDelimiter: {
-    borderWidth: BORDER_WIDTH,
-    borderColor: GREY[200],
-  },
   contact: {
     ...FIRA_SANS_BOLD.LG,
     marginBottom: MARGIN.MD,
@@ -96,7 +92,6 @@ const styles = StyleSheet.create({
   },
   contactsContainer: {
     marginHorizontal: MARGIN.XL,
-    marginTop: MARGIN.SM,
     marginBottom: MARGIN.MD,
   },
   infos: {
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.MD,
   },
   logOutButton: {
-    marginVertical: MARGIN.MD,
+    marginBottom: MARGIN.MD,
     marginHorizontal: MARGIN.XL,
   },
   passwordButton: {

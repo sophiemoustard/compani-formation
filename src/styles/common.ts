@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT } from './metrics';
-import { WHITE, PINK } from './colors';
+import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT, BORDER_WIDTH } from './metrics';
+import { WHITE, PINK, GREY } from './colors';
 import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
 
 export default StyleSheet.create({
@@ -27,6 +27,12 @@ export default StyleSheet.create({
     marginHorizontal: MARGIN.MD,
     flex: 1,
     height: PROGRESS_BAR_HEIGHT,
+  },
+  sectionDelimiter: {
+    borderWidth: BORDER_WIDTH,
+    borderColor: GREY[200],
+    marginBottom: MARGIN.MD,
+    justifyContent: 'center',
   },
 });
 
