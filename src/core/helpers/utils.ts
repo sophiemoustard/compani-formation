@@ -43,7 +43,7 @@ export const achievementJingle = async () => {
 export const formatIdentity = (identity, format) => {
   if (!identity) return '';
   const formatLower = format.toLowerCase();
-  const values = [''];
+  const values: string[] = [];
 
   for (let i = 0; i < format.length; i += 1) {
     let value;
@@ -56,7 +56,7 @@ export const formatIdentity = (identity, format) => {
     values.push(value);
   }
 
-  return values.join(' ').trim();
+  return values.join(' ');
 };
 export const getCourseProgress = (course) => {
   if (course.format === STRICTLY_E_LEARNING) return course.progress.eLearning;
