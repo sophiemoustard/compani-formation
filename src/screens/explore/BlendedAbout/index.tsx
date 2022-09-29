@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, FlatList, Image, Linking, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -10,10 +9,9 @@ import { ascendingSort } from '../../../core/helpers/dates/utils';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
-import { markdownStyle } from '../../../styles/common';
+import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
-import { ICON } from '../../../styles/metrics';
-import { GREY } from '../../../styles/colors';
+import ContactInfoContainer from '../../../components/ContactInfoContainer';
 import { StateType } from '../../../types/store/StoreType';
 import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { LEARNER } from '../../../core/data/constants';
@@ -63,14 +61,14 @@ const BlendedAbout = ({ mode, route, navigation }: BlendedAboutProps) => {
       <View style={styles.content}>
         {course.slots.length > 0 &&
           <>
-            <View style={styles.sectionDelimiter} />
+            <View style={commonStyles.sectionDelimiter} />
             <Text style={styles.sectionTitle}>Dates de formation</Text>
             <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
               renderItem={({ item }) =>
                 <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
           </>}
         {!!course.trainer && <>
-          <View style={styles.sectionDelimiter} />
+          <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Intervenant(e)</Text>
           <View style={styles.subSectionContainer}>
             <Image style={styles.trainerPicture} source={trainerPictureSource} />
@@ -79,19 +77,8 @@ const BlendedAbout = ({ mode, route, navigation }: BlendedAboutProps) => {
           {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
         </>}
         {!!course.contact?.identity && <>
-          <View style={styles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Votre contact pour la formation</Text>
-          <Text style={styles.subSectionTitle}>{formatIdentity(course.contact.identity, 'FL')}</Text>
-          <TouchableOpacity onPress={() => Linking.openURL(`tel:${course.contact.contact.phone}`)}
-            style={styles.contact}>
-            <Feather name='phone' size={ICON.MD} color={GREY[600]} />
-            <Text style={styles.contactContent}>{course.contact.contact.phone}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL(`mailto:${course.contact.local.email}`)}
-            style={styles.contact}>
-            <Feather name='mail' size={ICON.MD} color={GREY[600]}/>
-            <Text style={styles.contactContent}>{course.contact.local.email}</Text>
-          </TouchableOpacity>
+          <View style={commonStyles.sectionDelimiter} />
+          <ContactInfoContainer contact={course.contact} title={'Votre contact pour la formation'} />
         </>}
       </View>
       <TouchableOpacity style={styles.internalRulesContainer} onPress={() => setIsModalOpened(true)}>

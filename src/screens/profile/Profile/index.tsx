@@ -159,7 +159,7 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
                 </View>
               </ImageBackground>
             </View>
-            <View style={styles.sectionDelimiter} />
+            <View style={commonStyles.sectionDelimiter} />
             <View style={styles.contactsContainer}>
               <Text style={styles.contact}>Contact</Text>
               <Text style={styles.subTitle}>Téléphone</Text>
@@ -172,7 +172,7 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
               <NiSecondaryButton customStyle={styles.passwordButton} caption="Modifier mon mot de passe"
                 onPress={editPassword} />
             </View>
-            <View style={styles.sectionDelimiter} />
+            <View style={commonStyles.sectionDelimiter} />
           </>
         }
         <NiSecondaryButton customStyle={styles.logOutButton} caption="Me déconnecter"

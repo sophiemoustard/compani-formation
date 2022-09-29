@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
     width: '95%',
     marginBottom: 24,
   },
+  footer: {
+    paddingVertical: PADDING.LG,
+  },
 });
 
 export default styles;
