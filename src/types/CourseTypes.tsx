@@ -1,3 +1,4 @@
+import { UserType } from './UserType';
 import { StepType, ELearningStepType } from './StepTypes';
 import { OPERATIONS, PEDAGOGY } from '../core/data/constants';
 
@@ -85,12 +86,8 @@ export type BlendedCourseType = BaseCourseType & {
   slots: SlotType[],
   slotsToPlan: SlotToPlanType[],
   trainer: { _id: string, identity: { lastname: string, firstname: string }, picture: { link: '' }, biography: '' },
-  contact: {
-    _id: string,
-    identity: { lastname: string, firstname: string },
-    contact: { phone: string },
-    local: { email: string}
-  },
+  contact: UserType,
+  companyRepresentative: UserType,
   misc: string,
   trainees?: TraineeType[],
 }

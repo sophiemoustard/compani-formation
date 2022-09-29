@@ -13,6 +13,7 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import { OPERATIONS } from '../../../../core/data/constants';
 import PersonCell from '../../../../components/PersonCell';
+import ContactInfoContainer from '../../../../components/ContactInfoContainer';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -61,6 +62,11 @@ const AdminCourseProfile = ({
           <FlatList data={course.trainees} keyExtractor={item => item._id}
             renderItem={({ item }) => renderTrainee(item)}/>
         </View>
+        {!!course.companyRepresentative?.identity && <View style={styles.sectionContainer}>
+          <View style={commonStyles.sectionDelimiter} />
+          <ContactInfoContainer contact={course.companyRepresentative} title={'Votre contact pour la formation'} />
+        </View>}
+        <View style={styles.footer} />
       </ScrollView>
     </SafeAreaView>
   );
