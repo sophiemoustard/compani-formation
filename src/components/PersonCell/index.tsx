@@ -17,7 +17,7 @@ const PersonCell = ({ person }: PersonCellProps) => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={source} />
-      <View>
+      <View style={styles.text}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.email}>{email}</Text>
         {isConnected && <Text style={styles.connected}>{isConnected}</Text>}

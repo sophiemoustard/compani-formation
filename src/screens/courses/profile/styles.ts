@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   footer: {
-    paddingVertical: MARGIN.XL,
+    paddingVertical: PADDING.LG,
   },
 });
 

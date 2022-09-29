@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     borderWidth: BORDER_WIDTH,
     borderColor: TRANSPARENT_GREY,
   },
+  text: {
+    flex: 1,
+  },
   name: {
     ...FIRA_SANS_MEDIUM.LG,
     color: GREY[900],
