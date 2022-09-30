@@ -1,37 +1,35 @@
-import React from 'react';
 import { TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
-import { StepType } from '../../../types/StepTypes';
+import { NextSlotsStepType } from '../../../types/StepTypes';
+import { StateType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
+import { LEARNER } from '../../../core/data/constants';
 import styles from './styles';
 
 type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,
+  mode: CourseModeType,
 }
 
-type NextSlotsStepType = {
-  _id: string,
-  name: string,
-  slots: Date[],
-  type: StepType['type'],
-  stepIndex: number,
-  progress: { live: number },
-  courseId: string,
-}
-
-const NextStepCell = ({ nextSlotsStep }: NextStepCellProps) => {
+const NextStepCell = ({ nextSlotsStep, mode }: NextStepCellProps) => {
+  const { stepIndex, slots, progress, courseId, name, type, misc } = nextSlotsStep;
   const navigation = useNavigation();
-  const { stepIndex, slots, progress, courseId } = nextSlotsStep;
 
-  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
+  const goToCourse = () => {
+    navigation.navigate(mode === LEARNER ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId });
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress.live}/>
-      <StepCellTitle index={stepIndex} name={nextSlotsStep.name} type={nextSlotsStep.type} />
+      <CalendarIcon slots={slots} progress={progress?.live} />
+      <StepCellTitle index={stepIndex} name={name} type={type} misc={misc} />
     </TouchableOpacity>
   );
 };
 
-export default NextStepCell;
+const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
+
+export default connect(mapStateToProps)(NextStepCell);

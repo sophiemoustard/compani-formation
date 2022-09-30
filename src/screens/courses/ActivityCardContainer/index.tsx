@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -11,13 +11,15 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
+import { LEARNER, TRAINER } from '../../../core/data/constants';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
-  isCourse: boolean,
+  mode: CourseModeType,
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
@@ -31,7 +33,7 @@ const ActivityCardContainer = ({
   navigation,
   cards,
   cardIndex,
-  isCourse,
+  mode,
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
@@ -80,7 +82,9 @@ const ActivityCardContainer = ({
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
     const { profileId } = route.params;
-    if (isCourse) navigation.navigate('CourseProfile', { courseId: profileId, endedActivity: activity?._id });
+    if (mode === LEARNER) {
+      navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
+    } else if (mode === TRAINER) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
 
     setIsActive(false);
@@ -109,16 +113,16 @@ const ActivityCardContainer = ({
         {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
       </Tab.Screen>
       {cards.length > 0 && activity &&
-         <>
-           {cards.map((_, index) => (
-             <Tab.Screen key={index} name={`card-${index}`}>
-               {() => <CardScreen index={index} goBack={goBack} />}
-             </Tab.Screen>
-           ))}
-           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-             {() => <ActivityEndCard goBack={goBack} activity={activity} />}
-           </Tab.Screen>
-         </>
+        <>
+          {cards.map((_, index) => (
+            <Tab.Screen key={index} name={`card-${index}`}>
+              {() => <CardScreen index={index} goBack={goBack} />}
+            </Tab.Screen>
+          ))}
+          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+            {() => <ActivityEndCard goBack={goBack} activity={activity} />}
+          </Tab.Screen>
+        </>
       }
     </Tab.Navigator>
     : null;
@@ -128,7 +132,7 @@ const mapStateToProps = (state: StateType) => ({
   cards: state.cards.cards,
   cardIndex: state.cards.cardIndex,
   exitConfirmationModal: state.cards.exitConfirmationModal,
-  isCourse: state.courses.isCourse,
+  mode: state.courses.mode,
 });
 
 const mapDispatchToProps = dispatch => ({

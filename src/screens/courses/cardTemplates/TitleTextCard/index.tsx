@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -24,14 +25,14 @@ const TitleTextCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: Title
   if (isLoading) return null;
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.title}>{card.title}</Text>
         <Markdown style={markdownStyle(cardsStyle.text)}>{card.text}</Markdown>
       </ScrollView>
       <CardFooter index={index} />
-    </>
+    </SafeAreaView>
   );
 };
 

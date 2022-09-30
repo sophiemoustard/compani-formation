@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import { createRef, useEffect, useReducer, useState } from 'react';
 import { Text, View, TextInput, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -22,10 +22,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const inputRefs: any[] = [
-    React.createRef(),
-    React.createRef(),
-    React.createRef(),
-    React.createRef(),
+    createRef(),
+    createRef(),
+    createRef(),
+    createRef(),
   ];
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigation = useNavigation();
@@ -36,11 +36,11 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const keyboardDidShow = () => setIsKeyboardOpen(true);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
-    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const showListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
     return () => {
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
-      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
+      hideListener.remove();
+      showListener.remove();
     };
   });
 

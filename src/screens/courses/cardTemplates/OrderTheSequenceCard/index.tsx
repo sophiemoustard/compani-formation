@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import DraggableFlatList from 'react-native-draggable-flatlist';
+import { NestableScrollContainer, NestableDraggableFlatList } from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
@@ -88,12 +89,6 @@ const OrderTheSequenceCard = ({
     })));
   };
 
-  const renderListHeaderComponent = () => <>
-    <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-    <Text style={cardsStyle.informativeText}>
-      Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
-    </Text>
-  </>;
   const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   if (isLoading) return null;
@@ -101,13 +96,18 @@ const OrderTheSequenceCard = ({
   const style = styles(footerColors.background);
 
   return (
-    <>
+    <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
+      <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
       <View style={style.container}>
-        <DraggableFlatList contentContainerStyle={style.draggableContainer} showsVerticalScrollIndicator={false}
-          data={answers} ListHeaderComponentStyle={style.questionContainer} onDragEnd={setAnswersArray}
-          ListHeaderComponent={renderListHeaderComponent} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-          renderItem={renderItem} activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
+        <NestableScrollContainer showsVerticalScrollIndicator={false}>
+          <Text style={cardsStyle.informativeText}>
+            Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
+          </Text>
+          <NestableDraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
+            keyExtractor={(_, answerIndex) => answerIndex.toString()} renderItem={renderItem}
+            activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
+        </NestableScrollContainer>
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
@@ -115,7 +115,7 @@ const OrderTheSequenceCard = ({
           buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
           onPressFooterButton={onPressFooterButton} />
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

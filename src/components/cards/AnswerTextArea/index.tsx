@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Keyboard, TextInput, View } from 'react-native';
 import Shadow from '../../design/Shadow';
 import { GREY } from '../../../styles/colors';
@@ -18,9 +18,9 @@ const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQues
   const style = styles(isSelected);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
     return () => {
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      hideListener.remove();
     };
   });
 

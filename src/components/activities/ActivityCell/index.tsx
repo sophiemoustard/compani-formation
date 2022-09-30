@@ -1,21 +1,22 @@
-import React, { useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import CardsActions from '../../../store/cards/actions';
 import { StateType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType, QuestionnaireAnswersType } from '../../../types/ActivityTypes';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
-import { QUIZ } from '../../../core/data/constants';
+import { LEARNER, QUIZ } from '../../../core/data/constants';
 import styles from './styles';
 
 type ActivityCellProps = {
   activity: ActivityType,
   profileId: string,
-  isCourse: boolean,
+  mode: CourseModeType,
   setQuestionnaireAnswersList: (qalist: QuestionnaireAnswersType[]) => void,
 }
 
@@ -33,7 +34,7 @@ const colorsReducer = (state, action) => {
   }
 };
 
-const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersList }: ActivityCellProps) => {
+const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }: ActivityCellProps) => {
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
@@ -58,7 +59,7 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
   };
 
   const onPress = () => {
-    if (isCourse) getQuestionnaireAnswersList();
+    if (mode === LEARNER) getQuestionnaireAnswersList();
 
     navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId });
   };
@@ -85,9 +86,7 @@ const ActivityCell = ({ activity, profileId, isCourse, setQuestionnaireAnswersLi
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  isCourse: state.courses.isCourse,
-});
+const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
 
 const mapDispatchToProps = dispatch => ({
   setQuestionnaireAnswersList: questionnaireAnswersList =>

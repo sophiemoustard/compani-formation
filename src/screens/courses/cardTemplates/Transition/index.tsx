@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { WHITE } from '../../../../styles/colors';
 import CardFooter from '../../../../components/cards/CardFooter';
@@ -22,13 +23,13 @@ const Transition = ({ index, card, isLoading, setIsRightSwipeEnabled }: Transiti
   if (isLoading) return null;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader color={WHITE} />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{card.title}</Text>
       </View>
       <CardFooter index={index} color={WHITE} />
-    </View>
+    </SafeAreaView>
   );
 };
 

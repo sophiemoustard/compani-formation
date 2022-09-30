@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
@@ -15,26 +14,22 @@ describe('Authentication tests', () => {
   const baseURL = 'test';
   let axiosLoggedMock;
   let axiosNotLoggedMock;
-  let getEnvVarsStub;
   let getBaseUrlStub;
 
   beforeEach(() => {
     axiosLoggedMock = new MockAdapter(axiosLogged);
     axiosNotLoggedMock = new MockAdapter(axiosNotLogged);
-    getEnvVarsStub = sinon.stub(Environment, 'getEnvVars');
     getBaseUrlStub = sinon.stub(Environment, 'getBaseUrl');
   });
 
   afterEach(() => {
     axiosLoggedMock.restore();
     axiosNotLoggedMock.restore();
-    getEnvVarsStub.restore();
     getBaseUrlStub.restore();
     cleanup();
   });
 
   test('user should authenticate and be redirected to Home page', async () => {
-    getEnvVarsStub.returns({ baseURL: 'test' });
     getBaseUrlStub.returns('test');
     const store = createStore(reducers);
     const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);

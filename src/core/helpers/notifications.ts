@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { BLENDED_COURSE_REGISTRATION, GRANTED, DENIED, NEW_ELEARNING_COURSE } from '../data/constants';
+import { BLENDED_COURSE_REGISTRATION, GRANTED, DENIED, NEW_ELEARNING_COURSE, PEDAGOGY } from '../data/constants';
 import { navigationRef } from '../../navigationRef';
 import asyncStorage from './asyncStorage';
 import Users from '../../api/users';
@@ -10,19 +10,17 @@ import Programs from '../../api/programs';
 import { BlendedCourseType, ELearningProgramType } from '../../types/CourseTypes';
 
 export const registerForPushNotificationsAsync = async () => {
-  let finalStatus;
-
   if (!Constants.isDevice) return { token: null, status: DENIED };
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  finalStatus = existingStatus;
+  let finalStatus = existingStatus;
 
   if (existingStatus !== GRANTED) {
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
   }
 
-  const { data: token } = await Notifications.getExpoPushTokenAsync();
+  const { data: token } = await Notifications.getExpoPushTokenAsync({ experienceId: process.env.EXPERIENCE_ID });
   await asyncStorage.setExpoToken(token);
 
   if (finalStatus !== GRANTED) return { token, status: DENIED };
@@ -46,7 +44,7 @@ export const handleNotificationResponse = async (response) => {
   const { type, _id } = response.notification.request.content.data;
   switch (type) {
     case BLENDED_COURSE_REGISTRATION: {
-      const course = await Courses.getCourse(_id);
+      const course = await Courses.getCourse(_id, PEDAGOGY);
 
       return navigationRef.current?.navigate('BlendedAbout', { course: course as BlendedCourseType });
     }

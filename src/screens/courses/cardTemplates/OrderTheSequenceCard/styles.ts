@@ -1,15 +1,18 @@
 import { StyleSheet } from 'react-native';
+import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
-import { MARGIN, PADDING } from '../../../../styles/metrics';
+import { MARGIN } from '../../../../styles/metrics';
 
 const styles = (backgroundColor: string) => StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: GREY[100],
+  },
   container: {
     marginHorizontal: MARGIN.LG,
-    flexGrow: 1,
-  },
-  draggableContainer: {
-    flexGrow: 1,
-    paddingBottom: PADDING.XL,
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: MARGIN.SM,
   },
   questionContainer: {
     justifyContent: 'space-between',
@@ -17,6 +20,7 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   },
   question: {
     ...FIRA_SANS_REGULAR.MD,
+    marginHorizontal: MARGIN.LG,
   },
   footerContainer: {
     backgroundColor,

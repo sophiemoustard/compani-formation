@@ -1,20 +1,32 @@
 import { AxiosResponse } from 'axios';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
-import { CourseType } from '../types/CourseTypes';
-import { CourseListResponseType, CourseResponseType, PdfResponseType } from '../types/AxiosTypes';
-import { MOBILE } from '../core/data/constants';
+import { CourseType, BlendedCourseType, actionQueryCourseType } from '../types/CourseTypes';
+import { BlendedCourseListResponseType, CourseResponseType, PdfResponseType } from '../types/AxiosTypes';
+import { MOBILE, OPERATIONS } from '../core/data/constants';
+
+type GetCourseListType = {
+  action: actionQueryCourseType,
+  format?: string,
+  trainer?: string
+}
 
 export default {
-  getUserCourses: async (): Promise<CourseType[]> => {
+  getCourseList: async (params: GetCourseListType): Promise<BlendedCourseType[]> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CourseListResponseType> = await axiosLogged.get(`${baseURL}/courses/user`);
+    const response: AxiosResponse<BlendedCourseListResponseType> = await axiosLogged.get(
+      `${baseURL}/courses`,
+      { params: { ...params, origin: MOBILE } }
+    );
 
     return response.data.data.courses;
   },
-  getCourse: async (courseId): Promise<CourseType> => {
+  getCourse: async (courseId: string, action: actionQueryCourseType): Promise<CourseType> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CourseResponseType> = await axiosLogged.get(`${baseURL}/courses/${courseId}/user`);
+    const response: AxiosResponse<CourseResponseType> = await axiosLogged.get(
+      `${baseURL}/courses/${courseId}`,
+      { params: { action, ...(action === OPERATIONS && { origin: MOBILE }) } }
+    );
 
     return response.data.data.course;
   },

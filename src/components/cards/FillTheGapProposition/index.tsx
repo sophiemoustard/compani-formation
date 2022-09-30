@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';

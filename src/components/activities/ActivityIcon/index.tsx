@@ -1,4 +1,3 @@
-import React from 'react';
 import { View } from 'react-native';
 import VideoIcon from '../../../../assets/icons/VideoIcon';
 import LessonIcon from '../../../../assets/icons/LessonIcon';

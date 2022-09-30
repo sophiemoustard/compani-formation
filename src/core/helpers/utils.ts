@@ -43,7 +43,7 @@ export const achievementJingle = async () => {
 export const formatIdentity = (identity, format) => {
   if (!identity) return '';
   const formatLower = format.toLowerCase();
-  const values = [''];
+  const values: string[] = [];
 
   for (let i = 0; i < format.length; i += 1) {
     let value;

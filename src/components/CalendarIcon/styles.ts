@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, PADDING, BORDER_WIDTH, ICON } from '../../styles/metrics';
-import { PINK, WHITE, GREY, GREEN } from '../../styles/colors';
+import { WHITE, GREY, GREEN } from '../../styles/colors';
 import { NUNITO_SEMI, NUNITO_REGULAR } from '../../styles/fonts';
 
 export const CALENDAR_HEADER_HEIGHT = 16;
 
-const styles = StyleSheet.create({
+const styles = (inputColor: string) => StyleSheet.create({
   container: {
     minWidth: 50,
     position: 'relative',
@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
     borderRightWidth: BORDER_WIDTH,
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.SM,
-    borderColor: PINK[500],
+    borderColor: inputColor,
     alignItems: 'center',
     paddingBottom: PADDING.SM,
     overflow: 'hidden',
   },
   dayOfWeek: {
-    backgroundColor: PINK[500],
+    backgroundColor: inputColor,
     width: '100%',
     height: CALENDAR_HEADER_HEIGHT,
     ...NUNITO_SEMI.XS,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   month: {
     ...NUNITO_SEMI.SM,
-    color: PINK[500],
+    color: inputColor,
     paddingHorizontal: PADDING.SM,
   },
   toPlan: {
@@ -51,12 +51,12 @@ const styles = StyleSheet.create({
     right: -10,
     borderRadius: BORDER_RADIUS.MD,
     borderWidth: BORDER_WIDTH,
-    borderColor: PINK[500],
+    borderColor: inputColor,
     backgroundColor: WHITE,
   },
   datesLength: {
     ...NUNITO_REGULAR.SM,
-    color: PINK[500],
+    color: inputColor,
     paddingHorizontal: PADDING.SM,
   },
   finishedContainer: {
@@ -97,12 +97,12 @@ const styles = StyleSheet.create({
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.SM,
     borderWidth: BORDER_WIDTH,
-    borderColor: PINK[500],
+    borderColor: inputColor,
     opacity: 0.6,
     zIndex: -2,
   },
   shadowHeader: {
-    backgroundColor: PINK[500],
+    backgroundColor: inputColor,
     opacity: 0.6,
     height: CALENDAR_HEADER_HEIGHT,
     borderTopLeftRadius: BORDER_RADIUS.SM,

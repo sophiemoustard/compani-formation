@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useReducer } from 'react';
+import { useEffect, useRef, useState, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -38,8 +38,8 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
   const keyboardDidHide = () => Keyboard.dismiss();
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
-    return () => { Keyboard.removeListener('keyboardDidHide', keyboardDidHide); };
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    return () => { hideListener.remove(); };
   });
 
   const hardwareBackPress = () => {

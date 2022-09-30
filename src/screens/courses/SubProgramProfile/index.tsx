@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   BackHandler,
   ImageSourcePropType,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -25,7 +26,6 @@ import { E_LEARNING } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
-import CoursesActions from '../../../store/courses/actions';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import { SubProgramType } from '../../../types/CourseTypes';
 
@@ -36,10 +36,9 @@ StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
   setStatusBarVisible: (boolean) => void,
-  resetCourseReducer: () => void,
 }
 
-const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourseReducer }: SubProgramProfileProps) => {
+const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
@@ -74,9 +73,8 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   }, [getSubProgram, isFocused, setStatusBarVisible]);
 
   const goBack = useCallback(() => {
-    resetCourseReducer();
-    navigation.navigate('Courses');
-  }, [navigation, resetCourseReducer]);
+    navigation.navigate('LearnerCourses');
+  }, [navigation]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();
@@ -100,25 +98,26 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible, resetCourse
   const renderSeparator = () => <View style={styles.separator} />;
 
   return subProgram && subProgram.steps && (
-    <ScrollView style={commonStyles.container} nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-      <ImageBackground source={source} imageStyle={styles.image}
-        style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
-        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
-        <View style={styles.header}>
-          <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
-            iconStyle={styles.arrowShadow} />
-          <Text style={styles.title}>{programName}</Text>
-        </View>
-      </ImageBackground>
-      <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
-        renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
-    </ScrollView>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
+        <ImageBackground source={source} imageStyle={styles.image}
+          style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
+          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
+          <View style={styles.header}>
+            <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
+              iconStyle={styles.arrowShadow} />
+            <Text style={styles.title}>{programName}</Text>
+          </View>
+        </ImageBackground>
+        <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
+          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 export default connect(null, mapDispatchToProps)(SubProgramProfile);

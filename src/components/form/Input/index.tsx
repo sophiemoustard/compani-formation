@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { GREY, WHITE } from '../../../styles/colors';
@@ -56,11 +56,11 @@ const Input = ({
   };
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', keyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const showListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
     return () => {
-      Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      showListener.remove();
+      hideListener.remove();
     };
   });
 

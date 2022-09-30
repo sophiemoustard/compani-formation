@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_MEDIUM.MD,
     color: GREY[800],
   },
+  misc: {
+    color: GREY[600],
+  },
 });
 
 export default styles;

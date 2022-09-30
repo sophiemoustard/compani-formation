@@ -12,15 +12,13 @@ web-report/
 env/*
 api-*
 .idea/*
+.env
 
 # macOS
 .DS_Store
 
 # Jest
 .jest/
-
-#Reactotron
-src/ReactotronConfig.js
 
 #Firebase
 google-services.json

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
@@ -77,7 +78,7 @@ const QuestionAnswerCard = ({
     item={item.text} isSelected={item.isSelected} />;
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
@@ -96,7 +97,7 @@ const QuestionAnswerCard = ({
           buttonDisabled={isValidationDisabled} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
           validateCard={validateQuestionnaireAnswer}/>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

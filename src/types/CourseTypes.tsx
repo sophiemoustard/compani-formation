@@ -1,4 +1,9 @@
+import { UserType } from './UserType';
 import { StepType, ELearningStepType } from './StepTypes';
+import { OPERATIONS, PEDAGOGY } from '../core/data/constants';
+
+// query
+export type actionQueryCourseType = typeof PEDAGOGY | typeof OPERATIONS;
 
 // Program
 export type BaseProgramType = {
@@ -49,6 +54,13 @@ export type SlotType = {
   step: { _id: string, type: string },
 }
 
+export type SlotToPlanType = {
+  _id: string,
+  address?: AddressType,
+  meetingLink?: string,
+  step: { _id: string, type: string },
+}
+
 type BaseCourseType = {
   _id: string,
   progress: number,
@@ -61,17 +73,23 @@ export type ELearningCourseType = BaseCourseType & {
   trainees?: string[],
 };
 
+export type TraineeType = {
+  _id: string,
+  identity: { lastname: string, firstname: string },
+  local: { email: string },
+  picture: { link: '' },
+  firstMobileConnection: string,
+}
+
 export type BlendedCourseType = BaseCourseType & {
   subProgram: { isStrictlyELearning: false },
   slots: SlotType[],
+  slotsToPlan: SlotToPlanType[],
   trainer: { _id: string, identity: { lastname: string, firstname: string }, picture: { link: '' }, biography: '' },
-  contact: {
-    _id: string,
-    identity: { lastname: string, firstname: string },
-    contact: { phone: string },
-    local: { email: string}
-  },
+  contact: UserType,
+  companyRepresentative: UserType,
   misc: string,
+  trainees?: TraineeType[],
 }
 
 export type CourseType = ELearningCourseType | BlendedCourseType;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from 'react-native';
 import QuestionCardFooter from '../QuestionCardFooter';
 import cardsStyle from '../../../styles/cards';

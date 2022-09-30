@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback, useReducer } from 'react';
+import { useEffect, useState, useCallback, useReducer } from 'react';
 import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import ExitModal from '../../components/ExitModal';
 import FeatherButton from '../../components/icons/FeatherButton';
@@ -7,13 +8,13 @@ import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import { RootStackParamList } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
-import styles from './styles';
 import accountCreationStyles from '../../styles/accountCreation';
 import { GREY } from '../../styles/colors';
 import { EMAIL_REGEX } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
+import styles from './styles';
 
 interface EmailFormProps extends StackScreenProps<RootStackParamList, 'EmailForm'> {}
 
@@ -76,28 +77,30 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   const enterEmail = text => setEmail(text.trim());
 
   return (
-    <KeyboardAvoidingView behavior={behavior} style={accountCreationStyles.screenView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <View style={styles.goBack}>
-        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
-          disabled={isLoading} />
-        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
-          title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
-      </View>
-      <View style={accountCreationStyles.container}>
-        <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
-        <View style={accountCreationStyles.input}>
-          <NiInput caption="E-mail" value={email} type="email" validationMessage={error.message}
-            disabled={isLoading} onChangeText={enterEmail} />
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <KeyboardAvoidingView behavior={behavior} style={accountCreationStyles.screenView}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
+        <View style={styles.goBack}>
+          <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD} color={GREY[600]}
+            disabled={isLoading} />
+          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
+            title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
         </View>
-        <View style={accountCreationStyles.footer}>
-          <NiPrimaryButton caption="Valider" onPress={validateEmail} loading={isLoading} />
+        <View style={accountCreationStyles.container}>
+          <Text style={accountCreationStyles.title}>Quel est votre e-mail ?</Text>
+          <View style={accountCreationStyles.input}>
+            <NiInput caption="E-mail" value={email} type="email" validationMessage={error.message}
+              disabled={isLoading} onChangeText={enterEmail} />
+          </View>
+          <View style={accountCreationStyles.footer}>
+            <NiPrimaryButton caption="Valider" onPress={validateEmail} loading={isLoading} />
+          </View>
+          <ForgotPasswordModal email={email} setForgotPasswordModal={setForgotPasswordModal}
+            visible={forgotPasswordModal} />
         </View>
-        <ForgotPasswordModal email={email} setForgotPasswordModal={setForgotPasswordModal}
-          visible={forgotPasswordModal} />
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

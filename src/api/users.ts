@@ -37,7 +37,8 @@ export default {
   },
   uploadImage: async (userId: string, data): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
-    await axiosLogged.post(`${baseURL}/users/${userId}/upload`, data);
+    const headers = { 'Content-Type': 'multipart/form-data' };
+    await axiosLogged.post(`${baseURL}/users/${userId}/upload`, data, { headers });
   },
   deleteImage: async (userId: string): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });

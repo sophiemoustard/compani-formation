@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/cards/selectors';
@@ -74,7 +75,7 @@ const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCard
   const backAnimatedStyle = { transform: [{ rotateY: backInterpolate }] };
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
       <View style={styles.container}>
         <TouchableOpacity style={styles.contentContainer} onPress={flipCard}>
@@ -90,7 +91,7 @@ const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCard
         </TouchableOpacity>
       </View>
       <CardFooter index={index} removeRight={timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD} />
-    </>
+    </SafeAreaView>
   );
 };
 

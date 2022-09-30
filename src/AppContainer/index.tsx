@@ -1,6 +1,7 @@
-import React, { useEffect, useContext, useState, useRef, useCallback } from 'react';
+import { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
@@ -39,7 +40,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
 
 const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
-  const [updateModaleVisible, setUpdateModaleVisible] = useState(false);
+  const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
@@ -168,7 +169,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
   if (!appIsReady) return null;
 
-  const style = styles(statusBarVisible, StatusBar.currentHeight);
+  const style = styles(statusBarVisible);
 
   if (maintenanceModalVisible) return <MaintenanceModal />;
   if (updateModaleVisible) return <UpdateAppModal />;
@@ -178,7 +179,9 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <AppNavigation />
+      <SafeAreaProvider>
+        <AppNavigation />
+      </SafeAreaProvider>
     </>
   );
 };

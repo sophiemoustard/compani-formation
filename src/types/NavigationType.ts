@@ -9,21 +9,26 @@ export type RootStackParamList = {
   QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
   BlendedAbout: { course: BlendedCourseType }
   ElearningAbout: { program: ELearningProgramType }
+  AdminCourseProfile: { courseId: string }
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
-  Camera: undefined;
   ImagePickerManager: undefined;
-  CourseProfile: {
+  LearnerCourseProfile: {
     courseId: string,
     endedActivity?: string | null,
     endedQuestionnaire?: string | null,
   };
+  TrainerCourseProfile: {
+    courseId: string,
+  };
   SubProgramProfile: { subProgramId: string };
+  CourseProfileHeader: undefined,
 }
 
 export type RootBottomTabParamList = {
   Catalog: undefined;
-  Courses: undefined;
+  LearnerCourses: undefined;
+  TrainerCourses: undefined;
   Profile: undefined;
 }
 

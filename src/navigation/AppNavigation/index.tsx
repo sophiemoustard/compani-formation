@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from 'react';
+import { useRef, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Context as AuthContext } from '../../context/AuthContext';
@@ -10,13 +10,13 @@ import EmailForm from '../../screens/EmailForm';
 import CreateAccount from '../../screens/CreateAccount';
 import BlendedAbout from '../../screens/explore/BlendedAbout';
 import ElearningAbout from '../../screens/explore/ELearningAbout';
-import CourseProfile from '../../screens/courses/CourseProfile';
+import LearnerCourseProfile from '../../screens/courses/profile/LearnerCourseProfile';
+import TrainerCourseProfile from '../../screens/courses/profile/TrainerCourseProfile';
+import AdminCourseProfile from '../../screens/courses/profile/AdminCourseProfile';
 import SubProgramProfile from '../../screens/courses/SubProgramProfile';
 import ActivityCardContainer from '../../screens/courses/ActivityCardContainer';
 import QuestionnaireCardContainer from '../../screens/courses/QuestionnaireCardContainer';
 import ProfileEdition from '../../screens/profile/ProfileEdition';
-import Camera from '../../screens/Camera';
-import ImagePickerManager from '../../screens/ImagePickerManager';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
 import { RootStackParamList } from '../../types/NavigationType';
@@ -43,14 +43,15 @@ const AppNavigation = () => {
 
   const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
-  const Profile = { ProfileEdition, PasswordEdition, Camera, ImagePickerManager };
-  const Courses = { CourseProfile, SubProgramProfile };
+  const Profile = { ProfileEdition, PasswordEdition };
+  const Courses = { LearnerCourseProfile, SubProgramProfile, TrainerCourseProfile };
   const userScreens = {
     Home,
     ActivityCardContainer,
     QuestionnaireCardContainer,
     BlendedAbout,
     ElearningAbout,
+    AdminCourseProfile,
     ...Profile,
     ...Courses,
   };

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Text, ScrollView, ImageBackground } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
+import CoursesActions from '../../../store/courses/actions';
 import Programs from '../../../api/programs';
 import { ELearningProgramType } from '../../../types/CourseTypes';
 import commonStyles from '../../../styles/common';
@@ -13,6 +15,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import CoursesSection from '../../../components/CoursesSection';
+import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter, getTheoreticalHours } from '../../../core/helpers/utils';
 
@@ -21,6 +24,7 @@ StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUserId: string | null,
+  resetCourseReducer: () => void,
 }
 
 const CategoriesStyleList = [
@@ -46,7 +50,7 @@ const CategoriesStyleList = [
   },
 ];
 
-const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
+const Catalog = ({ loggedUserId, navigation, resetCourseReducer }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const isFocused = useIsFocused();
   const style = styles();
@@ -66,9 +70,11 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   useEffect(() => {
     async function fetchData() { await getPrograms(); }
-    if (loggedUserId && isFocused) fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedUserId, isFocused]);
+    if (isFocused) {
+      resetCourseReducer();
+      fetchData();
+    }
+  }, [loggedUserId, isFocused, resetCourseReducer]);
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
@@ -76,22 +82,25 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     theoreticalHours={getTheoreticalHours(get(program, 'subPrograms[0].steps'))} />;
 
   return (
-    <ScrollView style={commonStyles.container} contentContainerStyle={style.container}>
-      <Text style={commonStyles.title}>Explorer</Text>
-      {Object.keys(programsByCategories).map((key, i) =>
-        <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
-          key={`program${i}`} source={CategoriesStyleList[i % 4].imageBackground}>
-          <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
-            countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
-        </ImageBackground>)}
-      <View style={style.footer}>
-        <Image style={style.elipse} source={require('../../../../assets/images/log_out_background.png')} />
-        <Image source={require('../../../../assets/images/aux_detective.png')} style={style.fellow} />
-      </View>
-    </ScrollView>
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <ScrollView contentContainerStyle={style.container}>
+        <Text style={commonStyles.title}>Explorer</Text>
+        {Object.keys(programsByCategories).map((key, i) =>
+          <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}
+            key={`program${i}`} source={CategoriesStyleList[i % 4].imageBackground}>
+            <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
+              countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
+          </ImageBackground>)}
+        <HomeScreenFooter source={require('../../../../assets/images/aux_detective.png')} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(Catalog);
+const mapDispatchToProps = dispatch => ({
+  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

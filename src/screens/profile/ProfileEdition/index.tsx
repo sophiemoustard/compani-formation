@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useReducer } from 'react';
+import { useEffect, useRef, useState, useReducer } from 'react';
 import {
   Text,
   ScrollView,
@@ -11,8 +11,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { CameraCapturedPicture } from 'expo-camera';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
@@ -30,6 +32,9 @@ import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
+import { formatImagePayload } from '../../../core/helpers/pictures';
+import CameraModal from '../../../components/camera/CameraModal';
+import ImagePickerManager from '../../../components/ImagePickerManager';
 
 interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
@@ -59,13 +64,15 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
+  const [camera, setCamera] = useState<boolean>(false);
+  const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
 
   const keyboardDidHide = () => Keyboard.dismiss();
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+    const hideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
     return () => {
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      hideListener.remove();
     };
   });
 
@@ -94,14 +101,23 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     if (lastName || phone || email || emptyEmail) {
       setIsValid(false);
     } else setIsValid(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unvalid]);
+
+  useEffect(() => {
+    if (loggedUser?.picture?.link) {
+      setSource({ uri: loggedUser.picture.link });
+      setHasPhoto(true);
+    } else {
+      setSource(require('../../../../assets/images/default_avatar.png'));
+      setHasPhoto(false);
+    }
+  }, [loggedUser]);
 
   const scrollRef = useRef<ScrollView>(null);
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Profile');
+    navigation.goBack();
   };
 
   const saveData = async () => {
@@ -144,52 +160,79 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     return '';
   };
 
+  const savePicture = async (picture: CameraCapturedPicture) => {
+    const { firstname, lastname } = loggedUser.identity;
+    const fileName = `photo_${firstname}_${lastname}`;
+    const data = await formatImagePayload(picture, fileName);
+
+    if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
+    await Users.uploadImage(loggedUser._id, data);
+
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
+  };
+
+  const deletePicture = async () => {
+    await Users.deleteImage(loggedUser._id);
+    const user = await Users.getById(loggedUser._id);
+    setLoggedUser(user);
+    setPictureModal(false);
+    goBack();
+  };
+
   return !!loggedUser && (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
-      keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
-      <View style={styles.goBack}>
-        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
-          color={GREY[600]} />
-        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
-          title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
-      </View>
-      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Modifier mes informations</Text>
-        <View style={styles.imageContainer}>
-          <Image style={styles.profileImage} source={source} />
-          <TouchableOpacity onPress={() => setPictureModal(true)}>
-            <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
-          </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
+        <View style={styles.goBack}>
+          <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
+            color={GREY[600]} />
+          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
+            title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
         </View>
-        <View style={styles.input}>
-          <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
-            onChangeText={text => onChangeIdentity('firstname', text)} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Nom" value={editedUser.identity.lastname}
-            type="lastname" onChangeText={text => onChangeIdentity('lastname', text)}
-            validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
-            onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
-            validationMessage={unvalid.phone && isValidationAttempted
-              ? 'Votre numéro de téléphone n\'est pas valide'
-              : ''} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
-            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })} />
-        </View>
-        <View style={styles.footer}>
-          <NiErrorMessage message={error.message} show={error.value} />
-          <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
-        </View>
-        <PictureModal visible={pictureModal} hasPhoto={hasPhoto} setPictureModal={setPictureModal} setSource={setSource}
-          setHasPhoto={setHasPhoto} goBack={goBack} />
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>Modifier mes informations</Text>
+          <View style={styles.imageContainer}>
+            <Image style={styles.profileImage} source={source} />
+            <TouchableOpacity onPress={() => setPictureModal(true)}>
+              <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
+              onChangeText={text => onChangeIdentity('firstname', text)} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Nom" value={editedUser.identity.lastname}
+              type="lastname" onChangeText={text => onChangeIdentity('lastname', text)}
+              validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
+              onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
+              validationMessage={unvalid.phone && isValidationAttempted
+                ? 'Votre numéro de téléphone n\'est pas valide'
+                : ''} />
+          </View>
+          <View style={styles.input}>
+            <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
+              onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })} />
+          </View>
+          <View style={styles.footer}>
+            <NiErrorMessage message={error.message} show={error.value} />
+            <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
+          </View>
+          <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
+            deletePicture={deletePicture} openCamera={() => setCamera(true)}
+            openImagePickerManager={() => setImagePickerManager(true)} />
+          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
+            goBack={goBack} />
+          {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
+            savePicture={savePicture} goBack={goBack} />}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

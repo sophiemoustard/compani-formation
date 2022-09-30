@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import companiDate from './dates';
+import CompaniDate from './dates/companiDates';
 
 type TokenType = {
   token: string | null,
@@ -7,7 +7,7 @@ type TokenType = {
 };
 
 const isTokenValid = (token: TokenType['token'], expiryDate: TokenType['expiryDate']): boolean =>
-  !!token && companiDate().isBefore(expiryDate || '');
+  !!token && CompaniDate().isBefore(expiryDate || '');
 
 type CompaniTokenType = {
   companiToken: TokenType['token'],
@@ -25,7 +25,7 @@ const setCompaniToken = async (
 ): Promise<void> => {
   if (token) await AsyncStorage.setItem('compani_token', token);
   if (tokenExpireDate) {
-    await AsyncStorage.setItem('compani_token_expiry_date', companiDate(tokenExpireDate).toISOString());
+    await AsyncStorage.setItem('compani_token_expiry_date', CompaniDate(tokenExpireDate).toISO());
   }
 };
 
@@ -46,7 +46,7 @@ const getRefreshToken = async (): Promise<RefreshTokenType> => ({
 
 const setRefreshToken = async (refreshToken: RefreshTokenType['refreshToken']): Promise<void> => {
   if (refreshToken) await AsyncStorage.setItem('refresh_token', refreshToken);
-  await AsyncStorage.setItem('refresh_token_expiry_date', companiDate().endOf('day').add(1, 'year').toISOString());
+  await AsyncStorage.setItem('refresh_token_expiry_date', CompaniDate().endOf('day').add(1, 'years').toISO());
 };
 
 const removeRefreshToken = async (): Promise<void> => {

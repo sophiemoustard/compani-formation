@@ -4,6 +4,10 @@ import { GREY, PINK } from '../../../../styles/colors';
 import { MARGIN, PADDING } from '../../../../styles/metrics';
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: GREY[100],
+  },
   container: {
     flex: 1,
     marginHorizontal: MARGIN.LG,

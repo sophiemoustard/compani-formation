@@ -4,6 +4,10 @@ import { GREY, PINK, WHITE } from '../../../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN, PADDING } from '../../../../styles/metrics';
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: GREY[100],
+  },
   container: {
     marginHorizontal: MARGIN.LG,
     marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.LG,

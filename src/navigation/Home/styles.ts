@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   iconText: {
     ...FIRA_SANS_BOLD.SM,
     color: PINK[500],
+    textAlign: 'center',
   },
 });
 

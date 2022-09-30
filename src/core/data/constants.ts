@@ -1,7 +1,14 @@
 export const APP_NAME = 'formation';
+export const LOCAL = 'local';
+export const DEVELOPMENT = 'development';
+export const STAGING = 'staging';
+export const PRODUCTION = 'production';
 
 // COURSES
 export const STRICTLY_E_LEARNING = 'strictly_e_learning';
+export const BLENDED = 'blended';
+export const OPERATIONS = 'operations';
+export const PEDAGOGY = 'pedagogy';
 
 // STEPS
 export const ON_SITE = 'on_site';
@@ -43,6 +50,11 @@ export const QUESTION_ANSWER = 'question_answer';
 // ROLE
 export const VENDOR_ADMIN = 'vendor_admin';
 export const TRAINING_ORGANISATION_MANAGER = 'training_organisation_manager';
+export const TRAINER = 'trainer';
+
+// COURSE MODE
+export const LEARNER = 'learner';
+export const TESTER = 'tester';
 
 // REGEX
 export const PHONE_REGEX = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}(?:[\s]*)$/;

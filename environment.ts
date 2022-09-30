@@ -1,44 +1,56 @@
-/* eslint-disable import/extensions */
 import Constants from 'expo-constants';
-// @ts-ignore
-import localEnv from './env/env.local';
-// @ts-ignore
-import devEnv from './env/env.dev';
-// @ts-ignore
-import stagingEnv from './env/env.staging';
-// @ts-ignore
-import prodEnv from './env/env.prod';
+import { LOCAL, DEVELOPMENT, STAGING, PRODUCTION } from './src/core/data/constants';
 import asyncStorage from './src/core/helpers/asyncStorage';
 
-type EnvVarsType = {
-  baseURL: string,
-  sentryKey: string,
-  baseURLStaging: string,
-  testEmail: string,
-  testId: string,
-}
+const getSentryKey = (): string => Constants.manifest?.extra?.SENTRY_KEY || '';
 
-const getEnvVars = (): EnvVarsType => {
-  const env = Constants.manifest?.releaseChannel || '';
+const _getBaseUrlForProfile = (): string => {
+  if (!Constants?.manifest?.extra) return '';
 
-  if (__DEV__) return localEnv;
-  if (/dev/.test(env)) return devEnv;
-  if (/staging/.test(env)) return stagingEnv;
-  if (/prod/.test(env)) return prodEnv;
-  return localEnv;
+  /**
+   * Pour utiliser expo build:...
+   * Il faudra l'enlever quand on aura totalement migrer vers EAS build
+   */
+  if (Constants.manifest.releaseChannel) {
+    if (__DEV__) return Constants.manifest.extra.BASE_URL_LOCAL;
+    if (/dev/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.BASE_URL_DEV;
+    if (/staging/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.BASE_URL_STAGING;
+    if (/prod/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.BASE_URL_PROD;
+    return '';
+  }
+
+  /**
+   * Pour utiliser eas build
+   */
+  switch (Constants.manifest.extra.PROFILE) {
+    case LOCAL:
+      return Constants.manifest.extra.BASE_URL_LOCAL || '';
+    case DEVELOPMENT:
+      return Constants.manifest.extra.BASE_URL_DEV || '';
+    case STAGING:
+      return Constants.manifest.extra.BASE_URL_STAGING || '';
+    case PRODUCTION:
+      return Constants.manifest.extra.BASE_URL_PROD || '';
+    default:
+      return '';
+  }
 };
 
 const getBaseUrl = async (payload?: { email?: string, userId?: string }): Promise<string> => {
-  const { baseURLStaging, baseURL, testEmail, testId } = getEnvVars();
+  const baseURLStaging = Constants.manifest?.extra?.BASE_URL_STAGING || '';
+  const testEmails = (Constants.manifest?.extra?.TEST_EMAILS || '').split(',');
+  const testIds = (Constants.manifest?.extra?.TEST_IDS || '').split(',');
 
-  if ((payload?.email && payload?.email === testEmail) || (payload?.userId && payload?.userId === testId)) {
+  // used in authentication routes POST /users/authenticate and PUT /users/${userId}/password
+  if ((payload?.email && testEmails.includes(payload.email)) || (payload?.userId && testIds.includes(payload.userId))) {
     return baseURLStaging;
   }
 
+  // used for all logged routes
   const userId = await asyncStorage.getUserId();
-  if (testId === userId) return baseURLStaging;
+  if (userId && testIds.includes(userId)) return baseURLStaging;
 
-  return baseURL;
+  return _getBaseUrlForProfile();
 };
 
-export default { getEnvVars, getBaseUrl };
+export default { getSentryKey, getBaseUrl };

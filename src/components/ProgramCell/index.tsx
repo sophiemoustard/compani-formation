@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, View, ImageBackground, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import get from 'lodash/get';
 import { ProgramType } from '../../types/CourseTypes';

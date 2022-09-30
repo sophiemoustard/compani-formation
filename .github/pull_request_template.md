@@ -2,15 +2,16 @@
 
 - [ ] J'ai testé sur iphone
 - [ ] J'ai testé sur android
+- [ ] J'ai testé sur tablette
 
 ---
 
 ### POINTS D'ATTENTION POUR CETTE PR  :warning:
 
 - [ ] J'ai ajouté une variable d'environnement
-  - [ ] Si oui, J'ai précisé sur le [slite de déploiement](https://alenvi.slite.com/app/channels/K4ziWiq5eN/notes/qSsdyBwQsC) ce qu'il fallait mettre à jour
+  - [ ] Si oui, J'ai précisé sur le [Doc de déploiement](https://www.notion.so/D-ploiement-et-distribution-mobile-7d25b02c0de448e2af7100151401d7e2) ce qu'il fallait mettre à jour
 - [ ] Mes changements entrainent une incompatibilité avec l'ancienne version de l'api
-  - [ ] Si oui, j'ai noté dans le [slite de déploiement](https://alenvi.slite.com/app/channels/K4ziWiq5eN/notes/qSsdyBwQsC) qu'il faut fusionner l'api dans staging avant d'envoyer le build
+  - [ ] Si oui, j'ai noté dans le [Doc de déploiement](https://www.notion.so/D-ploiement-et-distribution-mobile-7d25b02c0de448e2af7100151401d7e2) qu'il faut fusionner l'api dans staging avant d'envoyer le build
 
 ---
 
@@ -21,4 +22,4 @@
 
 - Comment tester ? :
 
-_Si tu as lu cette description, pense a réagir avec un :eye:_
+_Si tu as lu cette description, pense à réagir avec un :eye:_

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ICON } from '../../styles/metrics';
 import commonStyle from '../../styles/common';
 import FeatherButton from '../icons/FeatherButton';

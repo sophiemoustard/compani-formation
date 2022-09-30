@@ -15,8 +15,9 @@ export type StepType = ELearningStepType | LiveStepType;
 
 export type NextSlotsStepType = BaseStepType & {
   type: typeof ON_SITE | typeof REMOTE,
-  stepIndex: string,
+  stepIndex: number,
   firstSlot: Date,
   slots: Date[],
   courseId: string,
+  misc?: string,
 };

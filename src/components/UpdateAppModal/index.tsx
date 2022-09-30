@@ -1,4 +1,3 @@
-import React from 'react';
 import { Platform, Text, Linking } from 'react-native';
 import NiModal from '../Modal';
 import NiPrimaryButton from '../form/PrimaryButton';

@@ -4,7 +4,7 @@ import { MARGIN } from '../../../../styles/metrics';
 import { NUNITO_REGULAR_BOLD_ITALIC } from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: PINK[500],
   },

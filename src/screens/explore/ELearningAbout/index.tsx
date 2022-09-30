@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackActions } from '@react-navigation/native';
@@ -8,15 +8,17 @@ import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import CoursesActions from '../../../store/courses/actions';
 import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
+import { LEARNER } from '../../../core/data/constants';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
-  setIsCourse: (value: boolean) => void,
+  setMode: (value: CourseModeType) => void,
 }
 
-const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: ElearningAboutProps) => {
+const ElearningAbout = ({ route, navigation, loggedUserId, setMode }: ElearningAboutProps) => {
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
@@ -32,17 +34,17 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
     }
   }, [loggedUserId, program]);
 
-  const goToCourse = () => navigation.navigate('CourseProfile', { courseId });
+  const goToCourse = () => navigation.navigate('LearnerCourseProfile', { courseId });
 
   const startActivity = () => {
     const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
-    navigation.dispatch(StackActions.replace('CourseProfile', { courseId }));
+    navigation.dispatch(StackActions.replace('LearnerCourseProfile', { courseId }));
     navigation.navigate('ActivityCardContainer', { activityId: firstActivity._id, profileId: courseId });
   };
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      setIsCourse(true);
+      setMode(LEARNER);
       if (!hasAlreadySubscribed) {
         await Courses.registerToELearningCourse(courseId);
         startActivity();
@@ -62,7 +64,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setIsCourse }: Elearn
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setIsCourse: (isCourse: boolean) => dispatch(CoursesActions.setIsCourse(isCourse)),
+  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ElearningAbout);

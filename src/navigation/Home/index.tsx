@@ -1,17 +1,22 @@
-import React from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { connect } from 'react-redux';
 import CatalogIcon from '../../../assets/icons/CatalogIcon';
 import CatalogSelectedIcon from '../../../assets/icons/CatalogSelectedIcon';
-import CoursesIcon from '../../../assets/icons/CoursesIcon';
-import CoursesSelectedIcon from '../../../assets/icons/CoursesSelectedIcon';
+import LearnerCoursesIcon from '../../../assets/icons/LearnerCoursesIcon';
+import LearnerCoursesSelectedIcon from '../../../assets/icons/LearnerCoursesSelectedIcon';
+import TrainerCoursesIcon from '../../../assets/icons/TrainerCoursesIcon';
+import TrainerCoursesSelectedIcon from '../../../assets/icons/TrainerCoursesSelectedIcon';
 import ProfileIcon from '../../../assets/icons/ProfileIcon';
 import ProfileSelectedIcon from '../../../assets/icons/ProfileSelectedIcon';
-import CourseList from '../../screens/courses/CourseList';
+import { getUserVendorRole } from '../../store/main/selectors';
+import LearnerCourses from '../../screens/courses/list/LearnerCourses';
+import TrainerCourses from '../../screens/courses/list/TrainerCourses';
 import Catalog from '../../screens/explore/Catalog';
 import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
 import { RootBottomTabParamList } from '../../types/NavigationType';
+import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER } from '../../core/data/constants';
 
 const Tab = createBottomTabNavigator<RootBottomTabParamList>();
 
@@ -26,12 +31,19 @@ const catalogIcon = ({ focused }: tabBarProps) => (focused
   </View>
   : <CatalogIcon style={styles.iconContainer} />);
 
-const courseIcon = ({ focused }: tabBarProps) => (focused
+const learnerCoursesIcon = ({ focused }: tabBarProps) => (focused
   ? <View style={styles.iconContainer}>
-    <CoursesSelectedIcon />
+    <LearnerCoursesSelectedIcon />
     <Text style={styles.iconText}>Mes formations</Text>
   </View>
-  : <CoursesIcon style={styles.iconContainer} />);
+  : <LearnerCoursesIcon style={styles.iconContainer} />);
+
+const trainerCoursesIcon = ({ focused }: tabBarProps) => (focused
+  ? <View style={styles.iconContainer}>
+    <TrainerCoursesSelectedIcon />
+    <Text style={styles.iconText}>Espace intervenant</Text>
+  </View>
+  : <TrainerCoursesIcon style={styles.iconContainer} />);
 
 const profileIcon = ({ focused }: tabBarProps) => (focused
   ? <View style={styles.iconContainer}>
@@ -40,13 +52,26 @@ const profileIcon = ({ focused }: tabBarProps) => (focused
   </View>
   : <ProfileIcon style={styles.iconContainer} />);
 
-const Home = () => (
-  <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
-    initialRouteName="Courses">
-    <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon }} />
-    <Tab.Screen name="Courses" component={CourseList} options={{ tabBarIcon: courseIcon }} />
-    <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon }} />
-  </Tab.Navigator>
-);
+interface HomeProps {
+  userVendorRole: string | null,
+}
 
-export default Home;
+const Home = ({ userVendorRole } : HomeProps) => {
+  const showTrainerTab = !!userVendorRole &&
+    [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole) && false;
+
+  return (
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
+      initialRouteName="LearnerCourses">
+      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon }} />
+      <Tab.Screen name="LearnerCourses" component={LearnerCourses} options={{ tabBarIcon: learnerCoursesIcon }} />
+      { showTrainerTab &&
+        <Tab.Screen name="TrainerCourses" component={TrainerCourses} options={{ tabBarIcon: trainerCoursesIcon }} />}
+      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon }} />
+    </Tab.Navigator>
+  );
+};
+
+const mapStateToProps = state => ({ userVendorRole: getUserVendorRole(state) });
+
+export default connect(mapStateToProps)(Home);

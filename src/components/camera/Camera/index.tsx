@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { View, TouchableOpacity, Dimensions, Platform } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import * as ImageManipulator from 'expo-image-manipulator';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
@@ -8,13 +8,12 @@ import { WHITE } from '../../../styles/colors';
 import IoniconsButton from '../../icons/IoniconsButton';
 
 interface NiCameraProps {
-  setPreviewVisible: (visible: boolean) => void,
-  setCapturedImage: (photo: any) => void,
+  setCapturedImage: (photo: CameraCapturedPicture) => void,
 }
 
-const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
-  const { front, back } = Camera.Constants.Type;
-  const { on, off } = Camera.Constants.FlashMode;
+const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
+  const { front, back } = CameraType;
+  const { on, off } = FlashMode;
   const camera = useRef<Camera>(null);
   const [cameraType, setCameraType] = useState(front);
   const [flashMode, setFlashMode] = useState(off);
@@ -52,7 +51,6 @@ const NiCamera = ({ setPreviewVisible, setCapturedImage }: NiCameraProps) => {
 
   const onTakePicture = async () => {
     const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
-    setPreviewVisible(true);
     setCapturedImage(cameraType === back ? photo : await flipPhoto(photo));
   };
 

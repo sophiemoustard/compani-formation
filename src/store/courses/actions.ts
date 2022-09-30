@@ -1,14 +1,15 @@
 import {
-  SetIsCourseType,
-  SET_IS_COURSE,
+  CourseModeType,
+  SET_MODE,
   RESET_COURSE_REDUCER,
+  SetModeType,
 } from '../../types/store/CourseStoreType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 
-const setIsCourse = (isCourse: boolean): SetIsCourseType => ({ type: SET_IS_COURSE, value: isCourse });
+const setMode = (mode: CourseModeType): SetModeType => ({ type: SET_MODE, value: mode });
 const resetCourseReducer = (): ActionWithoutPayloadType => ({ type: RESET_COURSE_REDUCER });
 
 export default {
-  setIsCourse,
+  setMode,
   resetCourseReducer,
 };
