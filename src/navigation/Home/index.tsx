@@ -58,7 +58,7 @@ interface HomeProps {
 
 const Home = ({ userVendorRole } : HomeProps) => {
   const showTrainerTab = !!userVendorRole &&
-    [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
+    [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole) && false;
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}

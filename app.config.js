@@ -19,7 +19,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.11.1',
+    version: '2.12.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -56,7 +56,7 @@ export default {
     },
     ios: {
       bundleIdentifier: 'com.alenvi.compani', // eas build -> IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev'
-      buildNumber: '2.11.1.1',
+      buildNumber: '2.12.0',
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
@@ -73,7 +73,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 79,
+      versionCode: 80,
       googleServicesFile: './google-services.json',
     },
   },
