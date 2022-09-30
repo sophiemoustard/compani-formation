@@ -13,9 +13,39 @@ const ENVIRONMENT_VARIABLES = {
   PLATFORM: process.env.PLATFORM,
 };
 
+const LOCAL = 'local';
+const DEVELOPMENT = 'development';
+const PRODUCTION = 'production';
+
+const getAppName = () => {
+  switch (process.env.PROFILE) {
+    case LOCAL:
+      return 'Compani - local';
+    case DEVELOPMENT:
+      return 'Compani - Dev';
+    case PRODUCTION:
+      return 'Compani';
+    default:
+      return 'Compani';
+  }
+};
+
+const getIOSBundleIdentifier = () => {
+  switch (process.env.PROFILE) {
+    case LOCAL:
+      return 'com.alenvi.compani.local';
+    case DEVELOPMENT:
+      return 'com.alenvi.compani.dev';
+    case PRODUCTION:
+      return 'com.alenvi.compani';
+    default:
+      return 'com.alenvi.compani';
+  }
+};
+
 export default {
   expo: {
-    name: 'Compani', // eas build -> IS_PRODUCTION ? 'Compani' : 'Compani - Test'
+    name: getAppName(),
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
@@ -55,8 +85,8 @@ export default {
       color: '#005774',
     },
     ios: {
-      bundleIdentifier: 'com.alenvi.compani', // eas build -> IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev'
       buildNumber: '2.13.0',
+      bundleIdentifier: getIOSBundleIdentifier(),
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
