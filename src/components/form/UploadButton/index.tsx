@@ -9,11 +9,10 @@ interface UploadButtonProps {
   title: string,
   style?: Object,
   loading?: boolean,
-  disabled?: boolean,
 }
 
-const UploadButton = ({ title, style, loading = false, disabled = false } : UploadButtonProps) => (
-  <TouchableOpacity disabled={loading || disabled} style={[styles.button, style]}>
+const UploadButton = ({ title, style, loading = false } : UploadButtonProps) => (
+  <TouchableOpacity disabled style={[styles.button, style]}>
     <Text style={styles.title}>{title}</Text>
     {loading && <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />}
     {!loading && <FeatherButton name='plus-circle' onPress={() => {}} size={ICON.SM} color={GREY[800]} />}

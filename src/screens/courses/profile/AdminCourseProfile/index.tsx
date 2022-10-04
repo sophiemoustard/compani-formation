@@ -6,14 +6,18 @@ import has from 'lodash/has';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
+import AttendanceSheets from '../../../../api/attendanceSheets';
 import commonStyles from '../../../../styles/common';
 import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
-import { OPERATIONS } from '../../../../core/data/constants';
+import { INTRA, OPERATIONS } from '../../../../core/data/constants';
+import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
+import { AttendanceSheetType } from '../../../../types/AttendanceSheetTypes';
+import UploadButton from '../../../../components/form/UploadButton';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -23,6 +27,8 @@ const AdminCourseProfile = ({
   navigation,
 }: AdminCourseProfileProps) => {
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
+  const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
+  const [attendanceSheetsToUpload, setAttendanceSheetsToUpload] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
 
   useEffect(() => {
@@ -31,6 +37,10 @@ const AdminCourseProfile = ({
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
+        if (fetchedCourse.type === INTRA) {
+          const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList(fetchedCourse._id);
+          setSavedAttendanceSheets(fetchedAttendanceSheets);
+        }
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -39,6 +49,17 @@ const AdminCourseProfile = ({
 
     getCourse();
   }, [route.params.courseId]);
+
+  useEffect(() => {
+    if (course?.type === INTRA) {
+      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date).toISO());
+      setAttendanceSheetsToUpload(
+        course.slots
+          .map(slot => CompaniDate(slot.startDate).startOf('day').toISO())
+          .filter(date => savedDates.includes(date))
+      );
+    }
+  }, [course, savedAttendanceSheets]);
 
   const hardwareBackPress = useCallback(() => {
     navigation.goBack();
@@ -57,6 +78,13 @@ const AdminCourseProfile = ({
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
+        {!!(attendanceSheetsToUpload.length || savedAttendanceSheets.length) && <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Emargements</Text>
+          <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
+          {attendanceSheetsToUpload.map(sheetToUpload =>
+            <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
+              style={styles.uploadButton}/>)}
+        </View>}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Stagiaires</Text>
           <FlatList data={course.trainees} keyExtractor={item => item._id}

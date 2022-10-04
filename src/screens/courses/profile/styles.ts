@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY, PINK } from '../../../styles/colors';
 import { BORDER_RADIUS, BUTTON_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
-import { NUNITO_SEMI, FIRA_SANS_MEDIUM, FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { NUNITO_SEMI, FIRA_SANS_MEDIUM, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   separator: {
@@ -61,6 +61,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: PADDING.LG,
+  },
+  italicText: {
+    ...FIRA_SANS_ITALIC.MD,
+    color: GREY[600],
+    marginBottom: MARGIN.LG,
+  },
+  uploadButton: {
+    marginBottom: 16,
   },
 });
 
