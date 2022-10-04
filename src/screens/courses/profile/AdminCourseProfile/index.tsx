@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { View, BackHandler, Text, ScrollView } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import has from 'lodash/has';
@@ -8,10 +9,13 @@ import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import AttendanceSheets from '../../../../api/attendanceSheets';
 import commonStyles from '../../../../styles/common';
+import { ICON } from '../../../../styles/metrics';
+import { PINK } from '../../../../styles/colors';
 import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
+import FeatherButton from '../../../../components/icons/FeatherButton';
 import { INTRA, OPERATIONS } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
@@ -56,7 +60,7 @@ const AdminCourseProfile = ({
       setAttendanceSheetsToUpload(
         course.slots
           .map(slot => CompaniDate(slot.startDate).startOf('day').toISO())
-          .filter(date => savedDates.includes(date))
+          .filter(date => !savedDates.includes(date))
       );
     }
   }, [course, savedAttendanceSheets]);
@@ -84,6 +88,17 @@ const AdminCourseProfile = ({
           {attendanceSheetsToUpload.map(sheetToUpload =>
             <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
               style={styles.uploadButton}/>)}
+          <View style={styles.savedSheetContainer}>
+            {savedAttendanceSheets.map(sheet =>
+              <View key={sheet._id}>
+                <View style={styles.savedSheetContent}>
+                  <Feather name='file-text' size={ICON.XXL} />
+                  <FeatherButton name='edit-2' onPress={() => {}}
+                    size={ICON.SM} color={PINK[500]} style={styles.editButton} />
+                </View>
+                <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
+              </View>)}
+          </View>
         </View>}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Stagiaires</Text>
