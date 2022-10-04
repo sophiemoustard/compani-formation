@@ -9,6 +9,7 @@ export const STRICTLY_E_LEARNING = 'strictly_e_learning';
 export const BLENDED = 'blended';
 export const OPERATIONS = 'operations';
 export const PEDAGOGY = 'pedagogy';
+export const INTRA = 'intra';
 
 // STEPS
 export const ON_SITE = 'on_site';
