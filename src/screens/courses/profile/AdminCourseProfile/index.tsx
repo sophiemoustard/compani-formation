@@ -39,12 +39,12 @@ const AdminCourseProfile = ({
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
-        setCourse(fetchedCourse as BlendedCourseType);
-        setTitle(getTitle(fetchedCourse));
         if (fetchedCourse.type === INTRA) {
           const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList(fetchedCourse._id);
           setSavedAttendanceSheets(fetchedAttendanceSheets);
         }
+        setCourse(fetchedCourse as BlendedCourseType);
+        setTitle(getTitle(fetchedCourse));
       } catch (e: any) {
         console.error(e);
         setCourse(null);
