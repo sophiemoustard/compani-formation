@@ -84,7 +84,8 @@ const AdminCourseProfile = ({
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
         {!!(attendanceSheetsToUpload.length || savedAttendanceSheets.length) && <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Emargements</Text>
-          <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
+          {!!attendanceSheetsToUpload.length &&
+          <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>}
           {attendanceSheetsToUpload.map(sheetToUpload =>
             <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
               style={styles.uploadButton}/>)}
