@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createStore } from 'redux';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Notifications from 'expo-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import * as Sentry from 'sentry-expo';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import AppContainer from '../AppContainer';
@@ -19,22 +19,40 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),
 });
 
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 const App = () => {
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
-    async function startAnalytics() { await Analytics.logEvent('session_start'); }
-    startAnalytics();
+    async function prepare() {
+      try {
+        await Analytics.logEvent('session_start');
+        await initializeAssets();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setAppReady(true);
+      }
+    }
+
+    prepare();
   }, []);
 
-  if (!appReady) {
-    return <AppLoading startAsync={initializeAssets} onFinish={() => setAppReady(true)} onError={console.error} />;
-  }
+  const onLayoutRootView = useCallback(
+    async () => {
+      if (appReady) await SplashScreen.hideAsync();
+    },
+    [appReady]
+  );
+
+  if (!appReady) return null;
 
   return (
     <AuthProvider>
       <ReduxProvider store={store}>
-        <AppContainer />
+        <AppContainer onLayout={onLayoutRootView} />
       </ReduxProvider>
     </AuthProvider>
   );

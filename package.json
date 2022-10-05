@@ -8,7 +8,7 @@
     "eject": "expo eject",
     "test": "node_modules/jest/bin/jest.js",
     "ts-lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
-    "eas-build-pre-install": "echo $IOS_GOOGLE_SERVICES_BASE64 | base64 --decode > ./GoogleService-Info.plist && echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json"
+    "eas-build-pre-install": "echo $IOS_GOOGLE_SERVICES_BASE64 | base64 --decode > ./GoogleService-Info.plist && echo $ANDROID_GOOGLE_SERVICES_DEV_BASE64_NEW | base64 --decode > ./google-services.json"
   },
   "jest": {
     "preset": "jest-expo",
@@ -54,7 +54,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.1.4",
     "expo": "^45.0.0",
-    "expo-app-loading": "~2.0.0",
     "expo-application": "~4.1.0",
     "expo-asset": "~8.5.0",
     "expo-av": "~11.2.3",
@@ -72,6 +71,7 @@
     "expo-notifications": "~0.15.4",
     "expo-screen-orientation": "~4.2.0",
     "expo-sharing": "~10.2.0",
+    "expo-splash-screen": "~0.15.1",
     "expo-system-ui": "~1.2.0",
     "expo-updates": "~0.13.4",
     "luxon": "^3.0.2",
