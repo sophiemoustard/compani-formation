@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { View, BackHandler, Text, ScrollView } from 'react-native';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { View, BackHandler, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
@@ -10,12 +10,11 @@ import Courses from '../../../../api/courses';
 import AttendanceSheets from '../../../../api/attendanceSheets';
 import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
-import { PINK } from '../../../../styles/colors';
+import { GREY, PINK } from '../../../../styles/colors';
 import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
-import FeatherButton from '../../../../components/icons/FeatherButton';
 import { INTRA, OPERATIONS } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
@@ -32,8 +31,18 @@ const AdminCourseProfile = ({
 }: AdminCourseProfileProps) => {
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
-  const [attendanceSheetsToUpload, setAttendanceSheetsToUpload] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
+  const attendanceSheetsToUpload = useMemo(() => {
+    if (course?.type === INTRA) {
+      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date).toISO());
+      return [...new Set(
+        course.slots
+          .map(slot => CompaniDate(slot.startDate).startOf('day').toISO())
+          .filter(date => !savedDates.includes(date))
+      )];
+    }
+    return [];
+  }, [savedAttendanceSheets, course]);
 
   useEffect(() => {
     const getCourse = async () => {
@@ -53,17 +62,6 @@ const AdminCourseProfile = ({
 
     getCourse();
   }, [route.params.courseId]);
-
-  useEffect(() => {
-    if (course?.type === INTRA) {
-      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date).toISO());
-      setAttendanceSheetsToUpload(
-        course.slots
-          .map(slot => CompaniDate(slot.startDate).startOf('day').toISO())
-          .filter(date => !savedDates.includes(date))
-      );
-    }
-  }, [course, savedAttendanceSheets]);
 
   const hardwareBackPress = useCallback(() => {
     navigation.goBack();
@@ -92,11 +90,10 @@ const AdminCourseProfile = ({
           <View style={styles.savedSheetContainer}>
             {savedAttendanceSheets.map(sheet =>
               <View key={sheet._id}>
-                <View style={styles.savedSheetContent}>
-                  <Feather name='file-text' size={ICON.XXL} />
-                  <FeatherButton name='edit-2' onPress={() => {}}
-                    size={ICON.SM} color={PINK[500]} style={styles.editButton} />
-                </View>
+                <TouchableOpacity style={styles.savedSheetContent}>
+                  <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
+                  <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
+                </TouchableOpacity>
                 <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
               </View>)}
           </View>

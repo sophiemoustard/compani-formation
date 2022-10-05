@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
-import FeatherButton from '../../icons/FeatherButton';
+import { Feather } from '@expo/vector-icons';
 import commonStyle from '../../../styles/common';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
@@ -12,10 +12,10 @@ interface UploadButtonProps {
 }
 
 const UploadButton = ({ title, style, loading = false } : UploadButtonProps) => (
-  <TouchableOpacity disabled style={[styles.button, style]}>
+  <TouchableOpacity style={[styles.button, style]}>
     <Text style={styles.title}>{title}</Text>
     {loading && <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />}
-    {!loading && <FeatherButton name='plus-circle' onPress={() => {}} size={ICON.SM} color={GREY[800]} />}
+    {!loading && <Feather name='plus-circle' size={ICON.SM} color={GREY[800]} />}
   </TouchableOpacity>
 );
 
