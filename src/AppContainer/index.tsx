@@ -28,6 +28,7 @@ import styles from './styles';
 
 type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
+  onLayout: () => void,
   statusBarVisible: boolean,
 }
 
@@ -38,7 +39,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContainerProps) => {
   const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
@@ -162,9 +163,9 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   useEffect(() => {
     initializeAxiosNotLogged();
     shouldUpdate(ACTIVE_STATE);
-    AppState.addEventListener('change', shouldUpdate);
+    const { remove } = AppState.addEventListener('change', shouldUpdate);
 
-    return () => { AppState.removeEventListener('change', shouldUpdate); };
+    return () => { remove(); };
   }, []);
 
   if (!appIsReady) return null;
@@ -179,7 +180,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <SafeAreaProvider>
+      <SafeAreaProvider onLayout={onLayout}>
         <AppNavigation />
       </SafeAreaProvider>
     </>
