@@ -80,24 +80,26 @@ const AdminCourseProfile = ({
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
-        {!!(attendanceSheetsToUpload.length || savedAttendanceSheets.length) && <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Emargements</Text>
-          {!!attendanceSheetsToUpload.length &&
-          <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>}
-          {attendanceSheetsToUpload.map(sheetToUpload =>
-            <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
-              style={styles.uploadButton}/>)}
-          <View style={styles.savedSheetContainer}>
+        {!!(attendanceSheetsToUpload.length || savedAttendanceSheets.length) && <>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Emargements</Text>
+            {!!attendanceSheetsToUpload.length &&
+            <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>}
+            {attendanceSheetsToUpload.map(sheetToUpload =>
+              <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
+                style={styles.uploadButton}/>)}
+          </View>
+          <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
             {savedAttendanceSheets.map(sheet =>
-              <View key={sheet._id}>
-                <TouchableOpacity style={styles.savedSheetContent}>
+              <View key={sheet._id} style={styles.savedSheetContent}>
+                <TouchableOpacity>
                   <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
                   <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
                 </TouchableOpacity>
                 <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
               </View>)}
-          </View>
-        </View>}
+          </ScrollView>
+        </>}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Stagiaires</Text>
           <FlatList data={course.trainees} keyExtractor={item => item._id}
