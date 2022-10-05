@@ -11,7 +11,7 @@ interface UploadButtonProps {
   loading?: boolean,
 }
 
-const UploadButton = ({ title, style, loading = false } : UploadButtonProps) => (
+const UploadButton = ({ title, style = {}, loading = false } : UploadButtonProps) => (
   <TouchableOpacity style={[styles.button, style]}>
     <Text style={styles.title}>{title}</Text>
     {loading && <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />}

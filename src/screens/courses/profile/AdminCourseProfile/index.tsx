@@ -78,7 +78,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
         {!!(attendanceSheetsToUpload.length || savedAttendanceSheets.length) && <>
-          <View style={styles.sectionContainer}>
+          <View style={styles.uploadContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>
             {!!attendanceSheetsToUpload.length &&
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>}

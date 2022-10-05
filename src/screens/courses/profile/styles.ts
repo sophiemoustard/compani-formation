@@ -73,8 +73,12 @@ const styles = StyleSheet.create({
     color: GREY[600],
     marginBottom: MARGIN.LG,
   },
+  uploadContainer: {
+    marginHorizontal: MARGIN.MD,
+    marginTop: MARGIN.MD,
+  },
   uploadButton: {
-    marginBottom: 16,
+    marginBottom: MARGIN.SM,
   },
   editButton: {
     position: 'absolute',
@@ -88,6 +92,7 @@ const styles = StyleSheet.create({
   },
   savedSheetContainer: {
     flexDirection: 'row',
+    paddingVertical: PADDING.LG,
   },
   savedSheetContent: {
     marginHorizontal: MARGIN.MD,
