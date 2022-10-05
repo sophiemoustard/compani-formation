@@ -1,34 +1,54 @@
-import { useState, useEffect, useCallback } from 'react';
-import { View, BackHandler, Text, ScrollView } from 'react-native';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { View, BackHandler, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import has from 'lodash/has';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
+import AttendanceSheets from '../../../../api/attendanceSheets';
 import commonStyles from '../../../../styles/common';
+import { ICON } from '../../../../styles/metrics';
+import { GREY, PINK } from '../../../../styles/colors';
 import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
-import { OPERATIONS } from '../../../../core/data/constants';
+import { INTRA, OPERATIONS } from '../../../../core/data/constants';
+import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
+import { AttendanceSheetType } from '../../../../types/AttendanceSheetTypes';
+import UploadButton from '../../../../components/form/UploadButton';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
 
-const AdminCourseProfile = ({
-  route,
-  navigation,
-}: AdminCourseProfileProps) => {
+const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
+  const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
+  const attendanceSheetsToUpload = useMemo(() => {
+    if (course?.type === INTRA) {
+      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date).toISO());
+      return [...new Set(
+        course.slots
+          .map(slot => CompaniDate(slot.startDate).startOf('day').toISO())
+          .filter(date => !savedDates.includes(date))
+      )];
+    }
+    return [];
+  }, [savedAttendanceSheets, course]);
 
   useEffect(() => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
+        if (fetchedCourse.type === INTRA) {
+          const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: fetchedCourse._id });
+          setSavedAttendanceSheets(fetchedAttendanceSheets);
+        }
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
       } catch (e: any) {
@@ -57,6 +77,26 @@ const AdminCourseProfile = ({
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
+        {!!(attendanceSheetsToUpload.length || savedAttendanceSheets.length) && <>
+          <View style={styles.uploadContainer}>
+            <Text style={styles.sectionTitle}>Emargements</Text>
+            {!!attendanceSheetsToUpload.length &&
+            <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>}
+            {attendanceSheetsToUpload.map(sheetToUpload =>
+              <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
+                style={styles.uploadButton}/>)}
+          </View>
+          <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
+            {savedAttendanceSheets.map(sheet =>
+              <View key={sheet._id} style={styles.savedSheetContent}>
+                <TouchableOpacity>
+                  <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
+                  <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
+                </TouchableOpacity>
+                <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
+              </View>)}
+          </ScrollView>
+        </>}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Stagiaires</Text>
           <FlatList data={course.trainees} keyExtractor={item => item._id}

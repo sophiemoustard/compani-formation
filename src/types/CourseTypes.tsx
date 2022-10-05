@@ -66,6 +66,7 @@ type BaseCourseType = {
   progress: number,
   subProgram: SubProgramType & { program: ProgramType },
   areLastSlotAttendancesValidated?: boolean,
+  type: string,
 };
 
 export type ELearningCourseType = BaseCourseType & {

@@ -1,7 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY, PINK } from '../../../styles/colors';
-import { BORDER_RADIUS, BUTTON_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
-import { NUNITO_SEMI, FIRA_SANS_MEDIUM, FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
+import {
+  NUNITO_SEMI,
+  FIRA_SANS_MEDIUM,
+  FIRA_SANS_BOLD,
+  FIRA_SANS_ITALIC,
+  FIRA_SANS_REGULAR,
+} from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   separator: {
@@ -61,6 +67,39 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: PADDING.LG,
+  },
+  italicText: {
+    ...FIRA_SANS_ITALIC.MD,
+    color: GREY[600],
+    marginBottom: MARGIN.LG,
+  },
+  uploadContainer: {
+    marginHorizontal: MARGIN.MD,
+    marginTop: MARGIN.MD,
+  },
+  uploadButton: {
+    marginBottom: MARGIN.SM,
+  },
+  editButton: {
+    position: 'absolute',
+    top: -10,
+    right: 0,
+    borderRadius: BORDER_RADIUS.XXL,
+    borderColor: GREY[200],
+    borderWidth: BORDER_WIDTH,
+    backgroundColor: WHITE,
+    padding: PADDING.MD,
+  },
+  savedSheetContainer: {
+    flexDirection: 'row',
+    paddingVertical: PADDING.LG,
+  },
+  savedSheetContent: {
+    marginHorizontal: MARGIN.MD,
+    alignItems: 'center',
+  },
+  savedSheetText: {
+    ...FIRA_SANS_REGULAR.MD,
   },
 });
 
