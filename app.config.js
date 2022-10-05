@@ -17,39 +17,37 @@ const LOCAL = 'local';
 const DEVELOPMENT = 'development';
 const PRODUCTION = 'production';
 
-const getAppName = () => {
+const getVariables = () => {
   switch (process.env.PROFILE) {
     case LOCAL:
-      return 'Compani - local';
+      return {
+        appName: 'Compani - local',
+        bundleIdentifier: 'com.alenvi.compani.local',
+      };
     case DEVELOPMENT:
-      return 'Compani - Dev';
+      return {
+        appName: 'Compani - Dev',
+        bundleIdentifier: 'com.alenvi.compani.dev',
+      };
     case PRODUCTION:
-      return 'Compani';
+      return {
+        appName: 'Compani',
+        bundleIdentifier: 'com.alenvi.compani',
+      };
     default:
       return 'Compani';
   }
 };
 
-const getIOSBundleIdentifier = () => {
-  switch (process.env.PROFILE) {
-    case LOCAL:
-      return 'com.alenvi.compani.local';
-    case DEVELOPMENT:
-      return 'com.alenvi.compani.dev';
-    case PRODUCTION:
-      return 'com.alenvi.compani';
-    default:
-      return 'com.alenvi.compani';
-  }
-};
+const variables = getVariables();
 
 export default {
   expo: {
-    name: getAppName(),
+    name: variables.appName,
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.12.0.1',
+    version: '2.12.1',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -65,7 +63,7 @@ export default {
       eas: {
         projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
       },
-      hooks: { // eas build -> to be removed when using eas build - waiting for eas updates to be configures
+      hooks: { // eas updates -> to be removed when using eas updates - waiting for eas updates to be configures
         postPublish: [{
           file: 'sentry-expo/upload-sourcemaps',
           config: {
@@ -85,8 +83,8 @@ export default {
       color: '#005774',
     },
     ios: {
-      bundleIdentifier: getIOSBundleIdentifier(),
-      buildNumber: '2.12.0.1',
+      bundleIdentifier: variables.bundleIdentifier,
+      buildNumber: '2.12.0.2',
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
@@ -96,14 +94,14 @@ export default {
       googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
-      package: 'com.alenvi.compani',
+      package: variables.bundleIdentifier,
       permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'],
       icon: './assets/images/android_icon_old.png',
       adaptiveIcon: {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 80,
+      versionCode: 81,
       googleServicesFile: './google-services.json',
     },
   },
