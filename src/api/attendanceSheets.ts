@@ -5,11 +5,11 @@ import { AttendanceSheetListResponseType } from '../types/AxiosTypes';
 import { AttendanceSheetType } from '../types/AttendanceSheetTypes';
 
 export default {
-  getAttendanceSheetList: async (course: string): Promise<AttendanceSheetType[]> => {
+  getAttendanceSheetList: async (params): Promise<AttendanceSheetType[]> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<AttendanceSheetListResponseType> = await axiosLogged.get(
       `${baseURL}/attendancesheets`,
-      { params: { course } }
+      { params }
     );
 
     return response.data.data.attendanceSheets;

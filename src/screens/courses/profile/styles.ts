@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     position: 'absolute',
-    top: 0,
+    top: -10,
     right: 0,
     borderRadius: BORDER_RADIUS.XXL,
     borderColor: GREY[200],

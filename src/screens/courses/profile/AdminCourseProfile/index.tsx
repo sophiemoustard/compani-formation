@@ -25,10 +25,7 @@ import UploadButton from '../../../../components/form/UploadButton';
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
 
-const AdminCourseProfile = ({
-  route,
-  navigation,
-}: AdminCourseProfileProps) => {
+const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -49,7 +46,7 @@ const AdminCourseProfile = ({
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         if (fetchedCourse.type === INTRA) {
-          const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList(fetchedCourse._id);
+          const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: fetchedCourse._id });
           setSavedAttendanceSheets(fetchedAttendanceSheets);
         }
         setCourse(fetchedCourse as BlendedCourseType);
