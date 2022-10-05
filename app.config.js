@@ -20,20 +20,11 @@ const PRODUCTION = 'production';
 const getVariables = () => {
   switch (process.env.PROFILE) {
     case LOCAL:
-      return {
-        appName: 'Compani - local',
-        bundleIdentifier: 'com.alenvi.compani.local',
-      };
+      return { appName: 'Compani - local', bundleIdentifier: 'com.alenvi.compani.local' };
     case DEVELOPMENT:
-      return {
-        appName: 'Compani - Dev',
-        bundleIdentifier: 'com.alenvi.compani.dev',
-      };
+      return { appName: 'Compani - Dev', bundleIdentifier: 'com.alenvi.compani.dev' };
     case PRODUCTION:
-      return {
-        appName: 'Compani',
-        bundleIdentifier: 'com.alenvi.compani',
-      };
+      return { appName: 'Compani', bundleIdentifier: 'com.alenvi.compani' };
     default:
       return 'Compani';
   }
