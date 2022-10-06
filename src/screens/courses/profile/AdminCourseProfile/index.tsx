@@ -50,14 +50,17 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
 
+  const refreshAttendanceSheets = async (courseId) => {
+    const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
+    setSavedAttendanceSheets(fetchedAttendanceSheets);
+  };
+
   useEffect(() => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
-        if (fetchedCourse.type === INTRA) {
-          const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: fetchedCourse._id });
-          setSavedAttendanceSheets(fetchedAttendanceSheets);
-        }
+        if (fetchedCourse.type === INTRA) await refreshAttendanceSheets(fetchedCourse._id);
+
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
       } catch (e: any) {
@@ -88,8 +91,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         const file = await formatImage(picture, `emargement-${attendanceSheetDateToAdd}`);
         const data = await formatPayload({ file, course: course._id, date: attendanceSheetDateToAdd });
         await AttendanceSheets.upload(data);
-        const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: course._id });
-        setSavedAttendanceSheets(fetchedAttendanceSheets);
+        await refreshAttendanceSheets(course._id);
       }
     } catch (error) {
       console.error(error);
@@ -98,7 +100,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     }
   };
 
-  const open = (sheetToUpload) => {
+  const openPictureModal = (sheetToUpload) => {
     setPictureModal(true);
     setAttendanceSheetDateToAdd(sheetToUpload);
   };
@@ -117,7 +119,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             {attendanceSheetsToUpload.map(sheetToUpload =>
               <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
-                style={styles.uploadButton} onPress={() => open(sheetToUpload)}/>)}
+                style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload)}/>)}
           </View>}
           {!!savedAttendanceSheets.length &&
             <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
