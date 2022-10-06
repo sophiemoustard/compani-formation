@@ -88,7 +88,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         const file = await formatImage(picture, `emargement-${attendanceSheetDateToAdd}`);
         const data = await formatPayload({ file, course: course._id, date: attendanceSheetDateToAdd });
         await AttendanceSheets.upload(data);
-        const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList(course._id);
+        const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: course._id });
         setSavedAttendanceSheets(fetchedAttendanceSheets);
       }
     } catch (error) {
@@ -112,40 +112,39 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.sectionTitle}>Emargements</Text>
             {!attendanceSheetsToUpload.length && !savedAttendanceSheets.length &&
             <Text style={styles.italicText}>Il n&apos;y a aucun créneau pour cette formation.</Text>}
-          </View >
+          </View>
           {!!attendanceSheetsToUpload.length && <View style={styles.sectionContainer}>
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
-            <View style={styles.listContainer}>
-              {attendanceSheetsToUpload.map(sheetToUpload =>
-                <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
-                  style={styles.uploadButton} onPress={() => open(sheetToUpload)}/>)}
-            </View>
+            {attendanceSheetsToUpload.map(sheetToUpload =>
+              <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
+                style={styles.uploadButton} onPress={() => open(sheetToUpload)}/>)}
           </View>}
-          <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
-            {savedAttendanceSheets.map(sheet =>
-              <View key={sheet._id} style={styles.savedSheetContent}>
-                <TouchableOpacity>
-                  <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
-                  <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
-                </TouchableOpacity>
-                <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
-              </View>)}
-          </ScrollView>
+          {!!savedAttendanceSheets.length &&
+            <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
+              {savedAttendanceSheets.map(sheet =>
+                <View key={sheet._id} style={styles.savedSheetContent}>
+                  <TouchableOpacity>
+                    <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
+                    <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
+                  </TouchableOpacity>
+                  <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
+                </View>)}
+            </ScrollView>}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Stagiaires</Text>
           {!course.trainees?.length &&
-          <Text style={styles.italicText}>Il n&apos;y a aucun stagiaire pour cette formation</Text>
+          <Text style={styles.italicText}>Il n&apos;y a aucun stagiaire pour cette formation.</Text>
           }
           <FlatList data={course.trainees} keyExtractor={item => item._id}
             renderItem={({ item }) => renderTrainee(item)} style={ styles.listContainer} />
         </View>
-        {!!course.companyRepresentative?.identity && <View style={styles.sectionContainer}>
+        <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <ContactInfoContainer contact={course.companyRepresentative}
             title={'Votre référent structure pour cette formation'} />
-        </View>}
+        </View>
         <View style={styles.footer} />
       </ScrollView>
       <PictureModal visible={pictureModal} closePictureModal={() => setPictureModal(false)}

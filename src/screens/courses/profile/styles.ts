@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
   sectionTitle: {
     ...FIRA_SANS_BOLD.LG,
     color: GREY[900],
+    marginBottom: MARGIN.MD,
   },
   sectionContainer: {
     marginHorizontal: MARGIN.MD,
-    marginBottom: MARGIN.MD,
   },
   adminButton: {
     width: '95%',
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   italicText: {
     ...FIRA_SANS_ITALIC.MD,
     color: GREY[600],
+    marginBottom: MARGIN.MD,
   },
   uploadContainer: {
     marginHorizontal: MARGIN.MD,
@@ -91,7 +92,8 @@ const styles = StyleSheet.create({
   },
   savedSheetContainer: {
     flexDirection: 'row',
-    marginTop: MARGIN.SM,
+    paddingTop: PADDING.LG,
+    marginBottom: MARGIN.MD,
   },
   savedSheetContent: {
     marginHorizontal: MARGIN.MD,
@@ -102,10 +104,9 @@ const styles = StyleSheet.create({
   },
   attendancesContainer: {
     marginTop: MARGIN.LG,
-    marginBottom: MARGIN.MD,
   },
   listContainer: {
-    marginTop: MARGIN.MD,
+    marginBottom: MARGIN.MD,
   },
   titleContainer: {
     marginHorizontal: MARGIN.MD,
