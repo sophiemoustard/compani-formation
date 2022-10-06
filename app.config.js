@@ -75,7 +75,7 @@ export default {
     },
     ios: {
       bundleIdentifier: variables.bundleIdentifier,
-      buildNumber: '2.12.0.2',
+      buildNumber: '2.12.1',
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
@@ -92,7 +92,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 81,
+      versionCode: 83,
       googleServicesFile: './google-services.json',
     },
   },
