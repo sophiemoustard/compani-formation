@@ -13,7 +13,7 @@ import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
 import { GREY, PINK } from '../../../../styles/colors';
 import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
-import styles from '../styles';
+import styles from './styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import { INTRA, OPERATIONS } from '../../../../core/data/constants';
