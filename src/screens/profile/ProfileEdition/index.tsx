@@ -32,7 +32,7 @@ import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
 import PictureModal from '../../../components/PictureModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
-import { formatImagePayload } from '../../../core/helpers/pictures';
+import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import CameraModal from '../../../components/camera/CameraModal';
 import ImagePickerManager from '../../../components/ImagePickerManager';
 
@@ -163,7 +163,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const savePicture = async (picture: CameraCapturedPicture) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
-    const data = await formatImagePayload(picture, fileName);
+    const file = await formatImage(picture, fileName);
+    const data = await formatPayload({ file, fileName });
 
     if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
     await Users.uploadImage(loggedUser._id, data);

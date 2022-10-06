@@ -25,7 +25,7 @@ import CompanySearchModal from '../../../components/companyLinkRequest/CompanySe
 import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
-import { formatImagePayload } from '../../../core/helpers/pictures';
+import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
@@ -113,7 +113,8 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
   const savePicture = async (picture: CameraCapturedPicture) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
-    const data = await formatImagePayload(picture, fileName);
+    const file = await formatImage(picture, fileName);
+    const data = await formatPayload({ file, fileName });
 
     if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
     await Users.uploadImage(loggedUser._id, data);
