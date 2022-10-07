@@ -20,10 +20,6 @@ const styles = StyleSheet.create({
     color: GREY[600],
     marginBottom: MARGIN.MD,
   },
-  uploadContainer: {
-    marginHorizontal: MARGIN.MD,
-    marginTop: MARGIN.MD,
-  },
   uploadButton: {
     marginBottom: MARGIN.SM,
   },
