@@ -15,7 +15,7 @@ interface PictureModalProps {
   closePictureModal: () => void,
   openCamera: () => void,
   openImagePickerManager: () => void,
-  deletePicture: () => void,
+  deletePicture?: () => void,
 }
 
 const PictureModal = ({
@@ -72,7 +72,7 @@ const PictureModal = ({
   const onDeletePicture = async () => {
     try {
       setIsLoading(true);
-      await deletePicture();
+      if (deletePicture) await deletePicture();
     } catch (e) {
       Alert.alert(
         'Echec de la suppression',

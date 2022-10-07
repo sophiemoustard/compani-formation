@@ -14,4 +14,9 @@ export default {
 
     return response.data.data.attendanceSheets;
   },
+  upload: async (data): Promise<void> => {
+    const baseURL = await Environment.getBaseUrl();
+    const headers = { 'Content-Type': 'multipart/form-data' };
+    await axiosLogged.post(`${baseURL}/attendancesheets`, data, { headers });
+  },
 };
