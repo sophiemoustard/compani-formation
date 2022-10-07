@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     position: 'absolute',
-    top: -10,
+    top: -8,
     right: 0,
     borderRadius: BORDER_RADIUS.XXL,
     borderColor: GREY[200],
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   savedSheetContainer: {
     flexDirection: 'row',
-    paddingTop: PADDING.LG,
+    paddingTop: PADDING.MD,
     marginBottom: MARGIN.MD,
   },
   savedSheetContent: {

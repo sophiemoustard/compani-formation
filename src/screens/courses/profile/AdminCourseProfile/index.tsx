@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, BackHandler, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import pick from 'lodash/pick';
 import { CameraCapturedPicture } from 'expo-camera';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
@@ -16,7 +17,7 @@ import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from './styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
-import { INTRA, OPERATIONS } from '../../../../core/data/constants';
+import { IMAGE, INTRA, OPERATIONS, PDF } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
@@ -26,8 +27,16 @@ import ImagePickerManager from '../../../../components/ImagePickerManager';
 import PictureModal from '../../../../components/PictureModal';
 import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
+import ImagePreview from '../../../../components/ImagePreview';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
+}
+
+interface imagePreviewProps {
+  visible: boolean,
+  id: string,
+  link: string,
+  type: string,
 }
 
 const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
@@ -49,6 +58,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [attendanceSheetDateToAdd, setAttendanceSheetDateToAdd] = useState<string>('');
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
+  const [imagePreview, setImagePreview] =
+    useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
 
   const refreshAttendanceSheets = async (courseId) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
@@ -105,6 +116,24 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     setAttendanceSheetDateToAdd(sheetToUpload);
   };
 
+  const deleteAttendanceSheets = async () => {
+    try {
+      await AttendanceSheets.delete(imagePreview.id);
+      resetImagePreview();
+      await refreshAttendanceSheets(course?._id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const openImagePreview = (id, link) => {
+    Image.prefetch(link)
+      .then(() => setImagePreview({ visible: true, id, link, type: IMAGE }))
+      .catch(() => setImagePreview({ visible: true, id, link, type: PDF }));
+  };
+
+  const resetImagePreview = () => setImagePreview({ visible: false, id: '', link: '', type: '' });
+
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -117,15 +146,18 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           </View>
           {!!attendanceSheetsToUpload.length && <View style={styles.sectionContainer}>
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
-            {attendanceSheetsToUpload.map(sheetToUpload =>
-              <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
-                style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload)}/>)}
+            <View style={styles.listContainer}>
+              {attendanceSheetsToUpload.map(sheetToUpload =>
+                <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
+                  style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload)}
+                  disabled={!!course.archivedAt} />)}
+            </View>
           </View>}
           {!!savedAttendanceSheets.length &&
             <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
               {savedAttendanceSheets.map(sheet =>
                 <View key={sheet._id} style={styles.savedSheetContent}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => openImagePreview(sheet._id, sheet.file.link)}>
                     <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
                     <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
                   </TouchableOpacity>
@@ -139,8 +171,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!course.trainees?.length &&
           <Text style={styles.italicText}>Il n&apos;y a aucun stagiaire pour cette formation.</Text>
           }
-          <FlatList data={course.trainees} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderTrainee(item)} style={ styles.listContainer} />
+          {!!course.trainees?.length && <FlatList data={course.trainees} keyExtractor={item => item._id}
+            renderItem={({ item }) => renderTrainee(item)} style={styles.listContainer} />}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
@@ -154,6 +186,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
         savePicture={savePicture} />}
+      <ImagePreview source={pick(imagePreview, ['visible', 'link', 'type'])} onRequestClose={resetImagePreview}
+        deleteFile={deleteAttendanceSheets} />
     </SafeAreaView>
   );
 };
