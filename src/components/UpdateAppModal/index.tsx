@@ -1,12 +1,11 @@
-import { Platform, Text, Linking } from 'react-native';
+import { Text, Linking } from 'react-native';
 import NiModal from '../Modal';
 import NiPrimaryButton from '../form/PrimaryButton';
 import styles from './styles';
+import { isIOS } from '../../core/data/constants';
 
 const UpdateAppModal = () => {
-  const appUrl = Platform.OS === 'ios'
-    ? 'https://apps.apple.com/app/id/1516691161'
-    : 'market://details?id=com.alenvi.compani';
+  const appUrl = isIOS ? 'https://apps.apple.com/app/id/1516691161' : 'market://details?id=com.alenvi.compani';
 
   return (
     <NiModal visible={true}>
