@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN } from '../../../styles/metrics';
+import { MARGIN } from '../../styles/metrics';
 
 const styles = (imgHeight: number, isMediaLoading: boolean) => StyleSheet.create({
   media: {

@@ -18,7 +18,7 @@ import { AUDIO, IMAGE, VIDEO } from '../../../../core/data/constants';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
-import NiImage from '../../../../components/cards/Image';
+import NiImage from '../../../../components/Image';
 
 interface TitleTextMediaCardProps {
   card: TitleTextMediaType,

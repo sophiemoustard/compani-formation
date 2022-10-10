@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 import { IMAGE } from '../../core/data/constants';
 import { WHITE } from '../../styles/colors';
 import { ICON, SCREEN_HEIGHT } from '../../styles/metrics';
-import NiImage from '../cards/Image';
+import NiImage from '../Image';
 import NiPrimaryButton from '../form/PrimaryButton';
 import FeatherButton from '../icons/FeatherButton';
 import ZoomImage from '../ZoomImage';

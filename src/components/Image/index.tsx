@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { TouchableOpacity, Image, View } from 'react-native';
-import cardsStyle from '../../../styles/cards';
+import cardsStyle from '../../styles/cards';
 import styles from './styles';
-import Spinner from '../../Spinner';
+import Spinner from '../Spinner';
 
 interface NiImageProps {
   source: { uri: string },
