@@ -51,7 +51,7 @@ const courseReducer = (state, action) => {
   }
 };
 
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={LEARNER} />;
 
 const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });

@@ -18,7 +18,7 @@ import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
-import { PEDAGOGY } from '../../../../core/data/constants';
+import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN_SCREEN = 'AdminCourseProfile';
@@ -79,7 +79,7 @@ const TrainerCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderCells = item => renderStepCell(item, course, route);
+  const renderCells = item => renderStepCell(item, course, TRAINER, route);
 
   const goTo = (screen: typeof ABOUT_SCREEN | typeof ADMIN_SCREEN) => {
     if (!course) return;

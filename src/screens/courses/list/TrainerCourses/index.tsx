@@ -58,7 +58,7 @@ const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   return contents.filter(section => section.courses.length);
 };
 
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={TRAINER} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,

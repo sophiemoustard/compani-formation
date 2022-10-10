@@ -1,13 +1,12 @@
 import { TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
 import { NextSlotsStepType } from '../../../types/StepTypes';
-import { StateType } from '../../../types/store/StoreType';
 import { CourseModeType } from '../../../types/store/CourseStoreType';
-import { LEARNER } from '../../../core/data/constants';
+import { LEARNER, TRAINER } from '../../../core/data/constants';
 import styles from './styles';
+import { PINK, PURPLE } from '../../../styles/colors';
 
 type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,
@@ -24,12 +23,10 @@ const NextStepCell = ({ nextSlotsStep, mode }: NextStepCellProps) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress?.live} />
-      <StepCellTitle index={stepIndex} name={name} type={type} misc={misc} />
+      <CalendarIcon slots={slots} progress={progress?.live} color={mode === TRAINER ? PURPLE[800] : PINK[500]} />
+      <StepCellTitle index={stepIndex} name={name} type={type} misc={misc} showMisc={mode === TRAINER} />
     </TouchableOpacity>
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
-
-export default connect(mapStateToProps)(NextStepCell);
+export default NextStepCell;
