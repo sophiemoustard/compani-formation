@@ -119,7 +119,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const deleteAttendanceSheets = async () => {
     try {
       await AttendanceSheets.delete(imagePreview.id);
-      resetImagePreview();
       await refreshAttendanceSheets(course?._id);
     } catch (error) {
       console.error(error);
@@ -186,8 +185,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
         savePicture={savePicture} />}
-      <ImagePreview source={pick(imagePreview, ['visible', 'link', 'type'])} onRequestClose={resetImagePreview}
-        deleteFile={deleteAttendanceSheets} showButton={!course.archivedAt}/>
+      {imagePreview.visible && <ImagePreview source={pick(imagePreview, ['link', 'type'])}
+        onRequestClose={resetImagePreview} deleteFile={deleteAttendanceSheets} showButton={!course.archivedAt}/>}
     </SafeAreaView>
   );
 };

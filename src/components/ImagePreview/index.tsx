@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Modal, Alert, BackHandler } from 'react-native';
+import { View, Alert, BackHandler } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { IMAGE } from '../../core/data/constants';
 import { WHITE } from '../../styles/colors';
@@ -11,7 +11,6 @@ import ZoomImage from '../ZoomImage';
 import styles from './styles';
 
 interface sourceProps {
-  visible: boolean,
   link: string,
   type: string
 }
@@ -26,7 +25,7 @@ interface ImagePreviewProps {
 const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }: ImagePreviewProps) => {
   const [zoomImage, setZoomImage] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { visible, link, type } = source;
+  const { link, type } = source;
 
   const unmount = useCallback(() => {
     setIsLoading(false);
@@ -60,7 +59,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
   };
 
   return (
-    <Modal visible={visible} onRequestClose={unmount}>
+    <View>
       <View style={styles.container}>
         {type === IMAGE
           ? <View style={styles.imageContainer}>
@@ -81,7 +80,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
         style={styles.goBack} />}
       {zoomImage && source && type === IMAGE &&
         <ZoomImage image={{ uri: link }} setZoomImage={setZoomImage} />}
-    </Modal>
+    </View>
   );
 };
 
