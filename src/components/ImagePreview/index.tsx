@@ -20,9 +20,10 @@ interface ImagePreviewProps {
   source: sourceProps,
   deleteFile: () => void,
   onRequestClose: () => void,
+  showButton?: boolean,
 }
 
-const ImagePreview = ({ source, deleteFile, onRequestClose }: ImagePreviewProps) => {
+const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }: ImagePreviewProps) => {
   const [zoomImage, setZoomImage] = useState<boolean>(false);
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -83,8 +84,8 @@ const ImagePreview = ({ source, deleteFile, onRequestClose }: ImagePreviewProps)
 
         <View style={styles.buttonContainer}>
           <Text>{String(source)}</Text>
-          <NiPrimaryButton caption='Supprimer' onPress={onDeleteFile} loading={isLoading}
-            disabled={isLoading} customStyle={styles.button} />
+          {showButton && <NiPrimaryButton caption='Supprimer' onPress={onDeleteFile} loading={isLoading}
+            disabled={isLoading} customStyle={styles.button} />}
         </View>
       </View>
       {!zoomImage && <FeatherButton name={'x-circle'} onPress={unmount} size={ICON.XL} color={WHITE}

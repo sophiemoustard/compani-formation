@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, View } from 'react-native';
 import cardsStyle from '../../../styles/cards';
 import styles from './styles';
 import Spinner from '../../Spinner';
@@ -23,7 +23,9 @@ const NiImage = ({ source, imgHeight, onPress }: NiImageProps) => {
 
   return (
     <>
-      {isMediaLoading && <Spinner />}
+      {isMediaLoading && <View style={style.spinnerContainer}>
+        <Spinner />
+      </View>}
       <TouchableOpacity onPress={onPress}>
         <Image source={source} style={[cardsStyle.media, style.media]}
           onLoadStart={() => isFirstLoad && loadImage()} onLoad={() => setIsMediaLoading(false)} />

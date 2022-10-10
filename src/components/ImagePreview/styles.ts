@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BLACK, RED } from '../../styles/colors';
+import { BLACK } from '../../styles/colors';
 import { MARGIN, PADDING } from '../../styles/metrics';
 
 const styles = StyleSheet.create({

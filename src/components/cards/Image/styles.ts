@@ -7,6 +7,9 @@ const styles = (imgHeight: number, isMediaLoading: boolean) => StyleSheet.create
     marginBottom: MARGIN.LG,
     display: !isMediaLoading ? 'flex' : 'none',
   },
+  spinnerContainer: {
+    alignItems: 'center',
+  },
 });
 
 export default styles;

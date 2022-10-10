@@ -27,5 +27,5 @@ export const getTitle = (course) => {
   if (course?.subProgram.isStrictlyELearning) return programName;
 
   const { misc } = (course as BlendedCourseType);
-  return `${programName}${misc ? `- ${misc}` : ''}`;
+  return `${programName}${misc ? ` - ${misc}` : ''}`;
 };

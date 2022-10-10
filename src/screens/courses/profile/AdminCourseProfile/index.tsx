@@ -187,7 +187,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
         savePicture={savePicture} />}
       <ImagePreview source={pick(imagePreview, ['visible', 'link', 'type'])} onRequestClose={resetImagePreview}
-        deleteFile={deleteAttendanceSheets} />
+        deleteFile={deleteAttendanceSheets} showButton={!course.archivedAt}/>
     </SafeAreaView>
   );
 };
