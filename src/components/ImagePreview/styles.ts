@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { BLACK } from '../../styles/colors';
+import { BLACK, WHITE } from '../../styles/colors';
+import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 import { MARGIN, PADDING } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
@@ -20,6 +21,20 @@ const styles = StyleSheet.create({
   },
   pdfContent: {
     backgroundColor: BLACK,
+  },
+  linkContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: MARGIN.LG,
+  },
+  linkContent: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: WHITE,
+    textAlign: 'center',
+  },
+  link: {
+    textDecorationLine: 'underline',
   },
   buttonContainer: {
     justifyContent: 'space-between',

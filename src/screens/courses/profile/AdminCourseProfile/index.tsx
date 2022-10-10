@@ -125,10 +125,16 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     }
   };
 
-  const openImagePreview = (id, link) => {
-    Image.prefetch(link)
-      .then(() => setImagePreview({ visible: true, id, link, type: IMAGE }))
-      .catch(() => setImagePreview({ visible: true, id, link, type: PDF }));
+  const openImagePreview = async (id, link) => {
+    await new Promise(() => {
+      Image.getSize(
+        link,
+        (image) => {
+          setImagePreview({ visible: true, id, link, type: image ? IMAGE : PDF });
+        },
+        () => setImagePreview({ visible: true, id, link, type: PDF })
+      );
+    });
   };
 
   const resetImagePreview = () => setImagePreview({ visible: false, id: '', link: '', type: '' });

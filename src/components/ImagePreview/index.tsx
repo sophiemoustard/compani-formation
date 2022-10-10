@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Alert, BackHandler } from 'react-native';
+import { View, Alert, BackHandler, Platform, Text, TouchableOpacity } from 'react-native';
+import * as Print from 'expo-print';
 import { WebView } from 'react-native-webview';
 import { IMAGE } from '../../core/data/constants';
 import { WHITE } from '../../styles/colors';
@@ -65,10 +66,17 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
           ? <View style={styles.imageContainer}>
             <NiImage source={{ uri: link }} imgHeight={SCREEN_HEIGHT / 2} onPress={() => setZoomImage(true)} />
           </View>
-          : <View style={styles.pdfContainer}>
-            <WebView source={{ uri: link }} style={styles.pdfContent} />
-          </View>
-        }
+          : <>
+            {Platform.OS === 'ios'
+              ? <View style={styles.pdfContainer}>
+                <WebView source={{ uri: link }} style={styles.pdfContent} />
+              </View>
+              : <TouchableOpacity onPress={() => Print.printAsync({ uri: link })} style={styles.linkContainer}>
+                <Text style={styles.linkContent}>
+                  Pour visualiser le document veuillez cliquer <Text style={styles.link}>ici</Text>
+                </Text>
+              </TouchableOpacity> }
+          </>}
 
         <View style={styles.buttonContainer}>
           {showButton && <NiPrimaryButton caption='Supprimer' onPress={onDeleteFile} loading={isLoading}
