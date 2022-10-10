@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { View, Modal, Image, Alert, BackHandler, Text } from 'react-native';
+import { View, Modal, Alert, BackHandler } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { IMAGE } from '../../core/data/constants';
 import { WHITE } from '../../styles/colors';
-import { CARD_MEDIA_MAX_HEIGHT, ICON } from '../../styles/metrics';
+import { ICON, SCREEN_HEIGHT } from '../../styles/metrics';
 import NiImage from '../cards/Image';
 import NiPrimaryButton from '../form/PrimaryButton';
 import FeatherButton from '../icons/FeatherButton';
@@ -25,7 +25,6 @@ interface ImagePreviewProps {
 
 const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }: ImagePreviewProps) => {
   const [zoomImage, setZoomImage] = useState<boolean>(false);
-  const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { visible, link, type } = source;
 
@@ -44,16 +43,6 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      if (link && type === IMAGE) {
-        Image.getSize(link || '', (_, height) => {
-          setMediaHeight(Math.min(height, CARD_MEDIA_MAX_HEIGHT));
-        });
-      }
-    }
-  }, [link, isLoading, type]);
 
   const onDeleteFile = async () => {
     try {
@@ -75,7 +64,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
       <View style={styles.container}>
         {type === IMAGE
           ? <View style={styles.imageContainer}>
-            <NiImage source={{ uri: link }} imgHeight={mediaHeight} onPress={() => setZoomImage(true)} />
+            <NiImage source={{ uri: link }} imgHeight={SCREEN_HEIGHT / 2} onPress={() => setZoomImage(true)} />
           </View>
           : <View style={styles.pdfContainer}>
             <WebView source={{ uri: link }} style={styles.pdfContent} />
@@ -83,7 +72,6 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
         }
 
         <View style={styles.buttonContainer}>
-          <Text>{String(source)}</Text>
           {showButton && <NiPrimaryButton caption='Supprimer' onPress={onDeleteFile} loading={isLoading}
             disabled={isLoading} customStyle={styles.button} />}
         </View>

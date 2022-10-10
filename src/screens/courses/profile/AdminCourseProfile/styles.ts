@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
   },
   savedSheetContainer: {
     flexDirection: 'row',
-    paddingTop: PADDING.MD,
     marginBottom: MARGIN.MD,
   },
   savedSheetContent: {
     marginHorizontal: MARGIN.MD,
     alignItems: 'center',
+    paddingTop: PADDING.MD,
   },
   savedSheetText: {
     ...FIRA_SANS_REGULAR.MD,
