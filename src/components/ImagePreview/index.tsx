@@ -84,10 +84,8 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
         </View>
       </View>
       {!zoomImage && <FeatherButton name={'x-circle'} onPress={unmount} size={ICON.XL} color={WHITE}
-        disabled={isLoading}
-        style={styles.goBack} />}
-      {zoomImage && source && type === IMAGE &&
-        <ZoomImage image={{ uri: link }} setZoomImage={setZoomImage} />}
+        disabled={isLoading} style={styles.goBack} />}
+      {zoomImage && source && type === IMAGE && <ZoomImage image={{ uri: link }} setZoomImage={setZoomImage} />}
     </View>
   );
 };
