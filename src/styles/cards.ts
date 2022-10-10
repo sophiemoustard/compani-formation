@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK } from './colors';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BLACK, FIRA_SANS_MEDIUM } from './fonts';
-import { INPUT_HEIGHT, MARGIN, PADDING, TEXT_LINE_HEIGHT } from './metrics';
+import { BORDER_RADIUS, INPUT_HEIGHT, MARGIN, PADDING, TEXT_LINE_HEIGHT } from './metrics';
 
 export default StyleSheet.create({
   title: {
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     lineHeight: TEXT_LINE_HEIGHT,
   },
   media: {
-    resizeMode: 'center',
+    resizeMode: 'contain',
   },
   question: {
     ...FIRA_SANS_MEDIUM.LG,
