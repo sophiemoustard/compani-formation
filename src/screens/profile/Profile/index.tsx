@@ -195,7 +195,7 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
         <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
           openCamera={() => setCamera(true)} deletePicture={deletePicture}
           openImagePickerManager={() => setImagePickerManager(true)} />
-        <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+        {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
         {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
           savePicture={savePicture} />}
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />

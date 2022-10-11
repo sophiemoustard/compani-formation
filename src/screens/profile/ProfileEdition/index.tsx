@@ -224,8 +224,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
             deletePicture={deletePicture} openCamera={() => setCamera(true)}
             openImagePickerManager={() => setImagePickerManager(true)} />
-          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
-            goBack={goBack} />
+          {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
+            goBack={goBack} />}
           {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
             savePicture={savePicture} goBack={goBack} />}
         </ScrollView>

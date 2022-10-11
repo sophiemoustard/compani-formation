@@ -188,7 +188,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </ScrollView>
       <PictureModal visible={pictureModal} closePictureModal={() => setPictureModal(false)}
         openCamera={() => setCamera(true)} openImagePickerManager={() => setImagePickerManager(true)} />
-      <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+      {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
         savePicture={savePicture} />}
       {imagePreview.visible && <ImagePreview source={pick(imagePreview, ['link', 'type'])}
