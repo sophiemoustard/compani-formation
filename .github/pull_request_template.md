@@ -1,7 +1,11 @@
 ### TESTS  :computer:
 
-- J'ai testé sur iphone : [ ] simulateur [ ] physique
-- J'ai testé sur android : [ ] simulateur [ ] physique
+- J'ai testé sur iphone : 
+  - [ ] simulateur
+  - [ ] physique
+- J'ai testé sur android :
+  - [ ] simulateur
+  - [ ] physique
 - [ ] J'ai testé sur tablette
 
 ---

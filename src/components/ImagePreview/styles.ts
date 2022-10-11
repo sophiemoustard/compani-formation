@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { BLACK, WHITE } from '../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../styles/fonts';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { MARGIN } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
   container: {
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'flex-start',
     margin: MARGIN.MD,
-    paddingTop: PADDING.MD,
   },
 });
 

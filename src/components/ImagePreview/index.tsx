@@ -75,7 +75,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
                 <Text style={styles.linkContent}>
                   Pour visualiser le document veuillez cliquer <Text style={styles.link}>ici</Text>
                 </Text>
-              </TouchableOpacity> }
+              </TouchableOpacity>}
           </>}
 
         <View style={styles.buttonContainer}>
@@ -83,7 +83,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
             disabled={isLoading} customStyle={styles.button} />}
         </View>
       </View>
-      {!zoomImage && <FeatherButton name={'x-circle'} onPress={unmount} size={ICON.XL} color={WHITE}
+      {!zoomImage && <FeatherButton name={'x-circle'} onPress={unmount} size={ICON.LG} color={WHITE}
         disabled={isLoading} style={styles.goBack} />}
       {zoomImage && source && type === IMAGE && <ZoomImage image={{ uri: link }} setZoomImage={setZoomImage} />}
     </View>
