@@ -27,6 +27,7 @@ import ImagePickerManager from '../../../../components/ImagePickerManager';
 import PictureModal from '../../../../components/PictureModal';
 import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
+import { formatIdentity } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
@@ -45,17 +46,28 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [title, setTitle] = useState<string>('');
   const attendanceSheetsToUpload = useMemo(() => {
     if (course?.type === INTRA) {
-      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date).toISO());
+      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date || '').toISO());
       return [...new Set(
         course.slots
-          .map(slot => CompaniDate(slot.startDate).startOf('day').toISO())
-          .filter(date => !savedDates.includes(date))
+          .map(slot => ({
+            value: CompaniDate(slot.startDate).startOf('day').toISO(),
+            label: CompaniDate(slot.startDate).format('dd/LL/yyyy'),
+          }))
+          .filter(date => !savedDates.includes(date.value))
       )];
     }
-    return [];
+
+    const savedTrainees = savedAttendanceSheets.map(sheet => sheet.trainee?._id);
+    return [...new Set(
+      course?.trainees?.map(trainee => ({
+        value: trainee._id,
+        label: formatIdentity(trainee.identity, 'FL'),
+      }))
+        .filter(trainee => !savedTrainees.includes(trainee.value))
+    )];
   }, [savedAttendanceSheets, course]);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
-  const [attendanceSheetDateToAdd, setAttendanceSheetDateToAdd] = useState<string>('');
+  const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
@@ -70,7 +82,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
-        if (fetchedCourse.type === INTRA) await refreshAttendanceSheets(fetchedCourse._id);
+        await refreshAttendanceSheets(fetchedCourse._id);
 
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
@@ -99,21 +111,25 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const savePicture = async (picture: CameraCapturedPicture) => {
     try {
       if (course) {
-        const file = await formatImage(picture, `emargement-${attendanceSheetDateToAdd}`);
-        const data = await formatPayload({ file, course: course._id, date: attendanceSheetDateToAdd });
+        const file = await formatImage(picture, `emargement-${attendanceSheetToAdd}`);
+        const data = await formatPayload({
+          file,
+          course: course._id,
+          ...(course.type === INTRA ? { date: attendanceSheetToAdd } : { trainee: attendanceSheetToAdd }),
+        });
         await AttendanceSheets.upload(data);
         await refreshAttendanceSheets(course._id);
       }
     } catch (error) {
       console.error(error);
     } finally {
-      setAttendanceSheetDateToAdd('');
+      setAttendanceSheetToAdd('');
     }
   };
 
   const openPictureModal = (sheetToUpload) => {
     setPictureModal(true);
-    setAttendanceSheetDateToAdd(sheetToUpload);
+    setAttendanceSheetToAdd(sheetToUpload);
   };
 
   const deleteAttendanceSheets = async () => {
@@ -145,7 +161,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
         <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
       </TouchableOpacity>
-      <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
+      <Text style={styles.savedSheetText}>
+        {course?.type === INTRA
+          ? `${CompaniDate(sheet.date || '').format('dd/LL/yyyy')}`
+          : `${formatIdentity(sheet.trainee?.identity, 'FL')}`
+        }
+      </Text>
     </View>
   );
 
@@ -163,8 +184,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.listContainer}>
               {attendanceSheetsToUpload.map(sheetToUpload =>
-                <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
-                  style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload)} />)}
+                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value}
+                  style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
             </View>
           </View>}
           {!!savedAttendanceSheets.length &&
