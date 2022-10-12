@@ -1,23 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import CompaniDate from '../../core/helpers/dates/companiDates';
+import { CourseModeType } from '../../types/CourseTypes';
 import { capitalize } from '../../core/helpers/utils';
+import { PINK, PURPLE } from '../../styles/colors';
 import Shadow from '../design/Shadow';
-import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
+import { TRAINER } from '../../core/data/constants';
+import styles from './styles';
 
 interface CalendarIconProps {
   slots: Date[],
   progress: number,
-  color: string,
+  mode: CourseModeType,
 }
 
-const CalendarIcon = ({ slots, progress = 0, color }: CalendarIconProps) => {
+const CalendarIcon = ({ slots, progress = 0, mode }: CalendarIconProps) => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('');
   const [dayOfMonth, setDayOfMonth] = useState<string>('');
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
-  const style = styles(color);
+  const style = styles(mode === TRAINER ? PURPLE[800] : PINK[500]);
   const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {

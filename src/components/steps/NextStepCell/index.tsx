@@ -2,11 +2,10 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
-import { NextSlotsStepType } from '../../../types/StepTypes';
-import { LEARNER, TRAINER } from '../../../core/data/constants';
-import styles from './styles';
-import { PINK, PURPLE } from '../../../styles/colors';
 import { CourseModeType } from '../../../types/CourseTypes';
+import { NextSlotsStepType } from '../../../types/StepTypes';
+import { LEARNER } from '../../../core/data/constants';
+import styles from './styles';
 
 type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,
@@ -23,8 +22,8 @@ const NextStepCell = ({ nextSlotsStep, mode }: NextStepCellProps) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToCourse}>
-      <CalendarIcon slots={slots} progress={progress?.live} color={mode === TRAINER ? PURPLE[800] : PINK[500]} />
-      <StepCellTitle index={stepIndex} name={name} type={type} misc={misc} showMisc={mode === TRAINER} />
+      <CalendarIcon slots={slots} progress={progress?.live} mode={mode} />
+      <StepCellTitle index={stepIndex} name={name} type={type} misc={misc} mode={mode} />
     </TouchableOpacity>
   );
 };

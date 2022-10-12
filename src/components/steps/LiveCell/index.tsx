@@ -7,11 +7,10 @@ import { LiveStepType } from '../../../types/StepTypes';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
 import CalendarIcon from '../../CalendarIcon';
 import { ICON } from '../../../styles/metrics';
-import { GREY, PINK, PURPLE } from '../../../styles/colors';
+import { GREY } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
 import LiveCellInfoModal from '../LiveCellInfoModal';
 import styles from './styles';
-import { TRAINER } from '../../../core/data/constants';
 
 type LiveCellProps = {
   step: LiveStepType,
@@ -45,9 +44,8 @@ const LiveCell = ({ step, slots = [], index, mode }: LiveCellProps) => {
       <LiveCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
       <TouchableOpacity style={[styles.container, styles.upperContainer]} onPress={openModal}>
-        <CalendarIcon slots={dates} progress={get(step, 'progress.live')}
-          color={mode === TRAINER ? PURPLE[800] : PINK[500]}/>
-        <StepCellTitle index={index} name={step.name} type={step.type} showMisc={mode === TRAINER} />
+        <CalendarIcon slots={dates} progress={get(step, 'progress.live')} mode={mode} />
+        <StepCellTitle index={index} name={step.name} type={step.type} mode={mode} />
         <View style={styles.iconContainer}>
           <Feather name='info' size={ICON.LG} color={GREY[500]} style={styles.infoButtonContainer} />
         </View>
