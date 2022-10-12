@@ -139,6 +139,16 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const resetImagePreview = () => setImagePreview({ visible: false, id: '', link: '', type: '' });
 
+  const renderSavedAttendanceSheets = sheet => (
+    <View key={sheet._id} style={styles.savedSheetContent}>
+      <TouchableOpacity onPress={() => openImagePreview(sheet._id, sheet.file.link)}>
+        <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
+        <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
+      </TouchableOpacity>
+      <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
+    </View>
+  );
+
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -158,16 +168,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             </View>
           </View>}
           {!!savedAttendanceSheets.length &&
-            <ScrollView style={styles.savedSheetContainer} horizontal showsHorizontalScrollIndicator={false}>
-              {savedAttendanceSheets.map(sheet =>
-                <View key={sheet._id} style={styles.savedSheetContent}>
-                  <TouchableOpacity onPress={() => openImagePreview(sheet._id, sheet.file.link)}>
-                    <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
-                    <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
-                  </TouchableOpacity>
-                  <Text style={styles.savedSheetText}>{CompaniDate(sheet.date).format('dd/LL/yyyy')}</Text>
-                </View>)}
-            </ScrollView>}
+          <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => renderSavedAttendanceSheets(item)} style={styles.listContainer} horizontal />}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
