@@ -14,7 +14,7 @@ interface UploadButtonProps {
 
 const UploadButton = ({ title, onPress, style = {}, loading = false } : UploadButtonProps) => (
   <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-    <Text style={styles.title}>{title}</Text>
+    <Text style={styles.title} numberOfLines={1}>{title}</Text>
     {loading && <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />}
     {!loading && <Feather name='plus-circle' size={ICON.SM} color={GREY[800]} />}
   </TouchableOpacity>

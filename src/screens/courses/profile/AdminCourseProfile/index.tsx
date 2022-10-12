@@ -161,10 +161,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
         <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
       </TouchableOpacity>
-      <Text style={styles.savedSheetText}>
+      <Text style={styles.savedSheetText} numberOfLines={2}>
         {course?.type === INTRA
           ? `${CompaniDate(sheet.date || '').format('dd/LL/yyyy')}`
-          : `${formatIdentity(sheet.trainee?.identity, 'FL')}`
+          : `${formatIdentity(sheet.trainee?.identity, 'fL')}`
         }
       </Text>
     </View>
@@ -178,7 +178,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           <View style={styles.titleContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>
             {!attendanceSheetsToUpload.length && !savedAttendanceSheets.length &&
-            <Text style={styles.italicText}>Il n&apos;y a aucun créneau pour cette formation.</Text>}
+            <Text style={styles.italicText}>
+              {course.type === INTRA
+                ? 'Il n\'y a aucun créneau pour cette formation.'
+                : 'Il n\'y a aucun stagiaire pour cette formation.'
+              }
+            </Text>}
           </View>
           {!!attendanceSheetsToUpload.length && !course.archivedAt && <View style={styles.sectionContainer}>
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>

@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...FIRA_SANS_REGULAR.MD,
+    width: '90%',
   },
 });
 

@@ -22,7 +22,7 @@ const CourseProfileHeader = ({
     <View style={styles.header}>
       <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
         iconStyle={styles.arrowShadow} />
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} numberOfLines={4}>{title}</Text>
     </View>
   </ImageBackground>
 );
