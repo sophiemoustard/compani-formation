@@ -69,7 +69,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
           : <>
             {isIOS
               ? <View style={styles.pdfContainer}>
-                <WebView source={{ uri: link }} style={styles.pdfContent} />
+                <WebView source={{ uri: link }} style={styles.pdfContent} startInLoadingState />
               </View>
               : <TouchableOpacity onPress={() => Print.printAsync({ uri: link })} style={styles.linkContainer}>
                 <Text style={styles.linkContent}>

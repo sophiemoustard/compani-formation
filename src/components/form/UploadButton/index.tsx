@@ -8,14 +8,12 @@ import styles from './styles';
 interface UploadButtonProps {
   title: string,
   onPress: () => void,
-  disabled?: boolean,
   style?: Object,
   loading?: boolean,
 }
 
-const UploadButton = ({ title, onPress, disabled = false, style = {}, loading = false } : UploadButtonProps) => (
-  <TouchableOpacity style={[styles.button, style, disabled && commonStyle.disabled]} onPress={onPress}
-    disabled={disabled}>
+const UploadButton = ({ title, onPress, style = {}, loading = false } : UploadButtonProps) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
     <Text style={styles.title}>{title}</Text>
     {loading && <ActivityIndicator style={commonStyle.disabled} color={GREY[800]} size="small" />}
     {!loading && <Feather name='plus-circle' size={ICON.SM} color={GREY[800]} />}

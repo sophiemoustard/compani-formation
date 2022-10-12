@@ -149,13 +149,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             {!attendanceSheetsToUpload.length && !savedAttendanceSheets.length &&
             <Text style={styles.italicText}>Il n&apos;y a aucun créneau pour cette formation.</Text>}
           </View>
-          {!!attendanceSheetsToUpload.length && <View style={styles.sectionContainer}>
+          {!!attendanceSheetsToUpload.length && !course.archivedAt && <View style={styles.sectionContainer}>
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.listContainer}>
               {attendanceSheetsToUpload.map(sheetToUpload =>
                 <UploadButton title={CompaniDate(sheetToUpload).format('dd/LL/yyyy')} key={sheetToUpload}
-                  style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload)}
-                  disabled={!!course.archivedAt} />)}
+                  style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload)} />)}
             </View>
           </View>}
           {!!savedAttendanceSheets.length &&
