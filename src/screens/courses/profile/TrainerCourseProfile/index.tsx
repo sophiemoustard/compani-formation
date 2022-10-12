@@ -84,7 +84,7 @@ const TrainerCourseProfile = ({
   const goTo = (screen: typeof ABOUT_SCREEN | typeof ADMIN_SCREEN) => {
     if (!course) return;
 
-    if (screen === ABOUT_SCREEN) navigation.navigate(screen, { course: course as BlendedCourseType });
+    if (screen === ABOUT_SCREEN) navigation.navigate(screen, { course: course as BlendedCourseType, mode: TRAINER });
     else navigation.navigate(screen, { courseId: course._id });
   };
 

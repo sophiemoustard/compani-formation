@@ -174,7 +174,7 @@ const LearnerCourseProfile = ({
       };
       navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
     } else {
-      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType, mode: LEARNER });
     }
   };
 

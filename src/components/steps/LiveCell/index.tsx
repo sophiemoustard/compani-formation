@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import get from 'lodash/get';
-import { SlotType } from '../../../types/CourseTypes';
+import { CourseModeType, SlotType } from '../../../types/CourseTypes';
 import { LiveStepType } from '../../../types/StepTypes';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
 import CalendarIcon from '../../CalendarIcon';
@@ -11,7 +11,6 @@ import { GREY, PINK, PURPLE } from '../../../styles/colors';
 import StepCellTitle from '../StepCellTitle';
 import LiveCellInfoModal from '../LiveCellInfoModal';
 import styles from './styles';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { TRAINER } from '../../../core/data/constants';
 
 type LiveCellProps = {

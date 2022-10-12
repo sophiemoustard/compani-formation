@@ -1,7 +1,13 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { BLENDED_COURSE_REGISTRATION, GRANTED, DENIED, NEW_ELEARNING_COURSE, PEDAGOGY } from '../data/constants';
+import {
+  BLENDED_COURSE_REGISTRATION,
+  GRANTED, DENIED,
+  NEW_ELEARNING_COURSE,
+  PEDAGOGY,
+  LEARNER,
+} from '../data/constants';
 import { navigationRef } from '../../navigationRef';
 import asyncStorage from './asyncStorage';
 import Users from '../../api/users';
@@ -46,7 +52,7 @@ export const handleNotificationResponse = async (response) => {
     case BLENDED_COURSE_REGISTRATION: {
       const course = await Courses.getCourse(_id, PEDAGOGY);
 
-      return navigationRef.current?.navigate('BlendedAbout', { course: course as BlendedCourseType });
+      return navigationRef.current?.navigate('BlendedAbout', { course: course as BlendedCourseType, mode: LEARNER });
     }
     case NEW_ELEARNING_COURSE: {
       const program = await Programs.getELearningPrograms({ _id });

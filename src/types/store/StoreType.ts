@@ -1,4 +1,3 @@
-import { ResetCourseReducer, CourseActionWithoutPayloadType, CourseStateType } from './CourseStoreType';
 import { MainStateType, MainActionType, ResetMainReducer } from './MainStoreType';
 import { CardStateType, CardActionType, CardActionWithoutPayloadType } from './CardStoreType';
 
@@ -11,12 +10,8 @@ export type ActionType = MainActionType | CardActionType;
 export type ActionWithoutPayloadType =
 CardActionWithoutPayloadType |
 ResetMainReducer |
-ResetAllReducers |
-ResetCourseReducer |
-CourseActionWithoutPayloadType;
-
+ResetAllReducers;
 export interface StateType {
   main: MainStateType,
-  courses: CourseStateType
   cards: CardStateType
 }

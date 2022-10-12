@@ -8,15 +8,17 @@ import StepCellTitle from '../steps/StepCellTitle';
 import ActivityList from '../activities/ActivityList';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
+import { CourseModeType } from '../../types/CourseTypes';
 
 type ELearningCellProps = {
   step: ELearningStepType,
   index: number,
   profileId: string,
+  mode: CourseModeType,
   endedActivity?: string,
 }
 
-const ELearningCell = ({ step, index, profileId, endedActivity = '' }: ELearningCellProps) => {
+const ELearningCell = ({ step, index, profileId, mode, endedActivity = '' }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
   const [iconButtonStyle, setIconButtonStyle] = useState<object>(styles.iconButtonContainer);
@@ -43,7 +45,7 @@ const ELearningCell = ({ step, index, profileId, endedActivity = '' }: ELearning
             color={GREY[500]} style={iconButtonStyle} />
         </View>
       </TouchableOpacity>
-      {isOpen && <ActivityList activities={step.activities} profileId={profileId} />}
+      {isOpen && <ActivityList activities={step.activities} profileId={profileId} mode={mode} />}
     </View>
   );
 };

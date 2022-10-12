@@ -13,7 +13,7 @@ export const renderStepCell = ({ item, index }, course, mode, route) => {
 
   if (item.type === E_LEARNING) {
     return <ELearningCell step={item} index={index} profileId={route.params.courseId}
-      endedActivity={route.params.endedActivity} />;
+      endedActivity={route.params.endedActivity} mode={mode} />;
   }
 
   return null;

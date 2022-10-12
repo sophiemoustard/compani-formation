@@ -8,7 +8,6 @@ import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
-import CoursesActions from '../store/courses/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import axiosLogged from '../api/axios/logged';
 import axiosNotLogged from '../api/axios/notLogged';
@@ -20,17 +19,15 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-import { ACTIVE_STATE, LEARNER } from '../core/data/constants';
+import { ACTIVE_STATE } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
 import { UserType } from '../types/UserType';
 import { WHITE } from '../styles/colors';
 import styles from './styles';
-import { CourseModeType } from '../types/store/CourseStoreType';
 
 type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
-  setMode: (value: CourseModeType) => void,
   statusBarVisible: boolean,
 }
 
@@ -41,7 +38,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, setMode, statusBarVisible }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
@@ -58,11 +55,8 @@ const AppContainer = ({ setLoggedUser, setMode, statusBarVisible }: AppContainer
 
     const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
       get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-    if (companiToken && isValidNotification) {
-      setMode(LEARNER);
-      handleNotificationResponse(lastNotificationResponse);
-    }
-  }, [companiToken, lastNotificationResponse, setMode]);
+    if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+  }, [companiToken, lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
@@ -198,7 +192,6 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

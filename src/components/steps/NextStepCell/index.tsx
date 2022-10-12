@@ -3,10 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
 import { NextSlotsStepType } from '../../../types/StepTypes';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
 import styles from './styles';
 import { PINK, PURPLE } from '../../../styles/colors';
+import { CourseModeType } from '../../../types/CourseTypes';
 
 type NextStepCellProps = {
   nextSlotsStep: NextSlotsStepType,

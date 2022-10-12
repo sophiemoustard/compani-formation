@@ -7,7 +7,6 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
-import CoursesActions from '../../../store/courses/actions';
 import Programs from '../../../api/programs';
 import { ELearningProgramType } from '../../../types/CourseTypes';
 import commonStyles from '../../../styles/common';
@@ -24,7 +23,6 @@ StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUserId: string | null,
-  resetCourseReducer: () => void,
 }
 
 const CategoriesStyleList = [
@@ -50,7 +48,7 @@ const CategoriesStyleList = [
   },
 ];
 
-const Catalog = ({ loggedUserId, navigation, resetCourseReducer }: CatalogProps) => {
+const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   const [programsByCategories, setProgramsByCategories] = useState<object>({});
   const isFocused = useIsFocused();
   const style = styles();
@@ -71,10 +69,9 @@ const Catalog = ({ loggedUserId, navigation, resetCourseReducer }: CatalogProps)
   useEffect(() => {
     async function fetchData() { await getPrograms(); }
     if (isFocused) {
-      resetCourseReducer();
       fetchData();
     }
-  }, [loggedUserId, isFocused, resetCourseReducer]);
+  }, [loggedUserId, isFocused]);
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
@@ -99,8 +96,4 @@ const Catalog = ({ loggedUserId, navigation, resetCourseReducer }: CatalogProps)
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-const mapDispatchToProps = dispatch => ({
-  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
+export default connect(mapStateToProps)(Catalog);
