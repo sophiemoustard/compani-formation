@@ -5,7 +5,6 @@ import {
   View,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
   BackHandler,
   Image,
   TouchableOpacity,
@@ -26,7 +25,7 @@ import { RootStackParamList, RootBottomTabParamList } from '../../../types/Navig
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
-import { EMAIL_REGEX, PHONE_REGEX } from '../../../core/data/constants';
+import { EMAIL_REGEX, isIOS, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
@@ -45,8 +44,6 @@ StackScreenProps<RootBottomTabParamList>
 }
 
 const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
-  const isIOS = Platform.OS === 'ios';
-
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
     identity: {
@@ -227,8 +224,8 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
             deletePicture={deletePicture} openCamera={() => setCamera(true)}
             openImagePickerManager={() => setImagePickerManager(true)} />
-          <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
-            goBack={goBack} />
+          {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera}
+            goBack={goBack} />}
           {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
             savePicture={savePicture} goBack={goBack} />}
         </ScrollView>

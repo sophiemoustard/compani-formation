@@ -19,4 +19,8 @@ export default {
     const headers = { 'Content-Type': 'multipart/form-data' };
     await axiosLogged.post(`${baseURL}/attendancesheets`, data, { headers });
   },
+  delete: async (attendanceSheetId: string): Promise<void> => {
+    const baseURL = await Environment.getBaseUrl();
+    await axiosLogged.delete(`${baseURL}/attendancesheets/${attendanceSheetId}`);
+  },
 };

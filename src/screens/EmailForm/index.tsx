@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useReducer } from 'react';
-import { Text, View, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { Text, View, KeyboardAvoidingView, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import ExitModal from '../../components/ExitModal';
@@ -10,7 +10,7 @@ import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import accountCreationStyles from '../../styles/accountCreation';
 import { GREY } from '../../styles/colors';
-import { EMAIL_REGEX } from '../../core/data/constants';
+import { EMAIL_REGEX, isIOS } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
@@ -39,7 +39,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   }, [hardwareBackPress]);
 
   useEffect(() => {
-    if (Platform.OS === 'ios') setBehavior('padding');
+    if (isIOS) setBehavior('padding');
     else setBehavior('height');
   }, []);
 

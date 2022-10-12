@@ -1,8 +1,11 @@
+import { Platform } from 'react-native';
+
 export const APP_NAME = 'formation';
 export const LOCAL = 'local';
 export const DEVELOPMENT = 'development';
 export const STAGING = 'staging';
 export const PRODUCTION = 'production';
+export const isIOS = Platform.OS === 'ios';
 
 // COURSES
 export const STRICTLY_E_LEARNING = 'strictly_e_learning';
@@ -64,6 +67,7 @@ export const EMAIL_REGEX = /^[\w-.+]+@([\w-]+\.)+[\w-]{2,4}$/;
 // MEDIA TYPES
 export const IMAGE = 'image';
 export const AUDIO = 'audio';
+export const PDF = 'pdf';
 
 // ORIGIN
 export const MOBILE = 'mobile';

@@ -5,7 +5,6 @@ import {
   View,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
   BackHandler,
 } from 'react-native';
 import FeatherButton from '../icons/FeatherButton';
@@ -17,6 +16,7 @@ import NiInput from '../form/Input';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
+import { isIOS } from '../../core/data/constants';
 
 interface PasswordFormProps {
   goBack: () => void,
@@ -24,7 +24,6 @@ interface PasswordFormProps {
 }
 
 const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
-  const isIOS = Platform.OS === 'ios';
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [password, setPassword] =
     useState<{ newPassword: string, confirmedPassword: string }>({ newPassword: '', confirmedPassword: '' });

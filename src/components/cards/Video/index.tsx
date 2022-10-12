@@ -7,14 +7,14 @@ import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import { GREY } from '../../../styles/colors';
 import Spinner from '../../Spinner';
+import { isIOS } from '../../../core/data/constants';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
 }
 
 const NiVideo = ({ mediaSource }: NiVideoProps) => {
-  const isIos = Platform.OS === 'ios';
-  const isIosVersionWithPlayButton = isIos && Platform.Version === '14.1';
+  const isIosVersionWithPlayButton = isIOS && Platform.Version === '14.1';
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
   const [nativeControlsVisible, setNativeControlsVisible] = useState<boolean>(false);
   const videoRef = useRef<Video>(null);

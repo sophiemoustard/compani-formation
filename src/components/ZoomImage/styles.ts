@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { MODAL_BACKDROP_GREY } from '../../styles/colors';
-import { PADDING, SCREEN_HEIGHT } from '../../styles/metrics';
+import { MARGIN, SCREEN_HEIGHT } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
   goBack: {
-    alignSelf: 'flex-end',
-    paddingRight: PADDING.LG,
-    paddingTop: PADDING.LG,
+    position: 'absolute',
+    alignSelf: 'flex-start',
+    margin: MARGIN.MD,
   },
   media: {
     height: SCREEN_HEIGHT * 0.85,

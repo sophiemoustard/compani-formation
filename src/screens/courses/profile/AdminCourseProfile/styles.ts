@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     position: 'absolute',
-    top: -10,
+    top: -8,
     right: 0,
     borderRadius: BORDER_RADIUS.XXL,
     borderColor: GREY[200],
@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
   },
   savedSheetContainer: {
     flexDirection: 'row',
-    paddingTop: PADDING.LG,
     marginBottom: MARGIN.MD,
   },
   savedSheetContent: {
     marginHorizontal: MARGIN.MD,
     alignItems: 'center',
+    paddingTop: PADDING.MD,
   },
   savedSheetText: {
     ...FIRA_SANS_REGULAR.MD,

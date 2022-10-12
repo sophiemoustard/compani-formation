@@ -3,7 +3,6 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
-  Platform,
   TouchableOpacity,
   ImageBackground,
   useWindowDimensions,
@@ -21,6 +20,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import commonStyles from '../../styles/common';
 import styles from './styles';
 import Actions from '../../store/actions';
+import { isIOS } from '../../core/data/constants';
 
 interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
   resetAllReducers: () => void,
@@ -30,7 +30,6 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
-  const isIOS = Platform.OS === 'ios';
 
   useEffect(() => {
     resetAllReducers();

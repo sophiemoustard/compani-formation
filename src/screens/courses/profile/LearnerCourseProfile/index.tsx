@@ -8,7 +8,6 @@ import {
   BackHandler,
   TouchableOpacity,
   ImageSourcePropType,
-  Platform,
   ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -41,7 +40,7 @@ import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
-import { PEDAGOGY } from '../../../../core/data/constants';
+import { isIOS, PEDAGOGY } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -125,7 +124,7 @@ const LearnerCourseProfile = ({
     const fileUri = `${FileSystem.documentDirectory}${encodeURI(pdfName)}.pdf`;
     await FileSystem.writeAsStringAsync(fileUri, pdf, { encoding: FileSystem.EncodingType.Base64 });
 
-    if (Platform.OS === 'ios') {
+    if (isIOS) {
       await Sharing.shareAsync(fileUri);
     } else {
       FileSystem.getContentUriAsync(fileUri).then((cUri) => {
