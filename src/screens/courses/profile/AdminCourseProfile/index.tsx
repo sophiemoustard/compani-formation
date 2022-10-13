@@ -21,7 +21,12 @@ import { IMAGE, INTRA, OPERATIONS, PDF } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
-import { AttendanceSheetType } from '../../../../types/AttendanceSheetTypes';
+import {
+  AttendanceSheetType,
+  InterAttendanceSheetType,
+  IntraAttendanceSheetType,
+  isIntra,
+} from '../../../../types/AttendanceSheetTypes';
 import UploadButton from '../../../../components/form/UploadButton';
 import ImagePickerManager from '../../../../components/ImagePickerManager';
 import PictureModal from '../../../../components/PictureModal';
@@ -46,7 +51,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [title, setTitle] = useState<string>('');
   const attendanceSheetsToUpload = useMemo(() => {
     if (course?.type === INTRA) {
-      const savedDates = savedAttendanceSheets.map(sheet => CompaniDate(sheet.date || '').toISO());
+      const intraCourseSavedSheets = savedAttendanceSheets as IntraAttendanceSheetType[];
+      const savedDates = intraCourseSavedSheets.map(sheet => CompaniDate(sheet.date).toISO());
+
       return [...new Set(
         course.slots
           .map(slot => ({
@@ -56,8 +63,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           .filter(date => !savedDates.includes(date.value))
       )];
     }
+    const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
+    const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
-    const savedTrainees = savedAttendanceSheets.map(sheet => sheet.trainee?._id);
     return [...new Set(
       course?.trainees?.map(trainee => ({
         value: trainee._id,
@@ -155,20 +163,20 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const resetImagePreview = () => setImagePreview({ visible: false, id: '', link: '', type: '' });
 
-  const renderSavedAttendanceSheets = sheet => (
-    <View key={sheet._id} style={styles.savedSheetContent}>
-      <TouchableOpacity onPress={() => openImagePreview(sheet._id, sheet.file.link)}>
-        <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
-        <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
-      </TouchableOpacity>
-      <Text style={styles.savedSheetText} numberOfLines={2}>
-        {course?.type === INTRA
-          ? `${CompaniDate(sheet.date || '').format('dd/LL/yyyy')}`
-          : `${formatIdentity(sheet.trainee?.identity, 'fL')}`
-        }
-      </Text>
-    </View>
-  );
+  const renderSavedAttendanceSheets = (sheet: AttendanceSheetType) => {
+    const label = isIntra(sheet)
+      ? CompaniDate(sheet.date).format('dd/LL/yyyy')
+      : formatIdentity(sheet.trainee.identity, 'fL');
+
+    return (
+      <View key={sheet._id} style={styles.savedSheetContent}>
+        <TouchableOpacity onPress={() => openImagePreview(sheet._id, sheet.file.link)}>
+          <Feather name='file-text' size={ICON.XXL} color={GREY[900]} />
+          <View style={styles.editButton}><Feather name='edit-2' size={ICON.SM} color={PINK[500]} /></View>
+        </TouchableOpacity>
+        <Text style={styles.savedSheetText} numberOfLines={2}>{label}</Text>
+      </View>);
+  };
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
