@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import CardsActions from '../../../store/cards/actions';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType, QuestionnaireAnswersType } from '../../../types/ActivityTypes';
+import { CourseModeType } from '../../../types/CourseTypes';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { LEARNER, QUIZ } from '../../../core/data/constants';
 import styles from './styles';
-import { CourseModeType } from '../../../types/CourseTypes';
 
 type ActivityCellProps = {
   activity: ActivityType,

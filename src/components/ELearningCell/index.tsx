@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ELearningStepType } from '../../types/StepTypes';
+import { CourseModeType } from '../../types/CourseTypes';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import FeatherButton from '../icons/FeatherButton';
 import StepCellTitle from '../steps/StepCellTitle';
 import ActivityList from '../activities/ActivityList';
-import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
-import { CourseModeType } from '../../types/CourseTypes';
+import styles from './styles';
 
 type ELearningCellProps = {
   step: ELearningStepType,

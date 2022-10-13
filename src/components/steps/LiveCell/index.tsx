@@ -14,12 +14,12 @@ import styles from './styles';
 
 type LiveCellProps = {
   step: LiveStepType,
-  slots?: SlotType[],
   index: number,
   mode: CourseModeType,
+  slots?: SlotType[],
 }
 
-const LiveCell = ({ step, slots = [], index, mode }: LiveCellProps) => {
+const LiveCell = ({ step, index, mode, slots = [] }: LiveCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [stepSlots, setStepSlots] = useState<SlotType[]>([]);
   const [dates, setDates] = useState<Date[]>([]);
