@@ -63,14 +63,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           .filter(date => !savedDates.includes(date.value))
       )];
     }
+
     const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
     return [...new Set(
-      course?.trainees?.map(trainee => ({
-        value: trainee._id,
-        label: formatIdentity(trainee.identity, 'FL'),
-      }))
+      course?.trainees?.map(trainee => ({ value: trainee._id, label: formatIdentity(trainee.identity, 'FL') }))
         .filter(trainee => !savedTrainees.includes(trainee.value))
     )];
   }, [savedAttendanceSheets, course]);
