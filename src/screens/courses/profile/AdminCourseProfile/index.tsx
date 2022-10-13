@@ -180,8 +180,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             {!attendanceSheetsToUpload.length && !savedAttendanceSheets.length &&
             <Text style={styles.italicText}>
               {course.type === INTRA
-                ? 'Il n\'y a aucun créneau pour cette formation.'
-                : 'Il n\'y a aucun stagiaire pour cette formation.'
+                ? 'Veuillez ajouter des créneaux pour émarger la formation.'
+                : 'Veuillez ajouter des stagiaires pour émarger la formation.'
               }
             </Text>}
           </View>
