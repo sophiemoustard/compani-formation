@@ -90,4 +90,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
 });
 
-export default connect(mapDispatchToProps)(ActivityCell);
+export default connect(null, mapDispatchToProps)(ActivityCell);
