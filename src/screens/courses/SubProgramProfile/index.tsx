@@ -22,7 +22,7 @@ import { WHITE } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import ELearningCell from '../../../components/ELearningCell';
 import FeatherButton from '../../../components/icons/FeatherButton';
-import { E_LEARNING } from '../../../core/data/constants';
+import { E_LEARNING, TESTER } from '../../../core/data/constants';
 import commonStyles from '../../../styles/common';
 import styles from './styles';
 import MainActions from '../../../store/main/actions';
@@ -89,7 +89,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
 
   const renderCells = ({ item, index }) => {
     if (item.type === E_LEARNING) {
-      return <ELearningCell step={item} index={index} profileId={route.params.subProgramId} />;
+      return <ELearningCell step={item} index={index} profileId={route.params.subProgramId} mode={TESTER} />;
     }
 
     return null;

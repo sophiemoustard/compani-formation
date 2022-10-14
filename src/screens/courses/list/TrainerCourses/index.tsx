@@ -22,9 +22,6 @@ import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
 import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
-import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
-import { CourseModeType } from '../../../../types/store/CourseStoreType';
-import CoursesActions from '../../../../store/courses/actions';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -58,17 +55,16 @@ const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   return contents.filter(section => section.courses.length);
 };
 
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={TRAINER} />;
 
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
-  setMode: (value: CourseModeType) => void,
   loggedUserId: string | null,
 }
 
-const TrainerCourses = ({ setMode, navigation, loggedUserId }: TrainerCoursesProps) => {
+const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
@@ -104,9 +100,8 @@ const TrainerCourses = ({ setMode, navigation, loggedUserId }: TrainerCoursesPro
   useEffect(() => {
     if (isFocused) {
       getCourses();
-      setMode(TRAINER);
     }
-  }, [isFocused, getCourses, loggedUserId, setMode]);
+  }, [isFocused, getCourses, loggedUserId]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -136,8 +131,4 @@ const TrainerCourses = ({ setMode, navigation, loggedUserId }: TrainerCoursesPro
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrainerCourses);
+export default connect(mapStateToProps)(TrainerCourses);

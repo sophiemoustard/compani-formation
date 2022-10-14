@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { connect } from 'react-redux';
 import CompaniDate from '../../core/helpers/dates/companiDates';
+import { CourseModeType } from '../../types/CourseTypes';
 import { capitalize } from '../../core/helpers/utils';
 import { PINK, PURPLE } from '../../styles/colors';
 import Shadow from '../design/Shadow';
-import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
-import { StateType } from '../../types/store/StoreType';
-import { CourseModeType } from '../../types/store/CourseStoreType';
 import { TRAINER } from '../../core/data/constants';
+import styles from './styles';
 
 interface CalendarIconProps {
   slots: Date[],
@@ -81,6 +79,4 @@ const CalendarIcon = ({ slots, progress = 0, mode }: CalendarIconProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
-
-export default connect(mapStateToProps)(CalendarIcon);
+export default CalendarIcon;

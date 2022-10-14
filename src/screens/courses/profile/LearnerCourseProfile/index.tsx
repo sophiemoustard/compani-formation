@@ -40,7 +40,7 @@ import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
-import { isIOS, PEDAGOGY } from '../../../../core/data/constants';
+import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -137,7 +137,7 @@ const LearnerCourseProfile = ({
     setIsLoading(false);
   };
 
-  const renderCells = item => renderStepCell(item, course, route);
+  const renderCells = item => renderStepCell(item, course, LEARNER, route);
 
   const isProgressBarOnTop = (event) => {
     const { y } = event.nativeEvent.contentOffset;
@@ -174,7 +174,7 @@ const LearnerCourseProfile = ({
       };
       navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
     } else {
-      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType });
+      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType, mode: LEARNER });
     }
   };
 

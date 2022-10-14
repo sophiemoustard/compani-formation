@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
@@ -12,13 +11,9 @@ import { capitalize, formatIdentity } from '../../../core/helpers/utils';
 import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import ContactInfoContainer from '../../../components/ContactInfoContainer';
-import { StateType } from '../../../types/store/StoreType';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { LEARNER } from '../../../core/data/constants';
 
-interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {
-  mode: CourseModeType,
-}
+interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
 const formatDate = (date) => {
   const dayOfWeek = capitalize(CompaniDate(date).format('ccc'));
@@ -28,8 +23,8 @@ const formatDate = (date) => {
   return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
 };
 
-const BlendedAbout = ({ mode, route, navigation }: BlendedAboutProps) => {
-  const { course } = route.params;
+const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
+  const { course, mode } = route.params;
   const program = course.subProgram?.program || null;
   const [trainerPictureSource, setTrainerPictureSource] = useState(
     require('../../../../assets/images/default_avatar.png')
@@ -89,6 +84,4 @@ const BlendedAbout = ({ mode, route, navigation }: BlendedAboutProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
-
-export default connect(mapStateToProps)(BlendedAbout);
+export default BlendedAbout;

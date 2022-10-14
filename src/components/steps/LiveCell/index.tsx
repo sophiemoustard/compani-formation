@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import get from 'lodash/get';
-import { SlotType } from '../../../types/CourseTypes';
+import { CourseModeType, SlotType } from '../../../types/CourseTypes';
 import { LiveStepType } from '../../../types/StepTypes';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
 import CalendarIcon from '../../CalendarIcon';
@@ -14,11 +14,12 @@ import styles from './styles';
 
 type LiveCellProps = {
   step: LiveStepType,
-  slots?: SlotType[],
   index: number,
+  mode: CourseModeType,
+  slots?: SlotType[],
 }
 
-const LiveCell = ({ step, slots = [], index }: LiveCellProps) => {
+const LiveCell = ({ step, index, mode, slots = [] }: LiveCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [stepSlots, setStepSlots] = useState<SlotType[]>([]);
   const [dates, setDates] = useState<Date[]>([]);
@@ -43,8 +44,8 @@ const LiveCell = ({ step, slots = [], index }: LiveCellProps) => {
       <LiveCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
         onRequestClose={closeModal} />
       <TouchableOpacity style={[styles.container, styles.upperContainer]} onPress={openModal}>
-        <CalendarIcon slots={dates} progress={get(step, 'progress.live')} />
-        <StepCellTitle index={index} name={step.name} type={step.type} />
+        <CalendarIcon slots={dates} progress={get(step, 'progress.live')} mode={mode} />
+        <StepCellTitle index={index} name={step.name} type={step.type} mode={mode} />
         <View style={styles.iconContainer}>
           <Feather name='info' size={ICON.LG} color={GREY[500]} style={styles.infoButtonContainer} />
         </View>

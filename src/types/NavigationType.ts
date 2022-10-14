@@ -1,13 +1,13 @@
-import { BlendedCourseType, ELearningProgramType } from './CourseTypes';
+import { BlendedCourseType, CourseModeType, ELearningProgramType } from './CourseTypes';
 
 export type RootStackParamList = {
   Authentication: undefined;
   EmailForm: { firstConnection: Boolean } | undefined;
   CreateAccount: { email: string };
   PasswordReset: { userId: string, email: string, token: string }
-  ActivityCardContainer: { activityId: string, profileId: string };
+  ActivityCardContainer: { activityId: string, profileId: string, mode: CourseModeType };
   QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
-  BlendedAbout: { course: BlendedCourseType }
+  BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }
   ProfileEdition: undefined;

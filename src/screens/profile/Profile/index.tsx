@@ -8,7 +8,6 @@ import { CameraCapturedPicture } from 'expo-camera';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
-import CoursesActions from '../../../store/courses/actions';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
@@ -38,10 +37,9 @@ StackScreenProps<RootStackParamList>
 > {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
-  resetCourseReducer: () => void,
 }
 
-const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: ProfileProps) => {
+const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
@@ -77,9 +75,8 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
 
     if (isFocused) {
       fetchData();
-      resetCourseReducer();
     }
-  }, [isFocused, loggedUser, resetCourseReducer]);
+  }, [isFocused, loggedUser]);
 
   useEffect(() => {
     setUserFirstName(get(loggedUser, 'identity.firstname'));
@@ -212,7 +209,6 @@ const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
