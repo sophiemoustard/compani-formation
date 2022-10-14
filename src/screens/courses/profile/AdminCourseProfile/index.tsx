@@ -53,7 +53,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const attendanceSheetsToUpload = useMemo(() => {
     if (course?.type === INTRA) {
       const intraCourseSavedSheets = savedAttendanceSheets as IntraAttendanceSheetType[];
-      const savedDates = intraCourseSavedSheets.map(sheet => CompaniDate(sheet.date).toISO());
+      const savedDates = intraCourseSavedSheets.map(sheet => CompaniDate(sheet.date).startOf('day').toISO());
 
       return uniqBy(
         course.slots
