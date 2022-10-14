@@ -36,17 +36,20 @@ export const savePhoto = async (photo, loggedUser) => {
   return Users.getById(loggedUser._id);
 };
 
-export const formatImagePayload = async (image: CameraCapturedPicture, fileName: string) => {
+export const formatImage = async (image: CameraCapturedPicture, fileName: string) => {
   const fileInfos = await FileSystem.getInfoAsync(image.uri);
   const uri = (fileInfos.size && ((fileInfos.size / IMAGE_MAX_SIZE) > 1))
     ? await compressPhoto(image.uri, fileInfos.size)
     : formatPhotoURI(image.uri);
 
-  const data = new FormData();
   const file = { uri, type: mime.getType(uri), name: fileName };
 
-  data.append('fileName', fileName);
-  data.append('file', file);
+  return file;
+};
+
+export const formatPayload = async (payload) => {
+  const data = new FormData();
+  Object.entries(payload).forEach(([key, value]) => data.append(key, value));
 
   return data;
 };

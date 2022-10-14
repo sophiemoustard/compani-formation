@@ -11,7 +11,6 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
@@ -19,7 +18,6 @@ import { LEARNER, TRAINER } from '../../../core/data/constants';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
-  mode: CourseModeType,
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
@@ -33,7 +31,6 @@ const ActivityCardContainer = ({
   navigation,
   cards,
   cardIndex,
-  mode,
   exitConfirmationModal,
   setCards,
   setExitConfirmationModal,
@@ -42,6 +39,7 @@ const ActivityCardContainer = ({
 }: ActivityCardContainerProps) => {
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
+  const { profileId, mode } = route.params;
 
   useEffect(() => {
     setStatusBarVisible(false);
@@ -81,7 +79,6 @@ const ActivityCardContainer = ({
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
-    const { profileId } = route.params;
     if (mode === LEARNER) {
       navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
     } else if (mode === TRAINER) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
@@ -120,7 +117,7 @@ const ActivityCardContainer = ({
             </Tab.Screen>
           ))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <ActivityEndCard goBack={goBack} activity={activity} />}
+            {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} />}
           </Tab.Screen>
         </>
       }
@@ -132,7 +129,6 @@ const mapStateToProps = (state: StateType) => ({
   cards: state.cards.cards,
   cardIndex: state.cards.cardIndex,
   exitConfirmationModal: state.cards.exitConfirmationModal,
-  mode: state.courses.mode,
 });
 
 const mapDispatchToProps = dispatch => ({

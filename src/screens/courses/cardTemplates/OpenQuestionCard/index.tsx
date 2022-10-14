@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { ScrollView, View, Text, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
@@ -13,6 +13,7 @@ import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import Actions from '../../../../store/cards/actions';
 import styles from './styles';
+import { isIOS } from '../../../../core/data/constants';
 
 interface OpenQuestionCardProps {
   card: OpenQuestionType,
@@ -37,7 +38,6 @@ const OpenQuestionCard = ({
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
 
-  const isIOS = Platform.OS === 'ios';
   const style = styles(isSelected);
 
   useEffect(() => setIsRightSwipeEnabled(false));

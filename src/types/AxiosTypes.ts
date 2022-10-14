@@ -1,4 +1,5 @@
 import { ActivityWithCardsType } from './ActivityTypes';
+import { AttendanceSheetType } from './AttendanceSheetTypes';
 import { CompanyType } from './CompanyType';
 import { BlendedCourseType, CourseType, ProgramType, SubProgramType } from './CourseTypes';
 import { QuestionnaireType, QuestionnaireWithCardsType } from './QuestionnaireType';
@@ -6,6 +7,9 @@ import { UserType } from './UserType';
 
 // ACTIVITY
 export type ActivityResponseType = { message: string, data: { activity: ActivityWithCardsType } };
+
+// ATTENDANCE SHEET
+export type AttendanceSheetListResponseType = { message: string, data: { attendanceSheets: AttendanceSheetType[] } }
 
 // AUTHENTICATION
 export type AuthenticationType = {

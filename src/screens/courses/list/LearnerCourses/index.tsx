@@ -13,15 +13,12 @@ import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
 import HomeScreenFooter from '../../../../components/HomeScreenFooter';
 import { getLoggedUserId } from '../../../../store/main/selectors';
-import CoursesActions from '../../../../store/courses/actions';
 import commonStyles from '../../../../styles/common';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { SubProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
-import { ActionWithoutPayloadType } from '../../../../types/store/StoreType';
-import { CourseModeType } from '../../../../types/store/CourseStoreType';
 import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
-import { E_LEARNING, LEARNER, PEDAGOGY, TESTER } from '../../../../core/data/constants';
+import { E_LEARNING, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
@@ -30,7 +27,6 @@ interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
-  setMode: (value: CourseModeType) => void,
   loggedUserId: string | null,
 }
 
@@ -51,9 +47,9 @@ const courseReducer = (state, action) => {
   }
 };
 
-const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} />;
+const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={LEARNER} />;
 
-const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesProps) => {
+const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -84,15 +80,13 @@ const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesPro
       await Promise.all([getCourses(), getElearningDraftSubPrograms()]);
     }
     if (loggedUserId && isFocused) {
-      setMode(LEARNER);
       fetchData();
     }
-  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms, setMode]);
+  }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
 
   const onPressProgramCell = (id: string, isCourse: boolean) => {
     if (isCourse) navigation.navigate('LearnerCourseProfile', { courseId: id });
     else {
-      setMode(TESTER);
       navigation.navigate('SubProgramProfile', { subProgramId: id });
     }
   };
@@ -146,8 +140,4 @@ const LearnerCourses = ({ setMode, navigation, loggedUserId }: LearnerCoursesPro
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourses);
+export default connect(mapStateToProps)(LearnerCourses);

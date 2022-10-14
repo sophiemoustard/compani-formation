@@ -8,7 +8,6 @@ import { CameraCapturedPicture } from 'expo-camera';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
-import CoursesActions from '../../../store/courses/actions';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
@@ -25,7 +24,7 @@ import CompanySearchModal from '../../../components/companyLinkRequest/CompanySe
 import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
-import { formatImagePayload } from '../../../core/helpers/pictures';
+import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
@@ -38,10 +37,9 @@ StackScreenProps<RootStackParamList>
 > {
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
-  resetCourseReducer: () => void,
 }
 
-const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: ProfileProps) => {
+const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const { signOut } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
@@ -77,9 +75,8 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
 
     if (isFocused) {
       fetchData();
-      resetCourseReducer();
     }
-  }, [isFocused, loggedUser, resetCourseReducer]);
+  }, [isFocused, loggedUser]);
 
   useEffect(() => {
     setUserFirstName(get(loggedUser, 'identity.firstname'));
@@ -113,7 +110,8 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
   const savePicture = async (picture: CameraCapturedPicture) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
-    const data = await formatImagePayload(picture, fileName);
+    const file = await formatImage(picture, fileName);
+    const data = await formatPayload({ file, fileName });
 
     if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
     await Users.uploadImage(loggedUser._id, data);
@@ -194,7 +192,7 @@ const Profile = ({ loggedUser, setLoggedUser, resetCourseReducer, navigation }: 
         <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
           openCamera={() => setCamera(true)} deletePicture={deletePicture}
           openImagePickerManager={() => setImagePickerManager(true)} />
-        <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />
+        {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
         {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
           savePicture={savePicture} />}
         <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
@@ -211,7 +209,6 @@ const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-  resetCourseReducer: () => dispatch(CoursesActions.resetCourseReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

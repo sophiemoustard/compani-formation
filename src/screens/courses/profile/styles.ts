@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY, PINK } from '../../../styles/colors';
 import { BORDER_RADIUS, BUTTON_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
-import { NUNITO_SEMI, FIRA_SANS_MEDIUM, FIRA_SANS_BOLD } from '../../../styles/fonts';
+import { NUNITO_SEMI, FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   separator: {
@@ -47,20 +47,9 @@ const styles = StyleSheet.create({
     color: WHITE,
     paddingLeft: PADDING.MD,
   },
-  sectionTitle: {
-    ...FIRA_SANS_BOLD.LG,
-    marginBottom: MARGIN.MD,
-    color: GREY[900],
-  },
-  sectionContainer: {
-    margin: MARGIN.MD,
-  },
   adminButton: {
     width: '95%',
     marginBottom: 24,
-  },
-  footer: {
-    paddingVertical: PADDING.LG,
   },
 });
 

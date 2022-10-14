@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK } from '../../styles/colors';
 import { MARGIN } from '../../styles/metrics';
-import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../styles/fonts';
+import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, FIRA_SANS_MEDIUM, FIRA_SANS_ITALIC } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   title: {
@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
     color: PINK[500],
     marginLeft: MARGIN.MD,
     textDecorationLine: 'underline',
+  },
+  italicText: {
+    ...FIRA_SANS_ITALIC.MD,
+    color: GREY[600],
+    marginBottom: MARGIN.MD,
   },
 });
 

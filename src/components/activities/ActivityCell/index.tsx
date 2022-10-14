@@ -4,10 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import CardsActions from '../../../store/cards/actions';
-import { StateType } from '../../../types/store/StoreType';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import ActivityIcon from '../ActivityIcon';
 import { ActivityType, QuestionnaireAnswersType } from '../../../types/ActivityTypes';
+import { CourseModeType } from '../../../types/CourseTypes';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { LEARNER, QUIZ } from '../../../core/data/constants';
@@ -61,7 +60,7 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
   const onPress = () => {
     if (mode === LEARNER) getQuestionnaireAnswersList();
 
-    navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId });
+    navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId, mode });
   };
 
   return (
@@ -86,11 +85,9 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
-
 const mapDispatchToProps = dispatch => ({
   setQuestionnaireAnswersList: questionnaireAnswersList =>
     dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActivityCell);
+export default connect(null, mapDispatchToProps)(ActivityCell);

@@ -1,16 +1,18 @@
 import { View, FlatList } from 'react-native';
 import { ActivityType } from '../../../types/ActivityTypes';
+import { CourseModeType } from '../../../types/CourseTypes';
 import ActivityCell from '../ActivityCell';
 import styles from './styles';
 
 type ActivityListProps = {
   activities: ActivityType[],
   profileId: string,
+  mode: CourseModeType,
 }
 
-const ActivityList = ({ activities, profileId }: ActivityListProps) => {
+const ActivityList = ({ activities, profileId, mode }: ActivityListProps) => {
   const renderActivityCell = activity => (
-    <ActivityCell activity={activity} profileId={profileId} />
+    <ActivityCell activity={activity} profileId={profileId} mode={mode} />
   );
 
   const renderSeparator = () => <View style={styles.separator} />;

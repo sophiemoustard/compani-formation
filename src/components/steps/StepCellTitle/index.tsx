@@ -1,10 +1,8 @@
 import { View, Text } from 'react-native';
-import { connect } from 'react-redux';
 import { StepType } from '../../../types/StepTypes';
+import { CourseModeType } from '../../../types/CourseTypes';
 import { stepTypeOptions, E_LEARNING, TRAINER } from '../../../core/data/constants';
 import { formatDuration } from '../../../core/helpers/utils';
-import { StateType } from '../../../types/store/StoreType';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import styles from './styles';
 
 type StepCellTitleProps = {
@@ -23,10 +21,8 @@ const StepCellTitle = ({ name, type, index, mode, misc = '', theoreticalHours = 
       {type === E_LEARNING && !!theoreticalHours && ` (${formatDuration(theoreticalHours)})`}
     </Text>
     <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.stepName}>{name}</Text>
-    { mode === TRAINER && <Text style={styles.misc} numberOfLines={1}>{misc}</Text>}
+    {mode === TRAINER && type !== E_LEARNING && <Text style={styles.misc} numberOfLines={1}>{misc}</Text>}
   </View>
 );
 
-const mapStateToProps = (state: StateType) => ({ mode: state.courses.mode });
-
-export default connect(mapStateToProps)(StepCellTitle);
+export default StepCellTitle;

@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react';
-import { View, TouchableOpacity, Dimensions, Platform } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import * as ImageManipulator from 'expo-image-manipulator';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import { WHITE } from '../../../styles/colors';
 import IoniconsButton from '../../icons/IoniconsButton';
+import { isIOS } from '../../../core/data/constants';
 
 interface NiCameraProps {
   setCapturedImage: (photo: CameraCapturedPicture) => void,
@@ -28,7 +29,7 @@ const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
   };
 
   const setScreenDimension = async () => {
-    if (Platform.OS === 'ios' || !camera.current) return;
+    if (isIOS || !camera.current) return;
 
     const { height, width } = Dimensions.get('window');
     if (!width) return;

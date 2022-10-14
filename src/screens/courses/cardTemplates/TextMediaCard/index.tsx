@@ -18,7 +18,7 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import { IMAGE, VIDEO, AUDIO } from '../../../../core/data/constants';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
-import NiImage from '../../../../components/cards/Image';
+import NiImage from '../../../../components/Image';
 
 interface TextMediaCardProps {
   card: TextMediaType,

@@ -6,19 +6,15 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
 import { getLoggedUserId } from '../../../store/main/selectors';
-import CoursesActions from '../../../store/courses/actions';
-import { ActionWithoutPayloadType } from '../../../types/store/StoreType';
-import { CourseModeType } from '../../../types/store/CourseStoreType';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 import { LEARNER } from '../../../core/data/constants';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
-  setMode: (value: CourseModeType) => void,
 }
 
-const ElearningAbout = ({ route, navigation, loggedUserId, setMode }: ElearningAboutProps) => {
+const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps) => {
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
@@ -39,12 +35,14 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setMode }: ElearningA
   const startActivity = () => {
     const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
     navigation.dispatch(StackActions.replace('LearnerCourseProfile', { courseId }));
-    navigation.navigate('ActivityCardContainer', { activityId: firstActivity._id, profileId: courseId });
+    navigation.navigate(
+      'ActivityCardContainer',
+      { activityId: firstActivity._id, profileId: courseId, mode: LEARNER }
+    );
   };
 
   const subscribeAndGoToCourseProfile = async () => {
     try {
-      setMode(LEARNER);
       if (!hasAlreadySubscribed) {
         await Courses.registerToELearningCourse(courseId);
         startActivity();
@@ -63,8 +61,4 @@ const ElearningAbout = ({ route, navigation, loggedUserId, setMode }: ElearningA
 
 const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  setMode: (value: CourseModeType) => dispatch(CoursesActions.setMode(value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ElearningAbout);
+export default connect(mapStateToProps)(ElearningAbout);

@@ -6,7 +6,6 @@ import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import { StateType } from '../../../../types/store/StoreType';
-import { CourseModeType } from '../../../../types/store/CourseStoreType';
 import ActivityHistories from '../../../../api/activityHistories';
 import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import CardsActions from '../../../../store/cards/actions';
@@ -14,6 +13,7 @@ import styles from '../../../../styles/endCard';
 import commonStyles from '../../../../styles/common';
 import { achievementJingle } from '../../../../core/helpers/utils';
 import { LEARNER } from '../../../../core/data/constants';
+import { CourseModeType } from '../../../../types/CourseTypes';
 
 interface ActivityEndCardProps {
   mode: CourseModeType,
@@ -67,7 +67,6 @@ const ActivityEndCard = ({
 const mapStateToProps = (state: StateType) => ({
   questionnaireAnswersList: state.cards.questionnaireAnswersList,
   score: state.cards.score,
-  mode: state.courses.mode,
 });
 
 const mapDispatchToProps = dispatch => ({
