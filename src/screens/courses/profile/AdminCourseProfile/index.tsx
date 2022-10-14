@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
+import uniqBy from 'lodash/uniqBy';
 import { CameraCapturedPicture } from 'expo-camera';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
@@ -54,14 +55,15 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       const intraCourseSavedSheets = savedAttendanceSheets as IntraAttendanceSheetType[];
       const savedDates = intraCourseSavedSheets.map(sheet => CompaniDate(sheet.date).toISO());
 
-      return [...new Set(
+      return uniqBy(
         course.slots
           .map(slot => ({
             value: CompaniDate(slot.startDate).startOf('day').toISO(),
             label: CompaniDate(slot.startDate).format('dd/LL/yyyy'),
           }))
-          .filter(date => !savedDates.includes(date.value))
-      )];
+          .filter(date => !savedDates.includes(date.value)),
+        'value'
+      );
     }
 
     const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
