@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { WHITE, GREY } from '../../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN, PADDING } from '../../../../styles/metrics';
 import { FIRA_SANS_BOLD, FIRA_SANS_ITALIC, FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -41,9 +41,11 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.MD,
     alignItems: 'center',
     paddingTop: PADDING.MD,
+    maxWidth: ICON.XXL + PADDING.XL,
   },
   savedSheetText: {
     ...FIRA_SANS_REGULAR.MD,
+    textAlign: 'center',
   },
   attendancesContainer: {
     marginTop: MARGIN.LG,
