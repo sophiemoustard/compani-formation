@@ -6,7 +6,7 @@ import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
-import { Context as AuthContext } from '../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import axiosLogged from '../api/axios/logged';
@@ -40,7 +40,13 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
 };
 
 const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContainerProps) => {
-  const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
+  const {
+    tryLocalSignIn,
+    companiToken,
+    appIsReady,
+    signOut,
+    refreshCompaniToken,
+  }: AuthContextType = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
@@ -88,7 +94,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
 
     await asyncStorage.removeCompaniToken();
     const { refreshToken } = await asyncStorage.getRefreshToken();
-    await refreshCompaniToken(refreshToken);
+    if (refreshToken) await refreshCompaniToken(refreshToken);
 
     const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
     if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
@@ -145,8 +151,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       }
     }
 
-    initializeAxiosLogged(companiToken);
-    if (companiToken) setUser();
+    if (companiToken) {
+      initializeAxiosLogged(companiToken);
+      setUser();
+    }
   }, [companiToken, initializeAxiosLogged, setLoggedUser, signOut]);
 
   const shouldUpdate = async (nextState) => {

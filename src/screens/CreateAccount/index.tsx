@@ -13,7 +13,7 @@ import CreateAccountForm from '../../components/CreateAccountForm';
 import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
-import { Context as AuthContext } from '../../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 
 interface CreateAccountProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAccount'>,
@@ -50,7 +50,7 @@ const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
 const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { email } = route.params;
-  const { signIn } = useContext(AuthContext);
+  const { signIn }: AuthContextType = useContext(AuthContext);
   const [formList, setFormList] = useState<CreateAccountDataType[][]>([
     [{
       type: 'text',

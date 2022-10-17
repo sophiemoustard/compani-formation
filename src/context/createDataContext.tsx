@@ -1,37 +1,38 @@
-import { useReducer, createContext, ContextType, ReactNode } from 'react';
-import { AuthContextActionsType, AuthContextStateType } from './AuthContext';
+import { useReducer, createContext, ContextType, Reducer } from 'react';
+import { AuthContextStateType, AuthContextDispatchActionsType, AuthContextActionsType } from './AuthContext';
+import { Action } from './utils';
 
 export interface createDataContextType {
   Context: ContextType<any>,
-  Provider: (children: {children: ReactNode}) => JSX.Element
+  Provider: (children: { children: JSX.Element }) => JSX.Element
 }
 
-export default (
-  reducer: (state: AuthContextStateType, actions) => AuthContextStateType,
-  actions: AuthContextActionsType,
-  defaultValue: AuthContextStateType
-): createDataContextType => {
-  const Provider = ({ children }: {children: ReactNode}) => {
-    const [
-      { companiToken, loading, error, errorMessage, appIsReady },
-      dispatch,
-    ] = useReducer(reducer, defaultValue);
-    const state = { companiToken, loading, error, errorMessage, appIsReady };
+type ContextActionsType = AuthContextActionsType;
+type ContextDispatchActionsType = AuthContextDispatchActionsType;
+type ContextStateType = AuthContextStateType;
 
-    const boundActions = {};
+export const createDataContext = (
+  reducer: Reducer<ContextStateType, Action>,
+  actions: ContextDispatchActionsType,
+  defaultValue: ContextStateType
+): createDataContextType => {
+  const Context = createContext({ state: defaultValue });
+
+  const Provider = ({ children }: { children: JSX.Element }) => {
+    const [state, dispatch] = useReducer(reducer, defaultValue);
+
+    const boundActions = {} as ContextActionsType;
     // eslint-disable-next-line guard-for-in, no-restricted-syntax
     for (const key in actions) {
       boundActions[key] = actions[key](dispatch);
     }
 
     return (
-      <Context.Provider value={{ ...state, ...boundActions }}>
+      <Context.Provider value={{ state, ...state, ...boundActions }}>
         {children}
       </Context.Provider>
     );
   };
-
-  const Context = createContext(defaultValue);
 
   return { Context, Provider };
 };
