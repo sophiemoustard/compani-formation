@@ -1,10 +1,11 @@
-import React from 'react';
+import { Dispatch } from 'react';
 import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
-import createDataContext from './createDataContext';
+import { createDataContext } from './createDataContext';
 import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
+import { Action, BoundActions } from './utils';
 
 export interface AuthContextStateType {
   companiToken: string | null,
@@ -14,13 +15,17 @@ export interface AuthContextStateType {
   appIsReady: boolean
 }
 
-export interface AuthContextActionsType {
-  signIn: (d: React.Dispatch<any>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
-  tryLocalSignIn:(d: React.Dispatch<any>) => () => Promise<void>,
-  signOut:(d: React.Dispatch<any>) => (b: boolean) => Promise<void>,
-  resetError:(d: React.Dispatch<any>) => () => void,
-  refreshCompaniToken:(d: React.Dispatch<any>) => (refreshToken: string) => Promise<void>,
+export interface AuthContextDispatchActionsType {
+  signIn: (d: Dispatch<Action>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
+  tryLocalSignIn: (d: Dispatch<Action>) => () => Promise<void>,
+  signOut: (d: Dispatch<Action>) => (b?: boolean) => Promise<void>,
+  resetError: (d: Dispatch<Action>) => () => void,
+  refreshCompaniToken: (d: Dispatch<Action>) => (refreshToken: string) => Promise<void>,
 }
+
+export type AuthContextActionsType = BoundActions<AuthContextDispatchActionsType>;
+
+export type AuthContextType = AuthContextActionsType & AuthContextStateType;
 
 const authReducer = (state: AuthContextStateType, actions): AuthContextStateType => {
   switch (actions.type) {

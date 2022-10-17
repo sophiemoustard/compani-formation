@@ -1,7 +1,7 @@
 import { useRef, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Context as AuthContext } from '../../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 import Analytics from '../../core/helpers/analytics';
 import { navigationRef } from '../../navigationRef';
 import Home from '../../navigation/Home/index';
@@ -24,7 +24,7 @@ import { RootStackParamList } from '../../types/NavigationType';
 const MainStack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
-  const { companiToken } = useContext(AuthContext);
+  const { companiToken }: AuthContextType = useContext(AuthContext);
   const routeNameRef = useRef<string>();
 
   const handleOnReadyNavigation = () => {
