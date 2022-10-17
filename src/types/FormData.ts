@@ -1,13 +1,13 @@
 export {};
 
 declare global {
-  interface FormDataValue {
+  interface FormDataValueProps {
     uri: string;
     name: string;
     type: string;
   }
 
   interface FormData {
-    append(key: string, value: FormDataValue | string): void;
+    append(key: string, value: FormDataValueProps | string): void;
   }
 }

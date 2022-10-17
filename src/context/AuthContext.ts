@@ -1,3 +1,4 @@
+import React from 'react';
 import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
 import createDataContext from './createDataContext';
@@ -5,7 +6,7 @@ import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
 
-export interface StateType {
+export interface AuthContextStateType {
   companiToken: string | null,
   loading: boolean,
   error: boolean,
@@ -13,7 +14,15 @@ export interface StateType {
   appIsReady: boolean
 }
 
-const authReducer = (state: StateType, actions): StateType => {
+export interface AuthContextActionsType {
+  signIn: (d: React.Dispatch<any>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
+  tryLocalSignIn:(d: React.Dispatch<any>) => () => Promise<void>,
+  signOut:(d: React.Dispatch<any>) => (b: boolean) => Promise<void>,
+  resetError:(d: React.Dispatch<any>) => () => void,
+  refreshCompaniToken:(d: React.Dispatch<any>) => (refreshToken: string) => Promise<void>,
+}
+
+const authReducer = (state: AuthContextStateType, actions): AuthContextStateType => {
   switch (actions.type) {
     case BEFORE_SIGNIN:
       return { ...state, error: false, errorMessage: '', loading: true };
@@ -71,7 +80,7 @@ const signOut = dispatch => async (removeExpoToken: boolean = false) => {
   navigate('Authentication');
 };
 
-const refreshCompaniToken = dispatch => async (refreshToken) => {
+const refreshCompaniToken = dispatch => async (refreshToken: string) => {
   try {
     const token = await Authentication.refreshToken({ refreshToken });
 
@@ -100,7 +109,7 @@ const tryLocalSignIn = dispatch => async () => {
 
   const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
   if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
-    await refreshCompaniToken(dispatch)(refreshToken);
+    await refreshCompaniToken(dispatch)(refreshToken as string);
     return localSignIn(dispatch);
   }
 
