@@ -62,7 +62,7 @@ describe('Authentication tests', () => {
       );
     axiosLoggedMock.onGet(`${baseURL}/users/321`)
       .reply(200, { data: { user: { _id: '321' } } })
-      .onGet(`${baseURL}/courses/user`)
+      .onGet(`${baseURL}/courses`)
       .reply(200, { data: { courses: [] } })
       .onGet(`${baseURL}/subprograms/draft-e-learning`)
       .reply(200, { data: { subPrograms: [] } });
