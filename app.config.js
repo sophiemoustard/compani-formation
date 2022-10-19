@@ -95,5 +95,8 @@ export default {
       versionCode: 85,
       googleServicesFile: './google-services.json',
     },
+    plugins: [
+      ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
+    ],
   },
 };
