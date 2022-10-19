@@ -214,11 +214,11 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!course.trainees?.length && <FlatList data={course.trainees} keyExtractor={item => item._id}
             renderItem={({ item }) => renderTrainee(item)} style={styles.listContainer} />}
         </View>
-        <View style={styles.sectionContainer}>
+        {course.type === INTRA && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <ContactInfoContainer contact={course.companyRepresentative}
             title={'Votre référent structure pour cette formation'} />
-        </View>
+        </View>}
         <View style={styles.footer} />
       </ScrollView>
       <PictureModal visible={pictureModal} closePictureModal={() => setPictureModal(false)}
