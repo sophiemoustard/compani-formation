@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prestart": "source $HOME/.nvm/nvm.sh; nvm use 12.13.0",
+    "prestart": "source $HOME/.nvm/nvm.sh; nvm use 16.18.0",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
