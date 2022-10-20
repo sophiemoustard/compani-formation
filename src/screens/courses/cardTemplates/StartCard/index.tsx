@@ -12,11 +12,7 @@ interface StartCardProps {
   goBack: () => void,
 }
 
-const StartCard = ({
-  title,
-  isLoading,
-  goBack,
-}: StartCardProps) => {
+const StartCard = ({ title, isLoading, goBack }: StartCardProps) => {
   const navigation = useNavigation();
 
   return (
