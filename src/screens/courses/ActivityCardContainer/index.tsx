@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -41,11 +41,9 @@ const ActivityCardContainer = ({
   const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId, mode } = route.params;
 
-  useEffect(() => {
-    setStatusBarVisible(false);
-  }, [setStatusBarVisible]);
+  useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
-  const getActivity = async () => {
+  const getActivity = useCallback(async () => {
     try {
       const fetchedActivity = await Activities.getActivity(route.params.activityId);
       setActivity(fetchedActivity);
@@ -55,20 +53,19 @@ const ActivityCardContainer = ({
       setActivity(null);
       setCards([]);
     }
-  };
+  }, [route.params.activityId, setCards]);
 
   useEffect(() => {
     async function fetchData() {
       await getActivity();
     }
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getActivity]);
 
   useEffect(() => {
     async function prefetchImages() {
       const imagesToPrefetch: Promise<boolean>[] = cards
-        .filter(c => get(c, 'media.type') === 'image')
+        .filter(c => get(c, 'media.type') === 'image' && !!get(c, 'media.link'))
         .map(c => Image.prefetch(get(c, 'media.link')));
 
       if (imagesToPrefetch.length) await Promise.all(imagesToPrefetch.map(i => i.catch(e => e)));
