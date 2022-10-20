@@ -33,15 +33,11 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
     padding: PADDING.MD,
   },
-  savedSheetContainer: {
-    flexDirection: 'row',
-    marginBottom: MARGIN.MD,
-  },
   savedSheetContent: {
     marginHorizontal: MARGIN.MD,
     alignItems: 'center',
     paddingTop: PADDING.MD,
-    maxWidth: ICON.XXL + PADDING.XL,
+    maxWidth: ICON.XXL + PADDING.XXL,
   },
   savedSheetText: {
     ...FIRA_SANS_REGULAR.MD,
