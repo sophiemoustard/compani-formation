@@ -1,18 +1,17 @@
-import { useReducer, createContext, ContextType, Reducer } from 'react';
-import { AuthContextStateType, AuthContextDispatchActionsType, AuthContextActionsType } from './AuthContext';
-import { Action } from './utils';
+import { useReducer, createContext, ContextType } from 'react';
+import { AuthContextStateType, AuthContextDispatchActionsType } from './AuthContext';
+import { ActionType } from './utils';
 
 export interface createDataContextType {
   Context: ContextType<any>,
   Provider: (children: { children: JSX.Element }) => JSX.Element
 }
 
-type ContextActionsType = AuthContextActionsType;
+type ContextStateType = AuthContextStateType
 type ContextDispatchActionsType = AuthContextDispatchActionsType;
-type ContextStateType = AuthContextStateType;
 
 export const createDataContext = (
-  reducer: Reducer<ContextStateType, Action>,
+  reducer: (state: ContextStateType, action: ActionType) => ContextStateType,
   actions: ContextDispatchActionsType,
   defaultValue: ContextStateType
 ): createDataContextType => {
@@ -21,7 +20,7 @@ export const createDataContext = (
   const Provider = ({ children }: { children: JSX.Element }) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
 
-    const boundActions = {} as ContextActionsType;
+    const boundActions = {};
     // eslint-disable-next-line guard-for-in, no-restricted-syntax
     for (const key in actions) {
       boundActions[key] = actions[key](dispatch);

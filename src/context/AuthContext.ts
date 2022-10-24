@@ -5,7 +5,7 @@ import { createDataContext } from './createDataContext';
 import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
-import { Action, BoundActions } from './utils';
+import { ActionType, BoundActionsType } from './utils';
 
 export interface AuthContextStateType {
   companiToken: string | null,
@@ -16,18 +16,18 @@ export interface AuthContextStateType {
 }
 
 export interface AuthContextDispatchActionsType {
-  signIn: (d: Dispatch<Action>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
-  tryLocalSignIn: (d: Dispatch<Action>) => () => Promise<void>,
-  signOut: (d: Dispatch<Action>) => (b?: boolean) => Promise<void>,
-  resetError: (d: Dispatch<Action>) => () => void,
-  refreshCompaniToken: (d: Dispatch<Action>) => (refreshToken: string) => Promise<void>,
+  signIn: (d: Dispatch<ActionType>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
+  tryLocalSignIn: (d: Dispatch<ActionType>) => () => Promise<void>,
+  signOut: (d: Dispatch<ActionType>) => (b?: boolean) => Promise<void>,
+  resetError: (d: Dispatch<ActionType>) => () => void,
+  refreshCompaniToken: (d: Dispatch<ActionType>) => (refreshToken: string) => Promise<void>,
 }
 
-export type AuthContextActionsType = BoundActions<AuthContextDispatchActionsType>;
+export type AuthContextActionsType = BoundActionsType<AuthContextDispatchActionsType>;
 
 export type AuthContextType = AuthContextActionsType & AuthContextStateType;
 
-const authReducer = (state: AuthContextStateType, actions): AuthContextStateType => {
+const authReducer = (state: AuthContextStateType, actions: ActionType): AuthContextStateType => {
   switch (actions.type) {
     case BEFORE_SIGNIN:
       return { ...state, error: false, errorMessage: '', loading: true };
