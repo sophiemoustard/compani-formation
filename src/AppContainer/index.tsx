@@ -94,14 +94,17 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
 
     await asyncStorage.removeCompaniToken();
     const { refreshToken } = await asyncStorage.getRefreshToken();
-    if (refreshToken) await refreshCompaniToken(refreshToken);
 
-    const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
-    if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
-      const config = { ...error.config };
-      if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
+    if (refreshToken) {
+      await refreshCompaniToken(refreshToken);
 
-      return axiosLogged.request(config);
+      const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
+      if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
+        const config = { ...error.config };
+        if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
+
+        return axiosLogged.request(config);
+      }
     }
 
     await signOut();

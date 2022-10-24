@@ -113,8 +113,8 @@ const tryLocalSignIn = dispatch => async () => {
   if (userId && asyncStorage.isTokenValid(companiToken, companiTokenExpiryDate)) return localSignIn(dispatch);
 
   const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
-  if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
-    await refreshCompaniToken(dispatch)(refreshToken as string);
+  if (!!refreshToken && asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
+    await refreshCompaniToken(dispatch)(refreshToken);
     return localSignIn(dispatch);
   }
 
