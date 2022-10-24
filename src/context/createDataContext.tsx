@@ -15,7 +15,7 @@ export const createDataContext = (
   actions: ContextDispatchActionsType,
   defaultValue: ContextStateType
 ): createDataContextType => {
-  const Context = createContext({ state: defaultValue });
+  const Context = createContext(defaultValue);
 
   const Provider = ({ children }: { children: JSX.Element }) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
@@ -27,7 +27,7 @@ export const createDataContext = (
     }
 
     return (
-      <Context.Provider value={{ state, ...state, ...boundActions }}>
+      <Context.Provider value={{ ...state, ...boundActions }}>
         {children}
       </Context.Provider>
     );
