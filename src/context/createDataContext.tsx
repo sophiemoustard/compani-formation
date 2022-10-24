@@ -1,6 +1,6 @@
 import { useReducer, createContext, ContextType } from 'react';
 import { AuthContextStateType, AuthContextDispatchActionsType } from './AuthContext';
-import { ActionType } from './utils';
+import { ActionType } from './types';
 
 export interface createDataContextType {
   Context: ContextType<any>,
