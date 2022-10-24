@@ -1,10 +1,10 @@
 import { Dispatch } from 'react';
 
-export interface Action {
+export interface ActionType {
   type: string;
   payload: any;
 }
 
-export type BoundActions<T> = {
-  [K in keyof T]: T[K] extends (d: Dispatch<Action>) => infer R ? R : never
+export type BoundActionsType<T> = {
+  [K in keyof T]: T[K] extends (d: Dispatch<ActionType>) => infer R ? R : never
 }
