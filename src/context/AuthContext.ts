@@ -5,7 +5,7 @@ import { createDataContext } from './createDataContext';
 import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
-import { ActionType, BoundActionsType } from './utils';
+import { ActionType, BoundActionsType } from './types';
 
 export interface AuthContextStateType {
   companiToken: string | null,
