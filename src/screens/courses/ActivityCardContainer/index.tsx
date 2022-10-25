@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -43,24 +43,21 @@ const ActivityCardContainer = ({
 
   useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
-  const getActivity = useCallback(async () => {
-    try {
-      const fetchedActivity = await Activities.getActivity(route.params.activityId);
-      setActivity(fetchedActivity);
-      setCards(fetchedActivity.cards);
-    } catch (e: any) {
-      console.error(e);
-      setActivity(null);
-      setCards([]);
-    }
-  }, [route.params.activityId, setCards]);
-
   useEffect(() => {
-    async function fetchData() {
-      await getActivity();
-    }
-    fetchData();
-  }, [getActivity]);
+    const getActivity = async () => {
+      try {
+        const fetchedActivity = await Activities.getActivity(route.params.activityId);
+        setActivity(fetchedActivity);
+        setCards(fetchedActivity.cards);
+      } catch (e: any) {
+        console.error(e);
+        setActivity(null);
+        setCards([]);
+      }
+    };
+
+    getActivity();
+  }, [route.params.activityId, setCards]);
 
   useEffect(() => {
     async function prefetchImages() {
