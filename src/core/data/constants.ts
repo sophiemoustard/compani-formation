@@ -99,3 +99,7 @@ export const SIGNIN_ERROR = 'signinError';
 export const RESET_ERROR = 'resetError';
 export const SIGNOUT = 'signout';
 export const RENDER = 'render';
+
+// COMPANIDURATION FORMATS
+export const LONG_DURATION_H_MM = 'h\'h\' mm\'min\'';
+export const SHORT_DURATION_H_MM = 'h\'h\'mm';
