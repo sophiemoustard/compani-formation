@@ -35,7 +35,8 @@ const CompaniDurationFactory = (inputDuration: Duration): CompaniDurationType =>
         if (minutes === 0) return _duration.toFormat(DURATION_HOURS);
 
         return _duration.toFormat(SHORT_DURATION_H_MM);
-      } if (template === LONG_DURATION_H_MM) {
+      }
+      if (template === LONG_DURATION_H_MM) {
         if (hours === 0) return _duration.toFormat(DURATION_MINUTES);
         if (minutes === 0) return _duration.toFormat(DURATION_HOURS);
 
