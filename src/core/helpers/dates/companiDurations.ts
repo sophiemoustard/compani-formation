@@ -4,7 +4,7 @@ import { Duration } from './luxon';
 const DURATION_HOURS = 'h\'h\'';
 const DURATION_MINUTES = 'm\'min\'';
 
-type DurationTypes = Duration | CompaniDurationType | string;
+type DurationTypes = CompaniDurationType | string;
 
 type displayFormat = typeof SHORT_DURATION_H_MM | typeof LONG_DURATION_H_MM;
 
