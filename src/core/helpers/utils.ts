@@ -1,6 +1,7 @@
 import { Audio } from 'expo-av';
 import BigNumber from 'bignumber.js';
-import { STRICTLY_E_LEARNING } from '../data/constants';
+import { STRICTLY_E_LEARNING, LONG_DURATION_H_MM } from '../data/constants';
+import CompaniDuration from '../helpers/dates/companiDurations';
 
 export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
@@ -65,12 +66,10 @@ export const getCourseProgress = (course) => {
 };
 
 export const formatDuration = (durationHours) => {
-  const hours = Math.floor(durationHours);
-  const minutes = Math.round((durationHours % 1) * 60);
-  if (!hours) return `${minutes}min`;
-  if (!minutes) return `${hours}h`;
+  const durationInSeconds = durationHours * 3600;
+  const durationISO = `PT${durationInSeconds}S`;
 
-  return `${hours}h ${minutes.toString().padStart(2, '0')}min`;
+  return CompaniDuration(durationISO).format(LONG_DURATION_H_MM);
 };
 
 export const add = (...nums) => nums.reduce((acc, n) => new BigNumber(acc).plus(n).toNumber(), 0);
