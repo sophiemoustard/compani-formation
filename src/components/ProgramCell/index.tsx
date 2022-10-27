@@ -3,17 +3,18 @@ import get from 'lodash/get';
 import { ProgramType } from '../../types/CourseTypes';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
-import { formatDuration } from '../../core/helpers/utils';
+import CompaniDuration from '../../core/helpers/dates/companiDurations';
+import { LONG_DURATION_H_MM } from '../../core/data/constants';
 
 interface ProgramCellProps {
   program: ProgramType,
-  theoreticalHours: number,
+  theoreticalDuration: number,
   progress?: number | null,
   misc?: string | null,
   onPress: () => void,
 }
 
-const ProgramCell = ({ program, theoreticalHours, progress = null, misc = '', onPress }: ProgramCellProps) => {
+const ProgramCell = ({ program, theoreticalDuration, progress = null, misc = '', onPress }: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
   const programDescription = program.description || '';
@@ -44,10 +45,12 @@ const ProgramCell = ({ program, theoreticalHours, progress = null, misc = '', on
         {programName}{misc ? ` - ${misc}` : ''}
       </Text>
       <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
-      {!!theoreticalHours &&
+      {!!theoreticalDuration &&
         <View>
           <Text style={styles.eLearning}>E-LEARNING</Text>
-          <Text style={styles.theoreticalHours}>{formatDuration(theoreticalHours)}</Text>
+          <Text style={styles.theoreticalDuration}>
+            {CompaniDuration(theoreticalDuration).format(LONG_DURATION_H_MM)}
+          </Text>
         </View>}
     </TouchableOpacity>
   );
