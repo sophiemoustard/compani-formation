@@ -8,7 +8,7 @@ import { LONG_DURATION_H_MM } from '../../core/data/constants';
 
 interface ProgramCellProps {
   program: ProgramType,
-  theoreticalDuration: number,
+  theoreticalDuration: string,
   progress?: number | null,
   misc?: string | null,
   onPress: () => void,

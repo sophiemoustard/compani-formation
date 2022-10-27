@@ -2,6 +2,7 @@ import { Audio } from 'expo-av';
 import BigNumber from 'bignumber.js';
 import { STRICTLY_E_LEARNING } from '../data/constants';
 import CompaniDuration from '../helpers/dates/companiDurations';
+import { StepType } from '../../types/StepTypes';
 
 export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
@@ -67,7 +68,7 @@ export const getCourseProgress = (course) => {
 
 export const add = (...nums) => nums.reduce((acc, n) => new BigNumber(acc).plus(n).toNumber(), 0);
 
-export const getTheoreticalDuration = steps => (
+export const getTheoreticalDuration = (steps: StepType[]) : string => (
   steps.length
     ? steps
       .reduce((acc, value) => (value.theoreticalDuration ? acc.add(value.theoreticalDuration) : acc), CompaniDuration())
