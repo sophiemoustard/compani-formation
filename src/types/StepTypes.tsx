@@ -6,7 +6,6 @@ type BaseStepType = {
   progress: { live:number, eLearning: number },
   type: string,
   name: string,
-  theoreticalDuration?: string
 }
 
 export type ELearningStepType = BaseStepType &
