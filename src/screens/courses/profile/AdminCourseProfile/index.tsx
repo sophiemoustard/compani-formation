@@ -152,10 +152,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const openImagePreview = async (id, link) => {
     await new Promise(() => {
       Image.getSize(
-        link,
-        (image) => {
-          setImagePreview({ visible: true, id, link, type: image ? IMAGE : PDF });
-        },
+        link || '',
+        (image) => { setImagePreview({ visible: true, id, link: link || '', type: image ? IMAGE : PDF }); },
         () => setImagePreview({ visible: true, id, link, type: PDF })
       );
     });

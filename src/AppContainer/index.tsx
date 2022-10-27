@@ -6,7 +6,7 @@ import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
-import { Context as AuthContext } from '../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
 import axiosLogged from '../api/axios/logged';
@@ -28,6 +28,7 @@ import styles from './styles';
 
 type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
+  onLayout: () => void,
   statusBarVisible: boolean,
 }
 
@@ -38,8 +39,14 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
-  const { tryLocalSignIn, companiToken, appIsReady, signOut, refreshCompaniToken } = useContext(AuthContext);
+const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContainerProps) => {
+  const {
+    tryLocalSignIn,
+    companiToken,
+    appIsReady,
+    signOut,
+    refreshCompaniToken,
+  }: AuthContextType = useContext(AuthContext);
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
@@ -87,14 +94,17 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
 
     await asyncStorage.removeCompaniToken();
     const { refreshToken } = await asyncStorage.getRefreshToken();
-    await refreshCompaniToken(refreshToken);
 
-    const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
-    if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
-      const config = { ...error.config };
-      if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
+    if (refreshToken) {
+      await refreshCompaniToken(refreshToken);
 
-      return axiosLogged.request(config);
+      const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
+      if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
+        const config = { ...error.config };
+        if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
+
+        return axiosLogged.request(config);
+      }
     }
 
     await signOut();
@@ -144,8 +154,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       }
     }
 
-    initializeAxiosLogged(companiToken);
-    if (companiToken) setUser();
+    if (companiToken) {
+      initializeAxiosLogged(companiToken);
+      setUser();
+    }
   }, [companiToken, initializeAxiosLogged, setLoggedUser, signOut]);
 
   const shouldUpdate = async (nextState) => {
@@ -162,9 +174,9 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
   useEffect(() => {
     initializeAxiosNotLogged();
     shouldUpdate(ACTIVE_STATE);
-    AppState.addEventListener('change', shouldUpdate);
+    const { remove } = AppState.addEventListener('change', shouldUpdate);
 
-    return () => { AppState.removeEventListener('change', shouldUpdate); };
+    return () => { remove(); };
   }, []);
 
   if (!appIsReady) return null;
@@ -179,7 +191,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <SafeAreaProvider>
+      <SafeAreaProvider onLayout={onLayout}>
         <AppNavigation />
       </SafeAreaProvider>
     </>

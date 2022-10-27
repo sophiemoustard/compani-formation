@@ -8,7 +8,7 @@ const _getBaseUrlForProfile = (): string => {
   if (!Constants?.manifest?.extra) return '';
 
   /**
-   * Pour utiliser expo build:...
+   * Pour utiliser expo publish
    * Il faudra l'enlever quand on aura totalement migrer vers EAS build
    */
   if (Constants.manifest.releaseChannel) {

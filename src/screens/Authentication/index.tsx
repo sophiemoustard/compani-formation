@@ -16,7 +16,7 @@ import NiInput from '../../components/form/Input';
 import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
-import { Context as AuthContext } from '../../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 import commonStyles from '../../styles/common';
 import styles from './styles';
 import Actions from '../../store/actions';
@@ -27,9 +27,9 @@ interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
 }
 
 const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { signIn, loading, error, errorMessage, resetError } = useContext(AuthContext);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const { signIn, loading, error, errorMessage, resetError }: AuthContextType = useContext(AuthContext);
 
   useEffect(() => {
     resetAllReducers();
