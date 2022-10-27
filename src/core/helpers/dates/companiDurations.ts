@@ -62,7 +62,9 @@ const CompaniDurationFactory = (inputDuration: Duration): CompaniDurationType =>
   };
 };
 
-const _formatMiscToCompaniDuration = (...args) => {
+type CompaniDurationArgs = [] | [DurationTypes];
+
+const _formatMiscToCompaniDuration = (...args: CompaniDurationArgs) => {
   if (args.length === 0) return Duration.fromISO('PT0S');
 
   if (args.length === 1) {
@@ -75,4 +77,4 @@ const _formatMiscToCompaniDuration = (...args) => {
   return Duration.invalid('wrong arguments');
 };
 
-export default (...args) => CompaniDurationFactory(_formatMiscToCompaniDuration(...args));
+export default (...args: CompaniDurationArgs) => CompaniDurationFactory(_formatMiscToCompaniDuration(...args));
