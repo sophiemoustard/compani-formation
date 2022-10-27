@@ -3,9 +3,10 @@ import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { AttendanceSheetListResponseType } from '../types/AxiosTypes';
 import { AttendanceSheetType } from '../types/AttendanceSheetTypes';
+import { FormDataType } from '../types/FileType';
 
 export default {
-  getAttendanceSheetList: async (params): Promise<AttendanceSheetType[]> => {
+  getAttendanceSheetList: async (params: { course: string }): Promise<AttendanceSheetType[]> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<AttendanceSheetListResponseType> = await axiosLogged.get(
       `${baseURL}/attendancesheets`,
@@ -14,7 +15,7 @@ export default {
 
     return response.data.data.attendanceSheets;
   },
-  upload: async (data): Promise<void> => {
+  upload: async (data: FormDataType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl();
     const headers = { 'Content-Type': 'multipart/form-data' };
     await axiosLogged.post(`${baseURL}/attendancesheets`, data, { headers });

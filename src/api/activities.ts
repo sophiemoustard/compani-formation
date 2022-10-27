@@ -5,7 +5,7 @@ import { ActivityWithCardsType } from '../types/ActivityTypes';
 import { ActivityResponseType } from '../types/AxiosTypes';
 
 export default {
-  getActivity: async (activityId): Promise<ActivityWithCardsType> => {
+  getActivity: async (activityId: string): Promise<ActivityWithCardsType> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<ActivityResponseType> = await axiosLogged.get(`${baseURL}/activities/${activityId}`);
 
