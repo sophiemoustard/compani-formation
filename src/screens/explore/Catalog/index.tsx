@@ -75,7 +75,8 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
-  const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)}
+  const renderItem = (program: ELearningProgramType) => <ProgramCell program={program}
+    onPress={() => goToProgram(program)}
     theoreticalDuration={getTheoreticalDuration(get(program, 'subPrograms[0].steps'))} />;
 
   return (
