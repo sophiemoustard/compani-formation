@@ -70,7 +70,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCardIndex: index => dispatch(CardsActions.setCardIndex(index)),
+  setCardIndex: (index: number | null) => dispatch(CardsActions.setCardIndex(index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityEndCard);

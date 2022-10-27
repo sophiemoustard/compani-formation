@@ -25,7 +25,7 @@ import DeletionConfirmationModal from '../../../components/DeletionConfirmationM
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
-import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
 import ImagePickerManager from '../../../components/ImagePickerManager';
@@ -205,7 +205,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
+const mapStateToProps = (state: StateType) => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),

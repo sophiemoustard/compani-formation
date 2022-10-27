@@ -1,6 +1,6 @@
 import { UserType } from './UserType';
 import { StepType, ELearningStepType } from './StepTypes';
-import { LEARNER, OPERATIONS, PEDAGOGY, TESTER, TRAINER } from '../core/data/constants';
+import { BLENDED, LEARNER, OPERATIONS, PEDAGOGY, STRICTLY_E_LEARNING, TESTER, TRAINER } from '../core/data/constants';
 
 // query
 export type actionQueryCourseType = typeof PEDAGOGY | typeof OPERATIONS;
@@ -63,10 +63,11 @@ export type SlotToPlanType = {
 
 type BaseCourseType = {
   _id: string,
-  progress: number,
+  progress: { blended: number, eLearning?: number },
   subProgram: SubProgramType & { program: ProgramType },
   areLastSlotAttendancesValidated?: boolean,
   type: string,
+  format: typeof STRICTLY_E_LEARNING | typeof BLENDED,
 };
 
 export type ELearningCourseType = BaseCourseType & {

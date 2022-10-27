@@ -5,7 +5,7 @@ import { TRANSPARENT_GRADIENT, WHITE } from '../../../styles/colors';
 import CompanyLinkRequests from '../../../api/companyLinkRequests';
 import Companies from '../../../api/companies';
 import Users from '../../../api/users';
-import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import { UserType } from '../../../types/UserType';
 import { CompanyType } from '../../../types/CompanyType';
@@ -28,7 +28,7 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
   const [selectedCompany, setSelectedCompany] = useState<CompanyType>({ _id: '', name: '' });
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
-  const renderCompany = company => (
+  const renderCompany = (company: CompanyType) => (
     <TouchableOpacity style={styles.separator} onPress={() => selectCompany(company._id)}>
       <Text style={styles.company}>{company.name}</Text>
     </TouchableOpacity>
@@ -45,7 +45,7 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
   const getDisplayedCompanies = () => companyList
     .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)));
 
-  const selectCompany = (companyId) => {
+  const selectCompany = (companyId: string) => {
     setSelectedCompany(companyList.find(company => company._id === companyId) || { _id: '', name: '' });
     setIsModalOpened(true);
   };
@@ -82,7 +82,7 @@ const CompanySearchModal = ({ onRequestClose, setLoggedUser, visible, loggedUser
   );
 };
 
-const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
+const mapStateToProps = (state: StateType) => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),

@@ -1,19 +1,9 @@
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
-
-// #TODO
-type ActivityHistoryPostPayloadType = {
-  user: string,
-  activity: string,
-  questionnaireAnswersList: {
-    card: string,
-    answerList: string[],
-  }[],
-  score: number,
-}
+import { ActivityHistoryType } from '../types/ActivityHistoryType';
 
 export default {
-  createActivityHistories: async (payload: ActivityHistoryPostPayloadType): Promise<void> => {
+  createActivityHistories: async (payload: ActivityHistoryType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl();
     await axiosLogged.post(`${baseURL}/activityhistories`, payload);
   },

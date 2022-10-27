@@ -23,7 +23,7 @@ interface FillTheGap {
   index: number | null,
   isLoading: boolean,
   incGoodAnswersCount: () => void,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 export interface FillTheGapAnswers {

@@ -24,7 +24,7 @@ interface OrderTheSequenceCardProps {
   index: number | null,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 export interface answerPositionType extends OrderedAnswerType {

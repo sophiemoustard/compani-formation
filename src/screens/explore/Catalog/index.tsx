@@ -8,7 +8,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import Programs from '../../../api/programs';
-import { ELearningProgramType } from '../../../types/CourseTypes';
+import { ELearningProgramType, ProgramType } from '../../../types/CourseTypes';
 import commonStyles from '../../../styles/common';
 import { getLoggedUserId } from '../../../store/main/selectors';
 import ProgramCell from '../../../components/ProgramCell';
@@ -17,6 +17,7 @@ import CoursesSection from '../../../components/CoursesSection';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter, getTheoreticalDuration } from '../../../core/helpers/utils';
+import { StateType } from '../../../types/store/StoreType';
 
 interface CatalogProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -49,7 +50,7 @@ const CategoriesStyleList = [
 ];
 
 const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
-  const [programsByCategories, setProgramsByCategories] = useState<object>({});
+  const [programsByCategories, setProgramsByCategories] = useState<{ [key: string]: ProgramType[] }>({});
   const isFocused = useIsFocused();
   const style = styles();
 
@@ -75,9 +76,8 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
-  const renderItem = (program: ELearningProgramType) => <ProgramCell program={program}
-    onPress={() => goToProgram(program)}
-    theoreticalDuration={getTheoreticalDuration(get(program, 'subPrograms[0].steps'))} />;
+  const renderItem = (program: ELearningProgramType) => <ProgramCell onPress={() => goToProgram(program)}
+    program={program} theoreticalDuration={getTheoreticalDuration(get(program, 'subPrograms[0].steps'))} />;
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -95,6 +95,6 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
 
 export default connect(mapStateToProps)(Catalog);

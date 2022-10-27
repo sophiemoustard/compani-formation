@@ -22,7 +22,7 @@ interface QuestionAnswerCardProps {
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 export interface answerType extends answerFromAPIType {

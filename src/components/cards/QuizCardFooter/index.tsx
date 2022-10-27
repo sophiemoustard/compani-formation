@@ -8,7 +8,7 @@ interface QuizCardFooterProps {
   isValidated: boolean,
   isValid: boolean,
   cardIndex: number | null,
-  footerColors,
+  footerColors: { text: string, background: string, buttons: string },
   explanation: string,
   buttonDisabled?: boolean,
   hideButton?: boolean,

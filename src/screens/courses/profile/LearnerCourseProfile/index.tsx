@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
   ImageSourcePropType,
   ActivityIndicator,
+  LayoutChangeEvent,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -41,6 +44,7 @@ import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
 import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import { StateType } from '../../../../types/store/StoreType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -49,7 +53,7 @@ StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
   userId: string,
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const LearnerCourseProfile = ({
@@ -139,12 +143,12 @@ const LearnerCourseProfile = ({
 
   const renderCells = item => renderStepCell(item, course, LEARNER, route);
 
-  const isProgressBarOnTop = (event) => {
+  const isProgressBarOnTop = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = event.nativeEvent.contentOffset;
     setIsHeaderSticky(y >= progressBarY);
   };
 
-  const getProgressBarY = (event) => {
+  const getProgressBarY = (event: LayoutChangeEvent) => {
     const { layout } = event.nativeEvent;
     setProgressBarY(layout.y);
   };
@@ -208,7 +212,7 @@ const LearnerCourseProfile = ({
   );
 };
 
-const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
 
 const mapDispatchToProps = dispatch => ({
   setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),

@@ -35,7 +35,7 @@ const AppNavigation = () => {
     const prevRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
 
-    if (prevRouteName !== currentRouteName) {
+    if (!!currentRouteName && prevRouteName !== currentRouteName) {
       Analytics.logScreenView(currentRouteName);
       routeNameRef.current = currentRouteName;
     }

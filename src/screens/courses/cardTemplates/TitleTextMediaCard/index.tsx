@@ -24,8 +24,8 @@ interface TitleTextMediaCardProps {
   card: TitleTextMediaType,
   index: number | null,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
-  setIsLeftSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
+  setIsLeftSwipeEnabled: (boolean: boolean) => void,
 }
 
 const TitleTextMediaCard = ({

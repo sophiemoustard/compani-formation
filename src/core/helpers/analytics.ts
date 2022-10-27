@@ -1,6 +1,6 @@
 import * as Analytics from 'expo-firebase-analytics';
 
-const logScreenView = screen => Analytics.logEvent(
+const logScreenView = (screen: string) => Analytics.logEvent(
   'screen_view',
   {
     screen_name: screen,

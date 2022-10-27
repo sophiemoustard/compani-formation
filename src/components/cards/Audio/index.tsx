@@ -73,13 +73,13 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     }
   };
 
-  const playFromPosition = async (ms) => {
+  const playFromPosition = async (ms: number) => {
     if (isPlaying) await soundObject.playFromPositionAsync(ms);
     else setTimeElapsed(ms);
     isUserMovingSlider.current = false;
   };
 
-  const millisToMinutesAndSeconds = (millis) => {
+  const millisToMinutesAndSeconds = (millis: number) => {
     const minutes = Math.floor(millis / 60000);
     const seconds = Number(((millis % 60000) / 1000).toFixed(0));
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;

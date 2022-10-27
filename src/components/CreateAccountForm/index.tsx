@@ -31,7 +31,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const onChangeText = (text, fieldToChangeIndex) => {
+  const onChangeText = (text: string, fieldToChangeIndex: number) => {
     setData(
       data.map((dataItem, fieldIndex) => {
         if (fieldIndex === fieldToChangeIndex) {

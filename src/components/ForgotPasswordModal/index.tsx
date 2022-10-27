@@ -1,5 +1,5 @@
 import { createRef, useEffect, useReducer, useState } from 'react';
-import { Text, View, TextInput, Keyboard } from 'react-native';
+import { Text, View, TextInput, Keyboard, TextInputKeyPressEventData } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import get from 'lodash/get';
 import BottomModal from '../BottomModal';
@@ -52,17 +52,17 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
     } else { dispatchError({ type: RESET_ERROR }); }
   }, [code, isValidationAttempted]);
 
-  const onChangeText = (char, index) => {
+  const onChangeText = (char: string, index: number) => {
     setCode(code.map((c, i) => (i === index ? char : c)));
     if (!!char && index + 1 < 4) inputRefs[index + 1].focus();
   };
 
-  const goPreviousAfterEdit = (index) => {
+  const goPreviousAfterEdit = (index: number) => {
     inputRefs[index].focus();
     if (code[index] !== '') onChangeText('', index);
   };
 
-  const checkKeyValue = (key, idx) => {
+  const checkKeyValue = (key: TextInputKeyPressEventData['key'], idx: number) => {
     if (key === 'Backspace') {
       if (!idx && code[idx] === '') return;
 
@@ -88,7 +88,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
     setForgotPasswordModal(false);
   };
 
-  const sendCode = async (formattedCode) => {
+  const sendCode = async (formattedCode: string) => {
     try {
       setIsLoading(true);
       const checkToken = await Authentication.passwordToken(email, formattedCode);

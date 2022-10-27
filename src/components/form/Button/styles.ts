@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN } from '../../../styles/metrics';
+import { FontType } from '../../../types/FontType';
 
-const styles = (backgroundColor, borderColor, color, font) => StyleSheet.create({
+const styles = (backgroundColor: string, borderColor: string, color: string, font: FontType) => StyleSheet.create({
   button: {
     backgroundColor,
     borderColor,

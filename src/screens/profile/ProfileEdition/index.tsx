@@ -23,7 +23,7 @@ import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Users from '../../../api/users';
-import { ActionType, ActionWithoutPayloadType } from '../../../types/store/StoreType';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import { EMAIL_REGEX, isIOS, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
@@ -42,6 +42,9 @@ StackScreenProps<RootBottomTabParamList>
   loggedUser: UserType,
   setLoggedUser: (user: UserType) => void,
 }
+
+const FIRSTNAME = 'firstname';
+const LASTNAME = 'lastname';
 
 const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
@@ -143,7 +146,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     }
   };
 
-  const onChangeIdentity = (key, text) => {
+  const onChangeIdentity = (key: typeof LASTNAME | typeof FIRSTNAME, text: string) => {
     setEditedUser({
       ...editedUser,
       identity: { ...editedUser.identity, [key]: text },
@@ -199,11 +202,11 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
           </View>
           <View style={styles.input}>
             <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
-              onChangeText={text => onChangeIdentity('firstname', text)} />
+              onChangeText={text => onChangeIdentity(FIRSTNAME, text)} />
           </View>
           <View style={styles.input}>
             <NiInput caption="Nom" value={editedUser.identity.lastname}
-              type="lastname" onChangeText={text => onChangeIdentity('lastname', text)}
+              type="lastname" onChangeText={text => onChangeIdentity(LASTNAME, text)}
               validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
           </View>
           <View style={styles.input}>
@@ -234,7 +237,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   );
 };
 
-const mapStateToProps = state => ({ loggedUser: state.main.loggedUser });
+const mapStateToProps = (state: StateType) => ({ loggedUser: state.main.loggedUser });
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),

@@ -21,7 +21,7 @@ interface SingleChoiceQuestionCardProps {
   index: number | null,
   incGoodAnswersCount: () => void,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 const SingleChoiceQuestionCard = ({

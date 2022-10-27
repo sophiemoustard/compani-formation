@@ -11,7 +11,7 @@ type LiveInfoItemProps = {
   slots: SlotType[],
 }
 
-const hoursItem = slot => <LiveHoursDisplay startDate={slot.startDate} endDate={slot.endDate} />;
+const hoursItem = (slot: SlotType) => <LiveHoursDisplay startDate={slot.startDate} endDate={slot.endDate} />;
 
 const LiveInfoItem = ({ slots }: LiveInfoItemProps) => {
   const [location, setLocation] = useState<string>('');
@@ -22,7 +22,7 @@ const LiveInfoItem = ({ slots }: LiveInfoItemProps) => {
       : (get(slots[0], 'meetingLink') || ''));
   }, [slots]);
 
-  const openUrl = async add => (slots[0].step.type === ON_SITE
+  const openUrl = async (add: string) => (slots[0].step.type === ON_SITE
     ? Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${add}`)
     : Linking.openURL(add)
   );

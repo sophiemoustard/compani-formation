@@ -19,6 +19,7 @@ import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
 import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
+import { StateType } from '../../../../types/store/StoreType';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN_SCREEN = 'AdminCourseProfile';
@@ -29,7 +30,7 @@ StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
   userId: string,
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const TrainerCourseProfile = ({
@@ -105,10 +106,10 @@ const TrainerCourseProfile = ({
   );
 };
 
-const mapStateToProps = state => ({ userId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
 
 const mapDispatchToProps = dispatch => ({
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainerCourseProfile);

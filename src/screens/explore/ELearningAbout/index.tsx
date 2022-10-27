@@ -9,6 +9,7 @@ import { getLoggedUserId } from '../../../store/main/selectors';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 import { LEARNER } from '../../../core/data/constants';
+import { StateType } from '../../../types/store/StoreType';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string,
@@ -59,6 +60,6 @@ const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
 
 export default connect(mapStateToProps)(ElearningAbout);

@@ -18,7 +18,7 @@ const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
     navigation.navigate('Profile');
   };
 
-  const savePassword = async (password) => {
+  const savePassword = async (password: string) => {
     await Authentication.updatePassword(userId, { local: { password } });
     goBack();
   };

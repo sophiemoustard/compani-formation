@@ -12,7 +12,6 @@ import {
   PasswordTokenResponseType,
 } from '../types/AxiosTypes';
 
-// #TODO
 type UpdatePasswordPayloadType = {
   local: { password: string },
   isConfirmed?: boolean,

@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ArrowButton from '../../ArrowButton';
 import { LEFT, RIGHT } from '../../../core/data/constants';
-import styles from './styles';
+import styles, { StylesPropsType } from './styles';
 
 interface CardFooterProps {
   index: number | null,
@@ -14,7 +14,7 @@ const CardFooter = ({ index, color, removeRight }: CardFooterProps) => {
   const removeLeft = index === 0;
   const navigation = useNavigation();
 
-  let justifyContent;
+  let justifyContent: StylesPropsType['justifyContent'];
   if (removeLeft) justifyContent = 'flex-end';
   else if (removeRight) justifyContent = 'flex-start';
   else justifyContent = 'space-between';

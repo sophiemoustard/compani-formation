@@ -35,7 +35,7 @@ interface SubProgramProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
@@ -117,7 +117,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
 };
 
 const mapDispatchToProps = dispatch => ({
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(null, mapDispatchToProps)(SubProgramProfile);

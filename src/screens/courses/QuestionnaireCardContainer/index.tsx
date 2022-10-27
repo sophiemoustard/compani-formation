@@ -19,9 +19,9 @@ interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackPara
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (questionnaire: CardType[] | null) => void,
-  setExitConfirmationModal: (boolean) => void,
+  setExitConfirmationModal: (boolean: boolean) => void,
   resetCardReducer: () => void,
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const QuestionnaireCardContainer = ({
@@ -118,9 +118,9 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = dispatch => ({
   setCards: cards => dispatch(CardsActions.setCards(cards)),
-  setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
+  setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireCardContainer);

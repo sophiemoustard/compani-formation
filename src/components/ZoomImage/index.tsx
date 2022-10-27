@@ -1,7 +1,14 @@
 import { useRef } from 'react';
 import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
+import {
+  HandlerStateChangeEvent,
+  PanGestureHandlerEventPayload,
+  PanGestureHandler,
+  PinchGestureHandler,
+  PinchGestureHandlerEventPayload,
+  State,
+} from 'react-native-gesture-handler';
 import { WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import FeatherButton from '../icons/FeatherButton';
@@ -10,7 +17,7 @@ import styles from './styles';
 
 interface ZoomImageProps {
   image: { uri: string },
-  setZoomImage: (value) => void,
+  setZoomImage: (value: boolean) => void,
 }
 
 const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
@@ -28,7 +35,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
     { useNativeDriver: false }
   );
 
-  const onPinchStateChange = (event) => {
+  const onPinchStateChange = (event: HandlerStateChangeEvent<PinchGestureHandlerEventPayload>) => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
       lastScale.current *= event.nativeEvent.scale;
       baseScale.setValue(lastScale.current);
@@ -36,7 +43,7 @@ const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
     }
   };
 
-  const onPanStateChange = (event) => {
+  const onPanStateChange = (event: HandlerStateChangeEvent<PanGestureHandlerEventPayload>) => {
     translate.extractOffset();
     if (event.nativeEvent.oldState === State.ACTIVE) {
       Animated.spring(translate.x, { toValue: 1, useNativeDriver: false }).start();

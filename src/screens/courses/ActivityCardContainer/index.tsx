@@ -21,9 +21,9 @@ interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
-  setExitConfirmationModal: (boolean) => void,
+  setExitConfirmationModal: (boolean: boolean) => void,
   resetCardReducer: () => void,
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const ActivityCardContainer = ({
@@ -126,10 +126,10 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCards: cards => dispatch(CardsActions.setCards(cards)),
-  setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
+  setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
+  setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);

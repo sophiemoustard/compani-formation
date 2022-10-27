@@ -7,6 +7,9 @@ export const STAGING = 'staging';
 export const PRODUCTION = 'production';
 export const isIOS = Platform.OS === 'ios';
 
+export const LONG_FIRSTNAME_LONG_LASTNAME = 'FL';
+export const SHORT_FIRSTNAME_LONG_LASTNAME = 'fL';
+
 // COURSES
 export const STRICTLY_E_LEARNING = 'strictly_e_learning';
 export const BLENDED = 'blended';

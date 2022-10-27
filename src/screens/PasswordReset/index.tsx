@@ -15,7 +15,7 @@ const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
 
   const goBack = () => { navigation.navigate('EmailForm'); };
 
-  const savePassword = async (password) => {
+  const savePassword = async (password: string) => {
     await Authentication.updatePassword(userId, { local: { password } }, token);
     await signIn({ email, password });
   };
