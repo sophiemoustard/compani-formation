@@ -18,9 +18,9 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../../types/Na
 import { SubProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { getCourseProgress, getTheoreticalDuration } from '../../../../core/helpers/utils';
-import { E_LEARNING, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import { LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import styles from '../styles';
-import { formatNextSteps } from '../helper';
+import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
@@ -90,8 +90,6 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
       navigation.navigate('SubProgramProfile', { subProgramId: id });
     }
   };
-
-  const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
 
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} misc={course.misc}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}
