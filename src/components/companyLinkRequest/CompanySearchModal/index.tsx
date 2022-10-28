@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useEffect } from 'react';
 import { TouchableOpacity, TextInput, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';

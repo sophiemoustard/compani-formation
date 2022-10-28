@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import Markdown from 'react-native-markdown-display';

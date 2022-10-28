@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import { BlendedCourseType, CourseType } from '../../../types/CourseTypes';

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';

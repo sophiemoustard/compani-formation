@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import CompaniDate from './companiDates';
 
 const START_DATE_KEY = 'startDate';

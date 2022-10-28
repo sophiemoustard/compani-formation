@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, ScrollView, LogBox, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { View, Text, FlatList } from 'react-native';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../core/helpers/dates/utils';

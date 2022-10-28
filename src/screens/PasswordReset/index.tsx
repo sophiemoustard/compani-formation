@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
 import { WHITE } from '../../../styles/colors';

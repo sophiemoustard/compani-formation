@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { AxiosResponse } from 'axios';
 import Environment from '../../environment';
 import { MOBILE } from '../core/data/constants';

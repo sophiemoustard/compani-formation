@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useReducer, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';

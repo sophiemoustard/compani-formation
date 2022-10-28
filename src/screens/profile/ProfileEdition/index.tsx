@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useRef, useState, useReducer } from 'react';
 import {
   Text,

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useCallback, useEffect } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { OPEN_QUESTION, QUESTION_ANSWER, SURVEY, TRANSITION } from '../../core/data/constants';
 import { QuestionnaireAnswersType } from '../../types/ActivityTypes';
 import { CardStateType } from '../../types/store/CardStoreType';

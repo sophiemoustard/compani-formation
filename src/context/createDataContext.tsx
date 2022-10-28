@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useReducer, createContext } from 'react';
 import { AuthContextStateType, AuthContextDispatchActionsType } from './AuthContext';
 import { ActionType, CreateDataContextType } from './types';

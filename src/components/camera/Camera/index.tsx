@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useRef } from 'react';
 import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';

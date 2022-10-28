@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useEffect, useContext } from 'react';
 import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
 

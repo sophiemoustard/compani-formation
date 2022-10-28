@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useContext, useEffect } from 'react';
 import {
   Text,
