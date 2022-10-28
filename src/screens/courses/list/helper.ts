@@ -7,8 +7,7 @@ import { ascendingSort } from '../../../core/helpers/dates/utils';
 import { E_LEARNING } from '../../../core/data/constants';
 
 export const getElearningSteps = (steps: StepType[]): ELearningStepType[] => steps
-  .filter(step => step.type === E_LEARNING)
-  .map(step => step as ELearningStepType);
+  .filter(step => step.type === E_LEARNING) as ELearningStepType[];
 
 export const isForthcoming = (course: BlendedCourseType): boolean => {
   const noSlotPlannedAndSlotToPlan = !course.slots.length && !!course.slotsToPlan.length;
