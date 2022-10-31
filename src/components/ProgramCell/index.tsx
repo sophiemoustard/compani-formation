@@ -14,7 +14,13 @@ interface ProgramCellProps {
   onPress: () => void,
 }
 
-const ProgramCell = ({ program, theoreticalDuration, progress = null, misc = '', onPress }: ProgramCellProps) => {
+const ProgramCell = ({
+  program,
+  theoreticalDuration = 'PT0S',
+  progress = null,
+  misc = '',
+  onPress,
+}: ProgramCellProps) => {
   const programName = program.name || '';
   const programImage = get(program, 'image.link') || '';
   const programDescription = program.description || '';
@@ -45,7 +51,7 @@ const ProgramCell = ({ program, theoreticalDuration, progress = null, misc = '',
         {programName}{misc ? ` - ${misc}` : ''}
       </Text>
       <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
-      {!!theoreticalDuration && !CompaniDuration(theoreticalDuration).isEqual('PT0S') &&
+      {!CompaniDuration(theoreticalDuration).isEqual('PT0S') &&
         <View>
           <Text style={styles.eLearning}>E-LEARNING</Text>
           <Text style={styles.theoreticalDuration}>
