@@ -13,6 +13,7 @@ type CompaniDurationType = {
   format: (template: displayFormat) => string,
   asDays: () => Number,
   toISO: () => string,
+  isEqual: (miscTypeOtherDuration: DurationTypes) => Boolean,
   add: (miscTypeOtherDuration: DurationTypes) => CompaniDurationType,
 }
 
@@ -51,6 +52,14 @@ const CompaniDurationFactory = (inputDuration: Duration): CompaniDurationType =>
 
     toISO() {
       return _duration.toISO();
+    },
+
+    // QUERY
+    isEqual(miscTypeOtherDuration) {
+      const otherDurationInSeconds = _formatMiscToCompaniDuration(miscTypeOtherDuration).shiftTo('seconds');
+      const durationInSeconds = _duration.shiftTo('seconds');
+
+      return durationInSeconds.equals(otherDurationInSeconds);
     },
 
     // MANIPULATE
