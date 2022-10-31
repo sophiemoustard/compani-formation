@@ -45,7 +45,7 @@ const ProgramCell = ({ program, theoreticalDuration, progress = null, misc = '',
         {programName}{misc ? ` - ${misc}` : ''}
       </Text>
       <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
-      {!!theoreticalDuration && theoreticalDuration !== 'PT0S' &&
+      {!!theoreticalDuration && !CompaniDuration(theoreticalDuration).isEqual('PT0S') &&
         <View>
           <Text style={styles.eLearning}>E-LEARNING</Text>
           <Text style={styles.theoreticalDuration}>
