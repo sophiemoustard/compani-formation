@@ -13,13 +13,32 @@ const ENVIRONMENT_VARIABLES = {
   PLATFORM: process.env.PLATFORM,
 };
 
+const LOCAL = 'local';
+const DEVELOPMENT = 'development';
+const PRODUCTION = 'production';
+
+const getVariables = () => {
+  switch (process.env.PROFILE) {
+    case LOCAL:
+      return { appName: 'Compani - local', bundleIdentifier: 'com.alenvi.compani.local' };
+    case DEVELOPMENT:
+      return { appName: 'Compani - Dev', bundleIdentifier: 'com.alenvi.compani.dev' };
+    case PRODUCTION:
+      return { appName: 'Compani', bundleIdentifier: 'com.alenvi.compani' };
+    default:
+      return 'Compani';
+  }
+};
+
+const variables = getVariables();
+
 export default {
   expo: {
-    name: 'Compani', // eas build -> IS_PRODUCTION ? 'Compani' : 'Compani - Test'
+    name: variables.appName,
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.13.0',
+    version: '2.14.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -35,7 +54,7 @@ export default {
       eas: {
         projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
       },
-      hooks: { // eas build -> to be removed when using eas build - waiting for eas updates to be configures
+      hooks: { // eas updates -> to be removed when using eas updates - waiting for eas updates to be configures
         postPublish: [{
           file: 'sentry-expo/upload-sourcemaps',
           config: {
@@ -55,8 +74,8 @@ export default {
       color: '#005774',
     },
     ios: {
-      bundleIdentifier: 'com.alenvi.compani', // eas build -> IS_PRODUCTION ? 'com.alenvi.compani' : 'com.alenvi.compani.dev'
-      buildNumber: '2.13.0',
+      buildNumber: '2.14.0',
+      bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
       infoPlist: {
@@ -66,15 +85,18 @@ export default {
       googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
-      package: 'com.alenvi.compani',
+      package: variables.bundleIdentifier,
       permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'],
       icon: './assets/images/android_icon_old.png',
       adaptiveIcon: {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 85,
+      versionCode: 86,
       googleServicesFile: './google-services.json',
     },
+    plugins: [
+      ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
+    ],
   },
 };

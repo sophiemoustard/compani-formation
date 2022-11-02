@@ -11,7 +11,7 @@ import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
-import { Context as AuthContext } from '../../../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '../../../context/AuthContext';
 import styles from './styles';
 import Courses from '../../../api/courses';
 import Users from '../../../api/users';
@@ -40,7 +40,7 @@ StackScreenProps<RootStackParamList>
 }
 
 const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
-  const { signOut } = useContext(AuthContext);
+  const { signOut }: AuthContextType = useContext(AuthContext);
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
   const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();

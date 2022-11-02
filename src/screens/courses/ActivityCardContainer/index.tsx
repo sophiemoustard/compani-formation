@@ -41,34 +41,28 @@ const ActivityCardContainer = ({
   const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId, mode } = route.params;
 
-  useEffect(() => {
-    setStatusBarVisible(false);
-  }, [setStatusBarVisible]);
-
-  const getActivity = async () => {
-    try {
-      const fetchedActivity = await Activities.getActivity(route.params.activityId);
-      setActivity(fetchedActivity);
-      setCards(fetchedActivity.cards);
-    } catch (e: any) {
-      console.error(e);
-      setActivity(null);
-      setCards([]);
-    }
-  };
+  useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
   useEffect(() => {
-    async function fetchData() {
-      await getActivity();
-    }
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const getActivity = async () => {
+      try {
+        const fetchedActivity = await Activities.getActivity(route.params.activityId);
+        setActivity(fetchedActivity);
+        setCards(fetchedActivity.cards);
+      } catch (e: any) {
+        console.error(e);
+        setActivity(null);
+        setCards([]);
+      }
+    };
+
+    getActivity();
+  }, [route.params.activityId, setCards]);
 
   useEffect(() => {
     async function prefetchImages() {
       const imagesToPrefetch: Promise<boolean>[] = cards
-        .filter(c => get(c, 'media.type') === 'image')
+        .filter(c => get(c, 'media.type') === 'image' && !!get(c, 'media.link'))
         .map(c => Image.prefetch(get(c, 'media.link')));
 
       if (imagesToPrefetch.length) await Promise.all(imagesToPrefetch.map(i => i.catch(e => e)));

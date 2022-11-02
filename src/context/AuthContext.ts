@@ -1,11 +1,13 @@
+import { Dispatch } from 'react';
 import Authentication from '../api/authentication';
 import asyncStorage from '../core/helpers/asyncStorage';
-import createDataContext from './createDataContext';
+import { createDataContext } from './createDataContext';
 import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
+import { ActionType, BoundActionsType } from './types';
 
-export interface StateType {
+export interface AuthContextStateType {
   companiToken: string | null,
   loading: boolean,
   error: boolean,
@@ -13,7 +15,19 @@ export interface StateType {
   appIsReady: boolean
 }
 
-const authReducer = (state: StateType, actions): StateType => {
+export interface AuthContextDispatchActionsType {
+  signIn: (d: Dispatch<ActionType>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
+  tryLocalSignIn: (d: Dispatch<ActionType>) => () => Promise<void>,
+  signOut: (d: Dispatch<ActionType>) => (b?: boolean) => Promise<void>,
+  resetError: (d: Dispatch<ActionType>) => () => void,
+  refreshCompaniToken: (d: Dispatch<ActionType>) => (refreshToken: string) => Promise<void>,
+}
+
+export type AuthContextActionsType = BoundActionsType<AuthContextDispatchActionsType>;
+
+export type AuthContextType = AuthContextActionsType & AuthContextStateType;
+
+const authReducer = (state: AuthContextStateType, actions: ActionType): AuthContextStateType => {
   switch (actions.type) {
     case BEFORE_SIGNIN:
       return { ...state, error: false, errorMessage: '', loading: true };
@@ -71,7 +85,7 @@ const signOut = dispatch => async (removeExpoToken: boolean = false) => {
   navigate('Authentication');
 };
 
-const refreshCompaniToken = dispatch => async (refreshToken) => {
+const refreshCompaniToken = dispatch => async (refreshToken: string) => {
   try {
     const token = await Authentication.refreshToken({ refreshToken });
 
@@ -99,7 +113,7 @@ const tryLocalSignIn = dispatch => async () => {
   if (userId && asyncStorage.isTokenValid(companiToken, companiTokenExpiryDate)) return localSignIn(dispatch);
 
   const { refreshToken, refreshTokenExpiryDate } = await asyncStorage.getRefreshToken();
-  if (asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
+  if (!!refreshToken && asyncStorage.isTokenValid(refreshToken, refreshTokenExpiryDate)) {
     await refreshCompaniToken(dispatch)(refreshToken);
     return localSignIn(dispatch);
   }
