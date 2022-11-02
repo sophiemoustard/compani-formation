@@ -18,7 +18,7 @@ const StepCellTitle = ({ name, type, index, mode, misc = '', theoreticalDuration
   <View style={styles.textContainer}>
     <Text style={styles.stepType}>
       {`ÉTAPE ${index + 1} - ${stepTypeOptions[type]}`}
-      {type === E_LEARNING && !CompaniDuration(theoreticalDuration).isEquivalent('PT0S') &&
+      {type === E_LEARNING && !CompaniDuration(theoreticalDuration).isEquivalentTo('PT0S') &&
         ` (${CompaniDuration(theoreticalDuration).format(LONG_DURATION_H_MM)})`}
     </Text>
     <Text lineBreakMode={'tail'} numberOfLines={2} style={styles.stepName}>{name}</Text>
