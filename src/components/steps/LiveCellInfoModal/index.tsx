@@ -1,5 +1,7 @@
 import { View, Text, FlatList } from 'react-native';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
+import { ascendingSort } from '../../../core/helpers/dates/utils';
+import { DD_MM_YYYY } from '../../../core/data/constants';
 import NiModal from '../../Modal';
 import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
@@ -7,7 +9,6 @@ import { GREY } from '../../../styles/colors';
 import LiveInfoItem from '../LiveInfoItem';
 import { SlotType } from '../../../types/CourseTypes';
 import styles from './styles';
-import { ascendingSort } from '../../../core/helpers/dates/utils';
 
 type LiveCellInfoModalProps = {
   visible: boolean,
@@ -19,7 +20,7 @@ type LiveCellInfoModalProps = {
 const formatStepSlots = (slots): { startDate: string, slots: SlotType[] }[] => {
   const sortedSlots = slots.sort(ascendingSort('startDate'));
   const formattedSlots = sortedSlots.reduce((acc, slot) => {
-    const startDate = CompaniDate(slot.startDate).format('yyyy-LL-dd');
+    const startDate = CompaniDate(slot.startDate).format(DD_MM_YYYY);
     if (acc[startDate]) acc[startDate].push(slot);
     else acc[startDate] = [slot];
 

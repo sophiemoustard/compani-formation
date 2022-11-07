@@ -6,7 +6,7 @@ import { capitalize } from '../../core/helpers/utils';
 import { PINK, PURPLE } from '../../styles/colors';
 import Shadow from '../design/Shadow';
 import ProgressPieChart from '../ProgressPieChart';
-import { TRAINER } from '../../core/data/constants';
+import { TRAINER, DD_MM_YYYY, DAY_OF_WEEK_SHORT, DAY_OF_MONTH, MONTH_SHORT } from '../../core/data/constants';
 import styles from './styles';
 
 interface CalendarIconProps {
@@ -21,17 +21,16 @@ const CalendarIcon = ({ slots, progress = 0, mode }: CalendarIconProps) => {
   const [month, setMonth] = useState<string>('');
   const [dates, setDates] = useState<string[]>([]);
   const style = styles(mode === TRAINER ? PURPLE[800] : PINK[500]);
-  const dateFormat = 'dd/LL/yyyy';
 
   useEffect(() => {
     if (slots.length) {
-      const slotsDates = [...new Set(slots.map(date => CompaniDate(date).format(dateFormat)))];
+      const slotsDates = [...new Set(slots.map(date => CompaniDate(date).format(DD_MM_YYYY)))];
       const nextSlots = slots.filter(slot => CompaniDate().isSameOrBefore(slot));
       const date = nextSlots.length ? nextSlots[0] : slots[0];
 
-      setDayOfWeek(capitalize(CompaniDate(date).format('ccc')));
-      setDayOfMonth(capitalize(CompaniDate(date).format('d')));
-      setMonth(capitalize(CompaniDate(date).format('LLL')));
+      setDayOfWeek(capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT)));
+      setDayOfMonth(capitalize(CompaniDate(date).format(DAY_OF_MONTH)));
+      setMonth(capitalize(CompaniDate(date).format(MONTH_SHORT)));
       setDates(slotsDates);
     }
   }, [slots]);
