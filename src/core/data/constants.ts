@@ -102,7 +102,6 @@ export const RENDER = 'render';
 
 // COMPANIDATE FORMATS
 export const DD_MM_YYYY = 'dd/LL/yyyy';
-export const DAY_MONTH_YEAR = 'DDD';
 export const HH_MM = 'T';
 export const MONTH_SHORT = 'LLL';
 export const DAY_OF_MONTH = 'd';
