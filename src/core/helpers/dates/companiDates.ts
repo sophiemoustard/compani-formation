@@ -1,5 +1,5 @@
 import pick from 'lodash/pick';
-import { DateTime, Duration, DateTimeUnit, DurationObjectUnits } from './luxon';
+import { DateTime, Duration, DateTimeUnit } from './luxon';
 
 type DateTypes = Date | CompaniDateType | string;
 
