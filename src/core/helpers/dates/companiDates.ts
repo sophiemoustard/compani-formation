@@ -1,5 +1,5 @@
 import pick from 'lodash/pick';
-import { DateTime, DateTimeUnit, DurationObjectUnits } from './luxon';
+import { DateTime, Duration, DateTimeUnit, DurationObjectUnits } from './luxon';
 
 type DateTypes = Date | CompaniDateType | string;
 
@@ -13,14 +13,14 @@ type CompaniDateType = {
   format: (str: string) => string,
   toDate: () => Date,
   toISO: () => string,
-  isSame: (miscTypeOtherDate: DateTypes, unit : DateTimeUnit) => boolean,
-  isBefore: (date: DateTypes) => boolean,
-  isAfter: (date: DateTypes) => boolean,
-  isSameOrAfter: (date: DateTypes) => boolean,
-  isSameOrBefore: (date: DateTypes) => boolean,
+  isSame: (miscTypeOtherDate: DateTypes, unit: DateTimeUnit) => boolean,
+  isBefore: (date: DateTypes, unit?: DateTimeUnit) => boolean,
+  isAfter: (date: DateTypes, unit?: DateTimeUnit) => boolean,
+  isSameOrAfter: (date: DateTypes, unit?: DateTimeUnit) => boolean,
+  isSameOrBefore: (date: DateTypes, unit?: DateTimeUnit) => boolean,
   startOf: (unit: DateTimeUnit) => CompaniDateType,
   endOf: (unit: DateTimeUnit) => CompaniDateType,
-  add: (amount: number, unit: keyof DurationObjectUnits) => CompaniDateType,
+  add: (amount: string) => CompaniDateType,
   set: (values: ObjectDateType) => CompaniDateType,
 }
 
@@ -58,28 +58,28 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
       return _date.hasSame(otherDate, unit);
     },
 
-    isBefore(miscTypeOtherDate : DateTypes) {
+    isBefore(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
-      return _date < otherDate;
+      return _date.startOf(unit) < otherDate.startOf(unit);
     },
 
-    isAfter(miscTypeOtherDate : DateTypes) {
+    isAfter(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
-      return _date > otherDate;
+      return _date.startOf(unit) > otherDate.startOf(unit);
     },
 
-    isSameOrAfter(miscTypeOtherDate : DateTypes) {
+    isSameOrAfter(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
-      return _date >= otherDate;
+      return _date.startOf(unit) >= otherDate.startOf(unit);
     },
 
-    isSameOrBefore(miscTypeOtherDate : DateTypes) {
+    isSameOrBefore(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
-      return _date <= otherDate;
+      return _date.startOf(unit) <= otherDate.startOf(unit);
     },
 
     // MANIPULATE
@@ -91,8 +91,9 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
       return CompaniDateFactory(_date.endOf(unit));
     },
 
-    add(amount: number, unit: keyof DurationObjectUnits) {
-      return CompaniDateFactory(_date.plus({ [unit]: amount }));
+    add(amount: string) {
+      const isoDuration = Duration.fromISO(amount);
+      return CompaniDateFactory(_date.plus(isoDuration));
     },
 
     set(values: ObjectDateType) {
