@@ -4,6 +4,7 @@ import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { SlotType } from '../../../types/CourseTypes';
+import { HH_MM } from '../../../core/data/constants';
 import styles from './styles';
 
 type LiveHoursDisplayProps = {
@@ -13,11 +14,11 @@ type LiveHoursDisplayProps = {
 
 const LiveHoursDisplay = ({ startDate, endDate }: LiveHoursDisplayProps) => (
   <View style={styles.datesAndArrowContainer}>
-    <Text style={styles.hours}>{CompaniDate(startDate).format('HH:mm')}</Text>
+    <Text style={styles.hours}>{CompaniDate(startDate).format(HH_MM)}</Text>
     <View style={styles.arrow}>
       <Feather name="arrow-right" size={ICON.XS} color={GREY[400]} />
     </View>
-    <Text style={styles.hours}>{CompaniDate(endDate).format('HH:mm')}</Text>
+    <Text style={styles.hours}>{CompaniDate(endDate).format(HH_MM)}</Text>
   </View>
 );
 

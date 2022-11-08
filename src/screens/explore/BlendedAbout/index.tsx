@@ -11,15 +11,15 @@ import { capitalize, formatIdentity } from '../../../core/helpers/utils';
 import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import ContactInfoContainer from '../../../components/ContactInfoContainer';
-import { LEARNER } from '../../../core/data/constants';
+import { LEARNER, DAY_OF_WEEK_SHORT, DAY_OF_MONTH, MONTH_SHORT, YEAR } from '../../../core/data/constants';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
 const formatDate = (date) => {
-  const dayOfWeek = capitalize(CompaniDate(date).format('ccc'));
-  const dayOfMonth = capitalize(CompaniDate(date).format('d'));
-  const month = capitalize(CompaniDate(date).format('LLL'));
-  const year = capitalize(CompaniDate(date).format('yyyy'));
+  const dayOfWeek = capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT));
+  const dayOfMonth = capitalize(CompaniDate(date).format(DAY_OF_MONTH));
+  const month = capitalize(CompaniDate(date).format(MONTH_SHORT));
+  const year = capitalize(CompaniDate(date).format(YEAR));
   return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
 };
 

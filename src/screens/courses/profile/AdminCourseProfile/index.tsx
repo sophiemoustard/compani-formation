@@ -18,7 +18,7 @@ import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from './styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
-import { IMAGE, INTRA, OPERATIONS, PDF } from '../../../../core/data/constants';
+import { IMAGE, INTRA, OPERATIONS, PDF, DD_MM_YYYY } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
@@ -59,7 +59,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         course.slots
           .map(slot => ({
             value: CompaniDate(slot.startDate).startOf('day').toISO(),
-            label: CompaniDate(slot.startDate).format('dd/LL/yyyy'),
+            label: CompaniDate(slot.startDate).format(DD_MM_YYYY),
           }))
           .filter(date => !savedDates.includes(date.value)),
         'value'
@@ -163,7 +163,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const renderSavedAttendanceSheets = (sheet: AttendanceSheetType) => {
     const label = isIntra(sheet)
-      ? CompaniDate(sheet.date).format('dd/LL/yyyy')
+      ? CompaniDate(sheet.date).format(DD_MM_YYYY)
       : formatIdentity(sheet.trainee.identity, 'fL');
 
     return (
