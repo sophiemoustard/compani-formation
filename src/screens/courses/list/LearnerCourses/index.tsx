@@ -17,10 +17,10 @@ import commonStyles from '../../../../styles/common';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { SubProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
-import { getCourseProgress, getTheoreticalHours } from '../../../../core/helpers/utils';
-import { E_LEARNING, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import { getCourseProgress, getTheoreticalDuration } from '../../../../core/helpers/utils';
+import { LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import styles from '../styles';
-import { formatNextSteps } from '../helper';
+import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
@@ -91,14 +91,12 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
     }
   };
 
-  const getElearningSteps = steps => steps.filter(step => step.type === E_LEARNING);
-
   const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} misc={course.misc}
-    theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
+    theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}
     progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} />;
 
   const renderSubProgramItem = subProgram => <ProgramCell onPress={() => onPressProgramCell(subProgram._id, false)}
-    theoreticalHours={getTheoreticalHours(getElearningSteps(subProgram.steps))}
+    theoreticalDuration={getTheoreticalDuration(getElearningSteps(subProgram.steps))}
     program={get(subProgram, 'program') || {}} />;
 
   const nextSteps: NextSlotsStepType[] = useMemo(() => formatNextSteps(courses.onGoing), [courses.onGoing]);

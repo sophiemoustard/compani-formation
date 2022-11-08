@@ -9,7 +9,7 @@ type BaseStepType = {
 }
 
 export type ELearningStepType = BaseStepType &
-{ type: typeof E_LEARNING, activities: ActivityType[], theoreticalHours: number }
+{ type: typeof E_LEARNING, activities: ActivityType[], theoreticalDuration: string }
 export type LiveStepType = BaseStepType & { type: typeof ON_SITE | typeof REMOTE, activities: ActivityType[] }
 export type StepType = ELearningStepType | LiveStepType;
 

@@ -11,7 +11,7 @@ import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSec
 import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import HomeScreenFooter from '../../../../components/HomeScreenFooter';
-import { getTheoreticalHours } from '../../../../core/helpers/utils';
+import { getTheoreticalDuration } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
@@ -94,7 +94,7 @@ const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
   };
 
   const renderItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    misc={course.misc} theoreticalHours={getTheoreticalHours(getElearningSteps(get(course, 'subProgram.steps')))}
+    misc={course.misc} theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}
     onPress={() => goToCourse(course._id)} />;
 
   useEffect(() => {
