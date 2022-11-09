@@ -73,13 +73,13 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
     isSameOrAfter(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
-      return _date.startOf(unit) >= otherDate.startOf(unit);
+      return (_date.hasSame(otherDate, unit) || _date.startOf(unit) > otherDate.startOf(unit));
     },
 
     isSameOrBefore(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
-      return _date.startOf(unit) <= otherDate.startOf(unit);
+      return (_date.hasSame(otherDate, unit) || _date.startOf(unit) < otherDate.startOf(unit));
     },
 
     // MANIPULATE
