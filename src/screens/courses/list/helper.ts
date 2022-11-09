@@ -27,7 +27,7 @@ export const isInProgress = (course: BlendedCourseType): boolean => !isForthcomi
 
 const formatCourseStep = (stepId: string, course: BlendedCourseType, stepSlots): NextSlotsStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
-  const nextSlots = stepSlots[stepId].filter(slot => CompaniDate().isSameOrBefore(slot.endDate));
+  const nextSlots = stepSlots[stepId].filter(slot => CompaniDate().isBefore(slot.endDate));
   const slotsSorted = stepSlots[stepId].sort(ascendingSort('endDate'));
   const stepIndex = courseSteps.map(step => step._id).indexOf(stepId);
 
@@ -51,7 +51,7 @@ const formatCourseStepsList = (course: CourseType): NextSlotsStepType[] => {
   const stepSlots = groupBy(blendedCourse.slots.filter(s => get(s, 'step._id')), s => s.step._id);
 
   return Object.keys(stepSlots)
-    .filter(stepId => stepSlots[stepId].some(slot => CompaniDate().isSameOrBefore(slot.endDate)))
+    .filter(stepId => stepSlots[stepId].some(slot => CompaniDate().isBefore(slot.endDate)))
     .map(stepId => formatCourseStep(stepId, blendedCourse, stepSlots));
 };
 

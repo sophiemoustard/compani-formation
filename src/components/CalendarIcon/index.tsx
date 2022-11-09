@@ -25,7 +25,7 @@ const CalendarIcon = ({ slots, progress = 0, mode }: CalendarIconProps) => {
   useEffect(() => {
     if (slots.length) {
       const slotsDates = [...new Set(slots.map(date => CompaniDate(date).format(DD_MM_YYYY)))];
-      const nextSlots = slots.filter(slot => CompaniDate().isSameOrBefore(slot));
+      const nextSlots = slots.filter(slot => CompaniDate().isBefore(slot));
       const date = nextSlots.length ? nextSlots[0] : slots[0];
 
       setDayOfWeek(capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT)));

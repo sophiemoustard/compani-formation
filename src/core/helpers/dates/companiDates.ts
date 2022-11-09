@@ -16,8 +16,6 @@ type CompaniDateType = {
   isSame: (miscTypeOtherDate: DateTypes, unit: DateTimeUnit) => boolean,
   isBefore: (date: DateTypes, unit?: DateTimeUnit) => boolean,
   isAfter: (date: DateTypes, unit?: DateTimeUnit) => boolean,
-  isSameOrAfter: (date: DateTypes, unit?: DateTimeUnit) => boolean,
-  isSameOrBefore: (date: DateTypes, unit?: DateTimeUnit) => boolean,
   startOf: (unit: DateTimeUnit) => CompaniDateType,
   endOf: (unit: DateTimeUnit) => CompaniDateType,
   add: (amount: string) => CompaniDateType,
@@ -68,18 +66,6 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
       const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
 
       return _date.startOf(unit) > otherDate.startOf(unit);
-    },
-
-    isSameOrAfter(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
-      const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
-
-      return (_date.hasSame(otherDate, unit) || _date.startOf(unit) > otherDate.startOf(unit));
-    },
-
-    isSameOrBefore(miscTypeOtherDate: DateTypes, unit = 'millisecond') {
-      const otherDate = _formatMiscToCompaniDate(miscTypeOtherDate);
-
-      return (_date.hasSame(otherDate, unit) || _date.startOf(unit) < otherDate.startOf(unit));
     },
 
     // MANIPULATE
