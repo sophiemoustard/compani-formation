@@ -3,9 +3,9 @@ import { View, Text, FlatList, Linking, TouchableOpacity } from 'react-native';
 import get from 'lodash/get';
 import { SlotType } from '../../../types/CourseTypes';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
+import { ON_SITE, DAY_D_MONTH } from '../../../core/data/constants';
 import LiveHoursDisplay from '../LiveHoursDisplay';
 import styles from './styles';
-import { ON_SITE } from '../../../core/data/constants';
 
 type LiveInfoItemProps = {
   slots: SlotType[],
@@ -29,7 +29,7 @@ const LiveInfoItem = ({ slots }: LiveInfoItemProps) => {
 
   return (
     <>
-      <Text style={styles.date}>{CompaniDate(slots[0].startDate).format('cccc d LLLL')}</Text>
+      <Text style={styles.date}>{CompaniDate(slots[0].startDate).format(DAY_D_MONTH)}</Text>
       <FlatList horizontal ItemSeparatorComponent={() => <View style={styles.separator} />} data={slots}
         keyExtractor={item => item._id} renderItem={({ item }) => hoursItem(item)} />
       {!!location && (

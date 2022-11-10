@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     paddingLeft: PADDING.MD,
     color: GREY[500],
   },
-  theoreticalHours: {
+  theoreticalDuration: {
     paddingLeft: PADDING.MD,
     paddingBottom: PADDING.MD,
     color: PINK[500],

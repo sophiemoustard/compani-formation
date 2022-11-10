@@ -16,7 +16,7 @@ import styles from './styles';
 import CoursesSection from '../../../components/CoursesSection';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
-import { capitalizeFirstLetter, getTheoreticalHours } from '../../../core/helpers/utils';
+import { capitalizeFirstLetter, getTheoreticalDuration } from '../../../core/helpers/utils';
 
 interface CatalogProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -75,8 +75,9 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
 
-  const renderItem = program => <ProgramCell program={program} onPress={() => goToProgram(program)}
-    theoreticalHours={getTheoreticalHours(get(program, 'subPrograms[0].steps'))} />;
+  const renderItem = (program: ELearningProgramType) => <ProgramCell program={program}
+    onPress={() => goToProgram(program)}
+    theoreticalDuration={getTheoreticalDuration(get(program, 'subPrograms[0].steps'))} />;
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
