@@ -36,7 +36,7 @@
       }
     },
     "prod": {
-      "releaseChannel": "prod-2.14.0",
+      "releaseChannel": "prod-2.15.0",
       "env": {
         "APP_ENV": "production",
         "PROFILE": "production"
