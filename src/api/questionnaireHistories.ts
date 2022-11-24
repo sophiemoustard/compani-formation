@@ -5,10 +5,10 @@ type QuestionnaireHistoryPostPayloadType = {
   course: string,
   user: string,
   questionnaire: string,
-  questionnaireAnswersList: [{
+  questionnaireAnswersList?: {
     card: string,
-    answerList: [string],
-  }],
+    answerList: string[],
+  }[],
 }
 
 export default {

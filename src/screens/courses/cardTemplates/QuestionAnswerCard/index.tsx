@@ -1,10 +1,8 @@
-// @ts-nocheck
-
 import { useEffect, useState } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import { answerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
+import { AnswerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
 import { ActionType, StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/cards/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
@@ -27,7 +25,7 @@ interface QuestionAnswerCardProps {
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-export interface answerType extends answerFromAPIType {
+export interface AnswerType extends AnswerFromAPIType {
   isSelected: boolean,
 }
 
@@ -40,7 +38,7 @@ const QuestionAnswerCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: QuestionAnswerCardProps) => {
-  const [selectedAnswers, setSelectedAnswers] = useState<answerType[]>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<AnswerType[]>([]);
 
   useEffect(() => setIsRightSwipeEnabled(false));
 
@@ -76,8 +74,8 @@ const QuestionAnswerCard = ({
     else removeQuestionnaireAnswer(card._id);
   };
 
-  const renderItem = (item, index) => <QuestionAnswerProposition onPress={onSelectAnswer} index={index}
-    item={item.text} isSelected={item.isSelected} />;
+  const renderItem = (item: AnswerType, index: number) => <QuestionAnswerProposition onPress={onSelectAnswer}
+    item={item.text} isSelected={item.isSelected} index={index} />;
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Dispatch } from 'react';
 import { View, FlatList, ScrollView, LogBox, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -22,6 +22,8 @@ import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
 import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
+import { ActionType } from '../../../../context/types';
+import { StepType } from '../../../../types/StepTypes';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN_SCREEN = 'AdminCourseProfile';
@@ -82,7 +84,7 @@ const TrainerCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderCells = item => renderStepCell(item, course, TRAINER, route);
+  const renderCells = (item: { item: StepType, index: number }) => renderStepCell(item, course, TRAINER, route);
 
   const goTo = (screen: typeof ABOUT_SCREEN | typeof ADMIN_SCREEN) => {
     if (!course) return;
@@ -110,7 +112,7 @@ const TrainerCourseProfile = ({
 
 const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 

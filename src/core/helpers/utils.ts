@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { Audio, AVPlaybackSource } from 'expo-av';
 import BigNumber from 'bignumber.js';
 import CompaniDuration from '../helpers/dates/companiDurations';

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Dispatch } from 'react';
 import {
   View,
   Text,
@@ -47,6 +47,8 @@ import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepCell, renderSeparator, getTitle } from '../helper';
 import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
+import { ActionType } from '../../../../context/types';
+import { StepType } from '../../../../types/StepTypes';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -112,8 +114,8 @@ const LearnerCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const getPdfName = (c) => {
-    const misc = c.misc ? `_${c.misc}` : '';
+  const getPdfName = (c: CourseType) => {
+    const misc = get(c, 'misc') ? `_${get(c, 'misc')}` : '';
 
     return `attestation_${c.subProgram.program.name}${misc}`.replace(/ /g, '_').replace(/'/g, '_');
   };
@@ -143,7 +145,7 @@ const LearnerCourseProfile = ({
     setIsLoading(false);
   };
 
-  const renderCells = item => renderStepCell(item, course, LEARNER, route);
+  const renderCells = (item: { item: StepType, index: number }) => renderStepCell(item, course, LEARNER, route);
 
   const isProgressBarOnTop = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = event.nativeEvent.contentOffset;
@@ -216,8 +218,8 @@ const LearnerCourseProfile = ({
 
 const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
 
-const mapDispatchToProps = dispatch => ({
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourseProfile);

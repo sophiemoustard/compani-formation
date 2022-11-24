@@ -1,13 +1,11 @@
-// @ts-nocheck
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch } from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { NestableScrollContainer, NestableDraggableFlatList } from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
-import { footerColorsType, OrderedAnswerType, OrderTheSequenceType } from '../../../../types/CardType';
+import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/cards/selectors';
 import Actions from '../../../../store/cards/actions';
@@ -20,6 +18,7 @@ import OrderProposition from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
 import { SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED } from '../../../../core/data/constants';
 import styles from './styles';
+import { ActionType } from '../../../../context/types';
 
 interface OrderTheSequenceCardProps {
   card: OrderTheSequenceType,
@@ -29,9 +28,10 @@ interface OrderTheSequenceCardProps {
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-export interface answerPositionType extends OrderedAnswerType {
+export type AnswerPositionType = {
   goodPosition: number,
   tempPosition: number,
+  label: string
 }
 
 const OrderTheSequenceCard = ({
@@ -41,7 +41,7 @@ const OrderTheSequenceCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: OrderTheSequenceCardProps) => {
-  const [answers, setAnswers] = useState<answerPositionType[]>([]);
+  const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
@@ -85,13 +85,16 @@ const OrderTheSequenceCard = ({
     return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
   };
 
-  const setAnswersArray = ({ data }) => {
-    setAnswers(data.map((ans, answerIndex) => ({
-      label: ans.label, goodPosition: ans.goodPosition, tempPosition: answerIndex,
+  const setAnswersArray = ({ data }: { data: AnswerPositionType[] }) => {
+    setAnswers(data.map((ans: AnswerPositionType, answerIndex: number) => ({
+      label: ans.label,
+      goodPosition: ans.goodPosition,
+      tempPosition: answerIndex,
     })));
   };
 
-  const renderItem = ({ item, drag }) => <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
+  const renderItem = ({ item, drag }: { item: AnswerPositionType, drag: () => void}) =>
+    <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   if (isLoading) return null;
 
@@ -123,7 +126,7 @@ const OrderTheSequenceCard = ({
 
 const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 

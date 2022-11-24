@@ -19,16 +19,18 @@ type LiveCellInfoModalProps = {
   onRequestClose: () => void,
 }
 
-const formatStepSlots = (slots): { startDate: string, slots: SlotType[] }[] => {
+const formatStepSlots = (slots: SlotType[]): { startDate: string, slots: SlotType[] }[] => {
   const sortedSlots = slots.sort(ascendingSort('startDate'));
-  const formattedSlots = sortedSlots.reduce((acc, slot) => {
-    const startDate = CompaniDate(slot.startDate).format(DD_MM_YYYY);
-    if (acc[startDate]) acc[startDate].push(slot);
-    else acc[startDate] = [slot];
+  const formattedSlots = sortedSlots.reduce(
+    (acc, slot) => {
+      const startDate = CompaniDate(slot.startDate).format(DD_MM_YYYY);
+      if (acc[startDate]) acc[startDate].push(slot);
+      else acc[startDate] = [slot];
 
-    return acc;
-  },
-  {});
+      return acc;
+    },
+    {}
+  );
 
   return Object.keys(formattedSlots).map(key => ({ startDate: key, slots: formattedSlots[key] }));
 };

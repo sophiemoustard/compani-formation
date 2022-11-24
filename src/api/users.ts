@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { AxiosResponse } from 'axios';
 import Environment from '../../environment';
 import { MOBILE } from '../core/data/constants';
@@ -14,6 +12,12 @@ import {
 } from '../types/AxiosTypes';
 import { FormDataType } from '../types/FileType';
 
+type UpdatePayloadType = {
+  identity: UserType['identity'],
+  contact: UserType['contact'],
+  local: { email: UserType['local']['email'] },
+};
+
 export default {
   getById: async (userId: string): Promise<UserType> => {
     const baseURL = await Environment.getBaseUrl({ userId });
@@ -21,7 +25,7 @@ export default {
 
     return user.data.data.user;
   },
-  updateById: async (userId: string, data): Promise<void> => {
+  updateById: async (userId: string, data: UpdatePayloadType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
     await axiosLogged.put(`${baseURL}/users/${userId}`, data);
   },

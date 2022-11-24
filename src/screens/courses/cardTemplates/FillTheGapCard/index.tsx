@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -19,6 +19,7 @@ import FillTheGapProposition from '../../../../components/cards/FillTheGapPropos
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
 import { quizJingle } from '../../../../core/helpers/utils';
+import { ActionType } from '../../../../context/types';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -168,7 +169,7 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
 
 const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 

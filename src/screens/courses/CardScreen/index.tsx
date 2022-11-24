@@ -15,7 +15,7 @@ import { StateType, ActionType } from '../../../types/store/StoreType';
 interface CardScreenProps {
   index: number,
   exitConfirmationModal: boolean,
-  setExitConfirmationModal: (boolean) => void,
+  setExitConfirmationModal: (boolean: boolean) => void,
   goBack: () => void,
 }
 
@@ -24,7 +24,7 @@ const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, go
   const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
   const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
 
-  const onSwipe = (cardIndex, event) => {
+  const onSwipe = (cardIndex: number, event) => {
     if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && cardIndex > 0 && isLeftSwipeEnabled) {
       navigation.navigate(`card-${cardIndex - 1}`);
     }
@@ -52,7 +52,7 @@ const mapStateToProps = (state: StateType) => ({
 });
 
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
-  setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
+  setExitConfirmationModal: (openModal: boolean) => dispatch(Actions.setExitConfirmationModal(openModal)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardScreen);

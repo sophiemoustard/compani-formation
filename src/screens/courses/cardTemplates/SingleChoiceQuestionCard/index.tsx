@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -17,6 +15,7 @@ import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import { quizJingle } from '../../../../core/helpers/utils';
+import { ActionType } from '../../../../context/types';
 
 interface SingleChoiceQuestionCardProps {
   card: SingleChoiceQuestionType,
@@ -61,11 +60,11 @@ const SingleChoiceQuestionCard = ({
 
   if (isLoading) return null;
 
-  const renderItem = (item, answerIndex) => <QuizProposition onPress={onSelectAnswer} index={answerIndex} item={item}
-    isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer}
+  const renderItem = (item: string, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
+    isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer} index={answerIndex} item={item}
     isSelected={selectedAnswerIndex === answerIndex} />;
 
-  const onSelectAnswer = (selectedIndex) => {
+  const onSelectAnswer = (selectedIndex: number) => {
     setIsPressed(true);
     setSelectedAnswerIndex(selectedIndex);
     quizJingle(answers[selectedIndex] === card.qcuGoodAnswer);
@@ -97,7 +96,7 @@ const SingleChoiceQuestionCard = ({
 
 const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 

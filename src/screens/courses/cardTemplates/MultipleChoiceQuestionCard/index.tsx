@@ -1,12 +1,10 @@
-// @ts-nocheck
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch } from 'react';
 import { ScrollView, View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { useNavigation } from '@react-navigation/native';
-import { footerColorsType, MultipleChoiceQuestionType, qcmAnswerFromAPIType } from '../../../../types/CardType';
+import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerFromAPIType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
 import Selectors from '../../../../store/cards/selectors';
 import Actions from '../../../../store/cards/actions';
@@ -18,6 +16,7 @@ import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import styles from './styles';
 import { quizJingle } from '../../../../core/helpers/utils';
+import { ActionType } from '../../../../context/types';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
@@ -27,7 +26,7 @@ interface MultipleChoiceQuestionCardProps {
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-export interface qcmAnswerType extends qcmAnswerFromAPIType {
+export interface QcmAnswerType extends QcmAnswerFromAPIType {
   isSelected: boolean,
 }
 
@@ -38,7 +37,7 @@ const MultipleChoiceQuestionCard = ({
   isLoading,
   setIsRightSwipeEnabled,
 }: MultipleChoiceQuestionCardProps) => {
-  const [answers, setAnswers] = useState<qcmAnswerType[]>([]);
+  const [answers, setAnswers] = useState<QcmAnswerType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
@@ -70,7 +69,7 @@ const MultipleChoiceQuestionCard = ({
   const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 
   const onSelectAnswer = (index: number) => {
-    setAnswers((prevState: qcmAnswerType[]) => {
+    setAnswers((prevState: QcmAnswerType[]) => {
       const newState = [...prevState];
       newState[index].isSelected = !newState[index].isSelected;
 
@@ -95,8 +94,8 @@ const MultipleChoiceQuestionCard = ({
     return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const renderItem = (item, index) => <QuizProposition onPress={onSelectAnswer} index={index} item={item.text}
-    isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} />;
+  const renderItem = (item: QcmAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}
+    isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} item={item.text} />;
 
   const style = styles(footerColors.background);
 
@@ -126,7 +125,7 @@ const mapStateToProps = (state: StateType) => ({
   cardIndex: state.cards.cardIndex,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
 });
 

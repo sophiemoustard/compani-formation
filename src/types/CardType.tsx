@@ -33,7 +33,7 @@ export type SingleChoiceQuestionType = {
   template: string,
   question: string,
   qcuGoodAnswer: string,
-  qcAnswers: answerFromAPIType[],
+  qcAnswers: AnswerFromAPIType[],
   explanation: string,
 }
 
@@ -63,7 +63,7 @@ export type TitleTextType = {
   text: string,
 }
 
-export type qcmAnswerFromAPIType = {
+export type QcmAnswerFromAPIType = {
   correct: boolean,
   text: string,
 }
@@ -72,7 +72,7 @@ export type MultipleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
-  qcAnswers: qcmAnswerFromAPIType[],
+  qcAnswers: QcmAnswerFromAPIType[],
   explanation: string,
 }
 
@@ -117,7 +117,7 @@ export type FillTheGapType = {
   canSwitchAnswers: boolean,
 }
 
-export type answerFromAPIType = {
+export type AnswerFromAPIType = {
   _id: string,
   text: string,
 }
@@ -126,7 +126,7 @@ export type QuestionAnswerType = {
   _id: string,
   isQuestionAnswerMultipleChoiced: boolean,
   question: string,
-  qcAnswers: answerFromAPIType[],
+  qcAnswers: AnswerFromAPIType[],
   isMandatory: boolean,
 }
 

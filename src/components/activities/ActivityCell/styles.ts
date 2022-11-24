@@ -1,11 +1,10 @@
-// @ts-nocheck
-
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR, NUNITO_SEMI } from '../../../styles/fonts';
 import { WHITE } from '../../../styles/colors';
 import { BORDER_RADIUS, PADDING } from '../../../styles/metrics';
+import { ColorStateType } from './types';
 
-const styles = checkBackgroundColor => StyleSheet.create({
+const styles = (checkBackgroundColor: ColorStateType['check']) => StyleSheet.create({
   container: {
     display: 'flex',
     width: 128,

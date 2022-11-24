@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -17,6 +17,7 @@ import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
+import { ActionType } from '../../../context/types';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
@@ -127,7 +128,7 @@ const mapStateToProps = (state: StateType) => ({
   exitConfirmationModal: state.cards.exitConfirmationModal,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
   setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),

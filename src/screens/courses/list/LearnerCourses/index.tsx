@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback, useMemo, useReducer } from 'react';
 import { Text, View, ScrollView, ImageBackground } from 'react-native';
