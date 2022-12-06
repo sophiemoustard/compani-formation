@@ -5,7 +5,7 @@ import styles from './styles';
 interface FillTheGapQuestionProps {
   text: string,
   isValidated: boolean,
-  renderGap: (index: number) => void,
+  renderGap: (index: number) => JSX.Element,
 }
 
 const FillTheGapQuestion = ({ text, isValidated, renderGap }: FillTheGapQuestionProps) => {
