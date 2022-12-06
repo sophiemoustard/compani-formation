@@ -1,7 +1,12 @@
 import { Audio, AVPlaybackSource } from 'expo-av';
 import BigNumber from 'bignumber.js';
 import CompaniDuration from '../helpers/dates/companiDurations';
-import { STRICTLY_E_LEARNING, LONG_FIRSTNAME_LONG_LASTNAME, SHORT_FIRSTNAME_LONG_LASTNAME } from '../data/constants';
+import {
+  STRICTLY_E_LEARNING,
+  LONG_FIRSTNAME_LONG_LASTNAME,
+  SHORT_FIRSTNAME_LONG_LASTNAME,
+  PT0S,
+} from '../data/constants';
 import { UserType } from '../../types/UserType';
 import { ELearningStepType } from '../../types/StepTypes';
 import { CourseType } from '../../types/CourseTypes';
@@ -81,5 +86,5 @@ export const getTheoreticalDuration = (steps: ELearningStepType[]) : string => (
     ? steps
       .reduce((acc, value) => (value.theoreticalDuration ? acc.add(value.theoreticalDuration) : acc), CompaniDuration())
       .toISO()
-    : 'PT0S'
+    : PT0S
 );

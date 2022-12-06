@@ -4,7 +4,7 @@ import { ProgramType } from '../../types/CourseTypes';
 import styles from './styles';
 import ProgressPieChart from '../ProgressPieChart';
 import CompaniDuration from '../../core/helpers/dates/companiDurations';
-import { LONG_DURATION_H_MM } from '../../core/data/constants';
+import { LONG_DURATION_H_MM, PT0S } from '../../core/data/constants';
 
 interface ProgramCellProps {
   program: ProgramType,
@@ -16,7 +16,7 @@ interface ProgramCellProps {
 
 const ProgramCell = ({
   program,
-  theoreticalDuration = 'PT0S',
+  theoreticalDuration = PT0S,
   progress = null,
   misc = '',
   onPress,
@@ -51,7 +51,7 @@ const ProgramCell = ({
         {programName}{misc ? ` - ${misc}` : ''}
       </Text>
       <Text style={styles.description} lineBreakMode={'tail'} numberOfLines={4}>{programDescription}</Text>
-      {!CompaniDuration(theoreticalDuration).isEquivalentTo('PT0S') &&
+      {!CompaniDuration(theoreticalDuration).isEquivalentTo(PT0S) &&
         <View>
           <Text style={styles.eLearning}>E-LEARNING</Text>
           <Text style={styles.theoreticalDuration}>

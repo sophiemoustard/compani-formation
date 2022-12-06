@@ -115,3 +115,6 @@ export const DAY_D_MONTH = 'cccc d LLLL';
 // COMPANIDURATION FORMATS
 export const LONG_DURATION_H_MM = 'h\'h\' mm\'min\'';
 export const SHORT_DURATION_H_MM = 'h\'h\'mm';
+
+// COMPANIDURATION
+export const PT0S = 'PT0S';

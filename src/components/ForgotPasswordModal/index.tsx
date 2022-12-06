@@ -123,7 +123,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setIsLoading(true);
       setChosenMethod(PHONE);
       const sms = await Authentication.forgotPassword({ email, origin: MOBILE, type: PHONE });
-      setCodeRecipient(get(sms, 'phone'));
+      setCodeRecipient(get(sms, 'phone') || '');
       dispatchError({ type: RESET_ERROR });
     } catch (e: any) {
       const payload = e.response.status === 409

@@ -12,7 +12,7 @@ import { LEARNER } from '../../../core/data/constants';
 import { StateType } from '../../../types/store/StoreType';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
-  loggedUserId: string,
+  loggedUserId: string | null,
 }
 
 const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps) => {
@@ -27,7 +27,7 @@ const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps
       setCourseId(course._id);
 
       const { trainees } = course as ELearningCourseType;
-      setHasAlreadySubscribed(trainees?.includes(loggedUserId) || false);
+      if (loggedUserId) setHasAlreadySubscribed(trainees?.includes(loggedUserId) || false);
     }
   }, [loggedUserId, program]);
 

@@ -29,6 +29,11 @@ export type SubProgramType = {
   courses?: CourseType[],
 }
 
+// Sub-program
+export type SubProgramWithProgramType = SubProgramType & {
+  program: ProgramType,
+}
+
 export type ELearningSubProgramType = SubProgramType & {
   isStrictlyElearning: true,
   courses: { _id: string, trainees: String[] }[],

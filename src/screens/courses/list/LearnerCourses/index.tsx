@@ -15,7 +15,7 @@ import HomeScreenFooter from '../../../../components/HomeScreenFooter';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
-import { CourseType, SubProgramType } from '../../../../types/CourseTypes';
+import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { getCourseProgress, getTheoreticalDuration } from '../../../../core/helpers/utils';
 import { LEARNER, PEDAGOGY } from '../../../../core/data/constants';
@@ -101,7 +101,7 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
     progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} misc={get(course, 'misc')}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}/>;
 
-  const renderSubProgramItem = (subProgram: SubProgramType) => <ProgramCell program={get(subProgram, 'program') || {}}
+  const renderSubProgramItem = (subProgram: SubProgramWithProgramType) => <ProgramCell program={subProgram.program}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(subProgram.steps))}
     onPress={() => onPressProgramCell(subProgram._id, false)} />;
 
