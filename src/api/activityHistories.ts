@@ -4,6 +4,7 @@ import Environment from '../../environment';
 type ActivityHistoryPostPayloadType = {
   activity: string,
   user: string,
+  score: number,
   questionnaireAnswersList?: {
     card: string,
     answerList: string[],

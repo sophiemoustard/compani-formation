@@ -6,6 +6,7 @@ import { FIRA_SANS_BLACK, FIRA_SANS_REGULAR } from '../../styles/fonts';
 const styles = StyleSheet.create({
   image: {
     resizeMode: 'cover',
+    height: '100%',
   },
   inner: {
     flex: 1,

@@ -35,8 +35,7 @@ const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
     if (!width) return;
     const screenRatio = height / width;
     const supportedratios = await camera.current.getSupportedRatiosAsync();
-    const ratiosNumbers = (supportedratios || [])
-      .filter(supportedratio => !!supportedratio.split(':')[1])
+    const ratiosNumbers = supportedratios?.filter(supportedratio => !!supportedratio.split(':')[1])
       .map((supportedratio) => {
         const values = supportedratio.split(':');
         return Number(values[0]) / Number(values[1]);

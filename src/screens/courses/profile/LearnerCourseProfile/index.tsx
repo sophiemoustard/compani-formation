@@ -115,7 +115,7 @@ const LearnerCourseProfile = ({
   }, [hardwareBackPress]);
 
   const getPdfName = (c: CourseType) => {
-    const misc = get(c, 'misc') ? `_${get(c, 'misc')}` : '';
+    const misc = c.misc ? `_${c.misc}` : '';
 
     return `attestation_${c.subProgram.program.name}${misc}`.replace(/ /g, '_').replace(/'/g, '_');
   };
