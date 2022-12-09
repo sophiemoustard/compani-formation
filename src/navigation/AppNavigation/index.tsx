@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useRef, useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -35,7 +37,7 @@ const AppNavigation = () => {
     const prevRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
 
-    if (prevRouteName !== currentRouteName) {
+    if (!!currentRouteName && prevRouteName !== currentRouteName) {
       Analytics.logScreenView(currentRouteName);
       routeNameRef.current = currentRouteName;
     }

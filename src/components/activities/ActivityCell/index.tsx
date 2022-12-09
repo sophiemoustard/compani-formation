@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, Dispatch } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,8 @@ import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { LEARNER, QUIZ } from '../../../core/data/constants';
 import styles from './styles';
+import { ActionType } from '../../../context/types';
+import { ColorActionType, ColorStateType } from './types';
 
 type ActivityCellProps = {
   activity: ActivityType,
@@ -19,10 +21,10 @@ type ActivityCellProps = {
   setQuestionnaireAnswersList: (qalist: QuestionnaireAnswersType[]) => void,
 }
 
-const SET_TO_GREEN = 'SET_TO_GREEN';
-const SET_TO_ORANGE = 'SET_TO_ORANGE';
+export const SET_TO_GREEN = 'SET_TO_GREEN';
+export const SET_TO_ORANGE = 'SET_TO_ORANGE';
 
-const colorsReducer = (state, action) => {
+const colorsReducer = (state: ColorStateType, action: ColorActionType): ColorStateType => {
   switch (action) {
     case SET_TO_GREEN:
       return { border: GREEN[600], background: GREEN[300], check: GREEN[500] };
@@ -85,8 +87,8 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  setQuestionnaireAnswersList: questionnaireAnswersList =>
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
+  setQuestionnaireAnswersList: (questionnaireAnswersList: QuestionnaireAnswersType[]) =>
     dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
 });
 

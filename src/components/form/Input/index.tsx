@@ -8,7 +8,7 @@ import Shadow from '../../design/Shadow';
 
 interface InputProps {
   value: string,
-  onChangeText: (string) => void,
+  onChangeText: (string: string) => void,
   caption?: string,
   type: string,
   darkMode?: boolean,

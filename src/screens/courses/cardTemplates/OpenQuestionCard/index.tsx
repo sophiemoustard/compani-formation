@@ -22,7 +22,7 @@ interface OpenQuestionCardProps {
   isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 const OpenQuestionCard = ({
@@ -57,7 +57,7 @@ const OpenQuestionCard = ({
     setIsSelected(false);
   };
 
-  const onFocusTextInput = contentHeight => scrollRef.current?.scrollTo({ y: contentHeight, animated: true });
+  const onFocusTextInput = (contentHeight: number) => scrollRef.current?.scrollTo({ y: contentHeight, animated: true });
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>

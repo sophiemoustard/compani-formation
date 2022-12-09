@@ -6,9 +6,9 @@ import styles from './styles';
 
 interface AnswerQuestionProps {
   answer: string,
-  onChangeText: (string) => void,
-  onSelect: (boolean) => void,
-  scrollTo: (number) => void,
+  onChangeText: (string: string) => void,
+  onSelect: (boolean: boolean) => void,
+  scrollTo: (number: number) => void,
 }
 
 const AnswerTextArea = ({ onChangeText, onSelect, scrollTo, answer }: AnswerQuestionProps) => {

@@ -20,14 +20,8 @@ jobs:
       # Install your dependencies
       - run: yarn install --frozen-lockfile
 
-      - run: mkdir env
-      - run: touch env/env.local.ts
-      - run: touch env/env.dev.ts
-      - run: touch env/env.staging.ts
-      - run: touch env/env.prod.ts
-
       # Run tests
-      - run: npm run test
+      - run: yarn test
 
       # Clean
       - run: rm -rf env

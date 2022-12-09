@@ -36,7 +36,7 @@ const CameraModal = ({ visible, savePicture, onRequestClose, goBack }: CameraMod
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const onSavePhoto = async (photo) => {
+  const onSavePhoto = async (photo: CameraCapturedPicture) => {
     try {
       setIsLoading(true);
       await savePicture(photo);

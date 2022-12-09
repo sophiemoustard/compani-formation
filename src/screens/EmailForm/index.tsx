@@ -74,7 +74,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
     navigation.navigate('Authentication');
   };
 
-  const enterEmail = text => setEmail(text.trim());
+  const enterEmail = (text: string) => setEmail(text.trim());
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>

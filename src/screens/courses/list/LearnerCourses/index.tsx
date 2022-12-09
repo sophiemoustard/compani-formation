@@ -15,13 +15,14 @@ import HomeScreenFooter from '../../../../components/HomeScreenFooter';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import commonStyles from '../../../../styles/common';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
-import { SubProgramType } from '../../../../types/CourseTypes';
+import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { getCourseProgress, getTheoreticalDuration } from '../../../../core/helpers/utils';
 import { LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
+import { StateType } from '../../../../types/store/StoreType';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -32,8 +33,13 @@ StackScreenProps<RootStackParamList>
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
+type CourseStateType = {
+  onGoing: CourseType[],
+  achieved: CourseType[]
+};
+type CourseActionType = { type: typeof SET_COURSES, payload: CourseType[] } | { type: typeof RESET_COURSES };
 
-const courseReducer = (state, action) => {
+const courseReducer = (state: CourseStateType, action: CourseActionType) => {
   switch (action.type) {
     case SET_COURSES:
       return {
@@ -91,13 +97,13 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
     }
   };
 
-  const renderCourseItem = course => <ProgramCell program={get(course, 'subProgram.program') || {}} misc={course.misc}
-    theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}
-    progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} />;
+  const renderCourseItem = (course: CourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
+    progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} misc={get(course, 'misc')}
+    theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}/>;
 
-  const renderSubProgramItem = subProgram => <ProgramCell onPress={() => onPressProgramCell(subProgram._id, false)}
+  const renderSubProgramItem = (subProgram: SubProgramWithProgramType) => <ProgramCell program={subProgram.program}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(subProgram.steps))}
-    program={get(subProgram, 'program') || {}} />;
+    onPress={() => onPressProgramCell(subProgram._id, false)} />;
 
   const nextSteps: NextSlotsStepType[] = useMemo(() => formatNextSteps(courses.onGoing), [courses.onGoing]);
 
@@ -136,6 +142,6 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
 
 export default connect(mapStateToProps)(LearnerCourses);

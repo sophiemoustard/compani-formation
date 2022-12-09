@@ -11,11 +11,18 @@ import { capitalize, formatIdentity } from '../../../core/helpers/utils';
 import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import ContactInfoContainer from '../../../components/ContactInfoContainer';
-import { LEARNER, DAY_OF_WEEK_SHORT, DAY_OF_MONTH, MONTH_SHORT, YEAR } from '../../../core/data/constants';
+import {
+  LEARNER,
+  DAY_OF_WEEK_SHORT,
+  DAY_OF_MONTH,
+  MONTH_SHORT,
+  YEAR,
+  LONG_FIRSTNAME_LONG_LASTNAME,
+} from '../../../core/data/constants';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
-const formatDate = (date) => {
+const formatDate = (date: Date) => {
   const dayOfWeek = capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT));
   const dayOfMonth = capitalize(CompaniDate(date).format(DAY_OF_MONTH));
   const month = capitalize(CompaniDate(date).format(MONTH_SHORT));
@@ -67,7 +74,9 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           <Text style={styles.sectionTitle}>Intervenant(e)</Text>
           <View style={styles.subSectionContainer}>
             <Image style={styles.trainerPicture} source={trainerPictureSource} />
-            <Text style={styles.subSectionTitle}>{formatIdentity(course.trainer.identity, 'FL')}</Text>
+            <Text style={styles.subSectionTitle}>
+              {formatIdentity(course.trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME)}
+            </Text>
           </View>
           {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
         </>}

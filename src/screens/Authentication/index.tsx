@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useContext, useEffect } from 'react';
 import {
   Text,
@@ -5,7 +7,6 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   ImageBackground,
-  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -46,10 +47,8 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ImageBackground
-        style={{ ...styles.image, height: useWindowDimensions().height }}
-        source={require('../../../assets/images/authentication_background_image.jpg')}
-      >
+      <ImageBackground style={{ ...styles.image }}
+        source={require('../../../assets/images/authentication_background_image.jpg')}>
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
           <View style={styles.inner}>
             <Text style={styles.title}>

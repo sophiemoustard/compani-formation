@@ -10,6 +10,8 @@ import {
   INC_GOOD_ANSWERS_COUNT,
   SET_EXIT_CONFIRMATION_MODAL,
   CardActionWithoutPayloadType,
+  AddQuestionnaireAnswerType,
+  RemoveQuestionnaireAnswerType,
 } from '../../types/store/CardStoreType';
 import { defaultAction, DefaultActionType } from '../../types/store/StoreType';
 
@@ -21,7 +23,7 @@ const initialState: CardStateType = {
   exitConfirmationModal: false,
 };
 
-const applyAddQuestionnaireAnswer = (state, action) => {
+const applyAddQuestionnaireAnswer = (state: CardStateType, action: AddQuestionnaireAnswerType) => {
   const questionnaireAnswer = action.payload;
   const indexOfAnswer = state.questionnaireAnswersList
     .findIndex((qa => qa.card === questionnaireAnswer.card));
@@ -36,7 +38,7 @@ const applyAddQuestionnaireAnswer = (state, action) => {
   return { ...state, questionnaireAnswersList: [...state.questionnaireAnswersList, questionnaireAnswer] };
 };
 
-const applyRemoveQuestionnaireAnswer = (state, action) => {
+const applyRemoveQuestionnaireAnswer = (state: CardStateType, action: RemoveQuestionnaireAnswerType) => {
   const card = action.payload;
   return { ...state, questionnaireAnswersList: state.questionnaireAnswersList.filter(qa => qa.card !== card) };
 };

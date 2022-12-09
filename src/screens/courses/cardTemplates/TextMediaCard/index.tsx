@@ -24,8 +24,8 @@ interface TextMediaCardProps {
   card: TextMediaType,
   index: number | null,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
-  setIsLeftSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
+  setIsLeftSwipeEnabled: (boolean: boolean) => void,
 }
 
 const TextMediaCard = ({

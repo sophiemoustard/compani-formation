@@ -19,7 +19,7 @@ interface CardHeaderProps {
   maxProgress: number,
   progress: number,
   onPress?: () => void,
-  setExitConfirmationModal: (boolean) => void,
+  setExitConfirmationModal: (boolean: boolean) => void,
 }
 
 const CardHeader = ({
@@ -56,7 +56,7 @@ const mapStateToProps = (state: StateType) => ({
 );
 
 const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
-  setExitConfirmationModal: openModal => dispatch(Actions.setExitConfirmationModal(openModal)),
+  setExitConfirmationModal: (openModal: boolean) => dispatch(Actions.setExitConfirmationModal(openModal)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardHeader);

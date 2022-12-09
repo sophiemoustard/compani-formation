@@ -20,7 +20,7 @@ interface SurveyCardProps {
   isLoading: boolean,
   addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
   removeQuestionnaireAnswer: (card: string) => void,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 const SurveyCard = ({

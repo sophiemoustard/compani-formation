@@ -15,7 +15,12 @@ import Courses from '../../api/courses';
 import Programs from '../../api/programs';
 import { BlendedCourseType, ELearningProgramType } from '../../types/CourseTypes';
 
-export const registerForPushNotificationsAsync = async () => {
+type ExpoTokenAndStatusType = {
+  token: string | null,
+  status: typeof GRANTED | typeof DENIED,
+}
+
+export const registerForPushNotificationsAsync = async (): Promise<ExpoTokenAndStatusType> => {
   if (!Constants.isDevice) return { token: null, status: DENIED };
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -46,8 +51,14 @@ export const registerForPushNotificationsAsync = async () => {
   return { token, status: GRANTED };
 };
 
-export const handleNotificationResponse = async (response) => {
-  const { type, _id } = response.notification.request.content.data;
+type NotificationRequestDataType = {
+  type: typeof BLENDED_COURSE_REGISTRATION | typeof NEW_ELEARNING_COURSE,
+  _id: string
+};
+
+export const handleNotificationResponse = async (response: Notifications.NotificationResponse) => {
+  const { type, _id } = response.notification.request.content.data as NotificationRequestDataType;
+
   switch (type) {
     case BLENDED_COURSE_REGISTRATION: {
       const course = await Courses.getCourse(_id, PEDAGOGY);
@@ -64,7 +75,7 @@ export const handleNotificationResponse = async (response) => {
   }
 };
 
-export const handleExpoToken = async (data) => {
+export const handleExpoToken = async (data: ExpoTokenAndStatusType) => {
   try {
     const userId = await asyncStorage.getUserId();
     if (!userId) return;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Dispatch } from 'react';
 import {
   View,
   Text,
@@ -28,6 +28,8 @@ import styles from './styles';
 import MainActions from '../../../store/main/actions';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import { SubProgramType } from '../../../types/CourseTypes';
+import { ActionType } from '../../../context/types';
+import { StepType } from '../../../types/StepTypes';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -35,7 +37,7 @@ interface SubProgramProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
@@ -87,7 +89,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderCells = ({ item, index }) => {
+  const renderCells = ({ item, index }: { item: StepType, index: number }) => {
     if (item.type === E_LEARNING) {
       return <ELearningCell step={item} index={index} profileId={route.params.subProgramId} mode={TESTER} />;
     }
@@ -116,8 +118,8 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(null, mapDispatchToProps)(SubProgramProfile);

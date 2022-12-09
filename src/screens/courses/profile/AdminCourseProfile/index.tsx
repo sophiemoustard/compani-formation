@@ -1,12 +1,15 @@
+// @ts-nocheck
+
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
+import get from 'lodash/get';
+import has from 'lodash/has';
 import { CameraCapturedPicture } from 'expo-camera';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
-import has from 'lodash/has';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
@@ -18,7 +21,15 @@ import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
 import styles from './styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
-import { IMAGE, INTRA, OPERATIONS, PDF, DD_MM_YYYY } from '../../../../core/data/constants';
+import {
+  DD_MM_YYYY,
+  IMAGE,
+  INTRA,
+  LONG_FIRSTNAME_LONG_LASTNAME,
+  OPERATIONS,
+  PDF,
+  SHORT_FIRSTNAME_LONG_LASTNAME,
+} from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
@@ -70,7 +81,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
     return [...new Set(
-      course?.trainees?.map(trainee => ({ value: trainee._id, label: formatIdentity(trainee.identity, 'FL') }))
+      course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
         .filter(trainee => !savedTrainees.includes(trainee.value))
     )];
   }, [savedAttendanceSheets, course]);
@@ -81,7 +92,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
 
-  const refreshAttendanceSheets = async (courseId) => {
+  const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
   };
@@ -143,13 +154,13 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const deleteAttendanceSheets = async () => {
     try {
       await AttendanceSheets.delete(imagePreview.id);
-      await refreshAttendanceSheets(course?._id);
+      await refreshAttendanceSheets(get(course, '_id'));
     } catch (error) {
       console.error(error);
     }
   };
 
-  const openImagePreview = async (id, link) => {
+  const openImagePreview = async (id: string, link: string) => {
     await new Promise(() => {
       Image.getSize(
         link || '',
@@ -164,7 +175,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const renderSavedAttendanceSheets = (sheet: AttendanceSheetType) => {
     const label = isIntra(sheet)
       ? CompaniDate(sheet.date).format(DD_MM_YYYY)
-      : formatIdentity(sheet.trainee.identity, 'fL');
+      : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
 
     return (
       <View key={sheet._id} style={styles.savedSheetContent}>

@@ -18,6 +18,9 @@ import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
 import { isIOS } from '../../core/data/constants';
 
+const NEW_PASSWORD = 'newPassword';
+const CONFIRMED_PASSWORD = 'confirmedPassword';
+
 interface PasswordFormProps {
   goBack: () => void,
   onPress: (password: string) => void,
@@ -89,7 +92,9 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
     }
   };
 
-  const setPasswordField = (text, key) => { setPassword({ ...password, [key]: text }); };
+  const setPasswordField = (text: string, key: typeof NEW_PASSWORD | typeof CONFIRMED_PASSWORD) => {
+    setPassword({ ...password, [key]: text });
+  };
 
   return (
     <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
@@ -105,14 +110,14 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
         <Text style={styles.title}>Modifier mon mot de passe</Text>
         <View style={styles.input}>
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
-            type="password" onChangeText={text => setPasswordField(text, 'newPassword')}
+            type="password" onChangeText={text => setPasswordField(text, NEW_PASSWORD)}
             validationMessage={unvalid.newPassword && isValidationAttempted
               ? 'Le mot de passe doit comporter au minimum 6 caractères'
               : ''} />
         </View>
         <View style={styles.input}>
           <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
-            type="password" onChangeText={text => setPasswordField(text, 'confirmedPassword')}
+            type="password" onChangeText={text => setPasswordField(text, CONFIRMED_PASSWORD)}
             validationMessage={unvalid.confirmedPassword && isValidationAttempted
               ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
               : ''} />

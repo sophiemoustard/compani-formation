@@ -20,7 +20,7 @@ const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
   const [flashMode, setFlashMode] = useState(off);
   const [ratio, setRatio] = useState<string | undefined>();
 
-  const closerValue = (array, value) => {
+  const closerValue = (array: number[], value: number) => {
     let tempCloserValue = array[0];
     for (let i = 1; i < array.length; i += 1) {
       if (Math.abs(array[i] - value) < (Math.abs(tempCloserValue - value))) tempCloserValue = array[i];
@@ -35,24 +35,25 @@ const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
     if (!width) return;
     const screenRatio = height / width;
     const supportedratios = await camera.current.getSupportedRatiosAsync();
-    const ratiosNumbers = supportedratios?.map((supportedratio) => {
-      const values = supportedratio.split(':');
-      if (!values[1]) return null;
-      return Number(values[0]) / Number(values[1]);
-    });
+    const ratiosNumbers = supportedratios?.filter(supportedratio => !!supportedratio.split(':')[1])
+      .map((supportedratio) => {
+        const values = supportedratio.split(':');
+        return Number(values[0]) / Number(values[1]);
+      });
 
     const index = ratiosNumbers.indexOf(closerValue(ratiosNumbers, screenRatio));
     setRatio(supportedratios[index]);
   };
 
-  const flipPhoto = async photo => ImageManipulator.manipulateAsync(
-    photo.uri,
-    [{ flip: ImageManipulator.FlipType.Horizontal }]
-  );
+  const flipPhoto = async (photo: CameraCapturedPicture): Promise<CameraCapturedPicture> => ImageManipulator
+    .manipulateAsync(
+      photo.uri,
+      [{ flip: ImageManipulator.FlipType.Horizontal }]
+    );
 
   const onTakePicture = async () => {
-    const photo: any = await camera.current?.takePictureAsync({ skipProcessing: true });
-    setCapturedImage(cameraType === back ? photo : await flipPhoto(photo));
+    const photo = await camera.current?.takePictureAsync({ skipProcessing: true });
+    if (photo) setCapturedImage(cameraType === back ? photo : await flipPhoto(photo));
   };
 
   const onHandleCameraType = () => {

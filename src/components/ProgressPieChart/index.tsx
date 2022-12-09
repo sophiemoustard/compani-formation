@@ -1,6 +1,6 @@
 import { View } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { ProgressCircle } from 'react-native-svg-charts';
+import { Feather } from '@expo/vector-icons';
 import styles from './styles';
 import { BORDER_RADIUS, ICON } from '../../styles/metrics';
 import { PINK, WHITE, YELLOW } from '../../styles/colors';

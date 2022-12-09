@@ -14,7 +14,7 @@ interface FlashCardProps {
   card: FlashCardType,
   index: number | null,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 // eslint-disable-next-line no-shadow

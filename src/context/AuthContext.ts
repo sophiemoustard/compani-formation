@@ -5,7 +5,7 @@ import { createDataContext } from './createDataContext';
 import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
-import { ActionType, BoundActionsType } from './types';
+import { ActionType, BoundActionsType, CreateDataContextType } from './types';
 
 export interface AuthContextStateType {
   companiToken: string | null,
@@ -15,8 +15,10 @@ export interface AuthContextStateType {
   appIsReady: boolean
 }
 
+type SignInPayloadType = { email: string, password: string };
+
 export interface AuthContextDispatchActionsType {
-  signIn: (d: Dispatch<ActionType>) => ({ email, password }: { email: string, password: string}) => Promise<void>,
+  signIn: (d: Dispatch<ActionType>) => ({ email, password }: SignInPayloadType) => Promise<void>,
   tryLocalSignIn: (d: Dispatch<ActionType>) => () => Promise<void>,
   signOut: (d: Dispatch<ActionType>) => (b?: boolean) => Promise<void>,
   resetError: (d: Dispatch<ActionType>) => () => void,
@@ -46,7 +48,7 @@ const authReducer = (state: AuthContextStateType, actions: ActionType): AuthCont
   }
 };
 
-const signIn = dispatch => async ({ email, password }) => {
+const signIn = (dispatch: Dispatch<ActionType>) => async ({ email, password }: SignInPayloadType) => {
   try {
     if (!email || !password) return;
 
@@ -68,7 +70,7 @@ const signIn = dispatch => async ({ email, password }) => {
   }
 };
 
-const signOut = dispatch => async (removeExpoToken: boolean = false) => {
+const signOut = (dispatch: Dispatch<ActionType>) => async (removeExpoToken: boolean = false) => {
   await Authentication.logOut();
 
   const expoToken = await asyncStorage.getExpoToken();
@@ -85,7 +87,7 @@ const signOut = dispatch => async (removeExpoToken: boolean = false) => {
   navigate('Authentication');
 };
 
-const refreshCompaniToken = dispatch => async (refreshToken: string) => {
+const refreshCompaniToken = (dispatch: Dispatch<ActionType>) => async (refreshToken: string) => {
   try {
     const token = await Authentication.refreshToken({ refreshToken });
 
@@ -99,7 +101,7 @@ const refreshCompaniToken = dispatch => async (refreshToken: string) => {
   }
 };
 
-const localSignIn = async (dispatch) => {
+const localSignIn = async (dispatch: Dispatch<ActionType>) => {
   const { companiToken } = await asyncStorage.getCompaniToken();
   dispatch({ type: SIGNIN, payload: companiToken });
 
@@ -107,7 +109,7 @@ const localSignIn = async (dispatch) => {
   dispatch({ type: RENDER });
 };
 
-const tryLocalSignIn = dispatch => async () => {
+const tryLocalSignIn = (dispatch: Dispatch<ActionType>) => async () => {
   const userId = await asyncStorage.getUserId();
   const { companiToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
   if (userId && asyncStorage.isTokenValid(companiToken, companiTokenExpiryDate)) return localSignIn(dispatch);
@@ -122,11 +124,11 @@ const tryLocalSignIn = dispatch => async () => {
   return signOut(dispatch)();
 };
 
-const resetError = dispatch => () => {
+const resetError = (dispatch: Dispatch<ActionType>) => () => {
   dispatch({ type: RESET_ERROR });
 };
 
-export const { Provider, Context }: any = createDataContext(
+export const { Provider, Context }: CreateDataContextType = createDataContext(
   authReducer,
   { signIn, tryLocalSignIn, signOut, resetError, refreshCompaniToken },
   { companiToken: null, loading: false, error: false, errorMessage: '', appIsReady: false }

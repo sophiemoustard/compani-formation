@@ -15,7 +15,7 @@ import commonStyle from '../../styles/common';
 interface DeletionConfirmationModalProps {
   visible: boolean,
   loggedUserId: string,
-  setVisible: (value) => void,
+  setVisible: (value: boolean) => void,
   setConfirmationModal: () => void,
 }
 

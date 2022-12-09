@@ -9,7 +9,7 @@
     "jsx": "react-native",
     "esModuleInterop": true,
     "sourceMap": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,

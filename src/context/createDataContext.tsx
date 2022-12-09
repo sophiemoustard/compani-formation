@@ -1,11 +1,8 @@
-import { useReducer, createContext, ContextType } from 'react';
-import { AuthContextStateType, AuthContextDispatchActionsType } from './AuthContext';
-import { ActionType } from './types';
+// @ts-nocheck
 
-export interface createDataContextType {
-  Context: ContextType<any>,
-  Provider: (children: { children: JSX.Element }) => JSX.Element
-}
+import { useReducer, createContext } from 'react';
+import { AuthContextStateType, AuthContextDispatchActionsType } from './AuthContext';
+import { ActionType, CreateDataContextType } from './types';
 
 type ContextStateType = AuthContextStateType
 type ContextDispatchActionsType = AuthContextDispatchActionsType;
@@ -14,7 +11,7 @@ export const createDataContext = (
   reducer: (state: ContextStateType, action: ActionType) => ContextStateType,
   actions: ContextDispatchActionsType,
   defaultValue: ContextStateType
-): createDataContextType => {
+): CreateDataContextType => {
   const Context = createContext(defaultValue);
 
   const Provider = ({ children }: { children: JSX.Element }) => {

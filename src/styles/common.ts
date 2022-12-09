@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { StyleSheet } from 'react-native';
 import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT, BORDER_WIDTH } from './metrics';
 import { WHITE, PINK, GREY } from './colors';

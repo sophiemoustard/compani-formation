@@ -14,13 +14,8 @@ const CardFooter = ({ index, color, removeRight }: CardFooterProps) => {
   const removeLeft = index === 0;
   const navigation = useNavigation();
 
-  let justifyContent;
-  if (removeLeft) justifyContent = 'flex-end';
-  else if (removeRight) justifyContent = 'flex-start';
-  else justifyContent = 'space-between';
-
   return index !== null
-    ? (<View style={styles({ justifyContent }).container}>
+    ? (<View style={styles({ removeLeft, removeRight }).container}>
       {!removeLeft && <ArrowButton color={color} direction={LEFT}
         onPress={() => navigation.navigate(`card-${index - 1}`)} />}
       {!removeRight && <ArrowButton color={color} direction={RIGHT}
