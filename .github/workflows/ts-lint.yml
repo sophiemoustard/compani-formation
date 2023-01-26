@@ -8,12 +8,12 @@ jobs:
     name: Run ESLint and Typescript test
     runs-on: ubuntu-latest
     steps:
-      
+
       # Check out the repository
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       # Install Node.js
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.18.0
 
