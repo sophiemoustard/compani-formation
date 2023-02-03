@@ -12,6 +12,11 @@ import {
   PasswordTokenResponseType,
 } from '../types/AxiosTypes';
 
+type UpdatePasswordPayloadType = {
+  local: { password: string },
+  isConfirmed?: boolean,
+}
+
 export default {
   authenticate: async (payload: { email: string, password: string }): Promise<AuthenticationType> => {
     const baseURL = await Environment.getBaseUrl({ email: payload.email });
@@ -27,7 +32,7 @@ export default {
 
     return code.data.data.mailInfo;
   },
-  updatePassword: async (userId, data, token = ''): Promise<void> => {
+  updatePassword: async (userId: string, data: UpdatePasswordPayloadType, token: string = ''): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
     if (!token) await axiosLogged.put(`${baseURL}/users/${userId}/password`, data);
     else {

@@ -10,24 +10,18 @@ jobs:
     steps:
 
       # Check out the repository
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Install Node.js
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.18.0
 
       # Install your dependencies
-      - run: npm ci
-
-      - run: mkdir env
-      - run: touch env/env.local.ts
-      - run: touch env/env.dev.ts
-      - run: touch env/env.staging.ts
-      - run: touch env/env.prod.ts
+      - run: yarn install --frozen-lockfile --ignore-scripts
 
       # Run tests
-      - run: npm run test
+      - run: yarn test
 
       # Clean
       - run: rm -rf env

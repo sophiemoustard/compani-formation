@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+// @ts-nocheck
+
+import { Dispatch, useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -15,15 +17,16 @@ import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
+import { ActionType } from '../../../context/types';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
   cardIndex: number | null,
   exitConfirmationModal: boolean,
   cards: CardType[],
   setCards: (activity: CardType[] | null) => void,
-  setExitConfirmationModal: (boolean) => void,
+  setExitConfirmationModal: (boolean: boolean) => void,
   resetCardReducer: () => void,
-  setStatusBarVisible: (boolean) => void,
+  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const ActivityCardContainer = ({
@@ -125,11 +128,11 @@ const mapStateToProps = (state: StateType) => ({
   exitConfirmationModal: state.cards.exitConfirmationModal,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setCards: cards => dispatch(CardsActions.setCards(cards)),
-  setExitConfirmationModal: openModal => dispatch(CardsActions.setExitConfirmationModal(openModal)),
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
+  setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
+  setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-  setStatusBarVisible: statusBarVisible => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);

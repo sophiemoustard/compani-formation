@@ -28,7 +28,7 @@ const PictureModal = ({
 }: PictureModalProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const alert = (component) => {
+  const alert = (component: string) => {
     Alert.alert(
       'Accès refusé',
       `Vérifie que l'application a bien l'autorisation d'accéder à ${component}`,

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useCallback, useEffect } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -31,16 +33,16 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const onChangeText = (text, fieldToChangeIndex) => {
+  const onChangeText = (text: string, fieldToChangeIndex: number) => {
     setData(
-      data.map((dataItem, fieldIndex) => {
+      data.map((dataItem, fieldIndex: number) => {
         if (fieldIndex === fieldToChangeIndex) {
           return {
             ...dataItem,
             value: text,
             isValid: isFieldValid(
               dataItem.field,
-              data.map((item, valueIndex) => (fieldToChangeIndex === valueIndex ? text : item.value))
+              data.map((item, valueIndex: number) => (fieldToChangeIndex === valueIndex ? text : item.value))
             ),
           };
         }

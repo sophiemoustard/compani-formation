@@ -22,6 +22,7 @@ import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
 import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
+import { StateType } from '../../../../types/store/StoreType';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -129,6 +130,6 @@ const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
   );
 };
 
-const mapStateToProps = state => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
 
 export default connect(mapStateToProps)(TrainerCourses);

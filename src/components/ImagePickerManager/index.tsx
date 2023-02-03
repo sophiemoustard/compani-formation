@@ -21,7 +21,7 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
     onRequestClose();
   };
 
-  const onSavePhoto = async (photo) => {
+  const onSavePhoto = async (photo: CameraCapturedPicture) => {
     try {
       setIsSaving(true);
 

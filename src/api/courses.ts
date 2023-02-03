@@ -30,11 +30,11 @@ export default {
 
     return response.data.data.course;
   },
-  registerToELearningCourse: async (courseId): Promise<void> => {
+  registerToELearningCourse: async (courseId: string): Promise<void> => {
     const baseURL = await Environment.getBaseUrl();
     await axiosLogged.post(`${baseURL}/courses/${courseId}/register-e-learning`);
   },
-  downloadCertificate: async (courseId) : Promise<string> => {
+  downloadCertificate: async (courseId: string) : Promise<string> => {
     const baseURL = await Environment.getBaseUrl();
     const response: PdfResponseType = await axiosLogged.get(
       `${baseURL}/courses/${courseId}/completion-certificates`,

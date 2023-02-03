@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +14,7 @@ import commonStyles from '../../../../styles/common';
 import { achievementJingle } from '../../../../core/helpers/utils';
 import { LEARNER } from '../../../../core/data/constants';
 import { CourseModeType } from '../../../../types/CourseTypes';
+import { ActionType } from '../../../../context/types';
 
 interface ActivityEndCardProps {
   mode: CourseModeType,
@@ -37,9 +38,15 @@ const ActivityEndCard = ({
   useEffect(() => {
     async function saveHistory() {
       const userId = await asyncStorage.getUserId();
-      const payload = questionnaireAnswersList?.length
-        ? { user: userId, activity: activity._id, score, questionnaireAnswersList }
-        : { user: userId, activity: activity._id, score };
+
+      if (!userId || !activity._id) return;
+
+      const payload = {
+        activity: activity._id,
+        user: userId,
+        score,
+        ...(questionnaireAnswersList?.length && { questionnaireAnswersList }),
+      };
 
       await ActivityHistories.createActivityHistories(payload);
     }
@@ -69,8 +76,8 @@ const mapStateToProps = (state: StateType) => ({
   score: state.cards.score,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setCardIndex: index => dispatch(CardsActions.setCardIndex(index)),
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
+  setCardIndex: (index: number | null) => dispatch(CardsActions.setCardIndex(index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityEndCard);

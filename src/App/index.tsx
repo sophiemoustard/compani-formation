@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useEffect, useCallback } from 'react';
 import { createStore } from 'redux';
 import * as Analytics from 'expo-firebase-analytics';

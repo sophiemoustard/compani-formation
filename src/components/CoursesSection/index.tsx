@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { View, Text, FlatList, StyleProp, ViewStyle } from 'react-native';
 import styles from './styles';
 import { CourseType, ProgramType, SubProgramType } from '../../types/CourseTypes';

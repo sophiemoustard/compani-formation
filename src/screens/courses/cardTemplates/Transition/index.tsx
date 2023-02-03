@@ -14,7 +14,7 @@ interface TransitionProps {
   index: number | null,
   card: TransitionType,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 const Transition = ({ index, card, isLoading, setIsRightSwipeEnabled }: TransitionProps) => {

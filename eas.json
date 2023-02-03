@@ -8,6 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
+        "EXPO_USE_SOURCE": "1",
         "PROFILE": "local",
         "APP_ENV": "development"
       }
@@ -22,6 +23,7 @@
       "releaseChannel": "dev",
       "distribution": "internal",
       "env": {
+        "EXPO_USE_SOURCE": "1",
         "APP_ENV": "development",
         "PROFILE": "development"
       },
@@ -38,6 +40,7 @@
     "prod": {
       "releaseChannel": "prod-2.15.0",
       "env": {
+        "EXPO_USE_SOURCE": "1",
         "APP_ENV": "production",
         "PROFILE": "production"
       }

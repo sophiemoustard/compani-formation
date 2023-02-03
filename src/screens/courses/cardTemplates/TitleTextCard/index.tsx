@@ -16,7 +16,7 @@ interface TitleTextCardProps {
   card: TitleTextType,
   index: number | null,
   isLoading: boolean,
-  setIsRightSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
 const TitleTextCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: TitleTextCardProps) => {

@@ -11,7 +11,7 @@ type ActivityListProps = {
 }
 
 const ActivityList = ({ activities, profileId, mode }: ActivityListProps) => {
-  const renderActivityCell = activity => (
+  const renderActivityCell = (activity: ActivityType) => (
     <ActivityCell activity={activity} profileId={profileId} mode={mode} />
   );
 

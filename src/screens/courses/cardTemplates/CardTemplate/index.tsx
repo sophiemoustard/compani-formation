@@ -38,8 +38,8 @@ interface CardTemplateProps {
   index: number,
   cards: CardType[],
   setCardIndex: (index : number | null) => void,
-  setIsRightSwipeEnabled: (boolean) => void,
-  setIsLeftSwipeEnabled: (boolean) => void,
+  setIsRightSwipeEnabled: (boolean: boolean) => void,
+  setIsLeftSwipeEnabled: (boolean: boolean) => void,
 }
 
 const CardTemplate = ({

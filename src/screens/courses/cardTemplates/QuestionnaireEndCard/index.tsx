@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import { achievementJingle } from '../../../../core/helpers/utils';
 import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import { StateType } from '../../../../types/store/StoreType';
 import QuestionnaireHistories from '../../../../api/questionnaireHistories';
+import { ActionType } from '../../../../context/types';
 
 interface QuestionnaireEndCardProps {
   courseId: string
@@ -32,9 +33,15 @@ const QuestionnaireEndCard = ({
   useEffect(() => {
     async function createQuestionnaireHistories() {
       const userId = await asyncStorage.getUserId();
-      const payload = questionnaireAnswersList?.length
-        ? { course: courseId, user: userId, questionnaire: questionnaire._id, questionnaireAnswersList }
-        : { course: courseId, user: userId, questionnaire: questionnaire._id };
+
+      if (!courseId || !userId || !questionnaire._id) return;
+
+      const payload = {
+        course: courseId,
+        user: userId,
+        questionnaire: questionnaire._id,
+        ...(questionnaireAnswersList?.length && { questionnaireAnswersList }),
+      };
 
       await QuestionnaireHistories.createQuestionnaireHistories(payload);
     }
@@ -60,7 +67,7 @@ const mapStateToProps = (state: StateType) => ({
   questionnaireAnswersList: state.cards.questionnaireAnswersList,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setCardIndex: (index: number | null) => dispatch(CardsActions.setCardIndex(index)),
 });
 

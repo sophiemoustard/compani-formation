@@ -10,6 +10,13 @@ import {
   UserResponseType,
   ExistsResponseType,
 } from '../types/AxiosTypes';
+import { FormDataType } from '../types/FileType';
+
+type UpdatePayloadType = {
+  identity: UserType['identity'],
+  contact: UserType['contact'],
+  local: { email: UserType['local']['email'] },
+};
 
 export default {
   getById: async (userId: string): Promise<UserType> => {
@@ -18,7 +25,7 @@ export default {
 
     return user.data.data.user;
   },
-  updateById: async (userId: string, data): Promise<void> => {
+  updateById: async (userId: string, data: UpdatePayloadType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
     await axiosLogged.put(`${baseURL}/users/${userId}`, data);
   },
@@ -35,7 +42,7 @@ export default {
 
     return newUser.data.data.user;
   },
-  uploadImage: async (userId: string, data): Promise<void> => {
+  uploadImage: async (userId: string, data: FormDataType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
     const headers = { 'Content-Type': 'multipart/form-data' };
     await axiosLogged.post(`${baseURL}/users/${userId}/upload`, data, { headers });
@@ -44,11 +51,11 @@ export default {
     const baseURL = await Environment.getBaseUrl({ userId });
     await axiosLogged.delete(`${baseURL}/users/${userId}/upload`);
   },
-  addExpoToken: async (userId: string, formationExpoToken): Promise<void> => {
+  addExpoToken: async (userId: string, formationExpoToken: string): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
     await axiosLogged.post(`${baseURL}/users/${userId}/expo-token`, { formationExpoToken });
   },
-  removeExpoToken: async (userId: string, expoToken): Promise<void> => {
+  removeExpoToken: async (userId: string, expoToken: string): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
     await axiosLogged.delete(`${baseURL}/users/${userId}/expo-token/${expoToken}`);
   },

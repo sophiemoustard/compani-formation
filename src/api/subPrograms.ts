@@ -12,7 +12,7 @@ export default {
 
     return response.data.data.subPrograms;
   },
-  getSubProgram: async (courseId): Promise<SubProgramType> => {
+  getSubProgram: async (courseId: string): Promise<SubProgramType> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<SubProgramResponseType> = await axiosLogged.get(`${baseURL}/subprograms/${courseId}`);
 

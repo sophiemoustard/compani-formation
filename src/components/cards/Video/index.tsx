@@ -1,7 +1,16 @@
+// @ts-nocheck
+
 import { useState, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Platform, View } from 'react-native';
-import { Video, VideoFullscreenUpdate, ResizeMode } from 'expo-av';
+import {
+  Video,
+  VideoFullscreenUpdate,
+  ResizeMode,
+  VideoReadyForDisplayEvent,
+  VideoFullscreenUpdateEvent,
+  AVPlaybackStatus,
+} from 'expo-av';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
@@ -24,7 +33,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
     videoRef.current?.playAsync();
   };
 
-  const onPlaybackStatusUpdate = (playbackStatus) => {
+  const onPlaybackStatusUpdate = (playbackStatus: AVPlaybackStatus) => {
     if (isIosVersionWithPlayButton) {
       if (playbackStatus.isPlaying) setPlayVisible(false);
       else setPlayVisible(true);
@@ -32,7 +41,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
   };
 
   // eslint-disable-next-line consistent-return
-  const onFullscreenUpdate = async ({ fullscreenUpdate }) => {
+  const onFullscreenUpdate = async ({ fullscreenUpdate }: VideoFullscreenUpdateEvent) => {
     if (Platform.OS === 'android') {
       switch (fullscreenUpdate) {
         case VideoFullscreenUpdate.PLAYER_DID_PRESENT:
@@ -44,7 +53,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
     }
   };
 
-  const onReadyForDisplay = (event) => {
+  const onReadyForDisplay = (event: VideoReadyForDisplayEvent) => {
     if (event.status?.isLoaded) setNativeControlsVisible(true);
   };
   const style = styles(isMediaLoading);

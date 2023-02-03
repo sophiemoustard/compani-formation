@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useContext, useState } from 'react';
 import { View, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

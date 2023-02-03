@@ -5,6 +5,7 @@ import { formatIdentity } from '../../core/helpers/utils';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import { UserType } from '../../types/UserType';
+import { LONG_FIRSTNAME_LONG_LASTNAME } from '../../core/data/constants';
 
 type ContactInfoContainerProps = {
   title: string,
@@ -16,7 +17,7 @@ const ContactInfoContainer = ({ title, contact }: ContactInfoContainerProps) => 
     <Text style={styles.title}>{title}</Text>
     {contact
       ? <>
-        <Text style={styles.identity}>{formatIdentity(contact.identity, 'FL')}</Text>
+        <Text style={styles.identity}>{formatIdentity(contact.identity, LONG_FIRSTNAME_LONG_LASTNAME)}</Text>
         <TouchableOpacity onPress={() => Linking.openURL(`tel:${contact?.contact?.phone}`)} style={styles.contact}
           disabled={!contact?.contact?.phone}>
           <Feather name='phone' size={ICON.MD} color={GREY[600]} />

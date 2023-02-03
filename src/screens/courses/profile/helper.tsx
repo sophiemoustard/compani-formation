@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { View } from 'react-native';
 import get from 'lodash/get';
 import { E_LEARNING, ON_SITE, REMOTE } from '../../../core/data/constants';
