@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "preinstall": "source $HOME/.nvm/nvm.sh; nvm use 16.18.0",
     "prestart": "source $HOME/.nvm/nvm.sh; nvm use 16.18.0",
     "start": "npx expo start",
     "android": "npx expo start --android",
