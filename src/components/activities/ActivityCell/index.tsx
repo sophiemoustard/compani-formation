@@ -36,7 +36,6 @@ const colorsReducer = (state: ColorStateType, action: ColorActionType): ColorSta
 };
 
 const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }: ActivityCellProps) => {
-  const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
   const quizCount = activity.quizCount || 0;
@@ -67,9 +66,9 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
 
   return (
     <View style={coloredStyle.container}>
-      <TouchableOpacity onPress={onPress} disabled={disabled}>
+      <TouchableOpacity onPress={onPress}>
         <View style={coloredStyle.iconContainer}>
-          <ActivityIcon activity={activity} disabled={disabled} backgroundColor={colors.background}
+          <ActivityIcon activity={activity} backgroundColor={colors.background}
             borderColor={colors.border} />
           {isCompleted && !isQuiz &&
             <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={coloredStyle.icon}

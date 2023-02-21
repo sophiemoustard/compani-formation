@@ -3,7 +3,6 @@ import VideoIcon from '../../../../assets/icons/VideoIcon';
 import LessonIcon from '../../../../assets/icons/LessonIcon';
 import QuizIcon from '../../../../assets/icons/QuizIcon';
 import SharingExperienceIcon from '../../../../assets/icons/SharingExperienceIcon';
-import commonStyle from '../../../styles/common';
 import { ActivityType } from '../../../types/ActivityTypes';
 import { SHARING_EXPERIENCE, LESSON, QUIZ, VIDEO } from '../../../core/data/constants';
 import Shadow from '../../design/Shadow';
@@ -11,12 +10,11 @@ import styles from './styles';
 
 type ActivityIconProps = {
   activity: ActivityType,
-  disabled: Boolean,
   borderColor: string,
   backgroundColor: string,
 }
 
-const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: ActivityIconProps) => {
+const ActivityIcon = ({ activity, borderColor, backgroundColor }: ActivityIconProps) => {
   const coloredStyle = styles({ borderColor, backgroundColor });
 
   const getIcon = () => {
@@ -35,10 +33,8 @@ const ActivityIcon = ({ activity, disabled, borderColor, backgroundColor }: Acti
   };
 
   return (
-    <View style={[coloredStyle.container, disabled && commonStyle.disabled]}>
-      <View style={coloredStyle.button}>
-        {getIcon()}
-      </View>
+    <View style={coloredStyle.container}>
+      <View style={coloredStyle.button}>{getIcon()}</View>
       <Shadow customStyle={coloredStyle.shadow} />
     </View>
   );
