@@ -82,7 +82,6 @@ export default {
         NSCameraUsageDescription: 'Autorisez l\'accès à votre caméra pour pouvoir prendre une photo et la charger comme photo de profil dans Compani.',
         NSPhotoLibraryUsageDescription: 'Autorisez l\'accès à votre librairie pour pouvoir choisir une photo et la charger comme photo de profil dans Compani.',
       },
-      googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
       package: variables.bundleIdentifier,
@@ -93,7 +92,6 @@ export default {
         backgroundColor: '#005774',
       },
       versionCode: 110,
-      googleServicesFile: './google-services.json',
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
