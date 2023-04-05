@@ -1,10 +1,9 @@
 // @ts-nocheck
 
-import { useRef, useContext } from 'react';
+import { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
-import Analytics from '../../core/helpers/analytics';
 import { navigationRef } from '../../navigationRef';
 import Home from '../../navigation/Home/index';
 import Authentication from '../../screens/Authentication';
@@ -27,21 +26,6 @@ const MainStack = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
   const { companiToken }: AuthContextType = useContext(AuthContext);
-  const routeNameRef = useRef<string>();
-
-  const handleOnReadyNavigation = () => {
-    routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-  };
-
-  const handleNavigationStateChange = () => {
-    const prevRouteName = routeNameRef.current;
-    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
-
-    if (!!currentRouteName && prevRouteName !== currentRouteName) {
-      Analytics.logScreenView(currentRouteName);
-      routeNameRef.current = currentRouteName;
-    }
-  };
 
   const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
 
@@ -60,8 +44,7 @@ const AppNavigation = () => {
   const undismissableScreens = ['ActivityCardContainer', 'QuestionnaireCardContainer'];
 
   return (
-    <NavigationContainer ref={navigationRef} onReady={handleOnReadyNavigation}
-      onStateChange={handleNavigationStateChange}>
+    <NavigationContainer ref={navigationRef}>
       <MainStack.Navigator screenOptions={{ headerShown: false }}>
         {Object.entries(companiToken ? userScreens : authScreens)
           .map(([name, component]) => (
