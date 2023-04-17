@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { createStore } from 'redux';
-import * as Analytics from 'expo-firebase-analytics';
 import * as Notifications from 'expo-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as SplashScreen from 'expo-splash-screen';
@@ -30,7 +29,6 @@ const App = () => {
   useEffect(() => {
     async function prepare() {
       try {
-        await Analytics.logEvent('session_start');
         await initializeAssets();
       } catch (e) {
         console.error(e);

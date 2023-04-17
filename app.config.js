@@ -38,7 +38,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.16.0',
+    version: '2.17.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -74,7 +74,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.16.0',
+      buildNumber: '2.17.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -82,7 +82,6 @@ export default {
         NSCameraUsageDescription: 'Autorisez l\'accès à votre caméra pour pouvoir prendre une photo et la charger comme photo de profil dans Compani.',
         NSPhotoLibraryUsageDescription: 'Autorisez l\'accès à votre librairie pour pouvoir choisir une photo et la charger comme photo de profil dans Compani.',
       },
-      googleServicesFile: './GoogleService-Info.plist',
     },
     android: {
       package: variables.bundleIdentifier,
@@ -92,8 +91,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 100,
-      googleServicesFile: './google-services.json',
+      versionCode: 110,
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
