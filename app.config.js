@@ -38,7 +38,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.17.0',
+    version: '2.18.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -74,7 +74,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.17.0',
+      buildNumber: '2.18.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -91,7 +91,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 110,
+      versionCode: 120,
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
