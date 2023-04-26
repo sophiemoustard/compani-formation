@@ -7,7 +7,8 @@
     "web": "npx expo start --web",
     "eject": "expo eject",
     "test": "node_modules/jest/bin/jest.js",
-    "ts-lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js"
+    "ts-lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
+    "eas-build-pre-install": "echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json"
   },
   "jest": {
     "preset": "jest-expo",
