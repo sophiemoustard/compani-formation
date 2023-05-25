@@ -6,8 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
-import { CameraCapturedPicture } from 'expo-camera';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
+import { PictureType } from '../../../types/PictureTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
 import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
@@ -109,11 +109,11 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
     );
   };
 
-  const savePicture = async (picture: CameraCapturedPicture) => {
+  const savePicture = async (picture: PictureType) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
     const file = await formatImage(picture, fileName);
-    const data = await formatPayload({ file, fileName });
+    const data = formatPayload({ file, fileName });
 
     if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
     await Users.uploadImage(loggedUser._id, data);
