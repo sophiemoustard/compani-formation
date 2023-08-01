@@ -46,6 +46,8 @@ describe('Authentication tests', () => {
           },
         }
       )
+      .onPost(`${baseURL}/users/logout`)
+      .reply(200)
       .onGet(`${baseURL}/version/should-update`)
       .reply(200, { data: { mustUpdate: false } })
       .onPost(`${baseURL}/users/refreshToken`, { refreshToken: 'refresh-token' })
