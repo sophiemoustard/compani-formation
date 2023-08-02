@@ -33,6 +33,10 @@
       "./mock.js"
     ]
   },
+  "resolutions": {
+    "@expo/config-plugins": "~6.0.0",
+    "@expo/prebuild-config": "~6.0.0"
+  },
   "dependencies": {
     "@formatjs/intl-datetimeformat": "^5.0.1",
     "@formatjs/intl-getcanonicallocales": "^1.9.2",
