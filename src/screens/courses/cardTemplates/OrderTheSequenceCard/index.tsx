@@ -97,11 +97,9 @@ const OrderTheSequenceCard = ({
     <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
   const renderInformativeText = () => (
-    <View>
-      <Text style={cardsStyle.informativeText}>
-          Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
-      </Text>
-    </View>
+    <Text style={cardsStyle.informativeText}>
+      Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
+    </Text>
   );
 
   if (isLoading) return null;
