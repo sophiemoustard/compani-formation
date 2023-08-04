@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import { NestableScrollContainer, NestableDraggableFlatList } from 'react-native-draggable-flatlist';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
 import { StateType } from '../../../../types/store/StoreType';
@@ -96,6 +96,12 @@ const OrderTheSequenceCard = ({
   const renderItem = ({ item, drag }: { item: AnswerPositionType, drag: () => void}) =>
     <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
+  const renderInformativeText = () => (
+    <Text style={cardsStyle.informativeText}>
+      Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
+    </Text>
+  );
+
   if (isLoading) return null;
 
   const style = styles(footerColors.background);
@@ -105,14 +111,9 @@ const OrderTheSequenceCard = ({
       <CardHeader />
       <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
       <View style={style.container}>
-        <NestableScrollContainer showsVerticalScrollIndicator={false}>
-          <Text style={cardsStyle.informativeText}>
-            Classez les réponses dans le bon ordre : de la meilleure à la moins bonne
-          </Text>
-          <NestableDraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
-            keyExtractor={(_, answerIndex) => answerIndex.toString()} renderItem={renderItem}
-            activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} />
-        </NestableScrollContainer>
+        <DraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
+          keyExtractor={item => item.label} renderItem={renderItem}
+          activationDistance={SCROLL_SENSIBILITY_WHEN_SWIPE_ENABLED} ListHeaderComponent={renderInformativeText} />
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
