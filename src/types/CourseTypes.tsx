@@ -35,7 +35,7 @@ export type SubProgramWithProgramType = SubProgramType & {
 }
 
 export type ELearningSubProgramType = SubProgramType & {
-  isStrictlyElearning: true,
+  isStrictlyELearning: true,
   courses: { _id: string, trainees: String[] }[],
   steps: ELearningStepType[],
   program?: BaseProgramType,
