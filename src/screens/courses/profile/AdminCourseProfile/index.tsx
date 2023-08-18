@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
@@ -13,6 +13,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import AttendanceSheets from '../../../../api/attendanceSheets';
+import Questionnaires from '../../../../api/questionnaires';
 import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
 import { GREY, PINK } from '../../../../styles/colors';
@@ -23,11 +24,13 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
+  EXPECTATIONS,
   IMAGE,
   INTRA,
   LONG_FIRSTNAME_LONG_LASTNAME,
   OPERATIONS,
   PDF,
+  PUBLISHED,
   SHORT_FIRSTNAME_LONG_LASTNAME,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
@@ -46,6 +49,8 @@ import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
 import { formatIdentity } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
+import NiQuestionnaireQRCodeCell from '../../QuestionnaireQRCodeCell';
+import Environment from '../../../../../environment';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -91,6 +96,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
+  const [expectationsQuestionnaireId, setExpectationsQuestionnaireId] = useState<string>('');
+  const [expectationsQRCode, setExpectationsQRCode] = useState<string>('');
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
@@ -187,6 +194,29 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
+  useEffect(() => {
+    const getQuestionnairesQRCode = async () => {
+      const questionnaires = await Questionnaires.list();
+      const publishedQuestionnaires = questionnaires.filter(q => q.status === PUBLISHED);
+      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
+
+      if (expectationsQuestionnaire) {
+        setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
+
+        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaireId, { course: course._id });
+        setExpectationsQRCode(expectationsCode);
+      }
+    };
+
+    getQuestionnairesQRCode();
+  }, [course, expectationsQRCode, expectationsQuestionnaireId]);
+
+  const goToQuestionnaireProfile = async (questionnaireId) => {
+    const baseURL = await Environment.getBaseUrl();
+
+    Linking.openURL(`${baseURL}/ni/questionnaire/${questionnaireId}?courseId=${course._id}`);
+  };
+
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -222,6 +252,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           }
           {!!course.trainees?.length && <FlatList data={course.trainees} keyExtractor={item => item._id}
             renderItem={({ item }) => renderTrainee(item)} style={styles.listContainer} />}
+        </View>
+        <View style={styles.sectionContainer}>
+          <View style={commonStyles.sectionDelimiter} />
+          <Text style={styles.sectionTitle}>Répondre aux questionnaires</Text>
+          <NiQuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
+            onPress={goToQuestionnaireProfile(expectationsQuestionnaireId)} />
         </View>
         {course.type === INTRA && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />

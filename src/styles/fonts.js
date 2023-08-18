@@ -149,6 +149,10 @@ export const NUNITO_REGULAR_BOLD_ITALIC = StyleSheet.create({
 });
 
 export const NUNITO_LIGHT = StyleSheet.create({
+  LG: {
+    fontSize: 24,
+    fontFamily: 'nunito-light',
+  },
   XL: {
     fontSize: 48,
     fontFamily: 'nunito-light',
@@ -160,8 +164,8 @@ export const NUNITO_LIGHT = StyleSheet.create({
 });
 
 export const NUNITO_BLACK = StyleSheet.create({
-  XL: {
-    fontSize: 24,
+  LG: {
+    fontSize: 18,
     fontFamily: 'nunito-black',
   },
 });
