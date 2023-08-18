@@ -1,18 +1,31 @@
 import { useEffect, useState } from 'react';
-import { TouchableOpacity, Image, Text, View } from 'react-native';
+import { TouchableOpacity, Image, Text, View, Linking } from 'react-native';
 import { EXPECTATIONS } from '../../../core/data/constants';
 import { capitalizeFirstLetter } from '../../../core/helpers/utils';
+import Environment from '../../../../environment';
 import styles from './styles';
 
 interface NiQuestionnaireQRCodeCellProps {
   img: string,
-  type: string
-  onPress: () => void,
+  type: string,
+  questionnaireId: string,
+  courseId: string,
 }
 
-const NiQuestionnaireQRCodeCell = ({ img, type, onPress }: NiQuestionnaireQRCodeCellProps) => {
+const NiQuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: NiQuestionnaireQRCodeCellProps) => {
   const [questionnaireTypeTitle, setQuestionnaireTypeTitle] = useState('');
   const [qrCodePlaceHolder, setQrCodePlaceHolder] = useState('');
+  const [url, setUrl] = useState<string>('');
+
+  useEffect(() => {
+    const definedURL = async () => {
+      const baseURL = await Environment.getBaseUrl();
+
+      setUrl(`${baseURL}/ni/questionnaire/${questionnaireId}?courseId=${courseId}`);
+    };
+
+    definedURL();
+  }, [courseId, questionnaireId]);
 
   useEffect(() => {
     setQuestionnaireTypeTitle(type === EXPECTATIONS ? 'recueil des attentes' : 'fin de formation');
@@ -23,7 +36,7 @@ const NiQuestionnaireQRCodeCell = ({ img, type, onPress }: NiQuestionnaireQRCode
     <View style={styles.container}>
       <Text style={styles.title}>{capitalizeFirstLetter(questionnaireTypeTitle)}</Text>
       <Image source={{ uri: img }} style={styles.image} alt={qrCodePlaceHolder}></Image>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={() => Linking.openURL(url)}>
         <View>
           <Text style={styles.link}>Lien pour répondre au questionnaire de {questionnaireTypeTitle}</Text>
         </View>

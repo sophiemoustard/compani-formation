@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, Linking } from 'react-native';
+import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
@@ -51,7 +51,6 @@ import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
 import { formatIdentity } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
 import NiQuestionnaireQRCodeCell from '../../QuestionnaireQRCodeCell';
-import Environment from '../../../../../environment';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -107,11 +106,41 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     setSavedAttendanceSheets(fetchedAttendanceSheets);
   };
 
+  const getQuestionnairesQRCode = async (courseId: string) => {
+    try {
+      const questionnaires = await Questionnaires.list();
+      const publishedQuestionnaires = questionnaires.filter(q => q.status === PUBLISHED);
+
+      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
+      if (expectationsQuestionnaire) {
+        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaire._id, { course: courseId });
+
+        setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
+        setExpectationsQRCode(expectationsCode);
+      }
+
+      const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
+      if (endOfCourseQuestionnaire) {
+        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaire._id, { course: courseId });
+
+        setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
+        setEndOfCourseQRCode(endOfCourseCode);
+      }
+    } catch (e: any) {
+      console.error(e);
+      setExpectationsQuestionnaireId(null);
+      setExpectationsQRCode(null);
+      setEndOfCourseQuestionnaireId(null);
+      setEndOfCourseQRCode(null);
+    }
+  };
+
   useEffect(() => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         await refreshAttendanceSheets(fetchedCourse._id);
+        await getQuestionnairesQRCode(fetchedCourse._id);
 
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
@@ -122,6 +151,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     };
 
     getCourse();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route.params.courseId]);
 
   const hardwareBackPress = useCallback(() => {
@@ -197,37 +227,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
-  useEffect(() => {
-    const getQuestionnairesQRCode = async () => {
-      const questionnaires = await Questionnaires.list();
-      const publishedQuestionnaires = questionnaires.filter(q => q.status === PUBLISHED);
-
-      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
-      if (expectationsQuestionnaire) {
-        setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
-
-        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaireId, { course: course._id });
-        setExpectationsQRCode(expectationsCode);
-      }
-
-      const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
-      if (endOfCourseQuestionnaire) {
-        setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
-
-        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaireId, { course: course._id });
-        setEndOfCourseQRCode(endOfCourseCode);
-      }
-    };
-
-    getQuestionnairesQRCode();
-  }, [course, endOfCourseQuestionnaireId, expectationsQRCode, expectationsQuestionnaireId]);
-
-  const goToQuestionnaireProfile = async (questionnaireId) => {
-    const baseURL = await Environment.getBaseUrl();
-
-    Linking.openURL(`${baseURL}/ni/questionnaire/${questionnaireId}?courseId=${course._id}`);
-  };
-
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -267,10 +266,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Répondre aux questionnaires</Text>
-          <NiQuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
-            onPress={goToQuestionnaireProfile(expectationsQuestionnaireId)} />
-          <NiQuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
-            onPress={goToQuestionnaireProfile(endOfCourseQuestionnaireId)} />
+          {!!expectationsQuestionnaireId && <NiQuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
+            course={course._id} questionnaireId={expectationsQuestionnaireId} />}
+          {!!endOfCourseQuestionnaireId && <NiQuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
+            course={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
         </View>
         {course.type === INTRA && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
