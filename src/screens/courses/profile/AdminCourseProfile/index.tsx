@@ -24,6 +24,7 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
+  END_OF_COURSE,
   EXPECTATIONS,
   IMAGE,
   INTRA,
@@ -98,6 +99,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
   const [expectationsQuestionnaireId, setExpectationsQuestionnaireId] = useState<string>('');
   const [expectationsQRCode, setExpectationsQRCode] = useState<string>('');
+  const [endOfCourseQuestionnaireId, setEndOfCourseQuestionnaireId] = useState<string>('');
+  const [endOfCourseQRCode, setEndOfCourseQRCode] = useState<string>('');
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
@@ -198,18 +201,26 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const getQuestionnairesQRCode = async () => {
       const questionnaires = await Questionnaires.list();
       const publishedQuestionnaires = questionnaires.filter(q => q.status === PUBLISHED);
-      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
 
+      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
       if (expectationsQuestionnaire) {
         setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
 
         const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaireId, { course: course._id });
         setExpectationsQRCode(expectationsCode);
       }
+
+      const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
+      if (endOfCourseQuestionnaire) {
+        setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
+
+        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaireId, { course: course._id });
+        setEndOfCourseQRCode(endOfCourseCode);
+      }
     };
 
     getQuestionnairesQRCode();
-  }, [course, expectationsQRCode, expectationsQuestionnaireId]);
+  }, [course, endOfCourseQuestionnaireId, expectationsQRCode, expectationsQuestionnaireId]);
 
   const goToQuestionnaireProfile = async (questionnaireId) => {
     const baseURL = await Environment.getBaseUrl();
@@ -258,6 +269,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           <Text style={styles.sectionTitle}>Répondre aux questionnaires</Text>
           <NiQuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
             onPress={goToQuestionnaireProfile(expectationsQuestionnaireId)} />
+          <NiQuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
+            onPress={goToQuestionnaireProfile(endOfCourseQuestionnaireId)} />
         </View>
         {course.type === INTRA && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
