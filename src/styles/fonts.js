@@ -164,8 +164,8 @@ export const NUNITO_LIGHT = StyleSheet.create({
 });
 
 export const NUNITO_BLACK = StyleSheet.create({
-  LG: {
-    fontSize: 18,
+  XL: {
+    fontSize: 24,
     fontFamily: 'nunito-black',
   },
 });
