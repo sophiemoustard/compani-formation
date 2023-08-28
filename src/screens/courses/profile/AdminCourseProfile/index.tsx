@@ -50,7 +50,7 @@ import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
 import { formatIdentity } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
-import NiQuestionnaireQRCodeCell from '../../QuestionnaireQRCodeCell';
+import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -151,7 +151,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     };
 
     getCourse();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route.params.courseId]);
 
   const hardwareBackPress = useCallback(() => {
@@ -266,9 +265,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Répondre aux questionnaires</Text>
-          {!!expectationsQuestionnaireId && <NiQuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
+          {!!expectationsQuestionnaireId && <QuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
             course={course._id} questionnaireId={expectationsQuestionnaireId} />}
-          {!!endOfCourseQuestionnaireId && <NiQuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
+          {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
             course={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
         </View>
         {course.type === INTRA && <View style={styles.sectionContainer}>
