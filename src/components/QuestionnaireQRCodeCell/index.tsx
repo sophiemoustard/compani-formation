@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, Text, View, Linking } from 'react-native';
-import { EXPECTATIONS } from '../../../core/data/constants';
-import { capitalizeFirstLetter } from '../../../core/helpers/utils';
-import Environment from '../../../../environment';
+import { EXPECTATIONS } from '../../core/data/constants';
+import { capitalizeFirstLetter } from '../../core/helpers/utils';
+import Environment from '../../../environment';
 import styles from './styles';
 
-interface NiQuestionnaireQRCodeCellProps {
+interface QuestionnaireQRCodeCellProps {
   img: string,
   type: string,
   questionnaireId: string,
   courseId: string,
 }
 
-const NiQuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: NiQuestionnaireQRCodeCellProps) => {
+const QuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: QuestionnaireQRCodeCellProps) => {
   const [questionnaireTypeTitle, setQuestionnaireTypeTitle] = useState('');
   const [qrCodePlaceHolder, setQrCodePlaceHolder] = useState('');
   const [url, setUrl] = useState<string>('');
@@ -21,7 +21,7 @@ const NiQuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: NiQ
     const definedURL = async () => {
       const baseURL = await Environment.getBaseUrl();
 
-      setUrl(`${baseURL}/ni/questionnaire/${questionnaireId}?courseId=${courseId}`);
+      setUrl(`${baseURL}/ni/questionnaires/${questionnaireId}?courseId=${courseId}`);
     };
 
     definedURL();
@@ -45,4 +45,4 @@ const NiQuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: NiQ
   );
 };
 
-export default NiQuestionnaireQRCodeCell;
+export default QuestionnaireQRCodeCell;

@@ -21,8 +21,7 @@ export default {
   },
   list: async (): Promise<QuestionnaireType[]> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<QuestionnaireListResponseType> =
-      await axiosLogged.get(`${baseURL}/questionnaires`);
+    const response: AxiosResponse<QuestionnaireListResponseType> = await axiosLogged.get(`${baseURL}/questionnaires`);
 
     return response.data.data.questionnaires;
   },
