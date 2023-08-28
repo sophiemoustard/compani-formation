@@ -108,8 +108,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const getQuestionnairesQRCode = async (courseId: string) => {
     try {
-      const questionnaires = await Questionnaires.list();
-      const publishedQuestionnaires = questionnaires.filter(q => q.status === PUBLISHED);
+      const publishedQuestionnaires = await Questionnaires.list({ status: PUBLISHED });
 
       const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
       if (expectationsQuestionnaire) {
@@ -264,7 +263,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Répondre aux questionnaires</Text>
+          <Text style={styles.sectionTitle}>Questionnaires</Text>
           {!!expectationsQuestionnaireId && <QuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
             course={course._id} questionnaireId={expectationsQuestionnaireId} />}
           {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
