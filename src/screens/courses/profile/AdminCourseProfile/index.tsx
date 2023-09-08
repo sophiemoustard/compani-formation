@@ -7,7 +7,6 @@ import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
-import { CameraCapturedPicture } from 'expo-camera';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList } from 'react-native-gesture-handler';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -18,6 +17,7 @@ import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
 import { GREY, PINK } from '../../../../styles/colors';
 import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
+import { PictureType } from '../../../../types/PictureTypes';
 import styles from './styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
@@ -127,11 +127,11 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const renderTrainee = (person: TraineeType) => <PersonCell person={person} />;
 
-  const savePicture = async (picture: CameraCapturedPicture) => {
+  const savePicture = async (picture: PictureType) => {
     try {
       if (course) {
         const file = await formatImage(picture, `emargement-${attendanceSheetToAdd}`);
-        const data = await formatPayload({
+        const data = formatPayload({
           file,
           course: course._id,
           ...(course.type === INTRA ? { date: attendanceSheetToAdd } : { trainee: attendanceSheetToAdd }),

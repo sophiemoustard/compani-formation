@@ -38,7 +38,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.18.0',
+    version: '2.19.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -74,7 +74,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.18.0',
+      buildNumber: '2.19.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -85,16 +85,18 @@ export default {
     },
     android: {
       package: variables.bundleIdentifier,
+      googleServicesFile: './google-services.json',
       permissions: ['CAMERA', 'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'],
       icon: './assets/images/android_icon_old.png',
       adaptiveIcon: {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 120,
+      versionCode: 130,
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
+      'sentry-expo',
     ],
   },
 };

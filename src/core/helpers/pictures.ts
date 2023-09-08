@@ -33,7 +33,7 @@ export const formatImage = async (
   return file;
 };
 
-export const formatPayload = async (payload): Promise<FormDataType> => {
+export const formatPayload = (payload): FormDataType => {
   const data = new FormData();
   Object.entries(payload).forEach(([key, value]) => data.append(key, value));
 

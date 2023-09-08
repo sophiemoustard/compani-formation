@@ -38,7 +38,7 @@
       }
     },
     "prod": {
-      "releaseChannel": "prod-2.18.0",
+      "releaseChannel": "prod-2.19.0",
       "env": {
         "EXPO_USE_SOURCE": "1",
         "APP_ENV": "production",

@@ -15,12 +15,12 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { CameraCapturedPicture } from 'expo-camera';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
 import { UserType } from '../../../types/UserType';
+import { PictureType } from '../../../types/PictureTypes';
 import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
@@ -162,11 +162,11 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     return '';
   };
 
-  const savePicture = async (picture: CameraCapturedPicture) => {
+  const savePicture = async (picture: PictureType) => {
     const { firstname, lastname } = loggedUser.identity;
     const fileName = `photo_${firstname}_${lastname}`;
     const file = await formatImage(picture, fileName);
-    const data = await formatPayload({ file, fileName });
+    const data = formatPayload({ file, fileName });
 
     if (loggedUser.picture?.link) await Users.deleteImage(loggedUser._id);
     await Users.uploadImage(loggedUser._id, data);

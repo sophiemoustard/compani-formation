@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Alert, ActivityIndicator, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { CameraCapturedPicture } from 'expo-camera';
+import { PictureType } from '../../types/PictureTypes';
 import commonStyle from '../../styles/common';
 import { GREY } from '../../styles/colors';
 import styles from './styles';
 import NiModal from '../Modal';
 
 interface ImagePickerManagerProps {
-  savePicture: (image: CameraCapturedPicture) => void,
+  savePicture: (image: PictureType) => void,
   onRequestClose: () => void,
   goBack?: () => void,
 }
@@ -21,7 +21,7 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
     onRequestClose();
   };
 
-  const onSavePhoto = async (photo: CameraCapturedPicture) => {
+  const onSavePhoto = async (photo: ImagePicker.ImagePickerAsset) => {
     try {
       setIsSaving(true);
 
@@ -49,8 +49,8 @@ const ImagePickerManager = ({ savePicture, onRequestClose, goBack }: ImagePicker
           quality: 1,
         });
 
-        if (result.cancelled) unmount();
-        else onSavePhoto(result);
+        if (result.canceled) unmount();
+        else onSavePhoto(result.assets[0]);
       } catch (e) {
         Alert.alert(
           'La galerie ne répond pas',

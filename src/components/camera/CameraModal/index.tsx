@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BackHandler, Alert, Modal } from 'react-native';
 import { CameraCapturedPicture } from 'expo-camera';
+import { PictureType } from '../../../types/PictureTypes';
 import NiCameraPreview from '../CameraPreview';
 import NiCamera from '../Camera';
 import FeatherButton from '../../icons/FeatherButton';
@@ -10,7 +11,7 @@ import styles from './styles';
 
 interface CameraModalProps {
   visible: boolean,
-  savePicture: (image: CameraCapturedPicture) => void,
+  savePicture: (image: PictureType) => void,
   onRequestClose: () => void,
   goBack?: () => void,
 }
