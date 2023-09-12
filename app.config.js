@@ -92,7 +92,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 140,
+      versionCode: 130,
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
