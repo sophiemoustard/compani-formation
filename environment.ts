@@ -73,7 +73,14 @@ const _getWebappUrlForProfile = () => {
   }
 };
 
-const getWebappUrl = () => {
+const getWebappUrl = async () => {
+  const webappURLStaging = Constants.manifest?.extra?.WEBAPP_URL_STAGING || '';
+  const testIds = (Constants.manifest?.extra?.TEST_IDS || '').split(',');
+
+  // used for all logged routes
+  const userId = await asyncStorage.getUserId();
+  if (userId && testIds.includes(userId)) return webappURLStaging;
+
   return _getWebappUrlForProfile();
 };
 
