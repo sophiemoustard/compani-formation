@@ -20,6 +20,11 @@ const FirstConnectionModal = ({ visible, onRequestClose }: FirstConnectionModalP
     navigation.navigate('EmailForm', { firstConnection: true });
   };
 
+  const goToLoginCodeForm = () => {
+    onRequestClose();
+    navigation.navigate('LoginCodeForm');
+  };
+
   return (
     <Modal visible={visible} onRequestClose={onRequestClose}>
       <View style={styles.modalContainer}>
@@ -29,7 +34,7 @@ const FirstConnectionModal = ({ visible, onRequestClose }: FirstConnectionModalP
           <NiSecondaryButton caption="Je me connecte avec mon adresse email"
             onPress={goToEmailForm} />
           <NiSecondaryButton caption="Je me connecte avec un code donné par le formateur"
-            onPress={() => {}} />
+            onPress={goToLoginCodeForm} />
         </View>
       </View>
     </Modal>
