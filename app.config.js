@@ -74,7 +74,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.19.0.1',
+      buildNumber: '2.19.0.2',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
