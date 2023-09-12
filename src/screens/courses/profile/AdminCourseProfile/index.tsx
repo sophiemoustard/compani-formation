@@ -265,9 +265,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
           {!!expectationsQuestionnaireId && <QuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
-            course={course._id} questionnaireId={expectationsQuestionnaireId} />}
+            courseId={course._id} questionnaireId={expectationsQuestionnaireId} />}
           {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
-            course={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
+            courseId={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
         </View>
         {course.type === INTRA && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
