@@ -57,6 +57,18 @@ const _getWebappUrlForProfile = () => {
   if (!Constants?.manifest?.extra) return '';
 
   /**
+   * Pour utiliser expo publish
+   * Il faudra l'enlever quand on aura totalement migrer vers EAS updates
+   */
+  if (Constants.manifest.releaseChannel) {
+    if (__DEV__) return Constants.manifest.extra.WEBAPP_URL_LOCAL;
+    if (/dev/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.WEBAPP_URL_DEV;
+    if (/staging/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.WEBAPP_URL_STAGING;
+    if (/prod/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.WEBAPP_URL_PROD;
+    return '';
+  }
+
+  /**
    * Pour utiliser eas build
   */
   switch (Constants.manifest.extra.PROFILE) {
