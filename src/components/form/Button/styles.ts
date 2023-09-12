@@ -18,6 +18,7 @@ const styles = (backgroundColor: string, borderColor: string, color: string, fon
   },
   textButton: {
     color,
+    textAlign: 'center',
     ...font,
   },
   icon: {
