@@ -127,10 +127,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       }
     } catch (e: any) {
       console.error(e);
-      setExpectationsQuestionnaireId(null);
-      setExpectationsQRCode(null);
-      setEndOfCourseQuestionnaireId(null);
-      setEndOfCourseQRCode(null);
+      setExpectationsQuestionnaireId('');
+      setExpectationsQRCode('');
+      setEndOfCourseQuestionnaireId('');
+      setEndOfCourseQRCode('');
     }
   };
 

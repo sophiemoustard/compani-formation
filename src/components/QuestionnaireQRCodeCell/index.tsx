@@ -18,13 +18,13 @@ const QuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: Quest
   const [url, setUrl] = useState<string>('');
 
   useEffect(() => {
-    const definedURL = async () => {
+    const defineURL = async () => {
       const webappURL = await Environment.getWebappUrl();
 
       setUrl(`${webappURL}/ni/questionnaires/${questionnaireId}?courseId=${courseId}`);
     };
 
-    definedURL();
+    defineURL();
   }, [courseId, questionnaireId]);
 
   useEffect(() => {

@@ -28,7 +28,6 @@ export default {
   },
   getQRCode: async (questionnaireId: string, params: { course: string }): Promise<string> => {
     const baseURL = await Environment.getBaseUrl();
-
     const response: AxiosResponse<any> =
       await axiosLogged.get(`${baseURL}/questionnaires/${questionnaireId}/qrcode`, { params });
 
