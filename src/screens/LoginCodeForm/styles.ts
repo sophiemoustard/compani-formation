@@ -20,6 +20,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: MARGIN.MD,
+    padding: PADDING.XS,
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.MD,
     borderWidth: BORDER_WIDTH,

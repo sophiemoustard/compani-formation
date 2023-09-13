@@ -17,6 +17,7 @@ interface LoginCodeFormProps extends StackScreenProps<RootStackParamList> {}
 const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [code, setCode] = useState<string[]>(['', '', '', '']);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const inputRefs: any[] = [
     createRef(),
     createRef(),
@@ -54,7 +55,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
-          color={GREY[600]} />
+          color={GREY[600]} disabled={isLoading} />
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
           onPressCancelButton={() => setExitConfirmationModal(false)}
           title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
@@ -70,13 +71,15 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
               <TextInput ref={(r) => { inputRefs[idx] = r; }} key={`${k}${idx}`} value={code[idx]}
                 onChangeText={char => onChangeText(char, idx)} style={styles.number} placeholder={'_'}
                 onKeyPress={({ nativeEvent }) => checkKeyValue(nativeEvent.key, idx)}
-                maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} />))}
+                maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} editable={!isLoading} />))}
           </View>
         </View>
-        <NiInput caption={'Nom'} value={lastname} onChangeText={setLastname} type={'text'} required />
-        <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required />
+        <NiInput caption={'Nom'} value={lastname} onChangeText={setLastname} type={'text'} required
+          disabled={isLoading} />
+        <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
+          disabled={isLoading} />
         <View style={styles.footer}>
-          <NiPrimaryButton caption="Valider" onPress={() => {}} />
+          <NiPrimaryButton caption="Valider" onPress={() => setIsLoading(true)} loading={isLoading} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
