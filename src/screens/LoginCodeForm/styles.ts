@@ -43,4 +43,9 @@ export default StyleSheet.create({
     color: PINK[500],
     paddingHorizontal: PADDING.SM,
   },
+  footer: {
+    marginBottom: MARGIN.LG,
+    justifyContent: 'flex-end',
+    flex: 1,
+  },
 });
