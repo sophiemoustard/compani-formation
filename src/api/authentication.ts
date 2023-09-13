@@ -50,10 +50,11 @@ export default {
     const baseURL = await Environment.getBaseUrl();
     await axiosNotLogged.post(`${baseURL}/users/logout`);
   },
-  passwordToken: async (email: string, token: string): Promise<PasswordTokenType> => {
-    const baseURL = await Environment.getBaseUrl({ email });
+  passwordToken: async (params: { email?: string, firstname?: string, lastname?: string }, token: string)
+  : Promise<PasswordTokenType> => {
+    const baseURL = await Environment.getBaseUrl();
     const checkToken: AxiosResponse<PasswordTokenResponseType> =
-      await axiosNotLogged.get(`${baseURL}/users/passwordtoken/${token}`, { params: { email } });
+      await axiosNotLogged.get(`${baseURL}/users/passwordtoken/${token}`, { params });
 
     return checkToken.data.data;
   },

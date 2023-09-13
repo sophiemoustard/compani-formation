@@ -24,9 +24,10 @@ const CONFIRMED_PASSWORD = 'confirmedPassword';
 interface PasswordFormProps {
   goBack: () => void,
   onPress: (password: string) => void,
+  email?: string,
 }
 
-const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
+const PasswordForm = ({ onPress, goBack, email = '' }: PasswordFormProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [password, setPassword] =
     useState<{ newPassword: string, confirmedPassword: string }>({ newPassword: '', confirmedPassword: '' });
@@ -108,6 +109,9 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
+        {!!email && <Text style={styles.email}>L&apos;e-mail associé à votre compte est :
+          <Text style={styles.bold}>&nbsp;{email}</Text>
+        </Text>}
         <View style={styles.input}>
           <NiInput caption="Nouveau mot de passe" value={password.newPassword}
             type="password" onChangeText={text => setPasswordField(text, NEW_PASSWORD)}

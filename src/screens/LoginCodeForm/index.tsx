@@ -2,6 +2,7 @@ import { useState, createRef } from 'react';
 import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
+import Authentication from '../../api/authentication';
 import { RootStackParamList } from '../../types/NavigationType';
 import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
@@ -51,6 +52,22 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
     }
   };
 
+  const checkUserExists = async () => {
+    try {
+      const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
+      setIsLoading(true);
+      const checkToken = await Authentication.passwordToken({ firstname, lastname }, formattedCode);
+      navigation.navigate(
+        'PasswordReset',
+        { userId: checkToken.user._id, email: checkToken.user.email, token: checkToken.token }
+      );
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.goBack}>
@@ -79,7 +96,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
         <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
           disabled={isLoading} />
         <View style={styles.footer}>
-          <NiPrimaryButton caption="Valider" onPress={() => setIsLoading(true)} loading={isLoading} />
+          <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
