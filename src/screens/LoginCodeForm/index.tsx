@@ -74,9 +74,10 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
         'PasswordReset',
         { userId: checkToken.user._id, email: checkToken.user.email, token: checkToken.token }
       );
+      return null;
     } catch (e: any) {
-      if (e.response.status === 404) dispatchError({ type: SET_ERROR, payload: e.response.data.message });
-      else dispatchError({ type: SET_ERROR, payload: 'Oops, une erreur est survenue' });
+      if (e.response.status === 404) return dispatchError({ type: SET_ERROR, payload: e.response.data.message });
+      return dispatchError({ type: SET_ERROR, payload: 'Oops, une erreur est survenue' });
     } finally {
       setIsLoading(false);
     }
