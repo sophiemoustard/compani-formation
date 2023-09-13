@@ -3,6 +3,6 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     // Reanimated plugin has to be listed last.
-    plugins: ['inline-dotenv', 'react-native-reanimated/plugin'],
+    plugins: ['inline-dotenv', '@babel/plugin-proposal-export-namespace-from', 'react-native-reanimated/plugin'],
   };
 };
