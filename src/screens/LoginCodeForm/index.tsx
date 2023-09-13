@@ -1,4 +1,4 @@
-import { useState, createRef } from 'react';
+import { useState, createRef, useReducer } from 'react';
 import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -8,6 +8,7 @@ import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import ExitModal from '../../components/ExitModal';
 import NiInput from '../../components/form/Input';
+import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
 import { isIOS } from '../../core/data/constants';
 import { GREY } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
@@ -19,6 +20,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const inputRefs: any[] = [
     createRef(),
     createRef(),
@@ -54,15 +56,27 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
 
   const checkUserExists = async () => {
     try {
-      const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
       setIsLoading(true);
+
+      const isCodeInvalid = !(code.every(char => !!char && Number.isInteger(Number(char))));
+      if (isCodeInvalid) {
+        return dispatchError({ type: SET_ERROR, payload: 'Le format du code est incorrect' });
+      }
+
+      if (!lastname || !firstname) {
+        return dispatchError({ type: SET_ERROR, payload: 'Champ(s) invalides : tous les champs sont requis' });
+      }
+
+      const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
       const checkToken = await Authentication.passwordToken({ firstname, lastname }, formattedCode);
+
       navigation.navigate(
         'PasswordReset',
         { userId: checkToken.user._id, email: checkToken.user.email, token: checkToken.token }
       );
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      if (e.response.status === 404) dispatchError({ type: SET_ERROR, payload: e.response.data.message });
+      else dispatchError({ type: SET_ERROR, payload: 'Oops, une erreur est survenue' });
     } finally {
       setIsLoading(false);
     }
@@ -95,6 +109,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
           disabled={isLoading} />
         <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
           disabled={isLoading} />
+        {error.value && <Text style={styles.unvalid}>{error.message}</Text>}
         <View style={styles.footer}>
           <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />
         </View>
