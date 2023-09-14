@@ -28,18 +28,17 @@ const QuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: Quest
   }, [courseId, questionnaireId]);
 
   useEffect(() => {
-    setQuestionnaireTypeTitle(type === EXPECTATIONS ? 'recueil des attentes' : 'fin de formation');
-    setQrCodePlaceHolder(`QR Code pour répondre au questionnaire de ${questionnaireTypeTitle}`);
-  }, [questionnaireTypeTitle, type]);
+    const title = type === EXPECTATIONS ? 'recueil des attentes' : 'fin de formation';
+    setQuestionnaireTypeTitle(title);
+    setQrCodePlaceHolder(`QR Code pour répondre au questionnaire de ${title}`);
+  }, [type]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{capitalizeFirstLetter(questionnaireTypeTitle)}</Text>
       <Image source={{ uri: img }} style={styles.image} alt={qrCodePlaceHolder}></Image>
       <TouchableOpacity onPress={() => Linking.openURL(url)}>
-        <View>
-          <Text style={styles.link}>Lien pour répondre au questionnaire de {questionnaireTypeTitle}</Text>
-        </View>
+        <Text style={styles.link}>Lien pour répondre au questionnaire de {questionnaireTypeTitle}</Text>
       </TouchableOpacity>
     </View>
   );

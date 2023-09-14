@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: 'cover',
-    width: 150,
-    height: 150,
+    width: 152,
+    height: 152,
     alignSelf: 'center',
   },
   link: {
