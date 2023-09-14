@@ -19,4 +19,18 @@ export default {
 
     return response.data.data.questionnaire;
   },
+  list: async (params: { status: string }): Promise<QuestionnaireType[]> => {
+    const baseURL = await Environment.getBaseUrl();
+    const response: AxiosResponse<QuestionnaireListResponseType> =
+      await axiosLogged.get(`${baseURL}/questionnaires`, { params });
+
+    return response.data.data.questionnaires;
+  },
+  getQRCode: async (questionnaireId: string, params: { course: string }): Promise<string> => {
+    const baseURL = await Environment.getBaseUrl();
+    const response: AxiosResponse<any> =
+      await axiosLogged.get(`${baseURL}/questionnaires/${questionnaireId}/qrcode`, { params });
+
+    return response.data.data.qrCode;
+  },
 };

@@ -9,7 +9,7 @@ const _getBaseUrlForProfile = (): string => {
 
   /**
    * Pour utiliser expo publish
-   * Il faudra l'enlever quand on aura totalement migrer vers EAS build
+   * Il faudra l'enlever quand on aura totalement migrer vers EAS updates
    */
   if (Constants.manifest.releaseChannel) {
     if (__DEV__) return Constants.manifest.extra.BASE_URL_LOCAL;
@@ -53,4 +53,47 @@ const getBaseUrl = async (payload?: { email?: string, userId?: string }): Promis
   return _getBaseUrlForProfile();
 };
 
-export default { getSentryKey, getBaseUrl };
+const _getWebappUrlForProfile = () => {
+  if (!Constants?.manifest?.extra) return '';
+
+  /**
+   * Pour utiliser expo publish
+   * Il faudra l'enlever quand on aura totalement migrer vers EAS updates
+   */
+  if (Constants.manifest.releaseChannel) {
+    if (__DEV__) return Constants.manifest.extra.WEBAPP_URL_LOCAL;
+    if (/dev/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.WEBAPP_URL_DEV;
+    if (/staging/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.WEBAPP_URL_STAGING;
+    if (/prod/.test(Constants.manifest.releaseChannel)) return Constants.manifest.extra.WEBAPP_URL_PROD;
+    return '';
+  }
+
+  /**
+   * Pour utiliser eas build
+  */
+  switch (Constants.manifest.extra.PROFILE) {
+    case LOCAL:
+      return Constants.manifest.extra.WEBAPP_URL_LOCAL || '';
+    case DEVELOPMENT:
+      return Constants.manifest.extra.WEBAPP_URL_DEV || '';
+    case STAGING:
+      return Constants.manifest.extra.WEBAPP_URL_STAGING || '';
+    case PRODUCTION:
+      return Constants.manifest.extra.WEBAPP_URL_PROD || '';
+    default:
+      return '';
+  }
+};
+
+const getWebappUrl = async () => {
+  const webappURLStaging = Constants.manifest?.extra?.WEBAPP_URL_STAGING || '';
+  const testIds = (Constants.manifest?.extra?.TEST_IDS || '').split(',');
+
+  // used for all logged routes
+  const userId = await asyncStorage.getUserId();
+  if (userId && testIds.includes(userId)) return webappURLStaging;
+
+  return _getWebappUrlForProfile();
+};
+
+export default { getSentryKey, getBaseUrl, getWebappUrl };
