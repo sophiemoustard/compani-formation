@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
+import { MARGIN } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    flexGrow: 1,
-    height: '25%',
-    flexDirection: 'column',
+  button: {
+    marginBottom: MARGIN.MD,
   },
   goBack: {
     alignSelf: 'flex-end',
   },
   modalContent: {
-    flexGrow: 2,
+    marginVertical: MARGIN.LG,
     justifyContent: 'space-evenly',
   },
 });

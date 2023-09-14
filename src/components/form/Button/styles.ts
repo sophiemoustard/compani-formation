@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN } from '../../../styles/metrics';
+import { BORDER_RADIUS, BORDER_WIDTH, BUTTON_HEIGHT, MARGIN, PADDING } from '../../../styles/metrics';
 import { FontType } from '../../../types/FontType';
 
 const styles = (backgroundColor: string, borderColor: string, color: string, font: FontType) => StyleSheet.create({
@@ -10,11 +10,11 @@ const styles = (backgroundColor: string, borderColor: string, color: string, fon
     borderWidth: BORDER_WIDTH,
     display: 'flex',
     flexDirection: 'row',
-    height: BUTTON_HEIGHT,
+    minHeight: BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: 100,
-    paddingHorizontal: MARGIN.MD,
+    padding: PADDING.MD,
   },
   textButton: {
     color,

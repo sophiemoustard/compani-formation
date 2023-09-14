@@ -27,15 +27,11 @@ const FirstConnectionModal = ({ visible, onRequestClose }: FirstConnectionModalP
 
   return (
     <Modal visible={visible} onRequestClose={onRequestClose}>
-      <View style={styles.modalContainer}>
-        <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]}
-          style={styles.goBack} />
-        <View style={styles.modalContent}>
-          <NiSecondaryButton caption="Je me connecte avec mon adresse email"
-            onPress={goToEmailForm} />
-          <NiSecondaryButton caption="Je me connecte avec un code donné par le formateur"
-            onPress={goToLoginCodeForm} />
-        </View>
+      <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[600]} style={styles.goBack} />
+      <View style={styles.modalContent}>
+        <NiSecondaryButton caption="Je me connecte avec mon adresse email" onPress={goToEmailForm}
+          customStyle={styles.button}/>
+        <NiSecondaryButton caption="Je me connecte avec un code donné par le formateur" onPress={goToLoginCodeForm} />
       </View>
     </Modal>
   );

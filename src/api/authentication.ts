@@ -52,7 +52,8 @@ export default {
   },
   passwordToken: async (params: { email?: string, firstname?: string, lastname?: string }, token: string)
   : Promise<PasswordTokenType> => {
-    const baseURL = await Environment.getBaseUrl();
+    const { email } = params;
+    const baseURL = await Environment.getBaseUrl(email ? { email } : {});
     const checkToken: AxiosResponse<PasswordTokenResponseType> =
       await axiosNotLogged.get(`${baseURL}/users/passwordtoken/${token}`, { params });
 

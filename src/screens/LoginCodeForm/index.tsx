@@ -85,14 +85,14 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.goBack}>
-        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
-          color={GREY[600]} disabled={isLoading} />
-        <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
-          onPressCancelButton={() => setExitConfirmationModal(false)}
-          title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
-      </View>
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <View style={styles.goBack}>
+          <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
+            color={GREY[600]} disabled={isLoading} />
+          <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal}
+            onPressCancelButton={() => setExitConfirmationModal(false)}
+            title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
+        </View>
         <View style={styles.codeContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Code de connexion donné par le formateur</Text>

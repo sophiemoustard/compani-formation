@@ -62,7 +62,7 @@ export const FIRA_SANS_MEDIUM = StyleSheet.create({
 
 export const FIRA_SANS_REGULAR = StyleSheet.create({
   XXXL: {
-    fontSize: 36,
+    fontSize: 48,
     fontFamily: 'fira-sans-regular',
   },
   XXL: {
