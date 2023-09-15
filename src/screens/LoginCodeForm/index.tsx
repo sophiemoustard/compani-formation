@@ -1,5 +1,13 @@
 import { useState, createRef, useReducer, useRef } from 'react';
-import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TextInputKeyPressEventData,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import Authentication from '../../api/authentication';
@@ -18,6 +26,7 @@ import { isIOS } from '../../core/data/constants';
 import { GREY } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
+import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 interface LoginCodeFormProps extends StackScreenProps<RootStackParamList> {}
 
@@ -120,12 +129,12 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
         </View>
         <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-          <View style={styles.codeContainer}>
+          <View style={styles.sectionContainer}>
             <View style={styles.titleContainer}>
               <Text style={styles.title}>Code de connexion donné par le formateur</Text>
               <Text style={styles.required}>*</Text>
             </View>
-            <View style={styles.code}>
+            <View style={styles.section}>
               {inputRefs.map((k, idx) => (
                 <TextInput ref={(r) => { inputRefs[idx] = r; }} key={`${k}${idx}`} value={code[idx]}
                   onChangeText={char => onChangeText(char, idx)} style={styles.number} placeholder={'_'}
@@ -137,18 +146,18 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             disabled={isLoading} customStyle={styles.input} />
           <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
             disabled={isLoading} customStyle={styles.input} />
-          <View style={styles.codeContainer}>
+          <View style={styles.sectionContainer}>
             <View style={styles.titleContainer}>
               <Text style={styles.title}>Structure</Text>
               <Text style={styles.required}>*</Text>
             </View>
-            <>
-              {!company.name && <NiSecondaryButton caption="Veuillez cliquer ici pour renseigner votre structure"
-                onPress={chooseCompany} />}
-              {company.name && <View style={styles.code}>
-                <Text>{company.name}</Text>
-              </View>}
-            </>
+            {!company.name && <NiSecondaryButton caption="Renseigner ma structure" onPress={chooseCompany}
+              font={FIRA_SANS_REGULAR.MD} />}
+            {company.name && <View style={styles.section}>
+              <TouchableOpacity onPress={chooseCompany}>
+                <Text style={styles.company}>{company.name}</Text>
+              </TouchableOpacity>
+            </View>}
           </View>
           <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
           <View style={styles.footer}>

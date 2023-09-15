@@ -26,6 +26,7 @@ const CompanySearchModal = ({
     const selectedCompany = companyOptions.find(company => company._id === companyId) || { _id: '', name: '' };
 
     onRequestClose(selectedCompany);
+    setAnswer('');
   };
 
   const renderCompany = (company: CompanyType) => (
@@ -37,8 +38,13 @@ const CompanySearchModal = ({
   const getDisplayedCompanies = () => companyOptions
     .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)));
 
+  const resetModal = () => {
+    setAnswer('');
+    onRequestClose({ _id: '', name: '' });
+  };
+
   return (
-    <BottomModal onRequestClose={() => onRequestClose({ _id: '', name: '' })} visible={visible}>
+    <BottomModal onRequestClose={resetModal} visible={visible}>
       <TextInput placeholder="Choisir une structure" value={answer} onChangeText={setAnswer}
         style={!answer ? [styles.input, styles.placeholder] : styles.input} />
       <FlatList keyExtractor={item => `${item._id}`} data={getDisplayedCompanies()}
