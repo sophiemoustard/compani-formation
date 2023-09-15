@@ -1,5 +1,5 @@
-import { useState, createRef, useReducer } from 'react';
-import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView } from 'react-native';
+import { useState, createRef, useReducer, useRef } from 'react';
+import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import Authentication from '../../api/authentication';
@@ -8,10 +8,11 @@ import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import ExitModal from '../../components/ExitModal';
 import NiInput from '../../components/form/Input';
+import NiErrorMessage from '../../components/ErrorMessage';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
 import { isIOS } from '../../core/data/constants';
 import { GREY } from '../../styles/colors';
-import { ICON } from '../../styles/metrics';
+import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
 
 interface LoginCodeFormProps extends StackScreenProps<RootStackParamList> {}
@@ -29,6 +30,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   ];
   const [lastname, setLastname] = useState<string>('');
   const [firstname, setFirstname] = useState<string>('');
+  const scrollRef = useRef<ScrollView>(null);
 
   const goBack = () => {
     setExitConfirmationModal(false);
@@ -84,8 +86,9 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboard}
+        keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         <View style={styles.goBack}>
           <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
             color={GREY[600]} disabled={isLoading} />
@@ -93,27 +96,33 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             onPressCancelButton={() => setExitConfirmationModal(false)}
             title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
         </View>
-        <View style={styles.codeContainer}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Code de connexion donné par le formateur</Text>
-            <Text style={styles.required}>*</Text>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+          <View style={styles.codeContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Code de connexion donné par le formateur</Text>
+              <Text style={styles.required}>*</Text>
+            </View>
+            <View style={styles.code}>
+              {inputRefs.map((k, idx) => (
+                <TextInput ref={(r) => { inputRefs[idx] = r; }} key={`${k}${idx}`} value={code[idx]}
+                  onChangeText={char => onChangeText(char, idx)} style={styles.number} placeholder={'_'}
+                  onKeyPress={({ nativeEvent }) => checkKeyValue(nativeEvent.key, idx)}
+                  maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} editable={!isLoading} />))}
+            </View>
           </View>
-          <View style={styles.code}>
-            {inputRefs.map((k, idx) => (
-              <TextInput ref={(r) => { inputRefs[idx] = r; }} key={`${k}${idx}`} value={code[idx]}
-                onChangeText={char => onChangeText(char, idx)} style={styles.number} placeholder={'_'}
-                onKeyPress={({ nativeEvent }) => checkKeyValue(nativeEvent.key, idx)}
-                maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} editable={!isLoading} />))}
+          <View style={styles.input}>
+            <NiInput caption={'Nom'} value={lastname} onChangeText={setLastname} type={'text'} required
+              disabled={isLoading} />
           </View>
-        </View>
-        <NiInput caption={'Nom'} value={lastname} onChangeText={setLastname} type={'text'} required
-          disabled={isLoading} />
-        <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
-          disabled={isLoading} />
-        {error.value && <Text style={styles.unvalid}>{error.message}</Text>}
-        <View style={styles.footer}>
-          <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />
-        </View>
+          <View style={styles.input}>
+            <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
+              disabled={isLoading} />
+          </View>
+          <View style={styles.footer}>
+            <NiErrorMessage message={error.message} show={error.value} />
+            <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -1,12 +1,18 @@
 import { StyleSheet } from 'react-native';
-import { GREY, ORANGE, PINK, WHITE } from '../../styles/colors';
+import { GREY, PINK, WHITE } from '../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../styles/metrics';
-import { FIRA_SANS_ITALIC, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 export default StyleSheet.create({
   safeArea: {
     flex: 1,
     marginHorizontal: MARGIN.LG,
+  },
+  keyboard: {
+    flex: 1,
+  },
+  container: {
+    flexGrow: 1,
   },
   goBack: {
     marginVertical: MARGIN.MD,
@@ -44,14 +50,12 @@ export default StyleSheet.create({
     color: PINK[500],
     paddingHorizontal: PADDING.SM,
   },
+  input: {
+    marginBottom: MARGIN.SM,
+  },
   footer: {
     marginBottom: MARGIN.LG,
     justifyContent: 'flex-end',
     flex: 1,
-  },
-  unvalid: {
-    ...FIRA_SANS_ITALIC.SM,
-    color: ORANGE[600],
-    marginHorizontal: MARGIN.SM,
   },
 });

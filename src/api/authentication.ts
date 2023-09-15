@@ -17,6 +17,12 @@ type UpdatePasswordPayloadType = {
   isConfirmed?: boolean,
 }
 
+type PasswordTokenParamsType = {
+  email?: string,
+  firstname?: string,
+  lastname?: string,
+}
+
 export default {
   authenticate: async (payload: { email: string, password: string }): Promise<AuthenticationType> => {
     const baseURL = await Environment.getBaseUrl({ email: payload.email });
@@ -50,8 +56,7 @@ export default {
     const baseURL = await Environment.getBaseUrl();
     await axiosNotLogged.post(`${baseURL}/users/logout`);
   },
-  passwordToken: async (params: { email?: string, firstname?: string, lastname?: string }, token: string)
-  : Promise<PasswordTokenType> => {
+  passwordToken: async (params: PasswordTokenParamsType, token: string): Promise<PasswordTokenType> => {
     const { email } = params;
     const baseURL = await Environment.getBaseUrl(email ? { email } : {});
     const checkToken: AxiosResponse<PasswordTokenResponseType> =
