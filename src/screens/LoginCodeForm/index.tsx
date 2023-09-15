@@ -26,7 +26,7 @@ import { isIOS } from '../../core/data/constants';
 import { GREY } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
-import { FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
 interface LoginCodeFormProps extends StackScreenProps<RootStackParamList> {}
 
@@ -86,7 +86,8 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
       }
 
       const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
-      const checkToken = await Authentication.passwordToken({ firstname, lastname }, formattedCode);
+      const checkToken = await Authentication
+        .passwordToken({ firstname, lastname, company: company._id }, formattedCode);
 
       navigation.navigate(
         'PasswordReset',
@@ -152,7 +153,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
               <Text style={styles.required}>*</Text>
             </View>
             {!company.name && <NiSecondaryButton caption="Renseigner ma structure" onPress={chooseCompany}
-              font={FIRA_SANS_REGULAR.MD} />}
+              font={FIRA_SANS_MEDIUM.MD} color={GREY[900]} />}
             {company.name && <View style={styles.section}>
               <TouchableOpacity onPress={chooseCompany}>
                 <Text style={styles.company}>{company.name}</Text>
