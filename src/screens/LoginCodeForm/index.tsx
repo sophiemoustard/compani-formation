@@ -66,7 +66,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
       }
 
       if (!lastname || !firstname) {
-        return dispatchError({ type: SET_ERROR, payload: 'Champ(s) invalides : tous les champs sont requis' });
+        return dispatchError({ type: SET_ERROR, payload: 'Champ(s) invalide(s) : tous les champs sont requis' });
       }
 
       const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
