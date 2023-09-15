@@ -14,24 +14,28 @@ import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import commonStyles from '../../../styles/common';
 import { AuthContextType, Context as AuthContext } from '../../../context/AuthContext';
-import styles from './styles';
 import Courses from '../../../api/courses';
+import CompanyLinkRequests from '../../../api/companyLinkRequests';
 import Users from '../../../api/users';
+import Companies from '../../../api/companies';
 import { PINK } from '../../../styles/colors';
 import { UserType } from '../../../types/UserType';
 import { HIT_SLOP, ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
-import CompanySearchModal from '../../../components/companyLinkRequest/CompanySearchModal';
+import CompanySearchModal from '../../../components/CompanySearchModal';
 import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
 import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
 import HomeScreenFooter from '../../../components/HomeScreenFooter';
-import { formatImage, formatPayload } from '../../../core/helpers/pictures';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
 import CameraModal from '../../../components/camera/CameraModal';
 import ImagePickerManager from '../../../components/ImagePickerManager';
+import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
+import { formatImage, formatPayload } from '../../../core/helpers/pictures';
+import MainActions from '../../../store/main/actions';
 import { PEDAGOGY } from '../../../core/data/constants';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
+import { CompanyType } from '../../../types/CompanyType';
+import styles from './styles';
 
 interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -55,6 +59,9 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const [userFirstName, setUserFirstName] = useState<string>('');
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
+  const [companyOptions, setCompanyOptions] = useState<CompanyType[]>([]);
+  const [company, setCompany] = useState<CompanyType>({ _id: '', name: '' });
+  const [isValidationModalOpened, setIsValidationModalOpened] = useState<boolean>(false);
 
   const editProfile = () => navigation.navigate('ProfileEdition');
 
@@ -92,6 +99,35 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
     }
   }, [loggedUser]);
 
+  const addCompany = async () => {
+    try {
+      const fetchCompanies = await Companies.list();
+      setCompanyOptions(fetchCompanies);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsModalOpened(true);
+    }
+  };
+
+  const onRequestClose = (value: CompanyType) => {
+    if (value) setCompany(value);
+    setIsValidationModalOpened(true);
+    setIsModalOpened(false);
+  };
+
+  const createCompanyLinkRequest = async () => {
+    try {
+      await CompanyLinkRequests.createCompanyLinkRequest({ company: company._id });
+      const user = await Users.getById(loggedUser._id);
+      setLoggedUser(user);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsValidationModalOpened(false);
+    }
+  };
+
   const renderCompanyLinkRequest = () => {
     if (loggedUser.companyLinkRequest) {
       return (
@@ -104,7 +140,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
     return (
       <View style={styles.linkRequestButton}>
-        <NiPrimaryButton caption="Ajouter ma structure" onPress={() => setIsModalOpened(true)} />
+        <NiPrimaryButton caption="Ajouter ma structure" onPress={addCompany} />
       </View>
     );
   };
@@ -197,7 +233,9 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
         {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
         {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
           savePicture={savePicture} />}
-        <CompanySearchModal visible={isModalOpened} onRequestClose={() => setIsModalOpened(false)} />
+        <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
+        <ValidationModal visible={isValidationModalOpened} onPressConfirmButton={createCompanyLinkRequest}
+          company={company} onPressCancelButton={() => setIsValidationModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
           setVisible={() => setDeletionConfirmationModal(false)}
           setConfirmationModal={() => setUserAccountDeletedModal(true)} />
