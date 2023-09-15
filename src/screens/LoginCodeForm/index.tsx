@@ -3,13 +3,17 @@ import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import Authentication from '../../api/authentication';
+import Companies from '../../api/companies';
 import { RootStackParamList } from '../../types/NavigationType';
 import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import ExitModal from '../../components/ExitModal';
 import NiInput from '../../components/form/Input';
 import NiErrorMessage from '../../components/ErrorMessage';
+import NiSecondaryButton from '../../components/form/SecondaryButton';
+import CompanySearchModal from '../../components/CompanySearchModal';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
+import { CompanyType } from '../../types/CompanyType';
 import { isIOS } from '../../core/data/constants';
 import { GREY } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
@@ -31,6 +35,9 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   const [lastname, setLastname] = useState<string>('');
   const [firstname, setFirstname] = useState<string>('');
   const scrollRef = useRef<ScrollView>(null);
+  const [companyOptions, setCompanyOptions] = useState<CompanyType[]>([]);
+  const [company, setCompany] = useState<{ _id: string, name: string }>({ _id: '', name: '' });
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
   const goBack = () => {
     setExitConfirmationModal(false);
@@ -85,6 +92,22 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
     }
   };
 
+  const chooseCompany = async () => {
+    try {
+      const fetchCompanies = await Companies.listNotLogged();
+      setCompanyOptions(fetchCompanies);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsModalOpened(true);
+    }
+  };
+
+  const onRequestClose = (value: CompanyType) => {
+    if (value) setCompany(value);
+    setIsModalOpened(false);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboard}
@@ -114,6 +137,20 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             disabled={isLoading} customStyle={styles.input} />
           <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
             disabled={isLoading} customStyle={styles.input} />
+          <View style={styles.codeContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Structure</Text>
+              <Text style={styles.required}>*</Text>
+            </View>
+            <>
+              {!company.name && <NiSecondaryButton caption="Veuillez cliquer ici pour renseigner votre structure"
+                onPress={chooseCompany} />}
+              {company.name && <View style={styles.code}>
+                <Text>{company.name}</Text>
+              </View>}
+            </>
+          </View>
+          <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
           <View style={styles.footer}>
             <NiErrorMessage message={error.message} show={error.value} />
             <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />
