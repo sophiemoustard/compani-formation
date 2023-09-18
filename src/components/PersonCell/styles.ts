@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { GREY, TRANSPARENT_GREY, GREEN } from '../../styles/colors';
+import { GREY, TRANSPARENT_GREY, GREEN, ORANGE } from '../../styles/colors';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../styles/metrics';
-import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { FIRA_SANS_ITALIC, FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,6 +31,14 @@ const styles = StyleSheet.create({
   connected: {
     ...FIRA_SANS_REGULAR.MD,
     color: GREEN[500],
+  },
+  code: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: ORANGE[500],
+  },
+  phone: {
+    ...FIRA_SANS_ITALIC.MD,
+    color: GREY[500],
   },
 });
 
