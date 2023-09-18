@@ -7,4 +7,5 @@ export interface UserType {
   contact?: { phone: string },
   companyLinkRequest?: { company: { _id: string, name: string } }
   firstMobileConnection?: string,
+  loginCode?: string,
 }
