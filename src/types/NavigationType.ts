@@ -23,6 +23,7 @@ export type RootStackParamList = {
   };
   SubProgramProfile: { subProgramId: string };
   CourseProfileHeader: undefined,
+  LoginCodeForm: undefined,
 }
 
 export type RootBottomTabParamList = {

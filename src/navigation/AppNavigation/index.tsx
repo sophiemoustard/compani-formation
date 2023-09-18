@@ -8,6 +8,7 @@ import { navigationRef } from '../../navigationRef';
 import Home from '../../navigation/Home/index';
 import Authentication from '../../screens/Authentication';
 import EmailForm from '../../screens/EmailForm';
+import LoginCodeForm from '../../screens/LoginCodeForm';
 import CreateAccount from '../../screens/CreateAccount';
 import BlendedAbout from '../../screens/explore/BlendedAbout';
 import ElearningAbout from '../../screens/explore/ELearningAbout';
@@ -27,7 +28,7 @@ const MainStack = createStackNavigator<RootStackParamList>();
 const AppNavigation = () => {
   const { companiToken }: AuthContextType = useContext(AuthContext);
 
-  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset };
+  const authScreens = { Authentication, EmailForm, CreateAccount, PasswordReset, LoginCodeForm };
 
   const Profile = { ProfileEdition, PasswordEdition };
   const Courses = { LearnerCourseProfile, SubProgramProfile, TrainerCourseProfile };

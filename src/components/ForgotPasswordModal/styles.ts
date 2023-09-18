@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginBottom: MARGIN.XL,
   },
   input: {
-    ...FIRA_SANS_REGULAR.XXL,
+    ...FIRA_SANS_REGULAR.XXXL,
     marginHorizontal: MARGIN.XXS,
   },
   goBack: {

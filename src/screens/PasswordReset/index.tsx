@@ -15,7 +15,7 @@ const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
   const { userId, email, token } = route.params;
   const { signIn }: AuthContextType = useContext(AuthContext);
 
-  const goBack = () => { navigation.navigate('EmailForm'); };
+  const goBack = () => { navigation.goBack(); };
 
   const savePassword = async (password: string) => {
     await Authentication.updatePassword(userId, { local: { password } }, token);
@@ -24,7 +24,7 @@ const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <PasswordForm goBack={goBack} onPress={savePassword} />
+      <PasswordForm goBack={goBack} onPress={savePassword} email={email} />
     </SafeAreaView>
   );
 };

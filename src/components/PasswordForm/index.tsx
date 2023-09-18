@@ -24,9 +24,10 @@ const CONFIRMED_PASSWORD = 'confirmedPassword';
 interface PasswordFormProps {
   goBack: () => void,
   onPress: (password: string) => void,
+  email?: string,
 }
 
-const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
+const PasswordForm = ({ onPress, goBack, email = '' }: PasswordFormProps) => {
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [password, setPassword] =
     useState<{ newPassword: string, confirmedPassword: string }>({ newPassword: '', confirmedPassword: '' });
@@ -108,20 +109,19 @@ const PasswordForm = ({ onPress, goBack }: PasswordFormProps) => {
       </View>
       <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
-        <View style={styles.input}>
-          <NiInput caption="Nouveau mot de passe" value={password.newPassword}
-            type="password" onChangeText={text => setPasswordField(text, NEW_PASSWORD)}
-            validationMessage={unvalid.newPassword && isValidationAttempted
-              ? 'Le mot de passe doit comporter au minimum 6 caractères'
-              : ''} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
-            type="password" onChangeText={text => setPasswordField(text, CONFIRMED_PASSWORD)}
-            validationMessage={unvalid.confirmedPassword && isValidationAttempted
-              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
-              : ''} />
-        </View>
+        {!!email && <Text style={styles.email}>L&apos;e-mail associé à votre compte est :
+          <Text style={styles.bold}>&nbsp;{email}</Text>
+        </Text>}
+        <NiInput caption="Nouveau mot de passe" value={password.newPassword}
+          type="password" onChangeText={text => setPasswordField(text, NEW_PASSWORD)}
+          validationMessage={unvalid.newPassword && isValidationAttempted
+            ? 'Le mot de passe doit comporter au minimum 6 caractères'
+            : ''} customStyle={styles.input} />
+        <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
+          type="password" onChangeText={text => setPasswordField(text, CONFIRMED_PASSWORD)}
+          validationMessage={unvalid.confirmedPassword && isValidationAttempted
+            ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
+            : ''} customStyle={styles.input} />
         <View style={styles.footer}>
           <NiErrorMessage message={error.message} show={error.value} />
           <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />

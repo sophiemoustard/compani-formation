@@ -91,7 +91,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
   const sendCode = async (formattedCode: string) => {
     try {
       setIsLoading(true);
-      const checkToken = await Authentication.passwordToken(email, formattedCode);
+      const checkToken = await Authentication.passwordToken({ email }, formattedCode);
       onRequestClose();
       navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
     } catch (e) {
