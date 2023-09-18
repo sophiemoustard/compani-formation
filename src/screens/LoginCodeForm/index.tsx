@@ -110,14 +110,10 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
                   maxLength={1} keyboardType={'number-pad'} autoFocus={idx === 0} editable={!isLoading} />))}
             </View>
           </View>
-          <View style={styles.input}>
-            <NiInput caption={'Nom'} value={lastname} onChangeText={setLastname} type={'text'} required
-              disabled={isLoading} />
-          </View>
-          <View style={styles.input}>
-            <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
-              disabled={isLoading} />
-          </View>
+          <NiInput caption={'Nom'} value={lastname} onChangeText={setLastname} type={'text'} required
+            disabled={isLoading} customStyle={styles.input} />
+          <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
+            disabled={isLoading} customStyle={styles.input} />
           <View style={styles.footer}>
             <NiErrorMessage message={error.message} show={error.value} />
             <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />

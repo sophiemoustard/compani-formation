@@ -112,20 +112,16 @@ const PasswordForm = ({ onPress, goBack, email = '' }: PasswordFormProps) => {
         {!!email && <Text style={styles.email}>L&apos;e-mail associé à votre compte est :
           <Text style={styles.bold}>&nbsp;{email}</Text>
         </Text>}
-        <View style={styles.input}>
-          <NiInput caption="Nouveau mot de passe" value={password.newPassword}
-            type="password" onChangeText={text => setPasswordField(text, NEW_PASSWORD)}
-            validationMessage={unvalid.newPassword && isValidationAttempted
-              ? 'Le mot de passe doit comporter au minimum 6 caractères'
-              : ''} />
-        </View>
-        <View style={styles.input}>
-          <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
-            type="password" onChangeText={text => setPasswordField(text, CONFIRMED_PASSWORD)}
-            validationMessage={unvalid.confirmedPassword && isValidationAttempted
-              ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
-              : ''} />
-        </View>
+        <NiInput caption="Nouveau mot de passe" value={password.newPassword}
+          type="password" onChangeText={text => setPasswordField(text, NEW_PASSWORD)}
+          validationMessage={unvalid.newPassword && isValidationAttempted
+            ? 'Le mot de passe doit comporter au minimum 6 caractères'
+            : ''} customStyle={styles.input} />
+        <NiInput caption="Confirmer mot de passe" value={password.confirmedPassword}
+          type="password" onChangeText={text => setPasswordField(text, CONFIRMED_PASSWORD)}
+          validationMessage={unvalid.confirmedPassword && isValidationAttempted
+            ? 'Votre nouveau mot de passe et sa confirmation ne correspondent pas'
+            : ''} customStyle={styles.input} />
         <View style={styles.footer}>
           <NiErrorMessage message={error.message} show={error.value} />
           <NiPrimaryButton caption="Valider" onPress={savePassword} loading={isLoading} />
