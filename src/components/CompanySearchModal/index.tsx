@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { TouchableOpacity, TextInput, FlatList, Text } from 'react-native';
+import { sortStrings } from '../../core/helpers/utils';
 import { TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { CompanyType } from '../../types/CompanyType';
 import { INPUT_HEIGHT } from '../../styles/metrics';
@@ -36,7 +37,8 @@ const CompanySearchModal = ({
   );
 
   const getDisplayedCompanies = () => companyOptions
-    .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)));
+    .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)))
+    .sort((a, b) => sortStrings(a.name, b.name));
 
   const resetModal = () => {
     setAnswer('');

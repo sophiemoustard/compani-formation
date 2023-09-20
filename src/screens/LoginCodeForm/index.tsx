@@ -81,7 +81,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
         return dispatchError({ type: SET_ERROR, payload: 'Le format du code est incorrect' });
       }
 
-      if (!lastname || !firstname) {
+      if (!lastname || !firstname || !company._id) {
         return dispatchError({ type: SET_ERROR, payload: 'Champ(s) invalide(s) : tous les champs sont requis' });
       }
 
@@ -153,9 +153,9 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
               <Text style={styles.required}>*</Text>
             </View>
             {!company.name && <NiSecondaryButton caption="Renseigner ma structure" onPress={chooseCompany}
-              font={FIRA_SANS_MEDIUM.MD} color={GREY[900]} />}
+              font={FIRA_SANS_MEDIUM.MD} color={GREY[900]} disabled={isLoading} />}
             {company.name && <View style={styles.section}>
-              <TouchableOpacity onPress={chooseCompany}>
+              <TouchableOpacity onPress={chooseCompany} disabled={isLoading}>
                 <Text style={styles.company}>{company.name}</Text>
               </TouchableOpacity>
             </View>}
