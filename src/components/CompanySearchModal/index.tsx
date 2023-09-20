@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useState } from 'react';
 import { TouchableOpacity, TextInput, FlatList, Text } from 'react-native';
 import { sortStrings } from '../../core/helpers/utils';
@@ -11,7 +9,7 @@ import FooterGradient from '../design/FooterGradient';
 import styles from './styles';
 
 interface CompanySearchModalProps {
-  onRequestClose: (value) => void,
+  onRequestClose: (value: CompanyType) => void,
   visible: boolean,
   companyOptions: CompanyType[],
 }
@@ -23,7 +21,7 @@ const CompanySearchModal = ({
 }: CompanySearchModalProps) => {
   const [answer, setAnswer] = useState<string>('');
 
-  const onPressCompany = (companyId) => {
+  const onPressCompany = (companyId: string) => {
     const selectedCompany = companyOptions.find(company => company._id === companyId) || { _id: '', name: '' };
 
     onRequestClose(selectedCompany);
