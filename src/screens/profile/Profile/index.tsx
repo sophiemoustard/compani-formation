@@ -60,7 +60,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [companyOptions, setCompanyOptions] = useState<CompanyType[]>([]);
-  const [company, setCompany] = useState<CompanyType>({ _id: '', name: '' });
+  const [selectedCompany, setSelectedCompany] = useState<CompanyType>({ _id: '', name: '' });
   const [isValidationModalOpened, setIsValidationModalOpened] = useState<boolean>(false);
 
   const editProfile = () => navigation.navigate('ProfileEdition');
@@ -99,7 +99,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
     }
   }, [loggedUser]);
 
-  const addCompany = async () => {
+  const openCompanyModal = async () => {
     try {
       const fetchCompanies = await Companies.list();
       setCompanyOptions(fetchCompanies);
@@ -112,7 +112,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
   const onRequestClose = (value: CompanyType) => {
     if (value._id) {
-      setCompany(value);
+      setSelectedCompany(value);
       setIsValidationModalOpened(true);
     }
     setIsModalOpened(false);
@@ -120,7 +120,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
   const createCompanyLinkRequest = async () => {
     try {
-      await CompanyLinkRequests.createCompanyLinkRequest({ company: company._id });
+      await CompanyLinkRequests.createCompanyLinkRequest({ company: selectedCompany._id });
       const user = await Users.getById(loggedUser._id);
       setLoggedUser(user);
     } catch (e) {
@@ -142,7 +142,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
     return (
       <View style={styles.linkRequestButton}>
-        <NiPrimaryButton caption="Ajouter ma structure" onPress={addCompany} />
+        <NiPrimaryButton caption="Ajouter ma structure" onPress={openCompanyModal} />
       </View>
     );
   };
@@ -237,7 +237,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
           savePicture={savePicture} />}
         <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
         <ValidationModal visible={isValidationModalOpened} onPressConfirmButton={createCompanyLinkRequest}
-          company={company} onPressCancelButton={() => setIsValidationModalOpened(false)} />
+          companyName={selectedCompany.name} onPressCancelButton={() => setIsValidationModalOpened(false)} />
         <DeletionConfirmationModal visible={deletionConfirmationModal} loggedUserId={get(loggedUser, '_id')}
           setVisible={() => setDeletionConfirmationModal(false)}
           setConfirmationModal={() => setUserAccountDeletedModal(true)} />

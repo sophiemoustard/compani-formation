@@ -37,7 +37,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   const [firstname, setFirstname] = useState<string>('');
   const scrollRef = useRef<ScrollView>(null);
   const [companyOptions, setCompanyOptions] = useState<CompanyType[]>([]);
-  const [company, setCompany] = useState<{ _id: string, name: string }>({ _id: '', name: '' });
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const [companyButtonTitle, setCompanyButtonTitle] = useState<string>('Renseigner ma structure');
 
@@ -74,13 +74,13 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
         return dispatchError({ type: SET_ERROR, payload: 'Le format du code est incorrect' });
       }
 
-      if (!lastname || !firstname || !company._id) {
+      if (!lastname || !firstname || !selectedCompanyId) {
         return dispatchError({ type: SET_ERROR, payload: 'Champ(s) invalide(s) : tous les champs sont requis' });
       }
 
       const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
       const checkToken = await Authentication
-        .passwordToken({ firstname, lastname, company: company._id }, formattedCode);
+        .passwordToken({ firstname, lastname, company: selectedCompanyId }, formattedCode);
 
       navigation.navigate(
         'PasswordReset',
@@ -97,7 +97,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
 
   const onRequestClose = (value: CompanyType) => {
     if (value._id) {
-      setCompany(value);
+      setSelectedCompanyId(value._id);
       setCompanyButtonTitle(value.name);
     }
     setIsModalOpened(false);
@@ -147,7 +147,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             </View>
             <NiSecondaryButton caption={companyButtonTitle} onPress={() => setIsModalOpened(true)}
               font={FIRA_SANS_MEDIUM.MD} disabled={isLoading} bgColor={WHITE} color={isLoading ? GREY[200] : GREY[900]}
-              customStyle={styles.btn} />
+              borderColor={GREY[600]} />
           </View>
           <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
           <View style={styles.footer}>

@@ -14,11 +14,7 @@ interface CompanySearchModalProps {
   companyOptions: CompanyType[],
 }
 
-const CompanySearchModal = ({
-  onRequestClose,
-  visible,
-  companyOptions,
-}: CompanySearchModalProps) => {
+const CompanySearchModal = ({ onRequestClose, visible, companyOptions }: CompanySearchModalProps) => {
   const [answer, setAnswer] = useState<string>('');
 
   const onPressCompany = (companyId: string) => {
@@ -35,7 +31,7 @@ const CompanySearchModal = ({
   );
 
   const getDisplayedCompanies = () => companyOptions
-    .filter(company => company.name.toLowerCase().match(new RegExp(`^${answer.toLowerCase()}`)))
+    .filter(company => company.name.match(new RegExp(answer, 'i')))
     .sort((a, b) => sortStrings(a.name, b.name));
 
   const resetModal = () => {

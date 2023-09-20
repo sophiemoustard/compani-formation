@@ -53,9 +53,6 @@ export default StyleSheet.create({
   input: {
     marginBottom: MARGIN.SM,
   },
-  btn: {
-    borderColor: GREY[600],
-  },
   footer: {
     marginBottom: MARGIN.LG,
     justifyContent: 'flex-end',
