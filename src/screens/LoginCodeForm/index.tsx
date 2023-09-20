@@ -1,13 +1,5 @@
 import { useState, createRef, useReducer, useRef } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TextInputKeyPressEventData,
-  KeyboardAvoidingView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import Authentication from '../../api/authentication';
@@ -23,7 +15,7 @@ import CompanySearchModal from '../../components/CompanySearchModal';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
 import { CompanyType } from '../../types/CompanyType';
 import { isIOS } from '../../core/data/constants';
-import { GREY } from '../../styles/colors';
+import { GREY, WHITE } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
 import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
@@ -47,6 +39,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   const [companyOptions, setCompanyOptions] = useState<CompanyType[]>([]);
   const [company, setCompany] = useState<{ _id: string, name: string }>({ _id: '', name: '' });
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const [companyButtonTitle, setCompanyButtonTitle] = useState<string>('Renseigner ma structure');
 
   const goBack = () => {
     setExitConfirmationModal(false);
@@ -114,7 +107,10 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   };
 
   const onRequestClose = (value: CompanyType) => {
-    if (value) setCompany(value);
+    if (value._id) {
+      setCompany(value);
+      setCompanyButtonTitle(value.name);
+    }
     setIsModalOpened(false);
   };
 
@@ -152,13 +148,8 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
               <Text style={styles.title}>Structure</Text>
               <Text style={styles.required}>*</Text>
             </View>
-            {!company.name && <NiSecondaryButton caption="Renseigner ma structure" onPress={chooseCompany}
-              font={FIRA_SANS_MEDIUM.MD} color={GREY[900]} disabled={isLoading} />}
-            {company.name && <View style={styles.section}>
-              <TouchableOpacity onPress={chooseCompany} disabled={isLoading}>
-                <Text style={styles.company}>{company.name}</Text>
-              </TouchableOpacity>
-            </View>}
+            <NiSecondaryButton caption={companyButtonTitle} onPress={chooseCompany} font={FIRA_SANS_MEDIUM.MD}
+              disabled={isLoading} bgColor={WHITE} color={isLoading ? GREY[200] : GREY[900]} customStyle={styles.btn} />
           </View>
           <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
           <View style={styles.footer}>
