@@ -111,8 +111,10 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   };
 
   const onRequestClose = (value: CompanyType) => {
-    if (value) setCompany(value);
-    setIsValidationModalOpened(true);
+    if (value._id) {
+      setCompany(value);
+      setIsValidationModalOpened(true);
+    }
     setIsModalOpened(false);
   };
 
