@@ -1,4 +1,4 @@
-import { useState, createRef, useReducer, useRef } from 'react';
+import { useState, createRef, useReducer, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -95,17 +95,6 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
     }
   };
 
-  const chooseCompany = async () => {
-    try {
-      const fetchCompanies = await Companies.listNotLogged();
-      setCompanyOptions(fetchCompanies);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsModalOpened(true);
-    }
-  };
-
   const onRequestClose = (value: CompanyType) => {
     if (value._id) {
       setCompany(value);
@@ -113,6 +102,14 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
     }
     setIsModalOpened(false);
   };
+
+  useEffect(() => {
+    async function getCompanies() {
+      const fetchCompanies = await Companies.listNotLogged();
+      setCompanyOptions(fetchCompanies);
+    }
+    getCompanies();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -148,8 +145,9 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
               <Text style={styles.title}>Structure</Text>
               <Text style={styles.required}>*</Text>
             </View>
-            <NiSecondaryButton caption={companyButtonTitle} onPress={chooseCompany} font={FIRA_SANS_MEDIUM.MD}
-              disabled={isLoading} bgColor={WHITE} color={isLoading ? GREY[200] : GREY[900]} customStyle={styles.btn} />
+            <NiSecondaryButton caption={companyButtonTitle} onPress={() => setIsModalOpened(true)}
+              font={FIRA_SANS_MEDIUM.MD} disabled={isLoading} bgColor={WHITE} color={isLoading ? GREY[200] : GREY[900]}
+              customStyle={styles.btn} />
           </View>
           <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
           <View style={styles.footer}>
