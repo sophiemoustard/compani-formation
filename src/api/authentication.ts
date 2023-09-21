@@ -21,6 +21,7 @@ type PasswordTokenParamsType = {
   email?: string,
   firstname?: string,
   lastname?: string,
+  company?: string,
 }
 
 export default {

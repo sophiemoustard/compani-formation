@@ -7,18 +7,18 @@ import styles from './styles';
 
 interface ValidationModalProps {
   visible: boolean,
-  company: any,
+  companyName: string,
   onPressCancelButton: () => void,
   onPressConfirmButton: () => void,
 }
 
-const ValidationModal = ({ visible, company, onPressCancelButton, onPressConfirmButton }: ValidationModalProps) => (
+const ValidationModal = ({ visible, companyName, onPressCancelButton, onPressConfirmButton }: ValidationModalProps) => (
   <NiModal visible={visible}>
     <View style={styles.container}>
       <Text style={styles.title}>Voulez-vous vraiment ajouter cette structure ?</Text>
       <View style={styles.companyContainer}>
         <Feather name={'home'} size={ICON.MD} color={GREY[600]} />
-        <Text style={styles.companyName}>{company.name}</Text>
+        <Text style={styles.companyName}>{companyName}</Text>
       </View>
       <Text style={styles.contentText}>
         En l’ajoutant, vous confirmez que cette structure est votre employeur.

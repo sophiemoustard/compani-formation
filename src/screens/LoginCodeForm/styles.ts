@@ -17,12 +17,12 @@ export default StyleSheet.create({
   goBack: {
     marginVertical: MARGIN.MD,
   },
-  codeContainer: {
+  sectionContainer: {
     display: 'flex',
     flexDirection: 'column',
     paddingVertical: PADDING.MD,
   },
-  code: {
+  section: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: MARGIN.MD,

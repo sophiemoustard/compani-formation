@@ -1,19 +1,24 @@
-import { useState, createRef, useReducer, useRef } from 'react';
+import { useState, createRef, useReducer, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import Authentication from '../../api/authentication';
+import Companies from '../../api/companies';
 import { RootStackParamList } from '../../types/NavigationType';
 import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import ExitModal from '../../components/ExitModal';
 import NiInput from '../../components/form/Input';
 import NiErrorMessage from '../../components/ErrorMessage';
+import NiSecondaryButton from '../../components/form/SecondaryButton';
+import CompanySearchModal from '../../components/CompanySearchModal';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
+import { CompanyType } from '../../types/CompanyType';
 import { isIOS } from '../../core/data/constants';
-import { GREY } from '../../styles/colors';
+import { GREY, WHITE } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
+import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
 interface LoginCodeFormProps extends StackScreenProps<RootStackParamList> {}
 
@@ -31,6 +36,10 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
   const [lastname, setLastname] = useState<string>('');
   const [firstname, setFirstname] = useState<string>('');
   const scrollRef = useRef<ScrollView>(null);
+  const [companyOptions, setCompanyOptions] = useState<CompanyType[]>([]);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const [companyButtonTitle, setCompanyButtonTitle] = useState<string>('Renseigner ma structure');
 
   const goBack = () => {
     setExitConfirmationModal(false);
@@ -65,12 +74,13 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
         return dispatchError({ type: SET_ERROR, payload: 'Le format du code est incorrect' });
       }
 
-      if (!lastname || !firstname) {
+      if (!lastname || !firstname || !selectedCompanyId) {
         return dispatchError({ type: SET_ERROR, payload: 'Champ(s) invalide(s) : tous les champs sont requis' });
       }
 
       const formattedCode = `${code[0]}${code[1]}${code[2]}${code[3]}`;
-      const checkToken = await Authentication.passwordToken({ firstname, lastname }, formattedCode);
+      const checkToken = await Authentication
+        .passwordToken({ firstname, lastname, company: selectedCompanyId }, formattedCode);
 
       navigation.navigate(
         'PasswordReset',
@@ -85,6 +95,22 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
     }
   };
 
+  const onRequestClose = (value: CompanyType) => {
+    if (value._id) {
+      setSelectedCompanyId(value._id);
+      setCompanyButtonTitle(value.name);
+    }
+    setIsModalOpened(false);
+  };
+
+  useEffect(() => {
+    async function getCompanies() {
+      const fetchCompanies = await Companies.listNotLogged();
+      setCompanyOptions(fetchCompanies);
+    }
+    getCompanies();
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboard}
@@ -97,12 +123,12 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
         </View>
         <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
-          <View style={styles.codeContainer}>
+          <View style={styles.sectionContainer}>
             <View style={styles.titleContainer}>
               <Text style={styles.title}>Code de connexion donné par le formateur</Text>
               <Text style={styles.required}>*</Text>
             </View>
-            <View style={styles.code}>
+            <View style={styles.section}>
               {inputRefs.map((k, idx) => (
                 <TextInput ref={(r) => { inputRefs[idx] = r; }} key={`${k}${idx}`} value={code[idx]}
                   onChangeText={char => onChangeText(char, idx)} style={styles.number} placeholder={'_'}
@@ -114,6 +140,16 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             disabled={isLoading} customStyle={styles.input} />
           <NiInput caption={'Prénom'} value={firstname} onChangeText={setFirstname} type={'text'} required
             disabled={isLoading} customStyle={styles.input} />
+          <View style={styles.sectionContainer}>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Structure</Text>
+              <Text style={styles.required}>*</Text>
+            </View>
+            <NiSecondaryButton caption={companyButtonTitle} onPress={() => setIsModalOpened(true)}
+              font={FIRA_SANS_MEDIUM.MD} disabled={isLoading} bgColor={WHITE} color={isLoading ? GREY[200] : GREY[900]}
+              borderColor={GREY[600]} />
+          </View>
+          <CompanySearchModal visible={isModalOpened} onRequestClose={onRequestClose} companyOptions={companyOptions} />
           <View style={styles.footer}>
             <NiErrorMessage message={error.message} show={error.value} />
             <NiPrimaryButton caption="Valider" onPress={checkUserExists} loading={isLoading} />

@@ -88,3 +88,5 @@ export const getTheoreticalDuration = (steps: ELearningStepType[]) : string => (
       .toISO()
     : PT0S
 );
+
+export const sortStrings = (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase());
