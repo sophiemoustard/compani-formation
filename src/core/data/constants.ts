@@ -54,6 +54,11 @@ export const OPEN_QUESTION = 'open_question';
 export const SURVEY = 'survey';
 export const QUESTION_ANSWER = 'question_answer';
 
+// QUESTIONNAIRE
+export const PUBLISHED = 'published';
+export const EXPECTATIONS = 'expectations';
+export const END_OF_COURSE = 'end_of_course';
+
 // ROLE
 export const VENDOR_ADMIN = 'vendor_admin';
 export const TRAINING_ORGANISATION_MANAGER = 'training_organisation_manager';

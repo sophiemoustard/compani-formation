@@ -61,8 +61,12 @@ export const FIRA_SANS_MEDIUM = StyleSheet.create({
 });
 
 export const FIRA_SANS_REGULAR = StyleSheet.create({
-  XXL: {
+  XXXL: {
     fontSize: 48,
+    fontFamily: 'fira-sans-regular',
+  },
+  XXL: {
+    fontSize: 36,
     fontFamily: 'fira-sans-regular',
   },
   XL: {
@@ -149,6 +153,10 @@ export const NUNITO_REGULAR_BOLD_ITALIC = StyleSheet.create({
 });
 
 export const NUNITO_LIGHT = StyleSheet.create({
+  LG: {
+    fontSize: 24,
+    fontFamily: 'nunito-light',
+  },
   XL: {
     fontSize: 48,
     fontFamily: 'nunito-light',

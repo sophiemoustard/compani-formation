@@ -17,6 +17,7 @@ import NiInput from '../../components/form/Input';
 import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
+import FirstConnectionModal from '../../components/FirstConnectionModal';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 import commonStyles from '../../styles/common';
 import styles from './styles';
@@ -30,6 +31,7 @@ interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
 const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isFirstConnection, setIsFirstConnection] = useState<boolean>(false);
   const { signIn, loading, error, errorMessage, resetError }: AuthContextType = useContext(AuthContext);
 
   useEffect(() => {
@@ -42,8 +44,6 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
     resetError();
     navigation.navigate('EmailForm', { firstConnection: false });
   };
-
-  const firstConnection = () => navigation.navigate('EmailForm', { firstConnection: true });
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -62,7 +62,8 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
             </TouchableOpacity>
             <NiErrorMessage message={errorMessage} show={error} />
             <NiPrimaryButton customStyle={styles.button} caption="Se connecter" onPress={onPress} loading={loading} />
-            <NiSecondaryButton caption="C'est ma première connexion" onPress={firstConnection} />
+            <NiSecondaryButton caption="C'est ma première connexion" onPress={() => setIsFirstConnection(true)} />
+            <FirstConnectionModal onRequestClose={() => setIsFirstConnection(false)} visible={isFirstConnection} />
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>

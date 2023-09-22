@@ -13,6 +13,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import AttendanceSheets from '../../../../api/attendanceSheets';
+import Questionnaires from '../../../../api/questionnaires';
 import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
 import { GREY, PINK } from '../../../../styles/colors';
@@ -23,11 +24,14 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
+  END_OF_COURSE,
+  EXPECTATIONS,
   IMAGE,
   INTRA,
   LONG_FIRSTNAME_LONG_LASTNAME,
   OPERATIONS,
   PDF,
+  PUBLISHED,
   SHORT_FIRSTNAME_LONG_LASTNAME,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
@@ -46,6 +50,7 @@ import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
 import { formatIdentity } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
+import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -91,10 +96,42 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
+  const [expectationsQuestionnaireId, setExpectationsQuestionnaireId] = useState<string>('');
+  const [expectationsQRCode, setExpectationsQRCode] = useState<string>('');
+  const [endOfCourseQuestionnaireId, setEndOfCourseQuestionnaireId] = useState<string>('');
+  const [endOfCourseQRCode, setEndOfCourseQRCode] = useState<string>('');
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
+  };
+
+  const getQuestionnairesQRCode = async (courseId: string) => {
+    try {
+      const publishedQuestionnaires = await Questionnaires.list({ status: PUBLISHED });
+
+      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
+      if (expectationsQuestionnaire) {
+        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaire._id, { course: courseId });
+
+        setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
+        setExpectationsQRCode(expectationsCode);
+      }
+
+      const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
+      if (endOfCourseQuestionnaire) {
+        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaire._id, { course: courseId });
+
+        setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
+        setEndOfCourseQRCode(endOfCourseCode);
+      }
+    } catch (e: any) {
+      console.error(e);
+      setExpectationsQuestionnaireId('');
+      setExpectationsQRCode('');
+      setEndOfCourseQuestionnaireId('');
+      setEndOfCourseQRCode('');
+    }
   };
 
   useEffect(() => {
@@ -102,6 +139,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         await refreshAttendanceSheets(fetchedCourse._id);
+        await getQuestionnairesQRCode(fetchedCourse._id);
 
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
@@ -222,6 +260,14 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           }
           {!!course.trainees?.length && <FlatList data={course.trainees} keyExtractor={item => item._id}
             renderItem={({ item }) => renderTrainee(item)} style={styles.listContainer} />}
+        </View>
+        <View style={styles.sectionContainer}>
+          <View style={commonStyles.sectionDelimiter} />
+          <Text style={styles.sectionTitle}>Questionnaires</Text>
+          {!!expectationsQuestionnaireId && <QuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
+            courseId={course._id} questionnaireId={expectationsQuestionnaireId} />}
+          {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
+            courseId={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
         </View>
         {course.type === INTRA && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />

@@ -19,6 +19,7 @@ interface InputProps {
   placeholder?: string,
   borderColor?: string,
   isKeyboardOpen?: (value: boolean) => void,
+  customStyle?: object,
 }
 
 const Input = ({
@@ -34,6 +35,7 @@ const Input = ({
   placeholder = '',
   borderColor = GREY[600],
   isKeyboardOpen,
+  customStyle = {},
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
@@ -71,7 +73,7 @@ const Input = ({
         {required && <Text style={style.required}>*</Text>}
         {optional && <Text style={style.required}>(optionnel)</Text>}
       </View>
-      <View style={style.container}>
+      <View style={[style.container, customStyle]}>
         <View style={style.input}>
           <TextInput value={value} onChangeText={onChangeText} onTouchStart={() => setIsSelected(true)}
             onBlur={() => setIsSelected(false)} testID={caption} secureTextEntry={secureTextEntry}

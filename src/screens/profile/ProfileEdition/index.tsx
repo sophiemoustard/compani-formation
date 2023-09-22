@@ -202,26 +202,19 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
               <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.input}>
-            <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
-              onChangeText={text => onChangeIdentity(FIRSTNAME, text)} />
-          </View>
-          <View style={styles.input}>
-            <NiInput caption="Nom" value={editedUser.identity.lastname}
-              type="lastname" onChangeText={text => onChangeIdentity(LASTNAME, text)}
-              validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
-          </View>
-          <View style={styles.input}>
-            <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
-              onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
-              validationMessage={unvalid.phone && isValidationAttempted
-                ? 'Votre numéro de téléphone n\'est pas valide'
-                : ''} />
-          </View>
-          <View style={styles.input}>
-            <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
-              onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })} />
-          </View>
+          <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
+            onChangeText={text => onChangeIdentity(FIRSTNAME, text)} customStyle={styles.input} />
+          <NiInput caption="Nom" value={editedUser.identity.lastname}
+            type="lastname" onChangeText={text => onChangeIdentity(LASTNAME, text)} customStyle={styles.input}
+            validationMessage={unvalid.lastName && isValidationAttempted ? 'Ce champ est obligatoire' : ''} />
+          <NiInput caption="Téléphone" value={editedUser.contact.phone} type="phone"
+            onChangeText={text => setEditedUser({ ...editedUser, contact: { phone: text } })}
+            validationMessage={unvalid.phone && isValidationAttempted
+              ? 'Votre numéro de téléphone n\'est pas valide'
+              : ''} customStyle={styles.input} />
+          <NiInput caption="E-mail" value={editedUser.local.email} type="email" validationMessage={emailValidation()}
+            onChangeText={text => setEditedUser({ ...editedUser, local: { email: text.trim() } })}
+            customStyle={styles.input} />
           <View style={styles.footer}>
             <NiErrorMessage message={error.message} show={error.value} />
             <NiPrimaryButton caption="Valider" onPress={saveData} loading={isLoading} />
