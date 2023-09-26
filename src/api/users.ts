@@ -38,7 +38,7 @@ export default {
   create: async (data: UserCreationType): Promise<UserType> => {
     const baseURL = await Environment.getBaseUrl();
     const newUser: AxiosResponse<UserResponseType> =
-      await axiosLogged.post(`${baseURL}/users`, { ...data, origin: MOBILE });
+      await axiosNotLogged.post(`${baseURL}/users`, { ...data, origin: MOBILE });
 
     return newUser.data.data.user;
   },
