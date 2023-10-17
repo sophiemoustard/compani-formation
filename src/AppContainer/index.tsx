@@ -156,10 +156,9 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       }
     }
 
-    if (companiToken) {
-      initializeAxiosLogged(companiToken);
-      setUser();
-    }
+    // If companiToken is null (at logout), reset axioslogged
+    initializeAxiosLogged(companiToken);
+    if (companiToken) setUser();
   }, [companiToken, initializeAxiosLogged, setLoggedUser, signOut]);
 
   const shouldUpdate = async (nextState) => {

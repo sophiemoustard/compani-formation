@@ -117,7 +117,7 @@ const LearnerCourseProfile = ({
   const getPdfName = (c: CourseType) => {
     const misc = c.misc ? `_${c.misc}` : '';
 
-    return `attestation_${c.subProgram.program.name}${misc}`.replace(/ /g, '_').replace(/'/g, '_');
+    return `attestation_${c.subProgram.program.name}${misc}`.replace(/[^a-zA-Zà-üÀ-Ü0-9-+]{1,}/g, '_');
   };
 
   const downloadCompletionCertificate = async () => {
