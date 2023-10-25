@@ -16,6 +16,8 @@ export const BLENDED = 'blended';
 export const OPERATIONS = 'operations';
 export const PEDAGOGY = 'pedagogy';
 export const INTRA = 'intra';
+export const INTER_B2B = 'inter_b2b';
+export const INTRA_HOLDING = 'intra_holding';
 
 // STEPS
 export const ON_SITE = 'on_site';
