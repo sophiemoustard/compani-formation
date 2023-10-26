@@ -6,12 +6,12 @@ type BaseAttendanceSheetType = {
   file: { publicId: string, link: string },
 }
 
-export type IntraAttendanceSheetType = BaseAttendanceSheetType & { date: Date }
+export type IntraOrIntraHoldingAttendanceSheetType = BaseAttendanceSheetType & { date: Date }
 
 export type InterAttendanceSheetType = BaseAttendanceSheetType & { trainee: TraineeType }
 
-export type AttendanceSheetType = IntraAttendanceSheetType | InterAttendanceSheetType
+export type AttendanceSheetType = IntraOrIntraHoldingAttendanceSheetType | InterAttendanceSheetType
 
-export function isIntra(sheet: AttendanceSheetType): sheet is IntraAttendanceSheetType {
-  return (sheet as IntraAttendanceSheetType).date !== undefined;
+export function isIntraOrIntraHolding(sheet: AttendanceSheetType): sheet is IntraOrIntraHoldingAttendanceSheetType {
+  return (sheet as IntraOrIntraHoldingAttendanceSheetType).date !== undefined;
 }
