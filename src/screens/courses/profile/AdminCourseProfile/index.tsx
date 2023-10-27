@@ -247,7 +247,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.listContainer}>
               {attendanceSheetsToUpload.map(sheetToUpload =>
-                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value}
+                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value} disabled={!course.companies.length}
                   style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
             </View>
           </View>}
