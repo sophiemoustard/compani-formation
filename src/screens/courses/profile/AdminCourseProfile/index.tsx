@@ -247,8 +247,14 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.listContainer}>
               {attendanceSheetsToUpload.map(sheetToUpload =>
-                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value}
+                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value} disabled={!course.companies.length}
                   style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
+              {!course.companies.length &&
+                <Text style={styles.italicText}>
+                  Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
+                  d&apos;émargement.
+                </Text>
+              }
             </View>
           </View>}
           {!!savedAttendanceSheets.length &&
