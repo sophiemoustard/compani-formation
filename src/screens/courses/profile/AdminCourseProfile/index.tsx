@@ -249,6 +249,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
               {attendanceSheetsToUpload.map(sheetToUpload =>
                 <UploadButton title={sheetToUpload.label} key={sheetToUpload.value} disabled={!course.companies.length}
                   style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
+              {!course.companies.length &&
+                <Text style={styles.italicText}>
+                  Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
+                  d&apos;émargement.
+                </Text>
+              }
             </View>
           </View>}
           {!!savedAttendanceSheets.length &&
