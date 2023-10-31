@@ -28,6 +28,8 @@ import {
   EXPECTATIONS,
   IMAGE,
   INTRA,
+  INTER_B2B,
+  INTRA_HOLDING,
   LONG_FIRSTNAME_LONG_LASTNAME,
   OPERATIONS,
   PDF,
@@ -40,8 +42,8 @@ import ContactInfoContainer from '../../../../components/ContactInfoContainer';
 import {
   AttendanceSheetType,
   InterAttendanceSheetType,
-  IntraAttendanceSheetType,
-  isIntra,
+  IntraOrIntraHoldingAttendanceSheetType,
+  isIntraOrIntraHolding,
 } from '../../../../types/AttendanceSheetTypes';
 import UploadButton from '../../../../components/form/UploadButton';
 import ImagePickerManager from '../../../../components/ImagePickerManager';
@@ -67,9 +69,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const attendanceSheetsToUpload = useMemo(() => {
-    if (course?.type === INTRA) {
-      const intraCourseSavedSheets = savedAttendanceSheets as IntraAttendanceSheetType[];
-      const savedDates = intraCourseSavedSheets.map(sheet => CompaniDate(sheet.date).startOf('day').toISO());
+    if ([INTRA, INTRA_HOLDING].includes(course?.type)) {
+      const intraOrIntraHoldingCourseSavedSheets = savedAttendanceSheets as IntraOrIntraHoldingAttendanceSheetType[];
+      const savedDates = intraOrIntraHoldingCourseSavedSheets
+        .map(sheet => CompaniDate(sheet.date).startOf('day').toISO());
 
       return uniqBy(
         course.slots
@@ -172,7 +175,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         const data = formatPayload({
           file,
           course: course._id,
-          ...(course.type === INTRA ? { date: attendanceSheetToAdd } : { trainee: attendanceSheetToAdd }),
+          ...(course.type === INTER_B2B ? { trainee: attendanceSheetToAdd } : { date: attendanceSheetToAdd }),
         });
         await AttendanceSheets.upload(data);
         await refreshAttendanceSheets(course._id);
@@ -211,7 +214,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const resetImagePreview = () => setImagePreview({ visible: false, id: '', link: '', type: '' });
 
   const renderSavedAttendanceSheets = (sheet: AttendanceSheetType) => {
-    const label = isIntra(sheet)
+    const label = isIntraOrIntraHolding(sheet)
       ? CompaniDate(sheet.date).format(DD_MM_YYYY)
       : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
 
@@ -234,9 +237,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.sectionTitle}>Emargements</Text>
             {!attendanceSheetsToUpload.length && !savedAttendanceSheets.length &&
             <Text style={styles.italicText}>
-              {course.type === INTRA
-                ? 'Veuillez ajouter des créneaux pour émarger la formation.'
-                : 'Veuillez ajouter des stagiaires pour émarger la formation.'
+              {course.type === INTER_B2B
+                ? 'Veuillez ajouter des stagiaires pour émarger la formation.'
+                : 'Veuillez ajouter des créneaux pour émarger la formation.'
               }
             </Text>}
           </View>
@@ -244,8 +247,14 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.listContainer}>
               {attendanceSheetsToUpload.map(sheetToUpload =>
-                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value}
+                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value} disabled={!course.companies.length}
                   style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
+              {!course.companies.length &&
+                <Text style={styles.italicText}>
+                  Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
+                  d&apos;émargement.
+                </Text>
+              }
             </View>
           </View>}
           {!!savedAttendanceSheets.length &&
@@ -269,10 +278,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
             courseId={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
         </View>
-        {course.type === INTRA && <View style={styles.sectionContainer}>
+        {course.type !== INTER_B2B && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <ContactInfoContainer contact={course.companyRepresentative}
-            title={'Votre référent structure pour cette formation'} />
+            title={'Votre chargé de formation structure'} />
         </View>}
         <View style={styles.footer} />
       </ScrollView>
