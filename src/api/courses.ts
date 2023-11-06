@@ -38,7 +38,7 @@ export default {
     const baseURL = await Environment.getBaseUrl();
     const response: PdfResponseType = await axiosLogged.get(
       `${baseURL}/courses/${courseId}/completion-certificates`,
-      { params: { origin: MOBILE, format: PDF }, responseType: 'arraybuffer', headers: { Accept: 'application/pdf' } }
+      { params: { format: PDF }, responseType: 'arraybuffer', headers: { Accept: 'application/pdf' } }
     );
 
     return response.data;
