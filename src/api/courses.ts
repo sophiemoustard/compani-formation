@@ -3,7 +3,7 @@ import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { CourseType, BlendedCourseType, actionQueryCourseType } from '../types/CourseTypes';
 import { BlendedCourseListResponseType, CourseResponseType, PdfResponseType } from '../types/AxiosTypes';
-import { MOBILE, OPERATIONS } from '../core/data/constants';
+import { MOBILE, OPERATIONS, PDF } from '../core/data/constants';
 
 type GetCourseListType = {
   action: actionQueryCourseType,
@@ -38,7 +38,7 @@ export default {
     const baseURL = await Environment.getBaseUrl();
     const response: PdfResponseType = await axiosLogged.get(
       `${baseURL}/courses/${courseId}/completion-certificates`,
-      { params: { origin: MOBILE }, responseType: 'arraybuffer', headers: { Accept: 'application/pdf' } }
+      { params: { format: PDF }, responseType: 'arraybuffer', headers: { Accept: 'application/pdf' } }
     );
 
     return response.data;
