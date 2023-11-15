@@ -70,9 +70,9 @@ export default {
     },
     updates: {
       enabled: true,
-      checkAutomatically: 'ON_ERROR_RECOVERY',
+      checkAutomatically: 'ON_LOAD',
       fallbackToCacheTimeout: 3000,
-      url: 'https://u.expo.dev/861a9cc8-74bd-4278-9bad-783086e74994',
+      ...(process.env.PROFILE !== LOCAL && { url: 'https://u.expo.dev/861a9cc8-74bd-4278-9bad-783086e74994' }),
     },
     runtimeVersion: {
       policy: 'appVersion',

@@ -11,15 +11,13 @@
         "EXPO_USE_SOURCE": "1",
         "PROFILE": "local",
         "APP_ENV": "development"
-      },
-      "channel": "local"
+      }
     },
     "local-simulator": {
       "extends": "local",
       "ios": {
         "simulator": true
-      },
-      "channel": "local-simulator"
+      }
     },
     "development": {
       "channel": "test-eas-update",
@@ -37,8 +35,7 @@
       "extends": "development",
       "ios": {
         "simulator": true
-      },
-      "channel": "development-simulator"
+      }
     },
     "prod": {
       "channel": "prod-2.22.0",
