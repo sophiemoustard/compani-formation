@@ -72,6 +72,10 @@ export default {
       enabled: true,
       checkAutomatically: 'ON_LOAD',
       fallbackToCacheTimeout: 3000,
+      url: 'https://u.expo.dev/861a9cc8-74bd-4278-9bad-783086e74994',
+    },
+    runtimeVersion: {
+      policy: 'appVersion',
     },
     notification: {
       icon: './assets/images/android_notification_icon.png',
