@@ -70,7 +70,7 @@ export default {
     },
     updates: {
       enabled: true,
-      checkAutomatically: 'ON_LOAD',
+      checkAutomatically: 'ON_ERROR_RECOVERY',
       fallbackToCacheTimeout: 3000,
       url: 'https://u.expo.dev/861a9cc8-74bd-4278-9bad-783086e74994',
     },
