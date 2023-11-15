@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const ENVIRONMENT_VARIABLES = {
   BASE_URL_LOCAL: process.env.BASE_URL_LOCAL,
