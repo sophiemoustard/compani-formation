@@ -12,7 +12,7 @@ import reducers from '../store/index';
 import Environment from '../../environment';
 import { initializeAssets } from '../core/helpers/assets';
 
-Sentry.init({ dsn: Environment.getSentryKey(), debug: false });
+Sentry.init({ dsn: Environment.getSentryKey(), debug: false, enableInExpoDevelopment: true });
 
 const store = createStore(reducers);
 
