@@ -20,7 +20,7 @@
       }
     },
     "development": {
-      "releaseChannel": "dev",
+      "channel": "dev",
       "distribution": "internal",
       "env": {
         "EXPO_USE_SOURCE": "1",
@@ -38,7 +38,7 @@
       }
     },
     "prod": {
-      "releaseChannel": "prod-2.22.0",
+      "channel": "prod-2.22.0",
       "env": {
         "EXPO_USE_SOURCE": "1",
         "APP_ENV": "production",
