@@ -55,7 +55,7 @@ const courseReducer = (state: CourseStateType, action: CourseActionType) => {
 
 const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={LEARNER} />;
 
-const LearnerCourses = ({ loggedUserId }: LearnerCoursesProps) => {
+const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -90,17 +90,20 @@ const LearnerCourses = ({ loggedUserId }: LearnerCoursesProps) => {
     }
   }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
 
-  const onPressProgramCell = () => {
-    throw new Error('test error');
+  const onPressProgramCell = (id: string, isCourse: boolean) => {
+    if (isCourse) navigation.navigate('LearnerCourseProfile', { courseId: id });
+    else {
+      navigation.navigate('SubProgramProfile', { subProgramId: id });
+    }
   };
 
   const renderCourseItem = (course: CourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    progress={getCourseProgress(course)} onPress={() => onPressProgramCell()} misc={get(course, 'misc')}
+    progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} misc={get(course, 'misc')}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}/>;
 
   const renderSubProgramItem = (subProgram: SubProgramWithProgramType) => <ProgramCell program={subProgram.program}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(subProgram.steps))}
-    onPress={() => onPressProgramCell()} />;
+    onPress={() => onPressProgramCell(subProgram._id, false)} />;
 
   const nextSteps: NextSlotsStepType[] = useMemo(() => formatNextSteps(courses.onGoing), [courses.onGoing]);
 

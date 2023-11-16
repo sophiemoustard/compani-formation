@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createStore } from 'redux';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Sentry from 'sentry-expo';
@@ -11,8 +12,35 @@ import AppContainer from '../AppContainer';
 import reducers from '../store/index';
 import Environment from '../../environment';
 import { initializeAssets } from '../core/helpers/assets';
+import { isIOS, LOCAL, DEVELOPMENT, PRODUCTION } from '../core/data/constants';
 
-Sentry.init({ dsn: Environment.getSentryKey(), debug: false, enableInExpoDevelopment: true });
+const { expoConfig } = Constants;
+
+const getVariables = () => {
+  switch (expoConfig?.extra.PROFILE) {
+    case LOCAL:
+      return { appName: 'Compani - local', bundleIdentifier: 'com.alenvi.compani.local' };
+    case DEVELOPMENT:
+      return { appName: 'Compani - Dev', bundleIdentifier: 'com.alenvi.compani.dev' };
+    case PRODUCTION:
+      return { appName: 'Compani', bundleIdentifier: 'com.alenvi.compani' };
+    default:
+      return 'Compani';
+  }
+};
+
+const variables = getVariables();
+
+const release = isIOS
+  ? `${variables.bundleIdentifier}@${expoConfig?.version}+${expoConfig?.ios.buildNumber}`
+  : `${variables.bundleIdentifier}@${expoConfig?.version}+${expoConfig?.android.versionCode}`;
+
+Sentry.init({
+  dsn: Environment.getSentryKey(),
+  debug: false,
+  enableInExpoDevelopment: true,
+  release,
+});
 
 const store = createStore(reducers);
 
