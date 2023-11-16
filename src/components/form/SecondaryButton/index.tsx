@@ -1,5 +1,5 @@
 import NiButton from '../Button';
-import { GREY, YELLOW } from '../../../styles/colors';
+import { GREEN, GREY } from '../../../styles/colors';
 import { FontType } from '../../../types/FontType';
 import { FIRA_SANS_BLACK } from '../../../styles/fonts';
 import { FeatherType } from '../../../types/FeatherType';
@@ -23,7 +23,7 @@ const SecondaryButton = (
     caption,
     onPress,
     loading = false,
-    bgColor = YELLOW[300],
+    bgColor = GREEN[500],
     color = GREY[600],
     font = FIRA_SANS_BLACK.MD,
     borderColor = color,
