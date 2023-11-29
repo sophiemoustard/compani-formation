@@ -96,7 +96,10 @@ export default {
       versionCode: 160,
     },
     plugins: [
-      ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
+      [
+        'expo-build-properties',
+        { ios: { useFrameworks: 'static' }, android: { enableProguardInReleaseBuilds: true, enableShrinkResourcesInReleaseBuilds: true } },
+      ],
       'sentry-expo',
     ],
   },
