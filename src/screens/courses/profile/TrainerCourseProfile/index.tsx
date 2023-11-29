@@ -44,7 +44,7 @@ const TrainerCourseProfile = ({
 }: TrainerCourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.jpg'));
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
   const [title, setTitle] = useState<string>('');
 
   const isFocused = useIsFocused();

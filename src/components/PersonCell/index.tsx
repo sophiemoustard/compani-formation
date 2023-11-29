@@ -13,7 +13,7 @@ const PersonCell = ({ person }: PersonCellProps) => {
   const image = person?.picture?.link || '';
   const email = person?.local?.email || '';
   const phone = person?.contact?.phone || '';
-  const source = image ? { uri: image } : require('../../../assets/images/default_avatar.png');
+  const source = image ? { uri: image } : require('../../../assets/images/default_avatar.webp');
   const isConnected = person?.firstMobileConnectionDate && 'Connecté(e) à l\'app';
 
   return (

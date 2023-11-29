@@ -34,7 +34,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course, mode } = route.params;
   const program = course.subProgram?.program || null;
   const [trainerPictureSource, setTrainerPictureSource] = useState(
-    require('../../../../assets/images/default_avatar.png')
+    require('../../../../assets/images/default_avatar.webp')
   );
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 

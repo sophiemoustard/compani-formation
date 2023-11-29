@@ -28,22 +28,22 @@ StackScreenProps<RootStackParamList>
 
 const CategoriesStyleList = [
   {
-    imageBackground: require('../../../../assets/images/yellow_section_background.png'),
+    imageBackground: require('../../../../assets/images/yellow_section_background.webp'),
     backgroundStyle: styles().leftBackground,
     countStyle: { background: YELLOW[200], color: YELLOW[900] },
   },
   {
-    imageBackground: require('../../../../assets/images/green_section_background.png'),
+    imageBackground: require('../../../../assets/images/green_section_background.webp'),
     backgroundStyle: styles().rightBackground,
     countStyle: { background: GREEN[200], color: GREEN[900] },
   },
   {
-    imageBackground: require('../../../../assets/images/purple_section_background.png'),
+    imageBackground: require('../../../../assets/images/purple_section_background.webp'),
     backgroundStyle: styles().leftBackground,
     countStyle: { background: PURPLE[200], color: PURPLE[800] },
   },
   {
-    imageBackground: require('../../../../assets/images/pink_section_background.png'),
+    imageBackground: require('../../../../assets/images/pink_section_background.webp'),
     backgroundStyle: styles().rightBackground,
     countStyle: { background: PINK[200], color: PINK[600] },
   },
@@ -89,7 +89,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
             <CoursesSection items={programsByCategories[key]} title={capitalizeFirstLetter(key)}
               countStyle={styles(CategoriesStyleList[i % 4].countStyle).programsCount} renderItem={renderItem} />
           </ImageBackground>)}
-        <HomeScreenFooter source={require('../../../../assets/images/aux_detective.png')} />
+        <HomeScreenFooter source={require('../../../../assets/images/aux_detective.webp')} />
       </ScrollView>
     </SafeAreaView>
   );

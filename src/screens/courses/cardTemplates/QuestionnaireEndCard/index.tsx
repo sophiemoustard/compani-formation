@@ -54,9 +54,9 @@ const QuestionnaireEndCard = ({
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.png')}>
+      <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.webp')}>
         <Text style={styles.text}>Questionnaire terminé</Text>
-        <Image source={require('../../../../../assets/images/aux_fierte.png')} style={styles.image} />
+        <Image source={require('../../../../../assets/images/aux_fierte.webp')} style={styles.image} />
       </ImageBackground>
       <NiPrimaryButton customStyle={styles.button} caption="Terminer" onPress={goBack} />
     </ScrollView>
