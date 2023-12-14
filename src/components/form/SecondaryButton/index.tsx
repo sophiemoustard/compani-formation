@@ -23,7 +23,7 @@ const SecondaryButton = (
     caption,
     onPress,
     loading = false,
-    bgColor = GREY[400],
+    bgColor = GREY[100],
     color = GREY[600],
     font = FIRA_SANS_BLACK.MD,
     borderColor = color,
