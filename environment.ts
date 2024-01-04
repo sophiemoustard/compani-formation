@@ -10,7 +10,6 @@ const _getBaseUrlForProfile = (): string => {
 
   if (Updates.channel) {
     if (Updates.channel === 'dev') return Constants.expoConfig.extra.BASE_URL_DEV;
-    if (Updates.channel === 'staging') return Constants.expoConfig.extra.BASE_URL_STAGING;
     if (/prod/.test(Updates.channel)) return Constants.expoConfig.extra.BASE_URL_PROD;
   }
 
