@@ -1,8 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback, Dispatch } from 'react';
-import Constants from 'expo-constants';
-import { View, FlatList, ScrollView, LogBox, BackHandler, ImageSourcePropType, Text } from 'react-native';
+import { View, FlatList, ScrollView, LogBox, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -99,7 +98,6 @@ const TrainerCourseProfile = ({
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
         <View style={styles.buttonsContainer}>
-          <Text>{Constants?.expoConfig?.extra?.PROFILE}</Text>
           <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN_SCREEN)} icon='folder' color={GREY[700]}
             customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
           <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
