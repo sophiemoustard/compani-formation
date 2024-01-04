@@ -12,9 +12,9 @@ const _getBaseUrlForProfile = (): string => {
     if (Updates.channel === 'dev') return Constants.expoConfig.extra.BASE_URL_DEV;
     if (Updates.channel === 'staging') return Constants.expoConfig.extra.BASE_URL_STAGING;
     if (/prod/.test(Updates.channel)) return Constants.expoConfig.extra.BASE_URL_PROD;
-  } else return Constants.expoConfig.extra.BASE_URL_LOCAL;
+  }
 
-  return '';
+  return Constants.expoConfig.extra.BASE_URL_LOCAL;
 };
 
 const getBaseUrl = async (payload?: { email?: string, userId?: string }): Promise<string> => {
