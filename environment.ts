@@ -1,5 +1,4 @@
 import Constants from 'expo-constants';
-import * as Updates from 'expo-updates';
 import { LOCAL, DEVELOPMENT, STAGING, PRODUCTION } from './src/core/data/constants';
 import asyncStorage from './src/core/helpers/asyncStorage';
 
@@ -8,12 +7,16 @@ const getSentryKey = (): string => Constants.expoConfig?.extra?.SENTRY_KEY || ''
 const _getBaseUrlForProfile = (): string => {
   if (!Constants?.expoConfig?.extra) return '';
 
-  if (Updates.channel) {
-    if (Updates.channel === 'dev') return Constants.expoConfig.extra.BASE_URL_DEV;
-    if (/prod/.test(Updates.channel)) return Constants.expoConfig.extra.BASE_URL_PROD;
+  switch (Constants.expoConfig.extra.PROFILE) {
+    case LOCAL:
+      return Constants.expoConfig.extra.BASE_URL_LOCAL || '';
+    case DEVELOPMENT:
+      return Constants.expoConfig.extra.BASE_URL_DEV || '';
+    case PRODUCTION:
+      return Constants.expoConfig.extra.BASE_URL_PROD || '';
+    default:
+      return '';
   }
-
-  return Constants.expoConfig.extra.BASE_URL_LOCAL;
 };
 
 const getBaseUrl = async (payload?: { email?: string, userId?: string }): Promise<string> => {
