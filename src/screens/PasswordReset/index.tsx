@@ -8,18 +8,19 @@ import PasswordForm from '../../components/PasswordForm';
 import Authentication from '../../api/authentication';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 import styles from './styles';
+import { IDENTITY_VERIFICATION } from '../../core/data/constants';
 
 interface PasswordResetProps extends StackScreenProps<RootStackParamList, 'PasswordReset'> {}
 
 const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
-  const { userId, email, token } = route.params;
+  const { userId, email, token, firstMobileConnectionMode = IDENTITY_VERIFICATION } = route.params;
   const { signIn }: AuthContextType = useContext(AuthContext);
 
   const goBack = () => { navigation.goBack(); };
 
   const savePassword = async (password: string) => {
     await Authentication.updatePassword(userId, { local: { password } }, token);
-    await signIn({ email, password });
+    await signIn({ email, password, firstMobileConnectionMode });
   };
 
   return (

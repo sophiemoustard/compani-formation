@@ -24,8 +24,14 @@ type PasswordTokenParamsType = {
   company?: string,
 }
 
+type AuthenticationPayloadType = {
+  email: string,
+  password: string,
+  firstMobileConnectionMode: string
+}
+
 export default {
-  authenticate: async (payload: { email: string, password: string }): Promise<AuthenticationType> => {
+  authenticate: async (payload: AuthenticationPayloadType): Promise<AuthenticationType> => {
     const baseURL = await Environment.getBaseUrl({ email: payload.email });
     const response: AxiosResponse<AuthenticationResponseType> =
       await axiosNotLogged.post(`${baseURL}/users/authenticate`, { ...payload, origin: MOBILE });

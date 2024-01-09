@@ -14,7 +14,7 @@ import NiSecondaryButton from '../../components/form/SecondaryButton';
 import CompanySearchModal from '../../components/CompanySearchModal';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
 import { CompanyType } from '../../types/CompanyType';
-import { isIOS } from '../../core/data/constants';
+import { LOGIN_CODE, isIOS } from '../../core/data/constants';
 import { GREY, WHITE } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
@@ -84,7 +84,12 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
 
       navigation.navigate(
         'PasswordReset',
-        { userId: checkToken.user._id, email: checkToken.user.email, token: checkToken.token }
+        {
+          userId: checkToken.user._id,
+          email: checkToken.user.email,
+          token: checkToken.token,
+          firstMobileConnectionMode: LOGIN_CODE,
+        }
       );
       return null;
     } catch (e: any) {

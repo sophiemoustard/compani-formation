@@ -14,7 +14,7 @@ const PersonCell = ({ person }: PersonCellProps) => {
   const email = person?.local?.email || '';
   const phone = person?.contact?.phone || '';
   const source = image ? { uri: image } : require('../../../assets/images/default_avatar.png');
-  const isConnected = person?.firstMobileConnection && 'Connecté(e) à l\'app';
+  const isConnected = person?.firstMobileConnectionDate && 'Connecté(e) à l\'app';
 
   return (
     <View style={styles.container}>
