@@ -39,7 +39,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onPress = () => signIn({ email, password, firstMobileConnectionMode: AUTHENTICATION });
+  const onPress = () => signIn({ email, password, mobileConnectionMode: AUTHENTICATION });
   const forgotPassword = () => {
     resetError();
     navigation.navigate('EmailForm', { firstConnection: false });

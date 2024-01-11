@@ -27,7 +27,7 @@ type PasswordTokenParamsType = {
 type AuthenticationPayloadType = {
   email: string,
   password: string,
-  firstMobileConnectionMode: string
+  mobileConnectionMode: string
 }
 
 export default {

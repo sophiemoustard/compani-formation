@@ -88,7 +88,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
           userId: checkToken.user._id,
           email: checkToken.user.email,
           token: checkToken.token,
-          firstMobileConnectionMode: LOGIN_CODE,
+          mobileConnectionMode: LOGIN_CODE,
         }
       );
       return null;

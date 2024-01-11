@@ -128,7 +128,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     try {
       setIsLoading(true);
       await Users.create(formatCreationPayload(formList, email));
-      signIn({ email, password: formList[3][0].value, firstMobileConnectionMode: ACCOUNT_CREATION });
+      signIn({ email, password: formList[3][0].value, mobileConnectionMode: ACCOUNT_CREATION });
     } catch (e: any) {
       console.error(e);
     } finally {
