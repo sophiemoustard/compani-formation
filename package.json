@@ -85,7 +85,7 @@
     "qs": "^6.10.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.8",
+    "react-native": "0.71.14",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-drax": "^0.10.3",
     "react-native-gesture-handler": "~2.9.0",
