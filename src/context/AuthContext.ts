@@ -6,6 +6,7 @@ import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
 import { ActionType, BoundActionsType, CreateDataContextType } from './types';
+import { AuthenticationPayloadType } from '../types/AuthenticationTypes';
 
 export interface AuthContextStateType {
   companiToken: string | null,
@@ -14,11 +15,10 @@ export interface AuthContextStateType {
   errorMessage: string,
   appIsReady: boolean
 }
-
-type SignInPayloadType = { email: string, password: string, mobileConnectionMode: string };
-
 export interface AuthContextDispatchActionsType {
-  signIn: (d: Dispatch<ActionType>) => ({ email, password, mobileConnectionMode }: SignInPayloadType) => Promise<void>,
+  signIn: (
+    d: Dispatch<ActionType>) => ({ email, password, mobileConnectionMode }: AuthenticationPayloadType
+  ) => Promise<void>,
   tryLocalSignIn: (d: Dispatch<ActionType>) => () => Promise<void>,
   signOut: (d: Dispatch<ActionType>) => (b?: boolean) => Promise<void>,
   resetError: (d: Dispatch<ActionType>) => () => void,
@@ -49,12 +49,12 @@ const authReducer = (state: AuthContextStateType, actions: ActionType): AuthCont
 };
 
 const signIn = (dispatch: Dispatch<ActionType>) =>
-  async ({ email, password, mobileConnectionMode }: SignInPayloadType) => {
+  async (payload: AuthenticationPayloadType) => {
     try {
-      if (!email || !password) return;
+      if (!payload.email || !payload.password) return;
 
       dispatch({ type: BEFORE_SIGNIN });
-      const authentication = await Authentication.authenticate({ email, password, mobileConnectionMode });
+      const authentication = await Authentication.authenticate(payload);
 
       await asyncStorage.setUserId(authentication.user._id);
       await asyncStorage.setRefreshToken(authentication.refreshToken);

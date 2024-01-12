@@ -11,6 +11,7 @@ import {
   ForgotPasswordResponseType,
   PasswordTokenResponseType,
 } from '../types/AxiosTypes';
+import { AuthenticationPayloadType } from '../types/AuthenticationTypes';
 
 type UpdatePasswordPayloadType = {
   local: { password: string },
@@ -22,12 +23,6 @@ type PasswordTokenParamsType = {
   firstname?: string,
   lastname?: string,
   company?: string,
-}
-
-type AuthenticationPayloadType = {
-  email: string,
-  password: string,
-  mobileConnectionMode: string
 }
 
 export default {
