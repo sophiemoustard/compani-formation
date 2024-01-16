@@ -16,6 +16,7 @@ import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
+import { ACCOUNT_CREATION } from '../../core/data/constants';
 
 interface CreateAccountProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAccount'>,
@@ -127,7 +128,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     try {
       setIsLoading(true);
       await Users.create(formatCreationPayload(formList, email));
-      signIn({ email, password: formList[3][0].value });
+      signIn({ email, password: formList[3][0].value, mobileConnectionMode: ACCOUNT_CREATION });
     } catch (e: any) {
       console.error(e);
     } finally {
