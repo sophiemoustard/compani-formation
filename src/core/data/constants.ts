@@ -125,3 +125,9 @@ export const SHORT_DURATION_H_MM = 'h\'h\'mm';
 
 // COMPANIDURATION
 export const PT0S = 'PT0S';
+
+// FIRST MOBILE CONNECTION MODE
+export const AUTHENTICATION = 'authentication';
+export const LOGIN_CODE = 'login_code';
+export const IDENTITY_VERIFICATION = 'identity_verification';
+export const ACCOUNT_CREATION = 'account_creation';

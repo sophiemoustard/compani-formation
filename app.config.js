@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const ENVIRONMENT_VARIABLES = {
   BASE_URL_LOCAL: process.env.BASE_URL_LOCAL,
@@ -42,7 +44,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.21.0',
+    version: '2.22.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -58,27 +60,22 @@ export default {
       eas: {
         projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
       },
-      hooks: { // eas updates -> to be removed when using eas updates - waiting for eas updates to be configures
-        postPublish: [{
-          file: 'sentry-expo/upload-sourcemaps',
-          config: {
-            organization: 'alenvi',
-            project: 'mobile',
-          },
-        }],
-      },
     },
     updates: {
       enabled: true,
       checkAutomatically: 'ON_LOAD',
       fallbackToCacheTimeout: 3000,
+      url: 'https://u.expo.dev/861a9cc8-74bd-4278-9bad-783086e74994',
+    },
+    runtimeVersion: {
+      policy: 'appVersion',
     },
     notification: {
       icon: './assets/images/android_notification_icon.png',
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.21.0',
+      buildNumber: '2.22.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -96,7 +93,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 150,
+      versionCode: 160,
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],

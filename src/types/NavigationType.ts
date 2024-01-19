@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Authentication: undefined;
   EmailForm: { firstConnection: Boolean } | undefined;
   CreateAccount: { email: string };
-  PasswordReset: { userId: string, email: string, token: string }
+  PasswordReset: { userId: string, email: string, token: string, mobileConnectionMode: string }
   ActivityCardContainer: { activityId: string, profileId: string, mode: CourseModeType };
   QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
   BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }

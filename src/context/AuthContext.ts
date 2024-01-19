@@ -6,6 +6,7 @@ import { navigate } from '../navigationRef';
 import Users from '../api/users';
 import { BEFORE_SIGNIN, SIGNIN, SIGNIN_ERROR, RESET_ERROR, SIGNOUT, RENDER } from '../core/data/constants';
 import { ActionType, BoundActionsType, CreateDataContextType } from './types';
+import { AuthenticationPayloadType } from '../types/AuthenticationTypes';
 
 export interface AuthContextStateType {
   companiToken: string | null,
@@ -14,11 +15,10 @@ export interface AuthContextStateType {
   errorMessage: string,
   appIsReady: boolean
 }
-
-type SignInPayloadType = { email: string, password: string };
-
 export interface AuthContextDispatchActionsType {
-  signIn: (d: Dispatch<ActionType>) => ({ email, password }: SignInPayloadType) => Promise<void>,
+  signIn: (
+    d: Dispatch<ActionType>) => ({ email, password, mobileConnectionMode }: AuthenticationPayloadType
+  ) => Promise<void>,
   tryLocalSignIn: (d: Dispatch<ActionType>) => () => Promise<void>,
   signOut: (d: Dispatch<ActionType>) => (b?: boolean) => Promise<void>,
   resetError: (d: Dispatch<ActionType>) => () => void,
@@ -48,27 +48,28 @@ const authReducer = (state: AuthContextStateType, actions: ActionType): AuthCont
   }
 };
 
-const signIn = (dispatch: Dispatch<ActionType>) => async ({ email, password }: SignInPayloadType) => {
-  try {
-    if (!email || !password) return;
+const signIn = (dispatch: Dispatch<ActionType>) =>
+  async (payload: AuthenticationPayloadType) => {
+    try {
+      if (!payload.email || !payload.password) return;
 
-    dispatch({ type: BEFORE_SIGNIN });
-    const authentication = await Authentication.authenticate({ email, password });
+      dispatch({ type: BEFORE_SIGNIN });
+      const authentication = await Authentication.authenticate(payload);
 
-    await asyncStorage.setUserId(authentication.user._id);
-    await asyncStorage.setRefreshToken(authentication.refreshToken);
-    await asyncStorage.setCompaniToken(authentication.token, authentication.tokenExpireDate);
+      await asyncStorage.setUserId(authentication.user._id);
+      await asyncStorage.setRefreshToken(authentication.refreshToken);
+      await asyncStorage.setCompaniToken(authentication.token, authentication.tokenExpireDate);
 
-    dispatch({ type: SIGNIN, payload: authentication.token });
-  } catch (e: any) {
-    dispatch({
-      type: SIGNIN_ERROR,
-      payload: e.response.status === 401
-        ? 'L\'e-mail et/ou le mot de passe est incorrect.'
-        : 'Impossible de se connecter',
-    });
-  }
-};
+      dispatch({ type: SIGNIN, payload: authentication.token });
+    } catch (e: any) {
+      dispatch({
+        type: SIGNIN_ERROR,
+        payload: e.response.status === 401
+          ? 'L\'e-mail et/ou le mot de passe est incorrect.'
+          : 'Impossible de se connecter',
+      });
+    }
+  };
 
 const signOut = (dispatch: Dispatch<ActionType>) => async (removeExpoToken: boolean = false) => {
   await Authentication.logOut();

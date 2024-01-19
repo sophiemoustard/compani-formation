@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import BottomModal from '../BottomModal';
 import NiPrimaryButton from '../form/PrimaryButton';
 import Authentication from '../../api/authentication';
-import { EMAIL, MOBILE, PHONE } from '../../core/data/constants';
+import { EMAIL, IDENTITY_VERIFICATION, MOBILE, PHONE } from '../../core/data/constants';
 import { IS_LARGE_SCREEN } from '../../styles/metrics';
 import styles from './styles';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
@@ -93,7 +93,10 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setIsLoading(true);
       const checkToken = await Authentication.passwordToken({ email }, formattedCode);
       onRequestClose();
-      navigation.navigate('PasswordReset', { userId: checkToken.user._id, email, token: checkToken.token });
+      navigation.navigate(
+        'PasswordReset',
+        { userId: checkToken.user._id, email, token: checkToken.token, mobileConnectionMode: IDENTITY_VERIFICATION }
+      );
     } catch (e) {
       dispatchError({ type: SET_ERROR, payload: 'Oops, le code n\'est pas valide' });
     } finally {

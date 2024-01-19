@@ -22,7 +22,7 @@ import { AuthContextType, Context as AuthContext } from '../../context/AuthConte
 import commonStyles from '../../styles/common';
 import styles from './styles';
 import Actions from '../../store/actions';
-import { isIOS } from '../../core/data/constants';
+import { AUTHENTICATION, isIOS } from '../../core/data/constants';
 
 interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
   resetAllReducers: () => void,
@@ -39,7 +39,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onPress = () => signIn({ email, password });
+  const onPress = () => signIn({ email, password, mobileConnectionMode: AUTHENTICATION });
   const forgotPassword = () => {
     resetError();
     navigation.navigate('EmailForm', { firstConnection: false });

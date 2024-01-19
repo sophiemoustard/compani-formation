@@ -12,14 +12,14 @@ import styles from './styles';
 interface PasswordResetProps extends StackScreenProps<RootStackParamList, 'PasswordReset'> {}
 
 const PasswordReset = ({ route, navigation }: PasswordResetProps) => {
-  const { userId, email, token } = route.params;
+  const { userId, email, token, mobileConnectionMode } = route.params;
   const { signIn }: AuthContextType = useContext(AuthContext);
 
   const goBack = () => { navigation.goBack(); };
 
   const savePassword = async (password: string) => {
     await Authentication.updatePassword(userId, { local: { password } }, token);
-    await signIn({ email, password });
+    await signIn({ email, password, mobileConnectionMode });
   };
 
   return (

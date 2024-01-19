@@ -8,7 +8,7 @@ import { ShouldUpdateType, ShouldUpdateResponseType } from '../types/AxiosTypes'
 export default {
   shouldUpdate: async (): Promise<ShouldUpdateType> => {
     const baseURL = await Environment.getBaseUrl();
-    const params = { mobileVersion: Constants.manifest?.version, appName: APP_NAME };
+    const params = { mobileVersion: Constants.expoConfig?.version, appName: APP_NAME };
 
     const response: AxiosResponse<ShouldUpdateResponseType> =
       await axiosNotLogged.get(`${baseURL}/version/should-update`, { params });

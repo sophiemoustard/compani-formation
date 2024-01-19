@@ -85,7 +85,7 @@ export type TraineeType = {
   identity: { lastname: string, firstname: string },
   local: { email: string },
   picture: { link: '' },
-  firstMobileConnection: string,
+  firstMobileConnectionDate: string,
 }
 
 export type BlendedCourseType = BaseCourseType & {
