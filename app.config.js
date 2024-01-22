@@ -75,7 +75,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.22.0',
+      buildNumber: '2.22.0.1',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -93,7 +93,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 160,
+      versionCode: 161,
     },
     plugins: [
       ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
