@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, Dispatch } from 'react';
 import {
   View,
   Text,
-  FlatList,
   ScrollView,
   LogBox,
   BackHandler,
@@ -44,11 +43,10 @@ import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderStepCell, renderSeparator, getTitle } from '../helper';
+import { renderList, getTitle } from '../helper';
 import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
-import { StepType } from '../../../../types/StepTypes';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -145,8 +143,6 @@ const LearnerCourseProfile = ({
     setIsLoading(false);
   };
 
-  const renderCells = (item: { item: StepType, index: number }) => renderStepCell(item, course, LEARNER, route);
-
   const isProgressBarOnTop = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = event.nativeEvent.contentOffset;
     setIsHeaderSticky(y >= progressBarY);
@@ -198,8 +194,7 @@ const LearnerCourseProfile = ({
         </View>
         {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
         {getHeader()}
-        <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
-          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+        {renderList(course, LEARNER, route)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
             disabled={isLoading}>
