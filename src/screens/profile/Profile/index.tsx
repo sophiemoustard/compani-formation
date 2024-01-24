@@ -50,7 +50,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
   const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();
-  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
+  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.webp'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
@@ -94,7 +94,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
     } else {
-      setSource(require('../../../../assets/images/default_avatar.png'));
+      setSource(require('../../../../assets/images/default_avatar.webp'));
       setHasPhoto(false);
     }
   }, [loggedUser]);
@@ -175,7 +175,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
             <View style={styles.identityContainer}>
               <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
-                source={require('../../../../assets/images/profile_background.png')}>
+                source={require('../../../../assets/images/profile_background.webp')}>
                 <TouchableOpacity onPress={() => setPictureModal(true)}>
                   <Image style={styles.profileImage} source={source} />
                   <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
@@ -228,7 +228,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             style={styles.legalNoticeContainer}>
             <Text style={styles.legalNotice}>Supprimer mon compte</Text>
           </TouchableOpacity>}
-        <HomeScreenFooter source={require('../../../../assets/images/aux_joie.png')} />
+        <HomeScreenFooter source={require('../../../../assets/images/aux_joie.webp')} />
         <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
           openCamera={() => setCamera(true)} deletePicture={deletePicture}
           openImagePickerManager={() => setImagePickerManager(true)} />

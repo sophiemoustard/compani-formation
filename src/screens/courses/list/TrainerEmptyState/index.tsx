@@ -4,7 +4,7 @@ import styles from '../styles';
 const TrainerEmptyState = () => (
   <View style={styles.emptyStateContainer}>
     <Text style={styles.emptyStateText}>Vous n’avez pas encore animé de formation pour Compani...</Text>
-    <Image source={require('../../../../../assets/images/doc-tableau-blanc.png')} style={styles.emptyStateTrainerImage}
+    <Image source={require('../../../../../assets/images/doc-tableau-blanc.webp')} style={styles.emptyStateTrainerImage}
       resizeMode='contain' />
   </View>
 );

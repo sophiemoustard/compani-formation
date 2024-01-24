@@ -69,7 +69,7 @@ const LearnerCourseProfile = ({
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.jpg'));
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);

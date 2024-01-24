@@ -43,7 +43,7 @@ StackScreenProps<RootBottomTabParamList>
 const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.jpg'));
+    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.webp'));
   const [programName, setProgramName] = useState<string>('');
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
 
     const programImage = get(subProgram, 'program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
-    else setSource(require('../../../../assets/images/authentication_background_image.jpg'));
+    else setSource(require('../../../../assets/images/authentication_background_image.webp'));
   }, [subProgram]);
 
   const getSubProgram = useCallback(async () => {

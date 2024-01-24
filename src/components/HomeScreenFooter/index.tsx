@@ -7,7 +7,7 @@ interface HomeScreenFooterType {
 
 const HomeScreenFooter = ({ source } : HomeScreenFooterType) => (
   <View style={styles.footer}>
-    <Image style={styles.ellipse} source={require('../../../assets/images/home_footer_ellipse.png')} />
+    <Image style={styles.ellipse} source={require('../../../assets/images/home_footer_ellipse.webp')} />
     <Image source={source} style={styles.drawing} />
   </View>
 );

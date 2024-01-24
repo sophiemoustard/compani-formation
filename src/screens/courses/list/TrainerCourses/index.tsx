@@ -32,21 +32,21 @@ const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const contents: CourseDisplayType[] = [
     {
       title: 'En cours',
-      source: require('../../../../../assets/images/yellow_section_background.png'),
+      source: require('../../../../../assets/images/yellow_section_background.webp'),
       imageStyle: styles.leftBackground,
       countStyle: styles.yellowCount,
       courses: coursesInProgress,
     },
     {
       title: 'À venir',
-      source: require('../../../../../assets/images/purple_section_background.png'),
+      source: require('../../../../../assets/images/purple_section_background.webp'),
       imageStyle: styles.rightBackground,
       countStyle: styles.purpleCount,
       courses: forthcomingCourses,
     },
     {
       title: 'Terminées',
-      source: require('../../../../../assets/images/green_section_background.png'),
+      source: require('../../../../../assets/images/green_section_background.webp'),
       imageStyle: styles.leftBackground,
       countStyle: styles.greenCount,
       courses: completedCourses,
@@ -124,7 +124,7 @@ const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
           ))
           : <TrainerEmptyState />
         }
-        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.png')} />
+        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.webp')} />
       </ScrollView>
     </SafeAreaView>
   );

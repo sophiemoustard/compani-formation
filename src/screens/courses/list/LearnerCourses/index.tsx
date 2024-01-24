@@ -118,25 +118,25 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
           </View>
         }
         <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
-          source={require('../../../../../assets/images/yellow_section_background.png')}>
+          source={require('../../../../../assets/images/yellow_section_background.webp')}>
           <CoursesSection items={courses.onGoing} title='Mes formations en cours' renderItem={renderCourseItem}
             countStyle={styles.yellowCount} renderEmptyState={() => <LearnerEmptyState />}/>
         </ImageBackground>
         {!!courses.achieved.length &&
           <ImageBackground imageStyle={styles.rightBackground} style={styles.sectionContainer}
-            source={require('../../../../../assets/images/green_section_background.png')}>
+            source={require('../../../../../assets/images/green_section_background.webp')}>
             <CoursesSection items={courses.achieved} title='Mes formations terminées' renderItem={renderCourseItem}
               countStyle={styles.greenCount} />
           </ImageBackground>
         }
         {!!elearningDraftSubPrograms.length &&
           <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
-            source={require('../../../../../assets/images/purple_section_background.png')}>
+            source={require('../../../../../assets/images/purple_section_background.webp')}>
             <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
               countStyle={styles.purpleCount} renderItem={renderSubProgramItem} />
           </ImageBackground>
         }
-        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_rose.png')} />
+        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_rose.webp')} />
       </ScrollView>
     </SafeAreaView>
   );
