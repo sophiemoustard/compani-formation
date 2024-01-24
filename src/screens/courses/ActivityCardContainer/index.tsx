@@ -1,8 +1,8 @@
 // @ts-nocheck
 
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
-import { BackHandler, Image } from 'react-native';
+import { BackHandler, Image, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -43,6 +43,21 @@ const ActivityCardContainer = ({
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId, mode } = route.params;
+  const interval = useRef(null);
+
+  const [count, setCount] = useState(0);
+
+  // useEffect(() => {
+  //   interval.current = setInterval(() => setCount(c => c + 1), 1000);
+  //   return () => clearInterval(interval.current);
+  // }, []);
+
+  const startTimer = () => {
+    interval.current = setInterval(() => setCount(c => c + 1), 1000);
+    return () => clearInterval(interval.current);
+  };
+
+  const stopTimer = () => { clearInterval(interval.current); };
 
   useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
@@ -102,11 +117,14 @@ const ActivityCardContainer = ({
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
   return isActive
-    ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
-      </Tab.Screen>
-      {cards.length > 0 && activity &&
+    ? <>
+      <Text>{count}</Text>
+      <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
+        <Tab.Screen key={0} name={'startCard'} >
+          {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)}
+            startTimer={startTimer} />}
+        </Tab.Screen>
+        {cards.length > 0 && activity &&
         <>
           {cards.map((_, index) => (
             <Tab.Screen key={index} name={`card-${index}`}>
@@ -114,11 +132,12 @@ const ActivityCardContainer = ({
             </Tab.Screen>
           ))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} />}
+            {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} stopTimer={stopTimer} />}
           </Tab.Screen>
         </>
-      }
-    </Tab.Navigator>
+        }
+      </Tab.Navigator>
+    </>
     : null;
 };
 

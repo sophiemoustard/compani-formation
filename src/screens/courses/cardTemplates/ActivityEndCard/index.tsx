@@ -23,6 +23,7 @@ interface ActivityEndCardProps {
   score: number,
   setCardIndex: (index: number | null) => void,
   goBack: () => void,
+  stopTimer: () => void,
 }
 
 const ActivityEndCard = ({
@@ -32,6 +33,7 @@ const ActivityEndCard = ({
   score,
   setCardIndex,
   goBack,
+  stopTimer,
 }: ActivityEndCardProps) => {
   const isFocused = useIsFocused();
 
@@ -52,11 +54,12 @@ const ActivityEndCard = ({
     }
 
     if (isFocused) {
+      stopTimer();
       if (mode === LEARNER) saveHistory();
       setCardIndex(null);
       achievementJingle();
     }
-  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, mode]);
+  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, mode, stopTimer]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>

@@ -10,10 +10,16 @@ interface StartCardProps {
   title: string,
   isLoading: boolean,
   goBack: () => void,
+  startTimer: () => void,
 }
 
-const StartCard = ({ title, isLoading, goBack }: StartCardProps) => {
+const StartCard = ({ title, isLoading, goBack, startTimer }: StartCardProps) => {
   const navigation = useNavigation();
+
+  const onPress = () => {
+    startTimer();
+    navigation.navigate('card-0');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -30,7 +36,7 @@ const StartCard = ({ title, isLoading, goBack }: StartCardProps) => {
               : <Text style={styles.text}>{title}</Text>}
           </View>
           {!isLoading && <NiPrimaryButton customStyle={styles.button} bgColor={WHITE} color={PINK[500]}
-            caption="Démarrer" onPress={() => navigation.navigate('card-0')} />}
+            caption="Démarrer" onPress={onPress} />}
         </View>
       </ScrollView>
     </SafeAreaView>
