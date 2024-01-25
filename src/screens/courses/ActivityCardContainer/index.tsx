@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { Dispatch, useEffect, useRef, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import { BackHandler, Image, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -47,17 +47,12 @@ const ActivityCardContainer = ({
 
   const [count, setCount] = useState(0);
 
-  // useEffect(() => {
-  //   interval.current = setInterval(() => setCount(c => c + 1), 1000);
-  //   return () => clearInterval(interval.current);
-  // }, []);
-
   const startTimer = () => {
     interval.current = setInterval(() => setCount(c => c + 1), 1000);
     return () => clearInterval(interval.current);
   };
 
-  const stopTimer = () => { clearInterval(interval.current); };
+  const stopTimer = useCallback(() => { clearInterval(interval.current); }, []);
 
   useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
