@@ -2,7 +2,7 @@
 
 import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
-import { BackHandler, Image, Text } from 'react-native';
+import { AppState, BackHandler, Image, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -45,7 +45,17 @@ const ActivityCardContainer = ({
   const { profileId, mode } = route.params;
   const interval = useRef(null);
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    const { remove } = AppState.addEventListener('change', handleAppStateChange);
+    return () => { remove(); };
+  }, [handleAppStateChange]);
+
+  const handleAppStateChange = useCallback((nextAppState) => {
+    if (nextAppState === 'active') startTimer();
+    else stopTimer();
+  }, [stopTimer]);
 
   const startTimer = () => {
     interval.current = setInterval(() => setCount(c => c + 1), 1000);
