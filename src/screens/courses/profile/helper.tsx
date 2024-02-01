@@ -8,7 +8,7 @@ import ELearningCell from '../../../components/ELearningCell';
 import styles from './styles';
 import { BlendedCourseType } from '../../../types/CourseTypes';
 
-export const renderStepCell = ({ item, index }, course, mode, route) => {
+const renderStepCell = (item, index, course, mode, route) => {
   if ([ON_SITE, REMOTE].includes(item.type)) {
     return <LiveCell step={item} slots={course?.slots} index={index} mode={mode} />;
   }
@@ -21,7 +21,14 @@ export const renderStepCell = ({ item, index }, course, mode, route) => {
   return null;
 };
 
-export const renderSeparator = () => <View style={styles.separator} />;
+const renderSeparator = () => <View style={styles.separator} />;
+
+export const renderStepList = (course, mode, route) => <View style={styles.flatList}>
+  {course.subProgram.steps.map((s, index) => <View key={s._id}>
+    {index !== 0 && renderSeparator()}
+    {renderStepCell(s, index, course, mode, route)}
+  </View>)}
+</View>;
 
 export const getTitle = (course) => {
   if (!course) return '';
