@@ -98,13 +98,13 @@ export default {
     plugins: [
       [
         'expo-build-properties',
-        { 
+        {
           ios: { useFrameworks: 'static' },
           android: {
             enableProguardInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
             extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
-          } 
+          },
         },
       ],
       'sentry-expo',
