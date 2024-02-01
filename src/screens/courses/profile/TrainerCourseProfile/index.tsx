@@ -19,7 +19,7 @@ import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { getTitle, renderList } from '../helper';
+import { getTitle, renderStepList } from '../helper';
 import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
@@ -100,7 +100,7 @@ const TrainerCourseProfile = ({
           <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
-        {renderList(course, TRAINER, route)}
+        {renderStepList(course, TRAINER, route)}
       </ScrollView>
     </SafeAreaView>
   );

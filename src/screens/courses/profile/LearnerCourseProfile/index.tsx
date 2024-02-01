@@ -43,7 +43,7 @@ import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderList, getTitle } from '../helper';
+import { renderStepList, getTitle } from '../helper';
 import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
@@ -194,7 +194,7 @@ const LearnerCourseProfile = ({
         </View>
         {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
         {getHeader()}
-        {renderList(course, LEARNER, route)}
+        {renderStepList(course, LEARNER, route)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
             disabled={isLoading}>
