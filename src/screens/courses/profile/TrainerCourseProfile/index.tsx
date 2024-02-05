@@ -24,7 +24,6 @@ import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
 
-// LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN_SCREEN = 'AdminCourseProfile';
 const ABOUT_SCREEN = 'BlendedAbout';
 

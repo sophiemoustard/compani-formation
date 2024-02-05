@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, View, Text, FlatList } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { AnswerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
@@ -87,8 +87,7 @@ const QuestionAnswerCard = ({
             ? <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
             : <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
           }
-          <FlatList data={selectedAnswers} keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item, index }) => renderItem(item, index)} />
+          {selectedAnswers.map((item, index) => <View key={index}>{renderItem(item, index)}</View>)}
         </View>
       </ScrollView>
       <View style={styles.footerContainer}>

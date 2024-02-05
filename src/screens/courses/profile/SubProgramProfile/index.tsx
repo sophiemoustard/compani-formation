@@ -3,7 +3,6 @@ import {
   View,
   Text,
   ImageBackground,
-  FlatList,
   ScrollView,
   StyleProp,
   ViewStyle,
@@ -16,21 +15,18 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { LinearGradient } from 'expo-linear-gradient';
-import SubPrograms from '../../../api/subPrograms';
-import { WHITE } from '../../../styles/colors';
-import { ICON } from '../../../styles/metrics';
-import ELearningCell from '../../../components/ELearningCell';
-import FeatherButton from '../../../components/icons/FeatherButton';
-import { E_LEARNING, TESTER } from '../../../core/data/constants';
-import commonStyles from '../../../styles/common';
+import SubPrograms from '../../../../api/subPrograms';
+import { WHITE } from '../../../../styles/colors';
+import { ICON } from '../../../../styles/metrics';
+import FeatherButton from '../../../../components/icons/FeatherButton';
+import { TESTER } from '../../../../core/data/constants';
+import commonStyles from '../../../../styles/common';
 import styles from './styles';
-import MainActions from '../../../store/main/actions';
-import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
-import { SubProgramType } from '../../../types/CourseTypes';
-import { ActionType } from '../../../context/types';
-import { StepType } from '../../../types/StepTypes';
-
-// LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+import MainActions from '../../../../store/main/actions';
+import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
+import { SubProgramType } from '../../../../types/CourseTypes';
+import { ActionType } from '../../../../context/types';
+import { renderStepList } from '../helper';
 
 interface SubProgramProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
@@ -42,7 +38,7 @@ StackScreenProps<RootBottomTabParamList>
 const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.webp'));
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
   const [programName, setProgramName] = useState<string>('');
 
   useEffect(() => {
@@ -50,7 +46,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
 
     const programImage = get(subProgram, 'program.image.link') || '';
     if (programImage) setSource({ uri: programImage });
-    else setSource(require('../../../../assets/images/authentication_background_image.webp'));
+    else setSource(require('../../../../../assets/images/authentication_background_image.webp'));
   }, [subProgram]);
 
   const getSubProgram = useCallback(async () => {
@@ -88,16 +84,6 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderCells = ({ item, index }: { item: StepType, index: number }) => {
-    if (item.type === E_LEARNING) {
-      return <ELearningCell step={item} index={index} profileId={route.params.subProgramId} mode={TESTER} />;
-    }
-
-    return null;
-  };
-
-  const renderSeparator = () => <View style={styles.separator} />;
-
   return subProgram && subProgram.steps && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
@@ -110,8 +96,7 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
             <Text style={styles.title}>{programName}</Text>
           </View>
         </ImageBackground>
-        <FlatList style={styles.flatList} data={subProgram.steps} keyExtractor={item => item._id}
-          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+        {renderStepList({ subProgram }, TESTER, route)}
       </ScrollView>
     </SafeAreaView>
   );

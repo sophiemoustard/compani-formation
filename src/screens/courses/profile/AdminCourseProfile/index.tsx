@@ -267,8 +267,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!course.trainees?.length &&
           <Text style={styles.italicText}>Il n&apos;y a aucun stagiaire pour cette formation.</Text>
           }
-          {!!course.trainees?.length && <FlatList data={course.trainees} keyExtractor={item => item._id}
-            renderItem={({ item }) => renderTrainee(item)} style={styles.listContainer} />}
+          {!!course.trainees?.length && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />

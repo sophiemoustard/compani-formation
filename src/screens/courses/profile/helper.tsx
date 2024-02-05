@@ -2,7 +2,7 @@
 
 import { View } from 'react-native';
 import get from 'lodash/get';
-import { E_LEARNING, ON_SITE, REMOTE } from '../../../core/data/constants';
+import { E_LEARNING, ON_SITE, REMOTE, TESTER } from '../../../core/data/constants';
 import LiveCell from '../../../components/steps/LiveCell';
 import ELearningCell from '../../../components/ELearningCell';
 import styles from './styles';
@@ -14,7 +14,9 @@ const renderStepCell = (item, index, course, mode, route) => {
   }
 
   if (item.type === E_LEARNING) {
-    return <ELearningCell step={item} index={index} profileId={route.params.courseId}
+    const profileId = mode === TESTER ? route.params.subProgramId : route.params.courseId;
+
+    return <ELearningCell step={item} index={index} profileId={profileId}
       endedActivity={route.params.endedActivity} mode={mode} />;
   }
 
