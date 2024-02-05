@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback, Dispatch } from 'react';
-import { View, ScrollView, LogBox, BackHandler, ImageSourcePropType } from 'react-native';
+import { View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -24,7 +24,7 @@ import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
 
-LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+// LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN_SCREEN = 'AdminCourseProfile';
 const ABOUT_SCREEN = 'BlendedAbout';
 

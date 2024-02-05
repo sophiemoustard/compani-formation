@@ -51,7 +51,7 @@ const CompaniDurationFactory = (inputDuration: Duration): CompaniDurationType =>
     },
 
     toISO() {
-      return _duration.toISO();
+      return _duration.toISO() || '';
     },
 
     // QUERY

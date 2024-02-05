@@ -7,7 +7,6 @@ import {
   ScrollView,
   StyleProp,
   ViewStyle,
-  LogBox,
   BackHandler,
   ImageSourcePropType,
 } from 'react-native';
@@ -31,7 +30,7 @@ import { SubProgramType } from '../../../types/CourseTypes';
 import { ActionType } from '../../../context/types';
 import { StepType } from '../../../types/StepTypes';
 
-LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+// LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface SubProgramProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
