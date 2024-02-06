@@ -36,7 +36,7 @@ type AppContainerProps = {
 
 const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   const axiosLoggedConfig = { ...config };
-  if (axiosLoggedConfig.headers) axiosLoggedConfig.headers.common['x-access-token'] = token;
+  if (axiosLoggedConfig.headers) axiosLoggedConfig.headers.set({ 'x-access-token': token });
 
   return axiosLoggedConfig;
 };

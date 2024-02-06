@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, AxiosHeaders } from 'axios';
 import Environment from '../../environment';
 import { MOBILE } from '../core/data/constants';
 import { UserType } from '../types/UserType';
@@ -44,7 +44,7 @@ export default {
   },
   uploadImage: async (userId: string, data: FormDataType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl({ userId });
-    const headers = { 'Content-Type': 'multipart/form-data' };
+    const headers = new AxiosHeaders({ 'Content-Type': 'multipart/form-data' });
     await axiosLogged.post(`${baseURL}/users/${userId}/upload`, data, { headers });
   },
   deleteImage: async (userId: string): Promise<void> => {
