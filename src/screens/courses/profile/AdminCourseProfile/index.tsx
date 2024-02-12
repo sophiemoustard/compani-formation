@@ -267,7 +267,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!course.trainees?.length &&
           <Text style={styles.italicText}>Il n&apos;y a aucun stagiaire pour cette formation.</Text>
           }
-          {!!course.trainees?.length && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
+          {!!course.trainees && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
