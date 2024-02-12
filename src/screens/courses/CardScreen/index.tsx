@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 import Actions from '../../../store/cards/actions';
 import ExitModal from '../../../components/ExitModal';
 import CardTemplate from '../cardTemplates/CardTemplate';
@@ -24,18 +25,18 @@ const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, go
   const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
   const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
 
-  const onSwipe = (cardIndex: number, event) => {
-    if (event.nativeEvent.translationX > SWIPE_SENSIBILITY && cardIndex > 0 && isLeftSwipeEnabled) {
-      navigation.navigate(`card-${cardIndex - 1}`);
+  const onSwipe = Gesture.Pan().onEnd((event) => {
+    if (event.translationX > SWIPE_SENSIBILITY && index > 0 && isLeftSwipeEnabled) {
+      runOnJS(navigation.navigate)(`card-${index - 1}`);
     }
 
-    if (event.nativeEvent.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
-      navigation.navigate(`card-${cardIndex + 1}`);
+    if (event.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
+      runOnJS(navigation.navigate)(`card-${index + 1}`);
     }
-  };
+  });
 
   return (
-    <PanGestureHandler onGestureEvent={event => onSwipe(index, event)}
+    <GestureDetector gesture={onSwipe}
       activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
       <View style={styles.cardScreen}>
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr(e) de cela ?'}
@@ -43,7 +44,7 @@ const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, go
         <CardTemplate index={index} setIsLeftSwipeEnabled={setIsLeftSwipeEnabled}
           setIsRightSwipeEnabled={setIsRightSwipeEnabled} />
       </View>
-    </PanGestureHandler>
+    </GestureDetector>
   );
 };
 
