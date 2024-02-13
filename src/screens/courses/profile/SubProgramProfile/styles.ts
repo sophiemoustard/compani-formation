@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { WHITE, GREY } from '../../../styles/colors';
-import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_BLACK } from '../../../styles/fonts';
+import { WHITE, GREY } from '../../../../styles/colors';
+import { MAIN_MARGIN_LEFT } from '../../../../styles/metrics';
+import { FIRA_SANS_BLACK } from '../../../../styles/fonts';
 
 const imageHeight = 200;
 const styles = StyleSheet.create({
@@ -37,12 +37,6 @@ const styles = StyleSheet.create({
     textShadowColor: GREY[800],
     textShadowRadius: 4,
     textShadowOffset: { width: 0, height: 1 },
-  },
-  separator: {
-    marginBottom: MARGIN.MD,
-  },
-  flatList: {
-    marginVertical: MARGIN.MD,
   },
 });
 

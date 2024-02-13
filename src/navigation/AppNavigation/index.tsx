@@ -15,7 +15,7 @@ import ElearningAbout from '../../screens/explore/ELearningAbout';
 import LearnerCourseProfile from '../../screens/courses/profile/LearnerCourseProfile';
 import TrainerCourseProfile from '../../screens/courses/profile/TrainerCourseProfile';
 import AdminCourseProfile from '../../screens/courses/profile/AdminCourseProfile';
-import SubProgramProfile from '../../screens/courses/SubProgramProfile';
+import SubProgramProfile from '../../screens/courses/profile/SubProgramProfile';
 import ActivityCardContainer from '../../screens/courses/ActivityCardContainer';
 import QuestionnaireCardContainer from '../../screens/courses/QuestionnaireCardContainer';
 import ProfileEdition from '../../screens/profile/ProfileEdition';

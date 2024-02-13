@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
@@ -65,9 +65,9 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           <>
             <View style={commonStyles.sectionDelimiter} />
             <Text style={styles.sectionTitle}>Dates de formation</Text>
-            <FlatList data={formattedDates} keyExtractor={(item, idx) => `${item}${idx}`}
-              renderItem={({ item }) =>
-                <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>} />
+            {formattedDates.map((item, idx) => <View key={idx}>
+              <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>
+            </View>)}
           </>}
         {!!course.trainer && <>
           <View style={commonStyles.sectionDelimiter} />

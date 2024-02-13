@@ -36,7 +36,7 @@ type AppContainerProps = {
 
 const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   const axiosLoggedConfig = { ...config };
-  if (axiosLoggedConfig.headers) axiosLoggedConfig.headers.common['x-access-token'] = token;
+  if (axiosLoggedConfig.headers) axiosLoggedConfig.headers.set({ 'x-access-token': token });
 
   return axiosLoggedConfig;
 };
@@ -103,7 +103,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       const { companiToken: newCompaniToken, companiTokenExpiryDate } = await asyncStorage.getCompaniToken();
       if (asyncStorage.isTokenValid(newCompaniToken, companiTokenExpiryDate)) {
         const config = { ...error.config };
-        if (config.headers) config.headers['x-access-token'] = newCompaniToken || '';
+        if (config.headers) config.headers.set({ 'x-access-token': newCompaniToken || '' });
 
         return axiosLogged.request(config);
       }

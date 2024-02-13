@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, AxiosHeaders } from 'axios';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { AttendanceSheetListResponseType } from '../types/AxiosTypes';
@@ -17,7 +17,7 @@ export default {
   },
   upload: async (data: FormDataType): Promise<void> => {
     const baseURL = await Environment.getBaseUrl();
-    const headers = { 'Content-Type': 'multipart/form-data' };
+    const headers = new AxiosHeaders({ 'Content-Type': 'multipart/form-data' });
     await axiosLogged.post(`${baseURL}/attendancesheets`, data, { headers });
   },
   delete: async (attendanceSheetId: string): Promise<void> => {

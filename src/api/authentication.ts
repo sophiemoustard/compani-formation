@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosHeaders, AxiosResponse } from 'axios';
 import axiosNotLogged from './axios/notLogged';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
@@ -44,7 +44,8 @@ export default {
     const baseURL = await Environment.getBaseUrl({ userId });
     if (!token) await axiosLogged.put(`${baseURL}/users/${userId}/password`, data);
     else {
-      await axiosNotLogged.put(`${baseURL}/users/${userId}/password`, data, { headers: { 'x-access-token': token } });
+      const headers = new AxiosHeaders({ 'x-access-token': token });
+      await axiosNotLogged.put(`${baseURL}/users/${userId}/password`, data, { headers });
     }
   },
   refreshToken: async (payload: { refreshToken: string }): Promise<AuthenticationType> => {

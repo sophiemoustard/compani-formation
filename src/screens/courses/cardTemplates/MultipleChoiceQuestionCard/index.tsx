@@ -1,5 +1,5 @@
 import { useState, useEffect, Dispatch } from 'react';
-import { ScrollView, View, Text, FlatList } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -106,8 +106,7 @@ const MultipleChoiceQuestionCard = ({
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
-          <FlatList data={answers} keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item, index }) => renderItem(item, index)} />
+          {answers.map((item, index) => <View key={index}>{renderItem(item, index)}</View>)}
         </View>
       </ScrollView>
       <View style={style.footerContainer}>

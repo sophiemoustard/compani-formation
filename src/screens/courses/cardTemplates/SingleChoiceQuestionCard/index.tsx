@@ -1,5 +1,5 @@
 import { useState, useEffect, Dispatch } from 'react';
-import { ScrollView, View, Text, FlatList } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -80,8 +80,7 @@ const SingleChoiceQuestionCard = ({
         <Text style={cardsStyle.question}>{card.question}</Text>
         <View>
           <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
-          <FlatList data={answers} keyExtractor={(_, answerIndex) => answerIndex.toString()}
-            renderItem={({ item, index: answerIndex }) => renderItem(item, answerIndex)} />
+          {answers.map((item, answerIndex) => <View key={answerIndex}>{renderItem(item, answerIndex)}</View>)}
         </View>
       </ScrollView>
       <View style={style.footerContainer}>
