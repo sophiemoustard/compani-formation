@@ -42,27 +42,10 @@ const ActivityCardContainer = ({
 }: ActivityCardContainerProps) => {
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
-  const { profileId, mode } = route.params;
   const interval = useRef(null);
-
-  const [count, setCount] = useState<number>(0);
-
-  useEffect(() => {
-    const { remove } = AppState.addEventListener('change', handleAppStateChange);
-    return () => { remove(); };
-  }, [handleAppStateChange]);
-
-  const handleAppStateChange = useCallback((nextAppState) => {
-    if (nextAppState === 'active') startTimer();
-    else stopTimer();
-  }, [stopTimer]);
-
-  const startTimer = () => {
-    interval.current = setInterval(() => setCount(c => c + 1), 1000);
-    return () => clearInterval(interval.current);
-  };
-
-  const stopTimer = useCallback(() => { clearInterval(interval.current); }, []);
+  const timer = useRef<number>(0);
+  const [finalTimer, setFinalTimer] = useState<number>(0);
+  const { profileId, mode } = route.params;
 
   useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
@@ -93,6 +76,26 @@ const ActivityCardContainer = ({
     prefetchImages();
   }, [cards]);
 
+  useEffect(() => {
+    const { remove } = AppState.addEventListener('change', handleAppStateChange);
+    return () => { remove(); };
+  }, [handleAppStateChange]);
+
+  const handleAppStateChange = useCallback((nextAppState) => {
+    if (nextAppState === 'active') startTimer();
+    else stopTimer();
+  }, [stopTimer]);
+
+  const startTimer = () => {
+    interval.current = setInterval(() => { timer.current += 1; }, 1000);
+    return () => clearInterval(interval.current);
+  };
+
+  const stopTimer = useCallback(() => {
+    clearInterval(interval.current);
+    setFinalTimer(timer.current);
+  }, []);
+
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
@@ -101,6 +104,7 @@ const ActivityCardContainer = ({
     } else if (mode === TRAINER) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
     else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
 
+    stopTimer();
     setIsActive(false);
     resetCardReducer();
   };
@@ -123,23 +127,24 @@ const ActivityCardContainer = ({
 
   return isActive
     ? <>
-      <Text>{count}</Text>
+      <Text>{timer.current}</Text>
       <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
         <Tab.Screen key={0} name={'startCard'} >
           {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)}
             startTimer={startTimer} />}
         </Tab.Screen>
         {cards.length > 0 && activity &&
-        <>
-          {cards.map((_, index) => (
-            <Tab.Screen key={index} name={`card-${index}`}>
-              {() => <CardScreen index={index} goBack={goBack} />}
+          <>
+            {cards.map((_, index) => (
+              <Tab.Screen key={index} name={`card-${index}`}>
+                {() => <CardScreen index={index} goBack={goBack} />}
+              </Tab.Screen>
+            ))}
+            <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+              {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} stopTimer={stopTimer}
+                finalTimer={finalTimer} />}
             </Tab.Screen>
-          ))}
-          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} stopTimer={stopTimer} />}
-          </Tab.Screen>
-        </>
+          </>
         }
       </Tab.Navigator>
     </>
