@@ -83,8 +83,8 @@ const ActivityCardContainer = ({
 
   const handleAppStateChange = useCallback((nextAppState) => {
     if (nextAppState === 'active') startTimer();
-    else stopTimer();
-  }, [stopTimer]);
+    else pauseTimer();
+  }, [pauseTimer]);
 
   const startTimer = () => {
     interval.current = setInterval(() => { timer.current += 1; }, 1000);
@@ -95,6 +95,8 @@ const ActivityCardContainer = ({
     clearInterval(interval.current);
     setFinalTimer(timer.current);
   }, []);
+
+  const pauseTimer = useCallback(() => { clearInterval(interval.current); }, []);
 
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
