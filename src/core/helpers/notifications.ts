@@ -31,7 +31,7 @@ export const registerForPushNotificationsAsync = async (): Promise<ExpoTokenAndS
     finalStatus = status;
   }
 
-  const { data: token } = await Notifications.getExpoPushTokenAsync({ experienceId: process.env.EXPERIENCE_ID });
+  const { data: token } = await Notifications.getExpoPushTokenAsync({ projectId: process.env.PROJECT_ID });
   await asyncStorage.setExpoToken(token);
 
   if (finalStatus !== GRANTED) return { token, status: DENIED };

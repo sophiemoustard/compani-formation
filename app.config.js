@@ -44,7 +44,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
-    version: '2.22.0',
+    version: '2.23.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -58,7 +58,7 @@ export default {
     extra: {
       ...ENVIRONMENT_VARIABLES,
       eas: {
-        projectId: '861a9cc8-74bd-4278-9bad-783086e74994',
+        projectId: process.env.PROJECT_ID,
       },
     },
     updates: {
@@ -75,7 +75,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.22.0.1',
+      buildNumber: '2.23.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -93,10 +93,20 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 161,
+      versionCode: 170,
     },
     plugins: [
-      ['expo-build-properties', { ios: { useFrameworks: 'static' } }],
+      [
+        'expo-build-properties',
+        {
+          ios: { useFrameworks: 'static' },
+          android: {
+            enableProguardInReleaseBuilds: true,
+            enableShrinkResourcesInReleaseBuilds: true,
+            extraProguardRules: '-keep public class com.horcrux.svg.** {*;}',
+          },
+        },
+      ],
       'sentry-expo',
     ],
   },

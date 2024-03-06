@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback, Dispatch } from 'react';
-import { View, FlatList, ScrollView, LogBox, BackHandler, ImageSourcePropType } from 'react-native';
+import { View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -19,13 +19,11 @@ import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderStepCell, renderSeparator, getTitle } from '../helper';
+import { getTitle, renderStepList } from '../helper';
 import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
-import { StepType } from '../../../../types/StepTypes';
 
-LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 const ADMIN_SCREEN = 'AdminCourseProfile';
 const ABOUT_SCREEN = 'BlendedAbout';
 
@@ -44,7 +42,7 @@ const TrainerCourseProfile = ({
 }: TrainerCourseProfileProps) => {
   const [course, setCourse] = useState<CourseType | null>(null);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.jpg'));
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
   const [title, setTitle] = useState<string>('');
 
   const isFocused = useIsFocused();
@@ -84,8 +82,6 @@ const TrainerCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderCells = (item: { item: StepType, index: number }) => renderStepCell(item, course, TRAINER, route);
-
   const goTo = (screen: typeof ABOUT_SCREEN | typeof ADMIN_SCREEN) => {
     if (!course) return;
 
@@ -103,8 +99,7 @@ const TrainerCourseProfile = ({
           <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
-        <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
-          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+        {renderStepList(course, TRAINER, route)}
       </ScrollView>
     </SafeAreaView>
   );

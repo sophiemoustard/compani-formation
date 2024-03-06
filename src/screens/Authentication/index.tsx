@@ -48,7 +48,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ImageBackground style={{ ...styles.image }}
-        source={require('../../../assets/images/authentication_background_image.jpg')}>
+        source={require('../../../assets/images/authentication_background_image.webp')}>
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
           <View style={styles.inner}>
             <Text style={styles.title}>

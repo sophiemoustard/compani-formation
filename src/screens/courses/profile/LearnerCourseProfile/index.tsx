@@ -4,9 +4,7 @@ import { useState, useEffect, useCallback, Dispatch } from 'react';
 import {
   View,
   Text,
-  FlatList,
   ScrollView,
-  LogBox,
   BackHandler,
   TouchableOpacity,
   ImageSourcePropType,
@@ -44,13 +42,10 @@ import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderStepCell, renderSeparator, getTitle } from '../helper';
+import { renderStepList, getTitle } from '../helper';
 import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
-import { StepType } from '../../../../types/StepTypes';
-
-LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -69,7 +64,7 @@ const LearnerCourseProfile = ({
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.jpg'));
+    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -145,8 +140,6 @@ const LearnerCourseProfile = ({
     setIsLoading(false);
   };
 
-  const renderCells = (item: { item: StepType, index: number }) => renderStepCell(item, course, LEARNER, route);
-
   const isProgressBarOnTop = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { y } = event.nativeEvent.contentOffset;
     setIsHeaderSticky(y >= progressBarY);
@@ -198,8 +191,7 @@ const LearnerCourseProfile = ({
         </View>
         {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
         {getHeader()}
-        <FlatList style={styles.flatList} data={course.subProgram.steps} keyExtractor={item => item._id}
-          renderItem={renderCells} ItemSeparatorComponent={renderSeparator} />
+        {renderStepList(course, LEARNER, route)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
             disabled={isLoading}>

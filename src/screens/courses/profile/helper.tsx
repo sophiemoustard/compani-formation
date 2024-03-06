@@ -2,26 +2,35 @@
 
 import { View } from 'react-native';
 import get from 'lodash/get';
-import { E_LEARNING, ON_SITE, REMOTE } from '../../../core/data/constants';
+import { E_LEARNING, ON_SITE, REMOTE, TESTER } from '../../../core/data/constants';
 import LiveCell from '../../../components/steps/LiveCell';
 import ELearningCell from '../../../components/ELearningCell';
 import styles from './styles';
 import { BlendedCourseType } from '../../../types/CourseTypes';
 
-export const renderStepCell = ({ item, index }, course, mode, route) => {
+const renderStepCell = (item, index, course, mode, route) => {
   if ([ON_SITE, REMOTE].includes(item.type)) {
     return <LiveCell step={item} slots={course?.slots} index={index} mode={mode} />;
   }
 
   if (item.type === E_LEARNING) {
-    return <ELearningCell step={item} index={index} profileId={route.params.courseId}
+    const profileId = mode === TESTER ? route.params.subProgramId : route.params.courseId;
+
+    return <ELearningCell step={item} index={index} profileId={profileId}
       endedActivity={route.params.endedActivity} mode={mode} />;
   }
 
   return null;
 };
 
-export const renderSeparator = () => <View style={styles.separator} />;
+const renderSeparator = () => <View style={styles.separator} />;
+
+export const renderStepList = (course, mode, route) => <View style={styles.flatList}>
+  {course.subProgram.steps.map((s, index) => <View key={s._id}>
+    {index !== 0 && renderSeparator()}
+    {renderStepCell(s, index, course, mode, route)}
+  </View>)}
+</View>;
 
 export const getTitle = (course) => {
   if (!course) return '';

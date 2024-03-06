@@ -45,7 +45,7 @@ const CompaniDateFactory = (inputDate: DateTime): CompaniDateType => {
     },
 
     toISO() {
-      return _date.toUTC().toISO();
+      return _date.toUTC().toISO() || '';
     },
 
     // QUERY

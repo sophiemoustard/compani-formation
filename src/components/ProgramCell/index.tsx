@@ -26,7 +26,7 @@ const ProgramCell = ({
   const programDescription = program.description || '';
   const source = programImage
     ? { uri: programImage }
-    : require('../../../assets/images/authentication_background_image.jpg');
+    : require('../../../assets/images/authentication_background_image.webp');
 
   const progressStyle = () => {
     switch (progress) {

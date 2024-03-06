@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosHeaders, AxiosResponse } from 'axios';
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
 import { CourseType, BlendedCourseType, actionQueryCourseType } from '../types/CourseTypes';
@@ -36,9 +36,10 @@ export default {
   },
   downloadCertificate: async (courseId: string) : Promise<string> => {
     const baseURL = await Environment.getBaseUrl();
+    const headers = new AxiosHeaders({ Accept: 'application/pdf' });
     const response: PdfResponseType = await axiosLogged.get(
       `${baseURL}/courses/${courseId}/completion-certificates`,
-      { params: { format: PDF }, responseType: 'arraybuffer', headers: { Accept: 'application/pdf' } }
+      { params: { format: PDF }, responseType: 'arraybuffer', headers }
     );
 
     return response.data;

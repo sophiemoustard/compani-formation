@@ -62,7 +62,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
-  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.png'));
+  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.webp'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
@@ -110,7 +110,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
     } else {
-      setSource(require('../../../../assets/images/default_avatar.png'));
+      setSource(require('../../../../assets/images/default_avatar.webp'));
       setHasPhoto(false);
     }
   }, [loggedUser]);
