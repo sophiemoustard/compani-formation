@@ -81,6 +81,8 @@ const ActivityCardContainer = ({
     return () => { remove(); };
   }, [handleAppStateChange]);
 
+  const pauseTimer = useCallback(() => { clearInterval(interval.current); }, []);
+
   const handleAppStateChange = useCallback((nextAppState) => {
     if (nextAppState === 'active') startTimer();
     else pauseTimer();
@@ -95,34 +97,40 @@ const ActivityCardContainer = ({
     setFinalTimer(timer.current);
   }, []);
 
-  const pauseTimer = useCallback(() => { clearInterval(interval.current); }, []);
-
-  const goBack = async () => {
-    if (exitConfirmationModal) setExitConfirmationModal(false);
-
+  const navigateNext = useCallback(() => {
     if (mode === LEARNER) {
       navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
-    } else if (mode === TRAINER) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
-    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
+    } else if (mode === TRAINER) {
+      navigation.navigate('TrainerCourseProfile', { courseId: profileId });
+    } else {
+      navigation.navigate('SubProgramProfile', { subProgramId: profileId });
+    }
+  }, [activity?._id, mode, navigation, profileId]);
 
-    stopTimer();
-    setIsActive(false);
-    resetCardReducer();
-  };
+  const goBack = useCallback(
+    async () => {
+      if (exitConfirmationModal) setExitConfirmationModal(false);
 
-  const hardwareBackPress = () => {
+      stopTimer();
+      navigateNext();
+      setIsActive(false);
+      resetCardReducer();
+    },
+    [exitConfirmationModal, navigateNext, resetCardReducer, setExitConfirmationModal, stopTimer]
+  );
+
+  const hardwareBackPress = useCallback(() => {
     if (cardIndex === null) goBack();
     else setExitConfirmationModal(true);
 
     return true;
-  };
+  }, [cardIndex, goBack, setExitConfirmationModal]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardIndex]);
+  }, [hardwareBackPress]);
 
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
