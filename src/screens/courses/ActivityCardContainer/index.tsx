@@ -88,7 +88,6 @@ const ActivityCardContainer = ({
 
   const startTimer = () => {
     interval.current = setInterval(() => { timer.current += 1; }, 1000);
-    return () => clearInterval(interval.current);
   };
 
   const stopTimer = useCallback(() => {
