@@ -10,14 +10,14 @@ interface StartCardProps {
   title: string,
   isLoading: boolean,
   goBack: () => void,
-  startTimer: () => void,
+  startTimer?: () => void,
 }
 
 const StartCard = ({ title, isLoading, goBack, startTimer }: StartCardProps) => {
   const navigation = useNavigation();
 
   const onPress = () => {
-    startTimer();
+    if (startTimer) startTimer();
     navigation.navigate('card-0');
   };
 
