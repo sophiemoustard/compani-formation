@@ -2,7 +2,7 @@
 
 import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
-import { AppState, BackHandler, Image } from 'react-native';
+import { AppState, AppStateStatus, BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -42,7 +42,7 @@ const ActivityCardContainer = ({
 }: ActivityCardContainerProps) => {
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
-  const interval = useRef(null);
+  const interval = useRef<ReturnType<typeof setInterval> | null>(null);
   const timer = useRef<number>(0);
   const [finalTimer, setFinalTimer] = useState<number>(0);
   const { profileId, mode } = route.params;
@@ -76,24 +76,24 @@ const ActivityCardContainer = ({
     prefetchImages();
   }, [cards]);
 
+  const pauseTimer = useCallback(() => { if (interval.current) clearInterval(interval.current); }, []);
+
+  const handleAppStateChange = useCallback((nextAppState: AppStateStatus) => {
+    if (nextAppState === 'active') startTimer();
+    else pauseTimer();
+  }, [pauseTimer]);
+
   useEffect(() => {
     const { remove } = AppState.addEventListener('change', handleAppStateChange);
     return () => { remove(); };
   }, [handleAppStateChange]);
-
-  const pauseTimer = useCallback(() => { clearInterval(interval.current); }, []);
-
-  const handleAppStateChange = useCallback((nextAppState) => {
-    if (nextAppState === 'active') startTimer();
-    else pauseTimer();
-  }, [pauseTimer]);
 
   const startTimer = () => {
     interval.current = setInterval(() => { timer.current += 1; }, 1000);
   };
 
   const stopTimer = useCallback(() => {
-    clearInterval(interval.current);
+    if (interval.current) clearInterval(interval.current);
     setFinalTimer(timer.current);
   }, []);
 
