@@ -1,8 +1,8 @@
 // @ts-nocheck
 
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
-import { BackHandler, Image } from 'react-native';
+import { AppState, AppStateStatus, BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { connect } from 'react-redux';
@@ -42,6 +42,9 @@ const ActivityCardContainer = ({
 }: ActivityCardContainerProps) => {
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
+  const interval = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timer = useRef<number>(0);
+  const [finalTimer, setFinalTimer] = useState<number>(0);
   const { profileId, mode } = route.params;
 
   useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
@@ -73,38 +76,69 @@ const ActivityCardContainer = ({
     prefetchImages();
   }, [cards]);
 
-  const goBack = async () => {
-    if (exitConfirmationModal) setExitConfirmationModal(false);
+  const pauseTimer = useCallback(() => { if (interval.current) clearInterval(interval.current); }, []);
 
-    if (mode === LEARNER) {
-      navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
-    } else if (mode === TRAINER) navigation.navigate('TrainerCourseProfile', { courseId: profileId });
-    else navigation.navigate('SubProgramProfile', { subProgramId: profileId });
+  const handleAppStateChange = useCallback((nextAppState: AppStateStatus) => {
+    if (nextAppState === 'active') startTimer();
+    else pauseTimer();
+  }, [pauseTimer]);
 
-    setIsActive(false);
-    resetCardReducer();
+  useEffect(() => {
+    const { remove } = AppState.addEventListener('change', handleAppStateChange);
+    return () => { remove(); };
+  }, [handleAppStateChange]);
+
+  const startTimer = () => {
+    interval.current = setInterval(() => { timer.current += 1; }, 1000);
   };
 
-  const hardwareBackPress = () => {
+  const stopTimer = useCallback(() => {
+    if (interval.current) clearInterval(interval.current);
+    setFinalTimer(timer.current);
+  }, []);
+
+  const navigateNext = useCallback(() => {
+    if (mode === LEARNER) {
+      navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedActivity: activity?._id });
+    } else if (mode === TRAINER) {
+      navigation.navigate('TrainerCourseProfile', { courseId: profileId });
+    } else {
+      navigation.navigate('SubProgramProfile', { subProgramId: profileId });
+    }
+  }, [activity?._id, mode, navigation, profileId]);
+
+  const goBack = useCallback(
+    async () => {
+      if (exitConfirmationModal) setExitConfirmationModal(false);
+
+      stopTimer();
+      navigateNext();
+      setIsActive(false);
+      resetCardReducer();
+    },
+    [exitConfirmationModal, navigateNext, resetCardReducer, setExitConfirmationModal, stopTimer]
+  );
+
+  const hardwareBackPress = useCallback(() => {
     if (cardIndex === null) goBack();
     else setExitConfirmationModal(true);
 
     return true;
-  };
+  }, [cardIndex, goBack, setExitConfirmationModal]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardIndex]);
+  }, [hardwareBackPress]);
 
   const Tab = createMaterialTopTabNavigator<RootCardParamList>();
 
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
       <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)} />}
+        {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)}
+          startTimer={startTimer} />}
       </Tab.Screen>
       {cards.length > 0 && activity &&
         <>
@@ -114,7 +148,8 @@ const ActivityCardContainer = ({
             </Tab.Screen>
           ))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} />}
+            {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} stopTimer={stopTimer}
+              finalTimer={finalTimer} />}
           </Tab.Screen>
         </>
       }

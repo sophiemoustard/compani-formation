@@ -1,4 +1,4 @@
-import { Dispatch, useEffect } from 'react';
+import { Dispatch, useCallback, useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,14 +15,18 @@ import { achievementJingle } from '../../../../core/helpers/utils';
 import { LEARNER } from '../../../../core/data/constants';
 import { CourseModeType } from '../../../../types/CourseTypes';
 import { ActionType } from '../../../../context/types';
+import CompaniDuration from '../../../../core/helpers/dates/companiDurations';
+import { formatSecondsToISODuration } from '../../../../core/helpers/dates/utils';
 
 interface ActivityEndCardProps {
   mode: CourseModeType,
   activity: ActivityType,
   questionnaireAnswersList: QuestionnaireAnswersType[],
   score: number,
+  finalTimer: number,
   setCardIndex: (index: number | null) => void,
   goBack: () => void,
+  stopTimer: () => void,
 }
 
 const ActivityEndCard = ({
@@ -30,13 +34,15 @@ const ActivityEndCard = ({
   activity,
   questionnaireAnswersList,
   score,
+  finalTimer,
   setCardIndex,
   goBack,
+  stopTimer,
 }: ActivityEndCardProps) => {
   const isFocused = useIsFocused();
 
-  useEffect(() => {
-    async function saveHistory() {
+  const saveHistory = useCallback(
+    async (finalScore: number, finalQuestionnaireAnswersList: QuestionnaireAnswersType[], numberDuration: number) => {
       const userId = await asyncStorage.getUserId();
 
       if (!userId || !activity._id) return;
@@ -44,19 +50,27 @@ const ActivityEndCard = ({
       const payload = {
         activity: activity._id,
         user: userId,
-        score,
-        ...(questionnaireAnswersList?.length && { questionnaireAnswersList }),
+        score: finalScore,
+        duration: CompaniDuration(formatSecondsToISODuration(numberDuration)).toISO(),
+        ...(finalQuestionnaireAnswersList?.length && { questionnaireAnswersList: finalQuestionnaireAnswersList }),
       };
 
       await ActivityHistories.createActivityHistories(payload);
-    }
+    },
+    [activity._id]
+  );
 
+  useEffect(() => {
     if (isFocused) {
-      if (mode === LEARNER) saveHistory();
+      stopTimer();
       setCardIndex(null);
       achievementJingle();
     }
-  }, [isFocused, activity, questionnaireAnswersList, setCardIndex, score, mode]);
+  }, [isFocused, setCardIndex, mode, stopTimer, saveHistory]);
+
+  useEffect(() => {
+    if (finalTimer && mode === LEARNER) saveHistory(score, questionnaireAnswersList, finalTimer);
+  }, [finalTimer, mode, questionnaireAnswersList, saveHistory, score]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
