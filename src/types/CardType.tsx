@@ -53,7 +53,7 @@ export type SurveyType = {
   template: string,
   question: string,
   isMandatory: boolean,
-  label?: { left: string, right: string},
+  labels?: { 1: string, 5: string},
 }
 
 export type TitleTextType = {
