@@ -1,14 +1,13 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList } from 'react-native-gesture-handler';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';

@@ -1,14 +1,6 @@
-import { useRef } from 'react';
-import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  HandlerStateChangeEvent,
-  PanGestureHandlerEventPayload,
-  PanGestureHandler,
-  PinchGestureHandler,
-  PinchGestureHandlerEventPayload,
-  State,
-} from 'react-native-gesture-handler';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { WHITE } from '../../styles/colors';
 import { ICON } from '../../styles/metrics';
 import FeatherButton from '../icons/FeatherButton';
@@ -21,50 +13,36 @@ interface ZoomImageProps {
 }
 
 const ZoomImage = ({ image, setZoomImage }: ZoomImageProps) => {
-  const lastScale = useRef<number>(1);
-  const baseScale = new Animated.Value(1);
-  const pinchScale = new Animated.Value(1);
-  const scale = Animated.multiply(baseScale, pinchScale);
-  const translate = new Animated.ValueXY({ x: 0, y: 0 });
-  const pan = useRef<PanGestureHandler>(null);
-  const pinch = useRef<PinchGestureHandler>(null);
+  const baseScale = useSharedValue(1);
+  const lastScale = useSharedValue(1);
+  const translate = useSharedValue({ x: 0, y: 0 });
+  const imageLastOffset = useSharedValue({ x: 0, y: 0 });
 
-  const handlePinch = Animated.event([{ nativeEvent: { scale: pinchScale } }], { useNativeDriver: false });
-  const handlePan = Animated.event(
-    [{ nativeEvent: { translationX: translate.x, translationY: translate.y } }],
-    { useNativeDriver: false }
-  );
+  const pinchHandler = Gesture.Pinch().onUpdate((event) => { baseScale.value = lastScale.value * event.scale; });
 
-  const onPinchStateChange = (event: HandlerStateChangeEvent<PinchGestureHandlerEventPayload>) => {
-    if (event.nativeEvent.oldState === State.ACTIVE) {
-      lastScale.current *= event.nativeEvent.scale;
-      baseScale.setValue(lastScale.current);
-      pinchScale.setValue(1);
-    }
-  };
+  const panHandler = Gesture
+    .Pan()
+    .onUpdate((event) => {
+      translate.value = {
+        x: imageLastOffset.value.x + event.translationX,
+        y: imageLastOffset.value.y + event.translationY,
+      };
+    })
+    .onEnd(() => { imageLastOffset.value = { x: translate.value.x, y: translate.value.y }; });
 
-  const onPanStateChange = (event: HandlerStateChangeEvent<PanGestureHandlerEventPayload>) => {
-    translate.extractOffset();
-    if (event.nativeEvent.oldState === State.ACTIVE) {
-      Animated.spring(translate.x, { toValue: 1, useNativeDriver: false }).start();
-      Animated.spring(translate.y, { toValue: 1, useNativeDriver: false }).start();
-    }
-  };
+  const composed = Gesture.Race(pinchHandler, panHandler);
 
-  const transform = [{ scale }, { translateX: translate.x }, { translateY: translate.y }];
+  const transform = useAnimatedStyle(() => ({
+    transform: [{ translateX: translate.value.x }, { translateY: translate.value.y }, { scale: baseScale.value }],
+  }));
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <FeatherButton name='x-circle' onPress={() => setZoomImage(false)} size={ICON.LG} color={WHITE}
         style={styles.goBack} />
-      <PanGestureHandler onGestureEvent={handlePan} onHandlerStateChange={onPanStateChange} ref={pan}
-        simultaneousHandlers={pinch} maxPointers={1}>
-        <PinchGestureHandler onGestureEvent={handlePinch} onHandlerStateChange={onPinchStateChange} ref={pinch}
-          simultaneousHandlers={pan}>
-          {!!image &&
-            <Animated.Image source={image} style={[cardsStyle.media, styles.media, { transform }]} />}
-        </PinchGestureHandler>
-      </PanGestureHandler>
+      <GestureDetector gesture={composed}>
+        <Animated.Image source={image} style={[cardsStyle.media, styles.media, transform]} />
+      </GestureDetector>
     </SafeAreaView>);
 };
 
