@@ -106,7 +106,7 @@
     "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.4.2",
     "@types/mime": "^3.0.1",
-    "@types/qs": "^6.9.7",
+    "@types/qs": "^6.9.14",
     "@types/react": "~18.2.14",
     "@types/react-dom": "~18.0.8",
     "@types/react-native-svg-charts": "^5.0.12",
