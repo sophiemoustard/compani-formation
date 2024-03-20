@@ -107,7 +107,7 @@ export default {
           },
         },
       ],
-      'sentry-expo',
+      ['@sentry/react-native/expo', { organization: 'alenvi', project: 'mobile' }],
       'expo-font',
     ],
   },
