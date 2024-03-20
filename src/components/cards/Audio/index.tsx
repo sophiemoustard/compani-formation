@@ -89,7 +89,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     <View style={styles.container}>
       <View style={styles.player}>
         {isLoaded
-          ? <IoniconsButton name={isPlaying ? 'ios-pause' : 'ios-play'} size={ICON.MD} onPress={playOrPauseAudio}
+          ? <IoniconsButton name={isPlaying ? 'pause' : 'play'} size={ICON.MD} onPress={playOrPauseAudio}
             color={GREY[800]} style={styles.icon} />
           : <ActivityIndicator style={[commonStyle.disabled, styles.icon]} color={GREY[800]} size={ICON.MD} />}
         <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>

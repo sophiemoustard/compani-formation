@@ -108,6 +108,7 @@ export default {
         },
       ],
       'sentry-expo',
+      'expo-font',
     ],
   },
 };
