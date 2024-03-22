@@ -107,6 +107,7 @@ export default {
           },
         },
       ],
+      ['expo-dev-launcher', { launchModeExperimental: 'launcher' }],
       ['@sentry/react-native/expo', { organization: 'alenvi', project: 'mobile' }],
       'expo-font',
     ],
