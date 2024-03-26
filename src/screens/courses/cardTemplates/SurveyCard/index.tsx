@@ -61,12 +61,10 @@ const SurveyCard = ({
         <View style={styles.surveyScoreContainer}>
           <SurveyScoreSelector onPressScore={onPressScore} selectedScore={selectedScore} />
           <View style={styles.labelContainer}>
-            {card.labels && card.labels[1] && card.labels[5] && (
-              <>
-                <Text style={{ ...styles.text, ...styles.textLeft }}>{card.labels[1]}</Text>
-                <Text style={{ ...styles.text, ...styles.textRight }}>{card.labels[5]}</Text>
-              </>
-            )}
+            {card.labels && Object.keys(card.labels).length &&
+              Object.keys(card.labels)
+                .map((labelKey, i) => <Text style={styles.text} key={i}>{labelKey} : {card.labels[labelKey]}</Text>)
+            }
           </View>
         </View>
       </View>
