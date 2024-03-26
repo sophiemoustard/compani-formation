@@ -24,18 +24,10 @@ const styles = StyleSheet.create({
   labelContainer: {
     paddingTop: PADDING.XL,
     paddingHorizontal: PADDING.LG,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   text: {
-    width: 88,
     color: PINK[500],
-  },
-  textLeft: {
-    textAlign: 'left',
-  },
-  textRight: {
-    textAlign: 'right',
+    margin: MARGIN.XS,
   },
 });
 
