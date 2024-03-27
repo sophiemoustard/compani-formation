@@ -70,10 +70,10 @@ const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
       ratio ={ratio} onCameraReady={setScreenDimension}>
       <View style={styles.buttons}>
         <IoniconsButton disabled={cameraType === front} onPress={onHandleFlashMode} style={styles.flash} color={WHITE}
-          size={ICON.XL} name={flashMode === on ? 'md-flash' : 'md-flash-off'}/>
+          size={ICON.XL} name={flashMode === on ? 'flash' : 'flash-off'}/>
         <TouchableOpacity onPress={onTakePicture} style={styles.takePicture} />
         <IoniconsButton style={styles.cameraType} color={WHITE} size={ICON.XL} onPress={onHandleCameraType}
-          name={cameraType === front ? 'ios-camera-reverse' : 'ios-camera'} />
+          name={cameraType === front ? 'camera-reverse' : 'camera'} />
       </View>
     </Camera>
   );

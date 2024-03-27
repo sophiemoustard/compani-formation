@@ -1,9 +1,9 @@
 import { View } from 'react-native';
-import { ProgressCircle } from 'react-native-svg-charts';
 import { Feather } from '@expo/vector-icons';
+import ProgressCircle from './ProgressCircle';
 import styles from './styles';
-import { BORDER_RADIUS, ICON } from '../../styles/metrics';
-import { PINK, WHITE, YELLOW } from '../../styles/colors';
+import { ICON } from '../../styles/metrics';
+import { PINK, WHITE } from '../../styles/colors';
 
 interface ProgressPieChartProps {
   progress: number | null,
@@ -17,8 +17,7 @@ const ProgressPieChart = ({ progress }: ProgressPieChartProps) => (
         </View>}
     {!!progress && progress < 1 &&
         <View style={styles.progressContainer}>
-          <ProgressCircle style={styles.progress} progress={progress}
-            progressColor={YELLOW[500]} backgroundColor='transparent' strokeWidth={4} cornerRadius={BORDER_RADIUS.LG}/>
+          <ProgressCircle progress={progress} strokeWidth={4} size={16} />
         </View>}
     {progress === 1 &&
         <View style={styles.finishedContainer}>

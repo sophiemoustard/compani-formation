@@ -5,7 +5,7 @@ import { createStore } from 'redux';
 import * as Notifications from 'expo-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import AppContainer from '../AppContainer';
 import reducers from '../store/index';
@@ -58,4 +58,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Sentry.wrap(App);
