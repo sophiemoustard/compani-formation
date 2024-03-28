@@ -42,6 +42,7 @@ export default {
   expo: {
     name: variables.appName,
     slug: 'compani',
+    scheme: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android'],
     version: '2.24.0',
@@ -110,6 +111,7 @@ export default {
       ['expo-dev-launcher', { launchModeExperimental: 'launcher' }],
       ['@sentry/react-native/expo', { organization: 'alenvi', project: 'mobile' }],
       'expo-font',
+      'expo-router',
     ],
   },
 };

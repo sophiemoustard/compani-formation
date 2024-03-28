@@ -10,6 +10,7 @@
     "ts-lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
     "eas-build-pre-install": "echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json"
   },
+  "main": "expo-router/entry",
   "jest": {
     "preset": "jest-expo",
     "moduleFileExtensions": [
@@ -69,11 +70,14 @@
     "expo-image-picker": "~14.7.1",
     "expo-intent-launcher": "~10.11.0",
     "expo-linear-gradient": "~12.7.2",
+    "expo-linking": "~6.2.2",
     "expo-notifications": "~0.27.6",
     "expo-print": "~12.8.1",
+    "expo-router": "~3.4.8",
     "expo-screen-orientation": "~6.4.1",
     "expo-sharing": "~11.10.0",
     "expo-splash-screen": "~0.26.4",
+    "expo-status-bar": "~1.11.1",
     "expo-system-ui": "~2.9.3",
     "expo-updates": "~0.24.12",
     "luxon": "^3.4.4",
