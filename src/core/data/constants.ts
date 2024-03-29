@@ -60,6 +60,7 @@ export const QUESTION_ANSWER = 'question_answer';
 export const PUBLISHED = 'published';
 export const EXPECTATIONS = 'expectations';
 export const END_OF_COURSE = 'end_of_course';
+export const SELF_POSITIONNING = 'self_positionning';
 
 // ROLE
 export const VENDOR_ADMIN = 'vendor_admin';
