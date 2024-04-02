@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, Text, View, Linking } from 'react-native';
-import { EXPECTATIONS } from '../../core/data/constants';
+import { END_OF_COURSE, EXPECTATIONS } from '../../core/data/constants';
 import { capitalizeFirstLetter } from '../../core/helpers/utils';
 import Environment from '../../../environment';
 import styles from './styles';
@@ -27,8 +27,19 @@ const QuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: Quest
     defineURL();
   }, [courseId, questionnaireId]);
 
+  const getTitle = (questionnaireType: string) => {
+    switch (questionnaireType) {
+      case EXPECTATIONS:
+        return 'de recueil des attentes';
+      case END_OF_COURSE:
+        return 'de fin de formation';
+      default:
+        return 'd\'auto-positionnement';
+    }
+  };
+
   useEffect(() => {
-    const title = type === EXPECTATIONS ? 'recueil des attentes' : 'fin de formation';
+    const title = getTitle(type);
     setQuestionnaireTypeTitle(title);
     setQrCodePlaceHolder(`QR Code pour répondre au questionnaire de ${title}`);
   }, [type]);
@@ -38,7 +49,7 @@ const QuestionnaireQRCodeCell = ({ img, type, questionnaireId, courseId }: Quest
       <Text style={styles.title}>{capitalizeFirstLetter(questionnaireTypeTitle)}</Text>
       <Image source={{ uri: img }} style={styles.image} alt={qrCodePlaceHolder}></Image>
       <TouchableOpacity onPress={() => Linking.openURL(url)}>
-        <Text style={styles.link}>Lien pour répondre au questionnaire de {questionnaireTypeTitle}</Text>
+        <Text style={styles.link}>Lien pour répondre au questionnaire {questionnaireTypeTitle}</Text>
       </TouchableOpacity>
     </View>
   );

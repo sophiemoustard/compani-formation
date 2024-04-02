@@ -7,6 +7,7 @@ import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
+import keyBy from 'lodash/keyBy';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
@@ -23,8 +24,6 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
-  END_OF_COURSE,
-  EXPECTATIONS,
   IMAGE,
   INTRA,
   INTER_B2B,
@@ -32,7 +31,6 @@ import {
   LONG_FIRSTNAME_LONG_LASTNAME,
   OPERATIONS,
   PDF,
-  PUBLISHED,
   SHORT_FIRSTNAME_LONG_LASTNAME,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
@@ -98,10 +96,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
-  const [expectationsQuestionnaireId, setExpectationsQuestionnaireId] = useState<string>('');
-  const [expectationsQRCode, setExpectationsQRCode] = useState<string>('');
-  const [endOfCourseQuestionnaireId, setEndOfCourseQuestionnaireId] = useState<string>('');
-  const [endOfCourseQRCode, setEndOfCourseQRCode] = useState<string>('');
+  const [questionnaireLinks, setQuestionnaireLinks] = useState([]);
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
@@ -110,29 +105,20 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const getQuestionnairesQRCode = async (courseId: string) => {
     try {
-      const publishedQuestionnaires = await Questionnaires.list({ status: PUBLISHED });
+      const publishedQuestionnaires = await Questionnaires.list({ course: courseId });
+      const questionnairesByType = keyBy(publishedQuestionnaires, 'type');
 
-      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
-      if (expectationsQuestionnaire) {
-        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaire._id, { course: courseId });
+      const promises = Object.entries(questionnairesByType).map(async ([type, questionnaire]) => {
+        const img = await Questionnaires.getQRCode(questionnaire._id, { course: courseId });
+        return { _id: questionnaire._id, type, img };
+      });
 
-        setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
-        setExpectationsQRCode(expectationsCode);
-      }
+      const questionnairesLinks = await Promise.all(promises);
 
-      const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
-      if (endOfCourseQuestionnaire) {
-        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaire._id, { course: courseId });
-
-        setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
-        setEndOfCourseQRCode(endOfCourseCode);
-      }
+      setQuestionnaireLinks(questionnairesLinks);
     } catch (e: any) {
       console.error(e);
-      setExpectationsQuestionnaireId('');
-      setExpectationsQRCode('');
-      setEndOfCourseQuestionnaireId('');
-      setEndOfCourseQRCode('');
+      setQuestionnaireLinks([]);
     }
   };
 
@@ -271,10 +257,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
-          {!!expectationsQuestionnaireId && <QuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
-            courseId={course._id} questionnaireId={expectationsQuestionnaireId} />}
-          {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
-            courseId={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
+          {!!questionnaireLinks.length &&
+            questionnaireLinks.map((q, idx) => (<QuestionnaireQRCodeCell key={idx} img={q.img} type={q.type}
+              courseId={course._id} questionnaireId={q._id} />))}
         </View>
         {course.type !== INTER_B2B && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
