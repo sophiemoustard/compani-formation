@@ -7,7 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
-import AppNavigation from '../navigation/AppNavigation';
+import { Slot } from 'expo-router';
 import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
 import MainActions from '../store/main/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
@@ -193,7 +193,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
       <SafeAreaProvider onLayout={onLayout}>
-        <AppNavigation />
+        <Slot />
       </SafeAreaProvider>
     </>
   );

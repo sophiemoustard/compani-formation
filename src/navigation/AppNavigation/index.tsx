@@ -18,8 +18,8 @@ import AdminCourseProfile from '../../screens/courses/profile/AdminCourseProfile
 import SubProgramProfile from '../../screens/courses/profile/SubProgramProfile';
 import ActivityCardContainer from '../../screens/courses/ActivityCardContainer';
 import QuestionnaireCardContainer from '../../screens/courses/QuestionnaireCardContainer';
-import ProfileEdition from '../../screens/profile/ProfileEdition';
-import PasswordEdition from '../../screens/profile/PasswordEdition';
+import ProfileEdition from '../../app/home/profile/ProfileEdition';
+import PasswordEdition from '../../app/home/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
 import { RootStackParamList } from '../../types/NavigationType';
 

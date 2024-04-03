@@ -7,34 +7,34 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
-import { PictureType } from '../../../types/PictureTypes';
-import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
-import { formatPhone, getCourseProgress } from '../../../core/helpers/utils';
-import NiSecondaryButton from '../../../components/form/SecondaryButton';
-import NiPrimaryButton from '../../../components/form/PrimaryButton';
-import commonStyles from '../../../styles/common';
-import { AuthContextType, Context as AuthContext } from '../../../context/AuthContext';
-import Courses from '../../../api/courses';
-import CompanyLinkRequests from '../../../api/companyLinkRequests';
-import Users from '../../../api/users';
-import Companies from '../../../api/companies';
-import { PINK } from '../../../styles/colors';
-import { UserType } from '../../../types/UserType';
-import { HIT_SLOP, ICON } from '../../../styles/metrics';
-import FeatherButton from '../../../components/icons/FeatherButton';
-import PictureModal from '../../../components/PictureModal';
-import CompanySearchModal from '../../../components/CompanySearchModal';
-import DeletionConfirmationModal from '../../../components/DeletionConfirmationModal';
-import UserAccountDeletedModal from '../../../components/UserAccountDeletedModal';
-import HomeScreenFooter from '../../../components/HomeScreenFooter';
-import CameraModal from '../../../components/camera/CameraModal';
-import ImagePickerManager from '../../../components/ImagePickerManager';
-import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
-import { formatImage, formatPayload } from '../../../core/helpers/pictures';
-import MainActions from '../../../store/main/actions';
-import { PEDAGOGY } from '../../../core/data/constants';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
-import { CompanyType } from '../../../types/CompanyType';
+import { PictureType } from '../../../../types/PictureTypes';
+import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
+import { formatPhone, getCourseProgress } from '../../../../core/helpers/utils';
+import NiSecondaryButton from '../../../../components/form/SecondaryButton';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
+import commonStyles from '../../../../styles/common';
+import { AuthContextType, Context as AuthContext } from '../../../../context/AuthContext';
+import Courses from '../../../../api/courses';
+import CompanyLinkRequests from '../../../../api/companyLinkRequests';
+import Users from '../../../../api/users';
+import Companies from '../../../../api/companies';
+import { PINK } from '../../../../styles/colors';
+import { UserType } from '../../../../types/UserType';
+import { HIT_SLOP, ICON } from '../../../../styles/metrics';
+import FeatherButton from '../../../../components/icons/FeatherButton';
+import PictureModal from '../../../../components/PictureModal';
+import CompanySearchModal from '../../../../components/CompanySearchModal';
+import DeletionConfirmationModal from '../../../../components/DeletionConfirmationModal';
+import UserAccountDeletedModal from '../../../../components/UserAccountDeletedModal';
+import HomeScreenFooter from '../../../../components/HomeScreenFooter';
+import CameraModal from '../../../../components/camera/CameraModal';
+import ImagePickerManager from '../../../../components/ImagePickerManager';
+import ValidationModal from '../../../../components/companyLinkRequest/ValidationModal';
+import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
+import MainActions from '../../../../store/main/actions';
+import { PEDAGOGY } from '../../../../core/data/constants';
+import { ActionType, ActionWithoutPayloadType, StateType } from '../../../../types/store/StoreType';
+import { CompanyType } from '../../../../types/CompanyType';
 import styles from './styles';
 
 interface ProfileProps extends CompositeScreenProps<
@@ -50,7 +50,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
   const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();
-  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.webp'));
+  const [source, setSource] = useState(require('../../../../../assets/images/default_avatar.webp'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
@@ -94,7 +94,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
     } else {
-      setSource(require('../../../../assets/images/default_avatar.webp'));
+      setSource(require('../../../../../assets/images/default_avatar.webp'));
       setHasPhoto(false);
     }
   }, [loggedUser]);
@@ -175,7 +175,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
             <View style={styles.identityContainer}>
               <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
-                source={require('../../../../assets/images/profile_background.webp')}>
+                source={require('../../../../../assets/images/profile_background.webp')}>
                 <TouchableOpacity onPress={() => setPictureModal(true)}>
                   <Image style={styles.profileImage} source={source} />
                   <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
@@ -228,7 +228,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             style={styles.legalNoticeContainer}>
             <Text style={styles.legalNotice}>Supprimer mon compte</Text>
           </TouchableOpacity>}
-        <HomeScreenFooter source={require('../../../../assets/images/aux_joie.webp')} />
+        <HomeScreenFooter source={require('../../../../../assets/images/aux_joie.webp')} />
         <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
           openCamera={() => setCamera(true)} deletePicture={deletePicture}
           openImagePickerManager={() => setImagePickerManager(true)} />
