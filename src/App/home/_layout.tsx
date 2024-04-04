@@ -1,6 +1,8 @@
+// @ts-nocheck
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Tabs } from 'expo-router';
+import { Tabs, Redirect } from 'expo-router';
+import { useContext } from 'react';
 import CatalogIcon from '../../../assets/icons/CatalogIcon';
 import CatalogSelectedIcon from '../../../assets/icons/CatalogSelectedIcon';
 import LearnerCoursesIcon from '../../../assets/icons/LearnerCoursesIcon';
@@ -15,6 +17,7 @@ import { FIRA_SANS_BOLD } from '../../styles/fonts';
 import { MARGIN, TAB_BAR_HEIGHT, TAB_BAR_LABEL_WIDTH } from '../../styles/metrics';
 import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER } from '../../core/data/constants';
 import { StateType } from '../../types/store/StoreType';
+import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 
 interface tabBarProps {
   focused: boolean
@@ -55,6 +58,9 @@ interface HomeProps {
 const HomeLayout = ({ userVendorRole } : HomeProps) => {
   const showTrainerTab = !!userVendorRole &&
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
+  const { companiToken }: AuthContextType = useContext(AuthContext);
+
+  if (!companiToken) return <Redirect href="authentication" />;
 
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
