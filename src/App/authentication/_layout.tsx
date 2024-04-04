@@ -6,7 +6,7 @@ import { AuthContextType, Context as AuthContext } from '../../context/AuthConte
 const AuthenticationLayout = () => {
   const { companiToken }: AuthContextType = useContext(AuthContext);
 
-  if (companiToken) return <Redirect href="home" />;
+  if (companiToken) return <Redirect href="Home" />;
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

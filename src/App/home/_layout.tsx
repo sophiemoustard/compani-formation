@@ -60,15 +60,15 @@ const HomeLayout = ({ userVendorRole } : HomeProps) => {
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
   const { companiToken }: AuthContextType = useContext(AuthContext);
 
-  if (!companiToken) return <Redirect href="authentication" />;
+  if (!companiToken) return <Redirect href="Authentication" />;
 
   return (
     <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
-      initialRouteName="learnerCourses">
-      <Tabs.Screen name="catalog" options={{ tabBarIcon: catalogIcon }} />
-      <Tabs.Screen name="learnerCourses" options={{ tabBarIcon: learnerCoursesIcon }} />
-      <Tabs.Screen name='trainerCourses'
-        options={{ tabBarIcon: trainerCoursesIcon, href: !showTrainerTab ? null : '/home/trainerCourses' }} />
+      initialRouteName="LearnerCourses">
+      <Tabs.Screen name="Catalog" options={{ tabBarIcon: catalogIcon }} />
+      <Tabs.Screen name="LearnerCourses" options={{ tabBarIcon: learnerCoursesIcon }} />
+      <Tabs.Screen name='TrainerCourses'
+        options={{ tabBarIcon: trainerCoursesIcon, href: !showTrainerTab ? null : '/Home/TrainerCourses' }} />
       <Tabs.Screen name="profile" options={{ tabBarIcon: profileIcon }} />
     </Tabs>
   );

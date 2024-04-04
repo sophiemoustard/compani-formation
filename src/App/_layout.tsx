@@ -53,8 +53,8 @@ const MainLayout = () => {
         <AppContainer onLayout={onLayoutRootView} >
           <Stack>
             <Stack.Screen name='index'/>
-            <Stack.Screen name='home' />
-            <Stack.Screen name='authentication'/>
+            <Stack.Screen name='Home' />
+            <Stack.Screen name='Authentication'/>
           </Stack>
         </AppContainer>
       </ReduxProvider>

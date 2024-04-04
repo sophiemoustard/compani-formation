@@ -19,9 +19,9 @@ import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../
 import { NextSlotsStepType } from '../../../types/StepTypes';
 import { getCourseProgress, getTheoreticalDuration } from '../../../core/helpers/utils';
 import { LEARNER, PEDAGOGY } from '../../../core/data/constants';
-import styles from '../../../screens/list/styles';
-import { formatNextSteps, getElearningSteps } from '../../../screens/list/helper';
-import LearnerEmptyState from '../../../screens/list/LearnerEmptyState';
+import styles from './styles';
+import { formatNextSteps, getElearningSteps } from '../../../screens/courses/list/helper';
+import LearnerEmptyState from '../../../screens/courses/list/LearnerEmptyState';
 import { StateType } from '../../../types/store/StoreType';
 
 interface LearnerCoursesProps extends CompositeScreenProps<

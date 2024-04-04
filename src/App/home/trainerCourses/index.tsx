@@ -18,16 +18,16 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../types/Navig
 import { getLoggedUserId } from '../../../store/main/selectors';
 import commonStyles from '../../../styles/common';
 import { BLENDED, OPERATIONS, TRAINER } from '../../../core/data/constants';
-import styles from '../../../screens/list/styles';
+import styles from './styles';
 import {
   isInProgress,
   isForthcoming,
   isCompleted,
   getElearningSteps,
   formatNextSteps,
-} from '../../../screens/list/helper';
-import { CourseDisplayType } from '../../../screens/list/types';
-import TrainerEmptyState from '../../../screens/list/TrainerEmptyState';
+} from '../../../screens/courses/list/helper';
+import { CourseDisplayType } from '../../../screens/courses/list/types';
+import TrainerEmptyState from '../../../screens/courses/list/TrainerEmptyState';
 import { StateType } from '../../../types/store/StoreType';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {

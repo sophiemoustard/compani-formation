@@ -9,7 +9,7 @@ const App = () => {
   return (
 
     <>
-      <Redirect href={companiToken ? 'home' : 'authentication'}/>
+      <Redirect href={companiToken ? 'Home' : 'Authentication'}/>
     </>
   );
 };
