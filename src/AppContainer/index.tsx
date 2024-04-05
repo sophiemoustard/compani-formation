@@ -3,7 +3,6 @@
 import { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
@@ -30,7 +29,6 @@ import styles from './styles';
 
 type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
-  onLayout: () => void,
   statusBarVisible: boolean,
 }
 
@@ -41,7 +39,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
   const {
     tryLocalSignIn,
     companiToken,
@@ -192,9 +190,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       <View style={style.statusBar}>
         <StatusBar hidden={!statusBarVisible} translucent barStyle="dark-content" backgroundColor={WHITE} />
       </View>
-      <SafeAreaProvider onLayout={onLayout}>
-        <Slot />
-      </SafeAreaProvider>
+      <Slot />
     </>
   );
 };

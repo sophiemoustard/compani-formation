@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { createStore } from 'redux';
 import { Stack } from 'expo-router';
 import * as Notifications from 'expo-notifications';
@@ -21,9 +21,9 @@ Notifications.setNotificationHandler({
   handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),
 });
 
-const MainLayout = () => {
-  const [appReady, setAppReady] = useState(false);
+SplashScreen.preventAutoHideAsync();
 
+const MainLayout = () => {
   useEffect(() => {
     async function prepare() {
       try {
@@ -31,26 +31,17 @@ const MainLayout = () => {
       } catch (e) {
         console.error(e);
       } finally {
-        setAppReady(true);
+        SplashScreen.hideAsync();
       }
     }
 
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(
-    async () => {
-      if (appReady) await SplashScreen.hideAsync();
-    },
-    [appReady]
-  );
-
-  if (!appReady) return null;
-
   return (
     <AuthProvider>
       <ReduxProvider store={store}>
-        <AppContainer onLayout={onLayoutRootView} >
+        <AppContainer>
           <Stack>
             <Stack.Screen name='index'/>
             <Stack.Screen name='Home' />
