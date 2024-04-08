@@ -11,18 +11,18 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/NavigationType';
-import { ActionWithoutPayloadType } from '../../types/store/StoreType';
-import NiInput from '../../components/form/Input';
-import NiSecondaryButton from '../../components/form/SecondaryButton';
-import NiPrimaryButton from '../../components/form/PrimaryButton';
-import NiErrorMessage from '../../components/ErrorMessage';
-import FirstConnectionModal from '../../components/FirstConnectionModal';
-import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
-import commonStyles from '../../styles/common';
+import { RootStackParamList } from '@/types/NavigationType';
+import { ActionWithoutPayloadType } from '@/types/store/StoreType';
+import NiInput from '@/components/form/Input';
+import NiSecondaryButton from '@/components/form/SecondaryButton';
+import NiPrimaryButton from '@/components/form/PrimaryButton';
+import NiErrorMessage from '@/components/ErrorMessage';
+import FirstConnectionModal from '@/components/FirstConnectionModal';
+import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
+import commonStyles from '@/styles/common';
 import styles from './styles';
-import Actions from '../../store/actions';
-import { AUTHENTICATION, isIOS } from '../../core/data/constants';
+import Actions from '@/store/actions';
+import { AUTHENTICATION, isIOS } from '@/core/data/constants';
 
 interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
   resetAllReducers: () => void,

@@ -13,7 +13,11 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types", "./src/types/markdown"]
+    "typeRoots": ["./node_modules/@types", "./src/types/markdown"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "src/**/*",

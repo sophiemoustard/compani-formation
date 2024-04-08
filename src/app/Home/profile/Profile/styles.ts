@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { GREY, PINK, TRANSPARENT_GREY, WHITE } from '../../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '../../../../styles/metrics';
+import { GREY, PINK, TRANSPARENT_GREY, WHITE } from '@/styles/colors';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN, PADDING } from '@/styles/metrics';
 import {
   FIRA_SANS_BOLD,
   FIRA_SANS_MEDIUM,
@@ -9,7 +9,7 @@ import {
   NUNITO_LIGHT,
   FIRA_SANS_ITALIC,
   FIRA_SANS_BOLD_ITALIC,
-} from '../../../../styles/fonts';
+} from '@/styles/fonts';
 
 const styles = StyleSheet.create({
   container: {

@@ -11,13 +11,13 @@ import TrainerCoursesIcon from '../../../assets/icons/TrainerCoursesIcon';
 import TrainerCoursesSelectedIcon from '../../../assets/icons/TrainerCoursesSelectedIcon';
 import ProfileIcon from '../../../assets/icons/ProfileIcon';
 import ProfileSelectedIcon from '../../../assets/icons/ProfileSelectedIcon';
-import { getUserVendorRole } from '../../store/main/selectors';
-import { PINK } from '../../styles/colors';
-import { FIRA_SANS_BOLD } from '../../styles/fonts';
-import { MARGIN, TAB_BAR_HEIGHT, TAB_BAR_LABEL_WIDTH } from '../../styles/metrics';
-import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER } from '../../core/data/constants';
-import { StateType } from '../../types/store/StoreType';
-import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
+import { getUserVendorRole } from '@/store/main/selectors';
+import { PINK } from '@/styles/colors';
+import { FIRA_SANS_BOLD } from '@/styles/fonts';
+import { MARGIN, TAB_BAR_HEIGHT, TAB_BAR_LABEL_WIDTH } from '@/styles/metrics';
+import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER } from '@/core/data/constants';
+import { StateType } from '@/types/store/StoreType';
+import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 
 interface tabBarProps {
   focused: boolean

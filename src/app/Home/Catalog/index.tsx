@@ -6,18 +6,18 @@ import groupBy from 'lodash/groupBy';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
-import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
-import Programs from '../../../api/programs';
-import { ELearningProgramType, ProgramType } from '../../../types/CourseTypes';
-import commonStyles from '../../../styles/common';
-import { getLoggedUserId } from '../../../store/main/selectors';
-import ProgramCell from '../../../components/ProgramCell';
+import { RootBottomTabParamList, RootStackParamList } from '@/types/NavigationType';
+import Programs from '@/api/programs';
+import { ELearningProgramType, ProgramType } from '@/types/CourseTypes';
+import commonStyles from '@/styles/common';
+import { getLoggedUserId } from '@/store/main/selectors';
+import ProgramCell from '@/components/ProgramCell';
 import styles from './styles';
-import CoursesSection from '../../../components/CoursesSection';
-import HomeScreenFooter from '../../../components/HomeScreenFooter';
-import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
-import { capitalizeFirstLetter, getTheoreticalDuration } from '../../../core/helpers/utils';
-import { StateType } from '../../../types/store/StoreType';
+import CoursesSection from '@/components/CoursesSection';
+import HomeScreenFooter from '@/components/HomeScreenFooter';
+import { GREEN, PINK, YELLOW, PURPLE } from '@/styles/colors';
+import { capitalizeFirstLetter, getTheoreticalDuration } from '@/core/helpers/utils';
+import { StateType } from '@/types/store/StoreType';
 
 interface CatalogProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,

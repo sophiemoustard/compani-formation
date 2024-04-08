@@ -6,18 +6,18 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
-import Courses from '../../../api/courses';
-import CoursesSection, { EVENT_SECTION } from '../../../components/CoursesSection';
-import NextStepCell from '../../../components/steps/NextStepCell';
-import ProgramCell from '../../../components/ProgramCell';
-import HomeScreenFooter from '../../../components/HomeScreenFooter';
-import { getTheoreticalDuration } from '../../../core/helpers/utils';
-import { BlendedCourseType } from '../../../types/CourseTypes';
-import { NextSlotsStepType } from '../../../types/StepTypes';
-import { RootBottomTabParamList, RootStackParamList } from '../../../types/NavigationType';
-import { getLoggedUserId } from '../../../store/main/selectors';
-import commonStyles from '../../../styles/common';
-import { BLENDED, OPERATIONS, TRAINER } from '../../../core/data/constants';
+import Courses from '@/api/courses';
+import CoursesSection, { EVENT_SECTION } from '@/components/CoursesSection';
+import NextStepCell from '@/components/steps/NextStepCell';
+import ProgramCell from '@/components/ProgramCell';
+import HomeScreenFooter from '@/components/HomeScreenFooter';
+import { getTheoreticalDuration } from '@/core/helpers/utils';
+import { BlendedCourseType } from '@/types/CourseTypes';
+import { NextSlotsStepType } from '@/types/StepTypes';
+import { RootBottomTabParamList, RootStackParamList } from '@/types/NavigationType';
+import { getLoggedUserId } from '@/store/main/selectors';
+import commonStyles from '@/styles/common';
+import { BLENDED, OPERATIONS, TRAINER } from '@/core/data/constants';
 import styles from './styles';
 import {
   isInProgress,
@@ -25,10 +25,10 @@ import {
   isCompleted,
   getElearningSteps,
   formatNextSteps,
-} from '../../../screens/courses/list/helper';
-import { CourseDisplayType } from '../../../screens/courses/list/types';
-import TrainerEmptyState from '../../../screens/courses/list/TrainerEmptyState';
-import { StateType } from '../../../types/store/StoreType';
+} from '@/core/helpers/courses';
+import { CourseDisplayType } from '@/types/CourseDisplayType';
+import TrainerEmptyState from '@/components/EmptyState/TrainerEmptyState';
+import { StateType } from '@/types/store/StoreType';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));

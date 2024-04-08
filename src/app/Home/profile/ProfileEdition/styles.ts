@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '../../../../styles/metrics';
-import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { GREY, PINK, TRANSPARENT_GREY } from '../../../../styles/colors';
+import { BORDER_RADIUS, BORDER_WIDTH, MARGIN } from '@/styles/metrics';
+import { FIRA_SANS_BOLD, FIRA_SANS_MEDIUM } from '@/styles/fonts';
+import { GREY, PINK, TRANSPARENT_GREY } from '@/styles/colors';
 
 const styles = StyleSheet.create({
   safeArea: {

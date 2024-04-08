@@ -8,10 +8,10 @@ import { Provider as ReduxProvider } from 'react-redux';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Sentry from '@sentry/react-native';
 import { Provider as AuthProvider } from '../context/AuthContext';
-import AppContainer from '../AppContainer';
-import reducers from '../store/index';
+import AppContainer from '@/AppContainer';
+import reducers from '@/store/index';
 import Environment from '../../environment';
-import { initializeAssets } from '../core/helpers/assets';
+import { initializeAssets } from '@/core/helpers/assets';
 
 Sentry.init({ dsn: Environment.getSentryKey(), debug: false });
 
@@ -44,8 +44,6 @@ const MainLayout = () => {
         <AppContainer>
           <Stack>
             <Stack.Screen name='index'/>
-            <Stack.Screen name='Home' />
-            <Stack.Screen name='Authentication'/>
           </Stack>
         </AppContainer>
       </ReduxProvider>

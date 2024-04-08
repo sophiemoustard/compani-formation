@@ -1,16 +1,11 @@
 // @ts-nocheck
 import { Redirect } from 'expo-router';
 import { useContext } from 'react';
-import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 
 const App = () => {
   const { companiToken }: AuthContextType = useContext(AuthContext);
 
-  return (
-
-    <>
-      <Redirect href={companiToken ? 'Home' : 'Authentication'}/>
-    </>
-  );
+  return <Redirect href={companiToken ? 'Home' : 'Authentication'}/>;
 };
 export default App;

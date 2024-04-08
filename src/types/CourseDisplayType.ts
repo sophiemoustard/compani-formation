@@ -1,4 +1,4 @@
-import { BlendedCourseType } from '../../../types/CourseTypes';
+import { BlendedCourseType } from './CourseTypes';
 
 export type CourseDisplayType = {
   title: string,

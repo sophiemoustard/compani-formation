@@ -7,24 +7,24 @@ import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import { Slot } from 'expo-router';
-import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
-import MainActions from '../store/main/actions';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
-import axiosLogged from '../api/axios/logged';
-import axiosNotLogged from '../api/axios/notLogged';
-import Users from '../api/users';
-import Version from '../api/version';
-import asyncStorage from '../core/helpers/asyncStorage';
+import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
+import MainActions from '@/store/main/actions';
+import { ActionType, ActionWithoutPayloadType, StateType } from '@/types/store/StoreType';
+import axiosLogged from '@/api/axios/logged';
+import axiosNotLogged from '@/api/axios/notLogged';
+import Users from '@/api/users';
+import Version from '@/api/version';
+import asyncStorage from '@/core/helpers/asyncStorage';
 import {
   registerForPushNotificationsAsync,
   handleNotificationResponse,
   handleExpoToken,
-} from '../core/helpers/notifications';
-import { ACTIVE_STATE } from '../core/data/constants';
-import UpdateAppModal from '../components/UpdateAppModal';
-import MaintenanceModal from '../components/MaintenanceModal';
-import { UserType } from '../types/UserType';
-import { WHITE } from '../styles/colors';
+} from '@/core/helpers/notifications';
+import { ACTIVE_STATE } from '@/core/data/constants';
+import UpdateAppModal from '@/components/UpdateAppModal';
+import MaintenanceModal from '@/components/MaintenanceModal';
+import { UserType } from '@/types/UserType';
+import { WHITE } from '@/styles/colors';
 import styles from './styles';
 
 type AppContainerProps = {

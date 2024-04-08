@@ -2,11 +2,11 @@
 
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
-import { BlendedCourseType, CourseType } from '../../../types/CourseTypes';
-import { StepType, NextSlotsStepType, ELearningStepType } from '../../../types/StepTypes';
-import CompaniDate from '../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../core/helpers/dates/utils';
-import { E_LEARNING } from '../../../core/data/constants';
+import { BlendedCourseType, CourseType } from '@/types/CourseTypes';
+import { StepType, NextSlotsStepType, ELearningStepType } from '@/types/StepTypes';
+import CompaniDate from '@/core/helpers/dates/companiDates';
+import { ascendingSort } from '@/core/helpers/dates/utils';
+import { E_LEARNING } from '@/core/data/constants';
 
 export const getElearningSteps = (steps: StepType[]): ELearningStepType[] =>
   steps.filter(step => step.type === E_LEARNING) as ELearningStepType[];

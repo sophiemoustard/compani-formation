@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useContext } from 'react';
 import { Stack, Redirect } from 'expo-router';
-import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
+import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 
 const AuthenticationLayout = () => {
   const { companiToken }: AuthContextType = useContext(AuthContext);
