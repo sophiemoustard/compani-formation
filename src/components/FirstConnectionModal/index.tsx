@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import NiSecondaryButton from '../form/SecondaryButton';
 import FeatherButton from '../icons/FeatherButton';
 import Modal from '../Modal';
@@ -13,16 +13,16 @@ interface FirstConnectionModalProps {
 }
 
 const FirstConnectionModal = ({ visible, onRequestClose }: FirstConnectionModalProps) => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const goToEmailForm = () => {
     onRequestClose();
-    navigation.navigate('EmailForm', { firstConnection: true });
+    router.navigate({ pathname: '/Authentication/EmailForm/', params: { firstConnection: true } });
   };
 
   const goToLoginCodeForm = () => {
     onRequestClose();
-    navigation.navigate('LoginCodeForm');
+    router.navigate('LoginCodeForm');
   };
 
   return (

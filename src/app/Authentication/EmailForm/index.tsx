@@ -1,24 +1,23 @@
 import { useEffect, useState, useCallback, useReducer } from 'react';
 import { Text, View, KeyboardAvoidingView, BackHandler } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackScreenProps } from '@react-navigation/stack';
-import ExitModal from '../../components/ExitModal';
-import FeatherButton from '../../components/icons/FeatherButton';
-import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
-import { RootStackParamList } from '../../types/NavigationType';
-import NiInput from '../../components/form/Input';
-import NiPrimaryButton from '../../components/form/PrimaryButton';
-import accountCreationStyles from '../../styles/accountCreation';
-import { GREY } from '../../styles/colors';
-import { EMAIL_REGEX, isIOS } from '../../core/data/constants';
-import Users from '../../api/users';
-import ForgotPasswordModal from '../../components/ForgotPasswordModal';
-import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
+import ExitModal from '@/components/ExitModal';
+import FeatherButton from '@/components/icons/FeatherButton';
+import { ICON, IS_LARGE_SCREEN, MARGIN } from '@/styles/metrics';
+import NiInput from '@/components/form/Input';
+import NiPrimaryButton from '@/components/form/PrimaryButton';
+import accountCreationStyles from '@/styles/accountCreation';
+import { GREY } from '@/styles/colors';
+import { EMAIL_REGEX, isIOS } from '@/core/data/constants';
+import Users from '@/api/users';
+import ForgotPasswordModal from '@/components/ForgotPasswordModal';
+import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '@/reducers/error';
 import styles from './styles';
 
-interface EmailFormProps extends StackScreenProps<RootStackParamList, 'EmailForm'> {}
-
-const EmailForm = ({ route, navigation }: EmailFormProps) => {
+const EmailForm = () => {
+  const router = useRouter();
+  const { firstConnection } = useLocalSearchParams();
   const [behavior, setBehavior] = useState<'padding' | 'height'>('padding');
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
@@ -58,9 +57,9 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
         setIsLoading(true);
         const isExistingUser = await Users.exists({ email });
         if (isExistingUser) await setForgotPasswordModal(true);
-        else if (!route.params?.firstConnection) {
+        else if (!firstConnection) {
           dispatchError({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu' });
-        } else navigation.navigate('CreateAccount', { email });
+        } else router.navigate({ pathname: '/Authentication/CreateAccount/', params: { email } });
       }
     } catch (e) {
       dispatchError({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail' });
@@ -71,7 +70,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.navigate('Authentication');
+    router.back();
   };
 
   const enterEmail = (text: string) => setEmail(text.trim());

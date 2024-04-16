@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { GREY } from '../../styles/colors';
-import { MARGIN } from '../../styles/metrics';
+import { GREY } from '@/styles/colors';
+import { MARGIN } from '@/styles/metrics';
 
 export default StyleSheet.create({
   safeArea: {

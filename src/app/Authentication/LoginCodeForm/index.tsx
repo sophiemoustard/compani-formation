@@ -1,28 +1,26 @@
 import { useState, createRef, useReducer, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackScreenProps } from '@react-navigation/stack';
-import Authentication from '../../api/authentication';
-import Companies from '../../api/companies';
-import { RootStackParamList } from '../../types/NavigationType';
-import FeatherButton from '../../components/icons/FeatherButton';
-import NiPrimaryButton from '../../components/form/PrimaryButton';
-import ExitModal from '../../components/ExitModal';
-import NiInput from '../../components/form/Input';
-import NiErrorMessage from '../../components/ErrorMessage';
-import NiSecondaryButton from '../../components/form/SecondaryButton';
-import CompanySearchModal from '../../components/CompanySearchModal';
-import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
-import { CompanyType } from '../../types/CompanyType';
-import { LOGIN_CODE, isIOS } from '../../core/data/constants';
-import { GREY, WHITE } from '../../styles/colors';
-import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
+import { useNavigation } from 'expo-router';
+import Authentication from '@/api/authentication';
+import Companies from '@/api/companies';
+import FeatherButton from '@/components/icons/FeatherButton';
+import NiPrimaryButton from '@/components/form/PrimaryButton';
+import ExitModal from '@/components/ExitModal';
+import NiInput from '@/components/form/Input';
+import NiErrorMessage from '@/components/ErrorMessage';
+import NiSecondaryButton from '@/components/form/SecondaryButton';
+import CompanySearchModal from '@/components/CompanySearchModal';
+import { errorReducer, initialErrorState, SET_ERROR } from '@/reducers/error';
+import { CompanyType } from '@/types/CompanyType';
+import { LOGIN_CODE, isIOS } from '@/core/data/constants';
+import { GREY, WHITE } from '@/styles/colors';
+import { ICON, IS_LARGE_SCREEN, MARGIN } from '@/styles/metrics';
 import styles from './styles';
-import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
+import { FIRA_SANS_MEDIUM } from '@/styles/fonts';
 
-interface LoginCodeFormProps extends StackScreenProps<RootStackParamList> {}
-
-const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
+const LoginCodeForm = () => {
+  const navigation = useNavigation();
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);

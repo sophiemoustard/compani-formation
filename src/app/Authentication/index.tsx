@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -28,7 +29,8 @@ interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
   resetAllReducers: () => void,
 }
 
-const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) => {
+const Authentication = ({ resetAllReducers }: AuthenticationProps) => {
+  const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isFirstConnection, setIsFirstConnection] = useState<boolean>(false);
@@ -42,7 +44,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   const onPress = () => signIn({ email, password, mobileConnectionMode: AUTHENTICATION });
   const forgotPassword = () => {
     resetError();
-    navigation.navigate('EmailForm', { firstConnection: false });
+    router.navigate({ pathname: '/Authentication/EmailForm/', params: { firstConnection: false } });
   };
 
   return (

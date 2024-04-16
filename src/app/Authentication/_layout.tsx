@@ -11,6 +11,9 @@ const AuthenticationLayout = () => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name='index'/>
+      <Stack.Screen name='EmailForm'/>
+      <Stack.Screen name='LoginCodeForm'/>
+      <Stack.Screen name='CreateAccount'/>
     </Stack>
   );
 };
