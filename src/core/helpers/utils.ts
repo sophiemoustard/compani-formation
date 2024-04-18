@@ -6,6 +6,9 @@ import {
   LONG_FIRSTNAME_LONG_LASTNAME,
   SHORT_FIRSTNAME_LONG_LASTNAME,
   PT0S,
+  EXPECTATIONS,
+  END_OF_COURSE,
+  SELF_POSITIONNING,
 } from '../data/constants';
 import { UserType } from '../../types/UserType';
 import { ELearningStepType } from '../../types/StepTypes';
@@ -90,3 +93,20 @@ export const getTheoreticalDuration = (steps: ELearningStepType[]) : string => (
 );
 
 export const sortStrings = (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase());
+
+export const getQuestionnaireTitle = (questionnaireTypes: string[]) => {
+  const labels = questionnaireTypes.map((type) => {
+    switch (type) {
+      case EXPECTATIONS:
+        return 'de recueil des attentes';
+      case END_OF_COURSE:
+        return 'de fin de formation';
+      case SELF_POSITIONNING:
+        return 'd\'auto-positionnement';
+      default:
+        return '';
+    }
+  });
+
+  return `questionnaire ${labels.join(' et ')}`;
+};

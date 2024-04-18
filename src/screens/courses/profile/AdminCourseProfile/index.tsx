@@ -7,7 +7,6 @@ import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
-import keyBy from 'lodash/keyBy';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../../types/NavigationType';
@@ -47,7 +46,7 @@ import ImagePickerManager from '../../../../components/ImagePickerManager';
 import PictureModal from '../../../../components/PictureModal';
 import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
-import { formatIdentity } from '../../../../core/helpers/utils';
+import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
 import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
 
@@ -96,29 +95,26 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
-  const [questionnaireLinks, setQuestionnaireLinks] = useState([]);
+  const [questionnaireQRCode, setQuestionnaireQRCode] = useState('');
+  const [questionnairesType, setQuestionnairesType] = useState([]);
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
   };
 
-  const getQuestionnairesQRCode = async (courseId: string) => {
+  const getQuestionnaireQRCode = async (courseId: string) => {
     try {
       const publishedQuestionnaires = await Questionnaires.list({ course: courseId });
-      const questionnairesByType = keyBy(publishedQuestionnaires, 'type');
+      setQuestionnairesType(publishedQuestionnaires.map(q => q.type).sort((a, b) => sortStrings(a, b)));
 
-      const promises = Object.entries(questionnairesByType).map(async ([type, questionnaire]) => {
-        const img = await Questionnaires.getQRCode(questionnaire._id, { course: courseId });
-        return { _id: questionnaire._id, type, img };
-      });
-
-      const questionnairesLinks = await Promise.all(promises);
-
-      setQuestionnaireLinks(questionnairesLinks);
+      if (publishedQuestionnaires.length) {
+        const qrCode = await Questionnaires.getQRCode({ course: courseId });
+        setQuestionnaireQRCode(qrCode);
+      }
     } catch (e: any) {
       console.error(e);
-      setQuestionnaireLinks([]);
+      setQuestionnaireQRCode([]);
     }
   };
 
@@ -127,7 +123,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         await refreshAttendanceSheets(fetchedCourse._id);
-        await getQuestionnairesQRCode(fetchedCourse._id);
+        await getQuestionnaireQRCode(fetchedCourse._id);
 
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
@@ -254,13 +250,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           }
           {!!course.trainees && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
         </View>
-        <View style={styles.sectionContainer}>
+        {!!questionnaireQRCode && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
-          {!!questionnaireLinks.length &&
-            questionnaireLinks.map((q, idx) => (<QuestionnaireQRCodeCell key={idx} img={q.img} type={q.type}
-              courseId={course._id} questionnaireId={q._id} />))}
-        </View>
+          <QuestionnaireQRCodeCell img={questionnaireQRCode} types={questionnairesType}
+            courseId={course._id} />
+        </View>}
         {course.type !== INTER_B2B && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <ContactInfoContainer contact={course.companyRepresentative}

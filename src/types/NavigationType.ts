@@ -6,7 +6,7 @@ export type RootStackParamList = {
   CreateAccount: { email: string };
   PasswordReset: { userId: string, email: string, token: string, mobileConnectionMode: string }
   ActivityCardContainer: { activityId: string, profileId: string, mode: CourseModeType };
-  QuestionnaireCardContainer: { questionnaireId: string, profileId: string };
+  QuestionnaireCardContainer: { profileId: string };
   BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }

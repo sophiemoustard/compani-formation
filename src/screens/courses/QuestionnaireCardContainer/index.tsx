@@ -14,6 +14,7 @@ import { StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
+import { capitalizeFirstLetter, getQuestionnaireTitle, sortStrings } from '../../../core/helpers/utils';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import { ActionType } from '../../../context/types';
 
@@ -38,7 +39,8 @@ const QuestionnaireCardContainer = ({
   resetCardReducer,
   setStatusBarVisible,
 }: QuestionnaireCardContainerProps) => {
-  const [questionnaire, setQuestionnaire] = useState<QuestionnaireType | null>(null);
+  const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
+  const [title, setTitle] = useState<string>('');
   const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId } = route.params;
 
@@ -46,21 +48,23 @@ const QuestionnaireCardContainer = ({
     setStatusBarVisible(false);
   }, [setStatusBarVisible]);
 
-  const getQuestionnaire = async () => {
+  const getQuestionnaires = async () => {
     try {
-      const fetchedQuestionnaire = await Questionnaires.getQuestionnaire(route.params.questionnaireId);
-      setQuestionnaire(fetchedQuestionnaire);
-      setCards(fetchedQuestionnaire.cards);
+      const fetchedQuestionnaires = await Questionnaires.list({ course: profileId });
+      const sortedQuestionnaires = [...fetchedQuestionnaires].sort((a, b) => sortStrings(a.type, b.type));
+      setQuestionnaires(sortedQuestionnaires);
+      setCards(sortedQuestionnaires.map(q => q.cards).flat());
+      setTitle(capitalizeFirstLetter(getQuestionnaireTitle(sortedQuestionnaires.map(q => q.type))));
     } catch (e: any) {
       console.error(e);
-      setQuestionnaire(null);
+      setQuestionnaires([]);
       setCards([]);
     }
   };
 
   useEffect(() => {
     async function fetchData() {
-      await getQuestionnaire();
+      await getQuestionnaires();
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +73,7 @@ const QuestionnaireCardContainer = ({
   const goBack = async () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
 
-    navigation.navigate('LearnerCourseProfile', { courseId: profileId, endedQuestionnaire: questionnaire?._id });
+    navigation.navigate('LearnerCourseProfile', { courseId: profileId });
 
     setIsActive(false);
     resetCardReducer();
@@ -94,10 +98,10 @@ const QuestionnaireCardContainer = ({
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
       <Tab.Screen key={0} name={'startCard'} >
-        {() => <StartCard title={questionnaire?.name || ''} goBack={goBack}
-          isLoading={!(cards.length > 0 && questionnaire)} />}
+        {() => <StartCard title={title} goBack={goBack}
+          isLoading={!(cards.length > 0 && questionnaires.length)} />}
       </Tab.Screen>
-      {cards.length > 0 && questionnaire &&
+      {cards.length > 0 && questionnaires.length &&
         <>
           {cards.map((_, index) => (
             <Tab.Screen key={index} name={`card-${index}`}>
@@ -105,7 +109,7 @@ const QuestionnaireCardContainer = ({
             </Tab.Screen>
           ))}
           <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
-            {() => <QuestionnaireEndCard goBack={goBack} questionnaire={questionnaire} courseId={profileId} />}
+            {() => <QuestionnaireEndCard goBack={goBack} questionnaires={questionnaires} courseId={profileId} />}
           </Tab.Screen>
         </>
       }
