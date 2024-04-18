@@ -10,9 +10,7 @@ interface QuestionnairesContainerProps {
 
 const QuestionnairesContainer = ({ questionnaires, profileId }: QuestionnairesContainerProps) => (
   <View style={styles.container}>
-    <Text style={styles.header}>
-      <Text style={styles.headerText}>Vous avez un formulaire à compléter.</Text>
-    </Text>
+    <Text style={styles.header}>Vous avez un formulaire à compléter.</Text>
     <QuestionnaireCell questionnaires={questionnaires} profileId={profileId} />
   </View>
 );

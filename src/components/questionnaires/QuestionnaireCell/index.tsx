@@ -2,7 +2,8 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import QuestionnaireIcon from '../../../../assets/icons/QuestionnaireIcon';
-import { capitalizeFirstLetter, getQuestionnaireTitle } from '../../../core/helpers/utils';
+import { capitalizeFirstLetter } from '../../../core/helpers/utils';
+import { getQuestionnaireTitle } from '../../../core/helpers/courses';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import Shadow from '../../design/Shadow';
 

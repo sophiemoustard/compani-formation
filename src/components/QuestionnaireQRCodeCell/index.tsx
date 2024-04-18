@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, Text, View, Linking } from 'react-native';
-import { capitalizeFirstLetter, getQuestionnaireTitle } from '../../core/helpers/utils';
+import { capitalizeFirstLetter } from '../../core/helpers/utils';
+import { getQuestionnaireTitle } from '../../core/helpers/courses';
 import Environment from '../../../environment';
 import styles from './styles';
 

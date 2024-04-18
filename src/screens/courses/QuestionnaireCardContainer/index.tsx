@@ -14,7 +14,8 @@ import { StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
-import { capitalizeFirstLetter, getQuestionnaireTitle, sortStrings } from '../../../core/helpers/utils';
+import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils';
+import { getQuestionnaireTitle } from '../../../core/helpers/courses';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import { ActionType } from '../../../context/types';
 
