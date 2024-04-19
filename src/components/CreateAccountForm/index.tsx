@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from 'react';
 import { Text, View, BackHandler, KeyboardAvoidingView, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
@@ -20,7 +20,7 @@ interface CreateAccountFormProps {
   openUrl: () => void,
 }
 const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, openUrl }: CreateAccountFormProps) => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const hardwareBackPress = useCallback(() => {
     if (!isLoading) goBack(index);
@@ -75,7 +75,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
       })), index
     );
     if (data.every(d => d.isValid)) {
-      if (index !== 3) navigation.navigate(`create-account-screen-${index + 1}`);
+      if (index !== 3) router.navigate(`/Authentication/CreateAccount/${index + 1}`);
       else create();
     }
   };

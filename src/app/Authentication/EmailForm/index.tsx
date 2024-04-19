@@ -59,7 +59,7 @@ const EmailForm = () => {
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!firstConnection) {
           dispatchError({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu' });
-        } else router.navigate({ pathname: '/Authentication/CreateAccount/', params: { email } });
+        } else router.navigate({ pathname: '/Authentication/CreateAccount/0', params: { email } });
       }
     } catch (e) {
       dispatchError({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail' });
