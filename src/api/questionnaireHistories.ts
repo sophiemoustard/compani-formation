@@ -1,14 +1,12 @@
 import axiosLogged from './axios/logged';
 import Environment from '../../environment';
+import { QuestionnaireAnswersType } from '../types/ActivityTypes';
 
 type QuestionnaireHistoryPostPayloadType = {
   course: string,
   user: string,
   questionnaire: string,
-  questionnaireAnswersList?: {
-    card: string,
-    answerList: string[],
-  }[],
+  questionnaireAnswersList?: QuestionnaireAnswersType[],
 }
 
 export default {

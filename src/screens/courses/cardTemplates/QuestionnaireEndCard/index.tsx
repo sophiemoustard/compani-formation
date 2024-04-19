@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
-import { QuestionnaireType } from '../../../../types/QuestionnaireType';
+import { QuestionnaireWithCardsType } from '../../../../types/QuestionnaireType';
 import CardsActions from '../../../../store/cards/actions';
 import styles from '../../../../styles/endCard';
 import { achievementJingle } from '../../../../core/helpers/utils';
@@ -15,7 +15,7 @@ import { ActionType } from '../../../../context/types';
 
 interface QuestionnaireEndCardProps {
   courseId: string
-  questionnaire: QuestionnaireType,
+  questionnaires: QuestionnaireWithCardsType[],
   questionnaireAnswersList: QuestionnaireAnswersType[],
   goBack: () => void,
   setCardIndex: (index: number | null) => void,
@@ -23,7 +23,7 @@ interface QuestionnaireEndCardProps {
 
 const QuestionnaireEndCard = ({
   courseId,
-  questionnaire,
+  questionnaires,
   questionnaireAnswersList,
   goBack,
   setCardIndex,
@@ -34,23 +34,45 @@ const QuestionnaireEndCard = ({
     async function createQuestionnaireHistories() {
       const userId = await asyncStorage.getUserId();
 
-      if (!courseId || !userId || !questionnaire._id) return;
+      if (!courseId || !userId || !questionnaires.length) return;
 
-      const payload = {
-        course: courseId,
-        user: userId,
-        questionnaire: questionnaire._id,
-        ...(questionnaireAnswersList?.length && { questionnaireAnswersList }),
-      };
+      if (questionnaires.length === 1) {
+        const payload = {
+          course: courseId,
+          user: userId,
+          questionnaire: questionnaires[0]._id,
+          ...(questionnaireAnswersList?.length && { questionnaireAnswersList }),
+        };
 
-      await QuestionnaireHistories.createQuestionnaireHistories(payload);
+        await QuestionnaireHistories.createQuestionnaireHistories(payload);
+      } else {
+        const cardQuestionnaireList = Object
+          .fromEntries(questionnaires.map(q => q.cards.map(c => [c._id, q._id])).flat());
+        const answersGroupedByQuestionnaire: { [k: string]: QuestionnaireAnswersType[]; } = Object
+          .fromEntries(questionnaires.map(q => [q._id, []]));
+
+        questionnaireAnswersList.forEach((answer: QuestionnaireAnswersType) => {
+          answersGroupedByQuestionnaire[cardQuestionnaireList[answer.card]].push(answer);
+        });
+
+        Object.entries(answersGroupedByQuestionnaire)
+          .forEach(async ([questionnaireId, answers]: [string, QuestionnaireAnswersType[]]) => {
+            const payload = {
+              course: courseId,
+              questionnaire: questionnaireId,
+              user: userId,
+              questionnaireAnswersList: answers,
+            };
+            await QuestionnaireHistories.createQuestionnaireHistories(payload);
+          });
+      }
     }
 
     if (isFocused) {
       createQuestionnaireHistories();
       achievementJingle();
     }
-  }, [courseId, isFocused, questionnaire, questionnaireAnswersList, setCardIndex]);
+  }, [courseId, isFocused, questionnaires, questionnaireAnswersList, setCardIndex]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>

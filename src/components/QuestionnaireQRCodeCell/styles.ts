@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     color: PINK[500],
     textDecorationLine: 'underline',
     paddingTop: PADDING.LG,
+    textAlign: 'center',
   },
 });
 
