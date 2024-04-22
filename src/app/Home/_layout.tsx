@@ -69,7 +69,7 @@ const HomeLayout = ({ userVendorRole } : HomeProps) => {
       <Tabs.Screen name="LearnerCourses" options={{ tabBarIcon: learnerCoursesIcon }} />
       <Tabs.Screen name='TrainerCourses'
         options={{ tabBarIcon: trainerCoursesIcon, href: !showTrainerTab ? null : '/Home/TrainerCourses' }} />
-      <Tabs.Screen name="profile" options={{ tabBarIcon: profileIcon }} />
+      <Tabs.Screen name="Profile" options={{ tabBarIcon: profileIcon }} />
     </Tabs>
   );
 };

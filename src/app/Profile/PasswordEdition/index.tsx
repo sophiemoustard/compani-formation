@@ -1,21 +1,16 @@
-import { CompositeScreenProps } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
+// @ts-nocheck
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { RootStackParamList, RootBottomTabParamList } from '@/types/NavigationType';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import PasswordForm from '@/components/PasswordForm';
 import Authentication from '@/api/authentication';
 import styles from './styles';
 
-interface PasswordEditionProps extends CompositeScreenProps<
-StackScreenProps<RootStackParamList, 'PasswordEdition'>,
-StackScreenProps<RootBottomTabParamList>
-> {}
-
-const PasswordEdition = ({ route, navigation }: PasswordEditionProps) => {
-  const { userId } = route.params;
+const PasswordEdition = () => {
+  const router = useRouter();
+  const { userId } = useLocalSearchParams();
 
   const goBack = () => {
-    navigation.navigate('Profile');
+    router.navigate('/Home/Profile');
   };
 
   const savePassword = async (password: string) => {

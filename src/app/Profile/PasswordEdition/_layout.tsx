@@ -1,8 +1,8 @@
 import { Stack } from 'expo-router';
 
-const ProfilePageLayout = () => (
+const PasswordEditionLayout = () => (
   <Stack screenOptions={{ headerShown: false }}>
     <Stack.Screen name='index'/>
   </Stack>
 );
-export default ProfilePageLayout;
+export default PasswordEditionLayout;

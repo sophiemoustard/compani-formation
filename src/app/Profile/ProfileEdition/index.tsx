@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import FeatherButton from '@/components/icons/FeatherButton';
 import NiPrimaryButton from '@/components/form/PrimaryButton';
 import { GREY } from '@/styles/colors';
@@ -48,7 +49,8 @@ StackScreenProps<RootBottomTabParamList>
 const FIRSTNAME = 'firstname';
 const LASTNAME = 'lastname';
 
-const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
+const ProfileEdition = ({ loggedUser, setLoggedUser }: ProfileEditionProps) => {
+  const router = useRouter();
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
     identity: {
@@ -62,7 +64,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   const [isValid, setIsValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
-  const [source, setSource] = useState(require('../../../../../assets/images/default_avatar.webp'));
+  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.webp'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isValidationAttempted, setIsValidationAttempted] = useState<boolean>(false);
@@ -110,7 +112,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
     } else {
-      setSource(require('../../../../../assets/images/default_avatar.webp'));
+      setSource(require('../../../../assets/images/default_avatar.webp'));
       setHasPhoto(false);
     }
   }, [loggedUser]);
@@ -119,7 +121,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   const goBack = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
-    navigation.goBack();
+    router.navigate('/Home/Profile');
   };
 
   const saveData = async () => {

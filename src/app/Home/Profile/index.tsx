@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { PictureType } from '@/types/PictureTypes';
 import { RootBottomTabParamList, RootStackParamList } from '@/types/NavigationType';
 import { formatPhone, getCourseProgress } from '@/core/helpers/utils';
@@ -45,12 +46,13 @@ StackScreenProps<RootStackParamList>
   setLoggedUser: (user: UserType) => void,
 }
 
-const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
+const Profile = ({ loggedUser, setLoggedUser }: ProfileProps) => {
+  const router = useRouter();
   const { signOut }: AuthContextType = useContext(AuthContext);
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
   const [achievedCoursesCount, setAchievedCoursesCount] = useState<number>();
-  const [source, setSource] = useState(require('../../../../../assets/images/default_avatar.webp'));
+  const [source, setSource] = useState(require('../../../../assets/images/default_avatar.webp'));
   const [hasPhoto, setHasPhoto] = useState<boolean>(false);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
@@ -63,9 +65,10 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   const [selectedCompany, setSelectedCompany] = useState<CompanyType>({ _id: '', name: '' });
   const [isValidationModalOpened, setIsValidationModalOpened] = useState<boolean>(false);
 
-  const editProfile = () => navigation.navigate('ProfileEdition');
+  const editProfile = () => router.navigate('Profile/ProfileEdition');
 
-  const editPassword = () => navigation.navigate('PasswordEdition', { userId: loggedUser._id });
+  const editPassword = () => router
+    .navigate({ pathname: '/Profile/PasswordEdition', params: { userId: loggedUser._id } });
 
   const clearExpoTokenAndSignOut = () => signOut(true);
 
@@ -94,7 +97,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
       setSource({ uri: loggedUser.picture.link });
       setHasPhoto(true);
     } else {
-      setSource(require('../../../../../assets/images/default_avatar.webp'));
+      setSource(require('../../../../assets/images/default_avatar.webp'));
       setHasPhoto(false);
     }
   }, [loggedUser]);
@@ -175,7 +178,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
             <View style={styles.identityContainer}>
               <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
-                source={require('../../../../../assets/images/profile_background.webp')}>
+                source={require('../../../../assets/images/profile_background.webp')}>
                 <TouchableOpacity onPress={() => setPictureModal(true)}>
                   <Image style={styles.profileImage} source={source} />
                   <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
@@ -228,7 +231,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             style={styles.legalNoticeContainer}>
             <Text style={styles.legalNotice}>Supprimer mon compte</Text>
           </TouchableOpacity>}
-        <HomeScreenFooter source={require('../../../../../assets/images/aux_joie.webp')} />
+        <HomeScreenFooter source={require('../../../../assets/images/aux_joie.webp')} />
         <PictureModal visible={pictureModal} canDelete={hasPhoto} closePictureModal={() => setPictureModal(false)}
           openCamera={() => setCamera(true)} deletePicture={deletePicture}
           openImagePickerManager={() => setImagePickerManager(true)} />
