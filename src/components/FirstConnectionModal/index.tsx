@@ -22,7 +22,7 @@ const FirstConnectionModal = ({ visible, onRequestClose }: FirstConnectionModalP
 
   const goToLoginCodeForm = () => {
     onRequestClose();
-    router.navigate('LoginCodeForm');
+    router.navigate('/Authentication/LoginCodeForm');
   };
 
   return (

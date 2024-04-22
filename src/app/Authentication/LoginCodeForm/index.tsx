@@ -1,7 +1,7 @@
 import { useState, createRef, useReducer, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TextInputKeyPressEventData, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Authentication from '@/api/authentication';
 import Companies from '@/api/companies';
 import FeatherButton from '@/components/icons/FeatherButton';
@@ -20,7 +20,7 @@ import styles from './styles';
 import { FIRA_SANS_MEDIUM } from '@/styles/fonts';
 
 const LoginCodeForm = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [code, setCode] = useState<string[]>(['', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const LoginCodeForm = () => {
 
   const goBack = () => {
     setExitConfirmationModal(false);
-    navigation.goBack();
+    router.back();
   };
 
   const onChangeText = (char: string, index: number) => {
@@ -80,15 +80,15 @@ const LoginCodeForm = () => {
       const checkToken = await Authentication
         .passwordToken({ firstname, lastname, company: selectedCompanyId }, formattedCode);
 
-      navigation.navigate(
-        'PasswordReset',
-        {
+      router.navigate({
+        pathname: '/Authentication/PasswordReset',
+        params: {
           userId: checkToken.user._id,
           email: checkToken.user.email,
           token: checkToken.token,
           mobileConnectionMode: LOGIN_CODE,
-        }
-      );
+        },
+      });
       return null;
     } catch (e: any) {
       if (e.response.status === 404) return dispatchError({ type: SET_ERROR, payload: e.response.data.message });

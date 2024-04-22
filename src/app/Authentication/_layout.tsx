@@ -14,6 +14,7 @@ const AuthenticationLayout = () => {
       <Stack.Screen name='EmailForm'/>
       <Stack.Screen name='LoginCodeForm'/>
       <Stack.Screen name='CreateAccount'/>
+      <Stack.Screen name='PasswordReset'/>
     </Stack>
   );
 };

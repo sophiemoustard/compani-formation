@@ -1,6 +1,6 @@
 import { createRef, useEffect, useReducer, useState } from 'react';
 import { Text, View, TextInput, Keyboard, TextInputKeyPressEventData } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import get from 'lodash/get';
 import BottomModal from '../BottomModal';
 import NiPrimaryButton from '../form/PrimaryButton';
@@ -28,7 +28,7 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
     createRef(),
   ];
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigation = useNavigation();
+  const router = useRouter();
   const [codeRecipient, setCodeRecipient] = useState<string>('');
   const [chosenMethod, setChosenMethod] = useState<string>('');
 
@@ -93,10 +93,15 @@ const ForgotPasswordModal = ({ visible, email, setForgotPasswordModal }: ForgotP
       setIsLoading(true);
       const checkToken = await Authentication.passwordToken({ email }, formattedCode);
       onRequestClose();
-      navigation.navigate(
-        'PasswordReset',
-        { userId: checkToken.user._id, email, token: checkToken.token, mobileConnectionMode: IDENTITY_VERIFICATION }
-      );
+      router.navigate({
+        pathname: '/Authentication/PasswordReset',
+        params: {
+          userId: checkToken.user._id,
+          email,
+          token: checkToken.token,
+          mobileConnectionMode: IDENTITY_VERIFICATION,
+        },
+      });
     } catch (e) {
       dispatchError({ type: SET_ERROR, payload: 'Oops, le code n\'est pas valide' });
     } finally {
