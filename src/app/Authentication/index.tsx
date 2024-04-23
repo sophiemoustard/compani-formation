@@ -44,7 +44,7 @@ const Authentication = ({ resetAllReducers }: AuthenticationProps) => {
   const onPress = () => signIn({ email, password, mobileConnectionMode: AUTHENTICATION });
   const forgotPassword = () => {
     resetError();
-    router.navigate({ pathname: '/Authentication/EmailForm/', params: { firstConnection: false } });
+    router.navigate({ pathname: '/Authentication/EmailForm', params: { firstConnection: false } });
   };
 
   return (

@@ -9,7 +9,12 @@ import styles from './styles';
 
 const PasswordReset = () => {
   const router = useRouter();
-  const { userId, email, token, mobileConnectionMode } = useLocalSearchParams();
+  const {
+    userId,
+    email,
+    token,
+    mobileConnectionMode,
+  } = useLocalSearchParams<{userId: string, email: string, token: string, mobileConnectionMode: string }>();
   const { signIn }: AuthContextType = useContext(AuthContext);
 
   const goBack = () => { router.back(); };

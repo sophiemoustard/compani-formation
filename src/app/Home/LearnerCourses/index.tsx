@@ -21,7 +21,7 @@ import { getCourseProgress, getTheoreticalDuration } from '@/core/helpers/utils'
 import { LEARNER, PEDAGOGY } from '@/core/data/constants';
 import styles from './styles';
 import { formatNextSteps, getElearningSteps } from '@/core/helpers/courses';
-import LearnerEmptyState from '@/components/EmptyState/LearnerEmptyState';
+import LearnerEmptyState from '@/components/emptyState/LearnerEmptyState';
 import { StateType } from '@/types/store/StoreType';
 
 interface LearnerCoursesProps extends CompositeScreenProps<

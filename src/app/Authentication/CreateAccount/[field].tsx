@@ -14,7 +14,7 @@ import Users from '@/api/users';
 import { formatPhoneForPayload } from '@/core/helpers/utils';
 import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 import { ACCOUNT_CREATION } from '@/core/data/constants';
-import { Context } from '@/context/createAccountContext';
+import { Context as CreateAccountContext } from '@/context/createAccountContext';
 import { CreateAccountDataType } from '@/types/CreateAccountDataType';
 
 const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
@@ -33,9 +33,9 @@ const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
 
 const CreateAccount = () => {
   const router = useRouter();
-  const { field, email: emailAddress } = useLocalSearchParams();
+  const { field, email: emailAddress } = useLocalSearchParams<{field: string, email: string}>();
   const { signIn }: AuthContextType = useContext(AuthContext);
-  const { formList, setFormList, isLoading, setIsLoading, email, setEmail } = useContext(Context);
+  const { formList, setFormList, isLoading, setIsLoading, email, setEmail } = useContext(CreateAccountContext);
   const fieldIndex = Number(field);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const CreateAccount = () => {
   const goBack = i => (
     i > 0
       ? router.navigate(`/Authentication/CreateAccount/${i - 1}`)
-      : router.navigate({ pathname: '/Authentication/EmailForm/', params: { firstConnection: false } })
+      : router.navigate({ pathname: '/Authentication/EmailForm', params: { firstConnection: false } })
   );
   const setForm = (data, index) => {
     setFormList(prevFormList => (prevFormList.map((fieldsGroup, i) => (i === index ? data : fieldsGroup))));

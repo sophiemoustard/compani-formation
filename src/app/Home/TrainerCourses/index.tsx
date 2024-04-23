@@ -27,7 +27,7 @@ import {
   formatNextSteps,
 } from '@/core/helpers/courses';
 import { CourseDisplayType } from '@/types/CourseDisplayType';
-import TrainerEmptyState from '@/components/EmptyState/TrainerEmptyState';
+import TrainerEmptyState from '@/components/emptyState/TrainerEmptyState';
 import { StateType } from '@/types/store/StoreType';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {

@@ -7,7 +7,7 @@ import styles from './styles';
 
 const PasswordEdition = () => {
   const router = useRouter();
-  const { userId } = useLocalSearchParams();
+  const { userId } = useLocalSearchParams<{userId: string}>();
 
   const goBack = () => {
     router.navigate('/Home/Profile');

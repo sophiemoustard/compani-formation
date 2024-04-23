@@ -17,7 +17,7 @@ import styles from './styles';
 
 const EmailForm = () => {
   const router = useRouter();
-  const { firstConnection } = useLocalSearchParams();
+  const { firstConnection } = useLocalSearchParams<{firstConnection: string}>();
   const [behavior, setBehavior] = useState<'padding' | 'height'>('padding');
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
@@ -59,7 +59,9 @@ const EmailForm = () => {
         if (isExistingUser) await setForgotPasswordModal(true);
         else if (!firstConnection) {
           dispatchError({ type: SET_ERROR, payload: 'Oups ! Cet e-mail n\'est pas reconnu' });
-        } else router.navigate({ pathname: '/Authentication/CreateAccount/0', params: { email } });
+        } else {
+          router.navigate({ pathname: '/Authentication/CreateAccount/0', params: { email } });
+        }
       }
     } catch (e) {
       dispatchError({ type: SET_ERROR, payload: 'Oops, erreur lors de la vérification de l\'e-mail' });

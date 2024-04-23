@@ -17,7 +17,7 @@ const FirstConnectionModal = ({ visible, onRequestClose }: FirstConnectionModalP
 
   const goToEmailForm = () => {
     onRequestClose();
-    router.navigate({ pathname: '/Authentication/EmailForm/', params: { firstConnection: true } });
+    router.navigate({ pathname: '/Authentication/EmailForm', params: { firstConnection: true } });
   };
 
   const goToLoginCodeForm = () => {
