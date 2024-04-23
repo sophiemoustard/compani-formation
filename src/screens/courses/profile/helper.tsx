@@ -8,16 +8,16 @@ import ELearningCell from '../../../components/ELearningCell';
 import styles from './styles';
 import { BlendedCourseType } from '../../../types/CourseTypes';
 
-const renderStepCell = (item, index, course, mode, route) => {
+const renderStepCell = (item, index, course, mode, params) => {
   if ([ON_SITE, REMOTE].includes(item.type)) {
     return <LiveCell step={item} slots={course?.slots} index={index} mode={mode} />;
   }
 
   if (item.type === E_LEARNING) {
-    const profileId = mode === TESTER ? route.params.subProgramId : route.params.courseId;
+    const profileId = mode === TESTER ? params.subProgramId : params.courseId;
 
     return <ELearningCell step={item} index={index} profileId={profileId}
-      endedActivity={route.params.endedActivity} mode={mode} />;
+      endedActivity={params.endedActivity} mode={mode} />;
   }
 
   return null;
@@ -25,10 +25,10 @@ const renderStepCell = (item, index, course, mode, route) => {
 
 const renderSeparator = () => <View style={styles.separator} />;
 
-export const renderStepList = (course, mode, route) => <View style={styles.flatList}>
+export const renderStepList = (course, mode, params) => <View style={styles.flatList}>
   {course.subProgram.steps.map((s, index) => <View key={s._id}>
     {index !== 0 && renderSeparator()}
-    {renderStepCell(s, index, course, mode, route)}
+    {renderStepCell(s, index, course, mode, params)}
   </View>)}
 </View>;
 

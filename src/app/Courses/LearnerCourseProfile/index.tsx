@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import { useState, useEffect, useCallback, Dispatch } from 'react';
 import {
   View,
@@ -24,28 +23,29 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import { Buffer } from 'buffer';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
-import Courses from '../../../../api/courses';
-import Questionnaires from '../../../../api/questionnaires';
-import { WHITE, GREY } from '../../../../styles/colors';
-import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
-import commonStyles from '../../../../styles/common';
-import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
-import styles from '../styles';
-import MainActions from '../../../../store/main/actions';
-import ProgressBar from '../../../../components/cards/ProgressBar';
-import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
-import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import { getLoggedUserId } from '../../../../store/main/selectors';
-import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
-import { QuestionnaireType } from '../../../../types/QuestionnaireType';
-import { getCourseProgress } from '../../../../core/helpers/utils';
-import CourseProfileHeader from '../../../../components/CourseProfileHeader';
-import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { renderStepList, getTitle } from '../helper';
-import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
-import { StateType } from '../../../../types/store/StoreType';
-import { ActionType } from '../../../../context/types';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { RootStackParamList, RootBottomTabParamList } from '@/types/NavigationType';
+import Courses from '@/api/courses';
+import Questionnaires from '@/api/questionnaires';
+import { WHITE, GREY } from '@/styles/colors';
+import { ICON, SCROLL_EVENT_THROTTLE } from '@/styles/metrics';
+import commonStyles from '@/styles/common';
+import { CourseType, BlendedCourseType, ELearningProgramType } from '@/types/CourseTypes';
+import styles from './styles';
+import MainActions from '@/store/main/actions';
+import ProgressBar from '@/components/cards/ProgressBar';
+import CourseProfileStickyHeader from '@/components/CourseProfileStickyHeader';
+import NiSecondaryButton from '@/components/form/SecondaryButton';
+import { getLoggedUserId } from '@/store/main/selectors';
+import QuestionnairesContainer from '@/components/questionnaires/QuestionnairesContainer';
+import { QuestionnaireType } from '@/types/QuestionnaireType';
+import { getCourseProgress } from '@/core/helpers/utils';
+import CourseProfileHeader from '@/components/CourseProfileHeader';
+import { FIRA_SANS_MEDIUM } from '@/styles/fonts';
+import { renderStepList, getTitle } from '@/screens/courses/profile/helper';
+import { isIOS, LEARNER, PEDAGOGY } from '@/core/data/constants';
+import { StateType } from '@/types/store/StoreType';
+import { ActionType } from '@/context/types';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -56,15 +56,16 @@ StackScreenProps<RootBottomTabParamList>
 }
 
 const LearnerCourseProfile = ({
-  route,
-  navigation,
   userId,
   setStatusBarVisible,
 }: LearnerCourseProfileProps) => {
+  const router = useRouter();
+  const { courseId } = useLocalSearchParams<{courseId: string}>();
+  const params = useLocalSearchParams<{courseId: string}>();
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
+    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.webp'));
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -74,8 +75,8 @@ const LearnerCourseProfile = ({
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
-        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        const fetchedCourse = await Courses.getCourse(courseId, PEDAGOGY);
+        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: courseId });
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
         setTitle(getTitle(fetchedCourse));
@@ -92,11 +93,11 @@ const LearnerCourseProfile = ({
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId]);
+  }, [isFocused, setStatusBarVisible, courseId]);
 
   const goBack = useCallback(() => {
-    navigation.navigate('LearnerCourses');
-  }, [navigation]);
+    router.navigate('/Home/LearnerCourses');
+  }, [router]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();
@@ -109,7 +110,7 @@ const LearnerCourseProfile = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const getPdfName = (c: CourseType) => {
+  const getPdfName = (c: BlendedCourseType) => {
     const misc = c.misc ? `_${c.misc}` : '';
 
     return `attestation_${c.subProgram.program.name}${misc}`.replace(/[^a-zA-Zà-üÀ-Ü0-9-+]{1,}/g, '_');
@@ -173,9 +174,9 @@ const LearnerCourseProfile = ({
         ...program,
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
-      navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
+      router.navigate({ pathname: 'ElearningAbout', params: { program: eLearningProgram as ELearningProgramType } });
     } else {
-      navigation.navigate('BlendedAbout', { course: course as BlendedCourseType, mode: LEARNER });
+      router.navigate({ pathname: 'BlendedAbout', params: { course: course as BlendedCourseType, mode: LEARNER } });
     }
   };
 
@@ -191,7 +192,7 @@ const LearnerCourseProfile = ({
         </View>
         {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
         {getHeader()}
-        {renderStepList(course, LEARNER, route)}
+        {renderStepList(course, LEARNER, params)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
             disabled={isLoading}>

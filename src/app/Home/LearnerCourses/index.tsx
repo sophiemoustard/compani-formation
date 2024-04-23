@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
+import { useRouter } from 'expo-router';
 import Courses from '@/api/courses';
 import SubPrograms from '@/api/subPrograms';
 import NextStepCell from '@/components/steps/NextStepCell';
@@ -55,7 +56,8 @@ const courseReducer = (state: CourseStateType, action: CourseActionType) => {
 
 const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={LEARNER} />;
 
-const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
+const LearnerCourses = ({ loggedUserId }: LearnerCoursesProps) => {
+  const router = useRouter();
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -91,9 +93,9 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
   }, [loggedUserId, isFocused, getCourses, getElearningDraftSubPrograms]);
 
   const onPressProgramCell = (id: string, isCourse: boolean) => {
-    if (isCourse) navigation.navigate('LearnerCourseProfile', { courseId: id });
+    if (isCourse) router.navigate({ pathname: '/Courses/LearnerCourseProfile', params: { courseId: id } });
     else {
-      navigation.navigate('SubProgramProfile', { subProgramId: id });
+      router.navigate({ pathname: '/Courses/SubProgramProfile', params: { subProgramId: id } });
     }
   };
 
