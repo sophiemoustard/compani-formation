@@ -72,7 +72,7 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
           <ActivityIcon activity={activity} disabled={disabled} backgroundColor={colors.background}
             borderColor={colors.border} />
           {isCompleted && !isQuiz &&
-            <Ionicons name='ios-checkmark-circle' size={ICON.MD} color={GREEN[500]} style={coloredStyle.icon}
+            <Ionicons name='checkmark-circle' size={ICON.MD} color={GREEN[500]} style={coloredStyle.icon}
               backgroundColor={WHITE} />}
           {isCompleted && isQuiz &&
             <View style={coloredStyle.scoreContainer}>

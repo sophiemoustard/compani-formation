@@ -23,8 +23,6 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
-  END_OF_COURSE,
-  EXPECTATIONS,
   IMAGE,
   INTRA,
   INTER_B2B,
@@ -32,7 +30,6 @@ import {
   LONG_FIRSTNAME_LONG_LASTNAME,
   OPERATIONS,
   PDF,
-  PUBLISHED,
   SHORT_FIRSTNAME_LONG_LASTNAME,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
@@ -49,7 +46,7 @@ import ImagePickerManager from '../../../../components/ImagePickerManager';
 import PictureModal from '../../../../components/PictureModal';
 import CameraModal from '../../../../components/camera/CameraModal';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
-import { formatIdentity } from '../../../../core/helpers/utils';
+import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
 import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
 
@@ -98,41 +95,26 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
-  const [expectationsQuestionnaireId, setExpectationsQuestionnaireId] = useState<string>('');
-  const [expectationsQRCode, setExpectationsQRCode] = useState<string>('');
-  const [endOfCourseQuestionnaireId, setEndOfCourseQuestionnaireId] = useState<string>('');
-  const [endOfCourseQRCode, setEndOfCourseQRCode] = useState<string>('');
+  const [questionnaireQRCode, setQuestionnaireQRCode] = useState('');
+  const [questionnairesType, setQuestionnairesType] = useState([]);
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
   };
 
-  const getQuestionnairesQRCode = async (courseId: string) => {
+  const getQuestionnaireQRCode = async (courseId: string) => {
     try {
-      const publishedQuestionnaires = await Questionnaires.list({ status: PUBLISHED });
+      const publishedQuestionnaires = await Questionnaires.list({ course: courseId });
+      setQuestionnairesType(publishedQuestionnaires.map(q => q.type).sort((a, b) => sortStrings(a, b)));
 
-      const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
-      if (expectationsQuestionnaire) {
-        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaire._id, { course: courseId });
-
-        setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
-        setExpectationsQRCode(expectationsCode);
-      }
-
-      const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
-      if (endOfCourseQuestionnaire) {
-        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaire._id, { course: courseId });
-
-        setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
-        setEndOfCourseQRCode(endOfCourseCode);
+      if (publishedQuestionnaires.length) {
+        const qrCode = await Questionnaires.getQRCode({ course: courseId });
+        setQuestionnaireQRCode(qrCode);
       }
     } catch (e: any) {
       console.error(e);
-      setExpectationsQuestionnaireId('');
-      setExpectationsQRCode('');
-      setEndOfCourseQuestionnaireId('');
-      setEndOfCourseQRCode('');
+      setQuestionnaireQRCode([]);
     }
   };
 
@@ -141,7 +123,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
         await refreshAttendanceSheets(fetchedCourse._id);
-        await getQuestionnairesQRCode(fetchedCourse._id);
+        await getQuestionnaireQRCode(fetchedCourse._id);
 
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
@@ -268,14 +250,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           }
           {!!course.trainees && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
         </View>
-        <View style={styles.sectionContainer}>
+        {!!questionnaireQRCode && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
-          {!!expectationsQuestionnaireId && <QuestionnaireQRCodeCell img={expectationsQRCode} type={EXPECTATIONS}
-            courseId={course._id} questionnaireId={expectationsQuestionnaireId} />}
-          {!!endOfCourseQuestionnaireId && <QuestionnaireQRCodeCell img={endOfCourseQRCode} type={END_OF_COURSE}
-            courseId={course._id} questionnaireId={endOfCourseQuestionnaireId} />}
-        </View>
+          <QuestionnaireQRCodeCell img={questionnaireQRCode} types={questionnairesType}
+            courseId={course._id} />
+        </View>}
         {course.type !== INTER_B2B && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <ContactInfoContainer contact={course.companyRepresentative}

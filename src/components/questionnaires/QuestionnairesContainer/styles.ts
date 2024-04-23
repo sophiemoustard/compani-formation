@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { GREY, YELLOW } from '../../../styles/colors';
-import { FIRA_SANS_ITALIC, FIRA_SANS_BOLD_ITALIC } from '../../../styles/fonts';
+import { FIRA_SANS_ITALIC } from '../../../styles/fonts';
 import { BORDER_WIDTH, MARGIN, PADDING } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
@@ -15,12 +15,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: PADDING.LG,
     paddingVertical: PADDING.MD,
-  },
-  headerText: {
     ...FIRA_SANS_ITALIC.SM,
-  },
-  questionnairesCount: {
-    ...FIRA_SANS_BOLD_ITALIC.SM,
   },
 });
 

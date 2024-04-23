@@ -21,10 +21,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  progress: {
-    width: ICON.XS,
-    height: ICON.XS,
-  },
   finishedContainer: {
     width: ICON.XL,
     height: ICON.XL,
