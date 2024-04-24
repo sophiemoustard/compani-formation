@@ -8,7 +8,7 @@ export const RESET_PROGRAM_REDUCER = 'RESET_PROGRAM_REDUCER';
 
 export type SetCourseType = {
   type: typeof SET_COURSE,
-  payload: CourseType,
+  payload: CourseType | null,
 }
 
 export type ResetCourseReducer = {
@@ -17,7 +17,7 @@ export type ResetCourseReducer = {
 
 export type SetProgramType = {
   type: typeof SET_PROGRAM,
-  payload: ProgramType,
+  payload: ProgramType | null,
 }
 
 export type ResetProgramReducer = {

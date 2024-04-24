@@ -191,7 +191,7 @@ const LearnerCourseProfile = ({
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
       setProgram(eLearningProgram);
-      router.navigate({ pathname: '/Explore/ELearningAbout' });
+      router.navigate('/Explore/ELearningAbout');
     } else {
       router.navigate({ pathname: '/Explore/BlendedAbout', params: { mode: LEARNER } });
     }
@@ -230,8 +230,8 @@ const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state),
 
 const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-  setCourse: (course: CourseType) => dispatch(CourseActions.setCourse(course)),
-  setProgram: (program: ProgramType) => dispatch(ProgramActions.setProgram(program)),
+  setCourse: (course: CourseType | null) => dispatch(CourseActions.setCourse(course)),
+  setProgram: (program: ProgramType | null) => dispatch(ProgramActions.setProgram(program)),
   resetCourseReducer: () => dispatch(CourseActions.resetCourseReducer()),
   resetProgramReducer: () => dispatch(ProgramActions.resetProgramReducer()),
 

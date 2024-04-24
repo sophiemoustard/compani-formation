@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Dispatch } from 'react';
 import { Text, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import groupBy from 'lodash/groupBy';
+import { useRouter } from 'expo-router';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
@@ -10,6 +11,7 @@ import { RootBottomTabParamList, RootStackParamList } from '@/types/NavigationTy
 import Programs from '@/api/programs';
 import { ELearningProgramType, ProgramType } from '@/types/CourseTypes';
 import commonStyles from '@/styles/common';
+import ProgramActions from '@/store/program/actions';
 import { getLoggedUserId } from '@/store/main/selectors';
 import ProgramCell from '@/components/ProgramCell';
 import styles from './styles';
@@ -17,13 +19,14 @@ import CoursesSection from '@/components/CoursesSection';
 import HomeScreenFooter from '@/components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '@/styles/colors';
 import { capitalizeFirstLetter, getTheoreticalDuration } from '@/core/helpers/utils';
-import { StateType } from '@/types/store/StoreType';
+import { ActionType, StateType } from '@/types/store/StoreType';
 
 interface CatalogProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
   loggedUserId: string | null,
+  setProgram: (program: ProgramType) => void,
 }
 
 const CategoriesStyleList = [
@@ -49,7 +52,8 @@ const CategoriesStyleList = [
   },
 ];
 
-const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
+const Catalog = ({ loggedUserId, setProgram }: CatalogProps) => {
+  const router = useRouter();
   const [programsByCategories, setProgramsByCategories] = useState<{ [key: string]: ProgramType[] }>({});
   const isFocused = useIsFocused();
   const style = styles();
@@ -74,7 +78,10 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
     }
   }, [loggedUserId, isFocused]);
 
-  const goToProgram = (program: ELearningProgramType) => navigation.navigate('ElearningAbout', { program });
+  const goToProgram = (program: ELearningProgramType) => {
+    setProgram(program);
+    router.navigate('/Explore/ELearningAbout');
+  };
 
   const renderItem = (program: ELearningProgramType) => <ProgramCell onPress={() => goToProgram(program)}
     program={program} theoreticalDuration={getTheoreticalDuration(get(program, 'subPrograms[0].steps'))} />;
@@ -97,4 +104,8 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
 const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
 
-export default connect(mapStateToProps)(Catalog);
+const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
+  setProgram: (program: ProgramType) => dispatch(ProgramActions.setProgram(program)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

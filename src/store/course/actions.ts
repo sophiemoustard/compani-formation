@@ -6,7 +6,7 @@ import {
 } from '../../types/store/CourseStoreType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 
-const setCourse = (course: CourseType): SetCourseType => ({ type: SET_COURSE, payload: course });
+const setCourse = (course: CourseType | null): SetCourseType => ({ type: SET_COURSE, payload: course });
 const resetCourseReducer = (): ActionWithoutPayloadType => ({ type: RESET_COURSE_REDUCER });
 
 export default {

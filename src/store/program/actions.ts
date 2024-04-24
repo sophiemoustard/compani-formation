@@ -6,7 +6,7 @@ import {
 } from '../../types/store/CourseStoreType';
 import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 
-const setProgram = (program: ProgramType): SetProgramType => ({ type: SET_PROGRAM, payload: program });
+const setProgram = (program: ProgramType | null): SetProgramType => ({ type: SET_PROGRAM, payload: program });
 const resetProgramReducer = (): ActionWithoutPayloadType => ({ type: RESET_PROGRAM_REDUCER });
 
 export default {
