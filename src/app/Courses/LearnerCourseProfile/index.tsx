@@ -44,7 +44,7 @@ import { QuestionnaireType } from '@/types/QuestionnaireType';
 import { getCourseProgress } from '@/core/helpers/utils';
 import CourseProfileHeader from '@/components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '@/styles/fonts';
-import { renderStepList, getTitle } from '@/screens/courses/profile/helper';
+import { renderStepList, getTitle } from '@/core/helpers/courseProfile/helper';
 import { isIOS, LEARNER, PEDAGOGY } from '@/core/data/constants';
 import { StateType } from '@/types/store/StoreType';
 import { ActionType } from '@/context/types';
@@ -92,6 +92,7 @@ const LearnerCourseProfile = ({
           setCourse(fetchedCourse);
         }
         setTitle(getTitle(fetchedCourse));
+
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         if (programImage) setSource({ uri: programImage });
         const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: courseId });

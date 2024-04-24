@@ -6,6 +6,7 @@ import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
+import { useRouter } from 'expo-router';
 import Courses from '@/api/courses';
 import CoursesSection, { EVENT_SECTION } from '@/components/CoursesSection';
 import NextStepCell from '@/components/steps/NextStepCell';
@@ -71,7 +72,8 @@ StackScreenProps<RootStackParamList>
   loggedUserId: string | null,
 }
 
-const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
+const TrainerCourses = ({ loggedUserId }: TrainerCoursesProps) => {
+  const router = useRouter();
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
@@ -97,7 +99,7 @@ const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
   }, [loggedUserId]);
 
   const goToCourse = (id: string) => {
-    navigation.navigate('TrainerCourseProfile', { courseId: id });
+    router.navigate({ pathname: '/Courses/TrainerCourseProfile', params: { courseId: id } });
   };
 
   const renderItem = (course: BlendedCourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}

@@ -2,7 +2,7 @@
 
 import { View } from 'react-native';
 import get from 'lodash/get';
-import { E_LEARNING, ON_SITE, REMOTE, TESTER } from '../../../core/data/constants';
+import { E_LEARNING, ON_SITE, REMOTE, TESTER } from '../../data/constants';
 import LiveCell from '../../../components/steps/LiveCell';
 import ELearningCell from '../../../components/ELearningCell';
 import styles from './styles';

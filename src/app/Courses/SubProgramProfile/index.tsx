@@ -27,7 +27,7 @@ import MainActions from '@/store/main/actions';
 import { RootStackParamList, RootBottomTabParamList } from '@/types/NavigationType';
 import { SubProgramType } from '@/types/CourseTypes';
 import { ActionType } from '@/context/types';
-import { renderStepList } from '@/screens/courses/profile/helper';
+import { renderStepList } from '@/core/helpers/courseProfile/helper';
 
 interface SubProgramProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'SubProgramProfile'>,

@@ -7,50 +7,59 @@ import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
-import Courses from '../../../../api/courses';
-import { WHITE, GREY } from '../../../../styles/colors';
-import commonStyles from '../../../../styles/common';
-import { CourseType, BlendedCourseType } from '../../../../types/CourseTypes';
-import styles from '../styles';
-import MainActions from '../../../../store/main/actions';
-import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import { getLoggedUserId } from '../../../../store/main/selectors';
-import CourseProfileHeader from '../../../../components/CourseProfileHeader';
-import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
-import { getTitle, renderStepList } from '../helper';
-import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
-import { StateType } from '../../../../types/store/StoreType';
-import { ActionType } from '../../../../context/types';
+import { RootStackParamList, RootBottomTabParamList } from '@/types/NavigationType';
+import Courses from '@/api/courses';
+import { WHITE, GREY } from '@/styles/colors';
+import commonStyles from '@/styles/common';
+import { CourseType } from '@/types/CourseTypes';
+import styles from './styles';
+import MainActions from '@/store/main/actions';
+import CourseActions from '@/store/course/actions';
+import NiSecondaryButton from '@/components/form/SecondaryButton';
+import CourseProfileHeader from '@/components/CourseProfileHeader';
+import { FIRA_SANS_MEDIUM } from '@/styles/fonts';
+import { getTitle, renderStepList } from '@/core/helpers/courseProfile/helper';
+import { PEDAGOGY, TRAINER } from '@/core/data/constants';
+import { StateType } from '@/types/store/StoreType';
+import { ActionType } from '@/context/types';
 
-const ADMIN_SCREEN = 'AdminCourseProfile';
-const ABOUT_SCREEN = 'BlendedAbout';
+const ADMIN_SCREEN = '/Courses/AdminCourseProfile';
+const ABOUT_SCREEN = '/Explore/BlendedAbout';
 
 interface TrainerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  userId: string,
+  course: CourseType | null,
+  setCourse: (course: CourseType | null) => void,
   setStatusBarVisible: (boolean: boolean) => void,
+  resetCourseReducer: () => void,
 }
 
 const TrainerCourseProfile = ({
-  route,
-  navigation,
+  course,
+  setCourse,
   setStatusBarVisible,
+  resetCourseReducer,
 }: TrainerCourseProfileProps) => {
-  const [course, setCourse] = useState<CourseType | null>(null);
+  const router = useRouter();
+  const { courseId } = useLocalSearchParams<{courseId: string}>();
+  const params = useLocalSearchParams<{courseId: string}>();
   const [source, setSource] =
-    useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
+    useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.webp'));
   const [title, setTitle] = useState<string>('');
 
   const isFocused = useIsFocused();
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
-        setCourse(fetchedCourse);
+        let fetchedCourse = course;
+        if (!fetchedCourse) {
+          fetchedCourse = await Courses.getCourse(courseId, PEDAGOGY);
+          setCourse(fetchedCourse);
+        }
         setTitle(getTitle(fetchedCourse));
 
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
@@ -65,11 +74,12 @@ const TrainerCourseProfile = ({
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, route.params.courseId, setStatusBarVisible]);
+  }, [isFocused, setStatusBarVisible, courseId, setCourse, course]);
 
   const goBack = useCallback(() => {
-    navigation.navigate('TrainerCourses');
-  }, [navigation]);
+    router.navigate('/Home/TrainerCourses');
+    resetCourseReducer();
+  }, [resetCourseReducer, router]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();
@@ -85,8 +95,8 @@ const TrainerCourseProfile = ({
   const goTo = (screen: typeof ABOUT_SCREEN | typeof ADMIN_SCREEN) => {
     if (!course) return;
 
-    if (screen === ABOUT_SCREEN) navigation.navigate(screen, { course: course as BlendedCourseType, mode: TRAINER });
-    else navigation.navigate(screen, { courseId: course._id });
+    if (screen === ABOUT_SCREEN) router.navigate({ pathname: screen, params: { mode: TRAINER } });
+    else router.navigate({ pathname: screen, params: { courseId: course._id } });
   };
 
   return course && has(course, 'subProgram.program') && (
@@ -99,16 +109,18 @@ const TrainerCourseProfile = ({
           <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
-        {renderStepList(course, TRAINER, route)}
+        {renderStepList(course, TRAINER, params)}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ course: state.course.course });
 
 const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setCourse: (course: CourseType) => dispatch(CourseActions.setCourse(course)),
+  resetCourseReducer: () => dispatch(CourseActions.resetCourseReducer()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainerCourseProfile);

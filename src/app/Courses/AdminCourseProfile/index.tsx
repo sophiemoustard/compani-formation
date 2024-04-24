@@ -7,20 +7,19 @@ import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../../types/NavigationType';
-import Courses from '../../../../api/courses';
-import AttendanceSheets from '../../../../api/attendanceSheets';
-import Questionnaires from '../../../../api/questionnaires';
-import commonStyles from '../../../../styles/common';
-import { ICON } from '../../../../styles/metrics';
-import { GREY, PINK } from '../../../../styles/colors';
-import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
-import { PictureType } from '../../../../types/PictureTypes';
+import Courses from '@/api/courses';
+import AttendanceSheets from '@/api/attendanceSheets';
+import Questionnaires from '@/api/questionnaires';
+import commonStyles from '@/styles/common';
+import { ICON } from '@/styles/metrics';
+import { GREY, PINK } from '@/styles/colors';
+import { BlendedCourseType, TraineeType } from '@/types/CourseTypes';
+import { PictureType } from '@/types/PictureTypes';
 import styles from './styles';
-import { getTitle } from '../helper';
-import CourseAboutHeader from '../../../../components/CourseAboutHeader';
+import { getTitle } from '@/core/helpers/courseProfile/helper';
+import CourseAboutHeader from '@/components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
   END_OF_COURSE,
@@ -34,27 +33,24 @@ import {
   PDF,
   PUBLISHED,
   SHORT_FIRSTNAME_LONG_LASTNAME,
-} from '../../../../core/data/constants';
-import CompaniDate from '../../../../core/helpers/dates/companiDates';
-import PersonCell from '../../../../components/PersonCell';
-import ContactInfoContainer from '../../../../components/ContactInfoContainer';
+} from '@/core/data/constants';
+import CompaniDate from '@/core/helpers/dates/companiDates';
+import PersonCell from '@/components/PersonCell';
+import ContactInfoContainer from '@/components/ContactInfoContainer';
 import {
   AttendanceSheetType,
   InterAttendanceSheetType,
   IntraOrIntraHoldingAttendanceSheetType,
   isIntraOrIntraHolding,
-} from '../../../../types/AttendanceSheetTypes';
-import UploadButton from '../../../../components/form/UploadButton';
-import ImagePickerManager from '../../../../components/ImagePickerManager';
-import PictureModal from '../../../../components/PictureModal';
-import CameraModal from '../../../../components/camera/CameraModal';
-import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
-import { formatIdentity } from '../../../../core/helpers/utils';
-import ImagePreview from '../../../../components/ImagePreview';
-import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
-
-interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
-}
+} from '@/types/AttendanceSheetTypes';
+import UploadButton from '@/components/form/UploadButton';
+import ImagePickerManager from '@/components/ImagePickerManager';
+import PictureModal from '@/components/PictureModal';
+import CameraModal from '@/components/camera/CameraModal';
+import { formatImage, formatPayload } from '@/core/helpers/pictures';
+import { formatIdentity } from '@/core/helpers/utils';
+import ImagePreview from '@/components/ImagePreview';
+import QuestionnaireQRCodeCell from '@/components/QuestionnaireQRCodeCell';
 
 interface imagePreviewProps {
   visible: boolean,
@@ -63,7 +59,9 @@ interface imagePreviewProps {
   type: string,
 }
 
-const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
+const AdminCourseProfile = () => {
+  const router = useRouter();
+  const { courseId } = useLocalSearchParams<{courseId: string}>();
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -103,18 +101,18 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [endOfCourseQuestionnaireId, setEndOfCourseQuestionnaireId] = useState<string>('');
   const [endOfCourseQRCode, setEndOfCourseQRCode] = useState<string>('');
 
-  const refreshAttendanceSheets = async (courseId: string) => {
-    const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
+  const refreshAttendanceSheets = async (id: string) => {
+    const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: id });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
   };
 
-  const getQuestionnairesQRCode = async (courseId: string) => {
+  const getQuestionnairesQRCode = async (id: string) => {
     try {
       const publishedQuestionnaires = await Questionnaires.list({ status: PUBLISHED });
 
       const expectationsQuestionnaire = publishedQuestionnaires.find(q => q.type === EXPECTATIONS);
       if (expectationsQuestionnaire) {
-        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaire._id, { course: courseId });
+        const expectationsCode = await Questionnaires.getQRCode(expectationsQuestionnaire._id, { course: id });
 
         setExpectationsQuestionnaireId(expectationsQuestionnaire._id);
         setExpectationsQRCode(expectationsCode);
@@ -122,7 +120,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
       const endOfCourseQuestionnaire = publishedQuestionnaires.find(q => q.type === END_OF_COURSE);
       if (endOfCourseQuestionnaire) {
-        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaire._id, { course: courseId });
+        const endOfCourseCode = await Questionnaires.getQRCode(endOfCourseQuestionnaire._id, { course: id });
 
         setEndOfCourseQuestionnaireId(endOfCourseQuestionnaire._id);
         setEndOfCourseQRCode(endOfCourseCode);
@@ -139,7 +137,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
+        const fetchedCourse = await Courses.getCourse(courseId, OPERATIONS);
         await refreshAttendanceSheets(fetchedCourse._id);
         await getQuestionnairesQRCode(fetchedCourse._id);
 
@@ -152,12 +150,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     };
 
     getCourse();
-  }, [route.params.courseId]);
+  }, [courseId]);
 
   const hardwareBackPress = useCallback(() => {
-    navigation.goBack();
+    router.back();
     return true;
-  }, [navigation]);
+  }, [router]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
@@ -230,7 +228,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
+        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={router.back} />
         <View style={styles.attendancesContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>
