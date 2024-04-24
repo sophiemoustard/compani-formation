@@ -1,16 +1,17 @@
+// @ts-nocheck
 import { useEffect, useState, useMemo } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Markdown from 'react-native-markdown-display';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../types/NavigationType';
-import CompaniDate from '../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../core/helpers/dates/utils';
-import About from '../../../components/About';
+import { connect } from 'react-redux';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import CompaniDate from '@/core/helpers/dates/companiDates';
+import { ascendingSort } from '@/core/helpers/dates/utils';
+import About from '@/components/About';
 import styles from './styles';
-import { capitalize, formatIdentity } from '../../../core/helpers/utils';
-import commonStyles, { markdownStyle } from '../../../styles/common';
-import InternalRulesModal from '../../../components/InternalRulesModal';
-import ContactInfoContainer from '../../../components/ContactInfoContainer';
+import { capitalize, formatIdentity } from '@/core/helpers/utils';
+import commonStyles, { markdownStyle } from '@/styles/common';
+import InternalRulesModal from '@/components/InternalRulesModal';
+import ContactInfoContainer from '@/components/ContactInfoContainer';
 import {
   LEARNER,
   DAY_OF_WEEK_SHORT,
@@ -18,9 +19,9 @@ import {
   MONTH_SHORT,
   YEAR,
   LONG_FIRSTNAME_LONG_LASTNAME,
-} from '../../../core/data/constants';
-
-interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
+} from '@/core/data/constants';
+import { StateType } from '@/types/store/StoreType';
+import { BlendedCourseType } from '@/types/CourseTypes';
 
 const formatDate = (date: Date) => {
   const dayOfWeek = capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT));
@@ -30,8 +31,13 @@ const formatDate = (date: Date) => {
   return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
 };
 
-const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
-  const { course, mode } = route.params;
+interface BlendedAboutProps {
+  course: BlendedCourseType,
+}
+
+const BlendedAbout = ({ course }: BlendedAboutProps) => {
+  const router = useRouter();
+  const { mode } = useLocalSearchParams<{ mode: string}>();
   const program = course.subProgram?.program || null;
   const [trainerPictureSource, setTrainerPictureSource] = useState(
     require('../../../../assets/images/default_avatar.webp')
@@ -49,12 +55,15 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   }, [course.slots]);
 
   useEffect(() => {
-    if (course?.trainer?.picture?.link) setTrainerPictureSource({ uri: course.trainer.picture.link });
-  }, [course?.trainer?.picture?.link]);
+    if (course.trainer?.picture?.link) setTrainerPictureSource({ uri: course.trainer.picture.link });
+  }, [course.trainer?.picture?.link]);
 
   const goToCourse = () => {
     if (course._id) {
-      navigation.navigate(mode === LEARNER ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId: course._id });
+      router.navigate({
+        pathname: mode === LEARNER ? '/Courses/LearnerCourseProfile' : '/Courses/TrainerCourseProfile',
+        params: { courseId: course._id },
+      });
     }
   };
 
@@ -93,4 +102,6 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   );
 };
 
-export default BlendedAbout;
+const mapStateToProps = (state: StateType) => ({ course: state.course.course });
+
+export default connect(mapStateToProps)(BlendedAbout);

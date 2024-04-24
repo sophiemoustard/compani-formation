@@ -30,9 +30,11 @@ import Questionnaires from '@/api/questionnaires';
 import { WHITE, GREY } from '@/styles/colors';
 import { ICON, SCROLL_EVENT_THROTTLE } from '@/styles/metrics';
 import commonStyles from '@/styles/common';
-import { CourseType, BlendedCourseType, ELearningProgramType } from '@/types/CourseTypes';
+import { CourseType, BlendedCourseType, ProgramType } from '@/types/CourseTypes';
 import styles from './styles';
 import MainActions from '@/store/main/actions';
+import CourseActions from '@/store/course/actions';
+import ProgramActions from '@/store/program/actions';
 import ProgressBar from '@/components/cards/ProgressBar';
 import CourseProfileStickyHeader from '@/components/CourseProfileStickyHeader';
 import NiSecondaryButton from '@/components/form/SecondaryButton';
@@ -52,17 +54,26 @@ StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
   userId: string,
+  course: CourseType | null,
+  setCourse: (course: CourseType | null) => void,
+  setProgram: (program: ProgramType | null) => void,
   setStatusBarVisible: (boolean: boolean) => void,
+  resetCourseReducer: () => void,
+  resetProgramReducer: () => void,
 }
 
 const LearnerCourseProfile = ({
   userId,
+  course,
+  setCourse,
+  setProgram,
   setStatusBarVisible,
+  resetCourseReducer,
+  resetProgramReducer,
 }: LearnerCourseProfileProps) => {
   const router = useRouter();
   const { courseId } = useLocalSearchParams<{courseId: string}>();
   const params = useLocalSearchParams<{courseId: string}>();
-  const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../assets/images/authentication_background_image.webp'));
@@ -75,14 +86,16 @@ const LearnerCourseProfile = ({
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(courseId, PEDAGOGY);
-        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: courseId });
-        setCourse(fetchedCourse);
-        setQuestionnaires(fetchedQuestionnaires);
+        let fetchedCourse = course;
+        if (!fetchedCourse) {
+          fetchedCourse = await Courses.getCourse(courseId, PEDAGOGY);
+          setCourse(fetchedCourse);
+        }
         setTitle(getTitle(fetchedCourse));
-
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         if (programImage) setSource({ uri: programImage });
+        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: courseId });
+        setQuestionnaires(fetchedQuestionnaires);
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -93,11 +106,13 @@ const LearnerCourseProfile = ({
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, courseId]);
+  }, [isFocused, setStatusBarVisible, courseId, setCourse, course]);
 
   const goBack = useCallback(() => {
     router.navigate('/Home/LearnerCourses');
-  }, [router]);
+    resetCourseReducer();
+    resetProgramReducer();
+  }, [resetCourseReducer, resetProgramReducer, router]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();
@@ -174,9 +189,10 @@ const LearnerCourseProfile = ({
         ...program,
         subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
       };
-      router.navigate({ pathname: 'ElearningAbout', params: { program: eLearningProgram as ELearningProgramType } });
+      setProgram(eLearningProgram);
+      router.navigate({ pathname: '/Explore/ELearningAbout' });
     } else {
-      router.navigate({ pathname: 'BlendedAbout', params: { course: course as BlendedCourseType, mode: LEARNER } });
+      router.navigate({ pathname: '/Explore/BlendedAbout', params: { mode: LEARNER } });
     }
   };
 
@@ -209,10 +225,15 @@ const LearnerCourseProfile = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state), course: state.course.course });
 
 const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
+  setCourse: (course: CourseType) => dispatch(CourseActions.setCourse(course)),
+  setProgram: (program: ProgramType) => dispatch(ProgramActions.setProgram(program)),
+  resetCourseReducer: () => dispatch(CourseActions.resetCourseReducer()),
+  resetProgramReducer: () => dispatch(ProgramActions.resetProgramReducer()),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourseProfile);

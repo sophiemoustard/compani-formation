@@ -1,22 +1,24 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { StackActions } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../types/NavigationType';
-import Courses from '../../../api/courses';
-import { getLoggedUserId } from '../../../store/main/selectors';
-import { ELearningCourseType } from '../../../types/CourseTypes';
-import About from '../../../components/About';
-import { LEARNER } from '../../../core/data/constants';
-import { StateType } from '../../../types/store/StoreType';
+import { RootStackParamList } from '@/types/NavigationType';
+import Courses from '@/api/courses';
+import { getLoggedUserId } from '@/store/main/selectors';
+import { ELearningCourseType, ProgramType } from '@/types/CourseTypes';
+import About from '@/components/About';
+import { LEARNER } from '@/core/data/constants';
+import { StateType } from '@/types/store/StoreType';
 
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
   loggedUserId: string | null,
+  program: ProgramType,
 }
 
-const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps) => {
-  const { program } = route.params;
+const ElearningAbout = ({ loggedUserId, program }: ElearningAboutProps) => {
+  const router = useRouter();
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
 
@@ -31,15 +33,15 @@ const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps
     }
   }, [loggedUserId, program]);
 
-  const goToCourse = () => navigation.navigate('LearnerCourseProfile', { courseId });
+  const goToCourse = () => router.navigate({ pathname: '/Courses/LearnerCourseProfile', params: { courseId } });
 
   const startActivity = () => {
     const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
-    navigation.dispatch(StackActions.replace('LearnerCourseProfile', { courseId }));
-    navigation.navigate(
-      'ActivityCardContainer',
-      { activityId: firstActivity._id, profileId: courseId, mode: LEARNER }
-    );
+    router.replace({ pathname: '/Courses/LearnerCourseProfile', params: { courseId } });
+    router.navigate({
+      pathname: 'ActivityCardContainer',
+      params: { activityId: firstActivity?._id, profileId: courseId, mode: LEARNER },
+    });
   };
 
   const subscribeAndGoToCourseProfile = async () => {
@@ -60,6 +62,9 @@ const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
+const mapStateToProps = (state: StateType) => ({
+  loggedUserId: getLoggedUserId(state),
+  program: state.program.program,
+});
 
 export default connect(mapStateToProps)(ElearningAbout);

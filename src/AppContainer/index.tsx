@@ -6,31 +6,42 @@ import { connect } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
-import { Slot } from 'expo-router';
+import { Slot, useRouter } from 'expo-router';
 import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 import MainActions from '@/store/main/actions';
+import CourseActions from '@/store/course/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '@/types/store/StoreType';
 import axiosLogged from '@/api/axios/logged';
 import axiosNotLogged from '@/api/axios/notLogged';
 import Users from '@/api/users';
+import Courses from '@/api/courses';
 import Version from '@/api/version';
 import asyncStorage from '@/core/helpers/asyncStorage';
+import { registerForPushNotificationsAsync, handleExpoToken } from '@/core/helpers/notifications';
 import {
-  registerForPushNotificationsAsync,
-  handleNotificationResponse,
-  handleExpoToken,
-} from '@/core/helpers/notifications';
-import { ACTIVE_STATE } from '@/core/data/constants';
+  ACTIVE_STATE,
+  BLENDED_COURSE_REGISTRATION,
+  LEARNER, NEW_ELEARNING_COURSE,
+  PEDAGOGY,
+} from '@/core/data/constants';
 import UpdateAppModal from '@/components/UpdateAppModal';
 import MaintenanceModal from '@/components/MaintenanceModal';
 import { UserType } from '@/types/UserType';
 import { WHITE } from '@/styles/colors';
 import styles from './styles';
+import { CourseType, ELearningProgramType } from '@/types/CourseTypes';
+import programs from '@/api/programs';
 
 type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
+  setCourse: (course: CourseType | null) => void,
   statusBarVisible: boolean,
 }
+
+type NotificationRequestDataType = {
+  type: typeof BLENDED_COURSE_REGISTRATION | typeof NEW_ELEARNING_COURSE,
+  _id: string
+};
 
 const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   const axiosLoggedConfig = { ...config };
@@ -39,7 +50,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, setCourse, statusBarVisible }: AppContainerProps) => {
   const {
     tryLocalSignIn,
     companiToken,
@@ -47,12 +58,33 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     signOut,
     refreshCompaniToken,
   }: AuthContextType = useContext(AuthContext);
+  const router = useRouter();
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  const handleNotificationResponse = useCallback(async (response: Notifications.NotificationResponse) => {
+    const { type, _id } = response.notification.request.content.data as NotificationRequestDataType;
+
+    switch (type) {
+      case BLENDED_COURSE_REGISTRATION: {
+        const course = await Courses.getCourse(_id, PEDAGOGY);
+        setCourse(course);
+
+        return router.navigate({ pathname: '/Explore/BlendedAbout', params: { mode: LEARNER } });
+      }
+      case NEW_ELEARNING_COURSE: {
+        const program = await programs.getELearningPrograms({ _id });
+
+        return router.navigate('ElearningAbout', { program: program[0] as ELearningProgramType });
+      }
+      default:
+        return null;
+    }
+  }, [router, setCourse]);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(async (data) => {
@@ -63,7 +95,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible }: AppContainerProps) =>
     const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
       get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
     if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
-  }, [companiToken, lastNotificationResponse]);
+  }, [companiToken, handleNotificationResponse, lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
@@ -201,6 +233,8 @@ const mapStateToProps = (state: StateType) => ({
 
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
+  setCourse: (course: CourseType) => dispatch(CourseActions.setCourse(course)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

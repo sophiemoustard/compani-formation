@@ -1,5 +1,5 @@
 import { TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import CalendarIcon from '../../CalendarIcon';
 import StepCellTitle from '../StepCellTitle';
 import { CourseModeType } from '../../../types/CourseTypes';
@@ -14,10 +14,13 @@ type NextStepCellProps = {
 
 const NextStepCell = ({ nextSlotsStep, mode }: NextStepCellProps) => {
   const { stepIndex, slots, progress, courseId, name, type, misc } = nextSlotsStep;
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const goToCourse = () => {
-    navigation.navigate(mode === LEARNER ? 'LearnerCourseProfile' : 'TrainerCourseProfile', { courseId });
+    router.navigate({
+      pathname: mode === LEARNER ? '/Courses/LearnerCourseProfile' : '/Courses/TrainerCourseProfile',
+      params: { courseId },
+    });
   };
 
   return (

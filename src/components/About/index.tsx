@@ -3,7 +3,7 @@ import { Image, Text, View, ScrollView, BackHandler, ImageSourcePropType } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Markdown from 'react-native-markdown-display';
 import get from 'lodash/get';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import styles from './styles';
 import commonStyles, { markdownStyle } from '../../styles/common';
 import { GREY, TRANSPARENT_GRADIENT } from '../../styles/colors';
@@ -22,7 +22,7 @@ type AboutProps = {
 const About = ({ program, buttonCaption = 'Continuer', children, onPress }: AboutProps) => {
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../assets/images/authentication_background_image.webp'));
-  const navigation = useNavigation();
+  const router = useRouter();
 
   useEffect(() => {
     const programImage = get(program, 'image.link') || '';
@@ -31,9 +31,9 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
   }, [program]);
 
   const hardwareBackPress = useCallback(() => {
-    navigation.goBack();
+    router.back();
     return true;
-  }, [navigation]);
+  }, [router]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
@@ -45,7 +45,7 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
     <>
       <SafeAreaView style={commonStyles.container} edges={['top']}>
         <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
-          <CourseAboutHeader screenTitle='A PROPOS' courseTitle={program.name} goBack={navigation.goBack} />
+          <CourseAboutHeader screenTitle='A PROPOS' courseTitle={program.name} goBack={router.back} />
           <View style={styles.content}>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={source} />
