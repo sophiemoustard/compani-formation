@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '@/types/NavigationType';
 import Courses from '@/api/courses';
@@ -12,13 +12,14 @@ import About from '@/components/About';
 import { LEARNER } from '@/core/data/constants';
 import { StateType } from '@/types/store/StoreType';
 
-interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
+interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ELearningAbout'> {
   loggedUserId: string | null,
   program: ProgramType,
 }
 
-const ElearningAbout = ({ loggedUserId, program }: ElearningAboutProps) => {
+const ELearningAbout = ({ loggedUserId, program }: ElearningAboutProps) => {
   const router = useRouter();
+  const { isFromCatalog } = useLocalSearchParams();
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
 
@@ -55,10 +56,15 @@ const ElearningAbout = ({ loggedUserId, program }: ElearningAboutProps) => {
     }
   };
 
+  const goBack = () => {
+    if (isFromCatalog) router.navigate('Home/Catalog');
+    else router.back();
+  };
+
   const buttonCaption = hasAlreadySubscribed ? 'Continuer' : 'Commencer';
 
   return (
-    <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} />
+    <About program={program} onPress={subscribeAndGoToCourseProfile} buttonCaption={buttonCaption} goBack={goBack} />
   );
 };
 
@@ -67,4 +73,4 @@ const mapStateToProps = (state: StateType) => ({
   program: state.program.program,
 });
 
-export default connect(mapStateToProps)(ElearningAbout);
+export default connect(mapStateToProps)(ELearningAbout);

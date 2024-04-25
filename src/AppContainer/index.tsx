@@ -10,6 +10,7 @@ import { Slot, useRouter } from 'expo-router';
 import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 import MainActions from '@/store/main/actions';
 import CourseActions from '@/store/course/actions';
+import ProgramActions from '@/store/program/actions';
 import { ActionType, ActionWithoutPayloadType, StateType } from '@/types/store/StoreType';
 import axiosLogged from '@/api/axios/logged';
 import axiosNotLogged from '@/api/axios/notLogged';
@@ -29,12 +30,13 @@ import MaintenanceModal from '@/components/MaintenanceModal';
 import { UserType } from '@/types/UserType';
 import { WHITE } from '@/styles/colors';
 import styles from './styles';
-import { CourseType, ELearningProgramType } from '@/types/CourseTypes';
+import { CourseType, ProgramType } from '@/types/CourseTypes';
 import programs from '@/api/programs';
 
 type AppContainerProps = {
   setLoggedUser: (user: UserType) => void,
   setCourse: (course: CourseType | null) => void,
+  setProgram: (course: CourseType | null) => void,
   statusBarVisible: boolean,
 }
 
@@ -50,7 +52,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, setCourse, statusBarVisible }: AppContainerProps) => {
+const AppContainer = ({ setLoggedUser, setCourse, setProgram, statusBarVisible }: AppContainerProps) => {
   const {
     tryLocalSignIn,
     companiToken,
@@ -78,13 +80,14 @@ const AppContainer = ({ setLoggedUser, setCourse, statusBarVisible }: AppContain
       }
       case NEW_ELEARNING_COURSE: {
         const program = await programs.getELearningPrograms({ _id });
+        setProgram(program);
 
-        return router.navigate('ElearningAbout', { program: program[0] as ELearningProgramType });
+        return router.navigate('/Explore/ELearningAbout');
       }
       default:
         return null;
     }
-  }, [router, setCourse]);
+  }, [router, setCourse, setProgram]);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(async (data) => {
@@ -234,6 +237,7 @@ const mapStateToProps = (state: StateType) => ({
 const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
   setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
   setCourse: (course: CourseType) => dispatch(CourseActions.setCourse(course)),
+  setProgram: (program: ProgramType) => dispatch(ProgramActions.setCourse(program)),
 
 });
 

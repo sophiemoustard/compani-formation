@@ -68,7 +68,7 @@ const BlendedAbout = ({ course }: BlendedAboutProps) => {
   };
 
   return program && (
-    <About program={program} onPress={goToCourse}>
+    <About program={program} onPress={goToCourse} goBack={router.back}>
       <View style={styles.content}>
         {course.slots.length > 0 &&
           <>

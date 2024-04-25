@@ -80,7 +80,7 @@ const Catalog = ({ loggedUserId, setProgram }: CatalogProps) => {
 
   const goToProgram = (program: ELearningProgramType) => {
     setProgram(program);
-    router.navigate('/Explore/ELearningAbout');
+    router.navigate({ pathname: '/Explore/ELearningAbout', params: { isFromCatalog: true } });
   };
 
   const renderItem = (program: ELearningProgramType) => <ProgramCell onPress={() => goToProgram(program)}
