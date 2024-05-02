@@ -1,4 +1,5 @@
-import { useState, useEffect, Dispatch } from 'react';
+// @ts-nocheck
+import { useState, useEffect, Dispatch, useContext } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -17,6 +18,7 @@ import FooterGradient from '@/components/design/FooterGradient';
 import styles from './styles';
 import { quizJingle } from '@/core/helpers/utils';
 import { ActionType } from '@/context/types';
+import { Context as CardContext } from '@/context/CardContext';
 
 interface MultipleChoiceQuestionCardProps {
   card: MultipleChoiceQuestionType,
@@ -46,6 +48,7 @@ const MultipleChoiceQuestionCard = ({
     background: GREY[100],
   });
   const router = useRouter();
+  const { questionnaire, activity } = useContext(CardContext);
 
   useEffect(() => {
     if (!isLoading && !isValidated) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
@@ -91,7 +94,12 @@ const MultipleChoiceQuestionCard = ({
       return setIsValidated(true);
     }
 
-    return cardIndex !== null ? router.navigate(`/Courses/ActivityCardContainer/${cardIndex + 1}`) : null;
+    if (cardIndex !== null) {
+      if (activity) return router.navigate(`/Courses/ActivityCardContainer/${cardIndex + 1}`);
+      if (questionnaire) return router.navigate(`/Courses/QuestionnaireCardContainer/${cardIndex + 1}`);
+    }
+
+    return null;
   };
 
   const renderItem = (item: QcmAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}

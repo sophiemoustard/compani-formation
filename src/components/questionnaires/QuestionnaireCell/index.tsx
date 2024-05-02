@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import styles from './styles';
 import QuestionnaireIcon from '../../../../assets/icons/QuestionnaireIcon';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
@@ -11,10 +11,13 @@ interface QuestionnaireCellProps {
 }
 
 const QuestionnaireCell = ({ questionnaire, profileId }: QuestionnaireCellProps) => {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const onPress = () => {
-    navigation.navigate('QuestionnaireCardContainer', { questionnaireId: questionnaire._id, profileId });
+    router.navigate({
+      pathname: 'Courses/QuestionnaireCardContainer',
+      params: { questionnaireId: questionnaire._id, profileId },
+    });
   };
 
   return (

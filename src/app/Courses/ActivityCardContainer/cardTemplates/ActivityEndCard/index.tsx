@@ -20,9 +20,8 @@ import { formatSecondsToISODuration } from '@/core/helpers/dates/utils';
 import { Context as CardContext } from '@/context/CardContext';
 
 interface ActivityEndCardProps {
-  exitConfirmationModal,
+  exitConfirmationModal: boolean,
   setExitConfirmationModal: (boolean: boolean) => void,
-  resetCardReducer: () => void,
   resetCardReducer: () => void,
   questionnaireAnswersList: QuestionnaireAnswersType[],
   score: number,

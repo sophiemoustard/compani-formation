@@ -2,11 +2,13 @@ import { createContext, useCallback, useRef, useState } from 'react';
 import { router } from 'expo-router';
 import { ActivityWithCardsType } from '@/types/ActivityTypes';
 import { LEARNER, TRAINER } from '@/core/data/constants';
+import { QuestionnaireWithCardsType } from '@/types/QuestionnaireType';
 
 export const Context = createContext({});
 
 export const ContextProvider = ({ children }: { children: JSX.Element }) => {
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
+  const [questionnaire, setQuestionnaire] = useState<QuestionnaireWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
   const interval = useRef<ReturnType<typeof setInterval> | null>(null);
   const timer = useRef<number>(0);
@@ -43,6 +45,7 @@ export const ContextProvider = ({ children }: { children: JSX.Element }) => {
       startTimer,
       stopTimer,
       navigateNext,
+      profileId,
       setProfileId,
       mode,
       setMode,
@@ -50,6 +53,8 @@ export const ContextProvider = ({ children }: { children: JSX.Element }) => {
       interval,
       isActive,
       setIsActive,
+      questionnaire,
+      setQuestionnaire,
     }}>
       {children}
     </Context.Provider>
