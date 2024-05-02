@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
 import styles from './styles';
-import { FillTheGapAnswers } from '@/app/Courses/ActivityCardContainer/cardTemplates/FillTheGapCard';
+import { FillTheGapAnswers } from '@/components/cardTemplates/FillTheGapCard';
 
 interface FillTheGapPropositionProps {
   item: FillTheGapAnswers,

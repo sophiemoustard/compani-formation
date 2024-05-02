@@ -87,7 +87,7 @@ const QuestionnaireCardContainer = ({
   }, [cardIndex]);
 
   return isActive && questionnaire
-    ? <Redirect href={'/Courses/QuestionnaireCardContainer/cardTemplates/StartCard'}/>
+    ? <Redirect href={'/Courses/QuestionnaireCardContainer/cardTemplates/QuestionnaireStartCard'}/>
     : null;
 };
 

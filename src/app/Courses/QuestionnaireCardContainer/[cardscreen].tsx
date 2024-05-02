@@ -8,7 +8,7 @@ import { runOnJS } from 'react-native-reanimated';
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import Actions from '@/store/cards/actions';
 import ExitModal from '@/components/ExitModal';
-import CardTemplate from '../ActivityCardContainer/cardTemplates/CardTemplate';
+import CardTemplate from '@/components/cardTemplates/CardTemplate';
 import { SWIPE_SENSIBILITY } from '@/core/data/constants';
 import styles from './styles';
 import { StateType, ActionType } from '@/types/store/StoreType';

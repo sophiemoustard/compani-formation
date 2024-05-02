@@ -120,7 +120,7 @@ const ActivityCardContainer = ({
   }, [hardwareBackPress]);
 
   return isActive && activity
-    ? <Redirect href={'/Courses/ActivityCardContainer/cardTemplates/StartCard'}/>
+    ? <Redirect href={'/Courses/ActivityCardContainer/cardTemplates/ActivityStartCard'}/>
     : null;
 };
 

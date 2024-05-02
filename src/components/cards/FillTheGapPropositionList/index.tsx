@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { DraxView } from 'react-native-drax';
-import { FillTheGapAnswers } from '@/app/Courses/ActivityCardContainer/cardTemplates/FillTheGapCard';
+import { FillTheGapAnswers } from '@/components/cardTemplates/FillTheGapCard';
 import styles from './styles';
 
 interface FillTheGapPropositionListProps {

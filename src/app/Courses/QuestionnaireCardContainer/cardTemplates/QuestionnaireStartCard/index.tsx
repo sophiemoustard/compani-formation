@@ -20,7 +20,12 @@ interface StartCardProps {
   resetCardReducer: () => void,
 }
 
-const StartCard = ({ exitConfirmationModal, cards, setExitConfirmationModal, resetCardReducer }: StartCardProps) => {
+const QuestionnaireStartCard = ({
+  exitConfirmationModal,
+  cards,
+  setExitConfirmationModal,
+  resetCardReducer,
+}: StartCardProps) => {
   const router = useRouter();
   const { questionnaire, startTimer, stopTimer, navigateNext, setIsActive } = useContext(CardContext);
   const isLoading = !(cards.length > 0 && questionnaire);
@@ -74,4 +79,4 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StartCard);
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireStartCard);
