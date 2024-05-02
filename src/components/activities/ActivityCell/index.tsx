@@ -1,7 +1,7 @@
 import { useReducer, useEffect, Dispatch } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { connect } from 'react-redux';
 import CardsActions from '../../../store/cards/actions';
 import ActivityIcon from '../ActivityIcon';
@@ -42,7 +42,7 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
   const quizCount = activity.quizCount || 0;
   const isQuiz = activity.type === QUIZ;
   const isAboveAverage = isQuiz ? lastScore * 2 > quizCount : true;
-  const navigation = useNavigation();
+  const router = useRouter();
   const [colors, dispatch] = useReducer(colorsReducer, { border: YELLOW[600], background: YELLOW[300] });
 
   useEffect(() => {
@@ -62,7 +62,10 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
   const onPress = () => {
     if (mode === LEARNER) getQuestionnaireAnswersList();
 
-    navigation.navigate('ActivityCardContainer', { activityId: activity._id, profileId, mode });
+    router.navigate({
+      pathname: '/Courses/ActivityCardContainer',
+      params: { activityId: activity._id, profileId, mode },
+    });
   };
 
   return (

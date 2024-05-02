@@ -40,7 +40,7 @@ const ELearningAbout = ({ loggedUserId, program }: ElearningAboutProps) => {
     const firstActivity = get(program, 'subPrograms[0].steps[0].activities[0]') || null;
     router.replace({ pathname: '/Courses/LearnerCourseProfile', params: { courseId } });
     router.navigate({
-      pathname: 'ActivityCardContainer',
+      pathname: '/Courses/ActivityCardContainer',
       params: { activityId: firstActivity?._id, profileId: courseId, mode: LEARNER },
     });
   };

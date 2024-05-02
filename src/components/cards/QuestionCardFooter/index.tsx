@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import ArrowButton from '../../ArrowButton';
 import { LEFT } from '../../../core/data/constants';
 import { WHITE } from '../../../styles/colors';
@@ -31,19 +31,19 @@ const QuestionCardFooter = ({
 }: QuestionCardFooterProps) => {
   const arrowButtonVisible = !(index === 0);
   const style = styles(arrowButtonVisible);
-  const navigation = useNavigation();
+  const router = useRouter();
 
   const onPress = () => {
     if (onPressButton) onPressButton();
     else {
       if (validateCard) validateCard();
-      if (index !== null) navigation.navigate(`card-${index + 1}`);
+      if (index !== null) router.navigate(`/Courses/ActivityCardContainer/${index + 1}`);
     }
   };
 
   const goBack = () => {
     if (onPressArrow) onPressArrow();
-    if (index !== null) navigation.navigate(`card-${index - 1}`);
+    if (index !== null) router.navigate(`/Courses/ActivityCardContainer/${index - 1}`);
   };
 
   return (

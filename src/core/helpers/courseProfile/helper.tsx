@@ -12,7 +12,6 @@ const renderStepCell = (item, index, course, mode, params) => {
   if ([ON_SITE, REMOTE].includes(item.type)) {
     return <LiveCell step={item} slots={course?.slots} index={index} mode={mode} />;
   }
-
   if (item.type === E_LEARNING) {
     const profileId = mode === TESTER ? params.subProgramId : params.courseId;
 
