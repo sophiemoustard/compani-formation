@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { ContextProvider as CreateAccountProvider } from '@/context/createAccountContext';
+import { ContextProvider as CreateAccountProvider } from '@/context/AccountCreationContext';
 
 const CreateAccountLayout = () => (
   <CreateAccountProvider>

@@ -14,7 +14,7 @@ import Users from '@/api/users';
 import { formatPhoneForPayload } from '@/core/helpers/utils';
 import { AuthContextType, Context as AuthContext } from '@/context/AuthContext';
 import { ACCOUNT_CREATION } from '@/core/data/constants';
-import { Context as CreateAccountContext } from '@/context/createAccountContext';
+import { Context as CreateAccountContext } from '@/context/AccountCreationContext';
 import { CreateAccountDataType } from '@/types/CreateAccountDataType';
 
 const formatCreationPayload = (formList: CreateAccountDataType[][], email) => {
