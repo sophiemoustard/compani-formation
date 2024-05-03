@@ -5190,10 +5190,10 @@ expo-modules-core@1.11.12:
   dependencies:
     invariant "^2.2.4"
 
-expo-notifications@~0.27.6:
-  version "0.27.6"
-  resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.27.6.tgz#ef7c95504034ac8b5fa360e13f5b037c5bf7e80d"
-  integrity sha512-F2iu/lzsrvfMyHA5BfnbZfE8fVLV8aQmNLk3NPztZ0g7911QEriZzH7BK/NKOZ5UHhJYI+hhYvcZCq2nFm1NLA==
+expo-notifications@~0.27.7:
+  version "0.27.7"
+  resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.27.7.tgz#b44f93b92eff22b4333e589c4d1a5e12223cb866"
+  integrity sha512-qcetBEQlmV3VHvsJrpbQYDWpxXxFLs9HgUCb75YlGNzLrLG9puCE5lBIVskgErrG5ph8LaJs3JmazuwgW4qpQA==
   dependencies:
     "@expo/image-utils" "^0.4.0"
     "@ide/backoff" "^1.0.0"
