@@ -87,7 +87,7 @@ export default {
         NSPrivacyAccessedAPITypes: [
           {
             NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryFileTimestamp',
-            NSPrivacyAccessedAPITypeReasons: ['3B521'],
+            NSPrivacyAccessedAPITypeReasons: ['3B52.1'],
           },
           {
             NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryDiskSpace',
