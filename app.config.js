@@ -83,6 +83,18 @@ export default {
         NSCameraUsageDescription: 'Autorisez l\'accès à votre caméra pour pouvoir prendre une photo et la charger comme photo de profil dans Compani.',
         NSPhotoLibraryUsageDescription: 'Autorisez l\'accès à votre librairie pour pouvoir choisir une photo et la charger comme photo de profil dans Compani.',
       },
+      privacyManifests: {
+        NSPrivacyAccessedAPITypes: [
+          {
+            NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryFileTimestamp',
+            NSPrivacyAccessedAPITypeReasons: ['3B52.1'],
+          },
+          {
+            NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryDiskSpace',
+            NSPrivacyAccessedAPITypeReasons: ['E174.1'],
+          },
+        ],
+      },
     },
     android: {
       package: variables.bundleIdentifier,
