@@ -43,7 +43,7 @@ export default {
     name: variables.appName,
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
-    platforms: ['ios', 'android'],
+    platforms: ['ios', 'android', 'web'],
     version: '2.26.0',
     orientation: 'portrait',
     primaryColor: '#005774',
@@ -106,6 +106,9 @@ export default {
         backgroundColor: '#005774',
       },
       versionCode: 200,
+    },
+    web: {
+      favicon: './assets/images/android_icon_old.png',
     },
     plugins: [
       [
