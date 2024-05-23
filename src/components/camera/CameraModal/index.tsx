@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BackHandler, Alert, Modal } from 'react-native';
-import { CameraCapturedPicture } from 'expo-camera';
+import { CameraCapturedPicture } from 'expo-camera/legacy';
 import { PictureType } from '../../../types/PictureTypes';
 import NiCameraPreview from '../CameraPreview';
 import NiCamera from '../Camera';
