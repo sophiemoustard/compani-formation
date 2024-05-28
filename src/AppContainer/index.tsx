@@ -21,7 +21,7 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-import { ACTIVE_STATE } from '../core/data/constants';
+import { ACTIVE_STATE, isWeb } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
 import { UserType } from '../types/UserType';
@@ -57,14 +57,16 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(async (data) => {
-      if (!companiToken) return;
-      await handleExpoToken(data);
-    });
+    if (!isWeb) {
+      registerForPushNotificationsAsync().then(async (data) => {
+        if (!companiToken) return;
+        await handleExpoToken(data);
+      });
 
-    const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
-      get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-    if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+      const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
+        get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
+      if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+    }
   }, [companiToken, lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
