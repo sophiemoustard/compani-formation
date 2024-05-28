@@ -46,7 +46,7 @@ const AppNavigation = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <MainStack.Navigator screenOptions={{ headerShown: false }}>
+      <MainStack.Navigator screenOptions={{ headerShown: false, cardStyle: { flex: 1 } }} presentation='card'>
         {Object.entries(companiToken ? userScreens : authScreens)
           .map(([name, component]) => (
             <MainStack.Screen key={name} name={name as keyof RootStackParamList} component={component}

@@ -3,14 +3,14 @@ import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { MARGIN } from '../../../../styles/metrics';
 
-const styles = (backgroundColor: string) => StyleSheet.create({
+const styles = (backgroundColor: string, isValidated: boolean) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: GREY[100],
   },
   container: {
     marginHorizontal: MARGIN.LG,
-    flex: 1,
+    ...(!isValidated && { flex: 1 }),
     justifyContent: 'flex-end',
     marginBottom: MARGIN.SM,
   },
