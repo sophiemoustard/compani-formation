@@ -5,6 +5,7 @@ import styles from './styles';
 import { CourseType, ProgramType, SubProgramType } from '../../types/CourseTypes';
 import { NextSlotsStepType } from '../../types/StepTypes';
 import { formatWordToPlural } from '../../core/helpers/utils';
+import { isWeb } from '../../core/data/constants';
 
 export const COURSE_SECTION = 'FORMATION';
 export const EVENT_SECTION = 'ÉVÉNEMENT';
@@ -38,7 +39,7 @@ const CoursesSection = ({
         items.length
           ? <FlatList horizontal data={items} keyExtractor={item => `${title}${item._id}`}
             contentContainerStyle={styles.container} renderItem={({ item }) => renderItem(item)}
-            showsHorizontalScrollIndicator={false} ItemSeparatorComponent={renderSeparator} />
+            showsHorizontalScrollIndicator={isWeb} ItemSeparatorComponent={renderSeparator} />
           : renderEmptyState()
       }
     </>
