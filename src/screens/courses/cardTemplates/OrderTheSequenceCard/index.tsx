@@ -1,5 +1,5 @@
 import { useState, useEffect, Dispatch } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -109,10 +109,10 @@ const OrderTheSequenceCard = ({
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
       <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-      <ScrollView contentContainerStyle={style.container}>
+      <View style={style.container}>
         <DraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
           keyExtractor={item => item.label} renderItem={renderItem} ListHeaderComponent={renderInformativeText} />
-      </ScrollView>
+      </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}

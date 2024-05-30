@@ -10,8 +10,8 @@ const styles = (backgroundColor: string, isValidated: boolean) => StyleSheet.cre
   },
   container: {
     marginHorizontal: MARGIN.LG,
-    ...(!isValidated && { flex: 1 }),
-    justifyContent: 'flex-end',
+    flex: 1,
+    ...(!isValidated && { justifyContent: 'flex-end' }),
     marginBottom: MARGIN.SM,
   },
   questionContainer: {
