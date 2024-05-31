@@ -32,7 +32,7 @@ import ImagePickerManager from '../../../components/ImagePickerManager';
 import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import MainActions from '../../../store/main/actions';
-import { PEDAGOGY } from '../../../core/data/constants';
+import { PEDAGOGY, isWeb } from '../../../core/data/constants';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import { CompanyType } from '../../../types/CompanyType';
 import styles from './styles';
@@ -169,7 +169,7 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={isWeb}>
         {!!loggedUser &&
           <>
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>

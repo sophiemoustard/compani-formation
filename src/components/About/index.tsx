@@ -11,6 +11,7 @@ import NiPrimaryButton from '../../components/form/PrimaryButton';
 import { ProgramType } from '../../types/CourseTypes';
 import FooterGradient from '../design/FooterGradient';
 import CourseAboutHeader from '../CourseAboutHeader';
+import { isWeb } from '../../core/data/constants';
 
 type AboutProps = {
   program: ProgramType,
@@ -44,7 +45,7 @@ const About = ({ program, buttonCaption = 'Continuer', children, onPress }: Abou
   return (
     <>
       <SafeAreaView style={commonStyles.container} edges={['top']}>
-        <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={isWeb}>
           <CourseAboutHeader screenTitle='A PROPOS' courseTitle={program.name} goBack={navigation.goBack} />
           <View style={styles.content}>
             <View style={styles.imageContainer}>

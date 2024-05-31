@@ -7,7 +7,7 @@ import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
 import accountCreationStyles from '../../styles/accountCreation';
-import { isIOS, PHONE_REGEX } from '../../core/data/constants';
+import { isIOS, isWeb, PHONE_REGEX } from '../../core/data/constants';
 import { IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 
 interface CreateAccountFormProps {
@@ -81,7 +81,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
   };
 
   const render = (
-    <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={false}
+    <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={isWeb}
       keyboardShouldPersistTaps='always'>
       <Text style={accountCreationStyles.title}>{data[0].title}</Text>
       {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
