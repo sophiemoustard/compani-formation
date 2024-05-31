@@ -103,7 +103,7 @@ const OrderTheSequenceCard = ({
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.background, isValidated);
+  const style = styles(footerColors.background);
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>

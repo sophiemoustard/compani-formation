@@ -3,7 +3,7 @@ import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { MARGIN } from '../../../../styles/metrics';
 
-const styles = (backgroundColor: string, isValidated: boolean) => StyleSheet.create({
+const styles = (backgroundColor: string) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: GREY[100],
@@ -11,7 +11,7 @@ const styles = (backgroundColor: string, isValidated: boolean) => StyleSheet.cre
   container: {
     marginHorizontal: MARGIN.LG,
     flex: 1,
-    ...(!isValidated && { justifyContent: 'flex-end' }),
+    justifyContent: 'flex-end',
     marginBottom: MARGIN.SM,
   },
   questionContainer: {
