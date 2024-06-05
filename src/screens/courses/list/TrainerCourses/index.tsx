@@ -106,7 +106,7 @@ const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>

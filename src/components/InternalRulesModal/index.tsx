@@ -7,6 +7,7 @@ import { INPUT_HEIGHT } from '../../styles/metrics';
 import { internalRulesArticles } from '../../core/data/rules';
 import FooterGradient from '../design/FooterGradient';
 import styles from '../../styles/rulesModal';
+import { isWeb } from '../../core/data/constants';
 
 interface InternalRulesModalProps {
   onRequestClose: () => void,
@@ -17,7 +18,7 @@ const InternalRulesModal = ({ onRequestClose, visible }: InternalRulesModalProps
   <BottomModal onRequestClose={onRequestClose} visible={visible}>
     <View style={styles.content}>
       <Text style={styles.title}>Règlement intérieur</Text>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={isWeb}>
         <Text style={styles.italicText}>
             Règlement intérieur établi conformément aux articles
             L6352-3 et L6352-4 et R6352-1 à R6352-15 du Code du travail

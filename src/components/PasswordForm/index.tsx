@@ -16,7 +16,7 @@ import NiInput from '../form/Input';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
-import { isIOS } from '../../core/data/constants';
+import { isIOS, isWeb } from '../../core/data/constants';
 
 const NEW_PASSWORD = 'newPassword';
 const CONFIRMED_PASSWORD = 'confirmedPassword';
@@ -107,7 +107,7 @@ const PasswordForm = ({ onPress, goBack, email = '' }: PasswordFormProps) => {
           title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
           contentText="Vos modifications ne seront pas enregistrées" />
       </View>
-      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={isWeb}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
         {!!email && <Text style={styles.email}>L&apos;e-mail associé à votre compte est :
           <Text style={styles.bold}>&nbsp;{email}</Text>

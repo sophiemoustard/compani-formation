@@ -6,6 +6,7 @@ export const DEVELOPMENT = 'development';
 export const STAGING = 'staging';
 export const PRODUCTION = 'production';
 export const isIOS = Platform.OS === 'ios';
+export const isWeb = Platform.OS === 'web';
 
 export const LONG_FIRSTNAME_LONG_LASTNAME = 'FL';
 export const SHORT_FIRSTNAME_LONG_LASTNAME = 'fL';

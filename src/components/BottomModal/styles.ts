@@ -5,7 +5,7 @@ import { GREY, MODAL_BACKDROP_GREY } from '../../styles/colors';
 export default StyleSheet.create({
   modalContainer: {
     paddingTop: PADDING.XXXL,
-    flexGrow: 1,
+    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'column',

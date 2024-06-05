@@ -27,7 +27,7 @@ import { RootStackParamList, RootBottomTabParamList } from '../../../types/Navig
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
-import { EMAIL_REGEX, isIOS, PHONE_REGEX } from '../../../core/data/constants';
+import { EMAIL_REGEX, isIOS, isWeb, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
@@ -194,7 +194,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             onPressCancelButton={() => setExitConfirmationModal(false)}
             title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
         </View>
-        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={isWeb}>
           <Text style={styles.title}>Modifier mes informations</Text>
           <View style={styles.imageContainer}>
             <Image style={styles.profileImage} source={source} />

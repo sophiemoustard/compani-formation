@@ -5,7 +5,6 @@ import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flexGrow: 1,
     justifyContent: 'space-between',
   },
   content: {

@@ -74,7 +74,7 @@ const ActivityEndCard = ({
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
         <ImageBackground style={styles.elipse}
           source={require('../../../../../assets/images/end_card_background.webp')}>
           <Text style={styles.text}>Activité terminée</Text>

@@ -43,7 +43,7 @@ import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
-import { isIOS, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import { isIOS, isWeb, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
 import { StateType } from '../../../../types/store/StoreType';
 import { ActionType } from '../../../../context/types';
 
@@ -181,7 +181,7 @@ const LearnerCourseProfile = ({
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}
+      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={isWeb}
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
         onScroll={isProgressBarOnTop}>
         <CourseProfileHeader source={source} goBack={goBack} title={title} />
