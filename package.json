@@ -1,14 +1,14 @@
 {
   "scripts": {
-    "prestart": "source $HOME/.nvm/nvm.sh; nvm use 18.17.0",
-    "start": "npx expo start",
+    "start": "npx serve dist --single",
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
     "eject": "expo eject",
     "test": "node_modules/jest/bin/jest.js",
     "ts-lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
-    "eas-build-pre-install": "echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json"
+    "eas-build-pre-install": "echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json",
+    "build": "npx expo export -p web"
   },
   "jest": {
     "preset": "jest-expo",
@@ -131,6 +131,9 @@
     "sinon": "^17.0.1",
     "ts-jest": "^29.1.2",
     "typescript": "~5.3.0"
+  },
+  "engines": {
+    "node": "18.17.0"
   },
   "private": true
 }
