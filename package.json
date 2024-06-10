@@ -134,7 +134,7 @@
     "typescript": "~5.3.0"
   },
   "engines": {
-    "node": "18.17.0"
+    "node": "^18.17.0"
   },
   "private": true
 }
