@@ -176,11 +176,13 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
             <View style={styles.identityContainer}>
               <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
                 source={require('../../../../assets/images/profile_background.webp')}>
-                <TouchableOpacity onPress={() => setPictureModal(true)}>
-                  <Image style={styles.profileImage} source={source} />
-                  <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
-                    size={ICON.SM} color={PINK[500]} style={styles.profileImageEdit} />
-                </TouchableOpacity>
+                {!isWeb
+                  ? <TouchableOpacity onPress={() => setPictureModal(true)}>
+                    <Image style={styles.profileImage} source={source} />
+                    <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
+                      size={ICON.SM} color={PINK[500]} style={styles.profileImageEdit} />
+                  </TouchableOpacity>
+                  : <Image style={styles.profileImage} source={source} />}
                 <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
                 {loggedUser.company?.name
                   ? <Text style={styles.company}>{loggedUser.company.name}</Text>
