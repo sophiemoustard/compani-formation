@@ -1,15 +1,14 @@
 {
   "scripts": {
-    "prestart": "chmod +x prestart.sh && ./prestart.sh",
     "start": "chmod +x start.sh && ./start.sh",
+    "build": "chmod +x build.sh && ./build.sh",
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
     "eject": "expo eject",
     "test": "node_modules/jest/bin/jest.js",
     "ts-lint": "tsc --noEmit && eslint ./src --ext .js,.jsx,.ts,.tsx -c .eslintrc.js",
-    "eas-build-pre-install": "echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json",
-    "build": "chmod +x build.sh && ./build.sh"
+    "eas-build-pre-install": "echo $ANDROID_GOOGLE_SERVICES_BASE64 | base64 --decode > ./google-services.json"
   },
   "jest": {
     "preset": "jest-expo",
