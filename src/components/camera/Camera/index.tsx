@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { View, TouchableOpacity, Dimensions } from 'react-native';
-import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
+import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera/legacy';
 import * as ImageManipulator from 'expo-image-manipulator';
 import styles from './styles';
 import { ICON } from '../../../styles/metrics';
