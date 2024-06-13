@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "prestart": "source $HOME/.nvm/nvm.sh; nvm use 18.17.0",
-    "start": "npx expo start",
+    "start": "chmod +x start.sh && ./start.sh",
+    "build": "chmod +x build.sh && ./build.sh",
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
@@ -131,6 +131,9 @@
     "sinon": "^17.0.1",
     "ts-jest": "^29.1.2",
     "typescript": "~5.3.0"
+  },
+  "engines": {
+    "node": "^18.17.0"
   },
   "private": true
 }
