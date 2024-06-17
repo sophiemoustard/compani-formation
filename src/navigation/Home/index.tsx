@@ -16,7 +16,7 @@ import Catalog from '../../screens/explore/Catalog';
 import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
 import { RootBottomTabParamList } from '../../types/NavigationType';
-import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER } from '../../core/data/constants';
+import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, isWeb } from '../../core/data/constants';
 import { StateType } from '../../types/store/StoreType';
 
 const Tab = createBottomTabNavigator<RootBottomTabParamList>();
@@ -58,7 +58,7 @@ interface HomeProps {
 }
 
 const Home = ({ userVendorRole } : HomeProps) => {
-  const showTrainerTab = !!userVendorRole &&
+  const showTrainerTab = !!userVendorRole && !isWeb &&
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
 
   return (

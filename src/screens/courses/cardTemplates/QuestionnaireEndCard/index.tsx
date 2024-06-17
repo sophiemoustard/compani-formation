@@ -75,7 +75,8 @@ const QuestionnaireEndCard = ({
   }, [courseId, isFocused, questionnaires, questionnaireAnswersList, setCardIndex]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}>
       <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.webp')}>
         <Text style={styles.text}>Questionnaire terminé</Text>
         <Image source={require('../../../../../assets/images/aux_fierte.webp')} style={styles.image} />

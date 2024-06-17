@@ -32,7 +32,7 @@ import ImagePickerManager from '../../../components/ImagePickerManager';
 import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import MainActions from '../../../store/main/actions';
-import { PEDAGOGY } from '../../../core/data/constants';
+import { PEDAGOGY, isWeb } from '../../../core/data/constants';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import { CompanyType } from '../../../types/CompanyType';
 import styles from './styles';
@@ -169,18 +169,20 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={isWeb}>
         {!!loggedUser &&
           <>
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
             <View style={styles.identityContainer}>
               <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
                 source={require('../../../../assets/images/profile_background.webp')}>
-                <TouchableOpacity onPress={() => setPictureModal(true)}>
-                  <Image style={styles.profileImage} source={source} />
-                  <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
-                    size={ICON.SM} color={PINK[500]} style={styles.profileImageEdit} />
-                </TouchableOpacity>
+                {isWeb
+                  ? <Image style={styles.profileImage} source={source} />
+                  : <TouchableOpacity onPress={() => setPictureModal(true)}>
+                    <Image style={styles.profileImage} source={source} />
+                    <FeatherButton name={hasPhoto ? 'edit-2' : 'plus'} onPress={() => setPictureModal(true)}
+                      size={ICON.SM} color={PINK[500]} style={styles.profileImageEdit} />
+                  </TouchableOpacity>}
                 <Text style={styles.name}>{loggedUser.identity.firstname || ''} {loggedUser.identity.lastname}</Text>
                 {loggedUser.company?.name
                   ? <Text style={styles.company}>{loggedUser.company.name}</Text>
