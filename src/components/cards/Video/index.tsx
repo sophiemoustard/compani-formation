@@ -7,7 +7,6 @@ import {
   Video,
   VideoFullscreenUpdate,
   ResizeMode,
-  VideoReadyForDisplayEvent,
   VideoFullscreenUpdateEvent,
   AVPlaybackStatus,
 } from 'expo-av';
@@ -38,6 +37,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
       if (playbackStatus.isPlaying) setPlayVisible(false);
       else setPlayVisible(true);
     }
+    setNativeControlsVisible(true);
   };
 
   // eslint-disable-next-line consistent-return
@@ -53,9 +53,6 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
     }
   };
 
-  const onReadyForDisplay = (event: VideoReadyForDisplayEvent) => {
-    if (event.status?.isLoaded) setNativeControlsVisible(true);
-  };
   const style = styles(isMediaLoading);
 
   return (
@@ -67,7 +64,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
           style={style.play} />}
         <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode={ResizeMode.CONTAIN}
           source={mediaSource} onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
-          style={style.media} onReadyForDisplay={onReadyForDisplay} onLoadStart={() => setIsMediaLoading(true)}
+          videoStyle={style.media} onLoadStart={() => setIsMediaLoading(true)}
           onLoad={() => setIsMediaLoading(false)} />
       </View>
     </>
