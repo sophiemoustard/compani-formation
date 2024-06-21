@@ -5,9 +5,10 @@ import { WHITE } from '../../styles/colors';
 import styles, { TOAST_OFFSET } from './styles';
 
 interface ToastMessageProps {
+  message: string,
   onFinish: (finished: boolean) => void,
 }
-const ToastMessage = ({ onFinish }: ToastMessageProps) => {
+const ToastMessage = ({ message, onFinish }: ToastMessageProps) => {
   const translation = useRef(new Animated.Value(TOAST_OFFSET)).current;
 
   const pop = useCallback(() => {
@@ -32,7 +33,7 @@ const ToastMessage = ({ onFinish }: ToastMessageProps) => {
     <Animated.View style={[styles.container, { transform: [{ translateY: translation }] }]}>
       <View style={styles.content}>
         <AntDesign name={'closecircleo'} size={24} color={WHITE} />
-        <Text style={styles.text}>Vous n&apos;êtes pas connecté</Text>
+        <Text style={styles.text}>{message}</Text>
       </View>
     </Animated.View>
   );

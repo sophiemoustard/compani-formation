@@ -121,8 +121,6 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
     return Promise.reject(error.response);
   }, [signOut, refreshCompaniToken]);
 
-  useEffect(() => { setTriggerToastMessage(false); }, [setTriggerToastMessage]);
-
   const initializeAxiosLogged = useCallback((token: string) => {
     if (axiosLoggedRequestInterceptorId.current !== null) {
       axiosLogged.interceptors.request.eject(axiosLoggedRequestInterceptorId.current);
@@ -205,7 +203,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       </View>
       <SafeAreaProvider onLayout={onLayout}>
         <AppNavigation />
-        {triggerToastMessage && <ToastMessage onFinish={(finished: boolean) => setTriggerToastMessage(!finished)} />}
+        {triggerToastMessage && <ToastMessage onFinish={(finished: boolean) => setTriggerToastMessage(!finished)}
+          message={'Vous n\'êtes pas connecté'} />}
       </SafeAreaProvider>
     </>
   );
