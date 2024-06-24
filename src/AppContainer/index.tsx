@@ -24,6 +24,7 @@ import {
 import { ACTIVE_STATE, isWeb } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
+import ToastMessage from '../components/ToastMessage';
 import { UserType } from '../types/UserType';
 import { WHITE } from '../styles/colors';
 import styles from './styles';
@@ -55,6 +56,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  const [triggerToastMessage, setTriggerToastMessage] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isWeb) {
@@ -62,12 +64,16 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
         if (!companiToken) return;
         await handleExpoToken(data);
       });
+    }
+  }, [companiToken]);
 
+  useEffect(() => {
+    if (!isWeb) {
       const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
         get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-      if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
+      if (isValidNotification) handleNotificationResponse(lastNotificationResponse);
     }
-  }, [companiToken, lastNotificationResponse]);
+  }, [lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
@@ -136,6 +142,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       .use(
         response => response,
         async (error: AxiosError) => {
+          if ([400, 401].includes(error?.response?.status)) setTriggerToastMessage(true);
           if (error?.response?.status === 401) return handleUnauthorizedRequest(error);
           if (error?.response?.status === 502 || error?.response?.status === 503) setMaintenanceModalVisible(true);
           return Promise.reject(error);
@@ -196,6 +203,8 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       </View>
       <SafeAreaProvider onLayout={onLayout}>
         <AppNavigation />
+        {triggerToastMessage && <ToastMessage onFinish={(finished: boolean) => setTriggerToastMessage(!finished)}
+          message={'Vous n\'êtes pas connecté'} />}
       </SafeAreaProvider>
     </>
   );
