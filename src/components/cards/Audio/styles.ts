@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { GREY } from '../../../styles/colors';
-import { PADDING, ICON } from '../../../styles/metrics';
+import { GREY, PINK } from '../../../styles/colors';
+import { PADDING, ICON, SCREEN_HEIGHT } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +21,18 @@ const styles = StyleSheet.create({
   },
   track: {
     flex: 1,
+  },
+  webContainer: {
+    width: 'auto',
+    height: SCREEN_HEIGHT / 3,
+    backgroundColor: PINK[100],
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  webBackgroundIcon: {
+    position: 'absolute',
+    opacity: 0.2,
   },
 });
 

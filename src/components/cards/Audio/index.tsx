@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { Ionicons } from '@expo/vector-icons';
 import { Audio, AVPlaybackStatus } from 'expo-av';
 import { ICON } from '../../../styles/metrics';
 import IoniconsButton from '../../icons/IoniconsButton';
 import { GREY, PINK } from '../../../styles/colors';
 import styles from './styles';
 import commonStyle from '../../../styles/common';
+import { isWeb } from '../../../core/data/constants';
 
 interface NiAudioProps {
   mediaSource: { uri: string } | undefined,
@@ -85,20 +87,29 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  const renderPlayer = (iconSize: number) => (
+    isLoaded
+      ? <IoniconsButton name={isPlaying ? 'pause' : 'play'} size={iconSize} onPress={playOrPauseAudio}
+        color={GREY[800]} style={styles.icon} />
+      : <ActivityIndicator style={[commonStyle.disabled, styles.icon]} color={GREY[800]} size={iconSize} />
+  );
+
   return (
-    <View style={styles.container}>
-      <View style={styles.player}>
-        {isLoaded
-          ? <IoniconsButton name={isPlaying ? 'pause' : 'play'} size={ICON.MD} onPress={playOrPauseAudio}
-            color={GREY[800]} style={styles.icon} />
-          : <ActivityIndicator style={[commonStyle.disabled, styles.icon]} color={GREY[800]} size={ICON.MD} />}
-        <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
-        <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} thumbTintColor={PINK[500]}
-          onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed} value={timeElapsed}
-          onSlidingStart={() => { isUserMovingSlider.current = true; }} />
-        <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
+    isWeb
+      ? <View style={styles.webContainer}>
+        <Ionicons name="musical-note" size={100} style={styles.webBackgroundIcon} />
+        {renderPlayer(ICON.XL)}
       </View>
-    </View>
+      : <View style={styles.container}>
+        <View style={styles.player}>
+          {renderPlayer(ICON.MD)}
+          <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
+          <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} thumbTintColor={PINK[500]}
+            onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed} value={timeElapsed}
+            onSlidingStart={() => { isUserMovingSlider.current = true; }} />
+          <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
+        </View>
+      </View>
   );
 };
 
