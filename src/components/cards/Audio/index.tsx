@@ -97,18 +97,16 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   return (
     isWeb
       ? <View style={styles.webContainer}>
-        <Ionicons name="musical-note" size={100} style={styles.webBackgroundIcon} />
-        {renderPlayer(ICON.XL)}
+        <Ionicons name="musical-note" size={250} style={styles.webBackgroundIcon} />
+        {renderPlayer(ICON.XXXL)}
       </View>
       : <View style={styles.container}>
-        <View style={styles.player}>
-          {renderPlayer(ICON.MD)}
-          <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
-          <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} thumbTintColor={PINK[500]}
-            onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed} value={timeElapsed}
-            onSlidingStart={() => { isUserMovingSlider.current = true; }} />
-          <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
-        </View>
+        {renderPlayer(ICON.MD)}
+        <Text style={styles.timer}>{millisToMinutesAndSeconds(timeElapsed)}</Text>
+        <Slider minimumValue={0} maximumValue={duration} minimumTrackTintColor={PINK[500]} thumbTintColor={PINK[500]}
+          onSlidingComplete={playFromPosition} style={styles.track} onValueChange={setTimeElapsed} value={timeElapsed}
+          onSlidingStart={() => { isUserMovingSlider.current = true; }} />
+        <Text style={styles.timer}>{millisToMinutesAndSeconds(duration - timeElapsed)}</Text>
       </View>
   );
 };

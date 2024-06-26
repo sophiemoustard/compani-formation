@@ -7,14 +7,12 @@ const styles = StyleSheet.create({
     backgroundColor: GREY[200],
     paddingVertical: PADDING.MD,
     paddingHorizontal: PADDING.LG,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   icon: {
     width: ICON.MD,
     alignSelf: 'center',
-  },
-  player: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   timer: {
     paddingHorizontal: PADDING.SM,
