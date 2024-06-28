@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import {
@@ -31,7 +32,8 @@ export const registerForPushNotificationsAsync = async (): Promise<ExpoTokenAndS
     finalStatus = status;
   }
 
-  const { data: token } = await Notifications.getExpoPushTokenAsync({ projectId: process.env.PROJECT_ID });
+  const { data: token } = await Notifications
+    .getExpoPushTokenAsync({ projectId: Constants.expoConfig?.extra?.eas.projectId });
   await asyncStorage.setExpoToken(token);
 
   if (finalStatus !== GRANTED) return { token, status: DENIED };
