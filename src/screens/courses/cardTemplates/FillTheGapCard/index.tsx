@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { Dispatch, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
@@ -20,6 +20,7 @@ import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion'
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
 import { quizJingle } from '../../../../core/helpers/utils';
 import { ActionType } from '../../../../context/types';
+import { isWeb } from '../../../../core/data/constants';
 
 interface FillTheGap {
   card: FillTheGapType,
@@ -121,11 +122,22 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
     return goodAnswers.includes(text);
   };
 
-  const renderContent = (isVisible, item, text, idx?) => isVisible &&
-    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
+  const renderContent = (isVisible, item, text, idx?) => {
+    if (!isVisible) return null;
+
+    if (isWeb) {
+      return <TouchableOpacity style={style.answerContainer}
+        onPress={() => setAnswersAndPropositions({ dragged: { payload: text, dragTranslationRatio: { x: 0, y: 0 } } })}>
+        <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
+          isGoodAnswer={isGoodAnswer(text, idx)} />
+      </TouchableOpacity>;
+    }
+
+    return <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
       <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
         isGoodAnswer={isGoodAnswer(text, idx)} />
     </DraxView>;
+  };
 
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
     onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
