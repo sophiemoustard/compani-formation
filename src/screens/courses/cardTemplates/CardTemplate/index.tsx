@@ -59,43 +59,46 @@ const CardTemplate = ({
   }, [isFocused, setCardIndex, index, setIsLoading]);
 
   const card = cards[index];
-  switch (card.template) {
-    case FLASHCARD:
-      return <FlashCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case FILL_THE_GAPS:
-      return <FillTheGapCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case MULTIPLE_CHOICE_QUESTION:
-      return <MultipleChoiceQuestionCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case OPEN_QUESTION:
-      return <OpenQuestionCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case ORDER_THE_SEQUENCE:
-      return <OrderTheSequenceCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case QUESTION_ANSWER:
-      return <QuestionAnswerCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case SINGLE_CHOICE_QUESTION:
-      return <SingleChoiceQuestionCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case SURVEY:
-      return <SurveyCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case TEXT_MEDIA:
-      return <TextMediaCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled}
-        setIsLeftSwipeEnabled={setIsLeftSwipeEnabled} />;
-    case TITLE_TEXT:
-      return <TitleTextCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
-    case TITLE_TEXT_MEDIA:
-      return <TitleTextMediaCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled}
-        setIsLeftSwipeEnabled={setIsLeftSwipeEnabled} />;
-    case TRANSITION:
-      return <Transition isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+  if (card && isFocused) {
+    switch (card.template) {
+      case FLASHCARD:
+        return <FlashCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case FILL_THE_GAPS:
+        return <FillTheGapCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case MULTIPLE_CHOICE_QUESTION:
+        return <MultipleChoiceQuestionCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case OPEN_QUESTION:
+        return <OpenQuestionCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case ORDER_THE_SEQUENCE:
+        return <OrderTheSequenceCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case QUESTION_ANSWER:
+        return <QuestionAnswerCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case SINGLE_CHOICE_QUESTION:
+        return <SingleChoiceQuestionCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case SURVEY:
+        return <SurveyCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case TEXT_MEDIA:
+        return <TextMediaCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled}
+          setIsLeftSwipeEnabled={setIsLeftSwipeEnabled} />;
+      case TITLE_TEXT:
+        return <TitleTextCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
+      case TITLE_TEXT_MEDIA:
+        return <TitleTextMediaCard isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled}
+          setIsLeftSwipeEnabled={setIsLeftSwipeEnabled} />;
+      case TRANSITION:
+        return <Transition isLoading={isLoading} setIsRightSwipeEnabled={setIsRightSwipeEnabled} />;
 
-    default:
-      return (
-        <View>
-          <CardHeader />
-          <Text>{card.template}</Text>
-          <CardFooter index={index} />
-        </View>
-      );
+      default:
+        return (
+          <View>
+            <CardHeader />
+            <Text>{card.template}</Text>
+            <CardFooter index={index} />
+          </View>
+        );
+    }
   }
+  return null;
 };
 
 const mapStateToProps = (state: StateType) => ({ cards: state.cards.cards });
