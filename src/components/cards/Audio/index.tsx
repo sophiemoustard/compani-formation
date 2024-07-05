@@ -66,7 +66,8 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const playOrPauseAudio = async () => {
     try {
       if (mediaSource && isLoaded && !isPlaying) {
-        if (timeElapsed === duration) await soundObject.playFromPositionAsync(0);
+        if (isWeb) await soundObject.playAsync();
+        else if (timeElapsed === duration) await soundObject.playFromPositionAsync(0);
         else await soundObject.playFromPositionAsync(timeElapsed);
       }
       if (mediaSource && isLoaded && isPlaying) await soundObject.pauseAsync();
