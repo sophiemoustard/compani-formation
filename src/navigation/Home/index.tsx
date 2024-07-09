@@ -64,11 +64,13 @@ const Home = ({ userVendorRole } : HomeProps) => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
       initialRouteName="LearnerCourses">
-      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon }} />
-      <Tab.Screen name="LearnerCourses" component={LearnerCourses} options={{ tabBarIcon: learnerCoursesIcon }} />
+      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon, title: 'Explorer' }} />
+      <Tab.Screen name="LearnerCourses" component={LearnerCourses}
+        options={{ tabBarIcon: learnerCoursesIcon, title: 'Mes formations' }} />
       { showTrainerTab &&
-        <Tab.Screen name="TrainerCourses" component={TrainerCourses} options={{ tabBarIcon: trainerCoursesIcon }} />}
-      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon }} />
+        <Tab.Screen name="TrainerCourses" component={TrainerCourses}
+          options={{ tabBarIcon: trainerCoursesIcon, title: 'Espace intervenant' }} />}
+      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon, title: 'Profil' }} />
     </Tab.Navigator>
   );
 };

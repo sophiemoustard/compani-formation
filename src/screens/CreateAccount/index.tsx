@@ -155,7 +155,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {formList.map((fields, i) => (
-        <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
+        <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}
+          options={{ title: 'Création de compte' }}>
           {() => renderScreen(fields, i)}
         </Stack.Screen>
       ))}

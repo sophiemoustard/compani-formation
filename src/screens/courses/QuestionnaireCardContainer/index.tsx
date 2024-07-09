@@ -98,18 +98,18 @@ const QuestionnaireCardContainer = ({
 
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} >
+      <Tab.Screen key={0} name={'startCard'} options={{ title: title || 'Questionnaire' }}>
         {() => <StartCard title={title} goBack={goBack}
           isLoading={!(cards.length > 0 && questionnaires.length)} />}
       </Tab.Screen>
       {cards.length > 0 && questionnaires.length &&
         <>
           {cards.map((_, index) => (
-            <Tab.Screen key={index} name={`card-${index}`}>
+            <Tab.Screen key={index} name={`card-${index}`} options={{ title }}>
               {() => <CardScreen index={index} goBack={goBack} />}
             </Tab.Screen>
           ))}
-          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`} options={{ title }}>
             {() => <QuestionnaireEndCard goBack={goBack} questionnaires={questionnaires} courseId={profileId} />}
           </Tab.Screen>
         </>

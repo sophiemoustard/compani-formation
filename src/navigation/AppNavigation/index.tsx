@@ -44,13 +44,36 @@ const AppNavigation = () => {
   };
   const undismissableScreens = ['ActivityCardContainer', 'QuestionnaireCardContainer'];
 
+  const tabNames = {
+    Authentication: 'Authentification',
+    EmailForm: 'Quel est votre email ?',
+    CreateAccount: 'Création de compte',
+    PasswordReset: 'Réinitialisation du mot de passe',
+    LoginCodeForm: 'Quel est votre code de connexion ?',
+    ProfileEdition: 'Modifier mes informations',
+    PasswordEdition: 'Modifier mon mot de passe',
+    LearnerCourseProfile: 'Profil de la formation',
+    SubProgramProfile: 'Profil du sous-programme',
+    TrainerCourseProfile: 'Profil de la formation',
+    Home: 'Accueil',
+    ActivityCardContainer: 'Activité',
+    QuestionnaireCardContainer: 'Questionnaire',
+    BlendedAbout: 'A propos',
+    ElearningAbout: 'A propos',
+    AdminCourseProfile: 'Espace administrateur',
+  };
+
   return (
     <NavigationContainer ref={navigationRef}>
       <MainStack.Navigator screenOptions={{ headerShown: false, cardStyle: { flex: 1 } }} presentation='card'>
         {Object.entries(companiToken ? userScreens : authScreens)
           .map(([name, component]) => (
             <MainStack.Screen key={name} name={name as keyof RootStackParamList} component={component}
-              options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
+              options={
+                undismissableScreens.includes(name)
+                  ? { gestureEnabled: false, title: tabNames[name] }
+                  : { title: tabNames[name] }
+              } />
           ))}
       </MainStack.Navigator>
     </NavigationContainer>
