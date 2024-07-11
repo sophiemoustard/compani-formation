@@ -53,14 +53,9 @@ const AppNavigation = () => {
     ProfileEdition: 'Modifier mes informations',
     PasswordEdition: 'Modifier mon mot de passe',
     LearnerCourseProfile: 'Profil de la formation',
-    SubProgramProfile: 'Profil du sous-programme',
-    TrainerCourseProfile: 'Profil de la formation',
-    Home: 'Accueil',
-    ActivityCardContainer: 'Activité',
-    QuestionnaireCardContainer: 'Questionnaire',
+    SubProgramProfile: 'Profil de la formation',
     BlendedAbout: 'A propos',
     ElearningAbout: 'A propos',
-    AdminCourseProfile: 'Espace administrateur',
   };
 
   return (

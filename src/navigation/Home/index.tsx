@@ -68,8 +68,7 @@ const Home = ({ userVendorRole } : HomeProps) => {
       <Tab.Screen name="LearnerCourses" component={LearnerCourses}
         options={{ tabBarIcon: learnerCoursesIcon, title: 'Mes formations' }} />
       { showTrainerTab &&
-        <Tab.Screen name="TrainerCourses" component={TrainerCourses}
-          options={{ tabBarIcon: trainerCoursesIcon, title: 'Espace intervenant' }} />}
+        <Tab.Screen name="TrainerCourses" component={TrainerCourses} options={{ tabBarIcon: trainerCoursesIcon }} />}
       <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon, title: 'Profil' }} />
     </Tab.Navigator>
   );
