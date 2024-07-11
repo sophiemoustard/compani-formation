@@ -125,15 +125,17 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   const renderContent = (isVisible, item, text, idx?) => {
     if (!isVisible) return null;
 
+    const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
+      isSelected={selectedAnswers.includes(text)} isGoodAnswer={isGoodAnswer(text, idx)} />;
+
+    const webAnswer = { dragged: { payload: text, dragTranslationRatio: { x: 0, y: 0 } } };
+
     return isWeb
-      ? <TouchableOpacity style={style.answerContainer}
-        onPress={() => setAnswersAndPropositions({ dragged: { payload: text, dragTranslationRatio: { x: 0, y: 0 } } })}>
-        <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
-          isGoodAnswer={isGoodAnswer(text, idx)} />
+      ? <TouchableOpacity style={style.answerContainer} onPress={() => setAnswersAndPropositions(webAnswer)}>
+        {proposition}
       </TouchableOpacity>
       : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
-        <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
-          isGoodAnswer={isGoodAnswer(text, idx)} />
+        {proposition}
       </DraxView>;
   };
 
