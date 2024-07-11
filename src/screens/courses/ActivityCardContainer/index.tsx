@@ -16,7 +16,7 @@ import { StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
-import { LEARNER, TRAINER } from '../../../core/data/constants';
+import { LEARNER, TRAINER, tabsNames } from '../../../core/data/constants';
 import { ActionType } from '../../../context/types';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
@@ -136,7 +136,7 @@ const ActivityCardContainer = ({
 
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} options={{ title: activity?.name || 'Activité' }}>
+      <Tab.Screen key={0} name={'startCard'} options={{ title: activity?.name || tabsNames.ActivityCardContainer }}>
         {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)}
           startTimer={startTimer} />}
       </Tab.Screen>

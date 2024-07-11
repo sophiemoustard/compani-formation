@@ -18,6 +18,7 @@ import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils'
 import { getQuestionnaireTitle } from '../../../core/helpers/courses';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import { ActionType } from '../../../context/types';
+import { tabsNames } from '../../../core/data/constants';
 
 interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {
   cardIndex: number | null,
@@ -98,7 +99,7 @@ const QuestionnaireCardContainer = ({
 
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} options={{ title: title || 'Questionnaire' }}>
+      <Tab.Screen key={0} name={'startCard'} options={{ title: title || tabsNames.QuestionnaireCardContainer }}>
         {() => <StartCard title={title} goBack={goBack}
           isLoading={!(cards.length > 0 && questionnaires.length)} />}
       </Tab.Screen>

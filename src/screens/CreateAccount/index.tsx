@@ -16,7 +16,7 @@ import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
-import { ACCOUNT_CREATION } from '../../core/data/constants';
+import { ACCOUNT_CREATION, tabsNames } from '../../core/data/constants';
 
 interface CreateAccountProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAccount'>,
@@ -156,7 +156,7 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {formList.map((fields, i) => (
         <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}
-          options={{ title: 'Création de compte' }}>
+          options={{ title: tabsNames.CreateAccount }}>
           {() => renderScreen(fields, i)}
         </Stack.Screen>
       ))}
