@@ -132,23 +132,3 @@ export const AUTHENTICATION = 'authentication';
 export const LOGIN_CODE = 'login_code';
 export const IDENTITY_VERIFICATION = 'identity_verification';
 export const ACCOUNT_CREATION = 'account_creation';
-
-// TABS NAMES
-export const tabsNames = {
-  Authentication: 'Authentification',
-  EmailForm: 'Quel est votre email ?',
-  CreateAccount: 'Création de compte',
-  PasswordReset: 'Réinitialisation du mot de passe',
-  LoginCodeForm: 'Quel est votre code de connexion ?',
-  ProfileEdition: 'Modifier mes informations',
-  PasswordEdition: 'Modifier mon mot de passe',
-  LearnerCourseProfile: 'Profil de la formation',
-  SubProgramProfile: 'Profil de la formation',
-  BlendedAbout: 'À propos',
-  ElearningAbout: 'À propos',
-  Catalog: 'Explorer',
-  LearnerCourses: 'Mes formations',
-  Profile: 'Profil',
-  ActivityCardContainer: 'Activité',
-  QuestionnaireCardContainer: 'Questionnaire',
-};

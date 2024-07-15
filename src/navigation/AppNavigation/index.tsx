@@ -22,7 +22,7 @@ import ProfileEdition from '../../screens/profile/ProfileEdition';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
 import { RootStackParamList } from '../../types/NavigationType';
-import { tabsNames } from '../../core/data/constants';
+import { tabsNames } from '../../core/data/tabs';
 
 const MainStack = createStackNavigator<RootStackParamList>();
 

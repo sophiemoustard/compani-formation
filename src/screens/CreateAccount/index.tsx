@@ -16,7 +16,8 @@ import ProgressBar from '../../components/cards/ProgressBar';
 import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
-import { ACCOUNT_CREATION, tabsNames } from '../../core/data/constants';
+import { ACCOUNT_CREATION } from '../../core/data/constants';
+import { tabsNames } from '../../core/data/tabs';
 
 interface CreateAccountProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAccount'>,

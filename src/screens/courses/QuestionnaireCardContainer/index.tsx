@@ -18,7 +18,7 @@ import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils'
 import { getQuestionnaireTitle } from '../../../core/helpers/courses';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import { ActionType } from '../../../context/types';
-import { tabsNames } from '../../../core/data/constants';
+import { tabsNames } from '../../../core/data/tabs';
 
 interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {
   cardIndex: number | null,

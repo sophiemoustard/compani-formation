@@ -16,7 +16,8 @@ import Catalog from '../../screens/explore/Catalog';
 import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
 import { RootBottomTabParamList } from '../../types/NavigationType';
-import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, isWeb, tabsNames } from '../../core/data/constants';
+import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, isWeb } from '../../core/data/constants';
+import { tabsNames } from '../../core/data/tabs';
 import { StateType } from '../../types/store/StoreType';
 
 const Tab = createBottomTabNavigator<RootBottomTabParamList>();

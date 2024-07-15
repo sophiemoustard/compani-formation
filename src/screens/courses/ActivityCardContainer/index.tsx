@@ -16,7 +16,8 @@ import { StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
-import { LEARNER, TRAINER, tabsNames } from '../../../core/data/constants';
+import { LEARNER, TRAINER } from '../../../core/data/constants';
+import { tabsNames } from '../../../core/data/tabs';
 import { ActionType } from '../../../context/types';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
