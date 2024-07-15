@@ -16,7 +16,7 @@ import Catalog from '../../screens/explore/Catalog';
 import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
 import { RootBottomTabParamList } from '../../types/NavigationType';
-import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, isWeb } from '../../core/data/constants';
+import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, IS_WEB } from '../../core/data/constants';
 import { tabsNames } from '../../core/data/tabs';
 import { StateType } from '../../types/store/StoreType';
 
@@ -59,7 +59,7 @@ interface HomeProps {
 }
 
 const Home = ({ userVendorRole } : HomeProps) => {
-  const showTrainerTab = !!userVendorRole && !isWeb &&
+  const showTrainerTab = !!userVendorRole && !IS_WEB &&
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
 
   return (

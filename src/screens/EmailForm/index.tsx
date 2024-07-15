@@ -10,7 +10,7 @@ import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import accountCreationStyles from '../../styles/accountCreation';
 import { GREY } from '../../styles/colors';
-import { EMAIL_REGEX, isIOS } from '../../core/data/constants';
+import { EMAIL_REGEX, IS_IOS } from '../../core/data/constants';
 import Users from '../../api/users';
 import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
@@ -39,7 +39,7 @@ const EmailForm = ({ route, navigation }: EmailFormProps) => {
   }, [hardwareBackPress]);
 
   useEffect(() => {
-    if (isIOS) setBehavior('padding');
+    if (IS_IOS) setBehavior('padding');
     else setBehavior('height');
   }, []);
 

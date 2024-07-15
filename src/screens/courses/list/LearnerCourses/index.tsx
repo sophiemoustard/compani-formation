@@ -18,7 +18,7 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../../types/Na
 import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { getCourseProgress, getTheoreticalDuration } from '../../../../core/helpers/utils';
-import { LEARNER, PEDAGOGY, isWeb } from '../../../../core/data/constants';
+import { LEARNER, PEDAGOGY, IS_WEB } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
@@ -109,7 +109,7 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={isWeb}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={IS_WEB}>
         <Text style={commonStyles.title} testID='header'>Mes formations</Text>
         {!!nextSteps.length &&
           <View style={styles.nextSteps}>

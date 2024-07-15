@@ -27,7 +27,7 @@ import { RootStackParamList, RootBottomTabParamList } from '../../../types/Navig
 import Users from '../../../api/users';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import MainActions from '../../../store/main/actions';
-import { EMAIL_REGEX, isIOS, isWeb, PHONE_REGEX } from '../../../core/data/constants';
+import { EMAIL_REGEX, IS_IOS, IS_WEB, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
@@ -185,7 +185,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   return !!loggedUser && (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+      <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         <View style={styles.goBack}>
           <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
@@ -194,7 +194,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             onPressCancelButton={() => setExitConfirmationModal(false)}
             title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
         </View>
-        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={isWeb}>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={IS_WEB}>
           <Text style={styles.title}>Modifier mes informations</Text>
           <View style={styles.imageContainer}>
             <Image style={styles.profileImage} source={source} />

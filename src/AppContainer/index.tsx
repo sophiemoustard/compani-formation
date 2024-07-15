@@ -21,7 +21,7 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-import { ACTIVE_STATE, isWeb } from '../core/data/constants';
+import { ACTIVE_STATE, IS_WEB } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
 import ToastMessage from '../components/ToastMessage';
@@ -59,7 +59,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
   const [triggerToastMessage, setTriggerToastMessage] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!isWeb) {
+    if (!IS_WEB) {
       registerForPushNotificationsAsync().then(async (data) => {
         if (!companiToken) return;
         await handleExpoToken(data);
@@ -68,7 +68,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
   }, [companiToken]);
 
   useEffect(() => {
-    if (!isWeb) {
+    if (!IS_WEB) {
       const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
         get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
       if (isValidNotification) handleNotificationResponse(lastNotificationResponse);

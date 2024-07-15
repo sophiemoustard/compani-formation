@@ -32,7 +32,7 @@ import ImagePickerManager from '../../../components/ImagePickerManager';
 import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import MainActions from '../../../store/main/actions';
-import { PEDAGOGY, isWeb } from '../../../core/data/constants';
+import { PEDAGOGY, IS_WEB } from '../../../core/data/constants';
 import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import { CompanyType } from '../../../types/CompanyType';
 import styles from './styles';
@@ -169,14 +169,14 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={isWeb}>
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={IS_WEB}>
         {!!loggedUser &&
           <>
             <Text style={[commonStyles.title, styles.title]}>Mon profil</Text>
             <View style={styles.identityContainer}>
               <ImageBackground imageStyle={{ resizeMode: 'contain' }} style={styles.identityBackground}
                 source={require('../../../../assets/images/profile_background.webp')}>
-                {isWeb
+                {IS_WEB
                   ? <Image style={styles.profileImage} source={source} />
                   : <TouchableOpacity onPress={() => setPictureModal(true)}>
                     <Image style={styles.profileImage} source={source} />

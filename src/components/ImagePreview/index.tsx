@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { View, Alert, BackHandler, Text, TouchableOpacity } from 'react-native';
 import * as Print from 'expo-print';
 import { WebView } from 'react-native-webview';
-import { IMAGE, isIOS } from '../../core/data/constants';
+import { IMAGE, IS_IOS } from '../../core/data/constants';
 import { WHITE } from '../../styles/colors';
 import { ICON, SCREEN_HEIGHT } from '../../styles/metrics';
 import NiImage from '../Image';
@@ -67,7 +67,7 @@ const ImagePreview = ({ source, deleteFile, onRequestClose, showButton = true }:
             <NiImage source={{ uri: link }} imgHeight={SCREEN_HEIGHT / 2} onPress={() => setZoomImage(true)} />
           </View>
           : <>
-            {isIOS
+            {IS_IOS
               ? <View style={styles.pdfContainer}>
                 <WebView source={{ uri: link }} style={styles.pdfContent} startInLoadingState />
               </View>

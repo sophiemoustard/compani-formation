@@ -6,7 +6,7 @@ import styles from './styles';
 import { ICON } from '../../../styles/metrics';
 import { WHITE } from '../../../styles/colors';
 import IoniconsButton from '../../icons/IoniconsButton';
-import { isIOS } from '../../../core/data/constants';
+import { IS_IOS } from '../../../core/data/constants';
 
 interface NiCameraProps {
   setCapturedImage: (photo: CameraCapturedPicture) => void,
@@ -29,7 +29,7 @@ const NiCamera = ({ setCapturedImage }: NiCameraProps) => {
   };
 
   const setScreenDimension = async () => {
-    if (isIOS || !camera.current) return;
+    if (IS_IOS || !camera.current) return;
 
     const { height, width } = Dimensions.get('window');
     if (!width) return;
