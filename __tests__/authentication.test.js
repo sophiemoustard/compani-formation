@@ -1,11 +1,10 @@
-import { createStore } from 'redux';
 import { Provider as ReduxProvider } from 'react-redux';
 import MockAdapter from 'axios-mock-adapter';
 import sinon from 'sinon';
 import { render, fireEvent, waitFor, act, cleanup } from '@testing-library/react-native';
 import { Provider as AuthProvider } from '../src/context/AuthContext';
 import Environment from '../environment';
-import reducers from '../src/store/index';
+import store from '../src/store/store';
 import AppContainer from '../src/AppContainer';
 import axiosLogged from '../src/api/axios/logged';
 import axiosNotLogged from '../src/api/axios/notLogged';
@@ -31,7 +30,6 @@ describe('Authentication tests', () => {
 
   test('user should authenticate and be redirected to Home page', async () => {
     getBaseUrlStub.returns('test');
-    const store = createStore(reducers);
     const expirationDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     axiosNotLoggedMock.onPost(`${baseURL}/users/authenticate`)
