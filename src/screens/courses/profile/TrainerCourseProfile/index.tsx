@@ -1,9 +1,8 @@
 // @ts-nocheck
 
-import { useState, useEffect, useCallback, Dispatch } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
@@ -14,15 +13,13 @@ import { WHITE, GREY } from '../../../../styles/colors';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType } from '../../../../types/CourseTypes';
 import styles from '../styles';
-import MainActions from '../../../../store/main/actions';
+import { useAppDispatch } from '../../../../store/hooks';
+import { setStatusBarVisible } from '../../../../store/main/slice';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import { getLoggedUserId } from '../../../../store/main/selectors';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { getTitle, renderStepList } from '../helper';
 import { PEDAGOGY, TRAINER } from '../../../../core/data/constants';
-import { StateType } from '../../../../types/store/StoreType';
-import { ActionType } from '../../../../context/types';
 
 const ADMIN_SCREEN = 'AdminCourseProfile';
 const ABOUT_SCREEN = 'BlendedAbout';
@@ -31,15 +28,14 @@ interface TrainerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'TrainerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  userId: string,
-  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const TrainerCourseProfile = ({
   route,
   navigation,
-  setStatusBarVisible,
 }: TrainerCourseProfileProps) => {
+  const dispatch = useAppDispatch();
+
   const [course, setCourse] = useState<CourseType | null>(null);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
@@ -62,10 +58,10 @@ const TrainerCourseProfile = ({
     };
 
     if (isFocused) {
-      setStatusBarVisible(true);
+      dispatch(setStatusBarVisible(true));
       getCourse();
     }
-  }, [isFocused, route.params.courseId, setStatusBarVisible]);
+  }, [isFocused, route.params.courseId, dispatch]);
 
   const goBack = useCallback(() => {
     navigation.navigate('TrainerCourses');
@@ -105,10 +101,4 @@ const TrainerCourseProfile = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrainerCourseProfile);
+export default TrainerCourseProfile;

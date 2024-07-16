@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, Dispatch } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
@@ -22,20 +21,21 @@ import FeatherButton from '../../../../components/icons/FeatherButton';
 import { TESTER } from '../../../../core/data/constants';
 import commonStyles from '../../../../styles/common';
 import styles from './styles';
-import MainActions from '../../../../store/main/actions';
+import { useAppDispatch } from '../../../../store/hooks';
+import { setStatusBarVisible } from '../../../../store/main/slice';
 import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
 import { SubProgramType } from '../../../../types/CourseTypes';
-import { ActionType } from '../../../../context/types';
 import { renderStepList } from '../helper';
 
 interface SubProgramProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'SubProgramProfile'>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  setStatusBarVisible: (boolean: boolean) => void,
 }
 
-const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgramProfileProps) => {
+const SubProgramProfile = ({ route, navigation }: SubProgramProfileProps) => {
+  const dispatch = useAppDispatch();
+
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
@@ -64,10 +64,10 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      setStatusBarVisible(true);
+      dispatch(setStatusBarVisible(true));
       getSubProgram();
     }
-  }, [getSubProgram, isFocused, setStatusBarVisible]);
+  }, [getSubProgram, isFocused, dispatch]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
@@ -102,8 +102,4 @@ const SubProgramProfile = ({ route, navigation, setStatusBarVisible }: SubProgra
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-});
-
-export default connect(null, mapDispatchToProps)(SubProgramProfile);
+export default SubProgramProfile;

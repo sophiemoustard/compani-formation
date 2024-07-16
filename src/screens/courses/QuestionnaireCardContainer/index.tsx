@@ -11,7 +11,8 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
 import { StateType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
+import { useAppDispatch } from '../../../store/hooks';
+import { setStatusBarVisible } from '../../../store/main/slice';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils';
@@ -27,7 +28,6 @@ interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackPara
   setCards: (questionnaire: CardType[] | null) => void,
   setExitConfirmationModal: (boolean: boolean) => void,
   resetCardReducer: () => void,
-  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const QuestionnaireCardContainer = ({
@@ -39,16 +39,17 @@ const QuestionnaireCardContainer = ({
   setCards,
   setExitConfirmationModal,
   resetCardReducer,
-  setStatusBarVisible,
 }: QuestionnaireCardContainerProps) => {
+  const dispatch = useAppDispatch();
+
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [isActive, setIsActive] = useState<boolean>(true);
   const { profileId } = route.params;
 
   useEffect(() => {
-    setStatusBarVisible(false);
-  }, [setStatusBarVisible]);
+    dispatch(setStatusBarVisible(false));
+  }, [dispatch]);
 
   const getQuestionnaires = async () => {
     try {
@@ -129,7 +130,6 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
   setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireCardContainer);

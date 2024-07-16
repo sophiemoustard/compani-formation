@@ -48,6 +48,7 @@
     "@react-navigation/material-top-tabs": "^6.2.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/stack": "^6.2.1",
+    "@reduxjs/toolkit": "^2.2.6",
     "@sentry/react-native": "~5.22.0",
     "array-flat-polyfill": "^1.0.1",
     "axios": "^1.6.7",
@@ -99,8 +100,7 @@
     "react-native-tab-view": "^3.0.1",
     "react-native-web": "~0.19.6",
     "react-native-webview": "13.8.6",
-    "react-redux": "^8.0.2",
-    "redux": "^4.2.0"
+    "react-redux": "^9.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

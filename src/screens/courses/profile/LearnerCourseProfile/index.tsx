@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState, useEffect, useCallback, Dispatch } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
@@ -32,7 +31,8 @@ import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
-import MainActions from '../../../../store/main/actions';
+import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
+import { setStatusBarVisible } from '../../../../store/main/slice';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
@@ -44,23 +44,16 @@ import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
 import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
-import { StateType } from '../../../../types/store/StoreType';
-import { ActionType } from '../../../../context/types';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
-> {
-  userId: string,
-  setStatusBarVisible: (boolean: boolean) => void,
-}
+>{}
 
-const LearnerCourseProfile = ({
-  route,
-  navigation,
-  userId,
-  setStatusBarVisible,
-}: LearnerCourseProfileProps) => {
+const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector(getLoggedUserId);
+
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
@@ -89,10 +82,10 @@ const LearnerCourseProfile = ({
     };
 
     if (isFocused) {
-      setStatusBarVisible(true);
+      dispatch(setStatusBarVisible(true));
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId]);
+  }, [isFocused, dispatch, route.params.courseId]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
@@ -208,10 +201,4 @@ const LearnerCourseProfile = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourseProfile);
+export default LearnerCourseProfile;

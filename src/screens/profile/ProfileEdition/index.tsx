@@ -11,7 +11,6 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -19,14 +18,14 @@ import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
-import { UserType } from '../../../types/UserType';
 import { PictureType } from '../../../types/PictureTypes';
 import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Users from '../../../api/users';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { RootState } from '../../../store/store';
+import { setLoggedUser } from '../../../store/main/slice';
 import { EMAIL_REGEX, IS_IOS, IS_WEB, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
@@ -41,14 +40,15 @@ interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  loggedUser: UserType,
-  setLoggedUser: (user: UserType) => void,
 }
 
 const FIRSTNAME = 'firstname';
 const LASTNAME = 'lastname';
 
-const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
+const ProfileEdition = ({ navigation }: ProfileEditionProps) => {
+  const dispatch = useAppDispatch();
+  const loggedUser = useAppSelector((state: RootState) => state.main.loggedUser);
+
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
     identity: {
@@ -134,7 +134,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
         });
         const userId = loggedUser._id;
         const user = await Users.getById(userId);
-        setLoggedUser(user);
+        dispatch(setLoggedUser(user));
         goBack();
       }
     } catch (e: any) {
@@ -172,13 +172,13 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
     await Users.uploadImage(loggedUser._id, data);
 
     const user = await Users.getById(loggedUser._id);
-    setLoggedUser(user);
+    dispatch(setLoggedUser(user));
   };
 
   const deletePicture = async () => {
     await Users.deleteImage(loggedUser._id);
     const user = await Users.getById(loggedUser._id);
-    setLoggedUser(user);
+    dispatch(setLoggedUser(user));
     setPictureModal(false);
     goBack();
   };
@@ -232,10 +232,4 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUser: state.main.loggedUser });
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdition);
+export default ProfileEdition;
