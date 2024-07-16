@@ -18,7 +18,7 @@ import HomeScreenFooter from '../../../components/HomeScreenFooter';
 import { GREEN, PINK, YELLOW, PURPLE } from '../../../styles/colors';
 import { capitalizeFirstLetter, getTheoreticalDuration } from '../../../core/helpers/utils';
 import { StateType } from '../../../types/store/StoreType';
-import { isWeb } from '../../../core/data/constants';
+import { IS_WEB } from '../../../core/data/constants';
 
 interface CatalogProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -82,7 +82,7 @@ const Catalog = ({ loggedUserId, navigation }: CatalogProps) => {
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={isWeb}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={IS_WEB}>
         <Text style={commonStyles.title}>Explorer</Text>
         {Object.keys(programsByCategories).map((key, i) =>
           <ImageBackground imageStyle={CategoriesStyleList[i % 4].backgroundStyle} style={style.sectionContainer}

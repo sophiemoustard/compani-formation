@@ -17,6 +17,7 @@ import MainActions from '../../../store/main/actions';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
+import { tabsNames } from '../../../core/data/tabs';
 import { ActionType } from '../../../context/types';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
@@ -136,18 +137,18 @@ const ActivityCardContainer = ({
 
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} >
+      <Tab.Screen key={0} name={'startCard'} options={{ title: activity?.name || tabsNames.ActivityCardContainer }}>
         {() => <StartCard title={activity?.name || ''} goBack={goBack} isLoading={!(cards.length > 0 && activity)}
           startTimer={startTimer} />}
       </Tab.Screen>
       {cards.length > 0 && activity &&
         <>
           {cards.map((_, index) => (
-            <Tab.Screen key={index} name={`card-${index}`}>
+            <Tab.Screen key={index} name={`card-${index}`} options={{ title: activity.name }}>
               {() => <CardScreen index={index} goBack={goBack} />}
             </Tab.Screen>
           ))}
-          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`} options={{ title: activity.name }}>
             {() => <ActivityEndCard goBack={goBack} activity={activity} mode={mode} stopTimer={stopTimer}
               finalTimer={finalTimer} />}
           </Tab.Screen>

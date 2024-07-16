@@ -14,7 +14,7 @@ import NiSecondaryButton from '../../components/form/SecondaryButton';
 import CompanySearchModal from '../../components/CompanySearchModal';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
 import { CompanyType } from '../../types/CompanyType';
-import { LOGIN_CODE, isIOS, isWeb } from '../../core/data/constants';
+import { LOGIN_CODE, IS_IOS, IS_WEB } from '../../core/data/constants';
 import { GREY, WHITE } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
@@ -118,7 +118,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboard}
+      <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={styles.keyboard}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         <View style={styles.goBack}>
           <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
@@ -127,7 +127,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
             onPressCancelButton={() => setExitConfirmationModal(false)}
             title="Êtes-vous sûr(e) de cela ?" contentText={'Vous reviendrez à la page d\'accueil.'} />
         </View>
-        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={isWeb}>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={IS_WEB}>
           <View style={styles.sectionContainer}>
             <View style={styles.titleContainer}>
               <Text style={styles.title}>Code de connexion donné par le formateur</Text>

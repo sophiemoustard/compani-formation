@@ -2,10 +2,10 @@ import { Text, Linking } from 'react-native';
 import NiModal from '../Modal';
 import NiPrimaryButton from '../form/PrimaryButton';
 import styles from './styles';
-import { isIOS } from '../../core/data/constants';
+import { IS_IOS } from '../../core/data/constants';
 
 const UpdateAppModal = () => {
-  const appUrl = isIOS ? 'https://apps.apple.com/app/id/1516691161' : 'market://details?id=com.alenvi.compani';
+  const appUrl = IS_IOS ? 'https://apps.apple.com/app/id/1516691161' : 'market://details?id=com.alenvi.compani';
 
   return (
     <NiModal visible={true}>

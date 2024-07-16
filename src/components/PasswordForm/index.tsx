@@ -16,7 +16,7 @@ import NiInput from '../form/Input';
 import ExitModal from '../ExitModal';
 import NiErrorMessage from '../ErrorMessage';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../reducers/error';
-import { isIOS, isWeb } from '../../core/data/constants';
+import { IS_IOS, IS_WEB } from '../../core/data/constants';
 
 const NEW_PASSWORD = 'newPassword';
 const CONFIRMED_PASSWORD = 'confirmedPassword';
@@ -98,7 +98,7 @@ const PasswordForm = ({ onPress, goBack, email = '' }: PasswordFormProps) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+    <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
       keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS} >
       <View style={styles.goBack}>
         <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
@@ -107,7 +107,7 @@ const PasswordForm = ({ onPress, goBack, email = '' }: PasswordFormProps) => {
           title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
           contentText="Vos modifications ne seront pas enregistrées" />
       </View>
-      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={isWeb}>
+      <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={IS_WEB}>
         <Text style={styles.title}>Modifier mon mot de passe</Text>
         {!!email && <Text style={styles.email}>L&apos;e-mail associé à votre compte est :
           <Text style={styles.bold}>&nbsp;{email}</Text>

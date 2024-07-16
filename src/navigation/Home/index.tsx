@@ -16,7 +16,8 @@ import Catalog from '../../screens/explore/Catalog';
 import ProfileDetails from '../../screens/profile/Profile';
 import styles from './styles';
 import { RootBottomTabParamList } from '../../types/NavigationType';
-import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, isWeb } from '../../core/data/constants';
+import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, IS_WEB } from '../../core/data/constants';
+import { tabsNames } from '../../core/data/tabs';
 import { StateType } from '../../types/store/StoreType';
 
 const Tab = createBottomTabNavigator<RootBottomTabParamList>();
@@ -58,17 +59,19 @@ interface HomeProps {
 }
 
 const Home = ({ userVendorRole } : HomeProps) => {
-  const showTrainerTab = !!userVendorRole && !isWeb &&
+  const showTrainerTab = !!userVendorRole && !IS_WEB &&
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, tabBarStyle: styles.tabBar }}
       initialRouteName="LearnerCourses">
-      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon }} />
-      <Tab.Screen name="LearnerCourses" component={LearnerCourses} options={{ tabBarIcon: learnerCoursesIcon }} />
+      <Tab.Screen name="Catalog" component={Catalog} options={{ tabBarIcon: catalogIcon, title: tabsNames.Catalog }} />
+      <Tab.Screen name="LearnerCourses" component={LearnerCourses}
+        options={{ tabBarIcon: learnerCoursesIcon, title: tabsNames.LearnerCourses }} />
       { showTrainerTab &&
         <Tab.Screen name="TrainerCourses" component={TrainerCourses} options={{ tabBarIcon: trainerCoursesIcon }} />}
-      <Tab.Screen name="Profile" component={ProfileDetails} options={{ tabBarIcon: profileIcon }} />
+      <Tab.Screen name="Profile" options={{ tabBarIcon: profileIcon, title: tabsNames.Profile }}
+        component={ProfileDetails} />
     </Tab.Navigator>
   );
 };

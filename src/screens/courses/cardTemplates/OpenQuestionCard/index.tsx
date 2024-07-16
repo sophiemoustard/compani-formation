@@ -13,7 +13,7 @@ import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
 import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import Actions from '../../../../store/cards/actions';
 import styles from './styles';
-import { isIOS } from '../../../../core/data/constants';
+import { IS_IOS } from '../../../../core/data/constants';
 
 interface OpenQuestionCardProps {
   card: OpenQuestionType,
@@ -61,7 +61,7 @@ const OpenQuestionCard = ({
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
-      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
+      <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={style.keyboardAvoidingView}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         {!isSelected && <CardHeader />}
         <ScrollView contentContainerStyle={style.container} ref={scrollRef} showsVerticalScrollIndicator={false}>

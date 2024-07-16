@@ -5,8 +5,8 @@ export const LOCAL = 'local';
 export const DEVELOPMENT = 'development';
 export const STAGING = 'staging';
 export const PRODUCTION = 'production';
-export const isIOS = Platform.OS === 'ios';
-export const isWeb = Platform.OS === 'web';
+export const IS_IOS = Platform.OS === 'ios';
+export const IS_WEB = Platform.OS === 'web';
 
 export const LONG_FIRSTNAME_LONG_LASTNAME = 'FL';
 export const SHORT_FIRSTNAME_LONG_LASTNAME = 'fL';
@@ -24,7 +24,7 @@ export const INTRA_HOLDING = 'intra_holding';
 export const ON_SITE = 'on_site';
 export const REMOTE = 'remote';
 export const E_LEARNING = 'e_learning';
-export const stepTypeOptions = {
+export const STEP_TYPE_OPTIONS = {
   [ON_SITE]: 'Présentiel',
   [REMOTE]: 'Distanciel',
   [E_LEARNING]: 'eLearning',

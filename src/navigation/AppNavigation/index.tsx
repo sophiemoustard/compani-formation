@@ -22,6 +22,7 @@ import ProfileEdition from '../../screens/profile/ProfileEdition';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
 import PasswordReset from '../../screens/PasswordReset';
 import { RootStackParamList } from '../../types/NavigationType';
+import { tabsNames } from '../../core/data/tabs';
 
 const MainStack = createStackNavigator<RootStackParamList>();
 
@@ -50,7 +51,11 @@ const AppNavigation = () => {
         {Object.entries(companiToken ? userScreens : authScreens)
           .map(([name, component]) => (
             <MainStack.Screen key={name} name={name as keyof RootStackParamList} component={component}
-              options={undismissableScreens.includes(name) ? { gestureEnabled: false } : {}} />
+              options={
+                undismissableScreens.includes(name)
+                  ? { gestureEnabled: false, title: tabsNames[name] }
+                  : { title: tabsNames[name] }
+              } />
           ))}
       </MainStack.Navigator>
     </NavigationContainer>

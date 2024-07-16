@@ -8,7 +8,7 @@ import IoniconsButton from '../../icons/IoniconsButton';
 import { GREY, PINK } from '../../../styles/colors';
 import styles from './styles';
 import commonStyle from '../../../styles/common';
-import { isWeb } from '../../../core/data/constants';
+import { IS_WEB } from '../../../core/data/constants';
 
 interface NiAudioProps {
   mediaSource: { uri: string } | undefined,
@@ -66,7 +66,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   const playOrPauseAudio = async () => {
     try {
       if (mediaSource && isLoaded && !isPlaying) {
-        if (isWeb) await soundObject.playAsync();
+        if (IS_WEB) await soundObject.playAsync();
         else if (timeElapsed === duration) await soundObject.playFromPositionAsync(0);
         else await soundObject.playFromPositionAsync(timeElapsed);
       }
@@ -96,7 +96,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   );
 
   return (
-    isWeb
+    IS_WEB
       ? <View style={styles.webContainer}>
         <Ionicons name="musical-note" size={250} style={styles.webBackgroundIcon} />
         {renderPlayer(ICON.XXXL)}

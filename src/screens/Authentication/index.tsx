@@ -22,7 +22,7 @@ import { AuthContextType, Context as AuthContext } from '../../context/AuthConte
 import commonStyles from '../../styles/common';
 import styles from './styles';
 import Actions from '../../store/actions';
-import { AUTHENTICATION, isIOS } from '../../core/data/constants';
+import { AUTHENTICATION, IS_IOS } from '../../core/data/constants';
 
 interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
   resetAllReducers: () => void,
@@ -49,7 +49,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ImageBackground style={{ ...styles.image }}
         source={require('../../../assets/images/authentication_background_image.webp')}>
-        <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={{ flex: 1 }}>
           <View style={styles.inner}>
             <Text style={styles.title}>
               Identifiez-vous pour{'\n'}accéder aux informations
