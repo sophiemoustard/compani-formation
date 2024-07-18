@@ -23,9 +23,7 @@ import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Users from '../../../api/users';
-import { useAppSelector, useAppDispatch } from '../../../store/hooks';
-import { RootState } from '../../../store/store';
-import { setLoggedUser } from '../../../store/main/slice';
+import { useGetLoggedUser, useSetLoggedUser } from '../../../store/main/hooks';
 import { EMAIL_REGEX, IS_IOS, IS_WEB, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
@@ -46,8 +44,8 @@ const FIRSTNAME = 'firstname';
 const LASTNAME = 'lastname';
 
 const ProfileEdition = ({ navigation }: ProfileEditionProps) => {
-  const dispatch = useAppDispatch();
-  const loggedUser = useAppSelector((state: RootState) => state.main.loggedUser);
+  const setLoggedUser = useSetLoggedUser();
+  const loggedUser = useGetLoggedUser();
 
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
@@ -134,7 +132,7 @@ const ProfileEdition = ({ navigation }: ProfileEditionProps) => {
         });
         const userId = loggedUser._id;
         const user = await Users.getById(userId);
-        dispatch(setLoggedUser(user));
+        setLoggedUser(user);
         goBack();
       }
     } catch (e: any) {
@@ -172,13 +170,13 @@ const ProfileEdition = ({ navigation }: ProfileEditionProps) => {
     await Users.uploadImage(loggedUser._id, data);
 
     const user = await Users.getById(loggedUser._id);
-    dispatch(setLoggedUser(user));
+    setLoggedUser(user);
   };
 
   const deletePicture = async () => {
     await Users.deleteImage(loggedUser._id);
     const user = await Users.getById(loggedUser._id);
-    dispatch(setLoggedUser(user));
+    setLoggedUser(user);
     setPictureModal(false);
     goBack();
   };

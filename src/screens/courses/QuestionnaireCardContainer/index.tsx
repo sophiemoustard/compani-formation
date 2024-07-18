@@ -11,8 +11,7 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
 import { StateType } from '../../../types/store/StoreType';
-import { useAppDispatch } from '../../../store/hooks';
-import { setStatusBarVisible } from '../../../store/main/slice';
+import { useSetStatusBarVisible } from '../../../store/main/hooks';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils';
@@ -40,7 +39,7 @@ const QuestionnaireCardContainer = ({
   setExitConfirmationModal,
   resetCardReducer,
 }: QuestionnaireCardContainerProps) => {
-  const dispatch = useAppDispatch();
+  const setStatusBarVisible = useSetStatusBarVisible();
 
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -48,8 +47,8 @@ const QuestionnaireCardContainer = ({
   const { profileId } = route.params;
 
   useEffect(() => {
-    dispatch(setStatusBarVisible(false));
-  }, [dispatch]);
+    setStatusBarVisible(false);
+  }, [setStatusBarVisible]);
 
   const getQuestionnaires = async () => {
     try {

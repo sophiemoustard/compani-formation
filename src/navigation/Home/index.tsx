@@ -8,8 +8,7 @@ import TrainerCoursesIcon from '../../../assets/icons/TrainerCoursesIcon';
 import TrainerCoursesSelectedIcon from '../../../assets/icons/TrainerCoursesSelectedIcon';
 import ProfileIcon from '../../../assets/icons/ProfileIcon';
 import ProfileSelectedIcon from '../../../assets/icons/ProfileSelectedIcon';
-import { useAppSelector } from '../../store/hooks';
-import { getUserVendorRole } from '../../store/main/selectors';
+import { useGetUserVendorRole } from '../../store/main/hooks';
 import LearnerCourses from '../../screens/courses/list/LearnerCourses';
 import TrainerCourses from '../../screens/courses/list/TrainerCourses';
 import Catalog from '../../screens/explore/Catalog';
@@ -54,7 +53,7 @@ const profileIcon = ({ focused }: tabBarProps) => (focused
   : <ProfileIcon style={styles.iconContainer} />);
 
 const Home = () => {
-  const userVendorRole = useAppSelector(getUserVendorRole);
+  const userVendorRole = useGetUserVendorRole();
   const showTrainerTab = !!userVendorRole && !IS_WEB &&
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
 

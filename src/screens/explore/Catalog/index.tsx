@@ -9,8 +9,7 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../types/Navig
 import Programs from '../../../api/programs';
 import { ELearningProgramType, ProgramType } from '../../../types/CourseTypes';
 import commonStyles from '../../../styles/common';
-import { useAppSelector } from '../../../store/hooks';
-import { getLoggedUserId } from '../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../store/main/hooks';
 import ProgramCell from '../../../components/ProgramCell';
 import styles from './styles';
 import CoursesSection from '../../../components/CoursesSection';
@@ -48,7 +47,7 @@ const CategoriesStyleList = [
 ];
 
 const Catalog = ({ navigation }: CatalogProps) => {
-  const loggedUserId = useAppSelector(getLoggedUserId);
+  const loggedUserId = useGetLoggedUserId();
 
   const [programsByCategories, setProgramsByCategories] = useState<{ [key: string]: ProgramType[] }>({});
   const isFocused = useIsFocused();

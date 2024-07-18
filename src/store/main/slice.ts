@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
+import { UserType } from '../../types/UserType';
 
 type MainStateType = {
   loggedUser: object | null,
@@ -12,7 +13,7 @@ const mainSlice = createSlice({
   name: 'main',
   initialState,
   reducers: {
-    setLoggedUser: (state, action) => ({
+    setLoggedUser: (state: MainStateType, action: PayloadAction<UserType>) => ({
       ...state,
       loggedUser: pick(action.payload, [
         '_id',
@@ -26,7 +27,7 @@ const mainSlice = createSlice({
         'companyLinkRequest',
       ]),
     }),
-    setStatusBarVisible: (state, action: PayloadAction<boolean>) => (
+    setStatusBarVisible: (state: MainStateType, action: PayloadAction<boolean>) => (
       { ...state, statusBarVisible: action.payload }
     ),
     resetMainReducer: () => initialState,

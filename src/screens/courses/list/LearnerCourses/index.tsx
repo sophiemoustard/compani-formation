@@ -11,8 +11,7 @@ import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
 import HomeScreenFooter from '../../../../components/HomeScreenFooter';
-import { useAppSelector } from '../../../../store/hooks';
-import { getLoggedUserId } from '../../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../../store/main/hooks';
 import commonStyles from '../../../../styles/common';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../../types/CourseTypes';
@@ -53,7 +52,7 @@ const courseReducer = (state: CourseStateType, action: CourseActionType) => {
 const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={LEARNER} />;
 
 const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
-  const loggedUserId = useAppSelector(getLoggedUserId);
+  const loggedUserId = useGetLoggedUserId();
 
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));

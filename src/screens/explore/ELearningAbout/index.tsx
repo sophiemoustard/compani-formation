@@ -4,8 +4,7 @@ import { StackActions } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
-import { useAppSelector } from '../../../store/hooks';
-import { getLoggedUserId } from '../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../store/main/hooks';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 import { LEARNER } from '../../../core/data/constants';
@@ -13,7 +12,7 @@ import { LEARNER } from '../../../core/data/constants';
 interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {}
 
 const ElearningAbout = ({ route, navigation }: ElearningAboutProps) => {
-  const loggedUserId = useAppSelector(getLoggedUserId);
+  const loggedUserId = useGetLoggedUserId();
 
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);

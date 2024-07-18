@@ -8,9 +8,7 @@ import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { setLoggedUser } from '../store/main/slice';
-import { RootState } from '../store/store';
+import { useGetStatusBarVisible, useSetLoggedUser } from '../store/main/hooks';
 import axiosLogged from '../api/axios/logged';
 import axiosNotLogged from '../api/axios/notLogged';
 import Users from '../api/users';
@@ -48,8 +46,8 @@ const AppContainer = ({ onLayout }: AppContainerProps) => {
     refreshCompaniToken,
   }: AuthContextType = useContext(AuthContext);
 
-  const dispatch = useAppDispatch();
-  const statusBarVisible = useAppSelector((state: RootState) => state.main.statusBarVisible);
+  const setLoggedUser = useSetLoggedUser();
+  const statusBarVisible = useGetStatusBarVisible();
 
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
@@ -159,7 +157,7 @@ const AppContainer = ({ onLayout }: AppContainerProps) => {
         if (!userId) signOut();
         else {
           const user = await Users.getById(userId);
-          dispatch(setLoggedUser(user));
+          setLoggedUser(user);
         }
       } catch (e: any) {
         console.error(e);
@@ -169,7 +167,7 @@ const AppContainer = ({ onLayout }: AppContainerProps) => {
     // If companiToken is null (at logout), reset axioslogged
     initializeAxiosLogged(companiToken);
     if (companiToken) setUser();
-  }, [companiToken, initializeAxiosLogged, dispatch, signOut]);
+  }, [companiToken, initializeAxiosLogged, setLoggedUser, signOut]);
 
   const shouldUpdate = async (nextState) => {
     try {

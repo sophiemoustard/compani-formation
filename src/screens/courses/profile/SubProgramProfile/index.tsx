@@ -21,8 +21,7 @@ import FeatherButton from '../../../../components/icons/FeatherButton';
 import { TESTER } from '../../../../core/data/constants';
 import commonStyles from '../../../../styles/common';
 import styles from './styles';
-import { useAppDispatch } from '../../../../store/hooks';
-import { setStatusBarVisible } from '../../../../store/main/slice';
+import { useSetStatusBarVisible } from '../../../../store/main/hooks';
 import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
 import { SubProgramType } from '../../../../types/CourseTypes';
 import { renderStepList } from '../helper';
@@ -34,7 +33,7 @@ StackScreenProps<RootBottomTabParamList>
 }
 
 const SubProgramProfile = ({ route, navigation }: SubProgramProfileProps) => {
-  const dispatch = useAppDispatch();
+  const setStatusBarVisible = useSetStatusBarVisible();
 
   const [subProgram, setSubProgram] = useState<SubProgramType | null>(null);
   const [source, setSource] =
@@ -64,10 +63,10 @@ const SubProgramProfile = ({ route, navigation }: SubProgramProfileProps) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      dispatch(setStatusBarVisible(true));
+      setStatusBarVisible(true);
       getSubProgram();
     }
-  }, [getSubProgram, isFocused, dispatch]);
+  }, [getSubProgram, isFocused, setStatusBarVisible]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');

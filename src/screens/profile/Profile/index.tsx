@@ -29,9 +29,7 @@ import CameraModal from '../../../components/camera/CameraModal';
 import ImagePickerManager from '../../../components/ImagePickerManager';
 import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
-import { useAppSelector, useAppDispatch } from '../../../store/hooks';
-import { RootState } from '../../../store/store';
-import { setLoggedUser } from '../../../store/main/slice';
+import { useGetLoggedUser, useSetLoggedUser } from '../../../store/main/hooks';
 import { PEDAGOGY, IS_WEB } from '../../../core/data/constants';
 import { CompanyType } from '../../../types/CompanyType';
 import styles from './styles';
@@ -43,8 +41,8 @@ StackScreenProps<RootStackParamList>
 }
 
 const Profile = ({ navigation }: ProfileProps) => {
-  const dispatch = useAppDispatch();
-  const loggedUser = useAppSelector((state: RootState) => state.main.loggedUser);
+  const setLoggedUser = useSetLoggedUser();
+  const loggedUser = useGetLoggedUser();
 
   const { signOut }: AuthContextType = useContext(AuthContext);
   const isFocused = useIsFocused();
@@ -122,7 +120,7 @@ const Profile = ({ navigation }: ProfileProps) => {
     try {
       await CompanyLinkRequests.createCompanyLinkRequest({ company: selectedCompany._id });
       const user = await Users.getById(loggedUser._id);
-      dispatch(setLoggedUser(user));
+      setLoggedUser(user);
     } catch (e) {
       console.error(e);
     } finally {

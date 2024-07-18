@@ -31,12 +31,10 @@ import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
-import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
-import { setStatusBarVisible } from '../../../../store/main/slice';
+import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import { getLoggedUserId } from '../../../../store/main/selectors';
 import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
@@ -51,8 +49,8 @@ StackScreenProps<RootBottomTabParamList>
 >{}
 
 const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
-  const dispatch = useAppDispatch();
-  const userId = useAppSelector(getLoggedUserId);
+  const setStatusBarVisible = useSetStatusBarVisible();
+  const userId = useGetLoggedUserId();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -82,10 +80,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     };
 
     if (isFocused) {
-      dispatch(setStatusBarVisible(true));
+      setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, dispatch, route.params.courseId]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');

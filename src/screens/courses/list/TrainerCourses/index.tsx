@@ -14,8 +14,7 @@ import { getTheoreticalDuration } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
-import { useAppSelector } from '../../../../store/hooks';
-import { getLoggedUserId } from '../../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../../store/main/hooks';
 import commonStyles from '../../../../styles/common';
 import { BLENDED, OPERATIONS, TRAINER } from '../../../../core/data/constants';
 import styles from '../styles';
@@ -63,7 +62,7 @@ StackScreenProps<RootStackParamList>
 > {}
 
 const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
-  const loggedUserId = useAppSelector(getLoggedUserId);
+  const loggedUserId = useGetLoggedUserId();
 
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);

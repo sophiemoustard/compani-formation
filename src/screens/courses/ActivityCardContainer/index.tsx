@@ -13,8 +13,7 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
-import { useAppDispatch } from '../../../store/hooks';
-import { setStatusBarVisible } from '../../../store/main/slice';
+import { useSetStatusBarVisible } from '../../../store/main/hooks';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
@@ -40,7 +39,7 @@ const ActivityCardContainer = ({
   setExitConfirmationModal,
   resetCardReducer,
 }: ActivityCardContainerProps) => {
-  const dispatch = useAppDispatch();
+  const setStatusBarVisible = useSetStatusBarVisible();
 
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
@@ -49,7 +48,7 @@ const ActivityCardContainer = ({
   const [finalTimer, setFinalTimer] = useState<number>(0);
   const { profileId, mode } = route.params;
 
-  useEffect(() => { dispatch(setStatusBarVisible(false)); }, [dispatch]);
+  useEffect(() => { setStatusBarVisible(false); }, [setStatusBarVisible]);
 
   useEffect(() => {
     const getActivity = async () => {

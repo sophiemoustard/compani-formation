@@ -13,8 +13,7 @@ import { WHITE, GREY } from '../../../../styles/colors';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType } from '../../../../types/CourseTypes';
 import styles from '../styles';
-import { useAppDispatch } from '../../../../store/hooks';
-import { setStatusBarVisible } from '../../../../store/main/slice';
+import { useSetStatusBarVisible } from '../../../../store/main/hooks';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
@@ -34,7 +33,7 @@ const TrainerCourseProfile = ({
   route,
   navigation,
 }: TrainerCourseProfileProps) => {
-  const dispatch = useAppDispatch();
+  const setStatusBarVisible = useSetStatusBarVisible();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [source, setSource] =
@@ -58,10 +57,10 @@ const TrainerCourseProfile = ({
     };
 
     if (isFocused) {
-      dispatch(setStatusBarVisible(true));
+      setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, route.params.courseId, dispatch]);
+  }, [isFocused, route.params.courseId, setStatusBarVisible]);
 
   const goBack = useCallback(() => {
     navigation.navigate('TrainerCourses');
