@@ -9,31 +9,34 @@ type MainStateType = {
 
 const initialState: MainStateType = { loggedUser: null, statusBarVisible: true };
 
+const setUser = (state: MainStateType, action: PayloadAction<UserType>) => ({
+  ...state,
+  loggedUser: pick(action.payload, [
+    '_id',
+    'identity.firstname',
+    'identity.lastname',
+    'local.email',
+    'picture.link',
+    'company.name',
+    'contact.phone',
+    'role',
+    'companyLinkRequest',
+  ]),
+});
+
+const setStatusBar = (state: MainStateType, action: PayloadAction<boolean>) => (
+  { ...state, statusBarVisible: action.payload }
+);
+
 const mainSlice = createSlice({
   name: 'main',
   initialState,
   reducers: {
-    setLoggedUser: (state: MainStateType, action: PayloadAction<UserType>) => ({
-      ...state,
-      loggedUser: pick(action.payload, [
-        '_id',
-        'identity.firstname',
-        'identity.lastname',
-        'local.email',
-        'picture.link',
-        'company.name',
-        'contact.phone',
-        'role',
-        'companyLinkRequest',
-      ]),
-    }),
-    setStatusBarVisible: (state: MainStateType, action: PayloadAction<boolean>) => (
-      { ...state, statusBarVisible: action.payload }
-    ),
-    resetMainReducer: () => initialState,
+    setLoggedUser: setUser,
+    setStatusBarVisible: setStatusBar,
   },
 });
 
-export const { setLoggedUser, setStatusBarVisible, resetMainReducer } = mainSlice.actions;
+export const { setLoggedUser, setStatusBarVisible } = mainSlice.actions;
 
 export default mainSlice.reducer;

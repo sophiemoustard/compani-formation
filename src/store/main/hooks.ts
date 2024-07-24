@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { setLoggedUser, setStatusBarVisible } from './slice';
 import { UserType } from '../../types/UserType';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -6,13 +7,13 @@ import { getLoggedUser, getLoggedUserId, getStatusBarVisible, getUserVendorRole 
 export const useSetLoggedUser = () => {
   const dispatch = useAppDispatch();
 
-  return (user: UserType) => dispatch(setLoggedUser(user));
+  return useCallback((user: UserType) => dispatch(setLoggedUser(user)), [dispatch]);
 };
 
 export const useSetStatusBarVisible = () => {
   const dispatch = useAppDispatch();
 
-  return (value: boolean) => dispatch(setStatusBarVisible(value));
+  return useCallback((value: boolean) => dispatch(setStatusBarVisible(value)), [dispatch]);
 };
 
 export const useGetLoggedUserId = () => useAppSelector(getLoggedUserId);
