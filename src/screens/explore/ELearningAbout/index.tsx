@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackActions } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
 import Courses from '../../../api/courses';
-import { getLoggedUserId } from '../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../store/main/hooks';
 import { ELearningCourseType } from '../../../types/CourseTypes';
 import About from '../../../components/About';
 import { LEARNER } from '../../../core/data/constants';
-import { StateType } from '../../../types/store/StoreType';
 
-interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {
-  loggedUserId: string | null,
-}
+interface ElearningAboutProps extends StackScreenProps<RootStackParamList, 'ElearningAbout'> {}
 
-const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps) => {
+const ElearningAbout = ({ route, navigation }: ElearningAboutProps) => {
+  const loggedUserId = useGetLoggedUserId();
+
   const { program } = route.params;
   const [hasAlreadySubscribed, setHasAlreadySubscribed] = useState(false);
   const [courseId, setCourseId] = useState<string>('');
@@ -60,6 +58,4 @@ const ElearningAbout = ({ route, navigation, loggedUserId }: ElearningAboutProps
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
-
-export default connect(mapStateToProps)(ElearningAbout);
+export default ElearningAbout;

@@ -1,7 +1,6 @@
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback } from 'react';
 import { Text, View, ScrollView, ImageBackground } from 'react-native';
-import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -15,14 +14,13 @@ import { getTheoreticalDuration } from '../../../../core/helpers/utils';
 import { BlendedCourseType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
-import { getLoggedUserId } from '../../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../../store/main/hooks';
 import commonStyles from '../../../../styles/common';
 import { BLENDED, OPERATIONS, TRAINER } from '../../../../core/data/constants';
 import styles from '../styles';
 import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
 import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
-import { StateType } from '../../../../types/store/StoreType';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
   const coursesInProgress = courses.filter(c => isInProgress(c));
@@ -61,11 +59,11 @@ const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlots
 interface TrainerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
-> {
-  loggedUserId: string | null,
-}
+> {}
 
-const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
+const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
+  const loggedUserId = useGetLoggedUserId();
+
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
   const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
@@ -130,6 +128,4 @@ const TrainerCourses = ({ navigation, loggedUserId }: TrainerCoursesProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
-
-export default connect(mapStateToProps)(TrainerCourses);
+export default TrainerCourses;

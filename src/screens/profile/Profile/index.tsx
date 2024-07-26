@@ -3,7 +3,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Text, ScrollView, Image, View, ImageBackground, TouchableOpacity, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
@@ -19,7 +18,6 @@ import CompanyLinkRequests from '../../../api/companyLinkRequests';
 import Users from '../../../api/users';
 import Companies from '../../../api/companies';
 import { PINK } from '../../../styles/colors';
-import { UserType } from '../../../types/UserType';
 import { HIT_SLOP, ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import PictureModal from '../../../components/PictureModal';
@@ -31,9 +29,8 @@ import CameraModal from '../../../components/camera/CameraModal';
 import ImagePickerManager from '../../../components/ImagePickerManager';
 import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
-import MainActions from '../../../store/main/actions';
+import { useGetLoggedUser, useSetLoggedUser } from '../../../store/main/hooks';
 import { PEDAGOGY, IS_WEB } from '../../../core/data/constants';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
 import { CompanyType } from '../../../types/CompanyType';
 import styles from './styles';
 
@@ -41,11 +38,12 @@ interface ProfileProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
 > {
-  loggedUser: UserType,
-  setLoggedUser: (user: UserType) => void,
 }
 
-const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
+const Profile = ({ navigation }: ProfileProps) => {
+  const setLoggedUser = useSetLoggedUser();
+  const loggedUser = useGetLoggedUser();
+
   const { signOut }: AuthContextType = useContext(AuthContext);
   const isFocused = useIsFocused();
   const [onGoingCoursesCount, setOnGoingCoursesCount] = useState<number>();
@@ -249,10 +247,4 @@ const Profile = ({ loggedUser, setLoggedUser, navigation }: ProfileProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUser: state.main.loggedUser });
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Profile;

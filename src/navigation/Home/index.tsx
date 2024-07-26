@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { connect } from 'react-redux';
 import CatalogIcon from '../../../assets/icons/CatalogIcon';
 import CatalogSelectedIcon from '../../../assets/icons/CatalogSelectedIcon';
 import LearnerCoursesIcon from '../../../assets/icons/LearnerCoursesIcon';
@@ -9,7 +8,7 @@ import TrainerCoursesIcon from '../../../assets/icons/TrainerCoursesIcon';
 import TrainerCoursesSelectedIcon from '../../../assets/icons/TrainerCoursesSelectedIcon';
 import ProfileIcon from '../../../assets/icons/ProfileIcon';
 import ProfileSelectedIcon from '../../../assets/icons/ProfileSelectedIcon';
-import { getUserVendorRole } from '../../store/main/selectors';
+import { useGetUserVendorRole } from '../../store/main/hooks';
 import LearnerCourses from '../../screens/courses/list/LearnerCourses';
 import TrainerCourses from '../../screens/courses/list/TrainerCourses';
 import Catalog from '../../screens/explore/Catalog';
@@ -18,7 +17,6 @@ import styles from './styles';
 import { RootBottomTabParamList } from '../../types/NavigationType';
 import { VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER, IS_WEB } from '../../core/data/constants';
 import { tabsNames } from '../../core/data/tabs';
-import { StateType } from '../../types/store/StoreType';
 
 const Tab = createBottomTabNavigator<RootBottomTabParamList>();
 
@@ -54,11 +52,8 @@ const profileIcon = ({ focused }: tabBarProps) => (focused
   </View>
   : <ProfileIcon style={styles.iconContainer} />);
 
-interface HomeProps {
-  userVendorRole: string | null,
-}
-
-const Home = ({ userVendorRole } : HomeProps) => {
+const Home = () => {
+  const userVendorRole = useGetUserVendorRole();
   const showTrainerTab = !!userVendorRole && !IS_WEB &&
     [VENDOR_ADMIN, TRAINING_ORGANISATION_MANAGER, TRAINER].includes(userVendorRole);
 
@@ -76,6 +71,4 @@ const Home = ({ userVendorRole } : HomeProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ userVendorRole: getUserVendorRole(state) });
-
-export default connect(mapStateToProps)(Home);
+export default Home;

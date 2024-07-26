@@ -2,15 +2,13 @@
 
 import { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
-import { connect } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
-import MainActions from '../store/main/actions';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
+import { useGetStatusBarVisible, useSetLoggedUser } from '../store/main/hooks';
 import axiosLogged from '../api/axios/logged';
 import axiosNotLogged from '../api/axios/notLogged';
 import Users from '../api/users';
@@ -25,15 +23,12 @@ import { ACTIVE_STATE, IS_WEB } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
 import ToastMessage from '../components/ToastMessage';
-import { UserType } from '../types/UserType';
 import { WHITE } from '../styles/colors';
 import styles from './styles';
 
 type AppContainerProps = {
-  setLoggedUser: (user: UserType) => void,
-  onLayout: () => void,
-  statusBarVisible: boolean,
-}
+  onLayout: () => void;
+};
 
 const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   const axiosLoggedConfig = { ...config };
@@ -42,7 +37,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContainerProps) => {
+const AppContainer = ({ onLayout }: AppContainerProps) => {
   const {
     tryLocalSignIn,
     companiToken,
@@ -50,6 +45,10 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
     signOut,
     refreshCompaniToken,
   }: AuthContextType = useContext(AuthContext);
+
+  const setLoggedUser = useSetLoggedUser();
+  const statusBarVisible = useGetStatusBarVisible();
+
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
@@ -210,12 +209,4 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  statusBarVisible: state.main.statusBarVisible,
-});
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default AppContainer;

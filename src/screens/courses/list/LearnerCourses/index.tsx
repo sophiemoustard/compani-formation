@@ -2,7 +2,6 @@ import 'array-flat-polyfill';
 import { useState, useEffect, useCallback, useMemo, useReducer } from 'react';
 import { Text, View, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
@@ -12,7 +11,7 @@ import NextStepCell from '../../../../components/steps/NextStepCell';
 import ProgramCell from '../../../../components/ProgramCell';
 import CoursesSection, { EVENT_SECTION } from '../../../../components/CoursesSection';
 import HomeScreenFooter from '../../../../components/HomeScreenFooter';
-import { getLoggedUserId } from '../../../../store/main/selectors';
+import { useGetLoggedUserId } from '../../../../store/main/hooks';
 import commonStyles from '../../../../styles/common';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../../types/CourseTypes';
@@ -22,14 +21,11 @@ import { LEARNER, PEDAGOGY, IS_WEB } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
-import { StateType } from '../../../../types/store/StoreType';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
 StackScreenProps<RootStackParamList>
-> {
-  loggedUserId: string | null,
-}
+> {}
 
 const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
@@ -55,7 +51,9 @@ const courseReducer = (state: CourseStateType, action: CourseActionType) => {
 
 const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlotsStep={step} mode={LEARNER} />;
 
-const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
+const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
+  const loggedUserId = useGetLoggedUserId();
+
   const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
@@ -142,6 +140,4 @@ const LearnerCourses = ({ navigation, loggedUserId }: LearnerCoursesProps) => {
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUserId: getLoggedUserId(state) });
-
-export default connect(mapStateToProps)(LearnerCourses);
+export default LearnerCourses;

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState, useEffect, useCallback, Dispatch } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
 import has from 'lodash/has';
@@ -32,11 +31,10 @@ import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
-import MainActions from '../../../../store/main/actions';
+import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import { getLoggedUserId } from '../../../../store/main/selectors';
 import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
@@ -44,23 +42,16 @@ import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
 import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
-import { StateType } from '../../../../types/store/StoreType';
-import { ActionType } from '../../../../context/types';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
 StackScreenProps<RootBottomTabParamList>
-> {
-  userId: string,
-  setStatusBarVisible: (boolean: boolean) => void,
-}
+>{}
 
-const LearnerCourseProfile = ({
-  route,
-  navigation,
-  userId,
-  setStatusBarVisible,
-}: LearnerCourseProfileProps) => {
+const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
+  const setStatusBarVisible = useSetStatusBarVisible();
+  const userId = useGetLoggedUserId();
+
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
@@ -208,10 +199,4 @@ const LearnerCourseProfile = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ userId: getLoggedUserId(state) });
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LearnerCourseProfile);
+export default LearnerCourseProfile;

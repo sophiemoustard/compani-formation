@@ -13,7 +13,7 @@ import { RootCardParamList, RootStackParamList } from '../../../types/Navigation
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
 import { StateType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
+import { useSetStatusBarVisible } from '../../../store/main/hooks';
 import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
@@ -27,7 +27,6 @@ interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList
   setCards: (activity: CardType[] | null) => void,
   setExitConfirmationModal: (boolean: boolean) => void,
   resetCardReducer: () => void,
-  setStatusBarVisible: (boolean: boolean) => void,
 }
 
 const ActivityCardContainer = ({
@@ -39,8 +38,9 @@ const ActivityCardContainer = ({
   setCards,
   setExitConfirmationModal,
   resetCardReducer,
-  setStatusBarVisible,
 }: ActivityCardContainerProps) => {
+  const setStatusBarVisible = useSetStatusBarVisible();
+
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
   const interval = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -168,7 +168,6 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
   setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
   setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
   resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);
