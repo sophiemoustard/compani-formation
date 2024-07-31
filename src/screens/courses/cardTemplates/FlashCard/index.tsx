@@ -24,8 +24,7 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   const card: FlashCardType = useGetCard();
   const index = useGetCardIndex();
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const animatedValue = new Animated.Value(0);
+  const animatedValue = useRef(new Animated.Value(0)).current;
   const hasBeenClicked = useRef(false);
   let rotationValue = 0;
   animatedValue.addListener(({ value }) => { rotationValue = value; });
