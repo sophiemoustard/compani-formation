@@ -1,46 +1,38 @@
 // @ts-nocheck
 
-import { Dispatch, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import { AppState, AppStateStatus, BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { connect } from 'react-redux';
 import Activities from '../../../api/activities';
 import { ActivityWithCardsType } from '../../../types/ActivityTypes';
-import { CardType } from '../../../types/CardType';
 import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
 import StartCard from '../cardTemplates/StartCard';
 import ActivityEndCard from '../cardTemplates/ActivityEndCard';
-import { StateType } from '../../../types/store/StoreType';
 import { useSetStatusBarVisible } from '../../../store/main/hooks';
-import CardsActions from '../../../store/cards/actions';
 import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
 import { tabsNames } from '../../../core/data/tabs';
-import { ActionType } from '../../../context/types';
+import {
+  useGetCardIndex,
+  useGetCards,
+  useGetExitConfirmationModal,
+  useResetCardReducer,
+  useSetCards,
+  useSetExitConfirmationModal,
+} from '../../../store/cards/hooks';
 
-interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {
-  cardIndex: number | null,
-  exitConfirmationModal: boolean,
-  cards: CardType[],
-  setCards: (activity: CardType[] | null) => void,
-  setExitConfirmationModal: (boolean: boolean) => void,
-  resetCardReducer: () => void,
-}
+interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {}
 
-const ActivityCardContainer = ({
-  route,
-  navigation,
-  cards,
-  cardIndex,
-  exitConfirmationModal,
-  setCards,
-  setExitConfirmationModal,
-  resetCardReducer,
-}: ActivityCardContainerProps) => {
+const ActivityCardContainer = ({ route, navigation }: ActivityCardContainerProps) => {
   const setStatusBarVisible = useSetStatusBarVisible();
-
+  const cards = useGetCards();
+  const cardIndex = useGetCardIndex();
+  const exitConfirmationModal = useGetExitConfirmationModal();
+  const setCards = useSetCards();
+  const setExitConfirmationModal = useSetExitConfirmationModal();
+  const resetCardReducer = useResetCardReducer();
   const [activity, setActivity] = useState<ActivityWithCardsType | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);
   const interval = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -158,16 +150,4 @@ const ActivityCardContainer = ({
     : null;
 };
 
-const mapStateToProps = (state: StateType) => ({
-  cards: state.cards.cards,
-  cardIndex: state.cards.cardIndex,
-  exitConfirmationModal: state.cards.exitConfirmationModal,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
-  setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ActivityCardContainer);
+export default ActivityCardContainer;

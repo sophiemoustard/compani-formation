@@ -1,24 +1,21 @@
-import { useReducer, useEffect, Dispatch } from 'react';
+import { useReducer, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { connect } from 'react-redux';
-import CardsActions from '../../../store/cards/actions';
 import ActivityIcon from '../ActivityIcon';
-import { ActivityType, QuestionnaireAnswersType } from '../../../types/ActivityTypes';
+import { ActivityType } from '../../../types/ActivityTypes';
 import { CourseModeType } from '../../../types/CourseTypes';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
 import { LEARNER, QUIZ } from '../../../core/data/constants';
 import styles from './styles';
-import { ActionType } from '../../../context/types';
 import { ColorActionType, ColorStateType } from './types';
+import { useSetQuestionnaireAnswersList } from '../../../store/cards/hooks';
 
 type ActivityCellProps = {
   activity: ActivityType,
   profileId: string,
   mode: CourseModeType,
-  setQuestionnaireAnswersList: (qalist: QuestionnaireAnswersType[]) => void,
 }
 
 export const SET_TO_GREEN = 'SET_TO_GREEN';
@@ -35,7 +32,8 @@ const colorsReducer = (state: ColorStateType, action: ColorActionType): ColorSta
   }
 };
 
-const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }: ActivityCellProps) => {
+const ActivityCell = ({ activity, profileId, mode }: ActivityCellProps) => {
+  const setQuestionnaireAnswersList = useSetQuestionnaireAnswersList();
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
   const lastScore = isCompleted ? activity.activityHistories[activity.activityHistories.length - 1].score : 0;
@@ -87,9 +85,4 @@ const ActivityCell = ({ activity, profileId, mode, setQuestionnaireAnswersList }
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setQuestionnaireAnswersList: (questionnaireAnswersList: QuestionnaireAnswersType[]) =>
-    dispatch(CardsActions.setQuestionnaireAnswersList(questionnaireAnswersList)),
-});
-
-export default connect(null, mapDispatchToProps)(ActivityCell);
+export default ActivityCell;

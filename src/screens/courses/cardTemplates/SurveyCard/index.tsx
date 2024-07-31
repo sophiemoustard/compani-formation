@@ -1,37 +1,31 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { SurveyType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import { StateType, ActionType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
-import Actions from '../../../../store/cards/actions';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
-import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import styles from './styles';
+import {
+  useAddQuestionnaireAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuestionnaireAnswer,
+  useRemoveQuestionnaireAnswer,
+} from '../../../../store/cards/hooks';
 
 interface SurveyCardProps {
-  card: SurveyType,
-  index: number | null,
-  questionnaireAnswer: QuestionnaireAnswersType | null,
   isLoading: boolean,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
-  removeQuestionnaireAnswer: (card: string) => void,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-const SurveyCard = ({
-  card,
-  index,
-  questionnaireAnswer,
-  isLoading,
-  addQuestionnaireAnswer,
-  removeQuestionnaireAnswer,
-  setIsRightSwipeEnabled,
-}: SurveyCardProps) => {
+const SurveyCard = ({ isLoading, setIsRightSwipeEnabled }: SurveyCardProps) => {
+  const card: SurveyType = useGetCard();
+  const index = useGetCardIndex();
+  const questionnaireAnswer = useGetQuestionnaireAnswer();
+  const addQuestionnaireAnswer = useAddQuestionnaireAnswer();
+  const removeQuestionnaireAnswer = useRemoveQuestionnaireAnswer();
   const [selectedScore, setSelectedScore] = useState<string>('');
 
   useEffect(() => setIsRightSwipeEnabled(false));
@@ -75,15 +69,4 @@ const SurveyCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  card: Selectors.getCard(state),
-  index: state.cards.cardIndex,
-  questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
-});
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
-  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyCard);
+export default SurveyCard;

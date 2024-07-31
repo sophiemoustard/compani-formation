@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import ZoomImage from '../../../../components/ZoomImage';
-import Selectors from '../../../../store/cards/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
-import { StateType } from '../../../../types/store/StoreType';
-import { TextMediaType } from '../../../../types/CardType';
 import { CacheType } from '../../../../types/CacheType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
@@ -19,22 +15,19 @@ import { IMAGE, VIDEO, AUDIO } from '../../../../core/data/constants';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
 import NiImage from '../../../../components/Image';
+import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
+import { TextMediaType } from '../../../../types/CardType';
 
 interface TextMediaCardProps {
-  card: TextMediaType,
-  index: number | null,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
   setIsLeftSwipeEnabled: (boolean: boolean) => void,
 }
 
-const TextMediaCard = ({
-  card,
-  index,
-  isLoading,
-  setIsRightSwipeEnabled,
-  setIsLeftSwipeEnabled,
-}: TextMediaCardProps) => {
+const TextMediaCard = ({ isLoading, setIsRightSwipeEnabled, setIsLeftSwipeEnabled }: TextMediaCardProps) => {
+  const card: TextMediaType = useGetCard();
+  const index = useGetCardIndex();
+
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string, cache?: CacheType } | undefined>();
@@ -80,6 +73,4 @@ const TextMediaCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
-
-export default connect(mapStateToProps)(TextMediaCard);
+export default TextMediaCard;

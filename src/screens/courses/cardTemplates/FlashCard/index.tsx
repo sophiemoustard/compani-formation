@@ -1,18 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
-import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
-import { FlashCardType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
+import { FlashCardType } from '../../../../types/CardType';
 import CardFooter from '../../../../components/cards/CardFooter';
 import AnimatedShadow from '../../../../components/design/AnimatedShadow';
 import styles from './styles';
+import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
 
 interface FlashCardProps {
-  card: FlashCardType,
-  index: number | null,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
@@ -24,7 +20,9 @@ export enum ClickOnCard {
   CLICKED_MORE_THAN_ONCE_CARD = 'clickedMoreThanOnce',
 }
 
-const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
+const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
+  const card: FlashCardType = useGetCard();
+  const index = useGetCardIndex();
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const animatedValue = new Animated.Value(0);
@@ -95,6 +93,4 @@ const FlashCard = ({ card, index, isLoading, setIsRightSwipeEnabled }: FlashCard
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
-
-export default connect(mapStateToProps)(FlashCard);
+export default FlashCard;

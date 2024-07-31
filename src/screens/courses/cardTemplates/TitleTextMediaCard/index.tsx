@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Text, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import ZoomImage from '../../../../components/ZoomImage';
-import Selectors from '../../../../store/cards/selectors';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
 import { TitleTextMediaType } from '../../../../types/CardType';
-import { StateType } from '../../../../types/store/StoreType';
 import { CacheType } from '../../../../types/CacheType';
 import styles from './styles';
 import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
@@ -19,22 +16,17 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
 import NiImage from '../../../../components/Image';
+import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
 
 interface TitleTextMediaCardProps {
-  card: TitleTextMediaType,
-  index: number | null,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
   setIsLeftSwipeEnabled: (boolean: boolean) => void,
 }
 
-const TitleTextMediaCard = ({
-  card,
-  index,
-  isLoading,
-  setIsRightSwipeEnabled,
-  setIsLeftSwipeEnabled,
-}: TitleTextMediaCardProps) => {
+const TitleTextMediaCard = ({ isLoading, setIsRightSwipeEnabled, setIsLeftSwipeEnabled }: TitleTextMediaCardProps) => {
+  const card: TitleTextMediaType = useGetCard();
+  const index = useGetCardIndex();
   const [mediaHeight, setMediaHeight] = useState<number>(CARD_MEDIA_MAX_HEIGHT);
   const [mediaType, setMediaType] = useState<string>('');
   const [mediaSource, setMediaSource] = useState<{ uri: string, cache?: CacheType } | undefined>();
@@ -82,6 +74,4 @@ const TitleTextMediaCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
-
-export default connect(mapStateToProps)(TitleTextMediaCard);
+export default TitleTextMediaCard;

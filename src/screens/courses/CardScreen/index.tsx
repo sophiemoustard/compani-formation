@@ -2,25 +2,23 @@
 
 import { useState } from 'react';
 import { View } from 'react-native';
-import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
-import Actions from '../../../store/cards/actions';
 import ExitModal from '../../../components/ExitModal';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import styles from './styles';
-import { StateType, ActionType } from '../../../types/store/StoreType';
+import { useGetExitConfirmationModal, useSetExitConfirmationModal } from '../../../store/cards/hooks';
 
 interface CardScreenProps {
   index: number,
-  exitConfirmationModal: boolean,
-  setExitConfirmationModal: (boolean: boolean) => void,
   goBack: () => void,
 }
 
-const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, goBack }: CardScreenProps) => {
+const CardScreen = ({ index, goBack }: CardScreenProps) => {
+  const exitConfirmationModal = useGetExitConfirmationModal();
+  const setExitConfirmationModal = useSetExitConfirmationModal();
   const navigation = useNavigation();
   const [isLeftSwipeEnabled, setIsLeftSwipeEnabled] = useState<boolean>(true);
   const [isRightSwipeEnabled, setIsRightSwipeEnabled] = useState<boolean>(false);
@@ -48,12 +46,4 @@ const CardScreen = ({ index, exitConfirmationModal, setExitConfirmationModal, go
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  exitConfirmationModal: state.cards.exitConfirmationModal,
-});
-
-const mapDispatchToProps = (dispatch: ({ type, payload }: ActionType) => void) => ({
-  setExitConfirmationModal: (openModal: boolean) => dispatch(Actions.setExitConfirmationModal(openModal)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardScreen);
+export default CardScreen;

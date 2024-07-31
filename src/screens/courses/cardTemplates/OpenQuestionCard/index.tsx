@@ -1,39 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, Text, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { OpenQuestionType } from '../../../../types/CardType';
-import { ActionType, StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
 import { GREY, PINK } from '../../../../styles/colors';
 import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
-import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
-import Actions from '../../../../store/cards/actions';
 import styles from './styles';
 import { IS_IOS } from '../../../../core/data/constants';
+import {
+  useAddQuestionnaireAnswer,
+  useRemoveQuestionnaireAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuestionnaireAnswer,
+} from '../../../../store/cards/hooks';
 
 interface OpenQuestionCardProps {
-  card: OpenQuestionType,
-  index: number | null,
-  questionnaireAnswer: QuestionnaireAnswersType | null,
   isLoading: boolean,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
-  removeQuestionnaireAnswer: (card: string) => void,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-const OpenQuestionCard = ({
-  card,
-  index,
-  questionnaireAnswer,
-  isLoading,
-  addQuestionnaireAnswer,
-  removeQuestionnaireAnswer,
-  setIsRightSwipeEnabled,
-}: OpenQuestionCardProps) => {
+const OpenQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: OpenQuestionCardProps) => {
+  const card: OpenQuestionType = useGetCard();
+  const index = useGetCardIndex();
+  const questionnaireAnswer = useGetQuestionnaireAnswer();
+  const addQuestionnaireAnswer = useAddQuestionnaireAnswer();
+  const removeQuestionnaireAnswer = useRemoveQuestionnaireAnswer();
   const [answer, setAnswer] = useState<string>('');
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const scrollRef = useRef<ScrollView>(null);
@@ -79,15 +73,4 @@ const OpenQuestionCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  card: Selectors.getCard(state),
-  index: state.cards.cardIndex,
-  questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
-});
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
-  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(OpenQuestionCard);
+export default OpenQuestionCard;
