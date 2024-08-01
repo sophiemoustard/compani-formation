@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CardType } from '../../types/CardType';
 import { QuestionnaireAnswersType } from '../../types/ActivityTypes';
+import { resetAllReducers } from '../actions';
 
 export type CardStateType = {
   cards: CardType[],
@@ -68,6 +69,7 @@ const cardSlice = createSlice({
     setExitConfirmationModal: setExitModal,
     resetCardReducer: resetReducer,
   },
+  extraReducers: (builder) => { builder.addCase(resetAllReducers, () => initialState); },
 });
 
 export const {

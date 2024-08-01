@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { pick } from 'lodash';
 import { UserType } from '../../types/UserType';
+import { resetAllReducers } from '../actions';
 
 type MainStateType = {
   loggedUser: object | null,
@@ -35,6 +36,7 @@ const mainSlice = createSlice({
     setLoggedUser: setUser,
     setStatusBarVisible: setStatusBar,
   },
+  extraReducers: (builder) => { builder.addCase(resetAllReducers, () => initialState); },
 });
 
 export const { setLoggedUser, setStatusBarVisible } = mainSlice.actions;
