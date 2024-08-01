@@ -2,18 +2,18 @@ import { useCallback, useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
-import asyncStorage from '../../../../core/helpers/asyncStorage';
-import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import ActivityHistories from '../../../../api/activityHistories';
-import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
-import styles from '../../../../styles/endCard';
-import commonStyles from '../../../../styles/common';
-import { achievementJingle } from '../../../../core/helpers/utils';
-import { LEARNER } from '../../../../core/data/constants';
-import { CourseModeType } from '../../../../types/CourseTypes';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
+import asyncStorage from '../../../../core/helpers/asyncStorage';
 import CompaniDuration from '../../../../core/helpers/dates/companiDurations';
 import { formatSecondsToISODuration } from '../../../../core/helpers/dates/utils';
+import { achievementJingle } from '../../../../core/helpers/utils';
+import { LEARNER } from '../../../../core/data/constants';
 import { useGetQuestionnaireAnswersList, useGetScore, useSetCardIndex } from '../../../../store/cards/hooks';
+import styles from '../../../../styles/endCard';
+import commonStyles from '../../../../styles/common';
+import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
+import { CourseModeType } from '../../../../types/CourseTypes';
 
 interface ActivityEndCardProps {
   mode: CourseModeType,

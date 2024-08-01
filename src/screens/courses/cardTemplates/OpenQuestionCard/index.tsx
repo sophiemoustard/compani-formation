@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, Text, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { OpenQuestionType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREY, PINK } from '../../../../styles/colors';
-import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import AnswerTextArea from '../../../../components/cards/AnswerTextArea';
-import styles from './styles';
 import { IS_IOS } from '../../../../core/data/constants';
 import {
   useAddQuestionnaireAnswer,
@@ -16,6 +12,10 @@ import {
   useGetCardIndex,
   useGetQuestionnaireAnswer,
 } from '../../../../store/cards/hooks';
+import { GREY, PINK } from '../../../../styles/colors';
+import { IS_LARGE_SCREEN, MARGIN } from '../../../../styles/metrics';
+import { OpenQuestionType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface OpenQuestionCardProps {
   isLoading: boolean,

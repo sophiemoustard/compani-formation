@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import asyncStorage from '../../../../core/helpers/asyncStorage';
-import NiPrimaryButton from '../../../../components/form/PrimaryButton';
-import { QuestionnaireWithCardsType } from '../../../../types/QuestionnaireType';
-import styles from '../../../../styles/endCard';
-import { achievementJingle } from '../../../../core/helpers/utils';
-import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
 import QuestionnaireHistories from '../../../../api/questionnaireHistories';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
+import asyncStorage from '../../../../core/helpers/asyncStorage';
+import { achievementJingle } from '../../../../core/helpers/utils';
 import { useGetQuestionnaireAnswersList, useSetCardIndex } from '../../../../store/cards/hooks';
+import styles from '../../../../styles/endCard';
+import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
+import { QuestionnaireWithCardsType } from '../../../../types/QuestionnaireType';
 
 interface QuestionnaireEndCardProps {
   courseId: string

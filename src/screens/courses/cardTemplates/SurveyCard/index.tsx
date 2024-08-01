@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { SurveyType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
 import SurveyScoreSelector from '../../../../components/cards/SurveyScoreSelector';
-import styles from './styles';
 import {
   useAddQuestionnaireAnswer,
   useGetCard,
@@ -14,6 +11,9 @@ import {
   useGetQuestionnaireAnswer,
   useRemoveQuestionnaireAnswer,
 } from '../../../../store/cards/hooks';
+import { GREY, PINK } from '../../../../styles/colors';
+import { SurveyType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface SurveyCardProps {
   isLoading: boolean,

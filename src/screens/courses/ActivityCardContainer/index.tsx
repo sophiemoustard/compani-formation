@@ -6,12 +6,6 @@ import { AppState, AppStateStatus, BackHandler, Image } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Activities from '../../../api/activities';
-import { ActivityWithCardsType } from '../../../types/ActivityTypes';
-import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
-import StartCard from '../cardTemplates/StartCard';
-import ActivityEndCard from '../cardTemplates/ActivityEndCard';
-import { useSetStatusBarVisible } from '../../../store/main/hooks';
-import CardScreen from '../CardScreen';
 import { LEARNER, TRAINER } from '../../../core/data/constants';
 import { tabsNames } from '../../../core/data/tabs';
 import {
@@ -22,6 +16,12 @@ import {
   useSetCards,
   useSetExitConfirmationModal,
 } from '../../../store/cards/hooks';
+import { useSetStatusBarVisible } from '../../../store/main/hooks';
+import { ActivityWithCardsType } from '../../../types/ActivityTypes';
+import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
+import CardScreen from '../CardScreen';
+import ActivityEndCard from '../cardTemplates/ActivityEndCard';
+import StartCard from '../cardTemplates/StartCard';
 
 interface ActivityCardContainerProps extends StackScreenProps<RootStackParamList, 'ActivityCardContainer'> {}
 

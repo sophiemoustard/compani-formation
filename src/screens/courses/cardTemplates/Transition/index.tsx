@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { WHITE } from '../../../../styles/colors';
 import CardFooter from '../../../../components/cards/CardFooter';
 import CardHeader from '../../../../components/cards/CardHeader';
+import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
+import { WHITE } from '../../../../styles/colors';
 import { TransitionType } from '../../../../types/CardType';
 import styles from './styles';
-import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
 
 interface TransitionProps {
   isLoading: boolean,

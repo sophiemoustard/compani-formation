@@ -5,15 +5,12 @@ import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StackScreenProps } from '@react-navigation/stack';
 import Questionnaires from '../../../api/questionnaires';
-import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
-import StartCard from '../cardTemplates/StartCard';
-import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
-import { useSetStatusBarVisible } from '../../../store/main/hooks';
-import CardScreen from '../CardScreen';
+import { tabsNames } from '../../../core/data/tabs';
 import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils';
 import { getQuestionnaireTitle } from '../../../core/helpers/courses';
+import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
-import { tabsNames } from '../../../core/data/tabs';
+import { useSetStatusBarVisible } from '../../../store/main/hooks';
 import {
   useGetCardIndex,
   useGetCards,
@@ -22,6 +19,9 @@ import {
   useSetCards,
   useSetExitConfirmationModal,
 } from '../../../store/cards/hooks';
+import CardScreen from '../CardScreen';
+import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
+import StartCard from '../cardTemplates/StartCard';
 
 interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {}
 

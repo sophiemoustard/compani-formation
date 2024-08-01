@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import FeatherButton from '../../icons/FeatherButton';
-import { ICON } from '../../../styles/metrics';
-import { GREY } from '../../../styles/colors';
-import styles from './styles';
-import commonStyle from '../../../styles/common';
-import ProgressBar from '../ProgressBar';
-import { FeatherType } from '../../../types/FeatherType';
 import {
   useDisplayProgressBar,
   useGetMaxProgress,
   useGetProgress,
   useSetExitConfirmationModal,
 } from '../../../store/cards/hooks';
+import { ICON } from '../../../styles/metrics';
+import { GREY } from '../../../styles/colors';
+import commonStyle from '../../../styles/common';
+import { FeatherType } from '../../../types/FeatherType';
+import FeatherButton from '../../icons/FeatherButton';
+import ProgressBar from '../ProgressBar';
+import styles from './styles';
 
 interface CardHeaderProps {
   color?: string,

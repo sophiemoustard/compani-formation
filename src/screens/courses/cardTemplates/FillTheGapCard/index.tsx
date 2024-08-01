@@ -6,17 +6,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
 import { useNavigation } from '@react-navigation/native';
-import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import styles from './styles';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
-import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
-import { quizJingle } from '../../../../core/helpers/utils';
 import { isWeb } from '../../../../core/data/constants';
+import { quizJingle } from '../../../../core/helpers/utils';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
+import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface FillTheGap {
   isLoading: boolean,

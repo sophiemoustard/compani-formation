@@ -6,10 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import ExitModal from '../../../components/ExitModal';
-import CardTemplate from '../cardTemplates/CardTemplate';
 import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
-import styles from './styles';
 import { useGetExitConfirmationModal, useSetExitConfirmationModal } from '../../../store/cards/hooks';
+import CardTemplate from '../cardTemplates/CardTemplate';
+import styles from './styles';
 
 interface CardScreenProps {
   index: number,

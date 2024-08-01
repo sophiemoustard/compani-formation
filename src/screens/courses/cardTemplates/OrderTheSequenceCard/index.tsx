@@ -4,16 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
-import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
-import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
-import styles from './styles';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import cardsStyle from '../../../../styles/cards';
+import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
+import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface OrderTheSequenceCardProps {
   isLoading: boolean,

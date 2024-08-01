@@ -10,17 +10,17 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/NavigationType';
 import NiInput from '../../components/form/Input';
-import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
+import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
 import FirstConnectionModal from '../../components/FirstConnectionModal';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
-import commonStyles from '../../styles/common';
-import styles from './styles';
-import { useResetAllReducers } from '../../store/hooks';
 import { AUTHENTICATION, IS_IOS } from '../../core/data/constants';
+import { useResetAllReducers } from '../../store/hooks';
+import commonStyles from '../../styles/common';
+import { RootStackParamList } from '../../types/NavigationType';
+import styles from './styles';
 
 interface AuthenticationProps extends StackScreenProps<RootStackParamList> {}
 

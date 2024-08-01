@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import Transition from '../Transition';
+import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import {
   TRANSITION,
@@ -17,7 +17,7 @@ import {
   FILL_THE_GAPS,
   QUESTION_ANSWER,
 } from '../../../../core/data/constants';
-import CardHeader from '../../../../components/cards/CardHeader';
+import { useGetCards, useSetCardIndex } from '../../../../store/cards/hooks';
 import TitleTextMediaCard from '../TitleTextMediaCard';
 import TextMediaCard from '../TextMediaCard';
 import SingleChoiceQuestionCard from '../SingleChoiceQuestionCard';
@@ -29,7 +29,7 @@ import OpenQuestionCard from '../OpenQuestionCard';
 import OrderTheSequenceCard from '../OrderTheSequenceCard';
 import FillTheGapCard from '../FillTheGapCard';
 import QuestionAnswerCard from '../QuestionAnswerCard';
-import { useGetCards, useSetCardIndex } from '../../../../store/cards/hooks';
+import Transition from '../Transition';
 
 interface CardTemplateProps {
   index: number,

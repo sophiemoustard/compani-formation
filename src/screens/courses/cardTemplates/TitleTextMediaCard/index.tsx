@@ -5,18 +5,18 @@ import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import ZoomImage from '../../../../components/ZoomImage';
-import cardsStyle from '../../../../styles/cards';
-import { markdownStyle } from '../../../../styles/common';
-import { TitleTextMediaType } from '../../../../types/CardType';
-import { CacheType } from '../../../../types/CacheType';
-import styles from './styles';
-import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
-import { AUDIO, IMAGE, VIDEO } from '../../../../core/data/constants';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import NiVideo from '../../../../components/cards/Video';
 import NiAudio from '../../../../components/cards/Audio';
 import NiImage from '../../../../components/Image';
+import { AUDIO, IMAGE, VIDEO } from '../../../../core/data/constants';
 import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
+import cardsStyle from '../../../../styles/cards';
+import { markdownStyle } from '../../../../styles/common';
+import { CARD_MEDIA_MAX_HEIGHT } from '../../../../styles/metrics';
+import { CacheType } from '../../../../types/CacheType';
+import { TitleTextMediaType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface TitleTextMediaCardProps {
   isLoading: boolean,

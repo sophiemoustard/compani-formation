@@ -3,16 +3,16 @@ import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
 import { useNavigation } from '@react-navigation/native';
-import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerFromAPIType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
-import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import styles from './styles';
 import { quizJingle } from '../../../../core/helpers/utils';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
+import cardsStyle from '../../../../styles/cards';
+import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerFromAPIType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface MultipleChoiceQuestionCardProps {
   isLoading: boolean,

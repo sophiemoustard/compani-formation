@@ -4,11 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Markdown from 'react-native-markdown-display';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
+import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { markdownStyle } from '../../../../styles/common';
-import styles from './styles';
-import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
 import { TitleTextMediaType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface TitleTextCardProps {
   isLoading: boolean,

@@ -2,15 +2,15 @@ import { useReducer, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import ActivityIcon from '../ActivityIcon';
+import { LEARNER, QUIZ } from '../../../core/data/constants';
 import { ActivityType } from '../../../types/ActivityTypes';
 import { CourseModeType } from '../../../types/CourseTypes';
+import { useSetQuestionnaireAnswersList } from '../../../store/cards/hooks';
 import { GREEN, WHITE, ORANGE, YELLOW } from '../../../styles/colors';
 import { ICON } from '../../../styles/metrics';
-import { LEARNER, QUIZ } from '../../../core/data/constants';
-import styles from './styles';
+import ActivityIcon from '../ActivityIcon';
 import { ColorActionType, ColorStateType } from './types';
-import { useSetQuestionnaireAnswersList } from '../../../store/cards/hooks';
+import styles from './styles';
 
 type ActivityCellProps = {
   activity: ActivityType,

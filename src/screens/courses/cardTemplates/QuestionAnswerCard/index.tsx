@@ -3,11 +3,8 @@ import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AnswerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import styles from './styles';
 import QuestionAnswerProposition from '../../../../components/cards/QuestionAnswerProposition';
 import {
   useAddQuestionnaireAnswer,
@@ -16,6 +13,9 @@ import {
   useGetQuestionnaireAnswer,
   useRemoveQuestionnaireAnswer,
 } from '../../../../store/cards/hooks';
+import cardsStyle from '../../../../styles/cards';
+import { GREY, PINK } from '../../../../styles/colors';
+import styles from './styles';
 
 interface QuestionAnswerCardProps {
   isLoading: boolean,

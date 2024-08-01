@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
-import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
+import FooterGradient from '../../../../components/design/FooterGradient';
+import { quizJingle } from '../../../../core/helpers/utils';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
-import cardsStyle from '../../../../styles/cards';
-import FooterGradient from '../../../../components/design/FooterGradient';
-import styles from './styles';
-import { quizJingle } from '../../../../core/helpers/utils';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import cardsStyle from '../../../../styles/cards';
+import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
+import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface SingleChoiceQuestionCardProps {
   isLoading: boolean,

@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { FlashCardType } from '../../../../types/CardType';
 import CardFooter from '../../../../components/cards/CardFooter';
 import AnimatedShadow from '../../../../components/design/AnimatedShadow';
-import styles from './styles';
 import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
+import { FlashCardType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface FlashCardProps {
   isLoading: boolean,
