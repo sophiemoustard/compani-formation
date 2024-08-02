@@ -1,37 +1,27 @@
-import { useState, useEffect, Dispatch } from 'react';
+import { useState, useEffect } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
-import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
-import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
-import Actions from '../../../../store/cards/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
+import FooterGradient from '../../../../components/design/FooterGradient';
+import { quizJingle } from '../../../../core/helpers/utils';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
+import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
-import FooterGradient from '../../../../components/design/FooterGradient';
+import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
+import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import styles from './styles';
-import { quizJingle } from '../../../../core/helpers/utils';
-import { ActionType } from '../../../../context/types';
 
 interface SingleChoiceQuestionCardProps {
-  card: SingleChoiceQuestionType,
-  index: number | null,
-  incGoodAnswersCount: () => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-const SingleChoiceQuestionCard = ({
-  card,
-  index,
-  incGoodAnswersCount,
-  isLoading,
-  setIsRightSwipeEnabled,
-}: SingleChoiceQuestionCardProps) => {
+const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleChoiceQuestionCardProps) => {
+  const card: SingleChoiceQuestionType = useGetCard();
+  const index = useGetCardIndex();
+  const incGoodAnswersCount = useIncGoodAnswersCount();
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
   const [answers, setAnswers] = useState<string[]>([]);
@@ -93,10 +83,4 @@ const SingleChoiceQuestionCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleChoiceQuestionCard);
+export default SingleChoiceQuestionCard;

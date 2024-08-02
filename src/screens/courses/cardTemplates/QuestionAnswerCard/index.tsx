@@ -1,26 +1,23 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { AnswerFromAPIType, QuestionAnswerType } from '../../../../types/CardType';
-import { ActionType, StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREY, PINK } from '../../../../styles/colors';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
-import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import styles from './styles';
 import QuestionAnswerProposition from '../../../../components/cards/QuestionAnswerProposition';
-import Actions from '../../../../store/cards/actions';
-import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
+import {
+  useAddQuestionnaireAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuestionnaireAnswer,
+  useRemoveQuestionnaireAnswer,
+} from '../../../../store/cards/hooks';
+import cardsStyle from '../../../../styles/cards';
+import { GREY, PINK } from '../../../../styles/colors';
+import styles from './styles';
 
 interface QuestionAnswerCardProps {
-  card: QuestionAnswerType,
-  cardIndex: number | null,
-  questionnaireAnswer: QuestionnaireAnswersType | null,
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => void,
-  removeQuestionnaireAnswer: (card: string) => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
@@ -29,15 +26,12 @@ export interface AnswerType extends AnswerFromAPIType {
   isSelected: boolean,
 }
 
-const QuestionAnswerCard = ({
-  card,
-  cardIndex,
-  questionnaireAnswer,
-  addQuestionnaireAnswer,
-  removeQuestionnaireAnswer,
-  isLoading,
-  setIsRightSwipeEnabled,
-}: QuestionAnswerCardProps) => {
+const QuestionAnswerCard = ({ isLoading, setIsRightSwipeEnabled }: QuestionAnswerCardProps) => {
+  const card: QuestionAnswerType = useGetCard();
+  const cardIndex = useGetCardIndex();
+  const questionnaireAnswer = useGetQuestionnaireAnswer();
+  const addQuestionnaireAnswer = useAddQuestionnaireAnswer();
+  const removeQuestionnaireAnswer = useRemoveQuestionnaireAnswer();
   const [selectedAnswers, setSelectedAnswers] = useState<AnswerType[]>([]);
 
   useEffect(() => setIsRightSwipeEnabled(false));
@@ -100,15 +94,4 @@ const QuestionAnswerCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  card: Selectors.getCard(state),
-  cardIndex: state.cards.cardIndex,
-  questionnaireAnswer: Selectors.getQuestionnaireAnswer(state),
-});
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType) => void) => ({
-  addQuestionnaireAnswer: (qa: QuestionnaireAnswersType) => dispatch(Actions.addQuestionnaireAnswer(qa)),
-  removeQuestionnaireAnswer: (card: string) => dispatch(Actions.removeQuestionnaireAnswer(card)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionAnswerCard);
+export default QuestionAnswerCard;
