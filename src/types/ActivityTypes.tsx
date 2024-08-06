@@ -3,6 +3,16 @@ import { LESSON, VIDEO, QUIZ, SHARING_EXPERIENCE } from '../core/data/constants'
 
 export type QuestionnaireAnswersType = { _id?: string, card: string, answerList: string[] };
 
+export type QuizzAnswersType = {
+  _id?: string,
+  card: string,
+  answerList:
+  {
+    correct: boolean,
+    text: string,
+    isSelected: boolean
+  }[] };
+
 type BaseActivityType = {
   _id: string,
   name: string,

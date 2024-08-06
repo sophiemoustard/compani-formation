@@ -1,7 +1,13 @@
 // @ts-nocheck
 
-import { OPEN_QUESTION, QUESTION_ANSWER, SURVEY, TRANSITION } from '../../core/data/constants';
-import { QuestionnaireAnswersType } from '../../types/ActivityTypes';
+import {
+  MULTIPLE_CHOICE_QUESTION,
+  OPEN_QUESTION,
+  QUESTION_ANSWER,
+  SURVEY,
+  TRANSITION,
+} from '../../core/data/constants';
+import { QuestionnaireAnswersType, QuizzAnswersType } from '../../types/ActivityTypes';
 import { StateType } from '../store';
 
 export const getCard = (state: StateType) => state.cards.cards[state.cards.cardIndex];
@@ -34,3 +40,9 @@ export const getExitConfirmationModal = (state: StateType) => state.cards.exitCo
 export const getScore = (state: StateType) => state.cards.score;
 
 export const getQuestionnaireAnswersList = (state: StateType) => state.cards.questionnaireAnswersList;
+
+export const getQuizzAnswer = (state: StateType): QuizzAnswersType | null => {
+  const card = getCard(state);
+  if (!card || (![MULTIPLE_CHOICE_QUESTION].includes(card.template))) return null;
+  return state.cards.quizzAnswersList.find(qa => qa.card === card._id) || null;
+};
