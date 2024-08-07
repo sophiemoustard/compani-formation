@@ -8,7 +8,13 @@ import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import { quizJingle } from '../../../../core/helpers/utils';
-import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import {
+  useAddQuizzAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuizzAnswer,
+  useIncGoodAnswersCount,
+} from '../../../../store/cards/hooks';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import cardsStyle from '../../../../styles/cards';
 import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerFromAPIType } from '../../../../types/CardType';
@@ -27,6 +33,8 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   const card: MultipleChoiceQuestionType = useGetCard();
   const cardIndex = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
+  const quizzAnswer = useGetQuizzAnswer();
+  const addQuizzAnswer = useAddQuizzAnswer();
   const [answers, setAnswers] = useState<QcmAnswerType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
@@ -38,9 +46,17 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (!isLoading && !isValidated) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
+    if (!isLoading && !isValidated) {
+      if (quizzAnswer?.answerList.length) {
+        setAnswers(quizzAnswer.answerList);
+        setIsValidated(true);
+        const areAnswersCorrect = quizzAnswer.answerList.every(answer =>
+          (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+        setIsAnsweredCorrectly(areAnswersCorrect);
+      } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
+    }
     setIsRightSwipeEnabled(isValidated);
-  }, [card, isLoading, isValidated, setIsRightSwipeEnabled]);
+  }, [card, isLoading, isValidated, quizzAnswer, setIsRightSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -77,6 +93,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
+      addQuizzAnswer({ card: card._id, answerList: answers });
 
       return setIsValidated(true);
     }

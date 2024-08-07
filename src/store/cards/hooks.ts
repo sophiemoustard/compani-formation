@@ -9,6 +9,7 @@ import {
   incGoodAnswersCount,
   setExitConfirmationModal,
   resetCardReducer,
+  addQuizzAnswer,
 } from './slice';
 import {
   getCard,
@@ -21,9 +22,10 @@ import {
   getExitConfirmationModal,
   getScore,
   getQuestionnaireAnswersList,
+  getQuizzAnswer,
 } from './selectors';
 import { CardType } from '../../types/CardType';
-import { QuestionnaireAnswersType } from '../../types/ActivityTypes';
+import { QuestionnaireAnswersType, QuizzAnswersType } from '../../types/ActivityTypes';
 
 export const useSetCards = () => {
   const dispatch = useAppDispatch();
@@ -47,6 +49,12 @@ export const useRemoveQuestionnaireAnswer = () => {
   const dispatch = useAppDispatch();
 
   return useCallback((card: string) => dispatch(removeQuestionnaireAnswer(card)), [dispatch]);
+};
+
+export const useAddQuizzAnswer = () => {
+  const dispatch = useAppDispatch();
+
+  return useCallback((answer: QuizzAnswersType) => dispatch(addQuizzAnswer(answer)), [dispatch]);
 };
 
 export const useSetQuestionnaireAnswersList = () => {
@@ -92,3 +100,5 @@ export const useGetExitConfirmationModal = () => useAppSelector(getExitConfirmat
 export const useGetScore = () => useAppSelector(getScore);
 
 export const useGetQuestionnaireAnswersList = () => useAppSelector(getQuestionnaireAnswersList);
+
+export const useGetQuizzAnswer = () => useAppSelector(getQuizzAnswer);

@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CardType } from '../../types/CardType';
-import { QuestionnaireAnswersType } from '../../types/ActivityTypes';
+import { QuestionnaireAnswersType, QuizzAnswersType } from '../../types/ActivityTypes';
 import { resetAllReducers } from '../actions';
 
 export type CardStateType = {
   cards: CardType[],
   cardIndex: number | null,
   questionnaireAnswersList: QuestionnaireAnswersType[],
+  quizzAnswersList: QuizzAnswersType[],
   score: number,
   exitConfirmationModal: boolean,
 }
@@ -14,6 +15,7 @@ const initialState: CardStateType = {
   cards: [],
   cardIndex: null,
   questionnaireAnswersList: [],
+  quizzAnswersList: [],
   score: 0,
   exitConfirmationModal: false,
 };
@@ -50,6 +52,21 @@ const applyRemoveQuestionnaireAnswer = (state: CardStateType, action: PayloadAct
   return { ...state, questionnaireAnswersList: state.questionnaireAnswersList.filter(qa => qa.card !== card) };
 };
 
+const applyAddQuizzAnswer = (state: CardStateType, action: PayloadAction<QuizzAnswersType>) => {
+  const quizzAnswer = action.payload;
+  const indexOfAnswer = state.quizzAnswersList
+    .findIndex((qa => qa.card === quizzAnswer.card));
+
+  if (indexOfAnswer !== -1) {
+    const newQuizzAnswersList = [...state.quizzAnswersList];
+    newQuizzAnswersList[indexOfAnswer] = quizzAnswer;
+
+    return { ...state, quizzAnswersList: newQuizzAnswersList };
+  }
+
+  return { ...state, quizzAnswersList: [...state.quizzAnswersList, quizzAnswer] };
+};
+
 const incCount = (state: CardStateType) => ({ ...state, score: state.score + 1 });
 
 const setExitModal = (state: CardStateType, action: PayloadAction<boolean>) => (
@@ -64,6 +81,7 @@ const cardSlice = createSlice({
     setCardIndex: setIndex,
     addQuestionnaireAnswer: applyAddQuestionnaireAnswer,
     removeQuestionnaireAnswer: applyRemoveQuestionnaireAnswer,
+    addQuizzAnswer: applyAddQuizzAnswer,
     setQuestionnaireAnswersList: setQAList,
     incGoodAnswersCount: incCount,
     setExitConfirmationModal: setExitModal,
@@ -77,6 +95,7 @@ export const {
   setCardIndex,
   addQuestionnaireAnswer,
   removeQuestionnaireAnswer,
+  addQuizzAnswer,
   setQuestionnaireAnswersList,
   incGoodAnswersCount,
   setExitConfirmationModal,
