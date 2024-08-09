@@ -8,6 +8,7 @@ export type QuizzAnswersType = {
   card: string,
   answerList:
   {
+    _id?: string
     correct: boolean,
     text: string,
     isSelected: boolean
