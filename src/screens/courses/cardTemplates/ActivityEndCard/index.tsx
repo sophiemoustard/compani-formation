@@ -54,7 +54,7 @@ const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: Acti
         ...(finalQuestionnaireAnswersList?.length && { questionnaireAnswersList: finalQuestionnaireAnswersList }),
         ...(finalQuizzAnswersList?.length && {
           quizzAnswersList: finalQuizzAnswersList
-            .map(qa => ({ card: qa.card, answerList: qa.answerList.filter(a => a.isSelected).map(a => a._id) })),
+            .map(qa => ({ ...qa, answerList: qa.answerList.filter(a => a.isSelected).map(a => a._id) })),
         }),
       };
 
