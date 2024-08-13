@@ -9,10 +9,15 @@ import CompaniDuration from '../../../../core/helpers/dates/companiDurations';
 import { formatSecondsToISODuration } from '../../../../core/helpers/dates/utils';
 import { achievementJingle } from '../../../../core/helpers/utils';
 import { LEARNER } from '../../../../core/data/constants';
-import { useGetQuestionnaireAnswersList, useGetScore, useSetCardIndex } from '../../../../store/cards/hooks';
+import {
+  useGetQuestionnaireAnswersList,
+  useGetQuizzAnswersList,
+  useGetScore,
+  useSetCardIndex,
+} from '../../../../store/cards/hooks';
 import styles from '../../../../styles/endCard';
 import commonStyles from '../../../../styles/common';
-import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
+import { ActivityType, QuestionnaireAnswersType, QuizzAnswersType } from '../../../../types/ActivityTypes';
 import { CourseModeType } from '../../../../types/CourseTypes';
 
 interface ActivityEndCardProps {
@@ -25,12 +30,18 @@ interface ActivityEndCardProps {
 
 const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: ActivityEndCardProps) => {
   const questionnaireAnswersList = useGetQuestionnaireAnswersList();
+  const quizzAnswersList = useGetQuizzAnswersList();
   const score = useGetScore();
   const setCardIndex = useSetCardIndex();
   const isFocused = useIsFocused();
 
   const saveHistory = useCallback(
-    async (finalScore: number, finalQuestionnaireAnswersList: QuestionnaireAnswersType[], numberDuration: number) => {
+    async (
+      finalScore: number,
+      finalQuestionnaireAnswersList: QuestionnaireAnswersType[],
+      finalQuizzAnswersList: QuizzAnswersType[],
+      numberDuration: number
+    ) => {
       const userId = await asyncStorage.getUserId();
 
       if (!userId || !activity._id) return;
@@ -41,6 +52,10 @@ const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: Acti
         score: finalScore,
         duration: CompaniDuration(formatSecondsToISODuration(numberDuration)).toISO(),
         ...(finalQuestionnaireAnswersList?.length && { questionnaireAnswersList: finalQuestionnaireAnswersList }),
+        ...(finalQuizzAnswersList?.length && {
+          quizzAnswersList: finalQuizzAnswersList
+            .map(qa => ({ ...qa, answerList: qa.answerList.filter(a => a.isSelected).map(a => a._id) })),
+        }),
       };
 
       await ActivityHistories.createActivityHistories(payload);
@@ -57,8 +72,8 @@ const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: Acti
   }, [isFocused, setCardIndex, mode, stopTimer, saveHistory]);
 
   useEffect(() => {
-    if (finalTimer && mode === LEARNER) saveHistory(score, questionnaireAnswersList, finalTimer);
-  }, [finalTimer, mode, questionnaireAnswersList, saveHistory, score]);
+    if (finalTimer && mode === LEARNER) saveHistory(score, questionnaireAnswersList, quizzAnswersList, finalTimer);
+  }, [finalTimer, mode, questionnaireAnswersList, quizzAnswersList, saveHistory, score]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>

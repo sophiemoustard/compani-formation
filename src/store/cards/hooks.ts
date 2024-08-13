@@ -23,6 +23,7 @@ import {
   getScore,
   getQuestionnaireAnswersList,
   getQuizzAnswer,
+  getQuizzAnswersList,
 } from './selectors';
 import { CardType } from '../../types/CardType';
 import { QuestionnaireAnswersType, QuizzAnswersType } from '../../types/ActivityTypes';
@@ -100,5 +101,7 @@ export const useGetExitConfirmationModal = () => useAppSelector(getExitConfirmat
 export const useGetScore = () => useAppSelector(getScore);
 
 export const useGetQuestionnaireAnswersList = () => useAppSelector(getQuestionnaireAnswersList);
+
+export const useGetQuizzAnswersList = () => useAppSelector(getQuizzAnswersList);
 
 export const useGetQuizzAnswer = () => useAppSelector(getQuizzAnswer);

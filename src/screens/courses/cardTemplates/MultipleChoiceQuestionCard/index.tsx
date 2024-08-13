@@ -17,16 +17,12 @@ import {
 } from '../../../../store/cards/hooks';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import cardsStyle from '../../../../styles/cards';
-import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerFromAPIType } from '../../../../types/CardType';
+import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface MultipleChoiceQuestionCardProps {
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
-}
-
-export interface QcmAnswerType extends QcmAnswerFromAPIType {
-  isSelected: boolean,
 }
 
 const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: MultipleChoiceQuestionCardProps) => {

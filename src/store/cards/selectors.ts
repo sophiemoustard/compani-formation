@@ -41,6 +41,8 @@ export const getScore = (state: StateType) => state.cards.score;
 
 export const getQuestionnaireAnswersList = (state: StateType) => state.cards.questionnaireAnswersList;
 
+export const getQuizzAnswersList = (state: StateType) => state.cards.quizzAnswersList;
+
 export const getQuizzAnswer = (state: StateType): QuizzAnswersType | null => {
   const card = getCard(state);
   if (!card || (![MULTIPLE_CHOICE_QUESTION].includes(card.template))) return null;
