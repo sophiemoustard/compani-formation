@@ -10,7 +10,7 @@ import QuizProposition from '../../../../components/cards/QuizProposition';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
-import { footerColorsType, SingleChoiceQuestionType } from '../../../../types/CardType';
+import { footerColorsType, qcAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface SingleChoiceQuestionCardProps {
@@ -23,8 +23,8 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   const index = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
   const [isPressed, setIsPressed] = useState<boolean>(false);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>(-1);
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
+  const [answers, setAnswers] = useState<qcAnswerType[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -32,7 +32,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   });
 
   useEffect(() => {
-    if (!isLoading && !isPressed) setAnswers(shuffle([...card.qcAnswers.map(a => a.text), card.qcuGoodAnswer]));
+    if (!isLoading && !isPressed) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     setIsRightSwipeEnabled(isPressed);
   }, [isLoading, card, isPressed, setIsRightSwipeEnabled]);
 
@@ -41,24 +41,39 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
       return setFooterColors({ buttons: PINK[500], text: GREY[100], background: GREY[100] });
     }
 
-    if (card && answers[selectedAnswerIndex] === card.qcuGoodAnswer) {
+    if (isAnsweredCorrectly) {
       return setFooterColors({ buttons: GREEN[600], text: GREEN[600], background: GREEN[100] });
     }
 
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
-  }, [answers, card, isPressed, selectedAnswerIndex]);
+  }, [answers, isAnsweredCorrectly, isPressed]);
+
+  useEffect(() => {
+    if (isPressed) {
+      quizJingle(isAnsweredCorrectly);
+      if (isAnsweredCorrectly) incGoodAnswersCount();
+    }
+  }, [isPressed, isAnsweredCorrectly, incGoodAnswersCount]);
 
   if (isLoading) return null;
 
-  const renderItem = (item: string, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
-    isValidated={isPressed} isGoodAnswer={item === card.qcuGoodAnswer} index={answerIndex} item={item}
-    isSelected={selectedAnswerIndex === answerIndex} />;
+  const renderItem = (item: qcAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
+    isValidated={isPressed} isGoodAnswer={item.correct} index={answerIndex} item={item.text}
+    isSelected={item.isSelected} />;
 
   const onSelectAnswer = (selectedIndex: number) => {
+    setAnswers((prevState: qcAnswerType[]) => {
+      const newState = prevState.map((answer, i) => (i === selectedIndex ? { ...answer, isSelected: true } : answer));
+
+      const isAnswerCorrect = newState.every(answer =>
+        (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+
+      setIsAnsweredCorrectly(isAnswerCorrect);
+
+      return newState;
+    });
+
     setIsPressed(true);
-    setSelectedAnswerIndex(selectedIndex);
-    quizJingle(answers[selectedIndex] === card.qcuGoodAnswer);
-    if (answers[selectedIndex] === card.qcuGoodAnswer) incGoodAnswersCount();
   };
 
   const style = styles(isPressed, footerColors.background);
@@ -75,7 +90,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
       </ScrollView>
       <View style={style.footerContainer}>
         {!isPressed && <FooterGradient />}
-        <QuizCardFooter isValidated={isPressed} isValid={answers[selectedAnswerIndex] === card.qcuGoodAnswer}
+        <QuizCardFooter isValidated={isPressed} isValid={isAnsweredCorrectly}
           cardIndex={index} footerColors={footerColors} explanation={card.explanation}
           buttonDisabled={!isPressed} hideButton />
       </View>

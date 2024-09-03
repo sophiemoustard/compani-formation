@@ -17,7 +17,7 @@ import {
 } from '../../../../store/cards/hooks';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import cardsStyle from '../../../../styles/cards';
-import { footerColorsType, MultipleChoiceQuestionType, QcmAnswerType } from '../../../../types/CardType';
+import { footerColorsType, MultipleChoiceQuestionType, qcAnswerType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface MultipleChoiceQuestionCardProps {
@@ -31,7 +31,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   const incGoodAnswersCount = useIncGoodAnswersCount();
   const quizzAnswer = useGetQuizzAnswer();
   const addQuizzAnswer = useAddQuizzAnswer();
-  const [answers, setAnswers] = useState<QcmAnswerType[]>([]);
+  const [answers, setAnswers] = useState<qcAnswerType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
@@ -71,7 +71,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 
   const onSelectAnswer = (index: number) => {
-    setAnswers((prevState: QcmAnswerType[]) => {
+    setAnswers((prevState: qcAnswerType[]) => {
       const newState = [...prevState];
       newState[index].isSelected = !newState[index].isSelected;
 
@@ -97,7 +97,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
     return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const renderItem = (item: QcmAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}
+  const renderItem = (item: qcAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} item={item.text} />;
 
   const style = styles(footerColors.background);
