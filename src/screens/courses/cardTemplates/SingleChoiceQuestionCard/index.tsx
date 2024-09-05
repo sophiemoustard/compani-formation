@@ -65,8 +65,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
     setAnswers((prevState: qcAnswerType[]) => {
       const newState = prevState.map((answer, i) => (i === selectedIndex ? { ...answer, isSelected: true } : answer));
 
-      const isAnswerCorrect = newState.every(answer =>
-        (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+      const isAnswerCorrect = newState.every(answer => answer.isSelected === answer.correct);
 
       setIsAnsweredCorrectly(isAnswerCorrect);
 

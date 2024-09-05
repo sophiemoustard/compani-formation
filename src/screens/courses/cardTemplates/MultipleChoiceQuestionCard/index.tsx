@@ -46,8 +46,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
       if (quizzAnswer?.answerList.length) {
         setAnswers(quizzAnswer.answerList);
         setIsValidated(true);
-        const areAnswersCorrect = quizzAnswer.answerList.every(answer =>
-          (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+        const areAnswersCorrect = quizzAnswer.answerList.every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(areAnswersCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
@@ -83,8 +82,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
     if (!isOneAnswerSelected()) return null;
 
     if (!isValidated) {
-      const areAnswersCorrect = answers.every(answer =>
-        (answer.isSelected && answer.correct) || (!answer.isSelected && !answer.correct));
+      const areAnswersCorrect = answers.every(answer => answer.isSelected === answer.correct);
 
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
