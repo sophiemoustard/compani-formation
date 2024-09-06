@@ -7,7 +7,13 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import { quizJingle } from '../../../../core/helpers/utils';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
-import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import {
+  useAddQuizzAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuizzAnswer,
+  useIncGoodAnswersCount,
+} from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
 import { footerColorsType, QCAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
@@ -22,6 +28,8 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   const card: SingleChoiceQuestionType = useGetCard();
   const index = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
+  const quizzAnswer = useGetQuizzAnswer();
+  const addQuizzAnswer = useAddQuizzAnswer();
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [answers, setAnswers] = useState<QCAnswerType[]>([]);
@@ -32,9 +40,16 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   });
 
   useEffect(() => {
-    if (!isLoading && !isPressed) setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
+    if (!isLoading && !isPressed) {
+      if (quizzAnswer?.answerList.length) {
+        setAnswers(quizzAnswer.answerList);
+        setIsPressed(true);
+        const isAnswerCorrect = quizzAnswer.answerList.every(answer => answer.isSelected === answer.correct);
+        setIsAnsweredCorrectly(isAnswerCorrect);
+      } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
+    }
     setIsRightSwipeEnabled(isPressed);
-  }, [isLoading, card, isPressed, setIsRightSwipeEnabled]);
+  }, [isLoading, card, isPressed, setIsRightSwipeEnabled, quizzAnswer]);
 
   useEffect(() => {
     if (!isPressed) {
@@ -64,6 +79,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
     quizJingle(isAnswerCorrect);
 
     if (isAnswerCorrect) incGoodAnswersCount();
+    addQuizzAnswer({ card: card._id, answerList: updatedAnswers });
 
     setIsPressed(true);
   };

@@ -4,6 +4,7 @@ import {
   MULTIPLE_CHOICE_QUESTION,
   OPEN_QUESTION,
   QUESTION_ANSWER,
+  SINGLE_CHOICE_QUESTION,
   SURVEY,
   TRANSITION,
 } from '../../core/data/constants';
@@ -45,6 +46,6 @@ export const getQuizzAnswersList = (state: StateType) => state.cards.quizzAnswer
 
 export const getQuizzAnswer = (state: StateType): QuizzAnswersType | null => {
   const card = getCard(state);
-  if (!card || (![MULTIPLE_CHOICE_QUESTION].includes(card.template))) return null;
+  if (!card || (![MULTIPLE_CHOICE_QUESTION, SINGLE_CHOICE_QUESTION].includes(card.template))) return null;
   return state.cards.quizzAnswersList.find(qa => qa.card === card._id) || null;
 };
