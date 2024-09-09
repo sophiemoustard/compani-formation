@@ -10,7 +10,7 @@ import QuizProposition from '../../../../components/cards/QuizProposition';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
-import { footerColorsType, qcAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
+import { footerColorsType, QCAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface SingleChoiceQuestionCardProps {
@@ -24,7 +24,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   const incGoodAnswersCount = useIncGoodAnswersCount();
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<qcAnswerType[]>([]);
+  const [answers, setAnswers] = useState<QCAnswerType[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -50,7 +50,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
 
   if (isLoading) return null;
 
-  const renderItem = (item: qcAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
+  const renderItem = (item: QCAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
     isValidated={isPressed} isGoodAnswer={item.correct} index={answerIndex} item={item.text}
     isSelected={item.isSelected} />;
 

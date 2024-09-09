@@ -1,9 +1,9 @@
-import { CardType, qcAnswerType } from './CardType';
+import { CardType, QCAnswerType } from './CardType';
 import { LESSON, VIDEO, QUIZ, SHARING_EXPERIENCE } from '../core/data/constants';
 
 export type QuestionnaireAnswersType = { _id?: string, card: string, answerList: string[] };
 
-export type QuizzAnswersType = { _id?: string, card: string, answerList: qcAnswerType[] };
+export type QuizzAnswersType = { _id?: string, card: string, answerList: QCAnswerType[] };
 
 type BaseActivityType = {
   _id: string,
