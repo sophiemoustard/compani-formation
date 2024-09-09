@@ -48,13 +48,6 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [answers, isAnsweredCorrectly, isPressed]);
 
-  useEffect(() => {
-    if (isPressed) {
-      quizJingle(isAnsweredCorrectly);
-      if (isAnsweredCorrectly) incGoodAnswersCount();
-    }
-  }, [isPressed, isAnsweredCorrectly, incGoodAnswersCount]);
-
   if (isLoading) return null;
 
   const renderItem = (item: qcAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
@@ -62,17 +55,16 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
     isSelected={item.isSelected} />;
 
   const onSelectAnswer = (selectedIndex: number) => {
-    setAnswers((prevState: qcAnswerType[]) => {
-      const newState = prevState.map((answer, i) => (i === selectedIndex ? { ...answer, isSelected: true } : answer));
-
-      const isAnswerCorrect = newState.every(answer => answer.isSelected === answer.correct);
-
-      setIsAnsweredCorrectly(isAnswerCorrect);
-
-      return newState;
-    });
-
     setIsPressed(true);
+    const updatedAnswers = answers.map((answer, i) => (i === selectedIndex ? { ...answer, isSelected: true } : answer));
+    setAnswers(updatedAnswers);
+
+    const isAnswerCorrect = updatedAnswers.every(answer => answer.isSelected === answer.correct);
+    setIsAnsweredCorrectly(isAnswerCorrect);
+
+    quizJingle(isAnswerCorrect);
+
+    if (isAnswerCorrect) incGoodAnswersCount();
   };
 
   const style = styles(isPressed, footerColors.background);
