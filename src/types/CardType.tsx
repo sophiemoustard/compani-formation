@@ -63,10 +63,17 @@ export type TitleTextType = {
 }
 
 export type QCAnswerType = {
-  _id?: string
+  _id: string
   correct: boolean,
   text: string,
   isSelected: boolean
+}
+
+export type AnswerPositionType = {
+  _id: string
+  goodPosition: number,
+  tempPosition: number,
+  label: string
 }
 
 export type MultipleChoiceQuestionType = {

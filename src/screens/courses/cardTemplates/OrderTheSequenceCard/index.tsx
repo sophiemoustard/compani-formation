@@ -9,10 +9,17 @@ import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
-import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import {
+  isAnswerPositionTypeArray,
+  useAddQuizzAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuizzAnswer,
+  useIncGoodAnswersCount,
+} from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
-import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
+import { footerColorsType, OrderTheSequenceType, AnswerPositionType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface OrderTheSequenceCardProps {
@@ -20,16 +27,12 @@ interface OrderTheSequenceCardProps {
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
-export type AnswerPositionType = {
-  goodPosition: number,
-  tempPosition: number,
-  label: string
-}
-
 const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSequenceCardProps) => {
   const card: OrderTheSequenceType = useGetCard();
   const index = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
+  const quizzAnswer = useGetQuizzAnswer();
+  const addQuizzAnswer = useAddQuizzAnswer();
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
@@ -42,12 +45,19 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      const shuffledCards = shuffle(card.orderedAnswers
-        .map((ans, answerIndex) => ({ label: ans.text, goodPosition: answerIndex })));
-      setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
+      if (quizzAnswer?.answerList.length && isAnswerPositionTypeArray(quizzAnswer.answerList)) {
+        setAnswers(quizzAnswer.answerList);
+        setIsValidated(true);
+        const isOrderCorrect = quizzAnswer.answerList.every(answer => (answer.goodPosition === answer.tempPosition));
+        setIsOrderedCorrectly(isOrderCorrect);
+      } else {
+        const shuffledCards = shuffle(card.orderedAnswers
+          .map((ans, answerIndex) => ({ label: ans.text, goodPosition: answerIndex, _id: ans._id })));
+        setAnswers(shuffledCards.map((ans, answerIndex) => ({ ...ans, tempPosition: answerIndex })));
+      }
     }
     setIsRightSwipeEnabled(isValidated || false);
-  }, [card, isValidated, isLoading, setIsRightSwipeEnabled]);
+  }, [card, isValidated, isLoading, setIsRightSwipeEnabled, quizzAnswer]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -68,6 +78,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       quizJingle(isOrderCorrect);
       setIsOrderedCorrectly(isOrderCorrect);
       if (isOrderCorrect) incGoodAnswersCount();
+      addQuizzAnswer({ card: card._id, answerList: answers });
 
       return setIsValidated(true);
     }
@@ -79,6 +90,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       label: ans.label,
       goodPosition: ans.goodPosition,
       tempPosition: answerIndex,
+      _id: ans._id,
     })));
   };
 

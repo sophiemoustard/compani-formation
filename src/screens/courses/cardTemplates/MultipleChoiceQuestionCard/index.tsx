@@ -9,6 +9,7 @@ import QuizProposition from '../../../../components/cards/QuizProposition';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import { quizJingle } from '../../../../core/helpers/utils';
 import {
+  isQCAnswerTypeArray,
   useAddQuizzAnswer,
   useGetCard,
   useGetCardIndex,
@@ -43,7 +44,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      if (quizzAnswer?.answerList.length) {
+      if (quizzAnswer?.answerList.length && isQCAnswerTypeArray(quizzAnswer.answerList)) {
         setAnswers(quizzAnswer.answerList);
         setIsValidated(true);
         const areAnswersCorrect = quizzAnswer.answerList.every(answer => answer.isSelected === answer.correct);
