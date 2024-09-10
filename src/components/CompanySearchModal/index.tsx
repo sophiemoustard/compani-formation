@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TouchableOpacity, TextInput, FlatList, Text } from 'react-native';
+import get from 'lodash/get';
 import { sortStrings } from '../../core/helpers/utils';
 import { TRANSPARENT_GRADIENT, WHITE } from '../../styles/colors';
 import { CompanyType } from '../../types/CompanyType';
@@ -27,11 +28,13 @@ const CompanySearchModal = ({ onRequestClose, visible, companyOptions }: Company
   const renderCompany = (company: CompanyType) => (
     <TouchableOpacity style={styles.separator} onPress={() => onPressCompany(company._id)}>
       <Text style={styles.company}>{company.name}</Text>
+      <Text style={styles.holding}>{get(company, 'holding.name')}</Text>
     </TouchableOpacity>
   );
 
   const getDisplayedCompanies = () => companyOptions
-    .filter(company => company.name.match(new RegExp(answer, 'i')))
+    .filter(company => company.name.match(new RegExp(answer, 'i')) ||
+      get(company, 'holding.name', '').match(new RegExp(answer, 'i')))
     .sort((a, b) => sortStrings(a.name, b.name));
 
   const resetModal = () => {

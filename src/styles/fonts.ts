@@ -86,6 +86,11 @@ export const FIRA_SANS_REGULAR = StyleSheet.create({
     fontFamily: 'fira-sans-regular',
     letterSpacing: 0.1,
   },
+  XS: {
+    fontSize: 12,
+    fontFamily: 'fira-sans-regular',
+    letterSpacing: 0.1,
+  },
 });
 
 export const FIRA_SANS_ITALIC = StyleSheet.create({

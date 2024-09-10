@@ -14,7 +14,7 @@ import NiSecondaryButton from '../../components/form/SecondaryButton';
 import CompanySearchModal from '../../components/CompanySearchModal';
 import { errorReducer, initialErrorState, SET_ERROR } from '../../reducers/error';
 import { CompanyType } from '../../types/CompanyType';
-import { LOGIN_CODE, IS_IOS, IS_WEB } from '../../core/data/constants';
+import { LOGIN_CODE, IS_IOS, IS_WEB, DIRECTORY } from '../../core/data/constants';
 import { GREY, WHITE } from '../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 import styles from './styles';
@@ -110,7 +110,7 @@ const LoginCodeForm = ({ navigation }: LoginCodeFormProps) => {
 
   useEffect(() => {
     async function getCompanies() {
-      const fetchCompanies = await Companies.listNotLogged();
+      const fetchCompanies = await Companies.listNotLogged({ action: DIRECTORY });
       setCompanyOptions(fetchCompanies);
     }
     getCompanies();
