@@ -1,31 +1,25 @@
 // @ts-nocheck
 
-import { Dispatch, useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import { DraxProvider, DraxView } from 'react-native-drax';
 import { useNavigation } from '@react-navigation/native';
-import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
-import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
 import CardHeader from '../../../../components/cards/CardHeader';
-import styles from './styles';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
-import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import Actions from '../../../../store/cards/actions';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
+import { isWeb } from '../../../../core/data/constants';
 import { quizJingle } from '../../../../core/helpers/utils';
-import { ActionType } from '../../../../context/types';
+import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
+import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
+import styles from './styles';
 
 interface FillTheGap {
-  card: FillTheGapType,
-  index: number | null,
   isLoading: boolean,
-  incGoodAnswersCount: () => void,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
 
@@ -34,7 +28,10 @@ export interface FillTheGapAnswers {
   visible: boolean,
 }
 
-const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRightSwipeEnabled }: FillTheGap) => {
+const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
+  const card: FillTheGapType = useGetCard();
+  const index = useGetCardIndex();
+  const incGoodAnswersCount = useIncGoodAnswersCount();
   const [goodAnswers, setGoodAnswers] = useState<string[]>([]);
   const [propositions, setPropositions] = useState<FillTheGapAnswers[]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
@@ -121,11 +118,22 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
     return goodAnswers.includes(text);
   };
 
-  const renderContent = (isVisible, item, text, idx?) => isVisible &&
-    <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
-      <FillTheGapProposition item={item} isValidated={isValidated} isSelected={selectedAnswers.includes(text)}
-        isGoodAnswer={isGoodAnswer(text, idx)} />
-    </DraxView>;
+  const renderContent = (isVisible, item, text, idx?) => {
+    if (!isVisible) return null;
+
+    const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
+      isSelected={selectedAnswers.includes(text)} isGoodAnswer={isGoodAnswer(text, idx)} />;
+
+    const webAnswer = { dragged: { payload: text, dragTranslationRatio: { x: 0, y: 0 } } };
+
+    return isWeb
+      ? <TouchableOpacity style={style.answerContainer} onPress={() => setAnswersAndPropositions(webAnswer)}>
+        {proposition}
+      </TouchableOpacity>
+      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
+        {proposition}
+      </DraxView>;
+  };
 
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
     onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
@@ -167,10 +175,4 @@ const FillTheGapCard = ({ card, index, isLoading, incGoodAnswersCount, setIsRigh
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FillTheGapCard);
+export default FillTheGapCard;

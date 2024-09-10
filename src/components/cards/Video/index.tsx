@@ -7,7 +7,6 @@ import {
   Video,
   VideoFullscreenUpdate,
   ResizeMode,
-  VideoReadyForDisplayEvent,
   VideoFullscreenUpdateEvent,
   AVPlaybackStatus,
 } from 'expo-av';
@@ -16,14 +15,14 @@ import { ICON } from '../../../styles/metrics';
 import FeatherButton from '../../../components/icons/FeatherButton';
 import { GREY } from '../../../styles/colors';
 import Spinner from '../../Spinner';
-import { isIOS } from '../../../core/data/constants';
+import { IS_IOS } from '../../../core/data/constants';
 
 interface NiVideoProps {
   mediaSource: { uri: string } | undefined,
 }
 
 const NiVideo = ({ mediaSource }: NiVideoProps) => {
-  const isIosVersionWithPlayButton = isIOS && Platform.Version === '14.1';
+  const isIosVersionWithPlayButton = IS_IOS && Platform.Version === '14.1';
   const [playVisible, setPlayVisible] = useState<boolean>(isIosVersionWithPlayButton);
   const [nativeControlsVisible, setNativeControlsVisible] = useState<boolean>(false);
   const videoRef = useRef<Video>(null);
@@ -38,6 +37,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
       if (playbackStatus.isPlaying) setPlayVisible(false);
       else setPlayVisible(true);
     }
+    setNativeControlsVisible(true);
   };
 
   // eslint-disable-next-line consistent-return
@@ -53,9 +53,6 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
     }
   };
 
-  const onReadyForDisplay = (event: VideoReadyForDisplayEvent) => {
-    if (event.status?.isLoaded) setNativeControlsVisible(true);
-  };
   const style = styles(isMediaLoading);
 
   return (
@@ -67,7 +64,7 @@ const NiVideo = ({ mediaSource }: NiVideoProps) => {
           style={style.play} />}
         <Video ref={videoRef} useNativeControls={nativeControlsVisible} resizeMode={ResizeMode.CONTAIN}
           source={mediaSource} onPlaybackStatusUpdate={onPlaybackStatusUpdate} onFullscreenUpdate={onFullscreenUpdate}
-          style={style.media} onReadyForDisplay={onReadyForDisplay} onLoadStart={() => setIsMediaLoading(true)}
+          videoStyle={style.media} onLoadStart={() => setIsMediaLoading(true)}
           onLoad={() => setIsMediaLoading(false)} />
       </View>
     </>

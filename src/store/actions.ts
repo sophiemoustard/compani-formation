@@ -1,5 +1,5 @@
-import { LOG_OUT, ActionWithoutPayloadType } from '../types/store/StoreType';
+import { createAction } from '@reduxjs/toolkit';
 
-const resetAllReducers = (): ActionWithoutPayloadType => ({ type: LOG_OUT });
+const LOG_OUT = 'log_out';
 
-export default { resetAllReducers };
+export const resetAllReducers = createAction(LOG_OUT);

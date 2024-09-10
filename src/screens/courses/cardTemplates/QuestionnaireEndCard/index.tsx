@@ -1,33 +1,24 @@
-import { Dispatch, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import asyncStorage from '../../../../core/helpers/asyncStorage';
-import NiPrimaryButton from '../../../../components/form/PrimaryButton';
-import { QuestionnaireWithCardsType } from '../../../../types/QuestionnaireType';
-import CardsActions from '../../../../store/cards/actions';
-import styles from '../../../../styles/endCard';
-import { achievementJingle } from '../../../../core/helpers/utils';
-import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
-import { StateType } from '../../../../types/store/StoreType';
 import QuestionnaireHistories from '../../../../api/questionnaireHistories';
-import { ActionType } from '../../../../context/types';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
+import asyncStorage from '../../../../core/helpers/asyncStorage';
+import { achievementJingle } from '../../../../core/helpers/utils';
+import { useGetQuestionnaireAnswersList, useSetCardIndex } from '../../../../store/cards/hooks';
+import styles from '../../../../styles/endCard';
+import { QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
+import { QuestionnaireWithCardsType } from '../../../../types/QuestionnaireType';
 
 interface QuestionnaireEndCardProps {
   courseId: string
   questionnaires: QuestionnaireWithCardsType[],
-  questionnaireAnswersList: QuestionnaireAnswersType[],
   goBack: () => void,
-  setCardIndex: (index: number | null) => void,
 }
 
-const QuestionnaireEndCard = ({
-  courseId,
-  questionnaires,
-  questionnaireAnswersList,
-  goBack,
-  setCardIndex,
-}: QuestionnaireEndCardProps) => {
+const QuestionnaireEndCard = ({ courseId, questionnaires, goBack }: QuestionnaireEndCardProps) => {
+  const questionnaireAnswersList = useGetQuestionnaireAnswersList();
+  const setCardIndex = useSetCardIndex();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -75,7 +66,8 @@ const QuestionnaireEndCard = ({
   }, [courseId, isFocused, questionnaires, questionnaireAnswersList, setCardIndex]);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}>
       <ImageBackground style={styles.elipse} source={require('../../../../../assets/images/end_card_background.webp')}>
         <Text style={styles.text}>Questionnaire terminé</Text>
         <Image source={require('../../../../../assets/images/aux_fierte.webp')} style={styles.image} />
@@ -85,12 +77,4 @@ const QuestionnaireEndCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  questionnaireAnswersList: state.cards.questionnaireAnswersList,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setCardIndex: (index: number | null) => dispatch(CardsActions.setCardIndex(index)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireEndCard);
+export default QuestionnaireEndCard;

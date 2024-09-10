@@ -7,7 +7,7 @@ import NiInput from '../../components/form/Input';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import styles from './styles';
 import accountCreationStyles from '../../styles/accountCreation';
-import { isIOS, PHONE_REGEX } from '../../core/data/constants';
+import { IS_IOS, IS_WEB, PHONE_REGEX } from '../../core/data/constants';
 import { IS_LARGE_SCREEN, MARGIN } from '../../styles/metrics';
 
 interface CreateAccountFormProps {
@@ -81,7 +81,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
   };
 
   const render = (
-    <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={false}
+    <ScrollView contentContainerStyle={accountCreationStyles.container} showsVerticalScrollIndicator={IS_WEB}
       keyboardShouldPersistTaps='always'>
       <Text style={accountCreationStyles.title}>{data[0].title}</Text>
       {data.map((d, i) => <View style={accountCreationStyles.input} key={`container${i}`}>
@@ -102,7 +102,7 @@ const CreateAccountForm = ({ index, data, isLoading, setData, goBack, create, op
   );
 
   return (
-    isIOS
+    IS_IOS
       ? <KeyboardAvoidingView behavior='padding' style={accountCreationStyles.screenView}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         {render}

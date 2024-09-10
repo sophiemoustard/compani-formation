@@ -9,26 +9,23 @@ import {
   ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/NavigationType';
-import { ActionWithoutPayloadType } from '../../types/store/StoreType';
 import NiInput from '../../components/form/Input';
-import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
+import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
 import FirstConnectionModal from '../../components/FirstConnectionModal';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
+import { AUTHENTICATION, IS_IOS } from '../../core/data/constants';
+import { useResetAllReducers } from '../../store/hooks';
 import commonStyles from '../../styles/common';
+import { RootStackParamList } from '../../types/NavigationType';
 import styles from './styles';
-import Actions from '../../store/actions';
-import { AUTHENTICATION, isIOS } from '../../core/data/constants';
 
-interface AuthenticationProps extends StackScreenProps<RootStackParamList> {
-  resetAllReducers: () => void,
-}
+interface AuthenticationProps extends StackScreenProps<RootStackParamList> {}
 
-const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) => {
+const Authentication = ({ navigation }: AuthenticationProps) => {
+  const resetAllReducers = useResetAllReducers();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isFirstConnection, setIsFirstConnection] = useState<boolean>(false);
@@ -49,7 +46,7 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ImageBackground style={{ ...styles.image }}
         source={require('../../../assets/images/authentication_background_image.webp')}>
-        <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={{ flex: 1 }}>
           <View style={styles.inner}>
             <Text style={styles.title}>
               Identifiez-vous pour{'\n'}accéder aux informations
@@ -71,8 +68,4 @@ const Authentication = ({ navigation, resetAllReducers }: AuthenticationProps) =
   );
 };
 
-const mapDispatchToProps = (dispatch: ({ type }: ActionWithoutPayloadType) => void) => ({
-  resetAllReducers: () => dispatch(Actions.resetAllReducers()),
-});
-
-export default connect(null, mapDispatchToProps)(Authentication);
+export default Authentication;

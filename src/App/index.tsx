@@ -1,20 +1,17 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback } from 'react';
-import { createStore } from 'redux';
 import * as Notifications from 'expo-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Sentry from '@sentry/react-native';
 import { Provider as AuthProvider } from '../context/AuthContext';
 import AppContainer from '../AppContainer';
-import reducers from '../store/index';
+import store from '../store/store';
 import Environment from '../../environment';
 import { initializeAssets } from '../core/helpers/assets';
 
 Sentry.init({ dsn: Environment.getSentryKey(), debug: false });
-
-const store = createStore(reducers);
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: false, shouldSetBadge: true }),

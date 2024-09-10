@@ -1,45 +1,38 @@
 // @ts-nocheck
 
-import { Dispatch, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { StackScreenProps } from '@react-navigation/stack';
-import { connect } from 'react-redux';
 import Questionnaires from '../../../api/questionnaires';
-import { CardType } from '../../../types/CardType';
-import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
-import StartCard from '../cardTemplates/StartCard';
-import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
-import { StateType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
-import CardsActions from '../../../store/cards/actions';
-import CardScreen from '../CardScreen';
+import { tabsNames } from '../../../core/data/tabs';
 import { capitalizeFirstLetter, sortStrings } from '../../../core/helpers/utils';
 import { getQuestionnaireTitle } from '../../../core/helpers/courses';
+import { RootCardParamList, RootStackParamList } from '../../../types/NavigationType';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
-import { ActionType } from '../../../context/types';
+import { useSetStatusBarVisible } from '../../../store/main/hooks';
+import {
+  useGetCardIndex,
+  useGetCards,
+  useGetExitConfirmationModal,
+  useResetCardReducer,
+  useSetCards,
+  useSetExitConfirmationModal,
+} from '../../../store/cards/hooks';
+import CardScreen from '../CardScreen';
+import QuestionnaireEndCard from '../cardTemplates/QuestionnaireEndCard';
+import StartCard from '../cardTemplates/StartCard';
 
-interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {
-  cardIndex: number | null,
-  exitConfirmationModal: boolean,
-  cards: CardType[],
-  setCards: (questionnaire: CardType[] | null) => void,
-  setExitConfirmationModal: (boolean: boolean) => void,
-  resetCardReducer: () => void,
-  setStatusBarVisible: (boolean: boolean) => void,
-}
+interface QuestionnaireCardContainerProps extends StackScreenProps<RootStackParamList, 'QuestionnaireCardContainer'> {}
 
-const QuestionnaireCardContainer = ({
-  route,
-  navigation,
-  cards,
-  cardIndex,
-  exitConfirmationModal,
-  setCards,
-  setExitConfirmationModal,
-  resetCardReducer,
-  setStatusBarVisible,
-}: QuestionnaireCardContainerProps) => {
+const QuestionnaireCardContainer = ({ route, navigation }: QuestionnaireCardContainerProps) => {
+  const setStatusBarVisible = useSetStatusBarVisible();
+  const cards = useGetCards();
+  const cardIndex = useGetCardIndex();
+  const exitConfirmationModal = useGetExitConfirmationModal();
+  const setCards = useSetCards();
+  const setExitConfirmationModal = useSetExitConfirmationModal();
+  const resetCardReducer = useResetCardReducer();
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [isActive, setIsActive] = useState<boolean>(true);
@@ -98,18 +91,18 @@ const QuestionnaireCardContainer = ({
 
   return isActive
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
-      <Tab.Screen key={0} name={'startCard'} >
+      <Tab.Screen key={0} name={'startCard'} options={{ title: title || tabsNames.QuestionnaireCardContainer }}>
         {() => <StartCard title={title} goBack={goBack}
           isLoading={!(cards.length > 0 && questionnaires.length)} />}
       </Tab.Screen>
       {cards.length > 0 && questionnaires.length &&
         <>
           {cards.map((_, index) => (
-            <Tab.Screen key={index} name={`card-${index}`}>
+            <Tab.Screen key={index} name={`card-${index}`} options={{ title }}>
               {() => <CardScreen index={index} goBack={goBack} />}
             </Tab.Screen>
           ))}
-          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`}>
+          <Tab.Screen key={cards.length + 1} name={`card-${cards.length}`} options={{ title }}>
             {() => <QuestionnaireEndCard goBack={goBack} questionnaires={questionnaires} courseId={profileId} />}
           </Tab.Screen>
         </>
@@ -118,17 +111,4 @@ const QuestionnaireCardContainer = ({
     : null;
 };
 
-const mapStateToProps = (state: StateType) => ({
-  cards: state.cards.cards,
-  cardIndex: state.cards.cardIndex,
-  exitConfirmationModal: state.cards.exitConfirmationModal,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setCards: (cards: CardType[]) => dispatch(CardsActions.setCards(cards)),
-  setExitConfirmationModal: (openModal: boolean) => dispatch(CardsActions.setExitConfirmationModal(openModal)),
-  resetCardReducer: () => dispatch(CardsActions.resetCardReducer()),
-  setStatusBarVisible: (statusBarVisible: boolean) => dispatch(MainActions.setStatusBarVisible(statusBarVisible)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionnaireCardContainer);
+export default QuestionnaireCardContainer;

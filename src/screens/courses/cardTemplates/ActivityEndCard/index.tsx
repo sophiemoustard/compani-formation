@@ -1,48 +1,47 @@
-import { Dispatch, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
-import asyncStorage from '../../../../core/helpers/asyncStorage';
-import NiPrimaryButton from '../../../../components/form/PrimaryButton';
-import { StateType } from '../../../../types/store/StoreType';
 import ActivityHistories from '../../../../api/activityHistories';
-import { ActivityType, QuestionnaireAnswersType } from '../../../../types/ActivityTypes';
-import CardsActions from '../../../../store/cards/actions';
-import styles from '../../../../styles/endCard';
-import commonStyles from '../../../../styles/common';
-import { achievementJingle } from '../../../../core/helpers/utils';
-import { LEARNER } from '../../../../core/data/constants';
-import { CourseModeType } from '../../../../types/CourseTypes';
-import { ActionType } from '../../../../context/types';
+import NiPrimaryButton from '../../../../components/form/PrimaryButton';
+import asyncStorage from '../../../../core/helpers/asyncStorage';
 import CompaniDuration from '../../../../core/helpers/dates/companiDurations';
 import { formatSecondsToISODuration } from '../../../../core/helpers/dates/utils';
+import { achievementJingle } from '../../../../core/helpers/utils';
+import { LEARNER } from '../../../../core/data/constants';
+import {
+  useGetQuestionnaireAnswersList,
+  useGetQuizzAnswersList,
+  useGetScore,
+  useSetCardIndex,
+} from '../../../../store/cards/hooks';
+import styles from '../../../../styles/endCard';
+import commonStyles from '../../../../styles/common';
+import { ActivityType, QuestionnaireAnswersType, QuizzAnswersType } from '../../../../types/ActivityTypes';
+import { CourseModeType } from '../../../../types/CourseTypes';
 
 interface ActivityEndCardProps {
   mode: CourseModeType,
   activity: ActivityType,
-  questionnaireAnswersList: QuestionnaireAnswersType[],
-  score: number,
   finalTimer: number,
-  setCardIndex: (index: number | null) => void,
   goBack: () => void,
   stopTimer: () => void,
 }
 
-const ActivityEndCard = ({
-  mode,
-  activity,
-  questionnaireAnswersList,
-  score,
-  finalTimer,
-  setCardIndex,
-  goBack,
-  stopTimer,
-}: ActivityEndCardProps) => {
+const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: ActivityEndCardProps) => {
+  const questionnaireAnswersList = useGetQuestionnaireAnswersList();
+  const quizzAnswersList = useGetQuizzAnswersList();
+  const score = useGetScore();
+  const setCardIndex = useSetCardIndex();
   const isFocused = useIsFocused();
 
   const saveHistory = useCallback(
-    async (finalScore: number, finalQuestionnaireAnswersList: QuestionnaireAnswersType[], numberDuration: number) => {
+    async (
+      finalScore: number,
+      finalQuestionnaireAnswersList: QuestionnaireAnswersType[],
+      finalQuizzAnswersList: QuizzAnswersType[],
+      numberDuration: number
+    ) => {
       const userId = await asyncStorage.getUserId();
 
       if (!userId || !activity._id) return;
@@ -53,6 +52,10 @@ const ActivityEndCard = ({
         score: finalScore,
         duration: CompaniDuration(formatSecondsToISODuration(numberDuration)).toISO(),
         ...(finalQuestionnaireAnswersList?.length && { questionnaireAnswersList: finalQuestionnaireAnswersList }),
+        ...(finalQuizzAnswersList?.length && {
+          quizzAnswersList: finalQuizzAnswersList
+            .map(qa => ({ ...qa, answerList: qa.answerList.filter(a => a.isSelected).map(a => a._id) })),
+        }),
       };
 
       await ActivityHistories.createActivityHistories(payload);
@@ -69,12 +72,12 @@ const ActivityEndCard = ({
   }, [isFocused, setCardIndex, mode, stopTimer, saveHistory]);
 
   useEffect(() => {
-    if (finalTimer && mode === LEARNER) saveHistory(score, questionnaireAnswersList, finalTimer);
-  }, [finalTimer, mode, questionnaireAnswersList, saveHistory, score]);
+    if (finalTimer && mode === LEARNER) saveHistory(score, questionnaireAnswersList, quizzAnswersList, finalTimer);
+  }, [finalTimer, mode, questionnaireAnswersList, quizzAnswersList, saveHistory, score]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
         <ImageBackground style={styles.elipse}
           source={require('../../../../../assets/images/end_card_background.webp')}>
           <Text style={styles.text}>Activité terminée</Text>
@@ -86,13 +89,4 @@ const ActivityEndCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  questionnaireAnswersList: state.cards.questionnaireAnswersList,
-  score: state.cards.score,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  setCardIndex: (index: number | null) => dispatch(CardsActions.setCardIndex(index)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ActivityEndCard);
+export default ActivityEndCard;

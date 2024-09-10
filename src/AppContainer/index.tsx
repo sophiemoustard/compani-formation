@@ -2,15 +2,13 @@
 
 import { useEffect, useContext, useState, useRef, useCallback } from 'react';
 import { StatusBar, View, AppState } from 'react-native';
-import { connect } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import get from 'lodash/get';
 import { AxiosRequestConfig, AxiosError } from 'axios';
 import AppNavigation from '../navigation/AppNavigation';
 import { AuthContextType, Context as AuthContext } from '../context/AuthContext';
-import MainActions from '../store/main/actions';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../types/store/StoreType';
+import { useGetStatusBarVisible, useSetLoggedUser } from '../store/main/hooks';
 import axiosLogged from '../api/axios/logged';
 import axiosNotLogged from '../api/axios/notLogged';
 import Users from '../api/users';
@@ -21,18 +19,16 @@ import {
   handleNotificationResponse,
   handleExpoToken,
 } from '../core/helpers/notifications';
-import { ACTIVE_STATE } from '../core/data/constants';
+import { ACTIVE_STATE, IS_WEB } from '../core/data/constants';
 import UpdateAppModal from '../components/UpdateAppModal';
 import MaintenanceModal from '../components/MaintenanceModal';
-import { UserType } from '../types/UserType';
+import ToastMessage from '../components/ToastMessage';
 import { WHITE } from '../styles/colors';
 import styles from './styles';
 
 type AppContainerProps = {
-  setLoggedUser: (user: UserType) => void,
-  onLayout: () => void,
-  statusBarVisible: boolean,
-}
+  onLayout: () => void;
+};
 
 const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   const axiosLoggedConfig = { ...config };
@@ -41,7 +37,7 @@ const getAxiosLoggedConfig = (config: AxiosRequestConfig, token: string) => {
   return axiosLoggedConfig;
 };
 
-const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContainerProps) => {
+const AppContainer = ({ onLayout }: AppContainerProps) => {
   const {
     tryLocalSignIn,
     companiToken,
@@ -49,23 +45,34 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
     signOut,
     refreshCompaniToken,
   }: AuthContextType = useContext(AuthContext);
+
+  const setLoggedUser = useSetLoggedUser();
+  const statusBarVisible = useGetStatusBarVisible();
+
   const [updateModaleVisible, setUpdateModaleVisible] = useState<boolean>(false);
   const [maintenanceModalVisible, setMaintenanceModalVisible] = useState<boolean>(false);
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
+  const [triggerToastMessage, setTriggerToastMessage] = useState<boolean>(false);
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(async (data) => {
-      if (!companiToken) return;
-      await handleExpoToken(data);
-    });
+    if (!IS_WEB) {
+      registerForPushNotificationsAsync().then(async (data) => {
+        if (!companiToken) return;
+        await handleExpoToken(data);
+      });
+    }
+  }, [companiToken]);
 
-    const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
-      get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-    if (companiToken && isValidNotification) handleNotificationResponse(lastNotificationResponse);
-  }, [companiToken, lastNotificationResponse]);
+  useEffect(() => {
+    if (!IS_WEB) {
+      const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
+        get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
+      if (isValidNotification) handleNotificationResponse(lastNotificationResponse);
+    }
+  }, [lastNotificationResponse]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);
@@ -134,6 +141,7 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       .use(
         response => response,
         async (error: AxiosError) => {
+          if ([400, 401].includes(error?.response?.status)) setTriggerToastMessage(true);
           if (error?.response?.status === 401) return handleUnauthorizedRequest(error);
           if (error?.response?.status === 502 || error?.response?.status === 503) setMaintenanceModalVisible(true);
           return Promise.reject(error);
@@ -194,17 +202,11 @@ const AppContainer = ({ setLoggedUser, statusBarVisible, onLayout }: AppContaine
       </View>
       <SafeAreaProvider onLayout={onLayout}>
         <AppNavigation />
+        {triggerToastMessage && <ToastMessage onFinish={(finished: boolean) => setTriggerToastMessage(!finished)}
+          message={'Vous n\'êtes pas connecté'} />}
       </SafeAreaProvider>
     </>
   );
 };
 
-const mapStateToProps = (state: StateType) => ({
-  statusBarVisible: state.main.statusBarVisible,
-});
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);
+export default AppContainer;

@@ -32,8 +32,7 @@ export type SingleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
-  qcuGoodAnswer: string,
-  qcAnswers: AnswerFromAPIType[],
+  qcAnswers: QCAnswerType[],
   explanation: string,
 }
 
@@ -63,16 +62,18 @@ export type TitleTextType = {
   text: string,
 }
 
-export type QcmAnswerFromAPIType = {
+export type QCAnswerType = {
+  _id?: string
   correct: boolean,
   text: string,
+  isSelected: boolean
 }
 
 export type MultipleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
-  qcAnswers: QcmAnswerFromAPIType[],
+  qcAnswers: QCAnswerType[],
   explanation: string,
 }
 

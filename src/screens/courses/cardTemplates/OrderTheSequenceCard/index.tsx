@@ -1,28 +1,21 @@
-import { useState, useEffect, Dispatch } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
-import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
-import { StateType } from '../../../../types/store/StoreType';
-import Selectors from '../../../../store/cards/selectors';
-import Actions from '../../../../store/cards/actions';
 import CardHeader from '../../../../components/cards/CardHeader';
-import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
-import cardsStyle from '../../../../styles/cards';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
+import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import cardsStyle from '../../../../styles/cards';
+import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
+import { footerColorsType, OrderTheSequenceType } from '../../../../types/CardType';
 import styles from './styles';
-import { ActionType } from '../../../../context/types';
 
 interface OrderTheSequenceCardProps {
-  card: OrderTheSequenceType,
-  index: number | null,
-  incGoodAnswersCount: () => void,
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
@@ -33,13 +26,10 @@ export type AnswerPositionType = {
   label: string
 }
 
-const OrderTheSequenceCard = ({
-  card,
-  index,
-  incGoodAnswersCount,
-  isLoading,
-  setIsRightSwipeEnabled,
-}: OrderTheSequenceCardProps) => {
+const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSequenceCardProps) => {
+  const card: OrderTheSequenceType = useGetCard();
+  const index = useGetCardIndex();
+  const incGoodAnswersCount = useIncGoodAnswersCount();
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
@@ -123,10 +113,4 @@ const OrderTheSequenceCard = ({
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ card: Selectors.getCard(state), index: state.cards.cardIndex });
-
-const mapDispatchToProps = (dispatch: Dispatch<ActionType>) => ({
-  incGoodAnswersCount: () => dispatch(Actions.incGoodAnswersCount()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(OrderTheSequenceCard);
+export default OrderTheSequenceCard;

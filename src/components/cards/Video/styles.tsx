@@ -7,6 +7,7 @@ const styles = (isMediaLoading: boolean) => StyleSheet.create({
     height: CARD_MEDIA_MAX_HEIGHT,
     marginBottom: MARGIN.LG,
     display: !isMediaLoading ? 'flex' : 'none',
+    position: 'relative',
   },
   play: {
     position: 'absolute',

@@ -11,7 +11,6 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -19,15 +18,13 @@ import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import { GREY } from '../../../styles/colors';
 import { ICON, IS_LARGE_SCREEN, MARGIN } from '../../../styles/metrics';
-import { UserType } from '../../../types/UserType';
 import { PictureType } from '../../../types/PictureTypes';
 import styles from './styles';
 import NiInput from '../../../components/form/Input';
 import { RootStackParamList, RootBottomTabParamList } from '../../../types/NavigationType';
 import Users from '../../../api/users';
-import { ActionType, ActionWithoutPayloadType, StateType } from '../../../types/store/StoreType';
-import MainActions from '../../../store/main/actions';
-import { EMAIL_REGEX, isIOS, PHONE_REGEX } from '../../../core/data/constants';
+import { useGetLoggedUser, useSetLoggedUser } from '../../../store/main/hooks';
+import { EMAIL_REGEX, IS_IOS, IS_WEB, PHONE_REGEX } from '../../../core/data/constants';
 import ExitModal from '../../../components/ExitModal';
 import NiErrorMessage from '../../../components/ErrorMessage';
 import { formatPhoneForPayload } from '../../../core/helpers/utils';
@@ -41,14 +38,15 @@ interface ProfileEditionProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList>,
 StackScreenProps<RootBottomTabParamList>
 > {
-  loggedUser: UserType,
-  setLoggedUser: (user: UserType) => void,
 }
 
 const FIRSTNAME = 'firstname';
 const LASTNAME = 'lastname';
 
-const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditionProps) => {
+const ProfileEdition = ({ navigation }: ProfileEditionProps) => {
+  const setLoggedUser = useSetLoggedUser();
+  const loggedUser = useGetLoggedUser();
+
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const [editedUser, setEditedUser] = useState<any>({
     identity: {
@@ -185,7 +183,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
 
   return !!loggedUser && (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
+      <KeyboardAvoidingView behavior={IS_IOS ? 'padding' : 'height'} style={styles.keyboardAvoidingView}
         keyboardVerticalOffset={IS_LARGE_SCREEN ? MARGIN.MD : MARGIN.XS}>
         <View style={styles.goBack}>
           <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.MD}
@@ -194,7 +192,7 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
             onPressCancelButton={() => setExitConfirmationModal(false)}
             title="Êtes-vous sûr(e) de cela ?" contentText="Vos modifications ne seront pas enregistrées." />
         </View>
-        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={styles.container} ref={scrollRef} showsVerticalScrollIndicator={IS_WEB}>
           <Text style={styles.title}>Modifier mes informations</Text>
           <View style={styles.imageContainer}>
             <Image style={styles.profileImage} source={source} />
@@ -232,10 +230,4 @@ const ProfileEdition = ({ loggedUser, navigation, setLoggedUser }: ProfileEditio
   );
 };
 
-const mapStateToProps = (state: StateType) => ({ loggedUser: state.main.loggedUser });
-
-const mapDispatchToProps = (dispatch: ({ type }: ActionType | ActionWithoutPayloadType) => void) => ({
-  setLoggedUser: (user: UserType) => dispatch(MainActions.setLoggedUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdition);
+export default ProfileEdition;

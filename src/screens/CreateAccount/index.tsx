@@ -17,6 +17,7 @@ import Users from '../../api/users';
 import { formatPhoneForPayload } from '../../core/helpers/utils';
 import { AuthContextType, Context as AuthContext } from '../../context/AuthContext';
 import { ACCOUNT_CREATION } from '../../core/data/constants';
+import { tabsNames } from '../../core/data/tabs';
 
 interface CreateAccountProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAccount'>,
@@ -155,7 +156,8 @@ const CreateAccount = ({ route, navigation }: CreateAccountProps) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {formList.map((fields, i) => (
-        <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}>
+        <Stack.Screen key={fields[0].title} name={`create-account-screen-${i}`}
+          options={{ title: tabsNames.CreateAccount }}>
           {() => renderScreen(fields, i)}
         </Stack.Screen>
       ))}

@@ -4,6 +4,7 @@ import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR, FIRA_SANS_ITALIC, FIRA_SANS_MEDIUM }
 
 export default StyleSheet.create({
   content: {
+    flex: 1,
     paddingHorizontal: PADDING.LG,
   },
   title: {

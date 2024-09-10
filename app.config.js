@@ -43,8 +43,8 @@ export default {
     name: variables.appName,
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
-    platforms: ['ios', 'android'],
-    version: '2.27.0',
+    platforms: ['ios', 'android', 'web'],
+    version: '2.28.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -75,7 +75,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.27.0',
+      buildNumber: '2.28.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -105,7 +105,10 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 210,
+      versionCode: 220,
+    },
+    web: {
+      favicon: './assets/images/android_icon_old.png',
     },
     plugins: [
       [
