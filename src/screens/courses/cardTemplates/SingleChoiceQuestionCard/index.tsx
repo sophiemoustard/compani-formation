@@ -55,7 +55,6 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
     isSelected={item.isSelected} />;
 
   const onSelectAnswer = (selectedIndex: number) => {
-    setIsPressed(true);
     const updatedAnswers = answers.map((answer, i) => (i === selectedIndex ? { ...answer, isSelected: true } : answer));
     setAnswers(updatedAnswers);
 
@@ -65,6 +64,8 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
     quizJingle(isAnswerCorrect);
 
     if (isAnswerCorrect) incGoodAnswersCount();
+
+    setIsPressed(true);
   };
 
   const style = styles(isPressed, footerColors.background);
