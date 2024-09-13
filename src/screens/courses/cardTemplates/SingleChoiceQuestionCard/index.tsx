@@ -8,7 +8,6 @@ import { quizJingle } from '../../../../core/helpers/utils';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import QuizProposition from '../../../../components/cards/QuizProposition';
 import {
-  isQCAnswerTypeArray,
   useAddQuizzAnswer,
   useGetCard,
   useGetCardIndex,
@@ -42,10 +41,11 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
 
   useEffect(() => {
     if (!isLoading && !isPressed) {
-      if (quizzAnswer?.answerList.length && isQCAnswerTypeArray(quizzAnswer.answerList)) {
-        setAnswers(quizzAnswer.answerList);
+      if (quizzAnswer?.answerList.length) {
+        setAnswers(quizzAnswer.answerList as QCAnswerType[]);
         setIsPressed(true);
-        const isAnswerCorrect = quizzAnswer.answerList.every(answer => answer.isSelected === answer.correct);
+        const isAnswerCorrect = (quizzAnswer.answerList as QCAnswerType[])
+          .every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(isAnswerCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }

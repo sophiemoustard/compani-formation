@@ -10,7 +10,6 @@ import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
 import {
-  isAnswerPositionTypeArray,
   useAddQuizzAnswer,
   useGetCard,
   useGetCardIndex,
@@ -45,10 +44,11 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      if (quizzAnswer?.answerList.length && isAnswerPositionTypeArray(quizzAnswer.answerList)) {
-        setAnswers(quizzAnswer.answerList);
+      if (quizzAnswer?.answerList.length) {
+        setAnswers(quizzAnswer.answerList as AnswerPositionType[]);
         setIsValidated(true);
-        const isOrderCorrect = quizzAnswer.answerList.every(answer => (answer.goodPosition === answer.tempPosition));
+        const isOrderCorrect = (quizzAnswer.answerList as AnswerPositionType[])
+          .every(answer => (answer.goodPosition === answer.tempPosition));
         setIsOrderedCorrectly(isOrderCorrect);
       } else {
         const shuffledCards = shuffle(card.orderedAnswers

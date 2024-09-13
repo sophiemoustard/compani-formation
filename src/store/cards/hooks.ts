@@ -25,7 +25,7 @@ import {
   getQuizzAnswer,
   getQuizzAnswersList,
 } from './selectors';
-import { AnswerPositionType, CardType, QCAnswerType } from '../../types/CardType';
+import { CardType } from '../../types/CardType';
 import { QuestionnaireAnswersType, QuizzAnswersType } from '../../types/ActivityTypes';
 
 export const useSetCards = () => {
@@ -105,9 +105,3 @@ export const useGetQuestionnaireAnswersList = () => useAppSelector(getQuestionna
 export const useGetQuizzAnswersList = () => useAppSelector(getQuizzAnswersList);
 
 export const useGetQuizzAnswer = () => useAppSelector(getQuizzAnswer);
-
-export const isQCAnswerTypeArray = (data: QCAnswerType[] | AnswerPositionType[]): data is QCAnswerType[] =>
-  data.every(item => 'text' in item && 'isSelected' in item && 'correct' in item);
-
-export const isAnswerPositionTypeArray = (data: QCAnswerType[] | AnswerPositionType[]): data is AnswerPositionType[] =>
-  data.every(item => 'label' in item && 'goodPosition' in item && 'tempPosition' in item);
