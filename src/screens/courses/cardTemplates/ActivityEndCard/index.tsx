@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
+import get from 'lodash/get';
 import ActivityHistories from '../../../../api/activityHistories';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
@@ -54,7 +55,7 @@ const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: Acti
         ...(finalQuestionnaireAnswersList?.length && { questionnaireAnswersList: finalQuestionnaireAnswersList }),
         ...(finalQuizzAnswersList?.length && {
           quizzAnswersList: finalQuizzAnswersList
-            .map(qa => ({ ...qa, answerList: qa.answerList.filter(a => a.isSelected).map(a => a._id) })),
+            .map(qa => ({ ...qa, answerList: qa.answerList.filter(a => get(a, 'isSelected', true)).map(a => a._id) })),
         }),
       };
 

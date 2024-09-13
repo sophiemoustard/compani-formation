@@ -42,9 +42,10 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   useEffect(() => {
     if (!isLoading && !isPressed) {
       if (quizzAnswer?.answerList.length) {
-        setAnswers(quizzAnswer.answerList);
+        setAnswers(quizzAnswer.answerList as QCAnswerType[]);
         setIsPressed(true);
-        const isAnswerCorrect = quizzAnswer.answerList.every(answer => answer.isSelected === answer.correct);
+        const isAnswerCorrect = (quizzAnswer.answerList as QCAnswerType[])
+          .every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(isAnswerCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
