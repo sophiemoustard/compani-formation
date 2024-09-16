@@ -44,9 +44,10 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   useEffect(() => {
     if (!isLoading && !isValidated) {
       if (quizzAnswer?.answerList.length) {
-        setAnswers(quizzAnswer.answerList);
+        setAnswers(quizzAnswer.answerList as QCAnswerType[]);
         setIsValidated(true);
-        const areAnswersCorrect = quizzAnswer.answerList.every(answer => answer.isSelected === answer.correct);
+        const areAnswersCorrect = (quizzAnswer.answerList as QCAnswerType[])
+          .every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(areAnswersCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
