@@ -20,17 +20,15 @@ export default StyleSheet.create({
   company: {
     ...FIRA_SANS_REGULAR.MD,
     marginHorizontal: MARGIN.MD,
-    marginTop: MARGIN.MD,
-    marginBottom: MARGIN.SM,
   },
   holding: {
-    ...FIRA_SANS_REGULAR.XS,
+    ...FIRA_SANS_REGULAR.SM,
     marginHorizontal: MARGIN.MD,
-    marginBottom: MARGIN.SM,
     color: GREY[500],
   },
   separator: {
     borderTopWidth: BORDER_WIDTH,
     borderColor: GREY[200],
+    paddingVertical: PADDING.LG,
   },
 });

@@ -28,7 +28,7 @@ const CompanySearchModal = ({ onRequestClose, visible, companyOptions }: Company
   const renderCompany = (company: CompanyType) => (
     <TouchableOpacity style={styles.separator} onPress={() => onPressCompany(company._id)}>
       <Text style={styles.company}>{company.name}</Text>
-      <Text style={styles.holding}>{get(company, 'holding.name')}</Text>
+      {company.holding && <Text style={styles.holding}>{get(company, 'holding.name')}</Text>}
     </TouchableOpacity>
   );
 
