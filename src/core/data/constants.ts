@@ -132,3 +132,6 @@ export const AUTHENTICATION = 'authentication';
 export const LOGIN_CODE = 'login_code';
 export const IDENTITY_VERIFICATION = 'identity_verification';
 export const ACCOUNT_CREATION = 'account_creation';
+
+// COMPANIES
+export const DIRECTORY = 'directory';

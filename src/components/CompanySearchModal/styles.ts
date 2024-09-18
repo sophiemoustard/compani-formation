@@ -19,10 +19,16 @@ export default StyleSheet.create({
   },
   company: {
     ...FIRA_SANS_REGULAR.MD,
-    margin: MARGIN.MD,
+    marginHorizontal: MARGIN.MD,
+  },
+  holding: {
+    ...FIRA_SANS_REGULAR.SM,
+    marginHorizontal: MARGIN.MD,
+    color: GREY[500],
   },
   separator: {
     borderTopWidth: BORDER_WIDTH,
     borderColor: GREY[200],
+    paddingVertical: PADDING.LG,
   },
 });
