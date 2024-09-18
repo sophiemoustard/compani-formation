@@ -25,7 +25,7 @@ interface FillTheGap {
 
 export interface FillTheGapAnswers {
   text: string
-  visible: boolean,
+  isSelected: boolean,
   _id: string,
 }
 
@@ -54,7 +54,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, visible: true }))));
+      setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, isSelected: false }))));
       setSelectedAnswers(goodAnswers.map(() => ''));
     }
     setIsRightSwipeEnabled(isValidated);
@@ -86,7 +86,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
     const updateAnswer = (gapIdx: number, newGapValue: string) => {
       setSelectedAnswers(array => Object.assign([], array, { [gapIdx]: newGapValue }));
-      newPropositions[selectedPropIdx].visible = !newGapValue;
+      newPropositions[selectedPropIdx].isSelected = newGapValue;
     };
 
     const isMovingSelectedAnswer = selectedAnswerIdx > -1;
@@ -101,7 +101,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
       const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
       if (isGapAlreadyFilled) {
         const previousAnswerIdx = newPropositions.map(prop => prop._id).indexOf(selectedAnswers[gapIndex]);
-        newPropositions[previousAnswerIdx].visible = true;
+        newPropositions[previousAnswerIdx].isSelected = false;
       }
       updateAnswer(gapIndex, movedProp);
     }
@@ -116,8 +116,8 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
     return goodAnswers.includes(_id);
   };
 
-  const renderContent = (isVisible, item, _id, idx?) => {
-    if (!isVisible) return null;
+  const renderContent = (isSelected, item, _id, idx?) => {
+    if (isSelected) return null;
 
     const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
       isSelected={selectedAnswers.includes(_id)} isGoodAnswer={isGoodAnswer(_id, idx)} />;
@@ -136,8 +136,8 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
     onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
     renderContent={() => renderContent(
-      !!selectedAnswers[idx],
-      { ...propositions.find(p => p._id === selectedAnswers[idx]), visible: true },
+      !selectedAnswers[idx],
+      { ...propositions.find(p => p._id === selectedAnswers[idx]), isSelected: false },
       selectedAnswers[idx],
       idx
     )} />;
