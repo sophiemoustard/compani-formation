@@ -7,7 +7,7 @@ interface FillTheGapPropositionListProps {
   isValidated: boolean,
   propositions: FillTheGapAnswers[],
   setProposition: (event: any) => void,
-  renderContent: (isSelected: boolean, item: FillTheGapAnswers, _id: string) => JSX.Element,
+  renderContent: (item: FillTheGapAnswers) => JSX.Element,
 }
 
 const FillTheGapPropositionList = ({
@@ -17,9 +17,8 @@ const FillTheGapPropositionList = ({
 }: FillTheGapPropositionListProps) => (
   <View style={styles.answersContainer} pointerEvents={isValidated ? 'none' : 'auto'}>
     {propositions.map((proposition, idx) =>
-      <DraxView style={styles.gapContainer} key={`proposition${idx}`}
-        onReceiveDragDrop={event => setProposition(event)}
-        renderContent={() => renderContent(proposition.isSelected, proposition, proposition._id)} />)}
+      <DraxView style={styles.gapContainer} key={`proposition${idx}`} onReceiveDragDrop={event => setProposition(event)}
+        renderContent={() => renderContent(proposition)} />)}
   </View>
 );
 

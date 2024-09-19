@@ -86,7 +86,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
     const updateAnswer = (gapIdx: number, newGapValue: string) => {
       setSelectedAnswers(array => Object.assign([], array, { [gapIdx]: newGapValue }));
-      newPropositions[selectedPropIdx].isSelected = newGapValue;
+      newPropositions[selectedPropIdx].isSelected = !!newGapValue;
     };
 
     const isMovingSelectedAnswer = selectedAnswerIdx > -1;
@@ -116,31 +116,34 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
     return goodAnswers.includes(_id);
   };
 
-  const renderContent = (isSelected, item, _id, idx?) => {
-    if (isSelected) return null;
+  const renderContent = (item, idx?) => {
+    if (item.isSelected) return null;
 
     const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
-      isSelected={selectedAnswers.includes(_id)} isGoodAnswer={isGoodAnswer(_id, idx)} />;
+      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx)} />;
 
-    const webAnswer = { dragged: { payload: _id, dragTranslationRatio: { x: 0, y: 0 } } };
+    const webAnswer = { dragged: { payload: item._id, dragTranslationRatio: { x: 0, y: 0 } } };
 
     return IS_WEB
       ? <TouchableOpacity style={style.answerContainer} onPress={() => setAnswersAndPropositions(webAnswer)}>
         {proposition}
       </TouchableOpacity>
-      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={_id} longPressDelay={0}>
+      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={item._id}
+        longPressDelay={0}>
         {proposition}
       </DraxView>;
   };
 
-  const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
-    onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
-    renderContent={() => renderContent(
-      !selectedAnswers[idx],
-      { ...propositions.find(p => p._id === selectedAnswers[idx]), isSelected: false },
-      selectedAnswers[idx],
-      idx
-    )} />;
+  const renderGap = (idx) => {
+    const proposition = {
+      ...propositions.find(p => p._id === selectedAnswers[idx]),
+      isSelected: !selectedAnswers[idx],
+    };
+
+    return <DraxView style={style.gapContainer} key={`gap${idx}`}
+      onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
+      renderContent={() => renderContent(proposition, idx)} />;
+  };
 
   const onPressFooterButton = () => {
     if (!isValidated) {
