@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import ExitModal from '../../../components/ExitModal';
-import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
+import { IS_IOS, SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import { useGetExitConfirmationModal, useSetExitConfirmationModal } from '../../../store/cards/hooks';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import styles from './styles';
@@ -31,8 +31,9 @@ const CardScreen = ({ index, goBack }: CardScreenProps) => {
     if (event.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
       runOnJS(navigation.navigate)(`card-${index + 1}`);
     }
-  })
-    .activeOffsetX([-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]);
+  });
+
+  if (!IS_IOS) onSwipe.activeOffsetX([-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]);
 
   return (
     <GestureDetector gesture={onSwipe}>
