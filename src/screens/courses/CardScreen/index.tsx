@@ -31,11 +31,11 @@ const CardScreen = ({ index, goBack }: CardScreenProps) => {
     if (event.translationX < -SWIPE_SENSIBILITY && isRightSwipeEnabled) {
       runOnJS(navigation.navigate)(`card-${index + 1}`);
     }
-  });
+  })
+    .activeOffsetX([-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]);
 
   return (
-    <GestureDetector gesture={onSwipe}
-      activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
+    <GestureDetector gesture={onSwipe}>
       <View style={styles.cardScreen}>
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr(e) de cela ?'}
           onPressCancelButton={() => setExitConfirmationModal(false)} contentText={'Tous vos progrès seront perdus'} />
