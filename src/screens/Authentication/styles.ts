@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: 'cover',
     height: '100%',
+    width: '100%',
   },
   inner: {
     flex: 1,
