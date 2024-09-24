@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
 import DraggableFlatList from 'react-native-draggable-flatlist';
@@ -8,6 +8,7 @@ import CardHeader from '../../../../components/cards/CardHeader';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import FooterGradient from '../../../../components/design/FooterGradient';
 import OrderProposition from '../../../../components/cards/OrderProposition';
+import { IS_WEB } from '../../../../core/data/constants';
 import { quizJingle } from '../../../../core/helpers/utils';
 import {
   useAddQuizzAnswer,
@@ -34,6 +35,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   const addQuizzAnswer = useAddQuizzAnswer();
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
+  const [webScrollEnable, setWebScrollEnable] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
@@ -80,6 +82,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       if (isOrderCorrect) incGoodAnswersCount();
       addQuizzAnswer({ card: card._id, answerList: answers });
 
+      setWebScrollEnable(IS_WEB);
       return setIsValidated(true);
     }
     return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
@@ -94,6 +97,19 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     })));
   };
 
+  const renderContent = () => (
+    webScrollEnable
+      ? <ScrollView style={style.container}>
+        <DraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
+          keyExtractor={item => item.label} renderItem={renderItem} ListHeaderComponent={renderInformativeText} />
+      </ScrollView>
+      : <View style={style.container}>
+        <DraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
+          keyExtractor={item => item.label} renderItem={renderItem} ListHeaderComponent={renderInformativeText}
+          activationDistance={IS_WEB ? 1 : 0}/>
+      </View>
+  );
+
   const renderItem = ({ item, drag }: { item: AnswerPositionType, drag: () => void}) =>
     <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
 
@@ -105,16 +121,13 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
   if (isLoading) return null;
 
-  const style = styles(footerColors.background);
+  const style = styles(footerColors.background, webScrollEnable);
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
       <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-      <View style={style.container}>
-        <DraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
-          keyExtractor={item => item.label} renderItem={renderItem} ListHeaderComponent={renderInformativeText} />
-      </View>
+      {renderContent()}
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient /> }
         <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}

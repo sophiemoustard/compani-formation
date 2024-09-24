@@ -3,7 +3,7 @@ import { GREY } from '../../../../styles/colors';
 import { FIRA_SANS_REGULAR } from '../../../../styles/fonts';
 import { MARGIN } from '../../../../styles/metrics';
 
-const styles = (backgroundColor: string) => StyleSheet.create({
+const styles = (backgroundColor: string, webScrollEnable: boolean) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: GREY[100],
@@ -11,7 +11,7 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   container: {
     marginHorizontal: MARGIN.LG,
     flex: 1,
-    justifyContent: 'flex-end',
+    ...(!webScrollEnable && { justifyContent: 'flex-end' }),
     marginBottom: MARGIN.SM,
   },
   questionContainer: {
