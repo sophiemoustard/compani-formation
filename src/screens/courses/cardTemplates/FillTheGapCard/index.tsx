@@ -108,12 +108,12 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
     setPropositions(newPropositions);
   };
 
-  const isGoodAnswer = (_id, idx) => {
+  const isGoodAnswer = (propositionId, idx) => {
     if (Number.isInteger(idx)) {
-      return card.canSwitchAnswers ? goodAnswers.includes(_id) : goodAnswers.indexOf(_id) === idx;
+      return card.canSwitchAnswers ? goodAnswers.includes(propositionId) : goodAnswers.indexOf(propositionId) === idx;
     }
 
-    return goodAnswers.includes(_id);
+    return goodAnswers.includes(propositionId);
   };
 
   const renderContent = (item, idx?) => {
