@@ -114,13 +114,14 @@ export type OrderTheSequenceType = {
 export type GapAnswerType = {
   text: string,
   _id: string,
+  correct: boolean,
 }
 
 export type FillTheGapType = {
   _id: string,
   template: string,
   gappedText: string,
-  falsyGapAnswers: GapAnswerType[],
+  gapAnswers: GapAnswerType[],
   explanation: string,
   canSwitchAnswers: boolean,
 }

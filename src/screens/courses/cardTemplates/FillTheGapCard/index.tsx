@@ -11,7 +11,7 @@ import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
-import { isWeb } from '../../../../core/data/constants';
+import { IS_WEB } from '../../../../core/data/constants';
 import { quizJingle } from '../../../../core/helpers/utils';
 import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
@@ -25,7 +25,8 @@ interface FillTheGap {
 
 export interface FillTheGapAnswers {
   text: string
-  visible: boolean,
+  isSelected: boolean,
+  _id: string,
 }
 
 const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
@@ -47,14 +48,13 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setGoodAnswers(card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) || []);
+      setGoodAnswers(card.gapAnswers.filter(a => a.correct).map(a => a._id));
     }
   }, [card, isLoading, isValidated]);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setPropositions(shuffle([...card.falsyGapAnswers.map(a => a.text), ...goodAnswers])
-        .map(proposition => ({ text: proposition, visible: true })));
+      setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, isSelected: false }))));
       setSelectedAnswers(goodAnswers.map(() => ''));
     }
     setIsRightSwipeEnabled(isValidated);
@@ -79,14 +79,14 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   const setAnswersAndPropositions = (event, gapIndex?) => {
     const { payload: movedProp } = event.dragged;
     const newPropositions = [...propositions];
-    const selectedPropIdx = newPropositions.map(prop => prop.text).indexOf(movedProp);
+    const selectedPropIdx = newPropositions.map(prop => prop._id).indexOf(movedProp);
     const isActionClick = Math.abs(event.dragged.dragTranslationRatio.x) < 0.1 &&
       Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
     const selectedAnswerIdx = selectedAnswers.indexOf(movedProp);
 
     const updateAnswer = (gapIdx: number, newGapValue: string) => {
       setSelectedAnswers(array => Object.assign([], array, { [gapIdx]: newGapValue }));
-      newPropositions[selectedPropIdx].visible = !newGapValue;
+      newPropositions[selectedPropIdx].isSelected = !!newGapValue;
     };
 
     const isMovingSelectedAnswer = selectedAnswerIdx > -1;
@@ -100,52 +100,56 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
     if (isFillingGapByDroping) {
       const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
       if (isGapAlreadyFilled) {
-        const previousAnswerIdx = newPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
-        newPropositions[previousAnswerIdx].visible = true;
+        const previousAnswerIdx = newPropositions.map(prop => prop._id).indexOf(selectedAnswers[gapIndex]);
+        newPropositions[previousAnswerIdx].isSelected = false;
       }
-
       updateAnswer(gapIndex, movedProp);
     }
-
     setPropositions(newPropositions);
   };
 
-  const isGoodAnswer = (text, idx) => {
+  const isGoodAnswer = (propositionId, idx) => {
     if (Number.isInteger(idx)) {
-      return card.canSwitchAnswers ? goodAnswers.includes(text) : goodAnswers.indexOf(text) === idx;
+      return card.canSwitchAnswers ? goodAnswers.includes(propositionId) : goodAnswers.indexOf(propositionId) === idx;
     }
 
-    return goodAnswers.includes(text);
+    return goodAnswers.includes(propositionId);
   };
 
-  const renderContent = (isVisible, item, text, idx?) => {
-    if (!isVisible) return null;
+  const renderContent = (item, idx?) => {
+    if (item.isSelected) return null;
 
     const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
-      isSelected={selectedAnswers.includes(text)} isGoodAnswer={isGoodAnswer(text, idx)} />;
+      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx)} />;
 
-    const webAnswer = { dragged: { payload: text, dragTranslationRatio: { x: 0, y: 0 } } };
+    const webAnswer = { dragged: { payload: item._id, dragTranslationRatio: { x: 0, y: 0 } } };
 
-    return isWeb
+    return IS_WEB
       ? <TouchableOpacity style={style.answerContainer} onPress={() => setAnswersAndPropositions(webAnswer)}>
         {proposition}
       </TouchableOpacity>
-      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
+      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={item._id}
+        longPressDelay={0}>
         {proposition}
       </DraxView>;
   };
 
-  const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
-    onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
-    renderContent={() => renderContent(
-      !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
-    )} />;
+  const renderGap = (idx) => {
+    const proposition = {
+      ...propositions.find(p => p._id === selectedAnswers[idx]),
+      isSelected: !selectedAnswers[idx],
+    };
+
+    return <DraxView style={style.gapContainer} key={`gap${idx}`}
+      onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
+      renderContent={() => renderContent(proposition, idx)} />;
+  };
 
   const onPressFooterButton = () => {
     if (!isValidated) {
       const areAnswersCorrect = card.canSwitchAnswers
-        ? selectedAnswers.every(text => goodAnswers.includes(text))
-        : selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
+        ? selectedAnswers.every(_id => goodAnswers.includes(_id))
+        : selectedAnswers.every((_id, idx) => (_id === goodAnswers[idx]));
 
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);

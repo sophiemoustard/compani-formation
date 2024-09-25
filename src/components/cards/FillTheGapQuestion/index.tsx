@@ -10,7 +10,7 @@ interface FillTheGapQuestionProps {
 
 const FillTheGapQuestion = ({ text, isValidated, renderGap }: FillTheGapQuestionProps) => {
   // DON'T remove the spaces around '<trou>' in replace. They are needed for the display.
-  const splittedText = text.replace(/<trou>[^<]*<\/trou>/g, ' <trou> ').split(/\s+/);
+  const splittedText = text.replace(/<trou>/g, ' <trou> ').split(/\s+/);
 
   const formatText = (words: Array<string>) => {
     let i = 0;
