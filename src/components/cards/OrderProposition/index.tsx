@@ -12,10 +12,9 @@ interface OrderPropositionProps {
     tempPosition: number
   },
   isValidated: boolean,
-  drag: () => void,
 }
 
-const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionProps) => {
+const OrderProposition = ({ item, isValidated = false }: OrderPropositionProps) => {
   const [color, setColor] = useState<string>(GREY[200]);
   const [dragButtonColor, setDragButtonColor] = useState<string>(GREY[500]);
   const [isGoodPosition, setIsGoodPosition] = useState<boolean>(item.goodPosition === item.tempPosition);
@@ -43,7 +42,7 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
   return (
     <View style={style.container}>
       <View style={style.contentContainer}>
-        <TouchableOpacity style={style.indexContainer} disabled={isValidated} onLongPress={drag} delayLongPress={0}
+        <TouchableOpacity style={style.indexContainer} disabled={isValidated} delayLongPress={0}
           activeOpacity={1}>
           <View style={style.index}>
             <MaterialCommunityIcons name="drag" size={30} color={dragButtonColor} />
@@ -51,7 +50,7 @@ const OrderProposition = ({ item, isValidated = false, drag }: OrderPropositionP
           </View>
           <Shadow customStyle={style.indexShadow} />
         </TouchableOpacity>
-        <TouchableOpacity style={style.answerContainer} disabled={isValidated} onLongPress={drag} delayLongPress={100}>
+        <TouchableOpacity style={style.answerContainer} disabled={isValidated} delayLongPress={100}>
           <View style={style.answer}>
             <Text style={style.answerText}>{item.label}</Text>
           </View>
