@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import ExitModal from '../../../components/ExitModal';
-import { SWIPE_SENSIBILITY } from '../../../core/data/constants';
+import { IS_IOS, SWIPE_SENSIBILITY } from '../../../core/data/constants';
 import { useGetExitConfirmationModal, useSetExitConfirmationModal } from '../../../store/cards/hooks';
 import CardTemplate from '../cardTemplates/CardTemplate';
 import styles from './styles';
@@ -33,9 +33,10 @@ const CardScreen = ({ index, goBack }: CardScreenProps) => {
     }
   });
 
+  if (!IS_IOS) onSwipe.activeOffsetX([-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]);
+
   return (
-    <GestureDetector gesture={onSwipe}
-      activeOffsetX={[-SWIPE_SENSIBILITY, SWIPE_SENSIBILITY]}>
+    <GestureDetector gesture={onSwipe}>
       <View style={styles.cardScreen}>
         <ExitModal onPressConfirmButton={goBack} visible={exitConfirmationModal} title={'Êtes-vous sûr(e) de cela ?'}
           onPressCancelButton={() => setExitConfirmationModal(false)} contentText={'Tous vos progrès seront perdus'} />
