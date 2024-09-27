@@ -16,7 +16,7 @@ import {
 } from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
-import { footerColorsType, QCAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
+import { footerColorsType, StoreAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface SingleChoiceQuestionCardProps {
@@ -32,7 +32,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   const addQuizzAnswer = useAddQuizzAnswer();
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<QCAnswerType[]>([]);
+  const [answers, setAnswers] = useState<StoreAnswerType[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -42,9 +42,9 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   useEffect(() => {
     if (!isLoading && !isPressed) {
       if (quizzAnswer?.answerList.length) {
-        setAnswers(quizzAnswer.answerList as QCAnswerType[]);
+        setAnswers(quizzAnswer.answerList as StoreAnswerType[]);
         setIsPressed(true);
-        const isAnswerCorrect = (quizzAnswer.answerList as QCAnswerType[])
+        const isAnswerCorrect = (quizzAnswer.answerList as StoreAnswerType[])
           .every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(isAnswerCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
@@ -66,7 +66,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
 
   if (isLoading) return null;
 
-  const renderItem = (item: QCAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
+  const renderItem = (item: StoreAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
     isValidated={isPressed} isGoodAnswer={item.correct} index={answerIndex} item={item.text}
     isSelected={item.isSelected} />;
 

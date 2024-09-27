@@ -21,7 +21,7 @@ import {
   useIncGoodAnswersCount,
 } from '../../../../store/cards/hooks';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
+import { FillTheGapType, footerColorsType, StoreAnswerType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface FillTheGap {
@@ -63,17 +63,22 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   useEffect(() => {
     if (!isLoading && !isValidated) {
       if (quizzAnswer?.answerList.length) {
-        setPropositions(quizzAnswer.answerList.map(a => ({ _id: a._id, isSelected: a.isSelected, text: a.text })));
+        setPropositions(
+          (quizzAnswer.answerList as StoreAnswerType[])
+            .map(a => ({ _id: a._id, isSelected: a.isSelected, text: a.text }))
+        );
         setIsValidated(true);
         setSelectedAnswers(
-          quizzAnswer.answerList
+          (quizzAnswer.answerList as StoreAnswerType[])
             .filter(a => a.isSelected)
-            .sort((a, b) => a.position - b.position)
+            .sort((a, b) => a.position! - b.position!)
             .map(a => a._id)
         );
         const areAnswersCorrect = card.canSwitchAnswers
-          ? quizzAnswer.answerList.every(a => a.isSelected === a.correct)
-          : quizzAnswer.answerList.filter(a => a.correct).every(a => (a._id === goodAnswers[a.position]));
+          ? (quizzAnswer.answerList as StoreAnswerType[]).every(a => a.isSelected === a.correct)
+          : (quizzAnswer.answerList as StoreAnswerType[])
+            .filter(a => a.isSelected)
+            .every(a => (a._id === goodAnswers[a.position!]));
         setIsAnsweredCorrectly(areAnswersCorrect);
       } else {
         setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, isSelected: false }))));
