@@ -13,7 +13,13 @@ import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion'
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
 import { IS_WEB } from '../../../../core/data/constants';
 import { quizJingle } from '../../../../core/helpers/utils';
-import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import {
+  useAddQuizzAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuizzAnswer,
+  useIncGoodAnswersCount,
+} from '../../../../store/cards/hooks';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
 import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
 import styles from './styles';
@@ -33,6 +39,8 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   const card: FillTheGapType = useGetCard();
   const index = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
+  const quizzAnswer = useGetQuizzAnswer();
+  const addQuizzAnswer = useAddQuizzAnswer();
   const [goodAnswers, setGoodAnswers] = useState<string[]>([]);
   const [propositions, setPropositions] = useState<FillTheGapAnswers[]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
@@ -54,11 +62,26 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, isSelected: false }))));
-      setSelectedAnswers(goodAnswers.map(() => ''));
+      if (quizzAnswer?.answerList.length) {
+        setPropositions(quizzAnswer.answerList.map(a => ({ _id: a._id, isSelected: a.isSelected, text: a.text })));
+        setIsValidated(true);
+        setSelectedAnswers(
+          quizzAnswer.answerList
+            .filter(a => a.isSelected)
+            .sort((a, b) => a.position - b.position)
+            .map(a => a._id)
+        );
+        const areAnswersCorrect = card.canSwitchAnswers
+          ? quizzAnswer.answerList.every(a => a.isSelected === a.correct)
+          : quizzAnswer.answerList.filter(a => a.correct).every(a => (a._id === goodAnswers[a.position]));
+        setIsAnsweredCorrectly(areAnswersCorrect);
+      } else {
+        setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, isSelected: false }))));
+        setSelectedAnswers(goodAnswers.map(() => ''));
+      }
     }
     setIsRightSwipeEnabled(isValidated);
-  }, [card, goodAnswers, isLoading, isValidated, setIsRightSwipeEnabled]);
+  }, [card, goodAnswers, isLoading, isValidated, quizzAnswer, setIsRightSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -154,6 +177,13 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
+      const answers = propositions
+        .map(p => ({
+          ...p,
+          correct: goodAnswers.includes(p._id),
+          ...p.isSelected && { position: selectedAnswers.indexOf(p._id) },
+        }));
+      addQuizzAnswer({ card: card._id, answerList: answers });
 
       return setIsValidated(true);
     }
