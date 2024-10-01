@@ -18,11 +18,28 @@ interface OrderPropositionProps {
   isValidated: boolean,
   onDragUp: (index: number, positionCount: number) => void,
   onDragDown: (index: number, positionCount: number) => void
+  onMoveUp: (index: number, indexToMove: number) => void,
+  onMoveDown: (index: number, indexToMove: number) => void,
 }
 
-const OrderProposition = ({ item, index, isValidated = false, onDragUp, onDragDown }: OrderPropositionProps) => {
+const OrderProposition = ({
+  item,
+  index,
+  isValidated = false,
+  onDragUp,
+  onDragDown,
+  onMoveUp,
+  onMoveDown,
+}: OrderPropositionProps) => {
   const translate = useSharedValue({ x: 0, y: 0 });
+  const lastOffsetY = useSharedValue(0);
   const zIndex = useSharedValue(0);
+
+  const possibleDragRanges = [
+    [0, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 160],
+    [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD],
+    [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160],
+  ];
 
   const [color, setColor] = useState<string>(GREY[200]);
   const [dragButtonColor, setDragButtonColor] = useState<string>(GREY[500]);
@@ -58,24 +75,35 @@ const OrderProposition = ({ item, index, isValidated = false, onDragUp, onDragDo
         const maxY = [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160];
         translate.value = {
           x: 0,
-          y: Math.max(event.translationY, maxY[index]),
+          y: Math.max(lastOffsetY.value + event.translationY, maxY[index]),
         };
+        const value = possibleDragRanges[index].reduce((prev, curr) =>
+          (Math.abs(curr - translate.value.y) < Math.abs(prev - translate.value.y) ? curr : prev));
+        const indexToMove = index - (Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
+        runOnJS(onMoveUp)(index, indexToMove);
       } else {
         const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
         translate.value = {
           x: 0,
-          y: Math.min(event.translationY, maxY[index]),
+          y: Math.min(lastOffsetY.value + event.translationY, maxY[index]),
         };
+        const value = possibleDragRanges[index].reduce((prev, curr) =>
+          (Math.abs(curr - translate.value.y) < Math.abs(prev - translate.value.y) ? curr : prev));
+        const indexToMove = index + (Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
+        runOnJS(onMoveDown)(index, indexToMove);
       }
     })
-    .onEnd(() => {
+    .onEnd((event) => {
       if (isValidated) return;
-      const positionCount = Math.round((translate.value.y) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
+      const positionCount = Math.round((event.translationY) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
       if (Math.abs(positionCount)) {
         if (positionCount < 0) runOnJS(onDragUp)(index, Math.abs(positionCount));
         if (positionCount > 0) runOnJS(onDragDown)(index, Math.abs(positionCount));
       }
-      translate.value = { x: 0, y: 0 };
+      const value = possibleDragRanges[index].reduce((prev, curr) =>
+        (Math.abs(curr - translate.value.y) < Math.abs(prev - translate.value.y) ? curr : prev));
+      translate.value = { x: 0, y: value };
+      lastOffsetY.value = value;
       zIndex.value = 0;
     });
 

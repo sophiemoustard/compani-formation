@@ -98,7 +98,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         tempPosition: tmpPosition,
         _id: ans._id,
       };
-    }).sort((a, b) => a.tempPosition - b.tempPosition);
+    });
+    // .sort((a, b) => a.tempPosition - b.tempPosition);
     setAnswers(newAnswers);
   };
 
@@ -117,8 +118,22 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         tempPosition: tmpPosition,
         _id: ans._id,
       };
-    }).sort((a, b) => a.tempPosition - b.tempPosition);
+    });
+    // .sort((a, b) => a.tempPosition - b.tempPosition);
     setAnswers(newAnswers);
+  };
+
+  const onMoveUp = (index: number, indexToMove: number) => {
+    if (index === indexToMove + 1) console.log(`${indexToMove} goes to ${index}`);
+    if (index === indexToMove + 2) {
+      console.log(`${indexToMove} goes to ${indexToMove + 1} and ${indexToMove + 1} goes to ${index}`);
+    }
+  };
+  const onMoveDown = (index: number, indexToMove: number) => {
+    if (index === indexToMove - 1) console.log(`${indexToMove} goes to ${index}`);
+    if (index === indexToMove - 2) {
+      console.log(`${indexToMove} goes to ${indexToMove - 1} and ${indexToMove - 1} goes to ${index}`);
+    }
   };
 
   const renderInformativeText = () => (
@@ -139,7 +154,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         {renderInformativeText()}
         {answers.map((item, index) =>
           <OrderProposition key={index} item={item} index={index} isValidated={isValidated} onDragUp={onDragUp}
-            onDragDown={onDragDown}/>)}
+            onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown} />)}
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
