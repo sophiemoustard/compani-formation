@@ -27,7 +27,7 @@ interface OrderTheSequenceCardProps {
 
 const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSequenceCardProps) => {
   const card: OrderTheSequenceType = useGetCard();
-  const index = useGetCardIndex();
+  const cardIndex = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
   const quizzAnswer = useGetQuizzAnswer();
   const addQuizzAnswer = useAddQuizzAnswer();
@@ -81,17 +81,17 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
       return setIsValidated(true);
     }
-    return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
+    return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const onDragUp = (i: number, positionCount: number) => {
+  const onDragUp = (index: number, positionCount: number) => {
     let newPosition = 0;
-    if (i === 1) newPosition = 0;
-    if (i === 2) newPosition = i - positionCount;
+    if (index === 1) newPosition = 0;
+    if (index === 2) newPosition = index - positionCount;
     const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
       let tmpPosition = answerIndex;
-      if (answerIndex === newPosition) tmpPosition = i;
-      if (answerIndex === i) tmpPosition = newPosition;
+      if (answerIndex === newPosition) tmpPosition = index;
+      if (answerIndex === index) tmpPosition = newPosition;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -102,15 +102,15 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     setAnswers(newAnswers);
   };
 
-  const onDragDown = (i: number, positionCount: number) => {
+  const onDragDown = (index: number, positionCount: number) => {
     let newPosition = 2;
-    if (i === 0) newPosition = i + positionCount;
-    if (i === 1) newPosition = 2;
+    if (index === 0) newPosition = index + positionCount;
+    if (index === 1) newPosition = 2;
 
     const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
       let tmpPosition = answerIndex;
-      if (answerIndex === newPosition) tmpPosition = i;
-      if (answerIndex === i) tmpPosition = newPosition;
+      if (answerIndex === newPosition) tmpPosition = index;
+      if (answerIndex === index) tmpPosition = newPosition;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -137,13 +137,13 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
       <View style={style.container}>
         {renderInformativeText()}
-        {answers.map((item, i) =>
-          <OrderProposition key={i} item={item} index={i} isValidated={isValidated} onDragUp={onDragUp}
+        {answers.map((item, index) =>
+          <OrderProposition key={index} item={item} index={index} isValidated={isValidated} onDragUp={onDragUp}
             onDragDown={onDragDown}/>)}
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
-        <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}
+        <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={cardIndex}
           buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
           onPressFooterButton={onPressFooterButton} />
       </View>
