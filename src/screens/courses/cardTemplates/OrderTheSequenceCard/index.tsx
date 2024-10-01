@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
-import Animated, { useAnimatedStyle, useSharedValue, runOnJS } from 'react-native-reanimated';
-import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import CardHeader from '../../../../components/cards/CardHeader';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
@@ -21,51 +19,11 @@ import cardsStyle from '../../../../styles/cards';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import { footerColorsType, OrderTheSequenceType, AnswerPositionType } from '../../../../types/CardType';
 import styles from './styles';
-import { ORDERED_ANSWER_MIN_HEIGHT } from '../../../../styles/metrics';
 
 interface OrderTheSequenceCardProps {
   isLoading: boolean,
   setIsRightSwipeEnabled: (boolean: boolean) => void,
 }
-
-const DraggableItem = ({ item, index, isValidated, goUp, goDown }) => {
-  const translate = useSharedValue({ x: 0, y: 0 });
-  const zIndex = useSharedValue(0);
-
-  const gesture = Gesture
-    .Pan()
-    .onBegin(() => {
-      zIndex.value = 100;
-    })
-    .onUpdate((event) => {
-      if (isValidated) return;
-      translate.value = {
-        x: 0,
-        y: event.translationY,
-      };
-    })
-    .onEnd(() => {
-      if (isValidated) return;
-      const move = Math.round((translate.value.y) / ORDERED_ANSWER_MIN_HEIGHT);
-      if (Math.abs(move)) {
-        if (move < 0) runOnJS(goUp)(index, Math.abs(move));
-        if (move > 0) runOnJS(goDown)(index, Math.abs(move));
-      }
-      translate.value = { x: 0, y: 0 };
-      zIndex.value = 0;
-    });
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translate.value.x }, { translateY: translate.value.y }],
-    zIndex: zIndex.value,
-  }));
-
-  return <GestureDetector gesture={gesture}>
-    <Animated.View style={[animatedStyle]}>
-      <OrderProposition item={item} isValidated={isValidated} />
-    </Animated.View>
-  </GestureDetector>;
-};
 
 const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSequenceCardProps) => {
   const card: OrderTheSequenceType = useGetCard();
@@ -126,41 +84,41 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
   };
 
-  const goUp = (i: number, increment: number) => {
+  const onDragUp = (i: number, positionCount: number) => {
     let newPosition = 0;
     if (i === 1) newPosition = 0;
-    if (i === 2) newPosition = i - increment;
-    const truc = answers.map((ans: AnswerPositionType, answerIndex: number) => {
-      let test = answerIndex;
-      if (answerIndex === newPosition) test = i;
-      if (answerIndex === i) test = newPosition;
+    if (i === 2) newPosition = i - positionCount;
+    const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
+      let tmpPosition = answerIndex;
+      if (answerIndex === newPosition) tmpPosition = i;
+      if (answerIndex === i) tmpPosition = newPosition;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
-        tempPosition: test,
+        tempPosition: tmpPosition,
         _id: ans._id,
       };
     }).sort((a, b) => a.tempPosition - b.tempPosition);
-    setAnswers(truc);
+    setAnswers(newAnswers);
   };
 
-  const goDown = (i: number, decrement: number) => {
+  const onDragDown = (i: number, positionCount: number) => {
     let newPosition = 2;
-    if (i === 0) newPosition = i + decrement;
+    if (i === 0) newPosition = i + positionCount;
     if (i === 1) newPosition = 2;
 
-    const truc = answers.map((ans: AnswerPositionType, answerIndex: number) => {
-      let test = answerIndex;
-      if (answerIndex === newPosition) test = i;
-      if (answerIndex === i) test = newPosition;
+    const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
+      let tmpPosition = answerIndex;
+      if (answerIndex === newPosition) tmpPosition = i;
+      if (answerIndex === i) tmpPosition = newPosition;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
-        tempPosition: test,
+        tempPosition: tmpPosition,
         _id: ans._id,
       };
     }).sort((a, b) => a.tempPosition - b.tempPosition);
-    setAnswers(truc);
+    setAnswers(newAnswers);
   };
 
   const renderInformativeText = () => (
@@ -180,7 +138,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       <View style={style.container}>
         {renderInformativeText()}
         {answers.map((item, i) =>
-          <DraggableItem key={i} item={item} index={i} isValidated={isValidated} goUp={goUp} goDown={goDown}/>)}
+          <OrderProposition key={i} item={item} index={i} isValidated={isValidated} onDragUp={onDragUp}
+            onDragDown={onDragDown}/>)}
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
