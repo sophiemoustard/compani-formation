@@ -6,7 +6,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
 import styles from './styles';
-import { ORDERED_ANSWER_MIN_HEIGHT } from '../../../styles/metrics';
+import { MARGIN, ORDERED_ANSWER_MIN_HEIGHT } from '../../../styles/metrics';
 
 interface OrderPropositionProps {
   item: {
@@ -53,14 +53,24 @@ const OrderProposition = ({ item, index, isValidated = false, onDragUp, onDragDo
     })
     .onUpdate((event) => {
       if (isValidated) return;
-      translate.value = {
-        x: 0,
-        y: event.translationY,
-      };
+
+      if (event.translationY < 0) {
+        const maxY = [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160];
+        translate.value = {
+          x: 0,
+          y: Math.max(event.translationY, maxY[index]),
+        };
+      } else {
+        const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
+        translate.value = {
+          x: 0,
+          y: Math.min(event.translationY, maxY[index]),
+        };
+      }
     })
     .onEnd(() => {
       if (isValidated) return;
-      const positionCount = Math.round((translate.value.y) / ORDERED_ANSWER_MIN_HEIGHT);
+      const positionCount = Math.round((translate.value.y) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
       if (Math.abs(positionCount)) {
         if (positionCount < 0) runOnJS(onDragUp)(index, Math.abs(positionCount));
         if (positionCount > 0) runOnJS(onDragDown)(index, Math.abs(positionCount));
