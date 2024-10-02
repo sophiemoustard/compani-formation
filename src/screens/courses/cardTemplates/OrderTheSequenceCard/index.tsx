@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
 import { useNavigation } from '@react-navigation/native';
@@ -173,13 +173,13 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
       <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-      <View style={style.container}>
+      <ScrollView contentContainerStyle={style.container}>
         {renderInformativeText()}
         {answers.map((item, index) =>
           <OrderProposition key={index} item={item} index={index} isValidated={isValidated} onDragUp={onDragUp}
             onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown}
             ref={el => itemRefs.current[index] = el} />)}
-      </View>
+      </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
         <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={cardIndex}

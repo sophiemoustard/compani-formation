@@ -88,12 +88,18 @@ const OrderProposition = React.forwardRef((
 
   const gesture = Gesture
     .Pan()
+    .manualActivation(true)
+    .onTouchesMove((_e, state) => {
+      if (!isValidated) {
+        state.activate();
+      } else {
+        state.fail();
+      }
+    })
     .onBegin(() => {
       zIndex.value = 100;
     })
     .onUpdate((event) => {
-      if (isValidated) return;
-
       if (event.translationY < 0) {
         const maxY = [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160];
         translate.value = {
@@ -119,7 +125,6 @@ const OrderProposition = React.forwardRef((
       }
     })
     .onEnd((event) => {
-      if (isValidated) return;
       let positionCount = 0;
       if (event.translationY > 0) {
         const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
@@ -150,7 +155,7 @@ const OrderProposition = React.forwardRef((
   const style = styles(color, isValidated);
 
   return (
-    <GestureDetector gesture={gesture}>
+    <GestureDetector gesture={gesture} touchAction={'pan-y'}>
       <Animated.View style={[animatedStyle]}>
         <View style={style.container}>
           <View style={style.contentContainer}>
