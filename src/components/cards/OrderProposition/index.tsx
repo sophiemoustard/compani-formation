@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, TouchableOpacity, Text } from 'react-native';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -16,21 +16,24 @@ interface OrderPropositionProps {
   },
   index: number,
   isValidated: boolean,
-  onDragUp: (index: number, positionCount: number) => void,
-  onDragDown: (index: number, positionCount: number) => void
-  onMoveUp: (index: number, indexToMove: number) => void,
-  onMoveDown: (index: number, indexToMove: number) => void,
+  onDragUp: (index: number, tmpPosition: number, positionCount: number) => void,
+  onDragDown: (index: number, tmpPosition: number, positionCount: number) => void
+  onMoveUp: (index: number, tmpToMove: number) => void,
+  onMoveDown: (index: number, tmpToMove: number) => void,
 }
 
-const OrderProposition = ({
-  item,
-  index,
-  isValidated = false,
-  onDragUp,
-  onDragDown,
-  onMoveUp,
-  onMoveDown,
-}: OrderPropositionProps) => {
+const OrderProposition = React.forwardRef((
+  {
+    item,
+    index,
+    isValidated = false,
+    onDragUp,
+    onDragDown,
+    onMoveUp,
+    onMoveDown,
+  }: OrderPropositionProps,
+  ref
+) => {
   const translate = useSharedValue({ x: 0, y: 0 });
   const lastOffsetY = useSharedValue(0);
   const zIndex = useSharedValue(0);
@@ -63,6 +66,14 @@ const OrderProposition = ({
     setIsGoodPosition(item.goodPosition === item.tempPosition);
   }, [item]);
 
+  useImperativeHandle(ref, () => ({
+    moveTo(newPositionY: number, sign: string) {
+      const translateY = sign === '+' ? lastOffsetY.value + newPositionY : lastOffsetY.value - newPositionY;
+      translate.value = { x: 0, y: translateY };
+      lastOffsetY.value = translateY;
+    },
+  }));
+
   const gesture = Gesture
     .Pan()
     .onBegin(() => {
@@ -77,28 +88,35 @@ const OrderProposition = ({
           x: 0,
           y: Math.max(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const value = possibleDragRanges[index].reduce((prev, curr) =>
-          (Math.abs(curr - translate.value.y) < Math.abs(prev - translate.value.y) ? curr : prev));
-        const indexToMove = index - (Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
-        runOnJS(onMoveUp)(index, indexToMove);
-      } else {
+        const value = [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160].reduce((prev, curr) =>
+          (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
+        const jump = Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD);
+        runOnJS(onMoveUp)(index, item.tempPosition - 1);
+      } else if (event.translationY > 0) {
         const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
         translate.value = {
           x: 0,
           y: Math.min(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const value = possibleDragRanges[index].reduce((prev, curr) =>
-          (Math.abs(curr - translate.value.y) < Math.abs(prev - translate.value.y) ? curr : prev));
-        const indexToMove = index + (Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
-        runOnJS(onMoveDown)(index, indexToMove);
+        runOnJS(onMoveDown)(index, item.tempPosition + 1);
       }
     })
     .onEnd((event) => {
       if (isValidated) return;
-      const positionCount = Math.round((event.translationY) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
+      let positionCount = 0;
+      if (event.translationY > 0) {
+        const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
+        const translationY = Math.min(event.translationY, maxY[item.tempPosition]);
+        positionCount = Math.round(translationY / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
+      }
+      if (event.translationY < 0) {
+        const maxY = [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160];
+        const translationY = Math.max(event.translationY, maxY[item.tempPosition]);
+        positionCount = Math.round(translationY / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD));
+      }
       if (Math.abs(positionCount)) {
-        if (positionCount < 0) runOnJS(onDragUp)(index, Math.abs(positionCount));
-        if (positionCount > 0) runOnJS(onDragDown)(index, Math.abs(positionCount));
+        if (positionCount < 0) runOnJS(onDragUp)(index, item.tempPosition, Math.abs(positionCount));
+        if (positionCount > 0) runOnJS(onDragDown)(index, item.tempPosition, Math.abs(positionCount));
       }
       const value = possibleDragRanges[index].reduce((prev, curr) =>
         (Math.abs(curr - translate.value.y) < Math.abs(prev - translate.value.y) ? curr : prev));
@@ -138,6 +156,6 @@ const OrderProposition = ({
       </Animated.View>
     </GestureDetector>
   );
-};
+});
 
 export default OrderProposition;

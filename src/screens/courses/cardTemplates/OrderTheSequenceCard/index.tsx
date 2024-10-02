@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
@@ -19,6 +19,7 @@ import cardsStyle from '../../../../styles/cards';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import { footerColorsType, OrderTheSequenceType, AnswerPositionType } from '../../../../types/CardType';
 import styles from './styles';
+import { MARGIN, ORDERED_ANSWER_MIN_HEIGHT } from '../../../../styles/metrics';
 
 interface OrderTheSequenceCardProps {
   isLoading: boolean,
@@ -40,6 +41,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     background: GREY[100],
   });
   const navigation = useNavigation();
+  const itemRefs = useRef([]);
+  const disableDrag = useRef<boolean>(false);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -84,14 +87,19 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const onDragUp = (index: number, positionCount: number) => {
+  const onDragUp = (index: number, tempPosition: number, positionCount: number) => {
     let newPosition = 0;
-    if (index === 1) newPosition = 0;
-    if (index === 2) newPosition = index - positionCount;
+    if (positionCount === 1) {
+      newPosition = tempPosition - 1;
+    }
+    if (positionCount === 2) {
+      newPosition = tempPosition - 2;
+    }
     const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
-      let tmpPosition = answerIndex;
-      if (answerIndex === newPosition) tmpPosition = index;
+      let tmpPosition = ans.tempPosition;
       if (answerIndex === index) tmpPosition = newPosition;
+      if (ans.tempPosition === newPosition) tmpPosition = ans.tempPosition + 1;
+      else if (positionCount === 2) tmpPosition = ans.tempPosition + 1;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -99,19 +107,23 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         _id: ans._id,
       };
     });
-    // .sort((a, b) => a.tempPosition - b.tempPosition);
     setAnswers(newAnswers);
+    disableDrag.current = false;
   };
 
-  const onDragDown = (index: number, positionCount: number) => {
-    let newPosition = 2;
-    if (index === 0) newPosition = index + positionCount;
-    if (index === 1) newPosition = 2;
-
+  const onDragDown = (index: number, tempPosition: number, positionCount: number) => {
+    let newPosition = 0;
+    if (positionCount === 1) {
+      newPosition = tempPosition + 1;
+    }
+    if (positionCount === 2) {
+      newPosition = tempPosition + 2;
+    }
     const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
-      let tmpPosition = answerIndex;
-      if (answerIndex === newPosition) tmpPosition = index;
+      let tmpPosition = ans.tempPosition;
       if (answerIndex === index) tmpPosition = newPosition;
+      if (ans.tempPosition === newPosition) tmpPosition = ans.tempPosition - 1;
+      else if (positionCount === 2) tmpPosition = ans.tempPosition - 1;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -119,20 +131,42 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         _id: ans._id,
       };
     });
-    // .sort((a, b) => a.tempPosition - b.tempPosition);
     setAnswers(newAnswers);
+    disableDrag.current = false;
   };
 
-  const onMoveUp = (index: number, indexToMove: number) => {
-    if (index === indexToMove + 1) console.log(`${indexToMove} goes to ${index}`);
-    if (index === indexToMove + 2) {
-      console.log(`${indexToMove} goes to ${indexToMove + 1} and ${indexToMove + 1} goes to ${index}`);
+  const onMoveUp = (index: number, tmpToMove: number) => {
+    const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
+    if (answers[index].tempPosition === tmpToMove + 1) {
+      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
+        console.log(`${indexToMove} with tmp${answers[indexToMove].tempPosition} goes to ${index} rank with tmp${answers[index].tempPosition}`);
+        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
+        disableDrag.current = true;
+      }
+    }
+    if (answers[index].tempPosition === tmpToMove + 2) {
+      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
+        console.log(`ici ${indexToMove} goes to ${indexToMove + 1} and ${indexToMove + 1} goes to ${index}`);
+        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
+        disableDrag.current = true;
+      }
     }
   };
-  const onMoveDown = (index: number, indexToMove: number) => {
-    if (index === indexToMove - 1) console.log(`${indexToMove} goes to ${index}`);
-    if (index === indexToMove - 2) {
-      console.log(`${indexToMove} goes to ${indexToMove - 1} and ${indexToMove - 1} goes to ${index}`);
+  const onMoveDown = (index: number, tmpToMove: number) => {
+    const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
+    if (answers[index].tempPosition === tmpToMove - 1) {
+      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
+        console.log(`${indexToMove} with tmp${answers[indexToMove].tempPosition} goes to ${index} rank with tmp${answers[index].tempPosition}`);
+        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
+        disableDrag.current = true;
+      }
+    }
+    if (answers[index].tempPosition === tmpToMove - 2) {
+      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
+        console.log(`ici ${indexToMove} goes to ${indexToMove + 1} and ${indexToMove + 1} goes to ${index}`);
+        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
+        disableDrag.current = true;
+      }
     }
   };
 
@@ -154,7 +188,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         {renderInformativeText()}
         {answers.map((item, index) =>
           <OrderProposition key={index} item={item} index={index} isValidated={isValidated} onDragUp={onDragUp}
-            onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown} />)}
+            onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown}
+            ref={el => itemRefs.current[index] = el} />)}
       </View>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
