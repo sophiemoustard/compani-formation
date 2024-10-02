@@ -42,7 +42,6 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   });
   const navigation = useNavigation();
   const itemRefs = useRef([]);
-  const disableDrag = useRef<boolean>(false);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -99,7 +98,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       let tmpPosition = ans.tempPosition;
       if (answerIndex === index) tmpPosition = newPosition;
       if (ans.tempPosition === newPosition) tmpPosition = ans.tempPosition + 1;
-      else if (positionCount === 2) tmpPosition = ans.tempPosition + 1;
+      else if (positionCount === 2 && answerIndex !== index) tmpPosition = ans.tempPosition + 1;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -108,7 +107,6 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       };
     });
     setAnswers(newAnswers);
-    disableDrag.current = false;
   };
 
   const onDragDown = (index: number, tempPosition: number, positionCount: number) => {
@@ -123,7 +121,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       let tmpPosition = ans.tempPosition;
       if (answerIndex === index) tmpPosition = newPosition;
       if (ans.tempPosition === newPosition) tmpPosition = ans.tempPosition - 1;
-      else if (positionCount === 2) tmpPosition = ans.tempPosition - 1;
+      else if (positionCount === 2 && answerIndex !== index) tmpPosition = ans.tempPosition - 1;
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -132,40 +130,31 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       };
     });
     setAnswers(newAnswers);
-    disableDrag.current = false;
   };
 
   const onMoveUp = (index: number, tmpToMove: number) => {
     const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
     if (answers[index].tempPosition === tmpToMove + 1) {
-      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
-        console.log(`${indexToMove} with tmp${answers[indexToMove].tempPosition} goes to ${index} rank with tmp${answers[index].tempPosition}`);
+      if ([0, 1, 2].includes(tmpToMove)) {
         itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
-        disableDrag.current = true;
       }
     }
     if (answers[index].tempPosition === tmpToMove + 2) {
-      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
-        console.log(`ici ${indexToMove} goes to ${indexToMove + 1} and ${indexToMove + 1} goes to ${index}`);
+      if ([0, 1, 2].includes(tmpToMove)) {
         itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
-        disableDrag.current = true;
       }
     }
   };
   const onMoveDown = (index: number, tmpToMove: number) => {
     const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
     if (answers[index].tempPosition === tmpToMove - 1) {
-      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
-        console.log(`${indexToMove} with tmp${answers[indexToMove].tempPosition} goes to ${index} rank with tmp${answers[index].tempPosition}`);
+      if ([0, 1, 2].includes(tmpToMove)) {
         itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
-        disableDrag.current = true;
       }
     }
     if (answers[index].tempPosition === tmpToMove - 2) {
-      if (!disableDrag.current && [0, 1, 2].includes(tmpToMove)) {
-        console.log(`ici ${indexToMove} goes to ${indexToMove + 1} and ${indexToMove + 1} goes to ${index}`);
+      if ([0, 1, 2].includes(tmpToMove)) {
         itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
-        disableDrag.current = true;
       }
     }
   };

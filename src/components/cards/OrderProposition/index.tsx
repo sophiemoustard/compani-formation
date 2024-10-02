@@ -69,6 +69,18 @@ const OrderProposition = React.forwardRef((
   useImperativeHandle(ref, () => ({
     moveTo(newPositionY: number, sign: string) {
       const translateY = sign === '+' ? lastOffsetY.value + newPositionY : lastOffsetY.value - newPositionY;
+      const range = sign === '+'
+        ? [
+          [80, 160, 80],
+          [0, 80, 0],
+          [-80, 0, -80],
+        ]
+        : [
+          [80, 0, 80],
+          [0, -80, 0],
+          [-80, -160, -80],
+        ];
+      if (range[index][item.tempPosition] !== translateY) return;
       translate.value = { x: 0, y: translateY };
       lastOffsetY.value = translateY;
     },
@@ -88,17 +100,22 @@ const OrderProposition = React.forwardRef((
           x: 0,
           y: Math.max(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const value = [0, -(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD), -160].reduce((prev, curr) =>
+        const value = maxY.reduce((prev, curr) =>
           (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
         const jump = Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD);
-        runOnJS(onMoveUp)(index, item.tempPosition - 1);
+        if (jump === 1) runOnJS(onMoveUp)(index, item.tempPosition - 1);
+        if (jump === 2)runOnJS(onMoveUp)(index, item.tempPosition - 2);
       } else if (event.translationY > 0) {
         const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
         translate.value = {
           x: 0,
           y: Math.min(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        runOnJS(onMoveDown)(index, item.tempPosition + 1);
+        const value = maxY.reduce((prev, curr) =>
+          (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
+        const jump = Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD);
+        if (jump === 1) runOnJS(onMoveDown)(index, item.tempPosition + 1);
+        if (jump === 2)runOnJS(onMoveDown)(index, item.tempPosition + 2);
       }
     })
     .onEnd((event) => {
