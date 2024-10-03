@@ -1,10 +1,8 @@
-// @ts-nocheck
-
 import { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
-import { DraxProvider, DraxView } from 'react-native-drax';
+import { DraxDragWithReceiverEventData, DraxProvider, DraxView } from 'react-native-drax';
 import { useNavigation } from '@react-navigation/native';
 import CardHeader from '../../../../components/cards/CardHeader';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
@@ -97,7 +95,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   const style = styles(footerColors.background);
 
-  const setAnswersAndPropositions = (event, gapIndex?) => {
+  const setAnswersAndPropositions = (event: DraxDragWithReceiverEventData, gapIndex?: number) => {
     const { payload: movedProp } = event.dragged;
     const newPropositions = [...propositions];
     const selectedPropIdx = newPropositions.map(prop => prop._id).indexOf(movedProp);
@@ -119,17 +117,17 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
     const isFillingGapByDroping = !isActionClick && Number.isInteger(gapIndex);
     if (isFillingGapByDroping) {
-      const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
+      const isGapAlreadyFilled = selectedAnswers[gapIndex!] && selectedAnswers[gapIndex!] !== movedProp;
       if (isGapAlreadyFilled) {
-        const previousAnswerIdx = newPropositions.map(prop => prop._id).indexOf(selectedAnswers[gapIndex]);
+        const previousAnswerIdx = newPropositions.map(prop => prop._id).indexOf(selectedAnswers[gapIndex!]);
         newPropositions[previousAnswerIdx].isSelected = false;
       }
-      updateAnswer(gapIndex, movedProp);
+      updateAnswer(gapIndex!, movedProp);
     }
     setPropositions(newPropositions);
   };
 
-  const isGoodAnswer = (propositionId, idx) => {
+  const isGoodAnswer = (propositionId: string, idx: number) => {
     if (Number.isInteger(idx)) {
       return card.canSwitchAnswers ? goodAnswers.includes(propositionId) : goodAnswers.indexOf(propositionId) === idx;
     }
@@ -137,16 +135,17 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
     return goodAnswers.includes(propositionId);
   };
 
-  const renderContent = (item, idx?) => {
+  const renderContent = (item: FillTheGapAnswers, idx?: number) => {
     if (item.isSelected) return null;
 
     const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
-      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx)} />;
+      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx!)} />;
 
     const webAnswer = { dragged: { payload: item._id, dragTranslationRatio: { x: 0, y: 0 } } };
 
     return IS_WEB
-      ? <TouchableOpacity style={style.answerContainer} onPress={() => setAnswersAndPropositions(webAnswer)}>
+      ? <TouchableOpacity style={style.answerContainer}
+        onPress={() => setAnswersAndPropositions(webAnswer as DraxDragWithReceiverEventData)}>
         {proposition}
       </TouchableOpacity>
       : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={item._id}
@@ -155,7 +154,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
       </DraxView>;
   };
 
-  const renderGap = (idx) => {
+  const renderGap = (idx: number) => {
     const proposition = {
       ...propositions.find(p => p._id === selectedAnswers[idx]),
       isSelected: !selectedAnswers[idx],
@@ -163,7 +162,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
     return <DraxView style={style.gapContainer} key={`gap${idx}`}
       onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
-      renderContent={() => renderContent(proposition, idx)} />;
+      renderContent={() => renderContent(proposition as FillTheGapAnswers, idx)} />;
   };
 
   const onPressFooterButton = () => {
