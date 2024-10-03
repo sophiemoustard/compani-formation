@@ -127,7 +127,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
     setPropositions(newPropositions);
   };
 
-  const isGoodAnswer = (propositionId: string, idx: number) => {
+  const isGoodAnswer = (propositionId: string, idx?: number) => {
     if (Number.isInteger(idx)) {
       return card.canSwitchAnswers ? goodAnswers.includes(propositionId) : goodAnswers.indexOf(propositionId) === idx;
     }
@@ -136,10 +136,10 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   };
 
   const renderContent = (item: FillTheGapAnswers, idx?: number) => {
-    if (item.isSelected) return null;
+    if (item.isSelected) return <></>;
 
     const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
-      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx!)} />;
+      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx)} />;
 
     const webAnswer = { dragged: { payload: item._id, dragTranslationRatio: { x: 0, y: 0 } } };
 

@@ -7,7 +7,7 @@ interface FillTheGapPropositionListProps {
   isValidated: boolean,
   propositions: FillTheGapAnswers[],
   setProposition: (event: any) => void,
-  renderContent: (item: FillTheGapAnswers) => JSX.Element | null,
+  renderContent: (item: FillTheGapAnswers) => JSX.Element,
 }
 
 const FillTheGapPropositionList = ({
