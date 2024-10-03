@@ -132,30 +132,16 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     setAnswers(newAnswers);
   };
 
-  const onMoveUp = (index: number, tmpToMove: number) => {
-    const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
-    if (answers[index].tempPosition === tmpToMove + 1) {
-      if ([0, 1, 2].includes(tmpToMove)) {
-        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
-      }
-    }
-    if (answers[index].tempPosition === tmpToMove + 2) {
-      if ([0, 1, 2].includes(tmpToMove)) {
-        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
-      }
+  const onMoveUp = (tmpToMove: number) => {
+    if ([0, 1, 2].includes(tmpToMove)) {
+      const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
+      itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
     }
   };
-  const onMoveDown = (index: number, tmpToMove: number) => {
-    const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
-    if (answers[index].tempPosition === tmpToMove - 1) {
-      if ([0, 1, 2].includes(tmpToMove)) {
-        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
-      }
-    }
-    if (answers[index].tempPosition === tmpToMove - 2) {
-      if ([0, 1, 2].includes(tmpToMove)) {
-        itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
-      }
+  const onMoveDown = (tmpToMove: number) => {
+    if ([0, 1, 2].includes(tmpToMove)) {
+      const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
+      itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
     }
   };
 

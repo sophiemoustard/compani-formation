@@ -18,8 +18,8 @@ interface OrderPropositionProps {
   isValidated: boolean,
   onDragUp: (index: number, tmpPosition: number, positionCount: number) => void,
   onDragDown: (index: number, tmpPosition: number, positionCount: number) => void
-  onMoveUp: (index: number, tmpToMove: number) => void,
-  onMoveDown: (index: number, tmpToMove: number) => void,
+  onMoveUp: (tmpToMove: number) => void,
+  onMoveDown: (tmpToMove: number) => void,
 }
 
 const OrderProposition = React.forwardRef((
@@ -37,6 +37,8 @@ const OrderProposition = React.forwardRef((
   const translate = useSharedValue({ x: 0, y: 0 });
   const lastOffsetY = useSharedValue(0);
   const zIndex = useSharedValue(0);
+  const upJumpdone = useSharedValue(0);
+  const downJumpdone = useSharedValue(0);
 
   const possibleDragRanges = [
     [0, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 160],
@@ -80,7 +82,13 @@ const OrderProposition = React.forwardRef((
           [0, -80, 0],
           [-80, -160, -80],
         ];
-      if (range[index][item.tempPosition] !== translateY) return;
+      const allowedPositions = [
+        [0, 80, 160],
+        [-80, 0, 80],
+        [0, -80, -160],
+      ];
+      const rank = allowedPositions[index].findIndex(b => b === lastOffsetY.value);
+      if (range[index][rank] !== translateY) return;
       translate.value = { x: 0, y: translateY };
       lastOffsetY.value = translateY;
     },
@@ -109,8 +117,25 @@ const OrderProposition = React.forwardRef((
         const value = maxY.reduce((prev, curr) =>
           (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
         const jump = Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD);
-        if (jump === 1) runOnJS(onMoveUp)(index, item.tempPosition - 1);
-        if (jump === 2)runOnJS(onMoveUp)(index, item.tempPosition - 2);
+        if (jump === 0) {
+          if (upJumpdone.value === 1) {
+            runOnJS(onMoveDown)(item.tempPosition - 1);
+            upJumpdone.value = 0;
+          }
+        }
+        if (jump === 1) {
+          if (upJumpdone.value === 2) {
+            runOnJS(onMoveDown)(0);
+            upJumpdone.value = 1;
+          } else if (upJumpdone.value !== 1) {
+            runOnJS(onMoveUp)(item.tempPosition - 1);
+            upJumpdone.value = 1;
+          }
+        }
+        if (jump === 2 && upJumpdone.value !== 2) {
+          runOnJS(onMoveUp)(item.tempPosition - 2);
+          upJumpdone.value = 2;
+        }
       } else if (event.translationY > 0) {
         const maxY = [160, ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, 0];
         translate.value = {
@@ -120,8 +145,25 @@ const OrderProposition = React.forwardRef((
         const value = maxY.reduce((prev, curr) =>
           (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
         const jump = Math.abs(value) / (ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD);
-        if (jump === 1) runOnJS(onMoveDown)(index, item.tempPosition + 1);
-        if (jump === 2)runOnJS(onMoveDown)(index, item.tempPosition + 2);
+        if (jump === 0) {
+          if (downJumpdone.value === 1) {
+            runOnJS(onMoveUp)(item.tempPosition + 1);
+            downJumpdone.value = 0;
+          }
+        }
+        if (jump === 1) {
+          if (downJumpdone.value === 2) {
+            runOnJS(onMoveUp)(2);
+            downJumpdone.value = 1;
+          } else if (downJumpdone.value !== 1) {
+            runOnJS(onMoveDown)(item.tempPosition + 1);
+            downJumpdone.value = 1;
+          }
+        }
+        if (jump === 2 && downJumpdone.value !== 2) {
+          runOnJS(onMoveDown)(item.tempPosition + 2);
+          downJumpdone.value = 2;
+        }
       }
     })
     .onEnd((event) => {
@@ -145,6 +187,8 @@ const OrderProposition = React.forwardRef((
       translate.value = { x: 0, y: value };
       lastOffsetY.value = value;
       zIndex.value = 0;
+      upJumpdone.value = 0;
+      downJumpdone.value = 0;
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
