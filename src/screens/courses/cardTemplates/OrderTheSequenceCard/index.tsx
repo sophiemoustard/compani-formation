@@ -19,7 +19,6 @@ import cardsStyle from '../../../../styles/cards';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import { footerColorsType, OrderTheSequenceType, AnswerPositionType } from '../../../../types/CardType';
 import styles from './styles';
-import { MARGIN, ORDERED_ANSWER_MIN_HEIGHT } from '../../../../styles/metrics';
 
 interface OrderTheSequenceCardProps {
   isLoading: boolean,
@@ -35,6 +34,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
+  const [viewHeight, setViewHeight] = useState<number[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -132,16 +132,16 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     setAnswers(newAnswers);
   };
 
-  const onMoveUp = (tmpToMove: number) => {
+  const onMoveUp = (whereYouGo: number, tmpToMove: number) => {
     if ([0, 1, 2].includes(tmpToMove)) {
       const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
-      itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '+');
+      itemRefs.current[indexToMove].moveTo(viewHeight[whereYouGo], '+');
     }
   };
-  const onMoveDown = (tmpToMove: number) => {
+  const onMoveDown = (whereYouGo: number, tmpToMove: number) => {
     if ([0, 1, 2].includes(tmpToMove)) {
       const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
-      itemRefs.current[indexToMove].moveTo(ORDERED_ANSWER_MIN_HEIGHT + MARGIN.MD, '-');
+      itemRefs.current[indexToMove].moveTo(viewHeight[whereYouGo], '-');
     }
   };
 
@@ -153,6 +153,15 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
   if (isLoading) return null;
 
+  const setHeight = (height: number, index: number) => {
+    setViewHeight((prevState: number[]) => {
+      const newState = [...prevState];
+      newState[index] = height;
+
+      return newState;
+    });
+  };
+
   const style = styles(footerColors.background);
 
   return (
@@ -163,8 +172,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         {renderInformativeText()}
         {answers.map((item, index) =>
           <OrderProposition key={index} item={item} index={index} isValidated={isValidated} onDragUp={onDragUp}
-            onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown}
-            ref={el => itemRefs.current[index] = el} />)}
+            onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown} setViewHeight={setHeight}
+            viewHeight={viewHeight} ref={el => itemRefs.current[index] = el} items={answers}/>)}
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
