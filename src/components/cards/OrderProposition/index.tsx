@@ -17,10 +17,8 @@ interface OrderPropositionProps {
   index: number,
   isValidated: boolean,
   viewHeight: number[],
-  onDragUp: (index: number, tmpPosition: number, positionCount: number) => void,
-  onDragDown: (index: number, tmpPosition: number, positionCount: number) => void
-  onMoveUp: (index: number, tmpToMove: number) => void,
-  onMoveDown: (index: number, tmpToMove: number) => void,
+  setAnswersTempPositions: (index: number, positionCount: number) => void,
+  onMove: (index: number, tmpToMove: number, orientation: number) => void,
   setViewHeight: (height: number, index: number) => void,
 }
 
@@ -31,10 +29,8 @@ const OrderProposition = React.forwardRef((
     index,
     isValidated = false,
     viewHeight,
-    onDragUp,
-    onDragDown,
-    onMoveUp,
-    onMoveDown,
+    setAnswersTempPositions,
+    onMove,
     setViewHeight,
   }: OrderPropositionProps,
   ref
@@ -44,6 +40,7 @@ const OrderProposition = React.forwardRef((
   const zIndex = useSharedValue(0);
   const upJumpdone = useSharedValue(0);
   const downJumpdone = useSharedValue(0);
+  const positionCount = useSharedValue(0);
 
   const handleLayout = (event) => {
     const { height } = event.nativeEvent.layout;
@@ -72,19 +69,19 @@ const OrderProposition = React.forwardRef((
   }, [item]);
 
   useImperativeHandle(ref, () => ({
-    moveTo(newPositionY: number, sign: string) {
+    moveTo(triggeringPropsRange: number) {
       const sumOtherHeight = viewHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
-      const translateY = sign === '+' ? lastOffsetY.value + newPositionY : lastOffsetY.value - newPositionY;
-      const range = sign === '+'
+      const translateY = lastOffsetY.value + triggeringPropsRange;
+      const range = triggeringPropsRange > 0
         ? [
-          [newPositionY, sumOtherHeight, sumOtherHeight, sumOtherHeight],
+          [triggeringPropsRange, sumOtherHeight, sumOtherHeight, sumOtherHeight],
           [[0, viewHeight[2] - viewHeight[0]], viewHeight[2], viewHeight[2], [0, viewHeight[2] - viewHeight[0]]],
           [0, 0, 0, [-viewHeight[0], -viewHeight[1]]],
         ]
         : [
           [0, 0, 0, [viewHeight[1], viewHeight[2]]],
           [-viewHeight[0], -viewHeight[0], -viewHeight[0], [0, viewHeight[2] - viewHeight[0]]],
-          [-newPositionY, -sumOtherHeight, -sumOtherHeight, -sumOtherHeight],
+          [triggeringPropsRange, -sumOtherHeight, -sumOtherHeight, -sumOtherHeight],
         ];
       const allowedPositions = [
         [0, viewHeight[1], viewHeight[2], sumOtherHeight],
@@ -120,27 +117,32 @@ const OrderProposition = React.forwardRef((
           x: 0,
           y: Math.max(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const value = [0, sumOtherHeight / 2, sumOtherHeight].reduce((prev, curr) =>
-          (Math.abs(curr + event.translationY) < Math.abs(prev + event.translationY) ? curr : prev));
-        const jump = value / (sumOtherHeight / 2);
-        if (jump === 0) {
-          if (upJumpdone.value === 1) {
-            runOnJS(onMoveDown)(index, item.tempPosition - 1);
-            upJumpdone.value = 0;
+        if (lastOffsetY.value + event.translationY >= maxY[index]) {
+          const value = [0, sumOtherHeight / 2, sumOtherHeight].reduce((prev, curr) =>
+            (Math.abs(curr + event.translationY) < Math.abs(prev + event.translationY) ? curr : prev));
+          const jump = value / (sumOtherHeight / 2);
+          if (jump === 0) {
+            positionCount.value = 0;
+            if (upJumpdone.value === 1) {
+              runOnJS(onMove)(index, item.tempPosition - 1, -1);
+              upJumpdone.value = 0;
+            }
           }
-        }
-        if (jump === 1) {
-          if (upJumpdone.value === 2) {
-            runOnJS(onMoveDown)(index, 0);
-            upJumpdone.value = 1;
-          } else if (upJumpdone.value !== 1) {
-            runOnJS(onMoveUp)(index, item.tempPosition - 1);
-            upJumpdone.value = 1;
+          if (jump === 1) {
+            positionCount.value = -1;
+            if (upJumpdone.value === 2) {
+              runOnJS(onMove)(index, 0, -1);
+              upJumpdone.value = 1;
+            } else if (upJumpdone.value !== 1) {
+              runOnJS(onMove)(index, item.tempPosition - 1, 1);
+              upJumpdone.value = 1;
+            }
           }
-        }
-        if (jump === 2 && upJumpdone.value !== 2) {
-          runOnJS(onMoveUp)(index, item.tempPosition - 2);
-          upJumpdone.value = 2;
+          if (jump === 2 && upJumpdone.value !== 2) {
+            positionCount.value = -2;
+            runOnJS(onMove)(index, item.tempPosition - 2, 1);
+            upJumpdone.value = 2;
+          }
         }
       } else if (event.translationY > 0) {
         const maxY = [sumOtherHeight, viewHeight[2], 0];
@@ -148,61 +150,53 @@ const OrderProposition = React.forwardRef((
           x: 0,
           y: Math.min(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const value = [0, sumOtherHeight / 2, sumOtherHeight].reduce((prev, curr) =>
-          (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
-        const jump = value / (sumOtherHeight / 2);
-        if (jump === 0) {
-          if (downJumpdone.value === 1) {
-            runOnJS(onMoveUp)(index, item.tempPosition + 1);
-            downJumpdone.value = 0;
+        if (lastOffsetY.value + event.translationY <= maxY[index]) {
+          const value = [0, sumOtherHeight / 2, sumOtherHeight].reduce((prev, curr) =>
+            (Math.abs(curr - event.translationY) < Math.abs(prev - event.translationY) ? curr : prev));
+          const jump = value / (sumOtherHeight / 2);
+          if (jump === 0) {
+            positionCount.value = 0;
+            if (downJumpdone.value === 1) {
+              runOnJS(onMove)(index, item.tempPosition + 1, 1);
+              downJumpdone.value = 0;
+            }
           }
-        }
-        if (jump === 1) {
-          if (downJumpdone.value === 2) {
-            runOnJS(onMoveUp)(index, 2);
-            downJumpdone.value = 1;
-          } else if (downJumpdone.value !== 1) {
-            runOnJS(onMoveDown)(index, item.tempPosition + 1);
-            downJumpdone.value = 1;
+          if (jump === 1) {
+            positionCount.value = 1;
+            if (downJumpdone.value === 2) {
+              runOnJS(onMove)(index, 2, 1);
+              downJumpdone.value = 1;
+            } else if (downJumpdone.value !== 1) {
+              runOnJS(onMove)(index, item.tempPosition + 1, -1);
+              downJumpdone.value = 1;
+            }
           }
-        }
-        if (jump === 2 && downJumpdone.value !== 2) {
-          runOnJS(onMoveDown)(index, item.tempPosition + 2);
-          downJumpdone.value = 2;
+          if (jump === 2 && downJumpdone.value !== 2) {
+            positionCount.value = 2;
+            runOnJS(onMove)(index, item.tempPosition + 2, -1);
+            downJumpdone.value = 2;
+          }
         }
       }
     })
-    .onEnd((event) => {
-      let positionCount = 0;
+    .onEnd(() => {
       const sumOtherHeight = viewHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
-      if (event.translationY > 0) {
-        const bottomPropIndex = items.findIndex(i => i.tempPosition === 2);
-        const maxY = [sumOtherHeight, viewHeight[bottomPropIndex], 0];
-        const translationY = Math.min(event.translationY, maxY[item.tempPosition]);
-        positionCount = Math.round(translationY / (sumOtherHeight / 2));
-      }
-      if (event.translationY < 0) {
-        const topPropIndex = items.findIndex(i => i.tempPosition === 0);
-        const maxY = [0, -viewHeight[topPropIndex], -sumOtherHeight];
-        const translationY = Math.max(event.translationY, maxY[item.tempPosition]);
-        positionCount = Math.round(translationY / (sumOtherHeight / 2));
-      }
-      if (Math.abs(positionCount)) {
-        if (positionCount < 0) {
+      if (Math.abs(positionCount.value)) {
+        if (positionCount.value < 0) {
           const abovePropIndex = items.findIndex(i => i.tempPosition === item.tempPosition - 1);
 
-          const value = Math.abs(positionCount) === 1 ? -viewHeight[abovePropIndex] : -sumOtherHeight;
+          const value = Math.abs(positionCount.value) === 1 ? -viewHeight[abovePropIndex] : -sumOtherHeight;
           translate.value = { x: 0, y: lastOffsetY.value + value };
           lastOffsetY.value += value;
-          runOnJS(onDragUp)(index, item.tempPosition, Math.abs(positionCount));
+          runOnJS(setAnswersTempPositions)(index, positionCount.value);
         }
-        if (positionCount > 0) {
+        if (positionCount.value > 0) {
           const bottom = items.findIndex(i => i.tempPosition === item.tempPosition + 1);
 
-          const value = positionCount === 1 ? viewHeight[bottom] : sumOtherHeight;
+          const value = positionCount.value === 1 ? viewHeight[bottom] : sumOtherHeight;
           translate.value = { x: 0, y: lastOffsetY.value + value };
           lastOffsetY.value += value;
-          runOnJS(onDragDown)(index, item.tempPosition, Math.abs(positionCount));
+          runOnJS(setAnswersTempPositions)(index, positionCount.value);
         }
       } else {
         translate.value = { x: 0, y: lastOffsetY.value };

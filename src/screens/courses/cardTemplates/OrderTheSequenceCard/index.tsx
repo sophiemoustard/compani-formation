@@ -86,19 +86,14 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const onDragUp = (index: number, tempPosition: number, positionCount: number) => {
-    let newPosition = 0;
-    if (positionCount === 1) {
-      newPosition = tempPosition - 1;
-    }
-    if (positionCount === 2) {
-      newPosition = tempPosition - 2;
-    }
+  const setAnswersTempPositions = (index: number, positionCount: number) => {
+    const newPosition = answers[index].tempPosition + positionCount;
     const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
       let tmpPosition = ans.tempPosition;
       if (answerIndex === index) tmpPosition = newPosition;
-      if (ans.tempPosition === newPosition) tmpPosition = ans.tempPosition + 1;
-      else if (positionCount === 2 && answerIndex !== index) tmpPosition = ans.tempPosition + 1;
+      if (ans.tempPosition === newPosition || (Math.abs(positionCount) === 2 && answerIndex !== index)) {
+        tmpPosition = positionCount < 0 ? ans.tempPosition + 1 : ans.tempPosition - 1;
+      }
       return {
         label: ans.label,
         goodPosition: ans.goodPosition,
@@ -109,40 +104,10 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     setAnswers(newAnswers);
   };
 
-  const onDragDown = (index: number, tempPosition: number, positionCount: number) => {
-    let newPosition = 0;
-    if (positionCount === 1) {
-      newPosition = tempPosition + 1;
-    }
-    if (positionCount === 2) {
-      newPosition = tempPosition + 2;
-    }
-    const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
-      let tmpPosition = ans.tempPosition;
-      if (answerIndex === index) tmpPosition = newPosition;
-      if (ans.tempPosition === newPosition) tmpPosition = ans.tempPosition - 1;
-      else if (positionCount === 2 && answerIndex !== index) tmpPosition = ans.tempPosition - 1;
-      return {
-        label: ans.label,
-        goodPosition: ans.goodPosition,
-        tempPosition: tmpPosition,
-        _id: ans._id,
-      };
-    });
-    setAnswers(newAnswers);
-  };
-
-  const onMoveUp = (whereYouGo: number, tmpToMove: number) => {
-    if ([0, 1, 2].includes(tmpToMove)) {
-      const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
-      itemRefs.current[indexToMove].moveTo(viewHeight[whereYouGo], '+');
-    }
-  };
-  const onMoveDown = (whereYouGo: number, tmpToMove: number) => {
-    if ([0, 1, 2].includes(tmpToMove)) {
-      const indexToMove = answers.findIndex(answer => answer.tempPosition === tmpToMove);
-      itemRefs.current[indexToMove].moveTo(viewHeight[whereYouGo], '-');
-    }
+  const onMove = (index: number, targetPosition: number, orientation: number) => {
+    const indexToMove = answers.findIndex(answer => answer.tempPosition === targetPosition);
+    if (indexToMove < 0) return;
+    itemRefs.current[indexToMove].moveTo(orientation * viewHeight[index]);
   };
 
   const renderInformativeText = () => (
@@ -171,8 +136,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       <ScrollView contentContainerStyle={style.container}>
         {renderInformativeText()}
         {answers.map((item, index) =>
-          <OrderProposition key={index} item={item} index={index} isValidated={isValidated} onDragUp={onDragUp}
-            onDragDown={onDragDown} onMoveUp={onMoveUp} onMoveDown={onMoveDown} setViewHeight={setHeight}
+          <OrderProposition key={index} item={item} index={index} isValidated={isValidated}
+            setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setViewHeight={setHeight}
             viewHeight={viewHeight} ref={el => itemRefs.current[index] = el} items={answers}/>)}
       </ScrollView>
       <View style={style.footerContainer}>
