@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import CardHeader from '../../../../components/cards/CardHeader';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import OrderProposition from '../../../../components/cards/OrderProposition';
+import OrderProposition, { OrderPropositionRef } from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
 import {
   useAddQuizzAnswer,
@@ -41,7 +41,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     background: GREY[100],
   });
   const navigation = useNavigation();
-  const itemRefs = useRef([]);
+  const itemRefs = useRef<OrderPropositionRef[]>([]);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -138,7 +138,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         {answers.map((item, index) =>
           <OrderProposition key={index} item={item} index={index} isValidated={isValidated}
             setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setViewHeight={setHeight}
-            viewHeight={viewHeight} ref={el => itemRefs.current[index] = el} items={answers}/>)}
+            viewHeight={viewHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
+            items={answers}/>)}
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}

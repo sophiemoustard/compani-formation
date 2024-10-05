@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, LayoutChangeEvent } from 'react-native';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { AnswerPositionType } from '../../../types/CardType';
 import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
 import styles from './styles';
@@ -13,7 +14,7 @@ interface OrderPropositionProps {
     goodPosition: number,
     tempPosition: number
   },
-  items: any,
+  items: AnswerPositionType[],
   index: number,
   isValidated: boolean,
   viewHeight: number[],
@@ -22,7 +23,11 @@ interface OrderPropositionProps {
   setViewHeight: (height: number, index: number) => void,
 }
 
-const OrderProposition = React.forwardRef((
+export interface OrderPropositionRef {
+  moveTo: (triggeringPropsRange: number) => void;
+}
+
+const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionProps>((
   {
     item,
     items,
@@ -42,7 +47,7 @@ const OrderProposition = React.forwardRef((
   const downJumpdone = useSharedValue(0);
   const positionCount = useSharedValue(0);
 
-  const handleLayout = (event) => {
+  const handleLayout = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
     setViewHeight(height, index);
   };
