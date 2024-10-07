@@ -32,16 +32,16 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   const quizzAnswer = useGetQuizzAnswer();
   const addQuizzAnswer = useAddQuizzAnswer();
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
+  const itemRefs = useRef<OrderPropositionRef[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
-  const [viewHeight, setViewHeight] = useState<number[]>([]);
+  const [propsHeight, setPropsHeight] = useState<number[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
     background: GREY[100],
   });
   const navigation = useNavigation();
-  const itemRefs = useRef<OrderPropositionRef[]>([]);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
@@ -107,7 +107,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   const onMove = (index: number, targetPosition: number, orientation: number) => {
     const indexToMove = answers.findIndex(answer => answer.tempPosition === targetPosition);
     if (indexToMove < 0) return;
-    itemRefs.current[indexToMove].moveTo(orientation * viewHeight[index]);
+    itemRefs.current[indexToMove].moveTo(orientation * propsHeight[index]);
   };
 
   const renderInformativeText = () => (
@@ -119,7 +119,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   if (isLoading) return null;
 
   const setHeight = (height: number, index: number) => {
-    setViewHeight((prevState: number[]) => {
+    setPropsHeight((prevState: number[]) => {
       const newState = [...prevState];
       newState[index] = height;
 
@@ -137,8 +137,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         {renderInformativeText()}
         {answers.map((item, index) =>
           <OrderProposition key={index} item={item} index={index} isValidated={isValidated}
-            setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setViewHeight={setHeight}
-            viewHeight={viewHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
+            setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setPropsHeight={setHeight}
+            propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
             items={answers}/>)}
       </ScrollView>
       <View style={style.footerContainer}>
