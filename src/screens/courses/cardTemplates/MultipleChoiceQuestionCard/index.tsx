@@ -17,7 +17,7 @@ import {
 } from '../../../../store/cards/hooks';
 import { GREEN, GREY, ORANGE, PINK } from '../../../../styles/colors';
 import cardsStyle from '../../../../styles/cards';
-import { footerColorsType, MultipleChoiceQuestionType, QCAnswerType } from '../../../../types/CardType';
+import { footerColorsType, MultipleChoiceQuestionType, StoreAnswerType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface MultipleChoiceQuestionCardProps {
@@ -31,7 +31,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   const incGoodAnswersCount = useIncGoodAnswersCount();
   const quizzAnswer = useGetQuizzAnswer();
   const addQuizzAnswer = useAddQuizzAnswer();
-  const [answers, setAnswers] = useState<QCAnswerType[]>([]);
+  const [answers, setAnswers] = useState<StoreAnswerType[]>([]);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
@@ -44,10 +44,10 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   useEffect(() => {
     if (!isLoading && !isValidated) {
       if (quizzAnswer?.answerList.length) {
-        setAnswers(quizzAnswer.answerList as QCAnswerType[]);
+        const answerList = quizzAnswer.answerList as StoreAnswerType[];
+        setAnswers(answerList);
         setIsValidated(true);
-        const areAnswersCorrect = (quizzAnswer.answerList as QCAnswerType[])
-          .every(answer => answer.isSelected === answer.correct);
+        const areAnswersCorrect = answerList.every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(areAnswersCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
@@ -71,7 +71,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   const isOneAnswerSelected = () => answers.some(answer => answer.isSelected);
 
   const onSelectAnswer = (index: number) => {
-    setAnswers((prevState: QCAnswerType[]) => {
+    setAnswers((prevState: StoreAnswerType[]) => {
       const newState = [...prevState];
       newState[index].isSelected = !newState[index].isSelected;
 
@@ -96,7 +96,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
     return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const renderItem = (item: QCAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}
+  const renderItem = (item: StoreAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}
     isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} item={item.text} />;
 
   const style = styles(footerColors.background);
