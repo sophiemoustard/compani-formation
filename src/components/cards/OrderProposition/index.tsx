@@ -49,22 +49,20 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   const downJumpdone = useSharedValue(0);
   const positionCount = useSharedValue(0);
 
-  const handleLayout = (event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setPropsHeight(height, index);
-  };
   const [color, setColor] = useState<string>(GREY[200]);
   const [dragButtonColor, setDragButtonColor] = useState<string>(GREY[500]);
   const item = items[index];
   const [isGoodPosition, setIsGoodPosition] = useState<boolean>(item.goodPosition === item.tempPosition);
+  const [sumOtherHeights, setSumOtherHeights] = useState<number>(
+    propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0)
+  );
 
   useEffect(() => {
     if (hasBeenDragged) {
-      const sumOtherHeight = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
       const allowedPositions = [
-        [[0], [propsHeight[1], propsHeight[2]], [sumOtherHeight]],
+        [[0], [propsHeight[1], propsHeight[2]], [sumOtherHeights]],
         [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
-        [[-sumOtherHeight], [-propsHeight[1], -propsHeight[0]], [0]],
+        [[-sumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
       ];
       const offsetY = allowedPositions[index][items[index].tempPosition];
       if (!offsetY.includes(lastOffsetY.value)) {
@@ -92,7 +90,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         }
       }
     }
-  }, [hasBeenDragged, index, items, lastOffsetY, propsHeight, translate, zIndex]);
+  }, [hasBeenDragged, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate, zIndex]);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) {
@@ -112,25 +110,33 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     setIsGoodPosition(item.goodPosition === item.tempPosition);
   }, [item]);
 
+  useEffect(() => {
+    setSumOtherHeights(propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0));
+  }, [index, propsHeight]);
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout;
+    setPropsHeight(height, index);
+  };
+
   useImperativeHandle(ref, () => ({
     moveTo(triggeringPropsRange: number) {
-      const sumOtherHeight = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
       const translateY = lastOffsetY.value + triggeringPropsRange;
       const range = triggeringPropsRange > 0
         ? [
-          [triggeringPropsRange, sumOtherHeight, sumOtherHeight, sumOtherHeight],
+          [triggeringPropsRange, sumOtherHeights, sumOtherHeights, sumOtherHeights],
           [[0, propsHeight[2] - propsHeight[0]], propsHeight[2], propsHeight[2], [0, propsHeight[2] - propsHeight[0]]],
           [0, 0, 0, [-propsHeight[0], -propsHeight[1]]],
         ]
         : [
           [0, 0, 0, [propsHeight[1], propsHeight[2]]],
           [-propsHeight[0], -propsHeight[0], -propsHeight[0], [0, propsHeight[2] - propsHeight[0]]],
-          [triggeringPropsRange, -sumOtherHeight, -sumOtherHeight, -sumOtherHeight],
+          [triggeringPropsRange, -sumOtherHeights, -sumOtherHeights, -sumOtherHeights],
         ];
       const allowedPositions = [
-        [0, propsHeight[1], propsHeight[2], sumOtherHeight],
+        [0, propsHeight[1], propsHeight[2], sumOtherHeights],
         [-propsHeight[0], propsHeight[2] - propsHeight[0], 0, propsHeight[2]],
-        [0, -propsHeight[1], -propsHeight[0], -sumOtherHeight],
+        [0, -propsHeight[1], -propsHeight[0], -sumOtherHeights],
       ];
       const rank = allowedPositions[index].findIndex(b => b === lastOffsetY.value);
       if (typeof range[index][rank] === 'number' && range[index][rank] !== translateY) return;
@@ -155,17 +161,16 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
       runOnJS(setDraggedIndex)(index);
     })
     .onUpdate((event) => {
-      const sumOtherHeight = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
       if (event.translationY < 0) {
-        const maxY = [0, -propsHeight[0], -sumOtherHeight];
+        const maxY = [0, -propsHeight[0], -sumOtherHeights];
         translate.value = {
           x: 0,
           y: Math.max(lastOffsetY.value + event.translationY, maxY[index]),
         };
         const adjustedTranslateY = translate.value.y - lastOffsetY.value;
-        const value = [0, sumOtherHeight / 2, sumOtherHeight].reduce((prev, curr) =>
+        const value = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
           (Math.abs(curr + adjustedTranslateY) < Math.abs(prev + adjustedTranslateY) ? curr : prev));
-        const jump = value / (sumOtherHeight / 2);
+        const jump = value / (sumOtherHeights / 2);
         if (jump === 0) {
           positionCount.value = 0;
           if (upJumpdone.value === 1) {
@@ -190,15 +195,15 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
           upJumpdone.value = 2;
         }
       } else if (event.translationY > 0) {
-        const maxY = [sumOtherHeight, propsHeight[2], 0];
+        const maxY = [sumOtherHeights, propsHeight[2], 0];
         translate.value = {
           x: 0,
           y: Math.min(lastOffsetY.value + event.translationY, maxY[index]),
         };
         const adjustedTranslateY = translate.value.y - lastOffsetY.value;
-        const value = [0, sumOtherHeight / 2, sumOtherHeight].reduce((prev, curr) =>
+        const value = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
           (Math.abs(curr - adjustedTranslateY) < Math.abs(prev - adjustedTranslateY) ? curr : prev));
-        const jump = value / (sumOtherHeight / 2);
+        const jump = value / (sumOtherHeights / 2);
         if (jump === 0) {
           positionCount.value = 0;
           if (downJumpdone.value === 1) {
@@ -225,12 +230,11 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
       }
     })
     .onEnd(() => {
-      const sumOtherHeight = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
       if (Math.abs(positionCount.value)) {
         if (positionCount.value < 0) {
           const abovePropIndex = items.findIndex(i => i.tempPosition === item.tempPosition - 1);
 
-          const value = Math.abs(positionCount.value) === 1 ? -propsHeight[abovePropIndex] || 0 : -sumOtherHeight;
+          const value = Math.abs(positionCount.value) === 1 ? -propsHeight[abovePropIndex] || 0 : -sumOtherHeights;
           translate.value = { x: 0, y: lastOffsetY.value + value };
           lastOffsetY.value += value;
           runOnJS(setAnswersTempPositions)(index, positionCount.value);
@@ -238,7 +242,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         if (positionCount.value > 0) {
           const bottom = items.findIndex(i => i.tempPosition === item.tempPosition + 1);
 
-          const value = positionCount.value === 1 ? propsHeight[bottom] || 0 : sumOtherHeight;
+          const value = positionCount.value === 1 ? propsHeight[bottom] || 0 : sumOtherHeights;
           translate.value = { x: 0, y: lastOffsetY.value + value };
           lastOffsetY.value += value;
           runOnJS(setAnswersTempPositions)(index, positionCount.value);
