@@ -56,14 +56,16 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   const [sumOtherHeights, setSumOtherHeights] = useState<number>(
     propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0)
   );
+  const [allowedPositions, setAllowedPositions] = useState<number[][][]>(
+    [
+      [[0], [propsHeight[1], propsHeight[2]], [sumOtherHeights]],
+      [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
+      [[-sumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
+    ]
+  );
 
   useEffect(() => {
     if (hasBeenDragged) {
-      const allowedPositions = [
-        [[0], [propsHeight[1], propsHeight[2]], [sumOtherHeights]],
-        [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
-        [[-sumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
-      ];
       const offsetY = allowedPositions[index][items[index].tempPosition];
       if (!offsetY.includes(lastOffsetY.value)) {
         if (offsetY.length === 1) {
@@ -90,7 +92,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         }
       }
     }
-  }, [hasBeenDragged, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate, zIndex]);
+  }, [allowedPositions, hasBeenDragged, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate, zIndex]);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) {
@@ -111,7 +113,15 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   }, [item]);
 
   useEffect(() => {
-    setSumOtherHeights(propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0));
+    const tempSumOtherHeights = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
+    setSumOtherHeights(tempSumOtherHeights);
+    setAllowedPositions(
+      [
+        [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeights]],
+        [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
+        [[-tempSumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
+      ]
+    );
   }, [index, propsHeight]);
 
   const handleLayout = (event: LayoutChangeEvent) => {
@@ -124,23 +134,17 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
       const translateY = lastOffsetY.value + triggeringPropsRange;
       const range = triggeringPropsRange > 0
         ? [
-          [triggeringPropsRange, sumOtherHeights, sumOtherHeights, sumOtherHeights],
-          [[0, propsHeight[2] - propsHeight[0]], propsHeight[2], propsHeight[2], [0, propsHeight[2] - propsHeight[0]]],
-          [0, 0, 0, [-propsHeight[0], -propsHeight[1]]],
+          [[triggeringPropsRange], [sumOtherHeights], [sumOtherHeights]],
+          [[0, propsHeight[2] - propsHeight[0]], [propsHeight[2]], [0, propsHeight[2] - propsHeight[0]]],
+          [[-propsHeight[0], -propsHeight[1]], [0], [0]],
         ]
         : [
-          [0, 0, 0, [propsHeight[1], propsHeight[2]]],
-          [-propsHeight[0], -propsHeight[0], -propsHeight[0], [0, propsHeight[2] - propsHeight[0]]],
-          [triggeringPropsRange, -sumOtherHeights, -sumOtherHeights, -sumOtherHeights],
+          [[0], [0], [propsHeight[1], propsHeight[2]]],
+          [[-propsHeight[0]], [-propsHeight[0]], [0, propsHeight[2] - propsHeight[0]]],
+          [[-sumOtherHeights], [-sumOtherHeights], [triggeringPropsRange]],
         ];
-      const allowedPositions = [
-        [0, propsHeight[1], propsHeight[2], sumOtherHeights],
-        [-propsHeight[0], propsHeight[2] - propsHeight[0], 0, propsHeight[2]],
-        [0, -propsHeight[1], -propsHeight[0], -sumOtherHeights],
-      ];
-      const rank = allowedPositions[index].findIndex(b => b === lastOffsetY.value);
-      if (typeof range[index][rank] === 'number' && range[index][rank] !== translateY) return;
-      if (Array.isArray(range[index][rank]) && !range[index][rank].includes(translateY)) return;
+      const rank = allowedPositions[index].findIndex(p => p.includes(lastOffsetY.value));
+      if (!range[index][rank].includes(translateY)) return;
       translate.value = { x: 0, y: translateY };
       lastOffsetY.value = translateY;
     },
