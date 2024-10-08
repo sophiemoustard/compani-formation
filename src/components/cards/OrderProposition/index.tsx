@@ -132,19 +132,6 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   useImperativeHandle(ref, () => ({
     moveTo(triggeringPropsRange: number) {
       const translateY = lastOffsetY.value + triggeringPropsRange;
-      const range = triggeringPropsRange > 0
-        ? [
-          [[triggeringPropsRange], [sumOtherHeights], [sumOtherHeights]],
-          [[0, propsHeight[2] - propsHeight[0]], [propsHeight[2]], [0, propsHeight[2] - propsHeight[0]]],
-          [[-propsHeight[0], -propsHeight[1]], [0], [0]],
-        ]
-        : [
-          [[0], [0], [propsHeight[1], propsHeight[2]]],
-          [[-propsHeight[0]], [-propsHeight[0]], [0, propsHeight[2] - propsHeight[0]]],
-          [[-sumOtherHeights], [-sumOtherHeights], [triggeringPropsRange]],
-        ];
-      const rank = allowedPositions[index].findIndex(p => p.includes(lastOffsetY.value));
-      if (!range[index][rank].includes(translateY)) return;
       translate.value = { x: 0, y: translateY };
       lastOffsetY.value = translateY;
     },
