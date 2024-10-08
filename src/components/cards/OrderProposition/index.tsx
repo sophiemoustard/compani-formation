@@ -14,12 +14,12 @@ interface OrderPropositionProps {
   isValidated: boolean,
   propsHeight: number[],
   draggedIndex: number | null,
-  hasBeenDragged: number,
+  dragCount: number,
   setAnswersTempPositions: (index: number, positionCount: number) => void,
   onMove: (index: number, tmpToMove: number, orientation: number) => void,
   setPropsHeight: (height: number, index: number) => void,
   setDraggedIndex: (value: number | null) => void,
-  setHasBeenDragged: (value: number) => void,
+  setDragCount: (value: number) => void,
 }
 
 export interface OrderPropositionRef {
@@ -33,20 +33,20 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     isValidated = false,
     propsHeight,
     draggedIndex,
-    hasBeenDragged,
+    dragCount,
     setAnswersTempPositions,
     onMove,
     setPropsHeight,
     setDraggedIndex,
-    setHasBeenDragged,
+    setDragCount,
   }: OrderPropositionProps,
   ref
 ) => {
   const translate = useSharedValue({ x: 0, y: 0 });
   const lastOffsetY = useSharedValue(0);
   const zIndex = useSharedValue(0);
-  const upJumpdone = useSharedValue(0);
-  const downJumpdone = useSharedValue(0);
+  const previousUpShift = useSharedValue(0);
+  const previousDownShift = useSharedValue(0);
   const positionCount = useSharedValue(0);
 
   const [color, setColor] = useState<string>(GREY[200]);
@@ -65,7 +65,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   );
 
   useEffect(() => {
-    if (hasBeenDragged) {
+    if (dragCount) {
       const expectedOffsetY = allowedPositions[index][items[index].tempPosition];
       if (!expectedOffsetY.includes(lastOffsetY.value)) {
         if (expectedOffsetY.length === 1) {
@@ -91,7 +91,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         }
       }
     }
-  }, [allowedPositions, hasBeenDragged, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate]);
+  }, [allowedPositions, dragCount, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate]);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) {
@@ -157,32 +157,32 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
           x: 0,
           y: Math.max(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const adjustedTranslateY = translate.value.y - lastOffsetY.value;
-        const value = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
-          (Math.abs(curr + adjustedTranslateY) < Math.abs(prev + adjustedTranslateY) ? curr : prev));
-        const jump = value / (sumOtherHeights / 2);
-        if (jump === 0) {
+        const boundedTranslateY = translate.value.y - lastOffsetY.value;
+        const adjustedValue = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
+          (Math.abs(curr + boundedTranslateY) < Math.abs(prev + boundedTranslateY) ? curr : prev));
+        const shift = adjustedValue / (sumOtherHeights / 2);
+        if (shift === 0) {
           positionCount.value = 0;
-          if (upJumpdone.value === 1) {
+          if (previousUpShift.value === 1) {
             runOnJS(onMove)(index, item.tempPosition - 1, -1);
-            upJumpdone.value = 0;
+            previousUpShift.value = 0;
           }
         }
-        if (jump === 1) {
+        if (shift === 1) {
           positionCount.value = -1;
-          if (upJumpdone.value === 2) {
+          if (previousUpShift.value === 2) {
             runOnJS(onMove)(index, 0, -1);
-            upJumpdone.value = 1;
-          } else if (upJumpdone.value === 0) {
+            previousUpShift.value = 1;
+          } else if (previousUpShift.value === 0) {
             runOnJS(onMove)(index, item.tempPosition - 1, 1);
-            upJumpdone.value = 1;
+            previousUpShift.value = 1;
           }
         }
-        if (jump === 2 && upJumpdone.value !== 2) {
+        if (shift === 2 && previousUpShift.value !== 2) {
           positionCount.value = -2;
-          if (upJumpdone.value === 0) runOnJS(onMove)(index, item.tempPosition - 1, 1);
+          if (previousUpShift.value === 0) runOnJS(onMove)(index, item.tempPosition - 1, 1);
           runOnJS(onMove)(index, item.tempPosition - 2, 1);
-          upJumpdone.value = 2;
+          previousUpShift.value = 2;
         }
       } else if (event.translationY > 0) {
         const maxY = [sumOtherHeights, propsHeight[2], 0];
@@ -190,60 +190,57 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
           x: 0,
           y: Math.min(lastOffsetY.value + event.translationY, maxY[index]),
         };
-        const adjustedTranslateY = translate.value.y - lastOffsetY.value;
-        const value = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
-          (Math.abs(curr - adjustedTranslateY) < Math.abs(prev - adjustedTranslateY) ? curr : prev));
-        const jump = value / (sumOtherHeights / 2);
-        if (jump === 0) {
+        const boundedTranslateY = translate.value.y - lastOffsetY.value;
+        const adjustedValue = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
+          (Math.abs(curr - boundedTranslateY) < Math.abs(prev - boundedTranslateY) ? curr : prev));
+        const shift = adjustedValue / (sumOtherHeights / 2);
+        if (shift === 0) {
           positionCount.value = 0;
-          if (downJumpdone.value === 1) {
+          if (previousDownShift.value === 1) {
             runOnJS(onMove)(index, item.tempPosition + 1, 1);
-            downJumpdone.value = 0;
+            previousDownShift.value = 0;
           }
         }
-        if (jump === 1) {
+        if (shift === 1) {
           positionCount.value = 1;
-          if (downJumpdone.value === 2) {
+          if (previousDownShift.value === 2) {
             runOnJS(onMove)(index, 2, 1);
-            downJumpdone.value = 1;
-          } else if (downJumpdone.value === 0) {
+            previousDownShift.value = 1;
+          } else if (previousDownShift.value === 0) {
             runOnJS(onMove)(index, item.tempPosition + 1, -1);
-            downJumpdone.value = 1;
+            previousDownShift.value = 1;
           }
         }
-        if (jump === 2 && downJumpdone.value !== 2) {
+        if (shift === 2 && previousDownShift.value !== 2) {
           positionCount.value = 2;
-          if (downJumpdone.value === 0)runOnJS(onMove)(index, item.tempPosition + 1, -1);
+          if (previousDownShift.value === 0)runOnJS(onMove)(index, item.tempPosition + 1, -1);
           runOnJS(onMove)(index, item.tempPosition + 2, -1);
-          downJumpdone.value = 2;
+          previousDownShift.value = 2;
         }
       }
     })
     .onEnd(() => {
-      if (Math.abs(positionCount.value)) {
-        if (positionCount.value < 0) {
-          const abovePropIndex = items.findIndex(i => i.tempPosition === item.tempPosition - 1);
+      if (positionCount.value < 0) {
+        const abovePropIndex = items.findIndex(i => i.tempPosition === item.tempPosition - 1);
 
-          const value = Math.abs(positionCount.value) === 1 ? -propsHeight[abovePropIndex] || 0 : -sumOtherHeights;
-          translate.value = { x: 0, y: lastOffsetY.value + value };
-          lastOffsetY.value += value;
-          runOnJS(setAnswersTempPositions)(index, positionCount.value);
-        }
-        if (positionCount.value > 0) {
-          const bottom = items.findIndex(i => i.tempPosition === item.tempPosition + 1);
+        const value = Math.abs(positionCount.value) === 1 ? -propsHeight[abovePropIndex] || 0 : -sumOtherHeights;
+        translate.value = { x: 0, y: lastOffsetY.value + value };
+        lastOffsetY.value += value;
+        runOnJS(setAnswersTempPositions)(index, positionCount.value);
+      } else if (positionCount.value > 0) {
+        const bottom = items.findIndex(i => i.tempPosition === item.tempPosition + 1);
 
-          const value = positionCount.value === 1 ? propsHeight[bottom] || 0 : sumOtherHeights;
-          translate.value = { x: 0, y: lastOffsetY.value + value };
-          lastOffsetY.value += value;
-          runOnJS(setAnswersTempPositions)(index, positionCount.value);
-        }
+        const value = positionCount.value === 1 ? propsHeight[bottom] || 0 : sumOtherHeights;
+        translate.value = { x: 0, y: lastOffsetY.value + value };
+        lastOffsetY.value += value;
+        runOnJS(setAnswersTempPositions)(index, positionCount.value);
       } else {
         translate.value = { x: 0, y: lastOffsetY.value };
       }
       zIndex.value = 0;
-      upJumpdone.value = 0;
-      downJumpdone.value = 0;
-      runOnJS(setHasBeenDragged)(hasBeenDragged + 1);
+      previousUpShift.value = 0;
+      previousDownShift.value = 0;
+      runOnJS(setDragCount)(dragCount + 1);
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
