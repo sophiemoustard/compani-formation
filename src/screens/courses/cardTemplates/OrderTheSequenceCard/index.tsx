@@ -33,6 +33,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   const addQuizzAnswer = useAddQuizzAnswer();
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
   const itemRefs = useRef<OrderPropositionRef[]>([]);
+  const [draggedIndex, setDraggedIndex] = useState<number| null>(null);
+  const [hasBeenDragged, setHasBeenDragged] = useState<number>(0);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [propsHeight, setPropsHeight] = useState<number[]>([]);
@@ -101,6 +103,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         _id: ans._id,
       };
     });
+    setDraggedIndex(null);
     setAnswers(newAnswers);
   };
 
@@ -136,7 +139,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       <ScrollView contentContainerStyle={style.container}>
         {renderInformativeText()}
         {answers.map((item, index) =>
-          <OrderProposition key={index} item={item} index={index} isValidated={isValidated}
+          <OrderProposition key={index} item={item} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
+            setDraggedIndex={setDraggedIndex} hasBeenDragged={hasBeenDragged} setHasBeenDragged={setHasBeenDragged}
             setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setPropsHeight={setHeight}
             propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
             items={answers}/>)}
