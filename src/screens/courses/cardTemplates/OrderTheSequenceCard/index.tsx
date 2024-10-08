@@ -138,12 +138,12 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
       <ScrollView contentContainerStyle={style.container}>
         {renderInformativeText()}
-        {answers.map((item, index) =>
-          <OrderProposition key={index} item={item} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
+        {answers.map((_, index) =>
+          <OrderProposition key={index} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
             setDraggedIndex={setDraggedIndex} hasBeenDragged={hasBeenDragged} setHasBeenDragged={setHasBeenDragged}
             setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setPropsHeight={setHeight}
             propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
-            items={answers}/>)}
+            items={answers} />)}
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}

@@ -9,11 +9,6 @@ import Shadow from '../../design/Shadow';
 import styles from './styles';
 
 interface OrderPropositionProps {
-  item: {
-    label: string,
-    goodPosition: number,
-    tempPosition: number
-  },
   items: AnswerPositionType[],
   index: number,
   isValidated: boolean,
@@ -33,7 +28,6 @@ export interface OrderPropositionRef {
 
 const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionProps>((
   {
-    item,
     items,
     index,
     isValidated = false,
@@ -61,6 +55,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   };
   const [color, setColor] = useState<string>(GREY[200]);
   const [dragButtonColor, setDragButtonColor] = useState<string>(GREY[500]);
+  const item = items[index];
   const [isGoodPosition, setIsGoodPosition] = useState<boolean>(item.goodPosition === item.tempPosition);
 
   useEffect(() => {
