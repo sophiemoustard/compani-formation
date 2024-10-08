@@ -66,33 +66,32 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
 
   useEffect(() => {
     if (hasBeenDragged) {
-      const offsetY = allowedPositions[index][items[index].tempPosition];
-      if (!offsetY.includes(lastOffsetY.value)) {
-        if (offsetY.length === 1) {
-          lastOffsetY.value = offsetY[0];
-          translate.value = withTiming({ x: 0, y: offsetY[0] }, { duration: 50 });
+      const expectedOffsetY = allowedPositions[index][items[index].tempPosition];
+      if (!expectedOffsetY.includes(lastOffsetY.value)) {
+        if (expectedOffsetY.length === 1) {
+          lastOffsetY.value = expectedOffsetY[0];
+          translate.value = withTiming({ x: 0, y: expectedOffsetY[0] }, { duration: 50 });
         } else {
           if (index === 0) {
-            const findInd = items.findIndex(i => i.tempPosition === 0);
-            lastOffsetY.value = propsHeight[findInd];
-            translate.value = withTiming({ x: 0, y: propsHeight[findInd] }, { duration: 50 });
+            const topPropIndex = items.findIndex(i => i.tempPosition === 0);
+            lastOffsetY.value = propsHeight[topPropIndex];
+            translate.value = withTiming({ x: 0, y: propsHeight[topPropIndex] }, { duration: 50 });
           }
           if (index === 1) {
-            const findInd = items.findIndex(i => i.tempPosition === 0);
-            const arrayOffset = findInd === 0 ? 0 : offsetY[0];
-            lastOffsetY.value = arrayOffset;
-            translate.value = withTiming({ x: 0, y: arrayOffset }, { duration: 50 });
+            const topPropIndex = items.findIndex(i => i.tempPosition === 0);
+            const offsetY = topPropIndex === 0 ? 0 : expectedOffsetY[0];
+            lastOffsetY.value = offsetY;
+            translate.value = withTiming({ x: 0, y: offsetY }, { duration: 50 });
           }
           if (index === 2) {
-            const findInd = items.findIndex(i => i.tempPosition === 2);
-            lastOffsetY.value = -propsHeight[findInd];
-            translate.value = withTiming({ x: 0, y: -propsHeight[findInd] }, { duration: 50 });
+            const bottomPropIndex = items.findIndex(i => i.tempPosition === 2);
+            lastOffsetY.value = -propsHeight[bottomPropIndex];
+            translate.value = withTiming({ x: 0, y: -propsHeight[bottomPropIndex] }, { duration: 50 });
           }
-          zIndex.value = 0;
         }
       }
     }
-  }, [allowedPositions, hasBeenDragged, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate, zIndex]);
+  }, [allowedPositions, hasBeenDragged, index, items, lastOffsetY, propsHeight, sumOtherHeights, translate]);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) {
