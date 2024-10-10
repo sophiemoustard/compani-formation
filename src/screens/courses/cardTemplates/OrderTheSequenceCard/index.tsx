@@ -81,7 +81,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       quizJingle(isOrderCorrect);
       setIsOrderedCorrectly(isOrderCorrect);
       if (isOrderCorrect) incGoodAnswersCount();
-      addQuizzAnswer({ card: card._id, answerList: answers });
+      addQuizzAnswer({ card: card._id, answerList: [...answers].sort((a, b) => a.tempPosition - b.tempPosition) });
 
       return setIsValidated(true);
     }
@@ -107,10 +107,10 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     setAnswers(newAnswers);
   };
 
-  const onMove = (index: number, targetPosition: number, orientation: number) => {
+  const onMove = (index: number, targetPosition: number, orientation: string) => {
     const indexToMove = answers.findIndex(answer => answer.tempPosition === targetPosition);
     if (indexToMove < 0) return;
-    itemRefs.current[indexToMove].moveTo(orientation * propsHeight[index]);
+    itemRefs.current[indexToMove].moveTo(propsHeight[index], orientation);
   };
 
   const renderInformativeText = () => (
