@@ -16,8 +16,7 @@ const CourseProfileHeader = ({
   goBack,
   title,
 }: CourseProfileHeaderProps) => (
-  <ImageBackground source={source} imageStyle={styles.image}
-    style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
+  <ImageBackground source={source} imageStyle={styles.image} style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
     <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
     <View style={styles.header}>
       <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
