@@ -35,6 +35,8 @@ export default StyleSheet.create({
   number: {
     ...FIRA_SANS_REGULAR.XXL,
     marginHorizontal: MARGIN.XXS,
+    maxWidth: '25%',
+    textAlign: 'center',
   },
   titleContainer: {
     display: 'flex',
