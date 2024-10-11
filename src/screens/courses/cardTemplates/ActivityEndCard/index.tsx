@@ -3,6 +3,7 @@ import { Text, Image, ImageBackground, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import get from 'lodash/get';
+import has from 'lodash/has';
 import ActivityHistories from '../../../../api/activityHistories';
 import NiPrimaryButton from '../../../../components/form/PrimaryButton';
 import asyncStorage from '../../../../core/helpers/asyncStorage';
@@ -20,6 +21,7 @@ import styles from '../../../../styles/endCard';
 import commonStyles from '../../../../styles/common';
 import { ActivityType, QuestionnaireAnswersType, QuizzAnswersType } from '../../../../types/ActivityTypes';
 import { CourseModeType } from '../../../../types/CourseTypes';
+import { StoreAnswerType } from '../../../../types/CardType';
 
 interface ActivityEndCardProps {
   mode: CourseModeType,
@@ -55,7 +57,21 @@ const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: Acti
         ...(finalQuestionnaireAnswersList?.length && { questionnaireAnswersList: finalQuestionnaireAnswersList }),
         ...(finalQuizzAnswersList?.length && {
           quizzAnswersList: finalQuizzAnswersList
-            .map(qa => ({ ...qa, answerList: qa.answerList.filter(a => get(a, 'isSelected', true)).map(a => a._id) })),
+            .map(qa => ({
+              ...qa,
+              answerList: qa.answerList
+                .filter(a => get(a, 'isSelected', true))
+                .sort((a, b) => {
+                  if (has(a, 'position') && has(b, 'position')) {
+                    const answerA = a as StoreAnswerType;
+                    const answerB = b as StoreAnswerType;
+
+                    return answerA.position! - answerB.position!;
+                  }
+                  return 1;
+                })
+                .map(a => a._id),
+            })),
         }),
       };
 
