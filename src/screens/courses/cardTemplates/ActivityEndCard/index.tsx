@@ -63,7 +63,10 @@ const ActivityEndCard = ({ mode, activity, finalTimer, goBack, stopTimer }: Acti
                 .filter(a => get(a, 'isSelected', true))
                 .sort((a, b) => {
                   if (has(a, 'position') && has(b, 'position')) {
-                    return (a as StoreAnswerType).position! - (b as StoreAnswerType).position!;
+                    const answerA = a as StoreAnswerType;
+                    const answerB = b as StoreAnswerType;
+
+                    return answerA.position! - answerB.position!;
                   }
                   return 1;
                 })
