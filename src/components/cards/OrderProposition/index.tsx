@@ -8,6 +8,9 @@ import { GREY, GREEN, ORANGE } from '../../../styles/colors';
 import Shadow from '../../design/Shadow';
 import styles from './styles';
 
+const DOWN = 'down';
+const UP = 'up';
+
 interface OrderPropositionProps {
   items: AnswerPositionType[],
   index: number,
@@ -57,8 +60,6 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0)
   );
   const [allowedPositions, setAllowedPositions] = useState<number[][]>([]);
-  const DOWN = 'down';
-  const UP = 'up';
 
   useEffect(() => {
     if (dragCount) {
@@ -157,15 +158,15 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         const adjustedValue = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
           (Math.abs(curr + boundedTranslateY) < Math.abs(prev + boundedTranslateY) ? curr : prev));
         const shift = adjustedValue / (sumOtherHeights / 2);
+        positionCount.value = -shift;
+
         if (shift === 0) {
-          positionCount.value = 0;
           if (previousUpShift.value === 1) {
             runOnJS(onMove)(index, item.tempPosition - 1, DOWN);
             previousUpShift.value = 0;
           }
         }
         if (shift === 1) {
-          positionCount.value = -1;
           if (previousUpShift.value === 2) {
             runOnJS(onMove)(index, 0, DOWN);
             previousUpShift.value = 1;
@@ -175,7 +176,6 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
           }
         }
         if (shift === 2 && previousUpShift.value !== 2) {
-          positionCount.value = -2;
           if (previousUpShift.value === 0) runOnJS(onMove)(index, item.tempPosition - 1, UP);
           runOnJS(onMove)(index, item.tempPosition - 2, UP);
           previousUpShift.value = 2;
@@ -188,15 +188,15 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         const adjustedValue = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
           (Math.abs(curr - boundedTranslateY) < Math.abs(prev - boundedTranslateY) ? curr : prev));
         const shift = adjustedValue / (sumOtherHeights / 2);
+        positionCount.value = shift;
+
         if (shift === 0) {
-          positionCount.value = 0;
           if (previousDownShift.value === 1) {
             runOnJS(onMove)(index, item.tempPosition + 1, UP);
             previousDownShift.value = 0;
           }
         }
         if (shift === 1) {
-          positionCount.value = 1;
           if (previousDownShift.value === 2) {
             runOnJS(onMove)(index, 2, UP);
             previousDownShift.value = 1;
@@ -206,7 +206,6 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
           }
         }
         if (shift === 2 && previousDownShift.value !== 2) {
-          positionCount.value = 2;
           if (previousDownShift.value === 0)runOnJS(onMove)(index, item.tempPosition + 1, DOWN);
           runOnJS(onMove)(index, item.tempPosition + 2, DOWN);
           previousDownShift.value = 2;
