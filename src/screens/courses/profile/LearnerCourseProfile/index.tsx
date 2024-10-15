@@ -71,7 +71,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
         const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
         const attendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: route.params.courseId });
-        const traineeAttendanceSheets = attendanceSheets.filter(as => as.trainee === userId);
+        const traineeAttendanceSheets = attendanceSheets.filter(as => get(as, 'trainee._id') === userId);
         setSlotsToSign(fetchedCourse.slots.filter(s => !traineeAttendanceSheets.map(as => as.slot).includes(s._id)));
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
