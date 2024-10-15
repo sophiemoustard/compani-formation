@@ -71,7 +71,11 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
         const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
         const attendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: route.params.courseId });
+<<<<<<< HEAD
         const traineeAttendanceSheets = attendanceSheets.filter(as => get(as, 'trainee._id') === userId);
+=======
+        const traineeAttendanceSheets = attendanceSheets.filter(as => as.trainee._id === userId);
+>>>>>>> c6e7d345 (COM-3819: sign slot)
         setSlotsToSign(fetchedCourse.slots.filter(s => !traineeAttendanceSheets.map(as => as.slot).includes(s._id)));
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
