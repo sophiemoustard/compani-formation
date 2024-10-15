@@ -24,6 +24,7 @@ import { Buffer } from 'buffer';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
+import AttendanceSheets from '../../../../api/attendanceSheets';
 import Courses from '../../../../api/courses';
 import Questionnaires from '../../../../api/questionnaires';
 import { WHITE, GREY } from '../../../../styles/colors';
@@ -35,6 +36,7 @@ import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/ma
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
+import AttendancesContainer from '../../../../components/attendances/AttendancesContainer';
 import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
@@ -54,6 +56,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
+  const [slotsToSign, setSlotsToSign] = useState<any[]>([]);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
@@ -67,6 +70,9 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
         const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        const attendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: route.params.courseId });
+        const traineeAttendanceSheets = attendanceSheets.filter(as => as.trainee === userId);
+        setSlotsToSign(fetchedCourse.slots.filter(s => !traineeAttendanceSheets.map(as => as.slot).includes(s._id)));
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
         setTitle(getTitle(fetchedCourse));
@@ -83,7 +89,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId, userId]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
@@ -181,6 +187,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
         {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
+        {!!slotsToSign.length && <AttendancesContainer slots={slotsToSign} profileId={course._id}/>}
         {getHeader()}
         {renderStepList(course, LEARNER, route)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
