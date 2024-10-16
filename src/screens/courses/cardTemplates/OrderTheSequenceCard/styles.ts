@@ -10,7 +10,7 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   },
   container: {
     marginHorizontal: MARGIN.LG,
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'flex-end',
     marginBottom: MARGIN.SM,
   },
