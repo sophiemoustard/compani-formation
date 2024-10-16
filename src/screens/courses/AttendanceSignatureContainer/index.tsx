@@ -3,10 +3,14 @@ import { BackHandler, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Picker } from '@react-native-picker/picker';
 import { StackScreenProps } from '@react-navigation/stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../../types/NavigationType';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { DD_MM_YYYY, HH_MM, IS_WEB } from '../../../core/data/constants';
+import { ICON } from '../../../styles/metrics';
+import { GREY } from '../../../styles/colors';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
+import FeatherButton from '../../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../../components/form/PrimaryButton';
 import NiSecondaryButton from '../../../components/form/SecondaryButton';
 import NiErrorMessage from '../../../components/ErrorMessage';
@@ -58,26 +62,27 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
           <canvas id="signature-pad" class="signature-pad"></canvas>
         </div>
         <script>
-          var canvas = document.getElementById('signature-pad');
-          function resizeCanvas() {
-            var ratio = Math.max(window.devicePixelRatio || 1, 1);
+          let canvas = document.getElementById('signature-pad');
+            
+          const resizeCanvas = () => {
+            let ratio = Math.max(window.devicePixelRatio || 1, 1);
             canvas.width = canvas.offsetWidth * ratio;
             canvas.height = canvas.offsetHeight * ratio;
             canvas.getContext("2d").scale(ratio, ratio);
           }
           window.onresize = resizeCanvas;
           resizeCanvas();
-          
-          var signaturePad = new SignaturePad(canvas);
+              
+          let signaturePad = new SignaturePad(canvas);
 
-          function clearSignature() {
+          const clearSignature = () => {
             signaturePad.clear();
             if (${IS_WEB}) window.parent.postMessage('', "*");
             else window.ReactNativeWebView.postMessage('');
           }
 
-          function undoSignature() {
-            var data = signaturePad.toData();
+          const undoSignature = () => {
+            let data = signaturePad.toData();
             if (data) {
               data.pop();
               signaturePad.fromData(data);
@@ -86,14 +91,14 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
                 if (${IS_WEB}) window.parent.postMessage('', "*");
                 else window.ReactNativeWebView.postMessage('');
               } else {
-                var dataUrl = signaturePad.toDataURL('image/png');
+                let dataUrl = signaturePad.toDataURL('image/png');
                 if (${IS_WEB}) window.parent.postMessage(dataUrl, "*");
                 else window.ReactNativeWebView.postMessage(dataUrl);
               }
             }
           }
 
-          function handleMessage(message) {
+          const handleMessage = (message) => {
             if (message === 'clear') {
               clearSignature();
             } else if (message === 'undo') {
@@ -101,8 +106,8 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
             }
           }
 
-          signaturePad.addEventListener('endStroke', function () {
-            var dataUrl = signaturePad.toDataURL('image/png');
+          signaturePad.addEventListener('endStroke', () => {
+            let dataUrl = signaturePad.toDataURL('image/png');
             if (${IS_WEB}) window.parent.postMessage(dataUrl, "*");
             else window.ReactNativeWebView.postMessage(dataUrl);
           });
@@ -231,7 +236,8 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
   const undoCanvas = () => (IS_WEB ? sendMessageToIframe('undo') : sendMessageToWebView('undo'));
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <FeatherButton name='arrow-left' onPress={goBack} size={ICON.LG} color={GREY[600]} />
       <Picker selectedValue={signature.slot}
         onValueChange={value => setSignature(prevSignature => ({ ...prevSignature, slot: value }))}>
         <Picker.Item key={0} label="Sélectionner un créneau" value={''} />
@@ -261,7 +267,7 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
       {!!signature.slot && <NiPrimaryButton caption='Enregistrer la signature' onPress={savePicture}
         loading={isLoading} />}
       <NiErrorMessage message={error.message} show={error.value} />
-    </View>
+    </SafeAreaView>
   );
 };
 
