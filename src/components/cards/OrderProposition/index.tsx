@@ -126,7 +126,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
 
   useImperativeHandle(ref, () => ({
     moveTo(triggeringPropsRange: number, orientation: string) {
-      const translate = orientation === UP
+      const translate = orientation === DOWN
         ? lastOffsetY.value + triggeringPropsRange
         : lastOffsetY.value - triggeringPropsRange;
       translateY.value = translate;
@@ -162,22 +162,22 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
 
         if (shift === 0) {
           if (previousUpShift.value === 1) {
-            runOnJS(onMove)(index, item.tempPosition - 1, DOWN);
+            runOnJS(onMove)(index, item.tempPosition - 1, UP);
             previousUpShift.value = 0;
           }
         }
         if (shift === 1) {
           if (previousUpShift.value === 2) {
-            runOnJS(onMove)(index, 0, DOWN);
+            runOnJS(onMove)(index, 0, UP);
             previousUpShift.value = 1;
           } else if (previousUpShift.value === 0) {
-            runOnJS(onMove)(index, item.tempPosition - 1, UP);
+            runOnJS(onMove)(index, item.tempPosition - 1, DOWN);
             previousUpShift.value = 1;
           }
         }
         if (shift === 2 && previousUpShift.value !== 2) {
-          if (previousUpShift.value === 0) runOnJS(onMove)(index, item.tempPosition - 1, UP);
-          runOnJS(onMove)(index, item.tempPosition - 2, UP);
+          if (previousUpShift.value === 0) runOnJS(onMove)(index, item.tempPosition - 1, DOWN);
+          runOnJS(onMove)(index, item.tempPosition - 2, DOWN);
           previousUpShift.value = 2;
         }
       } else if (event.translationY > 0) { // item is going down
@@ -192,22 +192,22 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
 
         if (shift === 0) {
           if (previousDownShift.value === 1) {
-            runOnJS(onMove)(index, item.tempPosition + 1, UP);
+            runOnJS(onMove)(index, item.tempPosition + 1, DOWN);
             previousDownShift.value = 0;
           }
         }
         if (shift === 1) {
           if (previousDownShift.value === 2) {
-            runOnJS(onMove)(index, 2, UP);
+            runOnJS(onMove)(index, 2, DOWN);
             previousDownShift.value = 1;
           } else if (previousDownShift.value === 0) {
-            runOnJS(onMove)(index, item.tempPosition + 1, DOWN);
+            runOnJS(onMove)(index, item.tempPosition + 1, UP);
             previousDownShift.value = 1;
           }
         }
         if (shift === 2 && previousDownShift.value !== 2) {
-          if (previousDownShift.value === 0)runOnJS(onMove)(index, item.tempPosition + 1, DOWN);
-          runOnJS(onMove)(index, item.tempPosition + 2, DOWN);
+          if (previousDownShift.value === 0)runOnJS(onMove)(index, item.tempPosition + 1, UP);
+          runOnJS(onMove)(index, item.tempPosition + 2, UP);
           previousDownShift.value = 2;
         }
       }
