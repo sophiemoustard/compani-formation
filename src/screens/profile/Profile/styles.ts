@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   identityBackground: {
     height: 264,
     alignItems: 'center',
+    width: '100%',
   },
   profileImage: {
     height: 88,
