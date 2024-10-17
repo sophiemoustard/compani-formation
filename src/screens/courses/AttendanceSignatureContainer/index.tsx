@@ -19,6 +19,7 @@ import { formatPayload } from '../../../core/helpers/pictures';
 import attendanceSheets from '../../../api/attendanceSheets';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../reducers/error';
 import styles from './styles';
+import { htmlContent } from './canvas';
 
 interface AttendanceSignatureContainerProps extends StackScreenProps
 <RootStackParamList, 'AttendanceSignatureContainer'>{}
@@ -32,90 +33,6 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
   const webViewRef = useRef<WebView>(null);
   const userId = useGetLoggedUserId();
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
-
-  const htmlContent = `
-    <html>
-      <head>
-        <style>
-          .wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-          }
-          .signature-pad {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width:100%;
-            height:100%;
-            background-color: white;
-          }
-        </style>
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-      </head>
-      <body>
-        <div class="wrapper">
-          <canvas id="signature-pad" class="signature-pad"></canvas>
-        </div>
-        <script>
-          let canvas = document.getElementById('signature-pad');
-            
-          const resizeCanvas = () => {
-            let ratio = Math.max(window.devicePixelRatio || 1, 1);
-            canvas.width = canvas.offsetWidth * ratio;
-            canvas.height = canvas.offsetHeight * ratio;
-            canvas.getContext("2d").scale(ratio, ratio);
-          }
-          window.onresize = resizeCanvas;
-          resizeCanvas();
-              
-          let signaturePad = new SignaturePad(canvas);
-
-          const clearSignature = () => {
-            signaturePad.clear();
-            if (${IS_WEB}) window.parent.postMessage('', "*");
-            else window.ReactNativeWebView.postMessage('');
-          }
-
-          const undoSignature = () => {
-            let data = signaturePad.toData();
-            if (data) {
-              data.pop();
-              signaturePad.fromData(data);
-              if (signaturePad.isEmpty()) {
-                signaturePad.clear();
-                if (${IS_WEB}) window.parent.postMessage('', "*");
-                else window.ReactNativeWebView.postMessage('');
-              } else {
-                let dataUrl = signaturePad.toDataURL('image/png');
-                if (${IS_WEB}) window.parent.postMessage(dataUrl, "*");
-                else window.ReactNativeWebView.postMessage(dataUrl);
-              }
-            }
-          }
-
-          const handleMessage = (message) => {
-            if (message === 'clear') {
-              clearSignature();
-            } else if (message === 'undo') {
-              undoSignature();
-            }
-          }
-
-          signaturePad.addEventListener('endStroke', () => {
-            let dataUrl = signaturePad.toDataURL('image/png');
-            if (${IS_WEB}) window.parent.postMessage(dataUrl, "*");
-            else window.ReactNativeWebView.postMessage(dataUrl);
-          });
-          window.addEventListener('message', (event) => handleMessage(event.data));
-        </script>
-      </body>
-    </html>
-  `;
 
   useEffect(() => {
     setSlotsOptions(
@@ -131,9 +48,7 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
   const onMessage = (event: any) => {
     const dataURI = event.nativeEvent.data;
     setSignature(prevSignature => ({ ...prevSignature, data: dataURI }));
-    if (dataURI) {
-      dispatchError({ type: RESET_ERROR });
-    }
+    if (dataURI) dispatchError({ type: RESET_ERROR });
   };
 
   const handleIframeMessage = (event: any) => {
@@ -141,9 +56,12 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
     if (event.origin !== window.location.origin && event.origin !== 'null') return;
     const dataURI = event.data;
     setSignature(prevSignature => ({ ...prevSignature, data: dataURI }));
-    if (dataURI) {
-      dispatchError({ type: RESET_ERROR });
-    }
+    if (dataURI) dispatchError({ type: RESET_ERROR });
+  };
+
+  const onSlotChange = (value: string) => {
+    setSignature(prevSignature => ({ ...prevSignature, slot: value }));
+    if (!value) dispatchError({ type: RESET_ERROR });
   };
 
   useEffect(() => {
@@ -236,37 +154,38 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
   const undoCanvas = () => (IS_WEB ? sendMessageToIframe('undo') : sendMessageToWebView('undo'));
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <FeatherButton name='arrow-left' onPress={goBack} size={ICON.LG} color={GREY[600]} />
-      <Picker selectedValue={signature.slot}
-        onValueChange={value => setSignature(prevSignature => ({ ...prevSignature, slot: value }))}>
-        <Picker.Item key={0} label="Sélectionner un créneau" value={''} />
-        {slotsOptions.map(slot => (<Picker.Item key={slot.value} label={slot.label} value={slot.value} />))}
-      </Picker>
-      <View style={styles.webviewContainer}>
-        {
-          IS_WEB
-            ? <iframe
-              ref={iframeRef}
-              src={`data:text/html,${encodeURIComponent(htmlContent)}`}
-              style={{ width: '100%', height: 400, border: '1px solid #ccc' }}
-            />
-            : <WebView
-              ref={webViewRef}
-              source={{ html: htmlContent, baseUrl: '' }}
-              onMessage={onMessage}
-              javaScriptEnabled
-              originWhitelist={['*']}
-            />
-        }
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <View style={styles.container}>
+        <FeatherButton name='arrow-left' onPress={goBack} size={ICON.LG} color={GREY[600]} />
+        <Picker style={styles.picker} selectedValue={signature.slot} onValueChange={onSlotChange}>
+          <Picker.Item key={0} label="Sélectionner un créneau" value={''} />
+          {slotsOptions.map(slot => (<Picker.Item key={slot.value} label={slot.label} value={slot.value} />))}
+        </Picker>
+        <View style={styles.webviewContainer}>
+          {
+            IS_WEB
+              ? <iframe
+                ref={iframeRef}
+                src={`data:text/html,${encodeURIComponent(htmlContent)}`}
+                style={{ width: '100%', height: '100%', border: '1px solid #ccc' }}
+              />
+              : <WebView
+                ref={webViewRef}
+                source={{ html: htmlContent, baseUrl: '' }}
+                onMessage={onMessage}
+                javaScriptEnabled
+                originWhitelist={['*']}
+              />
+          }
+        </View>
+        <View style={styles.buttonContainer}>
+          <NiSecondaryButton caption="Tout effacer" onPress={clearCanvas} />
+          <NiSecondaryButton caption="Annuler" onPress={undoCanvas} />
+        </View>
+        {!!signature.slot && <NiPrimaryButton caption='Enregistrer la signature' onPress={savePicture}
+          loading={isLoading} />}
+        <NiErrorMessage message={error.message} show={error.value} />
       </View>
-      <View style={styles.buttonContainer}>
-        <NiSecondaryButton caption="Tout effacer" onPress={clearCanvas} />
-        <NiSecondaryButton caption="Annuler" onPress={undoCanvas} />
-      </View>
-      {!!signature.slot && <NiPrimaryButton caption='Enregistrer la signature' onPress={savePicture}
-        loading={isLoading} />}
-      <NiErrorMessage message={error.message} show={error.value} />
     </SafeAreaView>
   );
 };
