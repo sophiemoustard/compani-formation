@@ -17,6 +17,7 @@ import TrainerCourseProfile from '../../screens/courses/profile/TrainerCoursePro
 import AdminCourseProfile from '../../screens/courses/profile/AdminCourseProfile';
 import SubProgramProfile from '../../screens/courses/profile/SubProgramProfile';
 import ActivityCardContainer from '../../screens/courses/ActivityCardContainer';
+import AttendanceSignatureContainer from '../../screens/courses/AttendanceSignatureContainer';
 import QuestionnaireCardContainer from '../../screens/courses/QuestionnaireCardContainer';
 import ProfileEdition from '../../screens/profile/ProfileEdition';
 import PasswordEdition from '../../screens/profile/PasswordEdition';
@@ -37,6 +38,7 @@ const AppNavigation = () => {
     Home,
     ActivityCardContainer,
     QuestionnaireCardContainer,
+    AttendanceSignatureContainer,
     BlendedAbout,
     ElearningAbout,
     AdminCourseProfile,
