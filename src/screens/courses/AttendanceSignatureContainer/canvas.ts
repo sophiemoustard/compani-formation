@@ -41,7 +41,7 @@ export const htmlContent = `
     window.onresize = resizeCanvas;
     resizeCanvas();
 
-    let signaturePad = new SignaturePad(canvas);
+    let signaturePad = new SignaturePad(canvas, { minWidth: 2, maxWidth: 2 });
 
     const clearSignature = () => {
       signaturePad.clear();
