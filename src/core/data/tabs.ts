@@ -15,4 +15,5 @@ export const tabsNames = {
   Profile: 'Profil',
   ActivityCardContainer: 'Activité',
   QuestionnaireCardContainer: 'Questionnaire',
+  AttendancesSignatureContainer: 'Signature',
 };
