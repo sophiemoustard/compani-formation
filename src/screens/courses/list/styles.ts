@@ -1,5 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { MAIN_MARGIN_LEFT, MARGIN, PADDING, BORDER_WIDTH, BORDER_RADIUS } from '../../../styles/metrics';
+import {
+  MAIN_MARGIN_LEFT,
+  MARGIN,
+  PADDING,
+  BORDER_WIDTH,
+  BORDER_RADIUS,
+  IS_DESKTOP_SCREEN,
+} from '../../../styles/metrics';
 import { GREEN, GREY, PINK, PURPLE, YELLOW, TRANSPARENT_GREY, WHITE } from '../../../styles/colors';
 import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../../styles/fonts';
 
@@ -38,13 +45,13 @@ const styles = StyleSheet.create({
   leftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    left: '-70%',
+    left: IS_DESKTOP_SCREEN ? '85%' : '-70%',
     top: -32,
   },
   rightBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    right: '-70%',
+    right: IS_DESKTOP_SCREEN ? '85%' : '-70%',
     top: -32,
   },
   sectionContainer: {

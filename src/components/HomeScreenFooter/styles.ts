@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     height: ELLIPSE_HEIGHT / 2 + SCREEN_HEIGHT / 7,
     alignItems: 'center',
     marginTop: 'auto',
+    overflow: 'hidden',
   },
   ellipse: {
     width: '100%',
