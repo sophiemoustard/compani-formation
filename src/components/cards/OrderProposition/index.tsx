@@ -26,7 +26,7 @@ interface OrderPropositionProps {
 }
 
 export interface OrderPropositionRef {
-  moveTo: (triggeringPropsRange: number, orientation: string) => void;
+  moveTo: (triggeringPropsHeight: number, orientation: string) => void;
 }
 
 const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionProps>((
@@ -125,10 +125,10 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   };
 
   useImperativeHandle(ref, () => ({
-    moveTo(triggeringPropsRange: number, orientation: string) {
+    moveTo(triggeringPropsHeight: number, orientation: string) {
       const translate = orientation === DOWN
-        ? lastOffsetY.value + triggeringPropsRange
-        : lastOffsetY.value - triggeringPropsRange;
+        ? lastOffsetY.value + triggeringPropsHeight
+        : lastOffsetY.value - triggeringPropsHeight;
       translateY.value = translate;
       lastOffsetY.value = translate;
     },

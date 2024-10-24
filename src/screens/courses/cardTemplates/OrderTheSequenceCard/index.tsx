@@ -108,9 +108,9 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   };
 
   const onMove = (index: number, targetPosition: number, orientation: string) => {
-    const indexToMove = answers.findIndex(answer => answer.tempPosition === targetPosition);
-    if (indexToMove < 0) return;
-    itemRefs.current[indexToMove].moveTo(propsHeight[index], orientation);
+    const itemToMoveIndex = answers.findIndex(answer => answer.tempPosition === targetPosition);
+    if (itemToMoveIndex < 0) return;
+    itemRefs.current[itemToMoveIndex].moveTo(propsHeight[index], orientation);
   };
 
   const renderInformativeText = () => (
