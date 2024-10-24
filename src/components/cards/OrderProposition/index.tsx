@@ -59,11 +59,11 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   const [sumOtherHeights, setSumOtherHeights] = useState<number>(
     propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0)
   );
-  const [allowedPositions, setAllowedPositions] = useState<number[][]>([]);
+  const [allowedOffsetY, setAllowedOffsetY] = useState<number[][]>([]);
 
   useEffect(() => {
     if (dragCount) {
-      const expectedOffsetY = allowedPositions[item.tempPosition];
+      const expectedOffsetY = allowedOffsetY[item.tempPosition];
       if (!expectedOffsetY.includes(lastOffsetY.value)) {
         if (expectedOffsetY.length === 1) {
           lastOffsetY.value = expectedOffsetY[0];
@@ -88,7 +88,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         }
       }
     }
-  }, [allowedPositions, dragCount, index, item, items, lastOffsetY, propsHeight, sumOtherHeights, translateY]);
+  }, [allowedOffsetY, dragCount, index, item, items, lastOffsetY, propsHeight, sumOtherHeights, translateY]);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) {
@@ -111,12 +111,12 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   useEffect(() => {
     const tempSumOtherHeights = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
     setSumOtherHeights(tempSumOtherHeights);
-    const tempAllowedPositions = [
+    const tempAllowedOffsetY = [
       [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeights]],
       [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
       [[-tempSumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
     ];
-    setAllowedPositions(tempAllowedPositions[index]);
+    setAllowedOffsetY(tempAllowedOffsetY[index]);
   }, [index, propsHeight]);
 
   const handleLayout = (event: LayoutChangeEvent) => {
