@@ -182,9 +182,11 @@ const AttendanceSignatureContainer = ({ route, navigation }: AttendanceSignature
           <NiSecondaryButton caption="Tout effacer" onPress={clearCanvas} />
           <NiSecondaryButton caption="Annuler" onPress={undoCanvas} />
         </View>
-        {!!signature.slot && <NiPrimaryButton caption='Enregistrer la signature' onPress={savePicture}
-          loading={isLoading} />}
-        <NiErrorMessage message={error.message} show={error.value} />
+        <View style={styles.footer}>
+          {!!signature.slot && <NiPrimaryButton caption='Enregistrer la signature' onPress={savePicture}
+            loading={isLoading} />}
+          <NiErrorMessage message={error.message} show={error.value} />
+        </View>
       </View>
     </SafeAreaView>
   );

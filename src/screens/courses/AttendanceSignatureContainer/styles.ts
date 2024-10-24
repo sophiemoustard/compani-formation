@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, PADDING } from '../../../styles/metrics';
+import { BUTTON_HEIGHT, IS_DESKTOP_SCREEN, MARGIN, PADDING, TEXT_LINE_HEIGHT } from '../../../styles/metrics';
 import { IS_IOS } from '../../../core/data/constants';
 
 const styles = StyleSheet.create({
@@ -13,17 +13,20 @@ const styles = StyleSheet.create({
   picker: {
     marginVertical: IS_IOS ? -MARGIN.MD : MARGIN.MD,
     justifyContent: 'center',
+    ...IS_IOS && { height: '20%' },
   },
   webviewContainer: {
-    width: '100%',
     aspectRatio: 1,
-    maxWidth: 720,
+    height: IS_DESKTOP_SCREEN ? '100%' : '55%',
     alignSelf: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: PADDING.LG,
+  },
+  footer: {
+    minHeight: BUTTON_HEIGHT + TEXT_LINE_HEIGHT,
   },
 });
 
