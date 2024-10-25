@@ -96,12 +96,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       if (ans.tempPosition === newPosition || (Math.abs(positionCount) === 2 && answerIndex !== index)) {
         tmpPosition = positionCount < 0 ? ans.tempPosition + 1 : ans.tempPosition - 1;
       }
-      return {
-        label: ans.label,
-        goodPosition: ans.goodPosition,
-        tempPosition: tmpPosition,
-        _id: ans._id,
-      };
+
+      return { label: ans.label, goodPosition: ans.goodPosition, tempPosition: tmpPosition, _id: ans._id };
     });
     setDraggedIndex(null);
     setAnswers(newAnswers);
@@ -140,10 +136,9 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
         {renderInformativeText()}
         {answers.map((_, index) =>
           <OrderProposition key={index} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
-            setDraggedIndex={setDraggedIndex} dragCount={dragCount} setDragCount={setDragCount}
-            setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setPropsHeight={setHeight}
-            propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
-            items={answers} />)}
+            setDraggedIndex={setDraggedIndex} dragCount={dragCount} setDragCount={setDragCount} items={answers}
+            setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setHeight={setHeight}
+            propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }} />)}
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}

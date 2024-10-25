@@ -20,7 +20,7 @@ interface OrderPropositionProps {
   dragCount: number,
   setAnswersTempPositions: (index: number, positionCount: number) => void,
   onMove: (index: number, tmpToMove: number, orientation: string) => void,
-  setPropsHeight: (height: number, index: number) => void,
+  setHeight: (height: number, index: number) => void,
   setDraggedIndex: (value: number | null) => void,
   setDragCount: (value: number) => void,
 }
@@ -39,7 +39,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     dragCount,
     setAnswersTempPositions,
     onMove,
-    setPropsHeight,
+    setHeight,
     setDraggedIndex,
     setDragCount,
   }: OrderPropositionProps,
@@ -60,6 +60,19 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0)
   );
   const [allowedOffsetY, setAllowedOffsetY] = useState<number[][]>([]);
+
+  useEffect(() => { setIsGoodPosition(item.goodPosition === item.tempPosition); }, [item]);
+
+  useEffect(() => {
+    const tempSumOtherHeights = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
+    setSumOtherHeights(tempSumOtherHeights);
+    const tempAllowedOffsetY = [
+      [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeights]],
+      [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
+      [[-tempSumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
+    ];
+    setAllowedOffsetY(tempAllowedOffsetY[index]);
+  }, [index, propsHeight]);
 
   useEffect(() => { // this useEffect handles a bug case where items are not positioned as they should be
     if (dragCount) {
@@ -104,24 +117,9 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     return setColor(GREY[500]);
   }, [isGoodPosition, isValidated]);
 
-  useEffect(() => {
-    setIsGoodPosition(item.goodPosition === item.tempPosition);
-  }, [item]);
-
-  useEffect(() => {
-    const tempSumOtherHeights = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
-    setSumOtherHeights(tempSumOtherHeights);
-    const tempAllowedOffsetY = [
-      [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeights]],
-      [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
-      [[-tempSumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
-    ];
-    setAllowedOffsetY(tempAllowedOffsetY[index]);
-  }, [index, propsHeight]);
-
   const handleLayout = (event: LayoutChangeEvent) => {
     const { height } = event.nativeEvent.layout;
-    setPropsHeight(height, index);
+    setHeight(height, index);
   };
 
   useImperativeHandle(ref, () => ({
@@ -138,11 +136,8 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     .Pan()
     .manualActivation(true)
     .onTouchesMove((_, state) => {
-      if (!isValidated && [index, null].includes(draggedIndex)) {
-        state.activate();
-      } else {
-        state.fail();
-      }
+      if (!isValidated && [index, null].includes(draggedIndex)) state.activate();
+      else state.fail();
     })
     .onBegin(() => {
       zIndex.value = 100;
