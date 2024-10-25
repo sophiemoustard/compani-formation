@@ -74,3 +74,4 @@ export const QUESTIONNAIRE_WIDTH = 120;
 export const SCROLL_EVENT_THROTTLE = 16;
 export const SPINNER_BACKGROUND_HEIGHT = 160;
 export const HIT_SLOP = { top: 8, bottom: 8 };
+export const BACKGROUND_SPOT_WIDTH = 332;
