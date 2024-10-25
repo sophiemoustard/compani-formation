@@ -18,6 +18,8 @@ interface OrderPropositionProps {
   propsHeight: number[],
   draggedIndex: number | null,
   dragCount: number,
+  allowedOffsetY: number[][],
+  sumOtherHeights: number,
   setAnswersTempPositions: (index: number, positionCount: number) => void,
   onMove: (index: number, tmpToMove: number, orientation: string) => void,
   setHeight: (height: number, index: number) => void,
@@ -37,6 +39,8 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
     propsHeight,
     draggedIndex,
     dragCount,
+    allowedOffsetY,
+    sumOtherHeights,
     setAnswersTempPositions,
     onMove,
     setHeight,
@@ -56,23 +60,8 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   const [dragButtonColor, setDragButtonColor] = useState<string>(GREY[500]);
   const item = items[index];
   const [isGoodPosition, setIsGoodPosition] = useState<boolean>(item.goodPosition === item.tempPosition);
-  const [sumOtherHeights, setSumOtherHeights] = useState<number>(
-    propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0)
-  );
-  const [allowedOffsetY, setAllowedOffsetY] = useState<number[][]>([]);
 
   useEffect(() => { setIsGoodPosition(item.goodPosition === item.tempPosition); }, [item]);
-
-  useEffect(() => {
-    const tempSumOtherHeights = propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0);
-    setSumOtherHeights(tempSumOtherHeights);
-    const tempAllowedOffsetY = [
-      [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeights]],
-      [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
-      [[-tempSumOtherHeights], [-propsHeight[1], -propsHeight[0]], [0]],
-    ];
-    setAllowedOffsetY(tempAllowedOffsetY[index]);
-  }, [index, propsHeight]);
 
   useEffect(() => { // this useEffect handles a bug case where items are not positioned as they should be
     if (dragCount) {

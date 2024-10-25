@@ -38,6 +38,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
   const [propsHeight, setPropsHeight] = useState<number[]>([]);
+  const [allowedOffsetYList, setAllowedOffsetYList] = useState<number[][][]>([]);
+  const [sumOtherHeightsList, setSumOtherHeightsList] = useState<number[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -73,6 +75,18 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, answers, isOrderedCorrectly]);
+
+  useEffect(() => {
+    const tempSumOtherHeightsList = propsHeight.map((height, index) =>
+      propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0));
+    setSumOtherHeightsList(tempSumOtherHeightsList);
+    const tempAllowedOffsetYList = [
+      [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeightsList[0]]],
+      [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
+      [[-tempSumOtherHeightsList[2]], [-propsHeight[1], -propsHeight[0]], [0]],
+    ];
+    setAllowedOffsetYList(tempAllowedOffsetYList);
+  }, [propsHeight]);
 
   const onPressFooterButton = () => {
     if (!isValidated) {
@@ -138,7 +152,8 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
           <OrderProposition key={index} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
             setDraggedIndex={setDraggedIndex} dragCount={dragCount} setDragCount={setDragCount} items={answers}
             setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setHeight={setHeight}
-            propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }} />)}
+            propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
+            allowedOffsetY={allowedOffsetYList[index]} sumOtherHeights={sumOtherHeightsList[index]} />)}
       </ScrollView>
       <View style={style.footerContainer}>
         {!isValidated && <FooterGradient />}
