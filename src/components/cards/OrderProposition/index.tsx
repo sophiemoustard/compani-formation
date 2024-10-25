@@ -61,7 +61,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   );
   const [allowedOffsetY, setAllowedOffsetY] = useState<number[][]>([]);
 
-  useEffect(() => {
+  useEffect(() => { // this useEffect handles a bug case where items are not positioned as they should be
     if (dragCount) {
       const expectedOffsetY = allowedOffsetY[item.tempPosition];
       if (!expectedOffsetY.includes(lastOffsetY.value)) {
