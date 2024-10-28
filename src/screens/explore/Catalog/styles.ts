@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
-import { MAIN_MARGIN_LEFT, MARGIN } from '../../../styles/metrics';
+import { MAIN_MARGIN_LEFT, MARGIN, SCREEN_WIDTH, BACKGROUND_SPOT_WIDTH } from '../../../styles/metrics';
 
 const styles = (count = { color: '', background: '' }) => StyleSheet.create({
   container: {
@@ -23,13 +23,13 @@ const styles = (count = { color: '', background: '' }) => StyleSheet.create({
   rightBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    right: '-70%',
+    transform: [{ translateX: SCREEN_WIDTH - BACKGROUND_SPOT_WIDTH * 0.5 }],
     top: -32,
   },
   leftBackground: {
     resizeMode: 'contain',
     position: 'absolute',
-    left: '-70%',
+    transform: [{ translateX: -BACKGROUND_SPOT_WIDTH * 0.5 }],
     top: -32,
   },
 });
