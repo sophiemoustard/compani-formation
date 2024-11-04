@@ -50,7 +50,7 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   ref
 ) => {
   const translateY = useSharedValue(0);
-  const lastOffsetY = useSharedValue(0);
+  const globalOffsetY = useSharedValue(0);
   const zIndex = useSharedValue(0);
   const previousUpShift = useSharedValue(0);
   const previousDownShift = useSharedValue(0);
@@ -66,31 +66,31 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   useEffect(() => { // this useEffect handles a bug case where items are not positioned as they should be
     if (dragCount) {
       const expectedOffsetY = allowedOffsetY[item.tempPosition];
-      if (!expectedOffsetY.includes(lastOffsetY.value)) {
+      if (!expectedOffsetY.includes(globalOffsetY.value)) {
         if (expectedOffsetY.length === 1) {
-          lastOffsetY.value = expectedOffsetY[0];
+          globalOffsetY.value = expectedOffsetY[0];
           translateY.value = withTiming(expectedOffsetY[0], { duration: 50 });
         } else {
           if (index === 0) {
             const topPropIndex = items.findIndex(i => i.tempPosition === 0);
-            lastOffsetY.value = propsHeight[topPropIndex];
+            globalOffsetY.value = propsHeight[topPropIndex];
             translateY.value = withTiming(propsHeight[topPropIndex], { duration: 50 });
           }
           if (index === 1) {
             const topPropIndex = items.findIndex(i => i.tempPosition === 0);
             const offsetY = topPropIndex === 0 ? 0 : expectedOffsetY[0];
-            lastOffsetY.value = offsetY;
+            globalOffsetY.value = offsetY;
             translateY.value = withTiming(offsetY, { duration: 50 });
           }
           if (index === 2) {
             const bottomPropIndex = items.findIndex(i => i.tempPosition === 2);
-            lastOffsetY.value = -propsHeight[bottomPropIndex];
+            globalOffsetY.value = -propsHeight[bottomPropIndex];
             translateY.value = withTiming(-propsHeight[bottomPropIndex], { duration: 50 });
           }
         }
       }
     }
-  }, [allowedOffsetY, dragCount, index, item, items, lastOffsetY, propsHeight, sumOtherHeights, translateY]);
+  }, [allowedOffsetY, dragCount, index, item, items, globalOffsetY, propsHeight, sumOtherHeights, translateY]);
 
   useEffect(() => {
     if (isGoodPosition && isValidated) {
@@ -114,10 +114,10 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
   useImperativeHandle(ref, () => ({
     moveTo(triggeringPropsHeight: number, orientation: string) {
       const translate = orientation === DOWN
-        ? lastOffsetY.value + triggeringPropsHeight
-        : lastOffsetY.value - triggeringPropsHeight;
+        ? globalOffsetY.value + triggeringPropsHeight
+        : globalOffsetY.value - triggeringPropsHeight;
       translateY.value = translate;
-      lastOffsetY.value = translate;
+      globalOffsetY.value = translate;
     },
   }));
 
@@ -136,8 +136,8 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
       if (event.translationY < 0) { // item is going up
         // max translation to the top each proposition can do based on its index
         const maxUpwardTranslationByIndex = [0, -propsHeight[0], -sumOtherHeights];
-        translateY.value = Math.max(lastOffsetY.value + event.translationY, maxUpwardTranslationByIndex[index]);
-        const boundedTranslateY = translateY.value - lastOffsetY.value;
+        translateY.value = Math.max(globalOffsetY.value + event.translationY, maxUpwardTranslationByIndex[index]);
+        const boundedTranslateY = translateY.value - globalOffsetY.value;
         // These are the 3 values that the translation can approximately take
         const adjustedValue = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
           (Math.abs(curr + boundedTranslateY) < Math.abs(prev + boundedTranslateY) ? curr : prev));
@@ -167,8 +167,8 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
       } else if (event.translationY > 0) { // item is going down
         // max translation to the bottom each proposition can do based on its index
         const maxDownwardTranslationByIndex = [sumOtherHeights, propsHeight[2], 0];
-        translateY.value = Math.min(lastOffsetY.value + event.translationY, maxDownwardTranslationByIndex[index]);
-        const boundedTranslateY = translateY.value - lastOffsetY.value;
+        translateY.value = Math.min(globalOffsetY.value + event.translationY, maxDownwardTranslationByIndex[index]);
+        const boundedTranslateY = translateY.value - globalOffsetY.value;
         const adjustedValue = [0, sumOtherHeights / 2, sumOtherHeights].reduce((prev, curr) =>
           (Math.abs(curr - boundedTranslateY) < Math.abs(prev - boundedTranslateY) ? curr : prev));
         const shift = adjustedValue / (sumOtherHeights / 2);
@@ -201,18 +201,18 @@ const OrderProposition = React.forwardRef<OrderPropositionRef, OrderPropositionP
         const abovePropIndex = items.findIndex(i => i.tempPosition === item.tempPosition - 1);
 
         const value = positionCount.value === -1 ? -propsHeight[abovePropIndex] || 0 : -sumOtherHeights;
-        translateY.value = lastOffsetY.value + value;
-        lastOffsetY.value += value;
+        translateY.value = globalOffsetY.value + value;
+        globalOffsetY.value += value;
         runOnJS(setAnswersTempPositions)(index, positionCount.value);
       } else if (positionCount.value > 0) { // item is going down
-        const bottom = items.findIndex(i => i.tempPosition === item.tempPosition + 1);
+        const bottomPropIndex = items.findIndex(i => i.tempPosition === item.tempPosition + 1);
 
-        const value = positionCount.value === 1 ? propsHeight[bottom] || 0 : sumOtherHeights;
-        translateY.value = lastOffsetY.value + value;
-        lastOffsetY.value += value;
+        const value = positionCount.value === 1 ? propsHeight[bottomPropIndex] || 0 : sumOtherHeights;
+        translateY.value = globalOffsetY.value + value;
+        globalOffsetY.value += value;
         runOnJS(setAnswersTempPositions)(index, positionCount.value);
       } else { // item position doesn't change
-        translateY.value = lastOffsetY.value;
+        translateY.value = globalOffsetY.value;
       }
       zIndex.value = 0;
       previousUpShift.value = 0;
