@@ -72,7 +72,7 @@ const DeletionConfirmationModal = ({
     <NiModal visible={visible}>
       <>
         <View style={styles.header}>
-          <Text style={styles.title}>Êtes vous sûr de vouloir supprimer votre compte ?</Text>
+          <Text style={styles.title}>Êtes-vous sûr(e) de vouloir supprimer votre compte ?</Text>
           <FeatherButton name="x" onPress={onRequestClose} size={ICON.MD} color={GREY[600]} />
         </View>
         <View style={styles.warningMessage}>
