@@ -93,9 +93,9 @@ const QuestionnaireCardContainer = ({ route, navigation }: QuestionnaireCardCont
     ? <Tab.Navigator tabBar={() => <></>} screenOptions={{ swipeEnabled: false }}>
       <Tab.Screen key={0} name={'startCard'} options={{ title: title || tabsNames.QuestionnaireCardContainer }}>
         {() => <StartCard title={title} goBack={goBack}
-          isLoading={!(cards.length > 0 && !!questionnaires.length)} />}
+          isLoading={!cards.length || !questionnaires.length} />}
       </Tab.Screen>
-      {cards.length > 0 && !!questionnaires.length &&
+      {!!cards.length && !!questionnaires.length &&
         <>
           {cards.map((_, index) => (
             <Tab.Screen key={index} name={`card-${index}`} options={{ title }}>
