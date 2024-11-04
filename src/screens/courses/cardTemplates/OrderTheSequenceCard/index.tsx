@@ -80,6 +80,7 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     const tempSumOtherHeightsList = propsHeight.map((height, index) =>
       propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0));
     setSumOtherHeightsList(tempSumOtherHeightsList);
+
     const tempAllowedOffsetYList = [
       [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeightsList[0]]],
       [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
