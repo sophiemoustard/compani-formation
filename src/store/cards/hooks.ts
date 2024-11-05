@@ -10,6 +10,7 @@ import {
   setExitConfirmationModal,
   resetCardReducer,
   addQuizzAnswer,
+  setViewedFlashCards,
 } from './slice';
 import {
   getCard,
@@ -24,6 +25,7 @@ import {
   getQuestionnaireAnswersList,
   getQuizzAnswer,
   getQuizzAnswersList,
+  getViewedFlashCards,
 } from './selectors';
 import { CardType } from '../../types/CardType';
 import { QuestionnaireAnswersType, QuizzAnswersType } from '../../types/ActivityTypes';
@@ -82,6 +84,12 @@ export const useResetCardReducer = () => {
   return useCallback(() => dispatch(resetCardReducer()), [dispatch]);
 };
 
+export const useSetViewedFlashCards = () => {
+  const dispatch = useAppDispatch();
+
+  return useCallback((_id: string) => dispatch(setViewedFlashCards(_id)), [dispatch]);
+};
+
 export const useGetCard = () => useAppSelector(getCard);
 
 export const useGetQuestionnaireAnswer = () => useAppSelector(getQuestionnaireAnswer);
@@ -105,3 +113,5 @@ export const useGetQuestionnaireAnswersList = () => useAppSelector(getQuestionna
 export const useGetQuizzAnswersList = () => useAppSelector(getQuizzAnswersList);
 
 export const useGetQuizzAnswer = () => useAppSelector(getQuizzAnswer);
+
+export const useGetViewedFlashCards = () => useAppSelector(getViewedFlashCards);

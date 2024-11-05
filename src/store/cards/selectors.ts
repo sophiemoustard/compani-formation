@@ -52,3 +52,5 @@ export const getQuizzAnswer = (state: StateType): QuizzAnswersType | null => {
   if (!card || (!QUIZZ_TEMPLATES.includes(card.template))) return null;
   return state.cards.quizzAnswersList.find(qa => qa.card === card._id) || null;
 };
+
+export const getViewedFlashCards = (state: StateType) => state.cards.viewedFlashCards;
