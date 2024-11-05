@@ -4,7 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CardHeader from '../../../../components/cards/CardHeader';
 import CardFooter from '../../../../components/cards/CardFooter';
 import AnimatedShadow from '../../../../components/design/AnimatedShadow';
-import { useGetCard, useGetCardIndex } from '../../../../store/cards/hooks';
+import {
+  useGetCard,
+  useGetCardIndex,
+  useSetViewedFlashCards,
+  useGetViewedFlashCards,
+} from '../../../../store/cards/hooks';
 import { FlashCardType } from '../../../../types/CardType';
 import styles from './styles';
 
@@ -23,32 +28,25 @@ export enum ClickOnCard {
 const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   const card: FlashCardType = useGetCard();
   const index = useGetCardIndex();
+  const viewedFlashCards = useGetViewedFlashCards();
+  const setViewedFlashCards = useSetViewedFlashCards();
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const hasBeenClicked = useRef(false);
+  const [hasBeenClicked, setHasBeenClicked] = useState<boolean>(false);
   let rotationValue = 0;
   animatedValue.addListener(({ value }) => { rotationValue = value; });
 
   useEffect(() => {
-    setIsRightSwipeEnabled(timesHasBeenClicked !== ClickOnCard.UNCLICKED_CARD);
-    if (timesHasBeenClicked === ClickOnCard.CLICKED_ONCE_CARD && !hasBeenClicked.current) {
-      Animated.spring(animatedValue, {
-        toValue: 180,
-        friction: 8,
-        tension: 10,
-        useNativeDriver: true,
-      }).start();
-      hasBeenClicked.current = true;
-    } else if (hasBeenClicked.current) {
-      setTimesHasBeenClicked(ClickOnCard.CLICKED_MORE_THAN_ONCE_CARD);
-    }
-  }, [timesHasBeenClicked, hasBeenClicked, animatedValue, rotationValue, setIsRightSwipeEnabled]);
+    setHasBeenClicked(viewedFlashCards.includes(card._id));
+    setIsRightSwipeEnabled(viewedFlashCards.includes(card._id));
+  }, [viewedFlashCards, card, setIsRightSwipeEnabled]);
 
   if (isLoading) return null;
 
   const flipCard = () => {
     if (timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD) {
       setTimesHasBeenClicked(ClickOnCard.CLICKED_ONCE_CARD);
+      if (!viewedFlashCards.includes(card._id)) setViewedFlashCards(card._id);
     } if (rotationValue >= 90) {
       Animated.spring(animatedValue, {
         toValue: 0,
@@ -87,7 +85,7 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
           <AnimatedShadow customStyle={[styles.shadow, frontAnimatedStyle]} />
         </TouchableOpacity>
       </View>
-      <CardFooter index={index} removeRight={timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD} />
+      <CardFooter index={index} removeRight={!hasBeenClicked} />
     </SafeAreaView>
   );
 };
