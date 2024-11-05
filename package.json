@@ -72,7 +72,7 @@
     "expo-image-picker": "~15.0.7",
     "expo-intent-launcher": "~11.0.1",
     "expo-linear-gradient": "~13.0.2",
-    "expo-notifications": "~0.28.18",
+    "expo-notifications": "~0.28.19",
     "expo-print": "~13.0.1",
     "expo-screen-orientation": "~7.0.5",
     "expo-sharing": "~12.0.1",
