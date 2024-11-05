@@ -75,6 +75,7 @@ export default {
       color: '#005774',
     },
     ios: {
+      buildNumber: '2.29.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -104,6 +105,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
+      versionCode: 230,
     },
     web: {
       favicon: './assets/images/android_icon_old.png',

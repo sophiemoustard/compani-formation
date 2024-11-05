@@ -2,7 +2,7 @@
   "cli": {
     "version": ">= 0.57.0",
     "requireCommit": "true",
-     "appVersionSource": "remote"
+    "appVersionSource": "local"
   },
   "build": {
     "local": {
@@ -42,7 +42,6 @@
     },
     "prod": {
       "node": "20.18.0",
-      "autoIncrement": true,
       "channel": "prod-2.29.0",
       "env": {
         "EXPO_USE_SOURCE": "1",
