@@ -10,6 +10,7 @@ import {
   useSetViewedFlashCards,
   useGetViewedFlashCards,
 } from '../../../../store/cards/hooks';
+import { IS_WEB } from '../../../../core/data/constants';
 import { FlashCardType } from '../../../../types/CardType';
 import styles from './styles';
 
@@ -52,14 +53,14 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
         toValue: 0,
         friction: 8,
         tension: 10,
-        useNativeDriver: true,
+        useNativeDriver: !IS_WEB,
       }).start();
     } else {
       Animated.spring(animatedValue, {
         toValue: 180,
         friction: 8,
         tension: 10,
-        useNativeDriver: true,
+        useNativeDriver: !IS_WEB,
       }).start();
     }
   };

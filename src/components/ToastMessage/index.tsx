@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { Text, View, Animated } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { WHITE } from '../../styles/colors';
+import { IS_WEB } from '../../core/data/constants';
 import styles, { TOAST_OFFSET } from './styles';
 
 interface ToastMessageProps {
@@ -16,13 +17,13 @@ const ToastMessage = ({ message, onFinish }: ToastMessageProps) => {
       Animated.timing(translation, {
         toValue: 0,
         duration: 1200,
-        useNativeDriver: true,
+        useNativeDriver: !IS_WEB,
       }),
       Animated.timing(translation, {
         toValue: TOAST_OFFSET,
         delay: 2500,
         duration: 1200,
-        useNativeDriver: true,
+        useNativeDriver: !IS_WEB,
       }),
     ]).start(({ finished }) => onFinish(finished));
   }, [onFinish, translation]);
