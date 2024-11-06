@@ -30,6 +30,7 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   const card: FlashCardType = useGetCard();
   const index = useGetCardIndex();
   const viewedFlashCards = useGetViewedFlashCards();
+  const hasCardBeenViewed = viewedFlashCards.includes(card._id);
   const setViewedFlashCards = useSetViewedFlashCards();
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -38,16 +39,16 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   animatedValue.addListener(({ value }) => { rotationValue = value; });
 
   useEffect(() => {
-    setHasBeenClicked(viewedFlashCards.includes(card._id));
-    setIsRightSwipeEnabled(viewedFlashCards.includes(card._id));
-  }, [viewedFlashCards, card, setIsRightSwipeEnabled]);
+    setHasBeenClicked(hasCardBeenViewed);
+    setIsRightSwipeEnabled(hasCardBeenViewed);
+  }, [hasCardBeenViewed, setIsRightSwipeEnabled]);
 
   if (isLoading) return null;
 
   const flipCard = () => {
     if (timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD) {
       setTimesHasBeenClicked(ClickOnCard.CLICKED_ONCE_CARD);
-      if (!viewedFlashCards.includes(card._id)) setViewedFlashCards(card._id);
+      if (!hasCardBeenViewed) setViewedFlashCards(card._id);
     } if (rotationValue >= 90) {
       Animated.spring(animatedValue, {
         toValue: 0,
