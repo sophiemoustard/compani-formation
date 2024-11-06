@@ -54,7 +54,6 @@ const AppContainer = ({ onLayout }: AppContainerProps) => {
   const axiosLoggedRequestInterceptorId = useRef<number | null>(null);
   const axiosLoggedResponseInterceptorId = useRef<number | null>(null);
   const axiosNotLoggedResponseInterceptorId = useRef<number | null>(null);
-  const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const [triggerToastMessage, setTriggerToastMessage] = useState<boolean>(false);
 
   useEffect(() => {
@@ -67,12 +66,16 @@ const AppContainer = ({ onLayout }: AppContainerProps) => {
   }, [companiToken]);
 
   useEffect(() => {
+    let subscription;
     if (!IS_WEB) {
-      const isValidNotification = get(lastNotificationResponse, 'notification.request.content.data') &&
-        get(lastNotificationResponse, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
-      if (isValidNotification) handleNotificationResponse(lastNotificationResponse);
+      subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+        const isValidNotification = get(response, 'notification.request.content.data') &&
+          get(response, 'actionIdentifier') === Notifications.DEFAULT_ACTION_IDENTIFIER;
+        if (isValidNotification) handleNotificationResponse(response);
+      });
     }
-  }, [lastNotificationResponse]);
+    return () => subscription.remove();
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { tryLocalSignIn(); }, []);

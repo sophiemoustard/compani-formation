@@ -6,7 +6,7 @@
 - J'ai testé sur android :
   - [ ] simulateur
   - [ ] physique
-- [ ] J'ai testé sur tablette
+- [ ] J'ai testé sur navigateur
 
 ---
 
