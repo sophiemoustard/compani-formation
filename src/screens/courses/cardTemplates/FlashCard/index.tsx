@@ -49,21 +49,13 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
     if (timesHasBeenClicked === ClickOnCard.UNCLICKED_CARD) {
       setTimesHasBeenClicked(ClickOnCard.CLICKED_ONCE_CARD);
       if (!hasCardBeenViewed) setViewedFlashCards(card._id);
-    } if (rotationValue >= 90) {
-      Animated.spring(animatedValue, {
-        toValue: 0,
-        friction: 8,
-        tension: 10,
-        useNativeDriver: !IS_WEB,
-      }).start();
-    } else {
-      Animated.spring(animatedValue, {
-        toValue: 180,
-        friction: 8,
-        tension: 10,
-        useNativeDriver: !IS_WEB,
-      }).start();
     }
+    Animated.spring(animatedValue, {
+      toValue: rotationValue >= 90 ? 0 : 180,
+      friction: 8,
+      tension: 10,
+      useNativeDriver: !IS_WEB,
+    }).start();
   };
 
   const frontInterpolate = animatedValue.interpolate({ inputRange: [0, 180], outputRange: ['0deg', '180deg'] });
