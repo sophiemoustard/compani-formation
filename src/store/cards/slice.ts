@@ -10,6 +10,7 @@ export type CardStateType = {
   quizzAnswersList: QuizzAnswersType[],
   score: number,
   exitConfirmationModal: boolean,
+  viewedFlashCards: string[],
 }
 const initialState: CardStateType = {
   cards: [],
@@ -18,6 +19,7 @@ const initialState: CardStateType = {
   quizzAnswersList: [],
   score: 0,
   exitConfirmationModal: false,
+  viewedFlashCards: [],
 };
 
 const resetReducer = () => initialState;
@@ -73,6 +75,10 @@ const setExitModal = (state: CardStateType, action: PayloadAction<boolean>) => (
   { ...state, exitConfirmationModal: action.payload }
 );
 
+const setViewedCards = (state: CardStateType, action: PayloadAction<string>) => (
+  { ...state, viewedFlashCards: [...state.viewedFlashCards, action.payload] }
+);
+
 const cardSlice = createSlice({
   name: 'cards',
   initialState,
@@ -86,6 +92,7 @@ const cardSlice = createSlice({
     incGoodAnswersCount: incCount,
     setExitConfirmationModal: setExitModal,
     resetCardReducer: resetReducer,
+    setViewedFlashCards: setViewedCards,
   },
   extraReducers: (builder) => { builder.addCase(resetAllReducers, () => initialState); },
 });
@@ -100,6 +107,7 @@ export const {
   incGoodAnswersCount,
   setExitConfirmationModal,
   resetCardReducer,
+  setViewedFlashCards,
 } = cardSlice.actions;
 
 export default cardSlice.reducer;
