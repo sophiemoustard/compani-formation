@@ -74,9 +74,9 @@ const QuestionAnswerCard = ({ isLoading, setIsRightSwipeEnabled }: QuestionAnswe
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
-        <View>
+        <View style={styles.container}>
           {card.isQuestionAnswerMultipleChoiced
             ? <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
             : <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>

@@ -7,10 +7,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GREY[100],
   },
+  scrollView: {
+    flexGrow: 1,
+  },
   container: {
     marginHorizontal: MARGIN.LG,
     flexGrow: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     paddingBottom: PADDING.XL,
   },
   footerContainer: {
