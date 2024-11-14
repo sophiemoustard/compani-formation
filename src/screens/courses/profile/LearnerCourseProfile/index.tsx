@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -50,7 +48,7 @@ StackScreenProps<RootBottomTabParamList>
 
 const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
   const setStatusBarVisible = useSetStatusBarVisible();
-  const userId = useGetLoggedUserId();
+  const userId: string | null = useGetLoggedUserId();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -100,7 +98,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const getPdfName = (c: CourseType) => {
+  const getPdfName = (c: BlendedCourseType) => {
     const misc = c.misc ? `_${c.misc}` : '';
 
     return `attestation_${c.subProgram.program.name}${misc}`.replace(/[^a-zA-Zà-üÀ-Ü0-9-+]{1,}/g, '_');
@@ -114,7 +112,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
 
     const buffer = Buffer.from(data, 'base64');
     const pdf = buffer.toString('base64');
-    const pdfName = getPdfName(course);
+    const pdfName = getPdfName(course as BlendedCourseType);
     const fileUri = `${FileSystem.documentDirectory}${encodeURI(pdfName)}.pdf`;
     await FileSystem.writeAsStringAsync(fileUri, pdf, { encoding: FileSystem.EncodingType.Base64 });
 
@@ -162,7 +160,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       const { program } = course.subProgram;
       const eLearningProgram = {
         ...program,
-        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId] }] }],
+        subPrograms: [{ ...course.subProgram, courses: [{ _id: course._id, trainees: [userId!] }] }],
       };
       navigation.navigate('ElearningAbout', { program: eLearningProgram as ELearningProgramType });
     } else {
