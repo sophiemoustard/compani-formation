@@ -3,7 +3,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Ionicons } from '@expo/vector-icons';
 import { Audio, AVPlaybackStatus } from 'expo-av';
-import { ICON } from '../../../styles/metrics';
+import { ICON, WEB_AUDIO_ICON_SIZE } from '../../../styles/metrics';
 import IoniconsButton from '../../icons/IoniconsButton';
 import { GREY, PINK } from '../../../styles/colors';
 import styles from './styles';
@@ -98,7 +98,7 @@ const NiAudio = ({ mediaSource }: NiAudioProps) => {
   return (
     IS_WEB
       ? <View style={styles.webContainer}>
-        <Ionicons name="musical-note" size={250} style={styles.webBackgroundIcon} />
+        <Ionicons name="musical-note" size={WEB_AUDIO_ICON_SIZE} style={styles.webBackgroundIcon} />
         {renderPlayer(ICON.XXXL)}
       </View>
       : <View style={styles.container}>
