@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 import { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -113,18 +115,31 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     const buffer = Buffer.from(data, 'base64');
     const pdf = buffer.toString('base64');
     const pdfName = getPdfName(course as BlendedCourseType);
-    const fileUri = `${FileSystem.documentDirectory}${encodeURI(pdfName)}.pdf`;
-    await FileSystem.writeAsStringAsync(fileUri, pdf, { encoding: FileSystem.EncodingType.Base64 });
 
-    if (IS_IOS) {
-      await Sharing.shareAsync(fileUri);
-    } else {
-      FileSystem.getContentUriAsync(fileUri).then((cUri) => {
-        IntentLauncher.startActivityAsync('android.intent.action.VIEW' as IntentLauncher.ActivityAction, {
-          data: cUri,
-          flags: 1,
+    if (!IS_WEB) {
+      const fileUri = `${FileSystem.documentDirectory}${encodeURI(pdfName)}.pdf`;
+      await FileSystem.writeAsStringAsync(fileUri, pdf, { encoding: FileSystem.EncodingType.Base64 });
+
+      if (IS_IOS) {
+        await Sharing.shareAsync(fileUri);
+      } else {
+        FileSystem.getContentUriAsync(fileUri).then((cUri) => {
+          IntentLauncher.startActivityAsync('android.intent.action.VIEW' as IntentLauncher.ActivityAction, {
+            data: cUri,
+            flags: 1,
+          });
         });
-      });
+      }
+    } else if (typeof document !== 'undefined') {
+      const blob = new Blob([Buffer.from(pdf, 'base64')], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = pdfName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
     setIsLoading(false);
   };
