@@ -104,19 +104,21 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
-        <View>
-          <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
-          {answers.map((item, index) => <View key={index}>{renderItem(item, index)}</View>)}
+        <View style={style.container}>
+          <View style={style.propositionsContainer}>
+            <Text style={cardsStyle.informativeText}>Plusieurs réponses sont possibles</Text>
+            {answers.map((item, index) => <View key={index}>{renderItem(item, index)}</View>)}
+          </View>
+          <View style={style.footerContainer}>
+            {!isValidated && <FooterGradient /> }
+            <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={cardIndex}
+              buttonDisabled={!isOneAnswerSelected()} footerColors={footerColors} explanation={card.explanation}
+              onPressFooterButton={onPressFooterButton} />
+          </View>
         </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        {!isValidated && <FooterGradient /> }
-        <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={cardIndex}
-          buttonDisabled={!isOneAnswerSelected()} footerColors={footerColors} explanation={card.explanation}
-          onPressFooterButton={onPressFooterButton} />
-      </View>
     </SafeAreaView>
   );
 };
