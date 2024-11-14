@@ -20,6 +20,7 @@ export default StyleSheet.create({
     ...FIRA_SANS_MEDIUM.LG,
     color: GREY[800],
     marginBottom: MARGIN.XL,
+    marginHorizontal: MARGIN.LG,
   },
   explanation: {
     minHeight: INPUT_HEIGHT,
