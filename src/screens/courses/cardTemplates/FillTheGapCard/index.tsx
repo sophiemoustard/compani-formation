@@ -60,7 +60,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      if (quizzAnswer?.answerList.length) {
+      if (quizzAnswer?.answerList.length && goodAnswers.length) {
         const answerList = quizzAnswer.answerList as StoreAnswerType[];
         setPropositions(answerList.map(a => ({ _id: a._id, isSelected: a.isSelected, text: a.text })));
         setIsValidated(true);
