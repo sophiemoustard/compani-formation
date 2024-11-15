@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback } from 'react';
+import { Text } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as SplashScreen from 'expo-splash-screen';
@@ -45,6 +46,9 @@ const App = () => {
   );
 
   if (!appReady) return null;
+
+  Text.defaultProps = Text.defaultProps || {};
+  Text.defaultProps.allowFontScaling = false;
 
   return (
     <AuthProvider>
