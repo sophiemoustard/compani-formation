@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   questionWatermark: {
-    ...NUNITO_LIGHT.XXXL,
+    ...IS_LARGE_SCREEN ? NUNITO_LIGHT.XXXL : NUNITO_LIGHT.XXL,
     alignSelf: 'center',
     position: 'absolute',
     color: PINK[100],
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   answerWatermark: {
-    ...NUNITO_LIGHT.XXXL,
+    ...IS_LARGE_SCREEN ? NUNITO_LIGHT.XXXL : NUNITO_LIGHT.XXL,
     alignSelf: 'center',
     position: 'absolute',
     color: PINK[500],

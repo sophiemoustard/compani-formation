@@ -161,6 +161,10 @@ export const NUNITO_LIGHT = StyleSheet.create({
     fontSize: 48,
     fontFamily: 'nunito-light',
   },
+  XXL: {
+    fontSize: 268,
+    fontFamily: 'nunito-light',
+  },
   XXXL: {
     fontSize: 348,
     fontFamily: 'nunito-light',
