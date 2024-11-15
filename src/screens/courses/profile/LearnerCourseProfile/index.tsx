@@ -131,7 +131,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         });
       }
     } else if (typeof document !== 'undefined') {
-      const blob = new Blob([Buffer.from(pdf, 'base64')], { type: 'application/pdf' });
+      const blob = new Blob([buffer], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
