@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { GREY, PINK } from '../../../styles/colors';
-import { PADDING, ICON, SCREEN_HEIGHT, WEB_AUDIO_ICON_SIZE } from '../../../styles/metrics';
+import { PADDING, MARGIN, ICON, SCREEN_HEIGHT, WEB_AUDIO_ICON_SIZE } from '../../../styles/metrics';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: GREY[200],
     paddingVertical: PADDING.MD,
     paddingHorizontal: PADDING.LG,
+    marginBottom: MARGIN.LG,
     flexDirection: 'row',
     alignItems: 'center',
   },
