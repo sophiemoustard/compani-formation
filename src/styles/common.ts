@@ -38,7 +38,7 @@ export default StyleSheet.create({
   sectionDelimiter: {
     borderWidth: BORDER_WIDTH,
     borderColor: GREY[200],
-    marginBottom: MARGIN.MD,
+    marginVertical: MARGIN.MD,
     justifyContent: 'center',
   },
 });
