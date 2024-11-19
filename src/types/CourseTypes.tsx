@@ -90,12 +90,19 @@ export type TraineeType = {
   firstMobileConnectionDate: string,
 }
 
+export type TrainerType = {
+  _id: string,
+  identity: { lastname: string, firstname: string },
+  picture: { link: '' },
+  biography: ''
+};
+
 export type BlendedCourseType = BaseCourseType & {
   subProgram: { isStrictlyELearning: false },
   archivedAt: Date,
   slots: SlotType[],
   slotsToPlan: SlotToPlanType[],
-  trainer: { _id: string, identity: { lastname: string, firstname: string }, picture: { link: '' }, biography: '' },
+  trainers: TrainerType[],
   contact: UserType,
   companyRepresentative: UserType,
   misc: string,

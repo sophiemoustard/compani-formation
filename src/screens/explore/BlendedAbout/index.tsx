@@ -6,11 +6,12 @@ import { RootStackParamList } from '../../../types/NavigationType';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import About from '../../../components/About';
 import styles from './styles';
-import { capitalize, formatIdentity } from '../../../core/helpers/utils';
+import { capitalize, formatIdentity, formatQuantity } from '../../../core/helpers/utils';
 import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import ContactInfoContainer from '../../../components/ContactInfoContainer';
 import { DAY_D_MONTH_YEAR, LEARNER, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../core/data/constants';
+import { TrainerType } from '../../../types/CourseTypes';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
 
@@ -51,16 +52,21 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
               renderItem={({ item }) => <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>}
             />
           </>}
-        {!!course.trainer && <>
+        {!!course.trainers.length && <>
           <View style={commonStyles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Intervenant(e)</Text>
-          <View style={styles.subSectionContainer}>
-            <Image style={styles.trainerPicture} source={trainerPictureSource} />
-            <Text style={styles.subSectionTitle}>
-              {formatIdentity(course.trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME)}
-            </Text>
-          </View>
-          {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+          <Text style={styles.sectionTitle}>
+            {formatQuantity('Intervenant·e', course.trainers.length, '·s', false)}
+          </Text>
+          {course.trainers.map((trainer: TrainerType) =>
+            <>
+              <View style={styles.subSectionContainer}>
+                <Image style={styles.trainerPicture} source={trainerPictureSource} />
+                <Text style={styles.subSectionTitle}>
+                  {formatIdentity(trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME)}
+                </Text>
+              </View>
+              {!!trainer.biography && <Text style={styles.sectionContent}>{trainer.biography}</Text>}
+            </>)}
         </>}
         {!!course.contact?.identity && <>
           <View style={commonStyles.sectionDelimiter} />
