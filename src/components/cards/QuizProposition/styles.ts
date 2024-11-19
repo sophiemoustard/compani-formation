@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, ICON, PADDING, BUTTON_HEIGHT } from '../../../styles/metrics';
+import { MARGIN, BORDER_WIDTH, BORDER_RADIUS, ICON, BUTTON_HEIGHT } from '../../../styles/metrics';
 import { WHITE, GREY, GREEN, ORANGE } from '../../../styles/colors';
 import { FIRA_SANS_MEDIUM } from '../../../styles/fonts';
 
@@ -17,24 +17,23 @@ const styles = (color: string, isSelected: boolean, isGoodAnswer: boolean, isVal
     alignItems: 'center',
   },
   markerContainer: {
-    marginHorizontal: MARGIN.SM,
+    marginRight: MARGIN.SM,
     position: 'absolute',
     right: 0,
     height: '100%',
     borderRadius: BORDER_RADIUS.MD,
-    backgroundColor: WHITE,
+    width: '10%',
     justifyContent: 'center',
   },
   marker: {
     color: isGoodAnswer ? GREEN[600] : ORANGE[600],
     fontSize: ICON.MD,
     alignSelf: 'center',
-    padding: PADDING.MD,
-    backgroundColor: !isValidated || isSelected || isGoodAnswer ? WHITE : GREY[100],
   },
   textContainer: {
     alignItems: 'center',
     flex: 1,
+    maxWidth: '90%',
   },
   text: {
     textAlign: 'center',
