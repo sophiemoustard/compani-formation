@@ -60,7 +60,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
             <View style={commonStyles.sectionDelimiter} />
             <Text style={styles.sectionTitle}>Dates de formation</Text>
             {formattedDates.map((item, idx) => <View key={idx}>
-              <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>
+              <Markdown style={markdownStyle(commonStyles.sectionContent)}>{`- ${item}`}</Markdown>
             </View>)}
           </>}
         {!!course.trainers.length && <>

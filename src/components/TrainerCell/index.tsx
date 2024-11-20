@@ -3,6 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { formatIdentity } from '../../core/helpers/utils';
 import { TrainerType } from '../../types/CourseTypes';
 import { LONG_FIRSTNAME_LONG_LASTNAME } from '../../core/data/constants';
+import commonStyles from '../../styles/common';
 import styles from './style';
 
 interface TrainerCellProps {
@@ -26,7 +27,7 @@ const TrainerCell = ({ trainer }: TrainerCellProps) => {
           {formatIdentity(trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME)}
         </Text>
       </View>
-      {!!trainer.biography && <Text style={styles.sectionContent}>{trainer.biography}</Text>}
+      {!!trainer.biography && <Text style={commonStyles.sectionContent}>{trainer.biography}</Text>}
     </>
   );
 };
