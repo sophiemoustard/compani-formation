@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../styles/colors';
 import { BORDER_RADIUS, MARGIN, PADDING } from '../../styles/metrics';
-import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD } from '../../styles/fonts';
+import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -24,11 +24,6 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     borderRadius: BORDER_RADIUS.MD,
-  },
-  sectionContent: {
-    ...FIRA_SANS_REGULAR.MD,
-    color: GREY[800],
-    marginBottom: MARGIN.MD,
   },
   footer: {
     paddingBottom: PADDING.XXL,

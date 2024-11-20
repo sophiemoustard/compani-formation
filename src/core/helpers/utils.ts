@@ -90,3 +90,10 @@ export const getTheoreticalDuration = (steps: ELearningStepType[]) : string => (
 );
 
 export const sortStrings = (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase());
+
+export const formatQuantity = (itemLabel: string, quantity: number, pluralMark = 's', displayQuantity = true) => {
+  let label = itemLabel;
+  if (quantity > 1) label = itemLabel.split(' ').map(word => `${word}${pluralMark}`).join(' ');
+
+  return displayQuantity ? `${quantity} ${label}` : label;
+};
