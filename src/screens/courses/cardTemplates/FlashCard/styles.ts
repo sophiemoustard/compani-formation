@@ -1,9 +1,18 @@
 import { StyleSheet } from 'react-native';
 import { FIRA_SANS_BOLD, NUNITO_LIGHT } from '../../../../styles/fonts';
 import { GREY, PINK, WHITE } from '../../../../styles/colors';
-import { BORDER_RADIUS, BORDER_WIDTH, IS_LARGE_SCREEN, MARGIN, PADDING } from '../../../../styles/metrics';
+import {
+  BORDER_RADIUS,
+  BORDER_WIDTH,
+  FONT_SCALE,
+  IS_LARGE_SCREEN,
+  IS_SMALL_SCREEN,
+  MARGIN,
+  PADDING,
+} from '../../../../styles/metrics';
+import { FlashCardType } from '../../../../types/CardType';
 
-const styles = StyleSheet.create({
+const styles = (card: FlashCardType) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: GREY[100],
@@ -14,6 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
+    minHeight: 268,
   },
   contentContainer: {
     width: '100%',
@@ -30,7 +40,7 @@ const styles = StyleSheet.create({
     backfaceVisibility: 'hidden',
   },
   question: {
-    ...FIRA_SANS_BOLD.LG,
+    ...card.text.length > 200 && (IS_SMALL_SCREEN || FONT_SCALE > 1) ? FIRA_SANS_BOLD.MD : FIRA_SANS_BOLD.LG,
     color: GREY[800],
     textAlign: 'center',
     alignSelf: 'center',
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   answer: {
-    ...FIRA_SANS_BOLD.LG,
+    ...card.backText.length > 200 && (IS_SMALL_SCREEN || FONT_SCALE > 1) ? FIRA_SANS_BOLD.MD : FIRA_SANS_BOLD.LG,
     color: WHITE,
     textAlign: 'center',
   },

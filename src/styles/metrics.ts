@@ -54,8 +54,10 @@ export const IS_SMALL_SCREEN = Platform.select({
   web: SCREEN_WIDTH < IOS_WIDTH_THRESHOLD,
 });
 
+export const FONT_SCALE = PixelRatio.getFontScale();
+
 export const INPUT_HEIGHT = 48;
-export const GAP_WIDTH = 144 * PixelRatio.getFontScale();
+export const GAP_WIDTH = 144 * FONT_SCALE;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
 export const PROGRESS_BAR_HEIGHT = 8;
