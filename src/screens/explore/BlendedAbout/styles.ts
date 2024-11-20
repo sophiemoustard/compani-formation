@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../../styles/colors';
 import { MARGIN } from '../../../styles/metrics';
-import { FIRA_SANS_REGULAR, FIRA_SANS_BOLD, NUNITO_SEMI } from '../../../styles/fonts';
+import { FIRA_SANS_BOLD, NUNITO_SEMI } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   content: {
@@ -11,11 +11,6 @@ const styles = StyleSheet.create({
     ...FIRA_SANS_BOLD.LG,
     marginBottom: MARGIN.MD,
     color: GREY[900],
-  },
-  sectionContent: {
-    ...FIRA_SANS_REGULAR.MD,
-    color: GREY[800],
-    marginBottom: MARGIN.MD,
   },
   internalRulesContainer: {
     justifyContent: 'center',
