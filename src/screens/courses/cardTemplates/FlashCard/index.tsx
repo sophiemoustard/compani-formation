@@ -68,7 +68,7 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
         <View style={style.container}>
           <TouchableOpacity style={style.contentContainer} onPress={flipCard}>
             <Animated.View style={[style.flipCard, frontAnimatedStyle]}>

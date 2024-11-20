@@ -9,6 +9,7 @@ import {
   IS_SMALL_SCREEN,
   MARGIN,
   PADDING,
+  SMALL_SCREEN_WATERMARK_SIZE,
 } from '../../../../styles/metrics';
 import { FlashCardType } from '../../../../types/CardType';
 
@@ -17,13 +18,16 @@ const styles = (card: FlashCardType) => StyleSheet.create({
     flex: 1,
     backgroundColor: GREY[100],
   },
+  scrollView: {
+    flexGrow: 1,
+  },
   container: {
     marginHorizontal: MARGIN.LG,
     marginVertical: IS_LARGE_SCREEN ? MARGIN.XXL : MARGIN.LG,
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
-    minHeight: 268,
+    minHeight: SMALL_SCREEN_WATERMARK_SIZE,
   },
   contentContainer: {
     width: '100%',

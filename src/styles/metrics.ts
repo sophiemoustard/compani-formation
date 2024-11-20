@@ -78,3 +78,4 @@ export const SPINNER_BACKGROUND_HEIGHT = 160;
 export const HIT_SLOP = { top: 8, bottom: 8 };
 export const BACKGROUND_SPOT_WIDTH = 332;
 export const WEB_AUDIO_ICON_SIZE = 250;
+export const SMALL_SCREEN_WATERMARK_SIZE = 268;
