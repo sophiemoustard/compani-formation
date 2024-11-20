@@ -1,14 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { BORDER_RADIUS, BORDER_WIDTH, ICON, MARGIN } from '../../styles/metrics';
 import { GREY, TRANSPARENT_GREY } from '../../styles/colors';
-import { FIRA_SANS_MEDIUM, FIRA_SANS_REGULAR } from '../../styles/fonts';
+import { FIRA_SANS_MEDIUM } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
-  sectionContent: {
-    ...FIRA_SANS_REGULAR.MD,
-    color: GREY[800],
-    marginBottom: MARGIN.MD,
-  },
   subSectionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
