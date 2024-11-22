@@ -15,7 +15,7 @@ import AttendanceSheets from '../../../../api/attendanceSheets';
 import Questionnaires from '../../../../api/questionnaires';
 import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
-import { GREY, PINK } from '../../../../styles/colors';
+import { BLACK, GREY, PINK, YELLOW } from '../../../../styles/colors';
 import { BlendedCourseType, SlotType, TraineeType } from '../../../../types/CourseTypes';
 import { PictureType } from '../../../../types/PictureTypes';
 import styles from './styles';
@@ -42,10 +42,10 @@ import {
   IntraOrIntraHoldingAttendanceSheetType,
   isIntraOrIntraHolding,
 } from '../../../../types/AttendanceSheetTypes';
-import UploadButton from '../../../../components/form/UploadButton';
 import ImagePickerManager from '../../../../components/ImagePickerManager';
 import PictureModal from '../../../../components/PictureModal';
 import CameraModal from '../../../../components/camera/CameraModal';
+import SecondaryButton from '../../../../components/form/SecondaryButton';
 import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
 import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
@@ -235,12 +235,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             {!missingAttendanceSheets.length && !savedAttendanceSheets.length &&
               <Text style={styles.italicText}>{noAttendancesMessage}</Text>}
           </View>
-          {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.sectionContainer}>
-            <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
-            <View style={styles.listContainer}>
-              {missingAttendanceSheets.map(sheetToUpload =>
-                <UploadButton title={sheetToUpload.label} key={sheetToUpload.value} disabled={!course.companies.length}
-                  style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
+          {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
+            <Text style={styles.header}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
+            <View style={styles.sectionContainer}>
+              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={() => {}}
+                customStyle={styles.uploadButton} bgColor={course.companies.length ? YELLOW[300] : YELLOW[200]}
+                color={course.companies.length ? BLACK : GREY[600]} disabled={!course.companies.length}/>
               {!course.companies.length &&
                 <Text style={styles.italicText}>
                   Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
