@@ -16,7 +16,7 @@ import Questionnaires from '../../../../api/questionnaires';
 import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
 import { GREY, PINK } from '../../../../styles/colors';
-import { BlendedCourseType, TraineeType } from '../../../../types/CourseTypes';
+import { BlendedCourseType, SlotType, TraineeType } from '../../../../types/CourseTypes';
 import { PictureType } from '../../../../types/PictureTypes';
 import styles from './styles';
 import { getTitle } from '../helper';
@@ -33,6 +33,7 @@ import {
   SHORT_FIRSTNAME_LONG_LASTNAME,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
+import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
 import {
@@ -64,7 +65,11 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
-  const attendanceSheetsToUpload = useMemo(() => {
+  const [firstSlot, setFirstSlot] = useState<SlotType>(null);
+  const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
+  const missingAttendanceSheets = useMemo(() => {
+    if (!course?.slots.length) return [];
+
     if ([INTRA, INTRA_HOLDING].includes(course?.type)) {
       const intraOrIntraHoldingCourseSavedSheets = savedAttendanceSheets as IntraOrIntraHoldingAttendanceSheetType[];
       const savedDates = intraOrIntraHoldingCourseSavedSheets
@@ -76,11 +81,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             value: CompaniDate(slot.startDate).startOf('day').toISO(),
             label: CompaniDate(slot.startDate).format(DD_MM_YYYY),
           }))
-          .filter(date => !savedDates.includes(date.value)),
+          .filter(date => !savedDates.includes(date.value) && CompaniDate().isSameOrAfter(date.value)),
         'value'
       );
     }
 
+    if (CompaniDate().isBefore(firstSlot.startDate)) return [];
     const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
@@ -88,7 +94,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
         .filter(trainee => !savedTrainees.includes(trainee.value))
     )];
-  }, [savedAttendanceSheets, course]);
+  }, [course, firstSlot, savedAttendanceSheets]);
   const [pictureModal, setPictureModal] = useState<boolean>(false);
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [camera, setCamera] = useState<boolean>(false);
@@ -125,6 +131,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         await refreshAttendanceSheets(fetchedCourse._id);
         await getQuestionnaireQRCode(fetchedCourse._id);
 
+        if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
       } catch (e: any) {
@@ -135,6 +142,15 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
     getCourse();
   }, [route.params.courseId]);
+
+  useEffect(() => {
+    if (!firstSlot) setNoAttendancesMessage('Veuillez ajouter des créneaux pour émarger la formation.');
+    else if (CompaniDate().isBefore(firstSlot.startDate)) {
+      setNoAttendancesMessage('L\'émargement sera disponible une fois le premier créneau passé.');
+    } else if (course?.type === INTER_B2B && !course?.trainees.length) {
+      setNoAttendancesMessage('Veuillez ajouter des stagiaires pour émarger la formation.');
+    }
+  }, [course, firstSlot]);
 
   const hardwareBackPress = useCallback(() => {
     navigation.goBack();
@@ -216,18 +232,13 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <View style={styles.attendancesContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>
-            {!attendanceSheetsToUpload.length && !savedAttendanceSheets.length &&
-            <Text style={styles.italicText}>
-              {course.type === INTER_B2B
-                ? 'Veuillez ajouter des stagiaires pour émarger la formation.'
-                : 'Veuillez ajouter des créneaux pour émarger la formation.'
-              }
-            </Text>}
+            {!missingAttendanceSheets.length && !savedAttendanceSheets.length &&
+              <Text style={styles.italicText}>{noAttendancesMessage}</Text>}
           </View>
-          {!!attendanceSheetsToUpload.length && !course.archivedAt && <View style={styles.sectionContainer}>
+          {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.sectionContainer}>
             <Text style={styles.italicText}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.listContainer}>
-              {attendanceSheetsToUpload.map(sheetToUpload =>
+              {missingAttendanceSheets.map(sheetToUpload =>
                 <UploadButton title={sheetToUpload.label} key={sheetToUpload.value} disabled={!course.companies.length}
                   style={styles.uploadButton} onPress={() => openPictureModal(sheetToUpload.value)} />)}
               {!course.companies.length &&
