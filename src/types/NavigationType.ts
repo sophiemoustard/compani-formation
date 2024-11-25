@@ -10,6 +10,7 @@ export type RootStackParamList = {
   BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }
+  CreateAttendanceSheet: { courseId: string }
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   ImagePickerManager: undefined;
@@ -37,6 +38,11 @@ export type RootCreateAccountParamList = {
   [key: `create-account-screen-${number}`]: undefined;
 }
 
+export type RootCreateAttendanceSheetParamList = {
+  'attendance-sheet-data-selection': undefined;
+  'upload-method-selection': undefined;
+}
+
 export type RootCardParamList = {
   [key: `card-${number}`]: undefined;
   'startCard': undefined;
@@ -47,6 +53,7 @@ declare global {
     interface RootParamList extends RootStackParamList {}
     interface RootParamList extends RootBottomTabParamList {}
     interface RootParamList extends RootCreateAccountParamList {}
+    interface RootParamList extends RootCreateAttendanceSheetParamList {}
     interface RootParamList extends RootCardParamList {}
   }
 }

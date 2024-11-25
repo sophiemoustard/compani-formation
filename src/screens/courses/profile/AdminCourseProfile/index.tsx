@@ -9,6 +9,7 @@ import get from 'lodash/get';
 import has from 'lodash/has';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import AttendanceSheets from '../../../../api/attendanceSheets';
@@ -17,7 +18,6 @@ import commonStyles from '../../../../styles/common';
 import { ICON } from '../../../../styles/metrics';
 import { BLACK, GREY, PINK, YELLOW } from '../../../../styles/colors';
 import { BlendedCourseType, SlotType, TraineeType } from '../../../../types/CourseTypes';
-import { PictureType } from '../../../../types/PictureTypes';
 import styles from './styles';
 import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
@@ -42,11 +42,7 @@ import {
   IntraOrIntraHoldingAttendanceSheetType,
   isIntraOrIntraHolding,
 } from '../../../../types/AttendanceSheetTypes';
-import ImagePickerManager from '../../../../components/ImagePickerManager';
-import PictureModal from '../../../../components/PictureModal';
-import CameraModal from '../../../../components/camera/CameraModal';
 import SecondaryButton from '../../../../components/form/SecondaryButton';
-import { formatImage, formatPayload } from '../../../../core/helpers/pictures';
 import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
 import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
@@ -95,10 +91,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         .filter(trainee => !savedTrainees.includes(trainee.value))
     )];
   }, [course, firstSlot, savedAttendanceSheets]);
-  const [pictureModal, setPictureModal] = useState<boolean>(false);
-  const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
-  const [camera, setCamera] = useState<boolean>(false);
-  const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
   const [questionnaireQRCode, setQuestionnaireQRCode] = useState('');
@@ -143,6 +135,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     getCourse();
   }, [route.params.courseId]);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (course) refreshAttendanceSheets(course._id);
+    }, [course])
+  );
+
   useEffect(() => {
     if (!firstSlot) setNoAttendancesMessage('Veuillez ajouter des créneaux pour émarger la formation.');
     else if (CompaniDate().isBefore(firstSlot.startDate)) {
@@ -164,30 +162,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   }, [hardwareBackPress]);
 
   const renderTrainee = (person: TraineeType) => <PersonCell person={person} />;
-
-  const savePicture = async (picture: PictureType) => {
-    try {
-      if (course) {
-        const file = await formatImage(picture, `emargement-${attendanceSheetToAdd}`);
-        const data = formatPayload({
-          file,
-          course: course._id,
-          ...(course.type === INTER_B2B ? { trainee: attendanceSheetToAdd } : { date: attendanceSheetToAdd }),
-        });
-        await AttendanceSheets.upload(data);
-        await refreshAttendanceSheets(course._id);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setAttendanceSheetToAdd('');
-    }
-  };
-
-  const openPictureModal = (sheetToUpload) => {
-    setPictureModal(true);
-    setAttendanceSheetToAdd(sheetToUpload);
-  };
 
   const deleteAttendanceSheets = async () => {
     try {
@@ -225,6 +199,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
+  const goToAttedanceUpload = () => navigation.navigate('CreateAttendanceSheet', { courseId: route.params.courseId });
+
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -238,7 +214,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
             <Text style={styles.header}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.sectionContainer}>
-              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={() => {}}
+              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={goToAttedanceUpload}
                 customStyle={styles.uploadButton} bgColor={course.companies.length ? YELLOW[300] : YELLOW[200]}
                 color={course.companies.length ? BLACK : GREY[600]} disabled={!course.companies.length}/>
               {!course.companies.length &&
@@ -274,11 +250,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         </View>}
         <View style={styles.footer} />
       </ScrollView>
-      <PictureModal visible={pictureModal} closePictureModal={() => setPictureModal(false)}
-        openCamera={() => setCamera(true)} openImagePickerManager={() => setImagePickerManager(true)} />
-      {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
-      {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
-        savePicture={savePicture} />}
       {imagePreview.visible && <ImagePreview source={pick(imagePreview, ['link', 'type'])}
         onRequestClose={resetImagePreview} deleteFile={deleteAttendanceSheets} showButton={!course.archivedAt}/>}
     </SafeAreaView>
