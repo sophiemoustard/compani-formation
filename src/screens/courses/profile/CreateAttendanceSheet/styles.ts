@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { GREY } from '../../../../styles/colors';
-import { MARGIN, PADDING } from '../../../../styles/metrics';
-import { FIRA_SANS_BOLD } from '../../../../styles/fonts';
+import { PADDING } from '../../../../styles/metrics';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -13,17 +12,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: PADDING.LG,
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  container: {
-    flexGrow: 1,
-    marginHorizontal: MARGIN.LG,
-  },
-  title: {
-    ...FIRA_SANS_BOLD.LG,
-    marginVertical: MARGIN.LG,
-  },
-  button: {
-    marginHorizontal: MARGIN.MD,
   },
 });
 
