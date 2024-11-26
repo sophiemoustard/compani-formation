@@ -23,24 +23,24 @@ import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
-  const coursesInProgress = [];
-  const forthcomingCourses = [];
-  const completedCourses = [];
+  const coursesInProgress: BlendedCourseType[] = [];
+  const forthcomingCourses: BlendedCourseType[] = [];
+  const completedCourses: BlendedCourseType[] = [];
 
-  for (let i = 1; i < courses.length; i += 1) {
-    const status = getCourseStatus(courses[i]);
+  courses.forEach((course) => {
+    const status = getCourseStatus(course);
     switch (status) {
       case FORTHCOMING:
-        forthcomingCourses.push(courses[i]);
+        forthcomingCourses.push(course);
         break;
       case COMPLETED:
-        completedCourses.push(courses[i]);
+        completedCourses.push(course);
         break;
       default:
-        coursesInProgress.push(courses[i]);
+        coursesInProgress.push(course);
         break;
     }
-  }
+  });
 
   const contents: CourseDisplayType[] = [
     {
