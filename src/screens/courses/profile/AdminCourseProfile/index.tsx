@@ -1,11 +1,8 @@
-// @ts-nocheck
-
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
-import get from 'lodash/get';
 import has from 'lodash/has';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -70,7 +67,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
-  const [firstSlot, setFirstSlot] = useState<SlotType>(null);
+  const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
   const missingAttendanceSheets = useMemo(() => {
     if (!course?.slots.length) return [];
@@ -91,7 +88,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       );
     }
 
-    if (CompaniDate().isBefore(firstSlot.startDate)) return [];
+    if (CompaniDate().isBefore(firstSlot?.startDate!)) return [];
     const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
@@ -102,8 +99,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   }, [course, firstSlot, savedAttendanceSheets]);
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
-  const [questionnaireQRCode, setQuestionnaireQRCode] = useState('');
-  const [questionnairesType, setQuestionnairesType] = useState([]);
+  const [questionnaireQRCode, setQuestionnaireQRCode] = useState<string>('');
+  const [questionnairesType, setQuestionnairesType] = useState<string[]>([]);
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
@@ -121,14 +118,14 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       }
     } catch (e: any) {
       console.error(e);
-      setQuestionnaireQRCode([]);
+      setQuestionnaireQRCode('');
     }
   };
 
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
+        const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS) as BlendedCourseType;
         await refreshAttendanceSheets(fetchedCourse._id);
         await getQuestionnaireQRCode(fetchedCourse._id);
 
@@ -159,7 +156,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       setNoAttendancesMessage('Veuillez ajouter des créneaux pour téléverser des feuilles d\'émargement.');
     } else if (CompaniDate().isBefore(firstSlot.startDate)) {
       setNoAttendancesMessage('L\'émargement sera disponible une fois le premier créneau passé.');
-    } else if (course?.type === INTER_B2B && !course?.trainees.length) {
+    } else if (course?.type === INTER_B2B && !course?.trainees?.length) {
       setNoAttendancesMessage('Veuillez ajouter des stagiaires pour émarger la formation.');
     }
   }, [course, firstSlot]);
@@ -185,7 +182,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const deleteAttendanceSheets = async () => {
     try {
       await AttendanceSheets.delete(imagePreview.id);
-      await refreshAttendanceSheets(get(course, '_id'));
+      await refreshAttendanceSheets(course?._id!);
     } catch (error) {
       console.error(error);
     }
@@ -234,9 +231,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             <Text style={styles.header}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.sectionContainer}>
               <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={goToAttendanceSheetUpload}
-                customStyle={styles.uploadButton} bgColor={course.companies.length ? YELLOW[300] : YELLOW[200]}
-                color={course.companies.length ? BLACK : GREY[600]} disabled={!course.companies.length}/>
-              {!course.companies.length &&
+                customStyle={styles.uploadButton} bgColor={course?.companies?.length ? YELLOW[300] : YELLOW[200]}
+                color={course?.companies?.length ? BLACK : GREY[600]} disabled={!course?.companies?.length}/>
+              {!course.companies?.length &&
                 <Text style={styles.italicText}>
                   Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
                   d&apos;émargement.

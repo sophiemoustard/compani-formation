@@ -5,7 +5,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { GREY, PINK } from '../../styles/colors';
 import { INTER_B2B } from '../../core/data/constants';
 import AttendanceSheets from '../../api/attendanceSheets';
-
 import styles from './styles';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import CameraModal from '../../components/camera/CameraModal';

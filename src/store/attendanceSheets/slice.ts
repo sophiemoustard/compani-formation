@@ -35,10 +35,6 @@ const attendanceSheetSlice = createSlice({
   extraReducers: (builder) => { builder.addCase(resetAllReducers, () => initialState); },
 });
 
-export const {
-  setCourse,
-  setMissingAttendanceSheets,
-  resetAttendanceSheetReducer,
-} = attendanceSheetSlice.actions;
+export const { setCourse, setMissingAttendanceSheets, resetAttendanceSheetReducer } = attendanceSheetSlice.actions;
 
 export default attendanceSheetSlice.reducer;

@@ -12,7 +12,7 @@ import { BlendedCourseType } from '../../types/CourseTypes';
 export const useSetCourse = () => {
   const dispatch = useAppDispatch();
 
-  return useCallback((course: BlendedCourseType) => dispatch(setCourse(course)), [dispatch]);
+  return useCallback((course: BlendedCourseType | null) => dispatch(setCourse(course)), [dispatch]);
 };
 
 export const useSetMissingAttendanceSheets = () => {
