@@ -28,7 +28,7 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsPr
   const alert = (component: string) => {
     Alert.alert(
       'Accès refusé',
-      `Vérifie que l'application a bien l'autorisation d'accéder à ${component}`,
+      `Vérifiez que l'application a bien l'autorisation d'accéder à ${component}`,
       [{ text: 'OK' }],
       { cancelable: false }
     );
@@ -84,7 +84,7 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsPr
 
   return (
     <>
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={styles.container}>
         <NiPrimaryButton caption='Prendre une photo' customStyle={styles.button} onPress={takePicture}
           disabled={isLoading} bgColor={GREY[100]} color={PINK[500]} />
         <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} onPress={addPictureFromGallery}

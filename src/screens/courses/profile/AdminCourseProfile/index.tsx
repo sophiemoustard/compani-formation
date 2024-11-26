@@ -142,8 +142,9 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   );
 
   useEffect(() => {
-    if (!firstSlot) setNoAttendancesMessage('Veuillez ajouter des créneaux pour émarger la formation.');
-    else if (CompaniDate().isBefore(firstSlot.startDate)) {
+    if (!firstSlot) {
+      setNoAttendancesMessage('Veuillez ajouter des créneaux pour téléverser des feuilles d\'émargement.');
+    } else if (CompaniDate().isBefore(firstSlot.startDate)) {
       setNoAttendancesMessage('L\'émargement sera disponible une fois le premier créneau passé.');
     } else if (course?.type === INTER_B2B && !course?.trainees.length) {
       setNoAttendancesMessage('Veuillez ajouter des stagiaires pour émarger la formation.');
@@ -199,7 +200,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
-  const goToAttedanceUpload = () => navigation.navigate('CreateAttendanceSheet', { courseId: route.params.courseId });
+  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { courseId: course._id });
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -214,7 +215,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
             <Text style={styles.header}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
             <View style={styles.sectionContainer}>
-              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={goToAttedanceUpload}
+              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={goToAttendanceSheetUpload}
                 customStyle={styles.uploadButton} bgColor={course.companies.length ? YELLOW[300] : YELLOW[200]}
                 color={course.companies.length ? BLACK : GREY[600]} disabled={!course.companies.length}/>
               {!course.companies.length &&
