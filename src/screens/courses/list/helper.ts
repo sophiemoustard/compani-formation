@@ -6,26 +6,25 @@ import { BlendedCourseType, CourseType } from '../../../types/CourseTypes';
 import { StepType, NextSlotsStepType, ELearningStepType } from '../../../types/StepTypes';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
-import { E_LEARNING } from '../../../core/data/constants';
+import { COMPLETED, E_LEARNING, FORTHCOMING, IN_PROGRESS } from '../../../core/data/constants';
 
 export const getElearningSteps = (steps: StepType[]): ELearningStepType[] =>
   steps.filter(step => step.type === E_LEARNING) as ELearningStepType[];
 
-export const isForthcoming = (course: BlendedCourseType): boolean => {
-  const noSlotPlannedAndSlotToPlan = !course.slots.length && !!course.slotsToPlan.length;
-  const everySlotsToBeStarted = course.slots.every(slot => CompaniDate().isBefore(slot.startDate));
+export const getCourseStatus = (course: BlendedCourseType): string => {
+  const hasUnplannedSlots = course.slotsToPlan.length > 0;
+  if (!course.slots.length && hasUnplannedSlots) return FORTHCOMING;
+  const allSlotsCompleted = CompaniDate().isAfter(course.slots[course.slots.length - 1].endDate);
+  const anySlotUpcoming = CompaniDate().isBefore(course.slots[0].startDate);
 
-  return noSlotPlannedAndSlotToPlan || everySlotsToBeStarted;
+  if (!hasUnplannedSlots && allSlotsCompleted) {
+    return COMPLETED;
+  }
+  if (anySlotUpcoming) {
+    return FORTHCOMING;
+  }
+  return IN_PROGRESS;
 };
-
-export const isCompleted = (course: BlendedCourseType): boolean => {
-  const noSlotToPlan = !course.slotsToPlan.length;
-  const everySlotsHaveBeenCompleted = course.slots.every(slot => CompaniDate().isAfter(slot.endDate));
-
-  return noSlotToPlan && everySlotsHaveBeenCompleted;
-};
-
-export const isInProgress = (course: BlendedCourseType): boolean => !isForthcoming(course) && !isCompleted(course);
 
 const formatCourseStep = (stepId: string, course: BlendedCourseType, stepSlots): NextSlotsStepType => {
   const courseSteps = get(course, 'subProgram.steps') || [];
