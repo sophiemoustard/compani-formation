@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { INPUT_HEIGHT, MARGIN } from '../../styles/metrics';
+import { MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 
 const styles = StyleSheet.create({
@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: MARGIN.MD,
-    marginBottom: MARGIN.LG,
-    height: INPUT_HEIGHT,
+    marginBottom: MARGIN.MD,
   },
 });
 

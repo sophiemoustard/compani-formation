@@ -8,7 +8,7 @@ import { ErrorStateType } from '../../reducers/error';
 interface AttendanceSheetDataSelectionFormProps {
   title: string,
   options: { label: string, value: string }[],
-  setOption: (value: string | null) => void,
+  setOption: (value: string) => void,
   goToNextScreen: () => void,
   error: ErrorStateType
 }
@@ -26,8 +26,8 @@ const AttendanceSheetDataSelectionForm = ({
       <RadioButtonList options={options} setOption={setOption}/>
     </ScrollView>
     <View style={styles.button}>
-      <NiPrimaryButton caption={'Suivant'} onPress={goToNextScreen}/>
       <NiErrorMessage message={error.message} show={error.value}/>
+      <NiPrimaryButton caption={'Suivant'} onPress={goToNextScreen}/>
     </View>
   </>
 );

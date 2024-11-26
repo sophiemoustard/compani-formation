@@ -8,12 +8,12 @@ type RadioButtonOptionsType = { label: string, value: string };
 
 interface RadioButtonProps {
   options: RadioButtonOptionsType[],
-  setOption: (option: string | null) => void,
+  setOption: (option: string) => void,
 }
 
 interface RenderItemProps {
   item: { label: string, value: string },
-  checkedRadioButton: string | null,
+  checkedRadioButton: string,
   onPressCheckbox: (value: string) => void
 }
 
@@ -31,11 +31,11 @@ const renderItem = ({ item, checkedRadioButton, onPressCheckbox }: RenderItemPro
 };
 
 const RadioButtonList = ({ options, setOption }: RadioButtonProps) => {
-  const [checkedRadioButton, setCheckedRadioButton] = useState<string | null>(null);
+  const [checkedRadioButton, setCheckedRadioButton] = useState<string>('');
 
   useEffect(() => setOption(checkedRadioButton), [setOption, checkedRadioButton]);
 
-  const onPressCheckbox = (value: string) => setCheckedRadioButton(prevValue => (prevValue === value ? null : value));
+  const onPressCheckbox = (value: string) => setCheckedRadioButton(prevValue => (prevValue === value ? '' : value));
 
   return (
     <>

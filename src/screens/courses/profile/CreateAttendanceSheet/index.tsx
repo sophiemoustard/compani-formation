@@ -40,7 +40,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [course, setCourse] = useState<BlendedCourseType | null>(null);
   const [title, setTitle] = useState<string>('');
-  const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string | null>(null);
+  const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
   const missingAttendanceSheets = useMemo(() => {
     if (!course?.slots.length) return [];
@@ -96,9 +96,9 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     getCourse();
   }, [route.params.courseId]);
 
-  const goBack = () => navigation.navigate('AdminCourseProfile', { courseId: route.params.courseId });
+  const goBack = () => navigation.goBack();
 
-  const setOption = (option: string | null) => {
+  const setOption = (option: string) => {
     setAttendanceSheetToAdd(option);
     if (option) dispatchError({ type: RESET_ERROR });
   };
@@ -131,7 +131,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
         <FeatherButton name='arrow-left' onPress={() => navigation.navigate('attendance-sheet-data-selection')}
           size={ICON.MD} color={GREY[600]} />
       </View>
-      <UploadMethods course={course!} goBack={goBack} attendanceSheetToAdd={attendanceSheetToAdd!} />
+      <UploadMethods course={course!} goBack={goBack} attendanceSheetToAdd={attendanceSheetToAdd} />
     </SafeAreaView>
   );
 
