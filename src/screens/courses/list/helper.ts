@@ -12,17 +12,14 @@ export const getElearningSteps = (steps: StepType[]): ELearningStepType[] =>
   steps.filter(step => step.type === E_LEARNING) as ELearningStepType[];
 
 export const getCourseStatus = (course: BlendedCourseType): string => {
-  const hasUnplannedSlots = course.slotsToPlan.length > 0;
+  const hasUnplannedSlots = course.slotsToPlan.length;
   if (!course.slots.length && hasUnplannedSlots) return FORTHCOMING;
-  const allSlotsCompleted = CompaniDate().isAfter(course.slots[course.slots.length - 1].endDate);
-  const anySlotUpcoming = CompaniDate().isBefore(course.slots[0].startDate);
+  const isAfterLastSlot = CompaniDate().isAfter(course.slots[course.slots.length - 1].endDate);
+  const isBeforeFirstSlot = CompaniDate().isBefore(course.slots[0].startDate);
 
-  if (!hasUnplannedSlots && allSlotsCompleted) {
-    return COMPLETED;
-  }
-  if (anySlotUpcoming) {
-    return FORTHCOMING;
-  }
+  if (!hasUnplannedSlots && isAfterLastSlot) return COMPLETED;
+  if (isBeforeFirstSlot) return FORTHCOMING;
+
   return IN_PROGRESS;
 };
 
