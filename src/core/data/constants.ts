@@ -135,3 +135,8 @@ export const ACCOUNT_CREATION = 'account_creation';
 
 // COMPANIES
 export const DIRECTORY = 'directory';
+
+// COURSE STATUS
+export const IN_PROGRESS = 'in_progress';
+export const FORTHCOMING = 'forthcoming';
+export const COMPLETED = 'completed';
