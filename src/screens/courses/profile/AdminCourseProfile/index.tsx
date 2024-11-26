@@ -46,6 +46,12 @@ import SecondaryButton from '../../../../components/form/SecondaryButton';
 import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
 import ImagePreview from '../../../../components/ImagePreview';
 import QuestionnaireQRCodeCell from '../../../../components/QuestionnaireQRCodeCell';
+import {
+  useGetCourse,
+  useSetCourse,
+  useSetMissingAttendanceSheets,
+  useResetAttendanceSheetReducer,
+} from '../../../../store/attendanceSheets/hooks';
 
 interface AdminCourseProfileProps extends StackScreenProps<RootStackParamList, 'TrainerCourseProfile'> {
 }
@@ -58,7 +64,10 @@ interface imagePreviewProps {
 }
 
 const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
-  const [course, setCourse] = useState<BlendedCourseType | null>(null);
+  const course = useGetCourse();
+  const setCourse = useSetCourse();
+  const setMissingAttendanceSheet = useSetMissingAttendanceSheets();
+  const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType>(null);
@@ -133,7 +142,11 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     };
 
     getCourse();
-  }, [route.params.courseId]);
+  }, [route.params.courseId, setCourse]);
+
+  useEffect(() => {
+    setMissingAttendanceSheet(missingAttendanceSheets);
+  }, [missingAttendanceSheets, setMissingAttendanceSheet]);
 
   useFocusEffect(
     useCallback(() => {
@@ -151,10 +164,15 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     }
   }, [course, firstSlot]);
 
-  const hardwareBackPress = useCallback(() => {
+  const goBack = useCallback(() => {
     navigation.goBack();
+    resetAttendanceSheetReducer();
+  }, [navigation, resetAttendanceSheetReducer]);
+
+  const hardwareBackPress = useCallback(() => {
+    goBack();
     return true;
-  }, [navigation]);
+  }, [goBack]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
@@ -200,12 +218,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
-  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { courseId: course._id });
+  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet');
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={navigation.goBack} />
+        <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={goBack} />
         <View style={styles.attendancesContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>

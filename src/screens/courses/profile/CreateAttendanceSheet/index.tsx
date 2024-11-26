@@ -1,100 +1,38 @@
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { uniqBy } from 'lodash';
 import FeatherButton from '../../../../components/icons/FeatherButton';
 import { ICON } from '../../../../styles/metrics';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
-import Courses from '../../../../api/courses';
 import { GREY } from '../../../../styles/colors';
-import { BlendedCourseType } from '../../../../types/CourseTypes';
-import {
-  DD_MM_YYYY,
-  INTER_B2B,
-  INTRA,
-  INTRA_HOLDING,
-  LONG_FIRSTNAME_LONG_LASTNAME,
-  OPERATIONS,
-} from '../../../../core/data/constants';
-import AttendanceSheets from '../../../../api/attendanceSheets';
-import {
-  AttendanceSheetType,
-  InterAttendanceSheetType,
-  IntraOrIntraHoldingAttendanceSheetType,
-} from '../../../../types/AttendanceSheetTypes';
-import { formatIdentity } from '../../../../core/helpers/utils';
-import CompaniDate from '../../../../core/helpers/dates/companiDates';
+import { INTER_B2B } from '../../../../core/data/constants';
 import styles from './styles';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
 import AttendanceSheetDataSelectionForm from '../../../../components/AttendanceSheetDataSelectionForm';
 import UploadMethods from '../../../../components/UploadMethods';
+import { useGetCourse, useGetMissingAttendanceSheets } from '../../../../store/attendanceSheets/hooks';
 
 interface CreateAttendanceSheetProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAttendanceSheet'>,
 StackScreenProps<RootCreateAttendanceSheetParamList>
 > {}
 
-const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps) => {
-  const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
-  const [course, setCourse] = useState<BlendedCourseType | null>(null);
+const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
+  const course = useGetCourse();
+  const missingAttendanceSheets = useGetMissingAttendanceSheets();
   const [title, setTitle] = useState<string>('');
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
-  const missingAttendanceSheets = useMemo(() => {
-    if (!course?.slots.length) return [];
-
-    if ([INTRA, INTRA_HOLDING].includes(course?.type)) {
-      const intraOrIntraHoldingCourseSavedSheets = savedAttendanceSheets as IntraOrIntraHoldingAttendanceSheetType[];
-      const savedDates = intraOrIntraHoldingCourseSavedSheets
-        .map(sheet => CompaniDate(sheet.date).startOf('day').toISO());
-
-      return uniqBy(
-        course.slots
-          .map(slot => ({
-            value: CompaniDate(slot.startDate).startOf('day').toISO(),
-            label: CompaniDate(slot.startDate).format(DD_MM_YYYY),
-          }))
-          .filter(date => !savedDates.includes(date.value) && CompaniDate().isSameOrAfter(date.value)),
-        'value'
-      );
-    }
-
-    const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
-    const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
-
-    return [...new Set(
-      course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
-        .filter(trainee => !savedTrainees.includes(trainee.value))
-    )];
-  }, [course, savedAttendanceSheets]);
-
-  const refreshAttendanceSheets = async (courseId: string) => {
-    const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
-    setSavedAttendanceSheets(fetchedAttendanceSheets);
-  };
 
   useEffect(() => {
-    const getCourse = async () => {
-      try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS);
-        await refreshAttendanceSheets(route.params.courseId);
-
-        setCourse(fetchedCourse as BlendedCourseType);
-        setTitle(
-          fetchedCourse.type === INTER_B2B
-            ? 'Pour quel stagiaire souhaitez-vous charger une feuille d\'émargement ?'
-            : 'Pour quelle date souhaitez-vous charger une feuille d\'émargement ?'
-        );
-      } catch (e: any) {
-        console.error(e);
-        setCourse(null);
-      }
-    };
-
-    getCourse();
-  }, [route.params.courseId]);
+    setTitle(
+      course?.type === INTER_B2B
+        ? 'Pour quel stagiaire souhaitez-vous charger une feuille d\'émargement ?'
+        : 'Pour quelle date souhaitez-vous charger une feuille d\'émargement ?'
+    );
+  }, [course]);
 
   const goBack = () => navigation.goBack();
 
