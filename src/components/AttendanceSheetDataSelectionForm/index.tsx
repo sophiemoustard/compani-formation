@@ -20,7 +20,7 @@ const AttendanceSheetDataSelectionForm = ({
   setOption,
   goToNextScreen,
 }: AttendanceSheetDataSelectionFormProps) => (
-  <>
+  !!options.length && <>
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>{title}</Text>
       <RadioButtonList options={options} setOption={setOption}/>
