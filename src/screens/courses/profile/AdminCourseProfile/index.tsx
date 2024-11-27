@@ -39,6 +39,7 @@ import {
   InterAttendanceSheetType,
   IntraOrIntraHoldingAttendanceSheetType,
   isIntraOrIntraHolding,
+  SingleAttendanceSheetType,
 } from '../../../../types/AttendanceSheetTypes';
 import SecondaryButton from '../../../../components/form/SecondaryButton';
 import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
@@ -134,7 +135,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
-        const SINGLE_COURSES_SUBPROGRAM_IDS = Constants.expoConfig.extra.SINGLE_COURSES_SUBPROGRAM_IDS.split(';');
+        const SINGLE_COURSES_SUBPROGRAM_IDS = Constants?.expoConfig?.extra?.SINGLE_COURSES_SUBPROGRAM_IDS.split(';');
         setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
       } catch (e: any) {
         console.error(e);
@@ -225,7 +226,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
-  const renderSingleSavedAttendanceSheets = (sheet: AttendanceSheetType) => {
+  const renderSingleSavedAttendanceSheets = (sheet: SingleAttendanceSheetType) => {
     const label = sheet.slots
       ? [...new Set(sheet.slots.map(slot => CompaniDate(slot.startDate).format(DD_MM_YYYY)))].join(', ')
       : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
@@ -266,7 +267,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!savedAttendanceSheets.length && <>
             {
               isSingle
-                ? savedAttendanceSheets.map(sheet => renderSingleSavedAttendanceSheets(sheet))
+                ? (savedAttendanceSheets as SingleAttendanceSheetType[])
+                  .map(sheet => renderSingleSavedAttendanceSheets(sheet))
                 : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
                   showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
                   horizontal/>
