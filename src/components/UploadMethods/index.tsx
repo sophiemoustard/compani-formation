@@ -44,14 +44,6 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsPr
     }
   };
 
-  const takePicture = () => {
-    requestPermissionsForCamera();
-  };
-
-  const addPictureFromGallery = () => {
-    requestPermissionsForImagePicker();
-  };
-
   const requestPermissionsForImagePicker = async () => {
     try {
       setIsLoading(true);
@@ -84,10 +76,10 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsPr
   return (
     <>
       <View style={styles.container}>
-        <NiPrimaryButton caption='Prendre une photo' customStyle={styles.button} onPress={takePicture}
+        <NiPrimaryButton caption='Prendre une photo' customStyle={styles.button} onPress={requestPermissionsForCamera}
           disabled={isLoading} bgColor={GREY[100]} color={PINK[500]} />
-        <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} onPress={addPictureFromGallery}
-          disabled={isLoading} bgColor={GREY[100]} color={PINK[500]} />
+        <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} disabled={isLoading} color={PINK[500]}
+          onPress={requestPermissionsForImagePicker} bgColor={GREY[100]} />
       </View>
       {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
