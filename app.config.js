@@ -17,6 +17,7 @@ const ENVIRONMENT_VARIABLES = {
   TEST_EMAILS: process.env.TEST_EMAILS,
   TEST_IDS: process.env.TEST_IDS,
   PLATFORM: process.env.PLATFORM,
+  SINGLE_COURSES_SUBPROGRAM_IDS: process.env.SINGLE_COURSES_SUBPROGRAM_IDS,
 };
 
 const LOCAL = 'local';
