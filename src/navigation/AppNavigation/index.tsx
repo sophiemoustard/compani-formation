@@ -10,6 +10,7 @@ import Authentication from '../../screens/Authentication';
 import EmailForm from '../../screens/EmailForm';
 import LoginCodeForm from '../../screens/LoginCodeForm';
 import CreateAccount from '../../screens/CreateAccount';
+import CreateAttendanceSheet from '../../screens/courses/profile/CreateAttendanceSheet';
 import BlendedAbout from '../../screens/explore/BlendedAbout';
 import ElearningAbout from '../../screens/explore/ELearningAbout';
 import LearnerCourseProfile from '../../screens/courses/profile/LearnerCourseProfile';
@@ -40,6 +41,7 @@ const AppNavigation = () => {
     BlendedAbout,
     ElearningAbout,
     AdminCourseProfile,
+    CreateAttendanceSheet,
     ...Profile,
     ...Courses,
   };
