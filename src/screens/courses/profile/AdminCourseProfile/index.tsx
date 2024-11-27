@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import has from 'lodash/has';
@@ -65,6 +66,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const setCourse = useSetCourse();
   const setMissingAttendanceSheet = useSetMissingAttendanceSheets();
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
+  const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
@@ -132,6 +134,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
+        const SINGLE_COURSES_SUBPROGRAM_IDS = Constants.expoConfig.extra.SINGLE_COURSES_SUBPROGRAM_IDS.split(';');
+        setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -221,6 +225,18 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
+  const renderSingleSavedAttendanceSheets = (sheet: AttendanceSheetType) => {
+    const label = sheet.slots
+      ? [...new Set(sheet.slots.map(slot => CompaniDate(slot.startDate).format(DD_MM_YYYY)))].join(', ')
+      : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
+
+    return (
+      <View key={sheet._id} style={styles.attendanceSheetButton}>
+        <SecondaryButton caption={label} onPress={() => openImagePreview(sheet._id, sheet.file.link)}/>
+      </View>
+    );
+  };
+
   const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet');
 
   return course && has(course, 'subProgram.program') && (
@@ -247,9 +263,15 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
               }
             </View>
           </View>}
-          {!!savedAttendanceSheets.length &&
-          <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => renderSavedAttendanceSheets(item)} style={styles.listContainer} horizontal />}
+          {!!savedAttendanceSheets.length && <>
+            {
+              isSingle
+                ? savedAttendanceSheets.map(sheet => renderSingleSavedAttendanceSheets(sheet))
+                : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
+                  showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
+                  horizontal/>
+            }
+          </>}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
