@@ -1,14 +1,8 @@
-import { useCallback, useEffect, useReducer, useState } from 'react';
-import { BackHandler, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useEffect, useReducer, useState } from 'react';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
-import { CompositeScreenProps, useNavigationState } from '@react-navigation/native';
-import FeatherButton from '../../../../components/icons/FeatherButton';
-import { ICON } from '../../../../styles/metrics';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
-import { GREY } from '../../../../styles/colors';
 import { INTER_B2B } from '../../../../core/data/constants';
-import styles from './styles';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
 import AttendanceSheetDataSelectionForm from '../../../../components/AttendanceSheetDataSelectionForm';
 import UploadMethods from '../../../../components/UploadMethods';
@@ -25,13 +19,7 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
   const [title, setTitle] = useState<string>('');
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
-  const currentScreen = useNavigationState((state) => {
-    const nestedState = state.routes.find(route => route.name === 'CreateAttendanceSheet')?.state;
 
-    if (nestedState) return nestedState.routes[nestedState.index!].name;
-
-    return null;
-  });
   useEffect(() => {
     setTitle(
       course?.type === INTER_B2B
@@ -39,22 +27,6 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
         : 'Pour quelle date souhaitez-vous charger une feuille d\'émargement ?'
     );
   }, [course]);
-
-  const goBack = useCallback(() => {
-    if (currentScreen === 'upload-method-selection') navigation.navigate('attendance-sheet-data-selection');
-    else navigation.goBack();
-  }, [navigation, currentScreen]);
-
-  const hardwareBackPress = useCallback(() => {
-    goBack();
-    return true;
-  }, [goBack]);
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
-
-    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  }, [hardwareBackPress]);
 
   const setOption = (option: string) => {
     setAttendanceSheetToAdd(option);
@@ -74,23 +46,12 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
   };
 
   const renderDataSelection = () => (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <View style={styles.header}>
-        <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={GREY[600]} />
-      </View>
-      <AttendanceSheetDataSelectionForm title={title} options={missingAttendanceSheets} setOption={setOption}
-        goToNextScreen={goToNextScreen} error={error} />
-    </SafeAreaView>
+    <AttendanceSheetDataSelectionForm title={title} options={missingAttendanceSheets} setOption={setOption}
+      goToNextScreen={goToNextScreen} error={error} />
   );
 
   const renderUploadMethod = () => (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <View style={styles.header}>
-        <FeatherButton name='arrow-left' onPress={() => navigation.navigate('attendance-sheet-data-selection')}
-          size={ICON.MD} color={GREY[600]} />
-      </View>
-      <UploadMethods course={course!} goBack={() => navigation.goBack()} attendanceSheetToAdd={attendanceSheetToAdd} />
-    </SafeAreaView>
+    <UploadMethods course={course!} goToParent={navigation.goBack} attendanceSheetToAdd={attendanceSheetToAdd} />
   );
 
   const Stack = createStackNavigator<RootCreateAttendanceSheetParamList>();
