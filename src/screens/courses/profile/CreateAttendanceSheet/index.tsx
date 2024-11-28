@@ -89,7 +89,7 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
         <FeatherButton name='arrow-left' onPress={() => navigation.navigate('attendance-sheet-data-selection')}
           size={ICON.MD} color={GREY[600]} />
       </View>
-      <UploadMethods course={course!} goBack={goBack} attendanceSheetToAdd={attendanceSheetToAdd} />
+      <UploadMethods course={course!} goBack={() => navigation.goBack()} attendanceSheetToAdd={attendanceSheetToAdd} />
     </SafeAreaView>
   );
 
