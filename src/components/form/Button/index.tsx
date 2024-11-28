@@ -17,6 +17,7 @@ interface ButtonProps {
   font: FontType,
   icon?: FeatherType,
   disabled: boolean,
+  numberOfLines?: number,
 }
 
 const Button = ({
@@ -30,6 +31,7 @@ const Button = ({
   font,
   icon,
   disabled,
+  numberOfLines = 0,
 }: ButtonProps) => {
   const style = styles(bgColor, borderColor, color, font);
 
@@ -38,7 +40,7 @@ const Button = ({
       testID={caption}>
       {!loading && <>
         {icon && <Feather name={icon} color={color} size={ICON.MD} style={style.icon} />}
-        <Text style={{ ...style.textButton, color }} numberOfLines={1}>{caption}</Text>
+        <Text style={{ ...style.textButton, color }} numberOfLines={numberOfLines}>{caption}</Text>
       </>}
       {loading && <ActivityIndicator style={commonStyle.disabled} color={color} size="small" />}
     </TouchableOpacity>

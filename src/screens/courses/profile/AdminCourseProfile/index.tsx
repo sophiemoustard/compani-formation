@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import Constants from 'expo-constants';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
 import has from 'lodash/has';
@@ -29,6 +28,7 @@ import {
   OPERATIONS,
   PDF,
   SHORT_FIRSTNAME_LONG_LASTNAME,
+  SINGLE_COURSES_SUBPROGRAM_IDS,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../../core/helpers/dates/utils';
@@ -135,7 +135,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
-        const SINGLE_COURSES_SUBPROGRAM_IDS = Constants?.expoConfig?.extra?.SINGLE_COURSES_SUBPROGRAM_IDS.split(';');
         setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
       } catch (e: any) {
         console.error(e);
@@ -232,9 +231,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
 
     return (
-      <View key={sheet._id} style={styles.attendanceSheetButton}>
-        <SecondaryButton caption={label} onPress={() => openImagePreview(sheet._id, sheet.file.link)}/>
-      </View>
+      <SecondaryButton key={sheet._id} customStyle={styles.attendanceSheetButton} caption={label} numberOfLines={1}
+        onPress={() => openImagePreview(sheet._id, sheet.file.link)} />
     );
   };
 
