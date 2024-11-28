@@ -1,8 +1,8 @@
-import { useEffect, useReducer, useState } from 'react';
-import { View } from 'react-native';
+import { useCallback, useEffect, useReducer, useState } from 'react';
+import { BackHandler, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
-import { CompositeScreenProps } from '@react-navigation/native';
+import { CompositeScreenProps, useNavigationState } from '@react-navigation/native';
 import FeatherButton from '../../../../components/icons/FeatherButton';
 import { ICON } from '../../../../styles/metrics';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
@@ -25,7 +25,13 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
   const [title, setTitle] = useState<string>('');
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [error, dispatchError] = useReducer(errorReducer, initialErrorState);
+  const currentScreen = useNavigationState((state) => {
+    const nestedState = state.routes.find(route => route.name === 'CreateAttendanceSheet')?.state;
 
+    if (nestedState) return nestedState.routes[nestedState.index!].name;
+
+    return null;
+  });
   useEffect(() => {
     setTitle(
       course?.type === INTER_B2B
@@ -34,7 +40,21 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
     );
   }, [course]);
 
-  const goBack = () => navigation.goBack();
+  const goBack = useCallback(() => {
+    if (currentScreen === 'upload-method-selection') navigation.navigate('attendance-sheet-data-selection');
+    else navigation.goBack();
+  }, [navigation, currentScreen]);
+
+  const hardwareBackPress = useCallback(() => {
+    goBack();
+    return true;
+  }, [goBack]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  }, [hardwareBackPress]);
 
   const setOption = (option: string) => {
     setAttendanceSheetToAdd(option);
@@ -76,7 +96,7 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
   const Stack = createStackNavigator<RootCreateAttendanceSheetParamList>();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='attendance-sheet-data-selection'>
       <Stack.Screen key={0} name={'attendance-sheet-data-selection'}>{renderDataSelection}</Stack.Screen>
       <Stack.Screen key={1} name={'upload-method-selection'}>{renderUploadMethod}</Stack.Screen>
     </Stack.Navigator>
