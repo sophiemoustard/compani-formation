@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import {
+  FILL_THE_GAPS,
   MULTIPLE_CHOICE_QUESTION,
   OPEN_QUESTION,
   ORDER_THE_SEQUENCE,
@@ -47,7 +48,9 @@ export const getQuizzAnswersList = (state: StateType) => state.cards.quizzAnswer
 
 export const getQuizzAnswer = (state: StateType): QuizzAnswersType | null => {
   const card = getCard(state);
-  const QUIZZ_TEMPLATES = [MULTIPLE_CHOICE_QUESTION, SINGLE_CHOICE_QUESTION, ORDER_THE_SEQUENCE];
+  const QUIZZ_TEMPLATES = [MULTIPLE_CHOICE_QUESTION, SINGLE_CHOICE_QUESTION, ORDER_THE_SEQUENCE, FILL_THE_GAPS];
   if (!card || (!QUIZZ_TEMPLATES.includes(card.template))) return null;
   return state.cards.quizzAnswersList.find(qa => qa.card === card._id) || null;
 };
+
+export const getViewedFlashCards = (state: StateType) => state.cards.viewedFlashCards;

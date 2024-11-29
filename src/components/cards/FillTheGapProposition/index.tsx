@@ -25,7 +25,7 @@ const FillTheGapProposition = ({ item, isGoodAnswer, isValidated, isSelected }: 
 
   return (
     <>
-      <View style={item.visible ? style.textContainer : { opacity: 0 }}>
+      <View style={item.isSelected ? { opacity: 0 } : style.textContainer }>
         <Text style={style.text}>{item.text}</Text>
       </View>
       <Shadow customStyle={style.shadow} />

@@ -46,21 +46,25 @@ export const ICON = {
 
 export const IOS_WIDTH_THRESHOLD = 375;
 export const ANDROID_PIXEL_DENSITY_THRESHOLD = 2;
-export const SCREEN_WIDTH = width < height ? width : height;
-export const SCREEN_HEIGHT = width < height ? height : width;
+export const SCREEN_WIDTH = width;
+export const SCREEN_HEIGHT = height;
 export const IS_SMALL_SCREEN = Platform.select({
   ios: SCREEN_WIDTH < IOS_WIDTH_THRESHOLD,
   android: PixelRatio.get() < ANDROID_PIXEL_DENSITY_THRESHOLD,
+  web: SCREEN_WIDTH < IOS_WIDTH_THRESHOLD,
 });
 
+export const FONT_SCALE = PixelRatio.getFontScale();
+
 export const INPUT_HEIGHT = 48;
-export const GAP_WIDTH = 144;
+export const GAP_WIDTH = 144 * FONT_SCALE;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
 export const PROGRESS_BAR_HEIGHT = 8;
 export const ABSOLUTE_BOTTOM_POSITION = BUTTON_HEIGHT + MARGIN.XL;
-export const PROGRAM_CELL_WIDTH = SCREEN_WIDTH - 2 * MARGIN.MD;
-export const SLOT_CELL_WIDTH = SCREEN_WIDTH - 4 * MARGIN.LG;
+export const IS_DESKTOP_SCREEN = SCREEN_WIDTH > 640;
+export const PROGRAM_CELL_WIDTH = IS_DESKTOP_SCREEN ? SCREEN_WIDTH / 2 - 2 * MARGIN.MD : SCREEN_WIDTH - 2 * MARGIN.MD;
+export const SLOT_CELL_WIDTH = IS_DESKTOP_SCREEN ? SCREEN_WIDTH / 2 - 4 * MARGIN.MD : SCREEN_WIDTH - 4 * MARGIN.LG;
 export const SMALL_SCREEN_MAX_HEIGHT = 568;
 export const IS_LARGE_SCREEN = SCREEN_HEIGHT > SMALL_SCREEN_MAX_HEIGHT;
 export const TEXT_AREA_HEIGHT = IS_LARGE_SCREEN ? 192 : 80;
@@ -72,3 +76,6 @@ export const QUESTIONNAIRE_WIDTH = 120;
 export const SCROLL_EVENT_THROTTLE = 16;
 export const SPINNER_BACKGROUND_HEIGHT = 160;
 export const HIT_SLOP = { top: 8, bottom: 8 };
+export const BACKGROUND_SPOT_WIDTH = 332;
+export const WEB_AUDIO_ICON_SIZE = 250;
+export const SMALL_SCREEN_WATERMARK_SIZE = 268;

@@ -196,9 +196,9 @@ const ProfileEdition = ({ navigation }: ProfileEditionProps) => {
           <Text style={styles.title}>Modifier mes informations</Text>
           <View style={styles.imageContainer}>
             <Image style={styles.profileImage} source={source} />
-            <TouchableOpacity onPress={() => setPictureModal(true)}>
+            {!IS_WEB && <TouchableOpacity onPress={() => setPictureModal(true)}>
               <Text style={styles.profileEdit}>{hasPhoto ? 'MODIFIER LA PHOTO' : 'AJOUTER UNE PHOTO'}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
           </View>
           <NiInput caption="Prénom" value={editedUser.identity.firstname} type="firstname"
             onChangeText={text => onChangeIdentity(FIRSTNAME, text)} customStyle={styles.input} />

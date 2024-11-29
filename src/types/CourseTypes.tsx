@@ -1,5 +1,6 @@
 import { UserType } from './UserType';
 import { StepType, ELearningStepType } from './StepTypes';
+import { CompanyType } from './CompanyType';
 import { BLENDED, LEARNER, OPERATIONS, PEDAGOGY, STRICTLY_E_LEARNING, TESTER, TRAINER } from '../core/data/constants';
 
 // query
@@ -36,7 +37,7 @@ export type SubProgramWithProgramType = SubProgramType & {
 
 export type ELearningSubProgramType = SubProgramType & {
   isStrictlyELearning: true,
-  courses: { _id: string, trainees: String[] }[],
+  courses: { _id: string, trainees: string[] }[],
   steps: ELearningStepType[],
   program?: BaseProgramType,
 }
@@ -98,6 +99,7 @@ export type BlendedCourseType = BaseCourseType & {
   companyRepresentative: UserType,
   misc: string,
   trainees?: TraineeType[],
+  companies?: CompanyType[]
 }
 
 export type CourseModeType = typeof LEARNER | typeof TESTER | typeof TRAINER;

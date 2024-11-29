@@ -31,7 +31,7 @@ const PictureModal = ({
   const alert = (component: string) => {
     Alert.alert(
       'Accès refusé',
-      `Vérifie que l'application a bien l'autorisation d'accéder à ${component}`,
+      `Vérifiez que l'application a bien l'autorisation d'accéder à ${component}`,
       [{ text: 'OK' }],
       { cancelable: false }
     );

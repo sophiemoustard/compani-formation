@@ -16,7 +16,7 @@ import {
 } from '../../../../store/cards/hooks';
 import cardsStyle from '../../../../styles/cards';
 import { GREY, GREEN, ORANGE, PINK } from '../../../../styles/colors';
-import { footerColorsType, QCAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
+import { footerColorsType, StoreAnswerType, SingleChoiceQuestionType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface SingleChoiceQuestionCardProps {
@@ -32,7 +32,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   const addQuizzAnswer = useAddQuizzAnswer();
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isAnsweredCorrectly, setIsAnsweredCorrectly] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<QCAnswerType[]>([]);
+  const [answers, setAnswers] = useState<StoreAnswerType[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -42,10 +42,10 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   useEffect(() => {
     if (!isLoading && !isPressed) {
       if (quizzAnswer?.answerList.length) {
-        setAnswers(quizzAnswer.answerList as QCAnswerType[]);
+        const answerList = quizzAnswer.answerList as StoreAnswerType[];
+        setAnswers(answerList);
         setIsPressed(true);
-        const isAnswerCorrect = (quizzAnswer.answerList as QCAnswerType[])
-          .every(answer => answer.isSelected === answer.correct);
+        const isAnswerCorrect = answerList.every(answer => answer.isSelected === answer.correct);
         setIsAnsweredCorrectly(isAnswerCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
@@ -66,7 +66,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
 
   if (isLoading) return null;
 
-  const renderItem = (item: QCAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
+  const renderItem = (item: StoreAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
     isValidated={isPressed} isGoodAnswer={item.correct} index={answerIndex} item={item.text}
     isSelected={item.isSelected} />;
 
@@ -90,19 +90,21 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
-        <View>
-          <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
-          {answers.map((item, answerIndex) => <View key={answerIndex}>{renderItem(item, answerIndex)}</View>)}
+        <View style={style.container}>
+          <View style={style.propositionsContainer}>
+            <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
+            {answers.map((item, answerIndex) => <View key={answerIndex}>{renderItem(item, answerIndex)}</View>)}
+          </View>
+          <View style={style.footerContainer}>
+            {!isPressed && <FooterGradient />}
+            <QuizCardFooter isValidated={isPressed} isValid={isAnsweredCorrectly}
+              cardIndex={index} footerColors={footerColors} explanation={card.explanation}
+              buttonDisabled={!isPressed} hideButton />
+          </View>
         </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        {!isPressed && <FooterGradient />}
-        <QuizCardFooter isValidated={isPressed} isValid={isAnsweredCorrectly}
-          cardIndex={index} footerColors={footerColors} explanation={card.explanation}
-          buttonDisabled={!isPressed} hideButton />
-      </View>
     </SafeAreaView>
   );
 };

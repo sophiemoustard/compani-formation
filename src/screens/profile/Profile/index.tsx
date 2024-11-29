@@ -30,7 +30,7 @@ import ImagePickerManager from '../../../components/ImagePickerManager';
 import ValidationModal from '../../../components/companyLinkRequest/ValidationModal';
 import { formatImage, formatPayload } from '../../../core/helpers/pictures';
 import { useGetLoggedUser, useSetLoggedUser } from '../../../store/main/hooks';
-import { PEDAGOGY, IS_WEB } from '../../../core/data/constants';
+import { PEDAGOGY, IS_WEB, DIRECTORY } from '../../../core/data/constants';
 import { CompanyType } from '../../../types/CompanyType';
 import styles from './styles';
 
@@ -99,7 +99,7 @@ const Profile = ({ navigation }: ProfileProps) => {
 
   const openCompanyModal = async () => {
     try {
-      const fetchCompanies = await Companies.list();
+      const fetchCompanies = await Companies.list({ action: DIRECTORY });
       setCompanyOptions(fetchCompanies);
     } catch (e) {
       console.error(e);

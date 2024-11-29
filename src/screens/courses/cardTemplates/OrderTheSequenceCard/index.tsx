@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
-import DraggableFlatList from 'react-native-draggable-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import CardHeader from '../../../../components/cards/CardHeader';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import FooterGradient from '../../../../components/design/FooterGradient';
-import OrderProposition from '../../../../components/cards/OrderProposition';
+import OrderProposition, { OrderPropositionRef } from '../../../../components/cards/OrderProposition';
 import { quizJingle } from '../../../../core/helpers/utils';
 import {
   useAddQuizzAnswer,
@@ -28,13 +27,19 @@ interface OrderTheSequenceCardProps {
 
 const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSequenceCardProps) => {
   const card: OrderTheSequenceType = useGetCard();
-  const index = useGetCardIndex();
+  const cardIndex = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
   const quizzAnswer = useGetQuizzAnswer();
   const addQuizzAnswer = useAddQuizzAnswer();
   const [answers, setAnswers] = useState<AnswerPositionType[]>([]);
+  const itemRefs = useRef<OrderPropositionRef[]>([]);
+  const [draggedIndex, setDraggedIndex] = useState<number| null>(null);
+  const [dragCount, setDragCount] = useState<number>(0);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const [isOrderedCorrectly, setIsOrderedCorrectly] = useState<boolean>(false);
+  const [propsHeight, setPropsHeight] = useState<number[]>([]);
+  const [allowedOffsetYList, setAllowedOffsetYList] = useState<number[][][]>([]);
+  const [sumOtherHeightsList, setSumOtherHeightsList] = useState<number[]>([]);
   const [footerColors, setFooterColors] = useState<footerColorsType>({
     buttons: PINK[500],
     text: GREY[100],
@@ -71,6 +76,19 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
     return setFooterColors({ buttons: ORANGE[600], text: ORANGE[600], background: ORANGE[100] });
   }, [isValidated, answers, isOrderedCorrectly]);
 
+  useEffect(() => {
+    const tempSumOtherHeightsList = propsHeight.map((height, index) =>
+      propsHeight.filter((_, i) => i !== index).reduce((a, b) => a + b, 0));
+    setSumOtherHeightsList(tempSumOtherHeightsList);
+
+    const tempAllowedOffsetYList = [
+      [[0], [propsHeight[1], propsHeight[2]], [tempSumOtherHeightsList[0]]],
+      [[-propsHeight[0]], [propsHeight[2] - propsHeight[0], 0], [propsHeight[2]]],
+      [[-tempSumOtherHeightsList[2]], [-propsHeight[1], -propsHeight[0]], [0]],
+    ];
+    setAllowedOffsetYList(tempAllowedOffsetYList);
+  }, [propsHeight]);
+
   const onPressFooterButton = () => {
     if (!isValidated) {
       const isOrderCorrect = answers.every(answer => (answer.goodPosition === answer.tempPosition));
@@ -78,24 +96,33 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
       quizJingle(isOrderCorrect);
       setIsOrderedCorrectly(isOrderCorrect);
       if (isOrderCorrect) incGoodAnswersCount();
-      addQuizzAnswer({ card: card._id, answerList: answers });
+      addQuizzAnswer({ card: card._id, answerList: [...answers].sort((a, b) => a.tempPosition - b.tempPosition) });
 
       return setIsValidated(true);
     }
-    return index !== null ? navigation.navigate(`card-${index + 1}`) : null;
+    return cardIndex !== null ? navigation.navigate(`card-${cardIndex + 1}`) : null;
   };
 
-  const setAnswersArray = ({ data }: { data: AnswerPositionType[] }) => {
-    setAnswers(data.map((ans: AnswerPositionType, answerIndex: number) => ({
-      label: ans.label,
-      goodPosition: ans.goodPosition,
-      tempPosition: answerIndex,
-      _id: ans._id,
-    })));
+  const setAnswersTempPositions = (index: number, positionCount: number) => {
+    const newPosition = answers[index].tempPosition + positionCount;
+    const newAnswers = answers.map((ans: AnswerPositionType, answerIndex: number) => {
+      let tmpPosition = ans.tempPosition;
+      if (answerIndex === index) tmpPosition = newPosition;
+      if (ans.tempPosition === newPosition || (Math.abs(positionCount) === 2 && answerIndex !== index)) {
+        tmpPosition = positionCount < 0 ? ans.tempPosition + 1 : ans.tempPosition - 1;
+      }
+
+      return { label: ans.label, goodPosition: ans.goodPosition, tempPosition: tmpPosition, _id: ans._id };
+    });
+    setDraggedIndex(null);
+    setAnswers(newAnswers);
   };
 
-  const renderItem = ({ item, drag }: { item: AnswerPositionType, drag: () => void}) =>
-    <OrderProposition item={item} isValidated={isValidated} drag={drag} />;
+  const onMove = (index: number, targetPosition: number, orientation: string) => {
+    const itemToMoveIndex = answers.findIndex(answer => answer.tempPosition === targetPosition);
+    if (itemToMoveIndex < 0) return;
+    itemRefs.current[itemToMoveIndex].moveTo(propsHeight[index], orientation);
+  };
 
   const renderInformativeText = () => (
     <Text style={cardsStyle.informativeText}>
@@ -105,22 +132,38 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
 
   if (isLoading) return null;
 
+  const setHeight = (height: number, index: number) => {
+    setPropsHeight((prevState: number[]) => {
+      const newState = [...prevState];
+      newState[index] = height;
+
+      return newState;
+    });
+  };
+
   const style = styles(footerColors.background);
 
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
-      <View style={style.container}>
-        <DraggableFlatList showsVerticalScrollIndicator={false} data={answers} onDragEnd={setAnswersArray}
-          keyExtractor={item => item.label} renderItem={renderItem} ListHeaderComponent={renderInformativeText} />
-      </View>
-      <View style={style.footerContainer}>
-        {!isValidated && <FooterGradient /> }
-        <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={index}
-          buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
-          onPressFooterButton={onPressFooterButton} />
-      </View>
+      <ScrollView contentContainerStyle={style.container}>
+        <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+        <View style={style.propositionsContainer}>
+          {renderInformativeText()}
+          {answers.map((_, index) =>
+            <OrderProposition key={index} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
+              setDraggedIndex={setDraggedIndex} dragCount={dragCount} setDragCount={setDragCount} items={answers}
+              setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setHeight={setHeight}
+              propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
+              allowedOffsetY={allowedOffsetYList[index]} sumOtherHeights={sumOtherHeightsList[index]} />)}
+        </View>
+        <View style={style.footerContainer}>
+          {!isValidated && <FooterGradient />}
+          <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={cardIndex}
+            buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
+            onPressFooterButton={onPressFooterButton} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

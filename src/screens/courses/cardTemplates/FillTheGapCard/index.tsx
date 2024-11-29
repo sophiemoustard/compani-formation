@@ -1,21 +1,25 @@
-// @ts-nocheck
-
 import { useEffect, useState } from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import shuffle from 'lodash/shuffle';
-import { DraxProvider, DraxView } from 'react-native-drax';
+import { DraxDragWithReceiverEventData, DraxProvider, DraxView } from 'react-native-drax';
 import { useNavigation } from '@react-navigation/native';
 import CardHeader from '../../../../components/cards/CardHeader';
 import QuizCardFooter from '../../../../components/cards/QuizCardFooter';
 import FillTheGapProposition from '../../../../components/cards/FillTheGapProposition';
 import FillTheGapQuestion from '../../../../components/cards/FillTheGapQuestion';
 import FillTheGapPropositionList from '../../../../components/cards/FillTheGapPropositionList';
-import { isWeb } from '../../../../core/data/constants';
+import { IS_WEB } from '../../../../core/data/constants';
 import { quizJingle } from '../../../../core/helpers/utils';
-import { useGetCard, useGetCardIndex, useIncGoodAnswersCount } from '../../../../store/cards/hooks';
+import {
+  useAddQuizzAnswer,
+  useGetCard,
+  useGetCardIndex,
+  useGetQuizzAnswer,
+  useIncGoodAnswersCount,
+} from '../../../../store/cards/hooks';
 import { PINK, GREY, GREEN, ORANGE } from '../../../../styles/colors';
-import { FillTheGapType, footerColorsType } from '../../../../types/CardType';
+import { FillTheGapType, footerColorsType, StoreAnswerType } from '../../../../types/CardType';
 import styles from './styles';
 
 interface FillTheGap {
@@ -25,13 +29,16 @@ interface FillTheGap {
 
 export interface FillTheGapAnswers {
   text: string
-  visible: boolean,
+  isSelected: boolean,
+  _id: string,
 }
 
 const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   const card: FillTheGapType = useGetCard();
   const index = useGetCardIndex();
   const incGoodAnswersCount = useIncGoodAnswersCount();
+  const quizzAnswer = useGetQuizzAnswer();
+  const addQuizzAnswer = useAddQuizzAnswer();
   const [goodAnswers, setGoodAnswers] = useState<string[]>([]);
   const [propositions, setPropositions] = useState<FillTheGapAnswers[]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
@@ -47,18 +54,30 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setGoodAnswers(card.gappedText.match(/<trou>[^<]*<\/trou>/g)?.map(rep => rep.replace(/<\/?trou>/g, '')) || []);
+      setGoodAnswers(card.gapAnswers.filter(a => a.correct).map(a => a._id));
     }
   }, [card, isLoading, isValidated]);
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setPropositions(shuffle([...card.falsyGapAnswers.map(a => a.text), ...goodAnswers])
-        .map(proposition => ({ text: proposition, visible: true })));
-      setSelectedAnswers(goodAnswers.map(() => ''));
+      if (quizzAnswer?.answerList.length && goodAnswers.length) {
+        const answerList = quizzAnswer.answerList as StoreAnswerType[];
+        setPropositions(answerList.map(a => ({ _id: a._id, isSelected: a.isSelected, text: a.text })));
+        setIsValidated(true);
+        setSelectedAnswers(
+          answerList.filter(a => a.isSelected).sort((a, b) => a.position! - b.position!).map(a => a._id)
+        );
+        const areAnswersCorrect = card.canSwitchAnswers
+          ? answerList.every(a => a.isSelected === a.correct)
+          : answerList.filter(a => a.isSelected).every(a => (a._id === goodAnswers[a.position!]));
+        setIsAnsweredCorrectly(areAnswersCorrect);
+      } else {
+        setPropositions(shuffle(card.gapAnswers.map(a => ({ text: a.text, _id: a._id, isSelected: false }))));
+        setSelectedAnswers(goodAnswers.map(() => ''));
+      }
     }
     setIsRightSwipeEnabled(isValidated);
-  }, [card, goodAnswers, isLoading, isValidated, setIsRightSwipeEnabled]);
+  }, [card, goodAnswers, isLoading, isValidated, quizzAnswer, setIsRightSwipeEnabled]);
 
   useEffect(() => {
     if (!isValidated) {
@@ -76,17 +95,17 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   const style = styles(footerColors.background);
 
-  const setAnswersAndPropositions = (event, gapIndex?) => {
+  const setAnswersAndPropositions = (event: DraxDragWithReceiverEventData, gapIndex?: number) => {
     const { payload: movedProp } = event.dragged;
     const newPropositions = [...propositions];
-    const selectedPropIdx = newPropositions.map(prop => prop.text).indexOf(movedProp);
+    const selectedPropIdx = newPropositions.map(prop => prop._id).indexOf(movedProp);
     const isActionClick = Math.abs(event.dragged.dragTranslationRatio.x) < 0.1 &&
       Math.abs(event.dragged.dragTranslationRatio.y) < 0.1;
     const selectedAnswerIdx = selectedAnswers.indexOf(movedProp);
 
     const updateAnswer = (gapIdx: number, newGapValue: string) => {
       setSelectedAnswers(array => Object.assign([], array, { [gapIdx]: newGapValue }));
-      newPropositions[selectedPropIdx].visible = !newGapValue;
+      newPropositions[selectedPropIdx].isSelected = !!newGapValue;
     };
 
     const isMovingSelectedAnswer = selectedAnswerIdx > -1;
@@ -98,58 +117,70 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
     const isFillingGapByDroping = !isActionClick && Number.isInteger(gapIndex);
     if (isFillingGapByDroping) {
-      const isGapAlreadyFilled = selectedAnswers[gapIndex] && selectedAnswers[gapIndex] !== movedProp;
+      const isGapAlreadyFilled = selectedAnswers[gapIndex!] && selectedAnswers[gapIndex!] !== movedProp;
       if (isGapAlreadyFilled) {
-        const previousAnswerIdx = newPropositions.map(prop => prop.text).indexOf(selectedAnswers[gapIndex]);
-        newPropositions[previousAnswerIdx].visible = true;
+        const previousAnswerIdx = newPropositions.map(prop => prop._id).indexOf(selectedAnswers[gapIndex!]);
+        newPropositions[previousAnswerIdx].isSelected = false;
       }
-
-      updateAnswer(gapIndex, movedProp);
+      updateAnswer(gapIndex!, movedProp);
     }
-
     setPropositions(newPropositions);
   };
 
-  const isGoodAnswer = (text, idx) => {
+  const isGoodAnswer = (propositionId: string, idx?: number) => {
     if (Number.isInteger(idx)) {
-      return card.canSwitchAnswers ? goodAnswers.includes(text) : goodAnswers.indexOf(text) === idx;
+      return card.canSwitchAnswers ? goodAnswers.includes(propositionId) : goodAnswers.indexOf(propositionId) === idx;
     }
 
-    return goodAnswers.includes(text);
+    return goodAnswers.includes(propositionId);
   };
 
-  const renderContent = (isVisible, item, text, idx?) => {
-    if (!isVisible) return null;
+  const renderContent = (item: FillTheGapAnswers, idx?: number) => {
+    if (item.isSelected) return <></>;
 
     const proposition = <FillTheGapProposition item={item} isValidated={isValidated}
-      isSelected={selectedAnswers.includes(text)} isGoodAnswer={isGoodAnswer(text, idx)} />;
+      isSelected={selectedAnswers.includes(item._id)} isGoodAnswer={isGoodAnswer(item._id, idx)} />;
 
-    const webAnswer = { dragged: { payload: text, dragTranslationRatio: { x: 0, y: 0 } } };
+    const webAnswer = { dragged: { payload: item._id, dragTranslationRatio: { x: 0, y: 0 } } };
 
-    return isWeb
-      ? <TouchableOpacity style={style.answerContainer} onPress={() => setAnswersAndPropositions(webAnswer)}>
+    return IS_WEB
+      ? <TouchableOpacity style={style.answerContainer}
+        onPress={() => setAnswersAndPropositions(webAnswer as DraxDragWithReceiverEventData)}>
         {proposition}
       </TouchableOpacity>
-      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={text} longPressDelay={0}>
+      : <DraxView style={style.answerContainer} draggingStyle={{ opacity: 0 }} dragPayload={item._id}
+        longPressDelay={0}>
         {proposition}
       </DraxView>;
   };
 
-  const renderGap = idx => <DraxView style={style.gapContainer} key={`gap${idx}`}
-    onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
-    renderContent={() => renderContent(
-      !!selectedAnswers[idx], { text: selectedAnswers[idx], visible: true }, selectedAnswers[idx], idx
-    )} />;
+  const renderGap = (idx: number) => {
+    const proposition = {
+      ...propositions.find(p => p._id === selectedAnswers[idx]),
+      isSelected: !selectedAnswers[idx],
+    };
+
+    return <DraxView style={style.gapContainer} key={`gap${idx}`}
+      onReceiveDragDrop={event => setAnswersAndPropositions(event, idx)}
+      renderContent={() => renderContent(proposition as FillTheGapAnswers, idx)} />;
+  };
 
   const onPressFooterButton = () => {
     if (!isValidated) {
       const areAnswersCorrect = card.canSwitchAnswers
-        ? selectedAnswers.every(text => goodAnswers.includes(text))
-        : selectedAnswers.every((text, idx) => (text === goodAnswers[idx]));
+        ? selectedAnswers.every(_id => goodAnswers.includes(_id))
+        : selectedAnswers.every((_id, idx) => (_id === goodAnswers[idx]));
 
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
       if (areAnswersCorrect) incGoodAnswersCount();
+      const answers = propositions
+        .map(p => ({
+          ...p,
+          correct: goodAnswers.includes(p._id),
+          ...p.isSelected && { position: selectedAnswers.indexOf(p._id) },
+        }));
+      addQuizzAnswer({ card: card._id, answerList: answers });
 
       return setIsValidated(true);
     }
@@ -159,18 +190,18 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
           <FillTheGapQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
           <FillTheGapPropositionList isValidated={isValidated} propositions={propositions}
             setProposition={setAnswersAndPropositions} renderContent={renderContent} />
         </DraxProvider>
+        <View style={style.footerContainer}>
+          <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={index}
+            buttonDisabled={!areGapsFilled} footerColors={footerColors} explanation={card.explanation}
+            onPressFooterButton={onPressFooterButton} />
+        </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={index}
-          buttonDisabled={!areGapsFilled} footerColors={footerColors} explanation={card.explanation}
-          onPressFooterButton={onPressFooterButton} />
-      </View>
     </SafeAreaView>
   );
 };

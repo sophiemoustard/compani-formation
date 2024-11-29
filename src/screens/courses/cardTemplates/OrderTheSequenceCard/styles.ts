@@ -9,8 +9,11 @@ const styles = (backgroundColor: string) => StyleSheet.create({
     backgroundColor: GREY[100],
   },
   container: {
+    flexGrow: 1,
+  },
+  propositionsContainer: {
     marginHorizontal: MARGIN.LG,
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'flex-end',
     marginBottom: MARGIN.SM,
   },
@@ -20,7 +23,6 @@ const styles = (backgroundColor: string) => StyleSheet.create({
   },
   question: {
     ...FIRA_SANS_REGULAR.MD,
-    marginHorizontal: MARGIN.LG,
   },
   footerContainer: {
     backgroundColor,

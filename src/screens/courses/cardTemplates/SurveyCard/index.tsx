@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardHeader from '../../../../components/cards/CardHeader';
 import QuestionCardFooter from '../../../../components/cards/QuestionCardFooter';
@@ -50,7 +50,7 @@ const SurveyCard = ({ isLoading, setIsRightSwipeEnabled }: SurveyCardProps) => {
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <CardHeader />
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.question}>{card.question}</Text>
         <View style={styles.surveyScoreContainer}>
           <SurveyScoreSelector onPressScore={onPressScore} selectedScore={selectedScore} />
@@ -61,7 +61,7 @@ const SurveyCard = ({ isLoading, setIsRightSwipeEnabled }: SurveyCardProps) => {
             }
           </View>
         </View>
-      </View>
+      </ScrollView>
       <QuestionCardFooter index={index} buttonColor={isValidationDisabled ? GREY[300] : PINK[500]}
         arrowColor={PINK[500]} buttonCaption='Valider' buttonDisabled={isValidationDisabled}
         validateCard={validateSurvey} />

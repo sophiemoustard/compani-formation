@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   image: {
     height: imageHeight,
     position: 'relative',
+    width: '100%',
   },
   gradient: {
     position: 'absolute',

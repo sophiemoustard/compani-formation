@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
   input: {
     ...FIRA_SANS_REGULAR.XXXL,
     marginHorizontal: MARGIN.XXS,
+    maxWidth: '25%',
+    textAlign: 'center',
   },
   goBack: {
     alignSelf: 'flex-end',

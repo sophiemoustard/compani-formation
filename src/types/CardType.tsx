@@ -32,7 +32,7 @@ export type SingleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
-  qcAnswers: QCAnswerType[],
+  qcAnswers: StoreAnswerType[],
   explanation: string,
 }
 
@@ -62,11 +62,12 @@ export type TitleTextType = {
   text: string,
 }
 
-export type QCAnswerType = {
+export type StoreAnswerType = {
   _id: string
   correct: boolean,
   text: string,
   isSelected: boolean
+  position?: number
 }
 
 export type AnswerPositionType = {
@@ -80,7 +81,7 @@ export type MultipleChoiceQuestionType = {
   _id: string,
   template: string,
   question: string,
-  qcAnswers: QCAnswerType[],
+  qcAnswers: StoreAnswerType[],
   explanation: string,
 }
 
@@ -114,13 +115,14 @@ export type OrderTheSequenceType = {
 export type GapAnswerType = {
   text: string,
   _id: string,
+  correct: boolean,
 }
 
 export type FillTheGapType = {
   _id: string,
   template: string,
   gappedText: string,
-  falsyGapAnswers: GapAnswerType[],
+  gapAnswers: GapAnswerType[],
   explanation: string,
   canSwitchAnswers: boolean,
 }

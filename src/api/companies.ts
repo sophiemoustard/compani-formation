@@ -6,15 +6,16 @@ import { CompanyType } from '../types/CompanyType';
 import { CompanyListResponseType } from '../types/AxiosTypes';
 
 export default {
-  list: async (): Promise<CompanyType[]> => {
+  list: async (params: { action: string }): Promise<CompanyType[]> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CompanyListResponseType> = await axiosLogged.get(`${baseURL}/companies`);
+    const response: AxiosResponse<CompanyListResponseType> = await axiosLogged.get(`${baseURL}/companies`, { params });
 
     return response.data.data.companies;
   },
-  listNotLogged: async (): Promise<CompanyType[]> => {
+  listNotLogged: async (params: { action: string }): Promise<CompanyType[]> => {
     const baseURL = await Environment.getBaseUrl();
-    const response: AxiosResponse<CompanyListResponseType> = await axiosNotLogged.get(`${baseURL}/companies`);
+    const response: AxiosResponse<CompanyListResponseType> = await axiosNotLogged
+      .get(`${baseURL}/companies`, { params });
 
     return response.data.data.companies;
   },

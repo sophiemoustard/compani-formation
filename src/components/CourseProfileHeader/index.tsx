@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, StyleProp, ViewStyle, ImageSourcePropType } from 'react-native';
+import { View, Text, ImageBackground, ImageSourcePropType } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import FeatherButton from '../icons/FeatherButton';
 import { WHITE } from '../../styles/colors';
@@ -16,8 +16,7 @@ const CourseProfileHeader = ({
   goBack,
   title,
 }: CourseProfileHeaderProps) => (
-  <ImageBackground source={source} imageStyle={styles.image}
-    style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
+  <ImageBackground source={source} imageStyle={styles.image}>
     <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
     <View style={styles.header}>
       <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
