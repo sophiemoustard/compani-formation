@@ -145,6 +145,13 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     setMissingAttendanceSheet(missingAttendanceSheets);
   }, [missingAttendanceSheets, setMissingAttendanceSheet]);
 
+  useEffect(() => () => {
+    const currentRoute = navigation.getState().routes[navigation.getState().index];
+    if (currentRoute?.name !== 'CreateAttendanceSheet') {
+      resetAttendanceSheetReducer();
+    }
+  }, [navigation, resetAttendanceSheetReducer]);
+
   useFocusEffect(
     useCallback(() => {
       if (course) refreshAttendanceSheets(course._id);
@@ -163,8 +170,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const goBack = useCallback(() => {
     navigation.goBack();
-    resetAttendanceSheetReducer();
-  }, [navigation, resetAttendanceSheetReducer]);
+  }, [navigation]);
 
   const hardwareBackPress = useCallback(() => {
     goBack();

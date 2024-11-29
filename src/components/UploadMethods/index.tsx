@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { Alert, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { Alert, BackHandler, View } from 'react-native';
 import * as Camera from 'expo-camera/legacy';
 import * as ImagePicker from 'expo-image-picker';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { GREY, PINK } from '../../styles/colors';
 import { INTER_B2B } from '../../core/data/constants';
 import AttendanceSheets from '../../api/attendanceSheets';
@@ -12,17 +14,31 @@ import ImagePickerManager from '../../components/ImagePickerManager';
 import { PictureType } from '../../types/PictureTypes';
 import { formatImage, formatPayload } from '../../core/helpers/pictures';
 import { CourseType } from '../../types/CourseTypes';
+import FeatherButton from '../icons/FeatherButton';
+import { ICON } from '../../styles/metrics';
 
 interface UploadMethodsProps {
   attendanceSheetToAdd: string,
   course: CourseType,
-  goBack: () => void,
+  goToParent: () => void,
 }
 
-const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsProps) => {
+const UploadMethods = ({ attendanceSheetToAdd, course, goToParent }: UploadMethodsProps) => {
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
+
+  const hardwareBackPress = useCallback(() => {
+    navigation.goBack();
+    return true;
+  }, [navigation]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
+
+    return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
+  }, [hardwareBackPress]);
 
   const alert = (component: string) => {
     Alert.alert(
@@ -69,12 +85,15 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsPr
     } catch (e) {
       console.error(e);
     } finally {
-      goBack();
+      goToParent();
     }
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <View style={styles.header}>
+        <FeatherButton name='arrow-left' onPress={navigation.goBack} size={ICON.MD} color={GREY[600]} />
+      </View>
       <View style={styles.container}>
         <NiPrimaryButton caption='Prendre une photo' customStyle={styles.button} onPress={requestPermissionsForCamera}
           disabled={isLoading} bgColor={GREY[100]} color={PINK[500]} />
@@ -84,7 +103,8 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goBack }: UploadMethodsPr
       {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}
         savePicture={savePicture} />}
-    </>
+    </SafeAreaView>
+
   );
 };
 

@@ -1,14 +1,8 @@
 import { useEffect, useReducer, useState } from 'react';
-import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import FeatherButton from '../../../../components/icons/FeatherButton';
-import { ICON } from '../../../../styles/metrics';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
-import { GREY } from '../../../../styles/colors';
 import { INTER_B2B } from '../../../../core/data/constants';
-import styles from './styles';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
 import AttendanceSheetDataSelectionForm from '../../../../components/AttendanceSheetDataSelectionForm';
 import UploadMethods from '../../../../components/UploadMethods';
@@ -34,8 +28,6 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
     );
   }, [course]);
 
-  const goBack = () => navigation.goBack();
-
   const setOption = (option: string) => {
     setAttendanceSheetToAdd(option);
     if (option) dispatchError({ type: RESET_ERROR });
@@ -54,29 +46,18 @@ const CreateAttendanceSheet = ({ navigation }: CreateAttendanceSheetProps) => {
   };
 
   const renderDataSelection = () => (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <View style={styles.header}>
-        <FeatherButton name='arrow-left' onPress={goBack} size={ICON.MD} color={GREY[600]} />
-      </View>
-      <AttendanceSheetDataSelectionForm title={title} options={missingAttendanceSheets} setOption={setOption}
-        goToNextScreen={goToNextScreen} error={error} />
-    </SafeAreaView>
+    <AttendanceSheetDataSelectionForm title={title} options={missingAttendanceSheets} setOption={setOption}
+      goToNextScreen={goToNextScreen} error={error} />
   );
 
   const renderUploadMethod = () => (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <View style={styles.header}>
-        <FeatherButton name='arrow-left' onPress={() => navigation.navigate('attendance-sheet-data-selection')}
-          size={ICON.MD} color={GREY[600]} />
-      </View>
-      <UploadMethods course={course!} goBack={goBack} attendanceSheetToAdd={attendanceSheetToAdd} />
-    </SafeAreaView>
+    <UploadMethods course={course!} goToParent={navigation.goBack} attendanceSheetToAdd={attendanceSheetToAdd} />
   );
 
   const Stack = createStackNavigator<RootCreateAttendanceSheetParamList>();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='attendance-sheet-data-selection'>
       <Stack.Screen key={0} name={'attendance-sheet-data-selection'}>{renderDataSelection}</Stack.Screen>
       <Stack.Screen key={1} name={'upload-method-selection'}>{renderUploadMethod}</Stack.Screen>
     </Stack.Navigator>
