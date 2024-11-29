@@ -7,6 +7,9 @@ const styles = (backgroundColor: string) => StyleSheet.create({
     flex: 1,
     backgroundColor: GREY[100],
   },
+  container: {
+    flexGrow: 1,
+  },
   gapContainer: {
     backgroundColor: GREY[200],
     borderRadius: BORDER_RADIUS.MD,

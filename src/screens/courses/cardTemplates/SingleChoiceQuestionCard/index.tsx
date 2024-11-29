@@ -90,19 +90,21 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
         <Text style={cardsStyle.question}>{card.question}</Text>
-        <View>
-          <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
-          {answers.map((item, answerIndex) => <View key={answerIndex}>{renderItem(item, answerIndex)}</View>)}
+        <View style={style.container}>
+          <View style={style.propositionsContainer}>
+            <Text style={cardsStyle.informativeText}>Une seule réponse est possible</Text>
+            {answers.map((item, answerIndex) => <View key={answerIndex}>{renderItem(item, answerIndex)}</View>)}
+          </View>
+          <View style={style.footerContainer}>
+            {!isPressed && <FooterGradient />}
+            <QuizCardFooter isValidated={isPressed} isValid={isAnsweredCorrectly}
+              cardIndex={index} footerColors={footerColors} explanation={card.explanation}
+              buttonDisabled={!isPressed} hideButton />
+          </View>
         </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        {!isPressed && <FooterGradient />}
-        <QuizCardFooter isValidated={isPressed} isValid={isAnsweredCorrectly}
-          cardIndex={index} footerColors={footerColors} explanation={card.explanation}
-          buttonDisabled={!isPressed} hideButton />
-      </View>
     </SafeAreaView>
   );
 };

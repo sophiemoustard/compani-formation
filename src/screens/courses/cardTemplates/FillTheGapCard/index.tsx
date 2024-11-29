@@ -60,7 +60,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      if (quizzAnswer?.answerList.length) {
+      if (quizzAnswer?.answerList.length && goodAnswers.length) {
         const answerList = quizzAnswer.answerList as StoreAnswerType[];
         setPropositions(answerList.map(a => ({ _id: a._id, isSelected: a.isSelected, text: a.text })));
         setIsValidated(true);
@@ -190,18 +190,18 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={style.container} showsVerticalScrollIndicator={false}>
         <DraxProvider>
           <FillTheGapQuestion text={card.gappedText} isValidated={isValidated} renderGap={renderGap} />
           <FillTheGapPropositionList isValidated={isValidated} propositions={propositions}
             setProposition={setAnswersAndPropositions} renderContent={renderContent} />
         </DraxProvider>
+        <View style={style.footerContainer}>
+          <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={index}
+            buttonDisabled={!areGapsFilled} footerColors={footerColors} explanation={card.explanation}
+            onPressFooterButton={onPressFooterButton} />
+        </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        <QuizCardFooter isValidated={isValidated} isValid={isAnsweredCorrectly} cardIndex={index}
-          buttonDisabled={!areGapsFilled} footerColors={footerColors} explanation={card.explanation}
-          onPressFooterButton={onPressFooterButton} />
-      </View>
     </SafeAreaView>
   );
 };

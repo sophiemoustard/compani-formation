@@ -146,22 +146,24 @@ const OrderTheSequenceCard = ({ isLoading, setIsRightSwipeEnabled }: OrderTheSeq
   return (
     <SafeAreaView style={style.safeArea} edges={['top']}>
       <CardHeader />
-      <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
       <ScrollView contentContainerStyle={style.container}>
-        {renderInformativeText()}
-        {answers.map((_, index) =>
-          <OrderProposition key={index} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
-            setDraggedIndex={setDraggedIndex} dragCount={dragCount} setDragCount={setDragCount} items={answers}
-            setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setHeight={setHeight}
-            propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
-            allowedOffsetY={allowedOffsetYList[index]} sumOtherHeights={sumOtherHeightsList[index]} />)}
+        <Text style={[cardsStyle.question, style.question]}>{card.question}</Text>
+        <View style={style.propositionsContainer}>
+          {renderInformativeText()}
+          {answers.map((_, index) =>
+            <OrderProposition key={index} index={index} isValidated={isValidated} draggedIndex={draggedIndex}
+              setDraggedIndex={setDraggedIndex} dragCount={dragCount} setDragCount={setDragCount} items={answers}
+              setAnswersTempPositions={setAnswersTempPositions} onMove={onMove} setHeight={setHeight}
+              propsHeight={propsHeight} ref={(el: OrderPropositionRef) => { itemRefs.current[index] = el; }}
+              allowedOffsetY={allowedOffsetYList[index]} sumOtherHeights={sumOtherHeightsList[index]} />)}
+        </View>
+        <View style={style.footerContainer}>
+          {!isValidated && <FooterGradient />}
+          <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={cardIndex}
+            buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
+            onPressFooterButton={onPressFooterButton} />
+        </View>
       </ScrollView>
-      <View style={style.footerContainer}>
-        {!isValidated && <FooterGradient />}
-        <QuizCardFooter isValidated={isValidated} isValid={isOrderedCorrectly} cardIndex={cardIndex}
-          buttonDisabled={false} footerColors={footerColors} explanation={card.explanation}
-          onPressFooterButton={onPressFooterButton} />
-      </View>
     </SafeAreaView>
   );
 };

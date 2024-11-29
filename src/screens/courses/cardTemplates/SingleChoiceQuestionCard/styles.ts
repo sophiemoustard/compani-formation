@@ -7,10 +7,15 @@ const styles = (isPressed: boolean, backgroundColor: string) => StyleSheet.creat
     flex: 1,
     backgroundColor: GREY[100],
   },
-  container: {
-    marginHorizontal: MARGIN.LG,
+  scrollView: {
     flexGrow: 1,
-    justifyContent: 'space-between',
+  },
+  container: {
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+  },
+  propositionsContainer: {
+    marginHorizontal: MARGIN.LG,
     paddingBottom: PADDING.XL,
   },
   footerContainer: {

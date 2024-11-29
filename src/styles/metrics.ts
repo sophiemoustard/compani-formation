@@ -54,8 +54,10 @@ export const IS_SMALL_SCREEN = Platform.select({
   web: SCREEN_WIDTH < IOS_WIDTH_THRESHOLD,
 });
 
+export const FONT_SCALE = PixelRatio.getFontScale();
+
 export const INPUT_HEIGHT = 48;
-export const GAP_WIDTH = 144;
+export const GAP_WIDTH = 144 * FONT_SCALE;
 export const BUTTON_HEIGHT = 48;
 export const ORDERED_ANSWER_MIN_HEIGHT = 64;
 export const PROGRESS_BAR_HEIGHT = 8;
@@ -75,3 +77,5 @@ export const SCROLL_EVENT_THROTTLE = 16;
 export const SPINNER_BACKGROUND_HEIGHT = 160;
 export const HIT_SLOP = { top: 8, bottom: 8 };
 export const BACKGROUND_SPOT_WIDTH = 332;
+export const WEB_AUDIO_ICON_SIZE = 250;
+export const SMALL_SCREEN_WATERMARK_SIZE = 268;
