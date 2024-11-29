@@ -10,7 +10,7 @@ export type RootStackParamList = {
   BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }
-  CreateAttendanceSheet: undefined;
+  CreateAttendanceSheet: {isSingle: boolean};
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   ImagePickerManager: undefined;
