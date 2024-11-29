@@ -3,6 +3,7 @@ import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList 
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
+import get from 'lodash/get';
 import has from 'lodash/has';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -20,6 +21,7 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
+  HH_MM,
   IMAGE,
   INTRA,
   INTER_B2B,
@@ -49,6 +51,7 @@ import {
   useGetCourse,
   useSetCourse,
   useSetMissingAttendanceSheets,
+  useSetSlotsToBeSignedOptions,
   useResetAttendanceSheetReducer,
 } from '../../../../store/attendanceSheets/hooks';
 
@@ -66,12 +69,29 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const course = useGetCourse();
   const setCourse = useSetCourse();
   const setMissingAttendanceSheet = useSetMissingAttendanceSheets();
+  const setSlotsToBeSignedOptions = useSetSlotsToBeSignedOptions();
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
   const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
+
+  const slotsToBeSignedOptions = useMemo(() => {
+    if (!isSingle || !course?.slots.length) return [];
+    const signedSlots = (savedAttendanceSheets as SingleAttendanceSheetType[])
+      .map(as => get(as, 'slots', []).map(s => s._id))
+      .flat();
+
+    return course.slots
+      .filter(slot => !signedSlots.includes(slot._id))
+      .map(slot => ({
+        label: `${CompaniDate(slot.startDate).format(`${DD_MM_YYYY} ${HH_MM}`)}
+        - ${CompaniDate(slot.endDate).format(HH_MM)}`,
+        value: slot._id,
+      }));
+  }, [course, isSingle, savedAttendanceSheets]);
+
   const missingAttendanceSheets = useMemo(() => {
     if (!course?.slots.length) return [];
 
@@ -97,9 +117,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
     return [...new Set(
       course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
-        .filter(trainee => !savedTrainees.includes(trainee.value))
+        .filter(trainee => (isSingle ? slotsToBeSignedOptions.length : !savedTrainees.includes(trainee.value)))
     )];
-  }, [course, firstSlot, savedAttendanceSheets]);
+  }, [course, firstSlot, isSingle, savedAttendanceSheets, slotsToBeSignedOptions]);
+
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
   const [questionnaireQRCode, setQuestionnaireQRCode] = useState<string>('');
@@ -147,7 +168,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   useEffect(() => {
     setMissingAttendanceSheet(missingAttendanceSheets);
-  }, [missingAttendanceSheets, setMissingAttendanceSheet]);
+    setSlotsToBeSignedOptions(slotsToBeSignedOptions);
+  }, [missingAttendanceSheets, setMissingAttendanceSheet, slotsToBeSignedOptions, setSlotsToBeSignedOptions]);
 
   useEffect(() => () => {
     const currentRoute = navigation.getState().routes[navigation.getState().index];
@@ -236,7 +258,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     );
   };
 
-  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet');
+  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { isSingle });
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -249,11 +271,18 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
               <Text style={styles.italicText}>{noAttendancesMessage}</Text>}
           </View>
           {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
-            <Text style={styles.header}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
+            <Text style={styles.header}>
+              { isSingle
+                ? 'Pour charger une feuille d\'émargement ou envoyer une demande de signature veuillez cliquer sur le '
+              + 'bouton ci-dessous.'
+                : 'Chargez vos feuilles d\'émargements quand elles sont complètes.'
+              }
+            </Text>
             <View style={styles.sectionContainer}>
-              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={goToAttendanceSheetUpload}
-                customStyle={styles.uploadButton} bgColor={course?.companies?.length ? YELLOW[300] : YELLOW[200]}
-                color={course?.companies?.length ? BLACK : GREY[600]} disabled={!course?.companies?.length}/>
+              <SecondaryButton caption={isSingle ? 'Emarger des créneaux' : 'Charger une feuille d\'émargement'}
+                onPress={goToAttendanceSheetUpload} customStyle={styles.uploadButton}
+                bgColor={course?.companies?.length ? YELLOW[300] : YELLOW[200]} disabled={!course?.companies?.length}
+                color={course?.companies?.length ? BLACK : GREY[600]} />
               {!course.companies?.length &&
                 <Text style={styles.italicText}>
                   Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
