@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import {
-  MissingAttendanceSheetType,
+  DataOptionsType,
   resetAttendanceSheetReducer,
   setCourse,
   setMissingAttendanceSheets,
+  setSlotsToBeSignedOptions,
 } from './slice';
-import { getCourse, getMissingAttendanceSheets } from './selectors';
+import { getCourse, getMissingAttendanceSheets, getSlotsToBeSignedOptions } from './selectors';
 import { BlendedCourseType } from '../../types/CourseTypes';
 
 export const useSetCourse = () => {
@@ -18,8 +19,15 @@ export const useSetCourse = () => {
 export const useSetMissingAttendanceSheets = () => {
   const dispatch = useAppDispatch();
 
-  return useCallback((missingAttendanceSheets: MissingAttendanceSheetType) =>
+  return useCallback((missingAttendanceSheets: DataOptionsType) =>
     dispatch(setMissingAttendanceSheets(missingAttendanceSheets)), [dispatch]);
+};
+
+export const useSetSlotsToBeSignedOptions = () => {
+  const dispatch = useAppDispatch();
+
+  return useCallback((slotsToBeSignedOptions: DataOptionsType) =>
+    dispatch(setSlotsToBeSignedOptions(slotsToBeSignedOptions)), [dispatch]);
 };
 
 export const useResetAttendanceSheetReducer = () => {
@@ -31,3 +39,5 @@ export const useResetAttendanceSheetReducer = () => {
 export const useGetCourse = () => useAppSelector(getCourse);
 
 export const useGetMissingAttendanceSheets = () => useAppSelector(getMissingAttendanceSheets);
+
+export const useGetSlotsToBeSignedOptions = () => useAppSelector(getSlotsToBeSignedOptions);
