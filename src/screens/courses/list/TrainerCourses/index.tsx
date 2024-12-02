@@ -1,5 +1,5 @@
 import 'array-flat-polyfill';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Text, View, ScrollView, ImageBackground } from 'react-native';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,16 +16,31 @@ import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { RootBottomTabParamList, RootStackParamList } from '../../../../types/NavigationType';
 import { useGetLoggedUserId } from '../../../../store/main/hooks';
 import commonStyles from '../../../../styles/common';
-import { BLENDED, OPERATIONS, TRAINER } from '../../../../core/data/constants';
+import { BLENDED, COMPLETED, FORTHCOMING, OPERATIONS, TRAINER } from '../../../../core/data/constants';
 import styles from '../styles';
-import { isInProgress, isForthcoming, isCompleted, getElearningSteps, formatNextSteps } from '../helper';
+import { getElearningSteps, formatNextSteps, getCourseStatus } from '../helper';
 import { CourseDisplayType } from '../types';
 import TrainerEmptyState from '../TrainerEmptyState';
 
 const formatCoursesDiplaysContent = (courses: BlendedCourseType[]) => {
-  const coursesInProgress = courses.filter(c => isInProgress(c));
-  const forthcomingCourses = courses.filter(c => isForthcoming(c));
-  const completedCourses = courses.filter(c => isCompleted(c));
+  const coursesInProgress: BlendedCourseType[] = [];
+  const forthcomingCourses: BlendedCourseType[] = [];
+  const completedCourses: BlendedCourseType[] = [];
+
+  courses.forEach((course) => {
+    const status = getCourseStatus(course);
+    switch (status) {
+      case FORTHCOMING:
+        forthcomingCourses.push(course);
+        break;
+      case COMPLETED:
+        completedCourses.push(course);
+        break;
+      default:
+        coursesInProgress.push(course);
+        break;
+    }
+  });
 
   const contents: CourseDisplayType[] = [
     {
@@ -65,7 +80,6 @@ const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
   const loggedUserId = useGetLoggedUserId();
 
   const [coursesDisplays, setCoursesDisplays] = useState<CourseDisplayType[]>([]);
-  const [nextSteps, setNextSteps] = useState<NextSlotsStepType[]>([]);
   const isFocused = useIsFocused();
 
   const getCourses = useCallback(async () => {
@@ -78,9 +92,6 @@ const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
         });
         const formatedCourses = formatCoursesDiplaysContent(fetchedCourses);
         setCoursesDisplays(formatedCourses);
-
-        const formatedNextSteps = formatNextSteps(fetchedCourses);
-        setNextSteps(formatedNextSteps);
       }
     } catch (e: any) {
       console.error(e);
@@ -101,6 +112,12 @@ const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
       getCourses();
     }
   }, [isFocused, getCourses, loggedUserId]);
+
+  const nextSteps: NextSlotsStepType[] = useMemo(() => (
+    coursesDisplays.length
+      ? formatNextSteps(coursesDisplays[0].courses)
+      : []
+  ), [coursesDisplays]);
 
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
