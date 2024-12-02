@@ -28,7 +28,8 @@ const NiImage = ({ source, imgHeight, onPress }: NiImageProps) => {
       </View>}
       <TouchableOpacity onPress={onPress}>
         <Image source={source} style={[cardsStyle.media, style.media]}
-          onLoadStart={() => isFirstLoad && loadImage()} onLoad={() => setIsMediaLoading(false)} />
+          onLoadStart={() => isFirstLoad && loadImage()} onLoad={() => setIsMediaLoading(false)}
+          onError={() => setIsMediaLoading(false)} />
       </TouchableOpacity>
     </>
   );
