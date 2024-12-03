@@ -30,7 +30,7 @@ const FlashCard = ({ isLoading, setIsRightSwipeEnabled }: FlashCardProps) => {
   const card: FlashCardType = useGetCard();
   const index = useGetCardIndex();
   const viewedFlashCards = useGetViewedFlashCards();
-  const hasCardBeenViewed = viewedFlashCards.includes(card._id);
+  const hasCardBeenViewed = viewedFlashCards.includes(card?._id);
   const setViewedFlashCards = useSetViewedFlashCards();
   const [timesHasBeenClicked, setTimesHasBeenClicked] = useState<ClickOnCard>(ClickOnCard.UNCLICKED_CARD);
   const animatedValue = useRef(new Animated.Value(0)).current;
