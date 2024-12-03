@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { resetAllReducers } from '../actions';
 import { BlendedCourseType, SlotType } from '../../types/CourseTypes';
 
-export type DataOptionsType = {value: string; label: string;}[]
+export type DataOptionsType = { value: string; label: string }
 
 export type AttendanceSheetStateType = {
   course: BlendedCourseType | null,
-  missingAttendanceSheets: DataOptionsType,
+  missingAttendanceSheets: DataOptionsType[],
   groupedSlotsToBeSigned: Record<string, SlotType[]>,
 }
 const initialState: AttendanceSheetStateType = {
@@ -22,7 +22,7 @@ const setBlendedCourse = (state: AttendanceSheetStateType, action: PayloadAction
 );
 
 const setMissingAttendanceSheetList =
-  (state: AttendanceSheetStateType, action: PayloadAction<DataOptionsType>) => (
+  (state: AttendanceSheetStateType, action: PayloadAction<DataOptionsType[]>) => (
     { ...state, missingAttendanceSheets: action.payload }
   );
 

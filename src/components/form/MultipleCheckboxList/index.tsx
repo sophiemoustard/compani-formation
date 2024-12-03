@@ -5,19 +5,18 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GREY } from '../../../styles/colors';
+import { DataOptionsType } from '../../../store/attendanceSheets/slice';
 import styles from './styles';
 
-type CheckboxOptionsType = { label: string, value: string };
-
 interface MultipleCheckboxListProps {
-  optionsGroups: CheckboxOptionsType[][],
+  optionsGroups: DataOptionsType[][],
   groupTitles: string[],
   setOptions: (options: string[]) => void,
   checkedList: string[],
 }
 
 interface RenderItemProps {
-  item: { label: string, value: string },
+  item: DataOptionsType,
   checkedList: string[],
   onPressCheckbox: (value: string) => void
 }
