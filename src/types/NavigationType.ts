@@ -41,6 +41,7 @@ export type RootCreateAccountParamList = {
 export type RootCreateAttendanceSheetParamList = {
   'attendance-sheet-data-selection': undefined;
   'upload-method-selection': undefined;
+  'slots-data-selection': undefined;
 }
 
 export type RootCardParamList = {
