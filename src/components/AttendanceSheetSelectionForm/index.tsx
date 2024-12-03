@@ -10,19 +10,19 @@ import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 
-interface AttendanceSheetDataSelectionFormProps {
+interface AttendanceSheetSelectionFormProps {
   title: string,
   goToNextScreen: () => void,
   error: ErrorStateType,
   children: any,
 }
 
-const AttendanceSheetDataSelectionForm = ({
+const AttendanceSheetSelectionForm = ({
   title,
   goToNextScreen,
   error,
   children,
-}: AttendanceSheetDataSelectionFormProps) => {
+}: AttendanceSheetSelectionFormProps) => {
   const navigation = useNavigation();
 
   const hardwareBackPress = useCallback(() => {
@@ -50,4 +50,4 @@ const AttendanceSheetDataSelectionForm = ({
     </View>
   </SafeAreaView>;
 };
-export default AttendanceSheetDataSelectionForm;
+export default AttendanceSheetSelectionForm;

@@ -5,7 +5,7 @@ import keyBy from 'lodash/keyBy';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
 import { INTER_B2B, DD_MM_YYYY, HH_MM } from '../../../../core/data/constants';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
-import AttendanceSheetDataSelectionForm from '../../../../components/AttendanceSheetDataSelectionForm';
+import AttendanceSheetSelectionForm from '../../../../components/AttendanceSheetSelectionForm';
 import UploadMethods from '../../../../components/UploadMethods';
 import {
   useGetCourse,
@@ -90,19 +90,19 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   };
 
   const renderDataSelection = () => (
-    <AttendanceSheetDataSelectionForm title={title} error={errorData}
+    <AttendanceSheetSelectionForm title={title} error={errorData}
       goToNextScreen={() => go({ from: DATA_SELECTION, to: isSingle ? SLOTS_SELECTION : UPLOAD_METHOD })}>
       <RadioButtonList options={missingAttendanceSheets} setOption={setOption}
         checkedRadioButton={attendanceSheetToAdd} />
-    </AttendanceSheetDataSelectionForm>
+    </AttendanceSheetSelectionForm>
   );
 
   const renderSlotSelection = () => (
-    <AttendanceSheetDataSelectionForm title={'Pour quels créneaux souhaitez-vous charger une feuille d\'émargement ?'}
+    <AttendanceSheetSelectionForm title={'Pour quels créneaux souhaitez-vous charger une feuille d\'émargement ?'}
       error={errorSlots} goToNextScreen={() => go({ from: SLOTS_SELECTION, to: UPLOAD_METHOD })}>
       <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setOptions}
         checkedList={slotsToAdd}/>
-    </AttendanceSheetDataSelectionForm>
+    </AttendanceSheetSelectionForm>
   );
 
   const renderUploadMethod = () => (
