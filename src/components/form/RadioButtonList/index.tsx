@@ -2,17 +2,16 @@ import { TouchableOpacity, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
 import { GREY } from '../../../styles/colors';
-
-type RadioButtonOptionsType = { label: string, value: string };
+import { DataOptionsType } from '../../../store/attendanceSheets/slice';
 
 interface RadioButtonProps {
-  options: RadioButtonOptionsType[],
+  options: DataOptionsType[],
   setOption: (option: string) => void,
   checkedRadioButton: string
 }
 
 interface RenderItemProps {
-  item: { label: string, value: string },
+  item: DataOptionsType,
   checkedRadioButton: string,
   onPressCheckbox: (value: string) => void
 }

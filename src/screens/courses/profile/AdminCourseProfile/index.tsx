@@ -80,7 +80,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const stepsById: object = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
 
   const groupedSlotsToBeSigned = useMemo(() => {
-    if (!isSingle || !course?.slots.length) return [];
+    if (!isSingle || !course?.slots.length) return {};
     const signedSlots = (savedAttendanceSheets as SingleAttendanceSheetType[])
       .map(as => get(as, 'slots', []).map(s => s._id))
       .flat();
@@ -98,7 +98,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   }, [course, isSingle, savedAttendanceSheets, stepsById]);
 
   const missingAttendanceSheets = useMemo(() => {
-    if (!course?.slots.length) return [];
+    if (!course?.slots.length || !firstSlot) return [];
 
     if ([INTRA, INTRA_HOLDING].includes(course?.type)) {
       const intraOrIntraHoldingCourseSavedSheets = savedAttendanceSheets as IntraOrIntraHoldingAttendanceSheetType[];

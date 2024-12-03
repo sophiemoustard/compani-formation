@@ -19,7 +19,7 @@ export const useSetCourse = () => {
 export const useSetMissingAttendanceSheets = () => {
   const dispatch = useAppDispatch();
 
-  return useCallback((missingAttendanceSheets: DataOptionsType) =>
+  return useCallback((missingAttendanceSheets: DataOptionsType[]) =>
     dispatch(setMissingAttendanceSheets(missingAttendanceSheets)), [dispatch]);
 };
 
