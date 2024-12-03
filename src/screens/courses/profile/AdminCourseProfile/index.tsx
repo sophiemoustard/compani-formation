@@ -28,6 +28,7 @@ import {
   OPERATIONS,
   PDF,
   SHORT_FIRSTNAME_LONG_LASTNAME,
+  SINGLE_COURSES_SUBPROGRAM_IDS,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../../core/helpers/dates/utils';
@@ -38,6 +39,7 @@ import {
   InterAttendanceSheetType,
   IntraOrIntraHoldingAttendanceSheetType,
   isIntraOrIntraHolding,
+  SingleAttendanceSheetType,
 } from '../../../../types/AttendanceSheetTypes';
 import SecondaryButton from '../../../../components/form/SecondaryButton';
 import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
@@ -65,6 +67,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const setCourse = useSetCourse();
   const setMissingAttendanceSheet = useSetMissingAttendanceSheets();
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
+  const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
@@ -132,6 +135,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
+        setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -221,6 +225,17 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
+  const renderSingleSavedAttendanceSheets = (sheet: SingleAttendanceSheetType) => {
+    const label = sheet.slots
+      ? [...new Set(sheet.slots.map(slot => CompaniDate(slot.startDate).format(DD_MM_YYYY)))].join(', ')
+      : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
+
+    return (
+      <SecondaryButton key={sheet._id} customStyle={styles.attendanceSheetButton} caption={label} numberOfLines={1}
+        onPress={() => openImagePreview(sheet._id, sheet.file.link)} />
+    );
+  };
+
   const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet');
 
   return course && has(course, 'subProgram.program') && (
@@ -247,9 +262,16 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
               }
             </View>
           </View>}
-          {!!savedAttendanceSheets.length &&
-          <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => renderSavedAttendanceSheets(item)} style={styles.listContainer} horizontal />}
+          {!!savedAttendanceSheets.length && <>
+            {
+              isSingle
+                ? (savedAttendanceSheets as SingleAttendanceSheetType[])
+                  .map(sheet => renderSingleSavedAttendanceSheets(sheet))
+                : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
+                  showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
+                  horizontal/>
+            }
+          </>}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
