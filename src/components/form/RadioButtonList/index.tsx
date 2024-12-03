@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import styles from './styles';
@@ -9,6 +8,7 @@ type RadioButtonOptionsType = { label: string, value: string };
 interface RadioButtonProps {
   options: RadioButtonOptionsType[],
   setOption: (option: string) => void,
+  checkedRadioButton: string
 }
 
 interface RenderItemProps {
@@ -30,12 +30,10 @@ const renderItem = ({ item, checkedRadioButton, onPressCheckbox }: RenderItemPro
   );
 };
 
-const RadioButtonList = ({ options, setOption }: RadioButtonProps) => {
-  const [checkedRadioButton, setCheckedRadioButton] = useState<string>('');
-
-  useEffect(() => setOption(checkedRadioButton), [setOption, checkedRadioButton]);
-
-  const onPressCheckbox = (value: string) => setCheckedRadioButton(prevValue => (prevValue === value ? '' : value));
+const RadioButtonList = ({ options, checkedRadioButton, setOption }: RadioButtonProps) => {
+  const onPressCheckbox = (value: string) => {
+    setOption(checkedRadioButton === value ? '' : value);
+  };
 
   return (
     <>

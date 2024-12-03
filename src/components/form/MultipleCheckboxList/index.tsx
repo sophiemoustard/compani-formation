@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,6 +13,7 @@ interface MultipleCheckboxListProps {
   optionsGroups: CheckboxOptionsType[][],
   groupTitles: string[],
   setOptions: (options: string[]) => void,
+  checkedList: string[],
 }
 
 interface RenderItemProps {
@@ -39,20 +39,17 @@ const MultipleCheckboxList = ({
   optionsGroups = [],
   groupTitles = [],
   setOptions,
+  checkedList = [],
 }: MultipleCheckboxListProps) => {
-  const [checkedList, setCheckedList] = useState<string[]>([]);
-
-  useEffect(() => setOptions(checkedList), [setOptions, checkedList]);
-
-  const onPressCheckbox = (value: string) => setCheckedList((prevValue) => {
-    const indexToRemove = prevValue.indexOf(value);
+  const onPressCheckbox = (value: string) => {
+    const indexToRemove = checkedList.indexOf(value);
     if (indexToRemove !== -1) {
-      prevValue.splice(indexToRemove, 1);
-      return [...prevValue];
+      checkedList.splice(indexToRemove, 1);
+      setOptions([...checkedList]);
+    } else {
+      setOptions([...checkedList, value]);
     }
-    const newArray = [...prevValue, value];
-    return newArray;
-  });
+  };
 
   return (
     <View style={styles.container}>
