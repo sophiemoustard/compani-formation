@@ -3,8 +3,10 @@ import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList 
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
+import keyBy from 'lodash/keyBy';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,7 +23,6 @@ import { getTitle } from '../helper';
 import CourseAboutHeader from '../../../../components/CourseAboutHeader';
 import {
   DD_MM_YYYY,
-  HH_MM,
   IMAGE,
   INTRA,
   INTER_B2B,
@@ -51,7 +52,7 @@ import {
   useGetCourse,
   useSetCourse,
   useSetMissingAttendanceSheets,
-  useSetSlotsToBeSignedOptions,
+  useSetGroupedSlotsToBeSigned,
   useResetAttendanceSheetReducer,
 } from '../../../../store/attendanceSheets/hooks';
 
@@ -69,28 +70,32 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const course = useGetCourse();
   const setCourse = useSetCourse();
   const setMissingAttendanceSheet = useSetMissingAttendanceSheets();
-  const setSlotsToBeSignedOptions = useSetSlotsToBeSignedOptions();
+  const setGroupedSlotsToBeSigned = useSetGroupedSlotsToBeSigned();
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
   const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
+  const stepsById: object = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
 
-  const slotsToBeSignedOptions = useMemo(() => {
+  const groupedSlotsToBeSigned = useMemo(() => {
     if (!isSingle || !course?.slots.length) return [];
     const signedSlots = (savedAttendanceSheets as SingleAttendanceSheetType[])
       .map(as => get(as, 'slots', []).map(s => s._id))
       .flat();
 
-    return course.slots
-      .filter(slot => !signedSlots.includes(slot._id))
-      .map(slot => ({
-        label: `${CompaniDate(slot.startDate).format(`${DD_MM_YYYY} ${HH_MM}`)}
-        - ${CompaniDate(slot.endDate).format(HH_MM)}`,
-        value: slot._id,
-      }));
-  }, [course, isSingle, savedAttendanceSheets]);
+    const groupedSlots = groupBy(course.slots
+      .filter(slot => !signedSlots.includes(slot._id)), 'step');
+
+    return Object.keys(stepsById)
+      .reduce<Record<string, SlotType[]>>((acc, step) => {
+      if (groupedSlots[step]) {
+        acc[step] = groupedSlots[step];
+      }
+      return acc;
+    }, {});
+  }, [course, isSingle, savedAttendanceSheets, stepsById]);
 
   const missingAttendanceSheets = useMemo(() => {
     if (!course?.slots.length) return [];
@@ -117,9 +122,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
     return [...new Set(
       course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
-        .filter(trainee => (isSingle ? slotsToBeSignedOptions.length : !savedTrainees.includes(trainee.value)))
+        .filter(trainee => (isSingle
+          ? Object.values(groupedSlotsToBeSigned).flat().length
+          : !savedTrainees.includes(trainee.value)
+        ))
     )];
-  }, [course, firstSlot, isSingle, savedAttendanceSheets, slotsToBeSignedOptions]);
+  }, [course, firstSlot, isSingle, savedAttendanceSheets, groupedSlotsToBeSigned]);
 
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
@@ -168,8 +176,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   useEffect(() => {
     setMissingAttendanceSheet(missingAttendanceSheets);
-    setSlotsToBeSignedOptions(slotsToBeSignedOptions);
-  }, [missingAttendanceSheets, setMissingAttendanceSheet, slotsToBeSignedOptions, setSlotsToBeSignedOptions]);
+    setGroupedSlotsToBeSigned(groupedSlotsToBeSigned);
+  }, [missingAttendanceSheets, setMissingAttendanceSheet, groupedSlotsToBeSigned, setGroupedSlotsToBeSigned]);
 
   useEffect(() => () => {
     const currentRoute = navigation.getState().routes[navigation.getState().index];
