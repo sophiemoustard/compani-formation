@@ -5,10 +5,10 @@ import {
   resetAttendanceSheetReducer,
   setCourse,
   setMissingAttendanceSheets,
-  setSlotsToBeSignedOptions,
+  setGroupedSlotsToBeSigned,
 } from './slice';
-import { getCourse, getMissingAttendanceSheets, getSlotsToBeSignedOptions } from './selectors';
-import { BlendedCourseType } from '../../types/CourseTypes';
+import { getCourse, getMissingAttendanceSheets, getGroupedSlotsToBeSigned } from './selectors';
+import { BlendedCourseType, SlotType } from '../../types/CourseTypes';
 
 export const useSetCourse = () => {
   const dispatch = useAppDispatch();
@@ -23,11 +23,11 @@ export const useSetMissingAttendanceSheets = () => {
     dispatch(setMissingAttendanceSheets(missingAttendanceSheets)), [dispatch]);
 };
 
-export const useSetSlotsToBeSignedOptions = () => {
+export const useSetGroupedSlotsToBeSigned = () => {
   const dispatch = useAppDispatch();
 
-  return useCallback((slotsToBeSignedOptions: DataOptionsType) =>
-    dispatch(setSlotsToBeSignedOptions(slotsToBeSignedOptions)), [dispatch]);
+  return useCallback((groupedSlotsToBeSigned: Record<string, SlotType[]>) =>
+    dispatch(setGroupedSlotsToBeSigned(groupedSlotsToBeSigned)), [dispatch]);
 };
 
 export const useResetAttendanceSheetReducer = () => {
@@ -40,4 +40,4 @@ export const useGetCourse = () => useAppSelector(getCourse);
 
 export const useGetMissingAttendanceSheets = () => useAppSelector(getMissingAttendanceSheets);
 
-export const useGetSlotsToBeSignedOptions = () => useAppSelector(getSlotsToBeSignedOptions);
+export const useGetGroupedSlotsToBeSigned = () => useAppSelector(getGroupedSlotsToBeSigned);

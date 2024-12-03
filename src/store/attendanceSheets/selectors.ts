@@ -4,4 +4,4 @@ export const getCourse = (state: StateType) => state.attendanceSheets.course;
 
 export const getMissingAttendanceSheets = (state: StateType) => state.attendanceSheets.missingAttendanceSheets;
 
-export const getSlotsToBeSignedOptions = (state: StateType) => state.attendanceSheets.slotsToBeSignedOptions;
+export const getGroupedSlotsToBeSigned = (state: StateType) => state.attendanceSheets.groupedSlotsToBeSigned;

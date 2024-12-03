@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { resetAllReducers } from '../actions';
-import { BlendedCourseType } from '../../types/CourseTypes';
+import { BlendedCourseType, SlotType } from '../../types/CourseTypes';
 
 export type DataOptionsType = {value: string; label: string;}[]
 
 export type AttendanceSheetStateType = {
   course: BlendedCourseType | null,
   missingAttendanceSheets: DataOptionsType,
-  slotsToBeSignedOptions: DataOptionsType,
+  groupedSlotsToBeSigned: Record<string, SlotType[]>,
 }
 const initialState: AttendanceSheetStateType = {
   course: null,
   missingAttendanceSheets: [],
-  slotsToBeSignedOptions: [],
+  groupedSlotsToBeSigned: {},
 };
 
 const resetReducer = () => initialState;
@@ -26,9 +26,9 @@ const setMissingAttendanceSheetList =
     { ...state, missingAttendanceSheets: action.payload }
   );
 
-const setSlotsToBeSignedList =
-  (state: AttendanceSheetStateType, action: PayloadAction<DataOptionsType>) => (
-    { ...state, slotsToBeSignedOptions: action.payload }
+const setGroupedSlotsToBeSignedList =
+  (state: AttendanceSheetStateType, action: PayloadAction<Record<string, SlotType[]>>) => (
+    { ...state, groupedSlotsToBeSigned: action.payload }
   );
 
 const attendanceSheetSlice = createSlice({
@@ -37,7 +37,7 @@ const attendanceSheetSlice = createSlice({
   reducers: {
     setCourse: setBlendedCourse,
     setMissingAttendanceSheets: setMissingAttendanceSheetList,
-    setSlotsToBeSignedOptions: setSlotsToBeSignedList,
+    setGroupedSlotsToBeSigned: setGroupedSlotsToBeSignedList,
     resetAttendanceSheetReducer: resetReducer,
   },
   extraReducers: (builder) => { builder.addCase(resetAllReducers, () => initialState); },
@@ -46,7 +46,7 @@ const attendanceSheetSlice = createSlice({
 export const {
   setCourse,
   setMissingAttendanceSheets,
-  setSlotsToBeSignedOptions,
+  setGroupedSlotsToBeSigned,
   resetAttendanceSheetReducer,
 } = attendanceSheetSlice.actions;
 
