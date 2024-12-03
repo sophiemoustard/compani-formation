@@ -92,14 +92,16 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const renderDataSelection = () => (
     <AttendanceSheetDataSelectionForm title={title} error={errorData}
       goToNextScreen={() => go({ from: DATA_SELECTION, to: isSingle ? SLOTS_SELECTION : UPLOAD_METHOD })}>
-      <RadioButtonList options={missingAttendanceSheets} setOption={setOption} />
+      <RadioButtonList options={missingAttendanceSheets} setOption={setOption}
+        checkedRadioButton={attendanceSheetToAdd} />
     </AttendanceSheetDataSelectionForm>
   );
 
   const renderSlotSelection = () => (
     <AttendanceSheetDataSelectionForm title={'Pour quels créneaux souhaitez-vous charger une feuille d\'émargement ?'}
       error={errorSlots} goToNextScreen={() => go({ from: SLOTS_SELECTION, to: UPLOAD_METHOD })}>
-      <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setOptions} />
+      <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setOptions}
+        checkedList={slotsToAdd}/>
     </AttendanceSheetDataSelectionForm>
   );
 
