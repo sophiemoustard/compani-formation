@@ -35,7 +35,10 @@ export const formatImage = async (
 
 export const formatPayload = (payload): FormDataType => {
   const data = new FormData();
-  Object.entries(payload).forEach(([key, value]) => data.append(key, value));
-
+  Object.entries(payload).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach(v => data.append(key, v));
+    } else data.append(key, value);
+  });
   return data;
 };
