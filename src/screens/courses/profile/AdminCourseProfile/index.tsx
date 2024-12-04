@@ -6,7 +6,6 @@ import uniqBy from 'lodash/uniqBy';
 import groupBy from 'lodash/groupBy';
 import get from 'lodash/get';
 import has from 'lodash/has';
-import keyBy from 'lodash/keyBy';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useFocusEffect } from '@react-navigation/native';
@@ -77,7 +76,6 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
-  const stepsById: object = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
 
   const groupedSlotsToBeSigned = useMemo(() => {
     if (!isSingle || !course?.slots.length) return {};
@@ -85,17 +83,15 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       .map(as => get(as, 'slots', []).map(s => s._id))
       .flat();
 
-    const groupedSlots = groupBy(course.slots
-      .filter(slot => !signedSlots.includes(slot._id)), 'step');
+    const groupedSlots = groupBy(course.slots.filter(slot => !signedSlots.includes(slot._id)), 'step');
 
-    return Object.keys(stepsById)
-      .reduce<Record<string, SlotType[]>>((acc, step) => {
+    return course?.subProgram.steps.map(s => s._id).reduce<Record<string, SlotType[]>>((acc, step) => {
       if (groupedSlots[step]) {
         acc[step] = groupedSlots[step];
       }
       return acc;
     }, {});
-  }, [course, isSingle, savedAttendanceSheets, stepsById]);
+  }, [course, isSingle, savedAttendanceSheets]);
 
   const missingAttendanceSheets = useMemo(() => {
     if (!course?.slots.length || !firstSlot) return [];
@@ -121,11 +117,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
     return [...new Set(
-      course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
-        .filter(trainee => (isSingle
-          ? Object.values(groupedSlotsToBeSigned).flat().length
-          : !savedTrainees.includes(trainee.value)
-        ))
+      course?.trainees?.filter(trainee => (
+        isSingle ? Object.values(groupedSlotsToBeSigned).flat().length : !savedTrainees.includes(trainee._id)
+      ))
+        .map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
     )];
   }, [course, firstSlot, isSingle, savedAttendanceSheets, groupedSlotsToBeSigned]);
 
