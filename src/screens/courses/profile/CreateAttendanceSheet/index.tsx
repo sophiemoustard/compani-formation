@@ -61,46 +61,50 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     );
   }, [course]);
 
-  const setOption = useCallback((option: string) => {
+  const setDataOption = useCallback((option: string) => {
     setAttendanceSheetToAdd(option);
     if (option) dispatchErrorData({ type: RESET_ERROR });
   }, []);
 
-  const setOptions = useCallback((options: string[]) => {
+  const setSlotOptions = useCallback((options: string[]) => {
     setSlotsToAdd(options);
     if (options.length) dispatchErrorSlots({ type: RESET_ERROR });
   }, []);
 
-  const go = ({ from, to }: {from: SCREEN_TYPE, to: SCREEN_TYPE}) => {
-    if (from === DATA_SELECTION && !attendanceSheetToAdd) {
-      dispatchErrorData({
-        type: SET_ERROR,
-        payload: course?.type === INTER_B2B ? 'Veuillez sélectionner un stagiaire' : 'Veuillez sélectionner une date',
-      });
-    } else if (from === SLOTS_SELECTION && !slotsToAdd.length) {
+  const goToNextScreen = ({ from, to }: {from: SCREEN_TYPE, to: SCREEN_TYPE}) => {
+    if (from === DATA_SELECTION) {
+      if (!attendanceSheetToAdd) {
+        dispatchErrorData({
+          type: SET_ERROR,
+          payload: course?.type === INTER_B2B ? 'Veuillez sélectionner un stagiaire' : 'Veuillez sélectionner une date',
+        });
+      } else {
+        dispatchErrorData({ type: RESET_ERROR });
+        navigation.navigate(to);
+      }
+    } else if (!slotsToAdd.length) {
       dispatchErrorSlots({
         type: SET_ERROR,
         payload: 'Veuillez sélectionner des créneaux',
       });
     } else {
-      if (from === DATA_SELECTION) dispatchErrorData({ type: RESET_ERROR });
-      if (from === SLOTS_SELECTION) dispatchErrorSlots({ type: RESET_ERROR });
+      dispatchErrorSlots({ type: RESET_ERROR });
       navigation.navigate(to);
     }
   };
 
   const renderDataSelection = () => (
     <AttendanceSheetSelectionForm title={title} error={errorData}
-      goToNextScreen={() => go({ from: DATA_SELECTION, to: isSingle ? SLOTS_SELECTION : UPLOAD_METHOD })}>
-      <RadioButtonList options={missingAttendanceSheets} setOption={setOption}
+      goToNextScreen={() => goToNextScreen({ from: DATA_SELECTION, to: isSingle ? SLOTS_SELECTION : UPLOAD_METHOD })}>
+      <RadioButtonList options={missingAttendanceSheets} setOption={setDataOption}
         checkedRadioButton={attendanceSheetToAdd} />
     </AttendanceSheetSelectionForm>
   );
 
   const renderSlotSelection = () => (
     <AttendanceSheetSelectionForm title={'Pour quels créneaux souhaitez-vous charger une feuille d\'émargement ?'}
-      error={errorSlots} goToNextScreen={() => go({ from: SLOTS_SELECTION, to: UPLOAD_METHOD })}>
-      <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setOptions}
+      error={errorSlots} goToNextScreen={() => goToNextScreen({ from: SLOTS_SELECTION, to: UPLOAD_METHOD })}>
+      <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setSlotOptions}
         checkedList={slotsToAdd}/>
     </AttendanceSheetSelectionForm>
   );
