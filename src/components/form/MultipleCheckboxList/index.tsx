@@ -34,12 +34,7 @@ const renderItem = ({ item, checkedList, onPressCheckbox }: RenderItemProps) => 
   );
 };
 
-const MultipleCheckboxList = ({
-  optionsGroups = [],
-  groupTitles = [],
-  setOptions,
-  checkedList = [],
-}: MultipleCheckboxListProps) => {
+const MultipleCheckboxList = ({ optionsGroups, groupTitles, setOptions, checkedList }: MultipleCheckboxListProps) => {
   const onPressCheckbox = (value: string) => {
     const indexToRemove = checkedList.indexOf(value);
     if (indexToRemove !== -1) {
@@ -54,12 +49,8 @@ const MultipleCheckboxList = ({
     <View style={styles.container}>
       {optionsGroups.map((options, index) => (
         <View key={index} style={styles.groupContainer}>
-          <View style={styles.groupTitleContainer}>
-            <Text style={styles.groupLabel}>{groupTitles[index]}</Text>
-          </View>
-          <View style={styles.optionsContainer}>
-            {options.map(item => renderItem({ item, checkedList, onPressCheckbox }))}
-          </View>
+          <Text style={styles.groupLabel}>{groupTitles[index]}</Text>
+          {options.map(item => renderItem({ item, checkedList, onPressCheckbox }))}
         </View>
       ))}
     </View>

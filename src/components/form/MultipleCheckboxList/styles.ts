@@ -1,82 +1,29 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN, PADDING } from '../../../styles/metrics';
-import { FIRA_SANS_REGULAR } from '../../../styles/fonts';
-import { GREY } from '../../../styles/colors';
+import { FIRA_SANS_BOLD, FIRA_SANS_REGULAR } from '../../../styles/fonts';
 
 const styles = StyleSheet.create({
   itemContainer: {
-    paddingHorizontal: PADDING.LG,
+    paddingHorizontal: PADDING.MD,
     flexDirection: 'row',
     alignItems: 'center',
   },
   text: {
     ...FIRA_SANS_REGULAR.MD,
-    color: GREY[900],
     margin: MARGIN.SM,
-    flex: 1,
   },
   icon: {
     marginRight: MARGIN.SM,
   },
   container: {
-    padding: 10,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  caption: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  requiredCaption: {
-    color: 'red',
-  },
-  errorIcon: {
-    color: 'red',
-    fontSize: 18,
-    fontWeight: 'bold',
+    margin: MARGIN.SM,
   },
   groupContainer: {
-    marginBottom: 20,
-  },
-  groupTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  groupIcon: {
-    marginRight: 5,
-    fontSize: 14,
-    color: '#9E9E9E',
+    marginBottom: MARGIN.MD,
   },
   groupLabel: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  optionsContainer: {
-    flexDirection: 'column',
-  },
-  option: {
-    padding: 10,
-    backgroundColor: '#F5F5F5',
-    marginBottom: 5,
-    borderRadius: 5,
-  },
-  optionText: {
-    fontSize: 14,
-    color: '#424242',
-  },
-  selectedOption: {
-    color: '#0288D1',
-    fontWeight: 'bold',
-  },
-  errorMessage: {
-    color: 'red',
-    fontSize: 12,
-    marginTop: -10,
+    ...FIRA_SANS_BOLD.MD,
+    marginBottom: MARGIN.SM,
   },
 });
 
