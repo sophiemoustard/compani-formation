@@ -116,10 +116,16 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
+    if (isSingle) {
+      if (Object.values(groupedSlotsToBeSigned).flat().length) {
+        return course.trainees!
+          .map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }));
+      }
+      return [];
+    }
+
     return [...new Set(
-      course?.trainees?.filter(trainee => (
-        isSingle ? Object.values(groupedSlotsToBeSigned).flat().length : !savedTrainees.includes(trainee._id)
-      ))
+      course?.trainees?.filter(trainee => (!savedTrainees.includes(trainee._id)))
         .map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
     )];
   }, [course, firstSlot, isSingle, savedAttendanceSheets, groupedSlotsToBeSigned]);
