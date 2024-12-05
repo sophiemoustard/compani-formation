@@ -1,10 +1,6 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { GREY } from '../../../styles/colors';
+import { GREY, PINK } from '../../../styles/colors';
 import { DataOptionsType } from '../../../store/attendanceSheets/slice';
 import styles from './styles';
 
@@ -23,12 +19,12 @@ interface RenderItemProps {
 
 const renderItem = ({ item, checkedList, onPressCheckbox }: RenderItemProps) => {
   const iconName = checkedList.includes(item.value) ? 'check-box' : 'check-box-outline-blank';
-  const iconColor = checkedList.includes(item.value) ? GREY[900] : GREY[600];
+  const iconColor = checkedList.includes(item.value) ? PINK[500] : GREY[600];
   const textStyle = checkedList.includes(item.value) ? styles.text : { ...styles.text, color: GREY[600] };
 
   return (
     <TouchableOpacity key={item.label} style={styles.itemContainer} onPress={() => onPressCheckbox(item.value)}>
-      <MaterialIcons style={styles.icon} size={20} name={iconName} color={iconColor} />
+      <MaterialIcons style={styles.icon} size={24} name={iconName} color={iconColor} />
       <Text style={textStyle}>{item.label}</Text>
     </TouchableOpacity>
   );
