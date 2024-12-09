@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { GREY, PINK } from '../../styles/colors';
-import { INTER_B2B } from '../../core/data/constants';
+import { INTER_B2B, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../core/data/constants';
 import AttendanceSheets from '../../api/attendanceSheets';
 import styles from './styles';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
@@ -19,11 +19,12 @@ import { ICON } from '../../styles/metrics';
 
 interface UploadMethodsProps {
   attendanceSheetToAdd: string,
+  slotsToAdd: string[],
   course: CourseType,
   goToParent: () => void,
 }
 
-const UploadMethods = ({ attendanceSheetToAdd, course, goToParent }: UploadMethodsProps) => {
+const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToParent }: UploadMethodsProps) => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [camera, setCamera] = useState<boolean>(false);
@@ -79,6 +80,7 @@ const UploadMethods = ({ attendanceSheetToAdd, course, goToParent }: UploadMetho
           file,
           course: course._id,
           ...(course.type === INTER_B2B ? { trainee: attendanceSheetToAdd } : { date: attendanceSheetToAdd }),
+          ...(SINGLE_COURSES_SUBPROGRAM_IDS.includes(course.subProgram._id) && { slots: slotsToAdd }),
         });
         await AttendanceSheets.upload(data);
       }

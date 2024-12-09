@@ -1,4 +1,4 @@
-import { TraineeType } from './CourseTypes';
+import { SlotType, TraineeType } from './CourseTypes';
 
 type BaseAttendanceSheetType = {
   _id: string,
@@ -10,7 +10,10 @@ export type IntraOrIntraHoldingAttendanceSheetType = BaseAttendanceSheetType & {
 
 export type InterAttendanceSheetType = BaseAttendanceSheetType & { trainee: TraineeType }
 
+export type SingleAttendanceSheetType = BaseAttendanceSheetType & { trainee: TraineeType, slots: SlotType[] }
+
 export type AttendanceSheetType = IntraOrIntraHoldingAttendanceSheetType | InterAttendanceSheetType
+| SingleAttendanceSheetType
 
 export function isIntraOrIntraHolding(sheet: AttendanceSheetType): sheet is IntraOrIntraHoldingAttendanceSheetType {
   return (sheet as IntraOrIntraHoldingAttendanceSheetType).date !== undefined;

@@ -15,6 +15,7 @@ interface SecondaryButtonProps {
   borderColor?: string,
   icon?: FeatherType,
   disabled?: boolean,
+  numberOfLines?: number,
 }
 
 const SecondaryButton = (
@@ -29,10 +30,11 @@ const SecondaryButton = (
     borderColor = color,
     icon,
     disabled = false,
+    numberOfLines = 0,
   }: SecondaryButtonProps
 ) => (
   <NiButton customStyle={customStyle} caption={caption} onPress={onPress} loading={loading} disabled={disabled}
-    bgColor={bgColor} borderColor={borderColor} color={color} font={font} icon={icon}/>
+    bgColor={bgColor} borderColor={borderColor} color={color} font={font} icon={icon} numberOfLines={numberOfLines} />
 );
 
 export default SecondaryButton;

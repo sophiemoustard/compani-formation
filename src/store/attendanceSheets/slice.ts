@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { resetAllReducers } from '../actions';
-import { BlendedCourseType } from '../../types/CourseTypes';
+import { BlendedCourseType, SlotType } from '../../types/CourseTypes';
 
-export type MissingAttendanceSheetType = {value: string; label: string;}[]
+export type DataOptionsType = { value: string; label: string }
 
 export type AttendanceSheetStateType = {
   course: BlendedCourseType | null,
-  missingAttendanceSheets: MissingAttendanceSheetType,
+  missingAttendanceSheets: DataOptionsType[],
+  groupedSlotsToBeSigned: Record<string, SlotType[]>,
 }
 const initialState: AttendanceSheetStateType = {
   course: null,
   missingAttendanceSheets: [],
+  groupedSlotsToBeSigned: {},
 };
 
 const resetReducer = () => initialState;
@@ -20,8 +22,13 @@ const setBlendedCourse = (state: AttendanceSheetStateType, action: PayloadAction
 );
 
 const setMissingAttendanceSheetList =
-  (state: AttendanceSheetStateType, action: PayloadAction<MissingAttendanceSheetType>) => (
+  (state: AttendanceSheetStateType, action: PayloadAction<DataOptionsType[]>) => (
     { ...state, missingAttendanceSheets: action.payload }
+  );
+
+const setGroupedSlotsToBeSignedList =
+  (state: AttendanceSheetStateType, action: PayloadAction<Record<string, SlotType[]>>) => (
+    { ...state, groupedSlotsToBeSigned: action.payload }
   );
 
 const attendanceSheetSlice = createSlice({
@@ -30,11 +37,17 @@ const attendanceSheetSlice = createSlice({
   reducers: {
     setCourse: setBlendedCourse,
     setMissingAttendanceSheets: setMissingAttendanceSheetList,
+    setGroupedSlotsToBeSigned: setGroupedSlotsToBeSignedList,
     resetAttendanceSheetReducer: resetReducer,
   },
   extraReducers: (builder) => { builder.addCase(resetAllReducers, () => initialState); },
 });
 
-export const { setCourse, setMissingAttendanceSheets, resetAttendanceSheetReducer } = attendanceSheetSlice.actions;
+export const {
+  setCourse,
+  setMissingAttendanceSheets,
+  setGroupedSlotsToBeSigned,
+  resetAttendanceSheetReducer,
+} = attendanceSheetSlice.actions;
 
 export default attendanceSheetSlice.reducer;

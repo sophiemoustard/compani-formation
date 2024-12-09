@@ -65,6 +65,10 @@ const styles = StyleSheet.create({
     paddingVertical: PADDING.MD,
     ...FIRA_SANS_ITALIC.SM,
   },
+  attendanceSheetButton: {
+    marginHorizontal: MARGIN.MD,
+    marginBottom: MARGIN.SM,
+  },
 });
 
 export default styles;

@@ -17,6 +17,7 @@ const ENVIRONMENT_VARIABLES = {
   TEST_EMAILS: process.env.TEST_EMAILS,
   TEST_IDS: process.env.TEST_IDS,
   PLATFORM: process.env.PLATFORM,
+  SINGLE_COURSES_SUBPROGRAM_IDS: process.env.SINGLE_COURSES_SUBPROGRAM_IDS,
 };
 
 const LOCAL = 'local';
@@ -44,7 +45,7 @@ export default {
     slug: 'compani',
     description: 'Nous aidons les intervenants, les managers du secteur et les dirigeants à pratiquer un accompagnement humain',
     platforms: ['ios', 'android', 'web'],
-    version: '2.29.0',
+    version: '2.30.0',
     orientation: 'portrait',
     primaryColor: '#005774',
     icon: './assets/images/ios_icon.png',
@@ -75,7 +76,7 @@ export default {
       color: '#005774',
     },
     ios: {
-      buildNumber: '2.29.0',
+      buildNumber: '2.30.0',
       bundleIdentifier: variables.bundleIdentifier,
       requireFullScreen: true,
       icon: './assets/images/ios_icon.png',
@@ -105,7 +106,7 @@ export default {
         foregroundImage: './assets/images/android_icon.png',
         backgroundColor: '#005774',
       },
-      versionCode: 230,
+      versionCode: 240,
     },
     web: {
       favicon: './assets/images/android_icon_old.png',
