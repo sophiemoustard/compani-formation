@@ -33,19 +33,24 @@ export const htmlContent = `
     let canvas = document.getElementById('signature-pad');
   
     const resizeCanvas = () => {
-      const ratio = 1;
-      canvas.width = canvas.offsetWidth * ratio;
-      canvas.height = canvas.offsetHeight * ratio;
-      canvas.getContext("2d").scale(ratio, ratio);
+      if ((canvas.width !== canvas.offsetWidth) || (canvas.height !== canvas.offsetHeight)) {
+        const ratio = 1;
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+      }
     };
     window.onresize = resizeCanvas;
     resizeCanvas();
+
     let signaturePad = new SignaturePad(canvas, { minWidth: 2, maxWidth: 2 });
+
     const clearSignature = () => {
       signaturePad.clear();
       if (${IS_WEB}) window.parent.postMessage('', "*");
       else window.ReactNativeWebView.postMessage('');
     };
+
     const undoSignature = () => {
       const data = signaturePad.toData();
       if (data) {
@@ -62,10 +67,12 @@ export const htmlContent = `
         }
       }
     };
+
     const handleMessage = (message) => {
       if (message === 'clear') clearSignature();
       else if (message === 'undo') undoSignature();
-    };  
+    };
+
     signaturePad.addEventListener('endStroke', () => {
       const dataUrl = signaturePad.toDataURL('image/png');
       if (${IS_WEB}) window.parent.postMessage(dataUrl, "*");

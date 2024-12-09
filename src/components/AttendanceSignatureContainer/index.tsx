@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
@@ -9,10 +9,11 @@ import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import NiSecondaryButton from '../../components/form/SecondaryButton';
 import NiErrorMessage from '../../components/ErrorMessage';
-import styles from './styles';
-import { htmlContent } from './canvas';
-import { ErrorStateType } from '../../reducers/error';
 import { IS_WEB } from '../../core/data/constants';
+import { ErrorStateType } from '../../reducers/error';
+import ExitModal from '../ExitModal';
+import { htmlContent } from './canvas';
+import styles from './styles';
 
 interface AttendanceSignatureContainerProps {
   error: ErrorStateType,
@@ -30,6 +31,7 @@ const AttendanceSignatureContainer = ({
   const navigation = useNavigation();
   const iframeRef = useRef<any>(null);
   const webViewRef = useRef<WebView>(null);
+  const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
 
   const onMessage = (event: any) => {
     const dataURI = event.nativeEvent.data;
@@ -58,16 +60,16 @@ const AttendanceSignatureContainer = ({
     };
   }, [handleIframeMessage]);
 
-  const hardwareBackPress = useCallback(() => {
-    navigation.goBack();
+  const hardwareBackPress = () => {
+    setExitConfirmationModal(true);
     return true;
-  }, [navigation]);
+  };
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
 
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
-  }, [hardwareBackPress]);
+  }, []);
 
   const sendMessageToWebView = (message: string) => {
     webViewRef.current?.injectJavaScript(`handleMessage("${message}"); true;`);
@@ -81,10 +83,20 @@ const AttendanceSignatureContainer = ({
 
   const undoCanvas = () => (IS_WEB ? sendMessageToIframe('undo') : sendMessageToWebView('undo'));
 
+  const toggleModal = () => {
+    if (exitConfirmationModal) setExitConfirmationModal(false);
+    setSignature('');
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <View style={styles.container}>
-        <FeatherButton name='arrow-left' onPress={() => navigation.goBack()} size={ICON.LG} color={GREY[600]} />
+        <FeatherButton name='x-circle' onPress={() => setExitConfirmationModal(true)} size={ICON.LG}
+          color={GREY[600]} />
+        <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
+          title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
+          contentText="Votre signature ne sera pas enregistrée" />
         <View style={styles.webviewContainer}>
           {
             IS_WEB
