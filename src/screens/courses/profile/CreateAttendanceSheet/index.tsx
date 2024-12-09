@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import keyBy from 'lodash/keyBy';
+import AttendanceSheets from '../../../../api/attendanceSheets';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
 import { INTER_B2B, DD_MM_YYYY, HH_MM } from '../../../../core/data/constants';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
@@ -14,8 +15,12 @@ import {
 } from '../../../../store/attendanceSheets/hooks';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../../core/helpers/dates/utils';
+import { formatPayload } from '../../../../core/helpers/pictures';
 import RadioButtonList from '../../../../components/form/RadioButtonList';
 import MultipleCheckboxList from '../../../../components/form/MultipleCheckboxList';
+import AttendanceSignatureContainer from '../../../../components/AttendanceSignatureContainer';
+import AttendanceSheetSumary from '../../../../components/AttendanceSheetSummary';
+import AttendanceEndScreen from '../../../../components/AttendanceEndScreen';
 
 interface CreateAttendanceSheetProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAttendanceSheet'>,
@@ -25,6 +30,9 @@ StackScreenProps<RootCreateAttendanceSheetParamList>
 const DATA_SELECTION = 'attendance-sheet-data-selection';
 const SLOTS_SELECTION = 'slots-data-selection';
 const UPLOAD_METHOD = 'upload-method-selection';
+const ATTENDANCE_SIGNATURE = 'attendance-signature';
+const ATTENDANCE_SUMARY = 'attendance-sumary';
+const END_SCREEN = 'end-screen';
 
 const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps) => {
   const { isSingle } = route.params;
@@ -34,8 +42,11 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const [title, setTitle] = useState<string>('');
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [slotsToAdd, setSlotsToAdd] = useState<string[]>([]);
+  const [signature, setSignature] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorData, dispatchErrorData] = useReducer(errorReducer, initialErrorState);
   const [errorSlots, dispatchErrorSlots] = useReducer(errorReducer, initialErrorState);
+  const [errorSignature, dispatchErrorSignature] = useReducer(errorReducer, initialErrorState);
   const stepsById = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
   const stepsName = useMemo(() =>
     Object.keys(groupedSlotsToBeSigned).map(stepId => (stepsById[stepId].name)),
@@ -92,6 +103,38 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     }
   };
 
+  const goToSumary = () => {
+    if (!signature) {
+      dispatchErrorSignature({ type: SET_ERROR, payload: 'Veuillez signer dans l\'encadré' });
+    } else {
+      dispatchErrorSignature({ type: RESET_ERROR });
+      navigation.navigate(ATTENDANCE_SUMARY);
+    }
+  };
+
+  const saveAttendances = async () => {
+    try {
+      setIsLoading(true);
+      const contentType = 'image/png';
+      const file = { uri: signature, type: contentType, name: `trainer_signature_${course?._id}` };
+      const data = formatPayload({
+        signature: file,
+        course: course?._id,
+        trainee: attendanceSheetToAdd,
+        slots: slotsToAdd,
+      });
+      await AttendanceSheets.upload(data);
+      setIsLoading(false);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const saveAndGoToEndScreen = async () => {
+    await saveAttendances();
+    navigation.navigate(END_SCREEN);
+  };
+
   const renderDataSelection = () => (
     <AttendanceSheetSelectionForm title={title} error={errorData}
       goToNextScreen={isSingle ? goToSlotSelection : goToUploadMethod}>
@@ -113,6 +156,21 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       slotsToAdd={slotsToAdd} />
   );
 
+  const renderSignatureContainer = () => (
+    <AttendanceSignatureContainer error={errorSignature} goToNextScreen={goToSumary} setSignature={setSignature}
+      resetError={() => dispatchErrorSignature({ type: RESET_ERROR })} />
+  );
+
+  const renderSumary = () => (
+    <AttendanceSheetSumary signature={signature} goToNextScreen={saveAndGoToEndScreen}
+      stepsName={stepsName} isLoading={isLoading}
+      slotsOptions={slotsOptions
+        .map(group => group.filter(opt => slotsToAdd.includes(opt.value))).filter(g => g.length)} />
+  );
+  const renderEndScreen = () => (
+    <AttendanceEndScreen goToNextScreen={navigation.goBack} />
+  );
+
   const Stack = createStackNavigator<RootCreateAttendanceSheetParamList>();
 
   return (
@@ -120,6 +178,9 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       <Stack.Screen key={0} name={DATA_SELECTION}>{renderDataSelection}</Stack.Screen>
       {isSingle && <Stack.Screen key={1} name={SLOTS_SELECTION}>{renderSlotSelection}</Stack.Screen>}
       <Stack.Screen key={2} name={UPLOAD_METHOD}>{renderUploadMethod}</Stack.Screen>
+      <Stack.Screen key={3} name={ATTENDANCE_SIGNATURE}>{renderSignatureContainer}</Stack.Screen>
+      <Stack.Screen key={4} name={ATTENDANCE_SUMARY}>{renderSumary}</Stack.Screen>
+      <Stack.Screen key={5} name={END_SCREEN}>{renderEndScreen}</Stack.Screen>
     </Stack.Navigator>
   );
 };

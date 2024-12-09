@@ -29,6 +29,11 @@ const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToPare
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
+  const [isSingle, setIsSingle] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(course.subProgram._id));
+  }, [course]);
 
   const hardwareBackPress = useCallback(() => {
     navigation.goBack();
@@ -80,7 +85,7 @@ const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToPare
           file,
           course: course._id,
           ...(course.type === INTER_B2B ? { trainee: attendanceSheetToAdd } : { date: attendanceSheetToAdd }),
-          ...(SINGLE_COURSES_SUBPROGRAM_IDS.includes(course.subProgram._id) && { slots: slotsToAdd }),
+          ...(isSingle && { slots: slotsToAdd }),
         });
         await AttendanceSheets.upload(data);
       }
@@ -101,6 +106,8 @@ const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToPare
           disabled={isLoading} bgColor={GREY[100]} color={PINK[500]} />
         <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} disabled={isLoading} color={PINK[500]}
           onPress={requestPermissionsForImagePicker} bgColor={GREY[100]} />
+        {isSingle && <NiPrimaryButton caption='Ajouter une signature' customStyle={styles.button} disabled={isLoading}
+          color={PINK[500]} onPress={() => navigation.navigate('attendance-signature')} bgColor={GREY[100]} />}
       </View>
       {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}

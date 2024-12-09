@@ -9,28 +9,37 @@ interface MultipleCheckboxListProps {
   groupTitles: string[],
   setOptions: (options: string[]) => void,
   checkedList: string[],
+  disabled?: boolean,
 }
 
 interface RenderItemProps {
   item: DataOptionsType,
   checkedList: string[],
+  disabled: boolean,
   onPressCheckbox: (value: string) => void
 }
 
-const renderItem = ({ item, checkedList, onPressCheckbox }: RenderItemProps) => {
+const renderItem = ({ item, checkedList, disabled, onPressCheckbox }: RenderItemProps) => {
   const iconName = checkedList.includes(item.value) ? 'check-box' : 'check-box-outline-blank';
   const iconColor = checkedList.includes(item.value) ? PINK[500] : GREY[600];
   const textStyle = checkedList.includes(item.value) ? styles.text : { ...styles.text, color: GREY[600] };
 
   return (
-    <TouchableOpacity key={item.label} style={styles.itemContainer} onPress={() => onPressCheckbox(item.value)}>
+    <TouchableOpacity key={item.label} style={styles.itemContainer} onPress={() => onPressCheckbox(item.value)}
+      disabled={disabled}>
       <MaterialIcons style={styles.icon} size={24} name={iconName} color={iconColor} />
       <Text style={textStyle}>{item.label}</Text>
     </TouchableOpacity>
   );
 };
 
-const MultipleCheckboxList = ({ optionsGroups, groupTitles, setOptions, checkedList }: MultipleCheckboxListProps) => {
+const MultipleCheckboxList = ({
+  optionsGroups,
+  groupTitles,
+  setOptions,
+  checkedList,
+  disabled = false,
+}: MultipleCheckboxListProps) => {
   const onPressCheckbox = (value: string) => {
     const indexToRemove = checkedList.indexOf(value);
     if (indexToRemove !== -1) {
@@ -46,7 +55,7 @@ const MultipleCheckboxList = ({ optionsGroups, groupTitles, setOptions, checkedL
       {optionsGroups.map((options, index) => (
         <View key={index} style={styles.groupContainer}>
           <Text style={styles.groupLabel}>{groupTitles[index]}</Text>
-          {options.map(item => renderItem({ item, checkedList, onPressCheckbox }))}
+          {options.map(item => renderItem({ item, checkedList, disabled, onPressCheckbox }))}
         </View>
       ))}
     </View>
