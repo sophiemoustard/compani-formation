@@ -304,6 +304,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
             {
               isSingle
                 ? (savedAttendanceSheets as SingleAttendanceSheetType[])
+                  .filter(as => !!as.file)
                   .map(sheet => renderSingleSavedAttendanceSheets(sheet))
                 : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
                   showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
