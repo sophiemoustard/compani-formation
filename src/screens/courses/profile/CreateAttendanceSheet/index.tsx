@@ -39,12 +39,15 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const course = useGetCourse();
   const missingAttendanceSheets = useGetMissingAttendanceSheets();
   const groupedSlotsToBeSigned = useGetGroupedSlotsToBeSigned();
-  const [title, setTitle] = useState<string>('');
+  const [dataSelectionTitle, setDataSelectionTitle] = useState<string>('');
+  const [slotSelectionTitle, setSlotSelectionTitle] = useState<string>('');
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
   const [slotsToAdd, setSlotsToAdd] = useState<string[]>([]);
   const [signature, setSignature] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [confirmation, setConfirmation] = useState<boolean>(false);
+  const [traineeName, setTraineeName] = useState<string>('');
+  const [failUpload, setFailUpload] = useState<boolean>(false);
   const [errorData, dispatchErrorData] = useReducer(errorReducer, initialErrorState);
   const [errorSlots, dispatchErrorSlots] = useReducer(errorReducer, initialErrorState);
   const [errorSignature, dispatchErrorSignature] = useReducer(errorReducer, initialErrorState);
@@ -65,7 +68,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   [groupedSlotsToBeSigned]);
 
   useEffect(() => {
-    setTitle(
+    setDataSelectionTitle(
       course?.type === INTER_B2B
         ? 'Pour quel stagiaire souhaitez-vous charger une feuille d\'émargement ?'
         : 'Pour quelle date souhaitez-vous charger une feuille d\'émargement ?'
@@ -74,8 +77,18 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
 
   const setDataOption = useCallback((option: string) => {
     setAttendanceSheetToAdd(option);
+    if (course?.type === INTER_B2B) {
+      const name = missingAttendanceSheets.find(as => as.value === option)?.label || '';
+      setTraineeName(name);
+      if (isSingle) {
+        const title =
+          'Pour quels créneaux souhaitez-vous charger une feuille d\'émargement ou envoyer une demande de signature'
+          + ` à ${name} ?`;
+        setSlotSelectionTitle(title);
+      }
+    }
     if (option) dispatchErrorData({ type: RESET_ERROR });
-  }, []);
+  }, [course, isSingle, missingAttendanceSheets]);
 
   const setSlotOptions = useCallback((options: string[]) => {
     setSlotsToAdd(options);
@@ -133,6 +146,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       await AttendanceSheets.upload(data);
       setIsLoading(false);
     } catch (e) {
+      setFailUpload(true);
       console.error(e);
     }
   };
@@ -148,7 +162,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   };
 
   const renderDataSelection = () => (
-    <AttendanceSheetSelectionForm title={title} error={errorData}
+    <AttendanceSheetSelectionForm title={dataSelectionTitle} error={errorData}
       goToNextScreen={isSingle ? goToSlotSelection : goToUploadMethod}>
       <RadioButtonList options={missingAttendanceSheets} setOption={setDataOption}
         checkedRadioButton={attendanceSheetToAdd} />
@@ -156,7 +170,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   );
 
   const renderSlotSelection = () => (
-    <AttendanceSheetSelectionForm title={'Pour quels créneaux souhaitez-vous charger une feuille d\'émargement ?'}
+    <AttendanceSheetSelectionForm title={slotSelectionTitle}
       error={errorSlots} goToNextScreen={goToUploadMethod}>
       <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setSlotOptions}
         checkedList={slotsToAdd}/>
@@ -176,11 +190,11 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const renderSumary = () => (
     <AttendanceSheetSumary signature={signature} goToNextScreen={saveAndGoToEndScreen} error={errorConfirmation}
       stepsName={stepsName} isLoading={isLoading} setConfirmation={setConfirmationCheckbox} confirmation={confirmation}
-      slotsOptions={slotsOptions
+      traineeName={traineeName} slotsOptions={slotsOptions
         .map(group => group.filter(opt => slotsToAdd.includes(opt.value))).filter(g => g.length)} />
   );
   const renderEndScreen = () => (
-    <AttendanceEndScreen goToNextScreen={navigation.goBack} />
+    <AttendanceEndScreen goToNextScreen={navigation.goBack} traineeName={traineeName} failUpload={failUpload} />
   );
 
   const Stack = createStackNavigator<RootCreateAttendanceSheetParamList>();

@@ -23,6 +23,7 @@ interface AttendanceSheetSelectionFormProps {
   setConfirmation: () => void,
   confirmation: boolean,
   error: ErrorStateType,
+  traineeName: string,
 }
 
 const AttendanceSheetSumary = ({
@@ -34,6 +35,7 @@ const AttendanceSheetSumary = ({
   setConfirmation,
   confirmation,
   error,
+  traineeName,
 }: AttendanceSheetSelectionFormProps) => {
   const navigation = useNavigation();
 
@@ -53,7 +55,7 @@ const AttendanceSheetSumary = ({
       <FeatherButton name='arrow-left' onPress={() => navigation.goBack()} size={ICON.MD} color={GREY[600]} />
     </View>
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.title}>Emargements</Text>
+      <Text style={styles.title}>Emargements pour {traineeName}</Text>
       <MultipleCheckboxList optionsGroups={slotsOptions} disabled
         groupTitles={stepsName}
         setOptions={() => {}} checkedList={slotsOptions.flat().map(option => option.value as string)} />
