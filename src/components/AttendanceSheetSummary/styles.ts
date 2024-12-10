@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.MD,
     marginBottom: MARGIN.MD,
   },
+  image: {
+    height: '40%',
+    resizeMode: 'center',
+  },
 });
 
 export default styles;

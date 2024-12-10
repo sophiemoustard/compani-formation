@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, BackHandler } from 'react-native';
+import { ScrollView, View, Text, BackHandler, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
@@ -7,7 +7,6 @@ import NiPrimaryButton from '../form/PrimaryButton';
 import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
-import NiImage from '../Image';
 import NiErrorMessage from '../../components/ErrorMessage';
 import MultipleCheckboxList from '../form/MultipleCheckboxList';
 import { DataOptionsType } from '../../store/attendanceSheets/slice';
@@ -59,7 +58,7 @@ const AttendanceSheetSumary = ({
       <MultipleCheckboxList optionsGroups={slotsOptions} disabled
         groupTitles={stepsName}
         setOptions={() => {}} checkedList={slotsOptions.flat().map(option => option.value as string)} />
-      <NiImage source={{ uri: signature }} imgHeight={200} onPress={() => {}}/>
+      <Image source={{ uri: signature }} style={styles.image} />
     </ScrollView>
     <View style={styles.checkboxContainer}>
       <Checkbox itemLabel={'Je certifie que les informations ci-dessus sont exactes'} isChecked={confirmation}
