@@ -137,7 +137,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
-    setSavedAttendanceSheets(fetchedAttendanceSheets);
+    const filteredAttendanceSheets = fetchedAttendanceSheets.filter(as => !!as.file);
+    setSavedAttendanceSheets(filteredAttendanceSheets);
   };
 
   const getQuestionnaireQRCode = async (courseId: string) => {
