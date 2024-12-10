@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { BUTTON_HEIGHT, IS_DESKTOP_SCREEN, MARGIN, PADDING, TEXT_LINE_HEIGHT } from '../../styles/metrics';
+import { IS_DESKTOP_SCREEN, MARGIN, PADDING } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -8,11 +8,14 @@ const styles = StyleSheet.create({
   container: {
     margin: MARGIN.MD,
     paddingBottom: PADDING.LG,
+    flex: 1,
+    justifyContent: 'center',
   },
   webviewContainer: {
-    aspectRatio: 1,
-    height: IS_DESKTOP_SCREEN ? '100%' : '55%',
-    alignSelf: 'center',
+    height: '50%',
+    width: IS_DESKTOP_SCREEN ? '50%' : 'auto',
+    ...IS_DESKTOP_SCREEN && { alignSelf: 'center' },
+    margin: MARGIN.MD,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -20,7 +23,8 @@ const styles = StyleSheet.create({
     padding: PADDING.LG,
   },
   footer: {
-    minHeight: BUTTON_HEIGHT + TEXT_LINE_HEIGHT,
+    justifyContent: 'flex-end',
+    flex: 1,
   },
 });
 

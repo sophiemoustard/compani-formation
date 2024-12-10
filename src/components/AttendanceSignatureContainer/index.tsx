@@ -86,6 +86,7 @@ const AttendanceSignatureContainer = ({
   const toggleModal = () => {
     if (exitConfirmationModal) setExitConfirmationModal(false);
     setSignature('');
+    resetError();
     navigation.goBack();
   };
 
