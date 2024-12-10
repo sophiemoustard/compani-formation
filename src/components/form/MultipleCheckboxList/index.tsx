@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { GREY, PINK } from '../../../styles/colors';
+import { View, Text } from 'react-native';
 import { DataOptionsType } from '../../../store/attendanceSheets/slice';
 import styles from './styles';
+import Checkbox from '../Checkbox';
 
 interface MultipleCheckboxListProps {
   optionsGroups: DataOptionsType[][],
@@ -11,27 +10,6 @@ interface MultipleCheckboxListProps {
   checkedList: string[],
   disabled?: boolean,
 }
-
-interface RenderItemProps {
-  item: DataOptionsType,
-  checkedList: string[],
-  disabled: boolean,
-  onPressCheckbox: (value: string) => void
-}
-
-const renderItem = ({ item, checkedList, disabled, onPressCheckbox }: RenderItemProps) => {
-  const iconName = checkedList.includes(item.value) ? 'check-box' : 'check-box-outline-blank';
-  const iconColor = checkedList.includes(item.value) ? PINK[500] : GREY[600];
-  const textStyle = checkedList.includes(item.value) ? styles.text : { ...styles.text, color: GREY[600] };
-
-  return (
-    <TouchableOpacity key={item.label} style={styles.itemContainer} onPress={() => onPressCheckbox(item.value)}
-      disabled={disabled}>
-      <MaterialIcons style={styles.icon} size={24} name={iconName} color={iconColor} />
-      <Text style={textStyle}>{item.label}</Text>
-    </TouchableOpacity>
-  );
-};
 
 const MultipleCheckboxList = ({
   optionsGroups,
@@ -55,7 +33,11 @@ const MultipleCheckboxList = ({
       {optionsGroups.map((options, index) => (
         <View key={index} style={styles.groupContainer}>
           <Text style={styles.groupLabel}>{groupTitles[index]}</Text>
-          {options.map(item => renderItem({ item, checkedList, disabled, onPressCheckbox }))}
+          {options.map((item) => {
+            const isChecked = checkedList.includes(item.value as string);
+            return <Checkbox key={item.value} itemLabel={item.label} isChecked={isChecked} disabled={disabled}
+              onPressCheckbox={() => onPressCheckbox(item.value)} />;
+          })}
         </View>
       ))}
     </View>

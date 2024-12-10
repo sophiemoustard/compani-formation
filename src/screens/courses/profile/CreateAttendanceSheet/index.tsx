@@ -44,9 +44,11 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const [slotsToAdd, setSlotsToAdd] = useState<string[]>([]);
   const [signature, setSignature] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [confirmation, setConfirmation] = useState<boolean>(false);
   const [errorData, dispatchErrorData] = useReducer(errorReducer, initialErrorState);
   const [errorSlots, dispatchErrorSlots] = useReducer(errorReducer, initialErrorState);
   const [errorSignature, dispatchErrorSignature] = useReducer(errorReducer, initialErrorState);
+  const [errorConfirmation, dispatchErrorConfirmation] = useReducer(errorReducer, initialErrorState);
   const stepsById = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
   const stepsName = useMemo(() =>
     Object.keys(groupedSlotsToBeSigned).map(stepId => (stepsById[stepId].name)),
@@ -79,6 +81,11 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     setSlotsToAdd(options);
     if (options.length) dispatchErrorSlots({ type: RESET_ERROR });
   }, []);
+
+  const setConfirmationCheckbox = () => {
+    setConfirmation(prevState => !prevState);
+    dispatchErrorConfirmation({ type: RESET_ERROR });
+  };
 
   const goToUploadMethod = () => {
     if (isSingle && !slotsToAdd.length) {
@@ -131,8 +138,13 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   };
 
   const saveAndGoToEndScreen = async () => {
-    await saveAttendances();
-    navigation.navigate(END_SCREEN);
+    if (!confirmation) {
+      dispatchErrorConfirmation({ type: SET_ERROR, payload: 'Veuillez cocher la case ci-dessous' });
+    } else {
+      dispatchErrorConfirmation({ type: RESET_ERROR });
+      await saveAttendances();
+      navigation.navigate(END_SCREEN);
+    }
   };
 
   const renderDataSelection = () => (
@@ -162,8 +174,8 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   );
 
   const renderSumary = () => (
-    <AttendanceSheetSumary signature={signature} goToNextScreen={saveAndGoToEndScreen}
-      stepsName={stepsName} isLoading={isLoading}
+    <AttendanceSheetSumary signature={signature} goToNextScreen={saveAndGoToEndScreen} error={errorConfirmation}
+      stepsName={stepsName} isLoading={isLoading} setConfirmation={setConfirmationCheckbox} confirmation={confirmation}
       slotsOptions={slotsOptions
         .map(group => group.filter(opt => slotsToAdd.includes(opt.value))).filter(g => g.length)} />
   );

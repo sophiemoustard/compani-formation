@@ -8,8 +8,11 @@ import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import NiImage from '../Image';
+import NiErrorMessage from '../../components/ErrorMessage';
 import MultipleCheckboxList from '../form/MultipleCheckboxList';
 import { DataOptionsType } from '../../store/attendanceSheets/slice';
+import Checkbox from '../form/Checkbox';
+import { ErrorStateType } from '../../reducers/error';
 
 interface AttendanceSheetSelectionFormProps {
   goToNextScreen: () => void,
@@ -17,6 +20,9 @@ interface AttendanceSheetSelectionFormProps {
   slotsOptions: DataOptionsType[][],
   signature: string,
   isLoading: boolean,
+  setConfirmation: () => void,
+  confirmation: boolean,
+  error: ErrorStateType,
 }
 
 const AttendanceSheetSumary = ({
@@ -25,6 +31,9 @@ const AttendanceSheetSumary = ({
   slotsOptions,
   signature,
   isLoading,
+  setConfirmation,
+  confirmation,
+  error,
 }: AttendanceSheetSelectionFormProps) => {
   const navigation = useNavigation();
 
@@ -43,14 +52,19 @@ const AttendanceSheetSumary = ({
     <View style={styles.header}>
       <FeatherButton name='arrow-left' onPress={() => navigation.goBack()} size={ICON.MD} color={GREY[600]} />
     </View>
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Emargements</Text>
       <MultipleCheckboxList optionsGroups={slotsOptions} disabled
         groupTitles={stepsName}
-        setOptions={() => {}} checkedList={slotsOptions.flat().map(option => option.value)} />
+        setOptions={() => {}} checkedList={slotsOptions.flat().map(option => option.value as string)} />
       <NiImage source={{ uri: signature }} imgHeight={200} onPress={() => {}}/>
     </ScrollView>
+    <View style={styles.checkboxContainer}>
+      <Checkbox itemLabel={'Je certifie que les informations ci-dessus sont exactes'} isChecked={confirmation}
+        onPressCheckbox={setConfirmation} />
+    </View>
     <View style={styles.button}>
+      <NiErrorMessage message={error.message} show={error.value} />
       <NiPrimaryButton caption={'Suivant'} onPress={goToNextScreen} loading={isLoading} />
     </View>
   </SafeAreaView>;

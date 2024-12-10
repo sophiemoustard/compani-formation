@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { INPUT_HEIGHT, MARGIN, PADDING } from '../../styles/metrics';
 import { FIRA_SANS_BOLD } from '../../styles/fonts';
 import { GREY } from '../../styles/colors';
 
@@ -21,6 +21,13 @@ const styles = StyleSheet.create({
   title: {
     ...FIRA_SANS_BOLD.LG,
     marginVertical: MARGIN.LG,
+  },
+  checkboxContainer: {
+    position: 'absolute',
+    marginHorizontal: MARGIN.MD,
+    bottom: 2 * INPUT_HEIGHT,
+    left: 0,
+    right: 0,
   },
   button: {
     marginHorizontal: MARGIN.MD,
