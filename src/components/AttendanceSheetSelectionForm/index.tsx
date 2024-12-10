@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
 import styles from './styles';
-import RadioButtonList from '../form/RadioButtonList';
 import NiPrimaryButton from '../form/PrimaryButton';
 import NiErrorMessage from '../ErrorMessage';
 import { ErrorStateType } from '../../reducers/error';
@@ -11,21 +10,19 @@ import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 
-interface AttendanceSheetDataSelectionFormProps {
+interface AttendanceSheetSelectionFormProps {
   title: string,
-  options: { label: string, value: string }[],
-  setOption: (value: string) => void,
   goToNextScreen: () => void,
-  error: ErrorStateType
+  error: ErrorStateType,
+  children: any,
 }
 
-const AttendanceSheetDataSelectionForm = ({
+const AttendanceSheetSelectionForm = ({
   title,
-  options,
-  error,
-  setOption,
   goToNextScreen,
-}: AttendanceSheetDataSelectionFormProps) => {
+  error,
+  children,
+}: AttendanceSheetSelectionFormProps) => {
   const navigation = useNavigation();
 
   const hardwareBackPress = useCallback(() => {
@@ -45,7 +42,7 @@ const AttendanceSheetDataSelectionForm = ({
     </View>
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>{title}</Text>
-      <RadioButtonList options={options} setOption={setOption}/>
+      {children}
     </ScrollView>
     <View style={styles.button}>
       <NiErrorMessage message={error.message} show={error.value}/>
@@ -53,4 +50,4 @@ const AttendanceSheetDataSelectionForm = ({
     </View>
   </SafeAreaView>;
 };
-export default AttendanceSheetDataSelectionForm;
+export default AttendanceSheetSelectionForm;

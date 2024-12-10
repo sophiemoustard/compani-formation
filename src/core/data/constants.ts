@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
 export const APP_NAME = 'formation';
 export const LOCAL = 'local';
@@ -19,6 +20,7 @@ export const PEDAGOGY = 'pedagogy';
 export const INTRA = 'intra';
 export const INTER_B2B = 'inter_b2b';
 export const INTRA_HOLDING = 'intra_holding';
+export const SINGLE_COURSES_SUBPROGRAM_IDS = Constants?.expoConfig?.extra?.SINGLE_COURSES_SUBPROGRAM_IDS.split(';');
 
 // STEPS
 export const ON_SITE = 'on_site';
@@ -135,3 +137,8 @@ export const ACCOUNT_CREATION = 'account_creation';
 
 // COMPANIES
 export const DIRECTORY = 'directory';
+
+// COURSE STATUS
+export const IN_PROGRESS = 'in_progress';
+export const FORTHCOMING = 'forthcoming';
+export const COMPLETED = 'completed';

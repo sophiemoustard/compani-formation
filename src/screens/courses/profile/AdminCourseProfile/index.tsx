@@ -3,6 +3,8 @@ import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList 
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
+import groupBy from 'lodash/groupBy';
+import get from 'lodash/get';
 import has from 'lodash/has';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -28,6 +30,7 @@ import {
   OPERATIONS,
   PDF,
   SHORT_FIRSTNAME_LONG_LASTNAME,
+  SINGLE_COURSES_SUBPROGRAM_IDS,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../../core/helpers/dates/utils';
@@ -38,6 +41,7 @@ import {
   InterAttendanceSheetType,
   IntraOrIntraHoldingAttendanceSheetType,
   isIntraOrIntraHolding,
+  SingleAttendanceSheetType,
 } from '../../../../types/AttendanceSheetTypes';
 import SecondaryButton from '../../../../components/form/SecondaryButton';
 import { formatIdentity, sortStrings } from '../../../../core/helpers/utils';
@@ -47,6 +51,7 @@ import {
   useGetCourse,
   useSetCourse,
   useSetMissingAttendanceSheets,
+  useSetGroupedSlotsToBeSigned,
   useResetAttendanceSheetReducer,
 } from '../../../../store/attendanceSheets/hooks';
 
@@ -64,13 +69,32 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const course = useGetCourse();
   const setCourse = useSetCourse();
   const setMissingAttendanceSheet = useSetMissingAttendanceSheets();
+  const setGroupedSlotsToBeSigned = useSetGroupedSlotsToBeSigned();
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
+  const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
+
+  const groupedSlotsToBeSigned = useMemo(() => {
+    if (!isSingle || !course?.slots.length) return {};
+    const signedSlots = (savedAttendanceSheets as SingleAttendanceSheetType[])
+      .map(as => get(as, 'slots', []).map(s => s._id))
+      .flat();
+
+    const groupedSlots = groupBy(course.slots.filter(slot => !signedSlots.includes(slot._id)), 'step');
+
+    return course?.subProgram.steps.map(s => s._id).reduce<Record<string, SlotType[]>>((acc, step) => {
+      if (groupedSlots[step]) {
+        acc[step] = groupedSlots[step];
+      }
+      return acc;
+    }, {});
+  }, [course, isSingle, savedAttendanceSheets]);
+
   const missingAttendanceSheets = useMemo(() => {
-    if (!course?.slots.length) return [];
+    if (!course?.slots.length || !firstSlot) return [];
 
     if ([INTRA, INTRA_HOLDING].includes(course?.type)) {
       const intraOrIntraHoldingCourseSavedSheets = savedAttendanceSheets as IntraOrIntraHoldingAttendanceSheetType[];
@@ -92,11 +116,20 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const interCourseSavedSheets = savedAttendanceSheets as InterAttendanceSheetType[];
     const savedTrainees = interCourseSavedSheets.map(sheet => sheet.trainee?._id);
 
+    if (isSingle) {
+      if (Object.values(groupedSlotsToBeSigned).flat().length) {
+        return course.trainees!
+          .map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }));
+      }
+      return [];
+    }
+
     return [...new Set(
-      course?.trainees?.map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
-        .filter(trainee => !savedTrainees.includes(trainee.value))
+      course?.trainees?.filter(trainee => (!savedTrainees.includes(trainee._id)))
+        .map(t => ({ value: t._id, label: formatIdentity(t.identity, LONG_FIRSTNAME_LONG_LASTNAME) }))
     )];
-  }, [course, firstSlot, savedAttendanceSheets]);
+  }, [course, firstSlot, isSingle, savedAttendanceSheets, groupedSlotsToBeSigned]);
+
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
   const [questionnaireQRCode, setQuestionnaireQRCode] = useState<string>('');
@@ -132,6 +165,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
+        setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -143,7 +177,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   useEffect(() => {
     setMissingAttendanceSheet(missingAttendanceSheets);
-  }, [missingAttendanceSheets, setMissingAttendanceSheet]);
+    setGroupedSlotsToBeSigned(groupedSlotsToBeSigned);
+  }, [missingAttendanceSheets, setMissingAttendanceSheet, groupedSlotsToBeSigned, setGroupedSlotsToBeSigned]);
 
   useEffect(() => () => {
     const currentRoute = navigation.getState().routes[navigation.getState().index];
@@ -221,7 +256,18 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       </View>);
   };
 
-  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet');
+  const renderSingleSavedAttendanceSheets = (sheet: SingleAttendanceSheetType) => {
+    const label = sheet.slots
+      ? [...new Set(sheet.slots.map(slot => CompaniDate(slot.startDate).format(DD_MM_YYYY)))].join(', ')
+      : formatIdentity(sheet.trainee.identity, SHORT_FIRSTNAME_LONG_LASTNAME);
+
+    return (
+      <SecondaryButton key={sheet._id} customStyle={styles.attendanceSheetButton} caption={label} numberOfLines={1}
+        onPress={() => openImagePreview(sheet._id, sheet.file.link)} />
+    );
+  };
+
+  const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { isSingle });
 
   return course && has(course, 'subProgram.program') && (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
@@ -234,11 +280,18 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
               <Text style={styles.italicText}>{noAttendancesMessage}</Text>}
           </View>
           {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
-            <Text style={styles.header}>Chargez vos feuilles d&apos;émargements quand elles sont complètes.</Text>
+            <Text style={styles.header}>
+              { isSingle
+                ? 'Pour charger une feuille d\'émargement ou envoyer une demande de signature veuillez cliquer sur le '
+              + 'bouton ci-dessous.'
+                : 'Chargez vos feuilles d\'émargements quand elles sont complètes.'
+              }
+            </Text>
             <View style={styles.sectionContainer}>
-              <SecondaryButton caption={'Charger une feuille d\'émargement'} onPress={goToAttendanceSheetUpload}
-                customStyle={styles.uploadButton} bgColor={course?.companies?.length ? YELLOW[300] : YELLOW[200]}
-                color={course?.companies?.length ? BLACK : GREY[600]} disabled={!course?.companies?.length}/>
+              <SecondaryButton caption={isSingle ? 'Emarger des créneaux' : 'Charger une feuille d\'émargement'}
+                onPress={goToAttendanceSheetUpload} customStyle={styles.uploadButton}
+                bgColor={course?.companies?.length ? YELLOW[300] : YELLOW[200]} disabled={!course?.companies?.length}
+                color={course?.companies?.length ? BLACK : GREY[600]} />
               {!course.companies?.length &&
                 <Text style={styles.italicText}>
                   Au moins une structure doit être rattachée à la formation pour pouvoir ajouter une feuille
@@ -247,9 +300,16 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
               }
             </View>
           </View>}
-          {!!savedAttendanceSheets.length &&
-          <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => renderSavedAttendanceSheets(item)} style={styles.listContainer} horizontal />}
+          {!!savedAttendanceSheets.length && <>
+            {
+              isSingle
+                ? (savedAttendanceSheets as SingleAttendanceSheetType[])
+                  .map(sheet => renderSingleSavedAttendanceSheets(sheet))
+                : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
+                  showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
+                  horizontal/>
+            }
+          </>}
         </View>
         <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
