@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -42,7 +42,6 @@ import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
 import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../../../core/data/constants';
-import { AttendanceSheetType } from '../../../../types/AttendanceSheetTypes';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -60,8 +59,15 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
-  const [attendanceSheetsToSign, setAttendanceSheetsToSign] = useState<AttendanceSheetType[]>([]);
+
+  const attendanceSheetsToSign = useMemo(() =>
+    (SINGLE_COURSES_SUBPROGRAM_IDS.includes(course?.subProgram._id || '')
+      ? (course as BlendedCourseType)?.attendanceSheets?.filter(as =>
+        has(as, 'signatures.trainer') && !has(as, 'signatures.trainee')) || []
+      : []),
+  [course]);
+
+  const title = useMemo(() => getTitle(course), [course]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -71,15 +77,9 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
           Courses.getCourse(route.params.courseId, PEDAGOGY),
           Questionnaires.getUserQuestionnaires({ course: route.params.courseId }),
         ]);
+        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
-        if (SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id)) {
-          setAttendanceSheetsToSign((fetchedCourse as BlendedCourseType).attendanceSheets!
-            .filter(as => has(as, 'signatures.trainer') && !has(as, 'signatures.trainee')));
-        }
-        setTitle(getTitle(fetchedCourse));
-
-        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         if (programImage) setSource({ uri: programImage });
       } catch (e: any) {
         console.error(e);
@@ -191,7 +191,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     }
   };
 
-  return course && has(course, 'subProgram.program') && (
+  return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={IS_WEB}
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
@@ -220,7 +220,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         </View>}
       </ScrollView>
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default LearnerCourseProfile;
