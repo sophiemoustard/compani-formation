@@ -67,8 +67,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
-        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        const [fetchedCourse, fetchedQuestionnaires] = await Promise.all([
+          Courses.getCourse(route.params.courseId, PEDAGOGY),
+          Questionnaires.getUserQuestionnaires({ course: route.params.courseId }),
+        ]);
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
         if (SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id)) {

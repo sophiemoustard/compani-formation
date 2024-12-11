@@ -15,7 +15,7 @@ const PendingActionsContainer = ({ questionnaires, attendanceSheets, profileId }
   <View style={styles.container}>
     <Text style={styles.header}>Vous avez des actions à compléter.</Text>
     <View style={styles.cellContainer}>
-      <QuestionnaireCell questionnaires={questionnaires} profileId={profileId} />
+      {!!questionnaires.length && <QuestionnaireCell questionnaires={questionnaires} profileId={profileId} />}
       {attendanceSheets.map(as => <LearnerAttendanceSheetCell key={as._id} attendanceSheet={as} />)}
     </View>
   </View>
