@@ -73,6 +73,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
   const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
+  const [completedAttendanceSheets, setCompletedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
@@ -138,6 +139,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
+    setCompletedAttendanceSheets(fetchedAttendanceSheets.filter(as => !!as.file));
   };
 
   const getQuestionnaireQRCode = async (courseId: string) => {
@@ -200,8 +202,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       setNoAttendancesMessage('L\'émargement sera disponible une fois le premier créneau passé.');
     } else if (course?.type === INTER_B2B && !course?.trainees?.length) {
       setNoAttendancesMessage('Veuillez ajouter des stagiaires pour émarger la formation.');
+    } else if (!!savedAttendanceSheets.length && !completedAttendanceSheets.length) {
+      setNoAttendancesMessage('Toutes les feuilles d\'émargement sont en attente de signature du stagiaire.');
     }
-  }, [course, firstSlot]);
+  }, [completedAttendanceSheets, course, firstSlot, savedAttendanceSheets]);
 
   const goBack = useCallback(() => {
     navigation.goBack();
@@ -276,7 +280,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         <View style={styles.attendancesContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>
-            {!missingAttendanceSheets.length && !savedAttendanceSheets.length &&
+            {!missingAttendanceSheets.length && !completedAttendanceSheets.length &&
               <Text style={styles.italicText}>{noAttendancesMessage}</Text>}
           </View>
           {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
@@ -303,8 +307,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!savedAttendanceSheets.length && <>
             {
               isSingle
-                ? (savedAttendanceSheets as SingleAttendanceSheetType[])
-                  .filter(as => !!as.file)
+                ? (completedAttendanceSheets as SingleAttendanceSheetType[])
                   .map(sheet => renderSingleSavedAttendanceSheets(sheet))
                 : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
                   showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
