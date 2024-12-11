@@ -35,13 +35,14 @@ import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/ma
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
+import PendingActionsContainer from '../../../../components/questionnaires/PendingActionsContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
-import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../../../core/data/constants';
+import { AttendanceSheetType } from '../../../../types/AttendanceSheetTypes';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -60,6 +61,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
+  const [attendanceSheetsToSign, setAttendanceSheetsToSign] = useState<AttendanceSheetType[]>([]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -69,6 +71,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
+        if (SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id)) {
+          setAttendanceSheetsToSign((fetchedCourse as BlendedCourseType).attendanceSheets!
+            .filter(as => has(as, 'signatures.trainer') && !has(as, 'signatures.trainee')));
+        }
         setTitle(getTitle(fetchedCourse));
 
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
@@ -193,7 +199,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
           <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
-        {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
+        {!!(questionnaires.length || attendanceSheetsToSign.length) &&
+          <PendingActionsContainer questionnaires={questionnaires} profileId={course._id}
+            attendanceSheets={attendanceSheetsToSign}/>
+        }
         {getHeader()}
         {renderStepList(course, LEARNER, route)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>

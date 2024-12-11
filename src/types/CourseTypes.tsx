@@ -2,6 +2,7 @@ import { UserType } from './UserType';
 import { StepType, ELearningStepType } from './StepTypes';
 import { CompanyType } from './CompanyType';
 import { BLENDED, LEARNER, OPERATIONS, PEDAGOGY, STRICTLY_E_LEARNING, TESTER, TRAINER } from '../core/data/constants';
+import { AttendanceSheetType } from './AttendanceSheetTypes';
 
 // query
 export type actionQueryCourseType = typeof PEDAGOGY | typeof OPERATIONS;
@@ -99,7 +100,8 @@ export type BlendedCourseType = BaseCourseType & {
   companyRepresentative: UserType,
   misc: string,
   trainees?: TraineeType[],
-  companies?: CompanyType[]
+  companies?: CompanyType[],
+  attendanceSheets?: AttendanceSheetType[]
 }
 
 export type CourseModeType = typeof LEARNER | typeof TESTER | typeof TRAINER;
