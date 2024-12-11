@@ -5,11 +5,8 @@ import { GREY, PINK } from '../../styles/colors';
 
 const styles = StyleSheet.create({
   safeArea: {
-    flex: 1,
-    backgroundColor: GREY[100],
-  },
-  container: {
     flexGrow: 1,
+    backgroundColor: GREY[100],
     marginHorizontal: MARGIN.LG,
     justifyContent: 'space-between',
   },
@@ -24,14 +21,16 @@ const styles = StyleSheet.create({
     marginVertical: MARGIN.LG,
     textAlign: 'center',
   },
-  button: {
+  footer: {
     marginHorizontal: MARGIN.MD,
     marginBottom: MARGIN.MD,
+    justifyContent: 'flex-end',
   },
   image: {
     height: 160,
     resizeMode: 'contain',
     marginTop: MARGIN.XL,
+    alignSelf: 'center',
   },
   icon: {
     alignContent: 'center',
@@ -44,9 +43,6 @@ const styles = StyleSheet.create({
   },
   upperContainer: {
     justifyContent: 'flex-start',
-  },
-  lowerContainer: {
-    justifyContent: 'flex-end',
   },
 });
 

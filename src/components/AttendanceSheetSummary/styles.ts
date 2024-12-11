@@ -28,14 +28,15 @@ const styles = StyleSheet.create({
     bottom: 2 * INPUT_HEIGHT,
     left: 0,
     right: 0,
+    backgroundColor: GREY[100],
   },
   button: {
     marginHorizontal: MARGIN.MD,
     marginBottom: MARGIN.MD,
   },
   image: {
-    height: '40%',
-    resizeMode: 'center',
+    height: 300,
+    resizeMode: 'contain',
   },
 });
 

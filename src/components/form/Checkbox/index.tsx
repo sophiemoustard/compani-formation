@@ -1,23 +1,35 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
 import { GREY, PINK } from '../../../styles/colors';
 import styles from './styles';
 
 interface RenderItemProps {
   itemLabel: string,
   isChecked: boolean,
-  disabled?: boolean,
   onPressCheckbox: () => void
+  disabled?: boolean,
 }
 
-const Checkbox = ({ itemLabel, isChecked, disabled = false, onPressCheckbox }: RenderItemProps) => {
+const Checkbox = ({ itemLabel, isChecked, onPressCheckbox, disabled = false }: RenderItemProps) => {
   const iconName = isChecked ? 'check-box' : 'check-box-outline-blank';
-  const iconColor = isChecked ? PINK[500] : GREY[600];
-  const textStyle = isChecked ? styles.text : { ...styles.text, color: GREY[600] };
+  const [iconColor, setIconColor] = useState<string>(GREY[600]);
+  const [textStyle, setTextStyle] = useState<object>({ ...styles.text, color: GREY[600] });
+
+  useEffect(() => {
+    if (isChecked) {
+      if (disabled) {
+        setIconColor(PINK[300]);
+        setTextStyle({ ...styles.text, color: GREY[500] });
+      } else {
+        setIconColor(PINK[500]);
+        setTextStyle(styles.text);
+      }
+    }
+  }, [disabled, isChecked]);
 
   return (
-    <TouchableOpacity style={styles.itemContainer} onPress={onPressCheckbox}
-      disabled={disabled}>
+    <TouchableOpacity style={styles.itemContainer} onPress={onPressCheckbox} disabled={disabled}>
       <MaterialIcons style={styles.icon} size={24} name={iconName} color={iconColor} />
       <Text style={textStyle}>{itemLabel}</Text>
     </TouchableOpacity>

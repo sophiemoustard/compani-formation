@@ -13,6 +13,7 @@ import {
   useGetMissingAttendanceSheets,
   useGetGroupedSlotsToBeSigned,
 } from '../../../../store/attendanceSheets/hooks';
+import { DataOptionsType } from '../../../../store/attendanceSheets/slice';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import { formatPayload } from '../../../../core/helpers/pictures';
@@ -48,6 +49,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const [confirmation, setConfirmation] = useState<boolean>(false);
   const [traineeName, setTraineeName] = useState<string>('');
   const [failUpload, setFailUpload] = useState<boolean>(false);
+  const [selectedSlotsOptions, setSelectedSlotsOptions] = useState<DataOptionsType[][]>([]);
   const [errorData, dispatchErrorData] = useReducer(errorReducer, initialErrorState);
   const [errorSlots, dispatchErrorSlots] = useReducer(errorReducer, initialErrorState);
   const [errorSignature, dispatchErrorSignature] = useReducer(errorReducer, initialErrorState);
@@ -90,7 +92,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     if (option) dispatchErrorData({ type: RESET_ERROR });
   }, [course, isSingle, missingAttendanceSheets]);
 
-  const setSlotOptions = useCallback((options: string[]) => {
+  const setSlotsOptions = useCallback((options: string[]) => {
     setSlotsToAdd(options);
     if (options.length) dispatchErrorSlots({ type: RESET_ERROR });
   }, []);
@@ -128,6 +130,9 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       dispatchErrorSignature({ type: SET_ERROR, payload: 'Veuillez signer dans l\'encadré' });
     } else {
       dispatchErrorSignature({ type: RESET_ERROR });
+      setSelectedSlotsOptions(
+        slotsOptions.map(group => group.filter(opt => slotsToAdd.includes(opt.value))).filter(g => g.length)
+      );
       navigation.navigate(ATTENDANCE_SUMARY);
     }
   };
@@ -170,9 +175,8 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   );
 
   const renderSlotSelection = () => (
-    <AttendanceSheetSelectionForm title={slotSelectionTitle}
-      error={errorSlots} goToNextScreen={goToUploadMethod}>
-      <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setSlotOptions}
+    <AttendanceSheetSelectionForm title={slotSelectionTitle} error={errorSlots} goToNextScreen={goToUploadMethod}>
+      <MultipleCheckboxList optionsGroups={slotsOptions} groupTitles={stepsName} setOptions={setSlotsOptions}
         checkedList={slotsToAdd}/>
     </AttendanceSheetSelectionForm>
   );
@@ -190,8 +194,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const renderSumary = () => (
     <AttendanceSheetSumary signature={signature} goToNextScreen={saveAndGoToEndScreen} error={errorConfirmation}
       stepsName={stepsName} isLoading={isLoading} setConfirmation={setConfirmationCheckbox} confirmation={confirmation}
-      traineeName={traineeName} slotsOptions={slotsOptions
-        .map(group => group.filter(opt => slotsToAdd.includes(opt.value))).filter(g => g.length)} />
+      traineeName={traineeName} slotsOptions={selectedSlotsOptions} />
   );
   const renderEndScreen = () => (
     <AttendanceEndScreen goToNextScreen={navigation.goBack} traineeName={traineeName} failUpload={failUpload} />
@@ -204,9 +207,13 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       <Stack.Screen key={0} name={DATA_SELECTION}>{renderDataSelection}</Stack.Screen>
       {isSingle && <Stack.Screen key={1} name={SLOTS_SELECTION}>{renderSlotSelection}</Stack.Screen>}
       <Stack.Screen key={2} name={UPLOAD_METHOD}>{renderUploadMethod}</Stack.Screen>
-      <Stack.Screen key={3} name={ATTENDANCE_SIGNATURE}>{renderSignatureContainer}</Stack.Screen>
-      <Stack.Screen key={4} name={ATTENDANCE_SUMARY}>{renderSumary}</Stack.Screen>
-      <Stack.Screen key={5} name={END_SCREEN}>{renderEndScreen}</Stack.Screen>
+      {isSingle && <>
+        <Stack.Screen options={{ gestureEnabled: false }} key={3} name={ATTENDANCE_SIGNATURE}>
+          {renderSignatureContainer}
+        </Stack.Screen>
+        <Stack.Screen key={4} name={ATTENDANCE_SUMARY}>{renderSumary}</Stack.Screen>
+        <Stack.Screen options={{ gestureEnabled: false }} key={5} name={END_SCREEN}>{renderEndScreen}</Stack.Screen>
+      </>}
     </Stack.Navigator>
   );
 };

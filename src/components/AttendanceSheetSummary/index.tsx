@@ -13,9 +13,9 @@ import { DataOptionsType } from '../../store/attendanceSheets/slice';
 import Checkbox from '../form/Checkbox';
 import { ErrorStateType } from '../../reducers/error';
 
-interface AttendanceSheetSelectionFormProps {
+interface AttendanceSheetSummaryProps {
   goToNextScreen: () => void,
-  stepsName: any,
+  stepsName: string[],
   slotsOptions: DataOptionsType[][],
   signature: string,
   isLoading: boolean,
@@ -35,8 +35,9 @@ const AttendanceSheetSumary = ({
   confirmation,
   error,
   traineeName,
-}: AttendanceSheetSelectionFormProps) => {
+}: AttendanceSheetSummaryProps) => {
   const navigation = useNavigation();
+  const checkedList = slotsOptions.flat().map(option => option.value);
 
   const hardwareBackPress = useCallback(() => {
     navigation.goBack();
@@ -55,9 +56,8 @@ const AttendanceSheetSumary = ({
     </View>
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Emargements pour {traineeName}</Text>
-      <MultipleCheckboxList optionsGroups={slotsOptions} disabled
-        groupTitles={stepsName}
-        setOptions={() => {}} checkedList={slotsOptions.flat().map(option => option.value as string)} />
+      <MultipleCheckboxList optionsGroups={slotsOptions} disabled groupTitles={stepsName} setOptions={() => {}}
+        checkedList={checkedList} />
       <Image source={{ uri: signature }} style={styles.image} />
     </ScrollView>
     <View style={styles.checkboxContainer}>
