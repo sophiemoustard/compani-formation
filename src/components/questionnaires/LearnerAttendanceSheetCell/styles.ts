@@ -20,6 +20,16 @@ const styles = StyleSheet.create({
     backgroundColor: YELLOW[500],
     borderRadius: BORDER_RADIUS.MD,
   },
+  icon: {
+    height: 64,
+    width: 64,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: YELLOW[300],
+    borderColor: YELLOW[500],
+    borderWidth: 1,
+    borderRadius: BORDER_RADIUS.MD,
+  },
 });
 
 export default styles;

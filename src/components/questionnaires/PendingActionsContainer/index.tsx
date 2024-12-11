@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import QuestionnaireCell from '../QuestionnaireCell';
 import styles from './styles';
@@ -14,11 +14,10 @@ interface PendingActionsContainerProps {
 const PendingActionsContainer = ({ questionnaires, attendanceSheets, profileId }: PendingActionsContainerProps) => (
   <View style={styles.container}>
     <Text style={styles.header}>Vous avez des actions à compléter.</Text>
-    <View style={styles.cellContainer}>
+    <ScrollView style={styles.cellContainer} horizontal showsHorizontalScrollIndicator={false}>
       {!!questionnaires.length && <QuestionnaireCell questionnaires={questionnaires} profileId={profileId} />}
       {attendanceSheets.map(as => <LearnerAttendanceSheetCell key={as._id} attendanceSheet={as} />)}
-    </View>
+    </ScrollView>
   </View>
 );
-
 export default PendingActionsContainer;

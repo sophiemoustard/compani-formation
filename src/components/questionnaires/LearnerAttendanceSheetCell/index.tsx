@@ -14,7 +14,7 @@ const LearnerAttendanceSheetCell = ({ attendanceSheet }: LearnerAttendanceSheetC
   <View style={styles.container}>
     <TouchableOpacity>
       <View style={styles.iconContainer}>
-        <SignatureIcon />
+        <SignatureIcon customStyle={styles.icon}/>
         <Shadow customStyle={styles.shadow} />
       </View>
     </TouchableOpacity>
