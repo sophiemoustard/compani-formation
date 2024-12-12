@@ -5,7 +5,7 @@ import { BORDER_RADIUS, MARGIN, QUESTIONNAIRE_WIDTH } from '../../../styles/metr
 
 const styles = StyleSheet.create({
   container: {
-    margin: MARGIN.MD,
+    marginVertical: MARGIN.MD,
     alignItems: 'center',
     width: QUESTIONNAIRE_WIDTH,
   },
