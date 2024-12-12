@@ -4,7 +4,7 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import keyBy from 'lodash/keyBy';
 import AttendanceSheets from '../../../../api/attendanceSheets';
 import { RootStackParamList, RootCreateAttendanceSheetParamList } from '../../../../types/NavigationType';
-import { INTER_B2B, DD_MM_YYYY, HH_MM } from '../../../../core/data/constants';
+import { INTER_B2B, DD_MM_YYYY, HH_MM, IS_WEB } from '../../../../core/data/constants';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
 import AttendanceSheetSelectionForm from '../../../../components/AttendanceSheetSelectionForm';
 import UploadMethods from '../../../../components/UploadMethods';
@@ -137,11 +137,32 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     }
   };
 
+  const base64ToBlob = (base64Data: string, contentType: string) => {
+    const byteCharacters = atob(base64Data.split(',')[1]);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i += 1) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: contentType });
+  };
+
   const saveAttendances = async () => {
     try {
       setIsLoading(true);
+      let file;
       const contentType = 'image/png';
-      const file = { uri: signature, type: contentType, name: `trainer_signature_${course?._id}` };
+      if (IS_WEB) {
+        const blob = base64ToBlob(signature, contentType);
+        file = new File([blob], `trainer_signature_${course?._id}.png`, { type: contentType });
+      } else file = { uri: signature, type: contentType, name: `trainer_signature_${course?._id}` };
       const data = formatPayload({
         signature: file,
         course: course?._id,
