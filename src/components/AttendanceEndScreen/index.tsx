@@ -11,7 +11,7 @@ interface AttendanceEndScreenProps {
   goToNextScreen: () => void,
 }
 
-const AttendanceSheetSumary = ({ traineeName, failUpload, goToNextScreen }: AttendanceEndScreenProps) => (
+const AttendanceEndScreen = ({ traineeName, failUpload, goToNextScreen }: AttendanceEndScreenProps) => (
   <SafeAreaView style={styles.safeArea} edges={['top']}>
     {failUpload
       ? <View style={styles.errorContainer}>
@@ -36,4 +36,4 @@ const AttendanceSheetSumary = ({ traineeName, failUpload, goToNextScreen }: Atte
     </View>
   </SafeAreaView>
 );
-export default AttendanceSheetSumary;
+export default AttendanceEndScreen;

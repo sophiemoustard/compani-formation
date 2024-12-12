@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN } from '../../styles/metrics';
 import { FIRA_SANS_BLACK, FIRA_SANS_BOLD } from '../../styles/fonts';
-import { GREY, PINK } from '../../styles/colors';
+import { PINK } from '../../styles/colors';
 
 const styles = StyleSheet.create({
   safeArea: {
     flexGrow: 1,
-    backgroundColor: GREY[100],
     marginHorizontal: MARGIN.LG,
     justifyContent: 'space-between',
   },

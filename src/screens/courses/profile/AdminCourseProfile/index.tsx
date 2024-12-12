@@ -33,7 +33,6 @@ import {
   SINGLE_COURSES_SUBPROGRAM_IDS,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
 import {
@@ -164,7 +163,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         await refreshAttendanceSheets(fetchedCourse._id);
         await getQuestionnaireQRCode(fetchedCourse._id);
 
-        if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
+        if (fetchedCourse.slots.length) setFirstSlot(fetchedCourse.slots[0]);
         setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
         setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));

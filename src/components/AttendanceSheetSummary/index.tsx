@@ -25,7 +25,7 @@ interface AttendanceSheetSummaryProps {
   traineeName: string,
 }
 
-const AttendanceSheetSumary = ({
+const AttendanceSheetSummary = ({
   goToNextScreen,
   stepsName,
   slotsOptions,
@@ -56,8 +56,7 @@ const AttendanceSheetSumary = ({
     </View>
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Emargements pour {traineeName}</Text>
-      <MultipleCheckboxList optionsGroups={slotsOptions} disabled groupTitles={stepsName} setOptions={() => {}}
-        checkedList={checkedList} />
+      <MultipleCheckboxList optionsGroups={slotsOptions} disabled groupTitles={stepsName} checkedList={checkedList} />
       <Image source={{ uri: signature }} style={styles.image} />
     </ScrollView>
     <View style={styles.checkboxContainer}>
@@ -70,4 +69,4 @@ const AttendanceSheetSumary = ({
     </View>
   </SafeAreaView>;
 };
-export default AttendanceSheetSumary;
+export default AttendanceSheetSummary;

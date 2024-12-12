@@ -71,6 +71,17 @@ const AttendanceSignatureContainer = ({
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      if (exitConfirmationModal) return;
+
+      e.preventDefault();
+      setExitConfirmationModal(true);
+    });
+
+    return unsubscribe;
+  }, [navigation, exitConfirmationModal]);
+
   const sendMessageToWebView = (message: string) => {
     webViewRef.current?.injectJavaScript(`handleMessage("${message}"); true;`);
   };

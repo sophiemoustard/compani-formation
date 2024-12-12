@@ -20,7 +20,7 @@ import { formatPayload } from '../../../../core/helpers/pictures';
 import RadioButtonList from '../../../../components/form/RadioButtonList';
 import MultipleCheckboxList from '../../../../components/form/MultipleCheckboxList';
 import AttendanceSignatureContainer from '../../../../components/AttendanceSignatureContainer';
-import AttendanceSheetSumary from '../../../../components/AttendanceSheetSummary';
+import AttendanceSheetSummary from '../../../../components/AttendanceSheetSummary';
 import AttendanceEndScreen from '../../../../components/AttendanceEndScreen';
 
 interface CreateAttendanceSheetProps extends CompositeScreenProps<
@@ -32,7 +32,7 @@ const DATA_SELECTION = 'attendance-sheet-data-selection';
 const SLOTS_SELECTION = 'slots-data-selection';
 const UPLOAD_METHOD = 'upload-method-selection';
 const ATTENDANCE_SIGNATURE = 'attendance-signature';
-const ATTENDANCE_SUMARY = 'attendance-sumary';
+const ATTENDANCE_SUMMARY = 'attendance-summary';
 const END_SCREEN = 'end-screen';
 
 const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps) => {
@@ -125,7 +125,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
     }
   };
 
-  const goToSumary = () => {
+  const goToSummary = () => {
     if (!signature) {
       dispatchErrorSignature({ type: SET_ERROR, payload: 'Veuillez signer dans l\'encadré' });
     } else {
@@ -133,7 +133,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       setSelectedSlotsOptions(
         slotsOptions.map(group => group.filter(opt => slotsToAdd.includes(opt.value))).filter(g => g.length)
       );
-      navigation.navigate(ATTENDANCE_SUMARY);
+      navigation.navigate(ATTENDANCE_SUMMARY);
     }
   };
 
@@ -187,12 +187,12 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   );
 
   const renderSignatureContainer = () => (
-    <AttendanceSignatureContainer error={errorSignature} goToNextScreen={goToSumary} setSignature={setSignature}
+    <AttendanceSignatureContainer error={errorSignature} goToNextScreen={goToSummary} setSignature={setSignature}
       resetError={() => dispatchErrorSignature({ type: RESET_ERROR })} />
   );
 
-  const renderSumary = () => (
-    <AttendanceSheetSumary signature={signature} goToNextScreen={saveAndGoToEndScreen} error={errorConfirmation}
+  const renderSummary = () => (
+    <AttendanceSheetSummary signature={signature} goToNextScreen={saveAndGoToEndScreen} error={errorConfirmation}
       stepsName={stepsName} isLoading={isLoading} setConfirmation={setConfirmationCheckbox} confirmation={confirmation}
       traineeName={traineeName} slotsOptions={selectedSlotsOptions} />
   );
@@ -208,10 +208,8 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
       {isSingle && <Stack.Screen key={1} name={SLOTS_SELECTION}>{renderSlotSelection}</Stack.Screen>}
       <Stack.Screen key={2} name={UPLOAD_METHOD}>{renderUploadMethod}</Stack.Screen>
       {isSingle && <>
-        <Stack.Screen options={{ gestureEnabled: false }} key={3} name={ATTENDANCE_SIGNATURE}>
-          {renderSignatureContainer}
-        </Stack.Screen>
-        <Stack.Screen key={4} name={ATTENDANCE_SUMARY}>{renderSumary}</Stack.Screen>
+        <Stack.Screen key={3} name={ATTENDANCE_SIGNATURE}>{renderSignatureContainer}</Stack.Screen>
+        <Stack.Screen key={4} name={ATTENDANCE_SUMMARY}>{renderSummary}</Stack.Screen>
         <Stack.Screen options={{ gestureEnabled: false }} key={5} name={END_SCREEN}>{renderEndScreen}</Stack.Screen>
       </>}
     </Stack.Navigator>

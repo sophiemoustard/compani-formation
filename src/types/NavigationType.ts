@@ -43,7 +43,7 @@ export type RootCreateAttendanceSheetParamList = {
   'upload-method-selection': undefined;
   'slots-data-selection': undefined;
   'attendance-signature': undefined;
-  'attendance-sumary': undefined;
+  'attendance-summary': undefined;
   'end-screen': undefined;
 }
 
