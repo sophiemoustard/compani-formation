@@ -4,14 +4,11 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   BackHandler,
   TouchableOpacity,
   ImageSourcePropType,
   ActivityIndicator,
-  LayoutChangeEvent,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
+  FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -27,13 +24,12 @@ import { RootStackParamList, RootBottomTabParamList } from '../../../../types/Na
 import Courses from '../../../../api/courses';
 import Questionnaires from '../../../../api/questionnaires';
 import { WHITE, GREY } from '../../../../styles/colors';
-import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
+import { ICON } from '../../../../styles/metrics';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
-import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
@@ -56,8 +52,6 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
-  const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
-  const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const attendanceSheetsToSign = useMemo(() =>
@@ -152,31 +146,6 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     setIsLoading(false);
   };
 
-  const isProgressBarOnTop = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { y } = event.nativeEvent.contentOffset;
-    setIsHeaderSticky(y >= progressBarY);
-  };
-
-  const getProgressBarY = (event: LayoutChangeEvent) => {
-    const { layout } = event.nativeEvent;
-    setProgressBarY(layout.y);
-  };
-
-  const getHeader = () => course && has(course, 'subProgram.program') && (
-    <View onLayout={getProgressBarY}>
-      {isHeaderSticky
-        ? <CourseProfileStickyHeader progress={getCourseProgress(course)} title={title} />
-        : <View style={styles.progressBarContainer}>
-          <Text style={styles.progressBarText}>ÉTAPES</Text>
-          <View style={commonStyles.progressBarContainer}>
-            <ProgressBar progress={getCourseProgress(course) * 100} />
-          </View>
-          <Text style={styles.progressBarText}>{(getCourseProgress(course) * 100).toFixed(0)}%</Text>
-        </View>
-      }
-    </View>
-  );
-
   const goToAbout = () => {
     if (!course) return;
     if (course.subProgram.isStrictlyELearning) {
@@ -191,22 +160,31 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     }
   };
 
-  return course && has(course, 'subProgram.program') ? (
-    <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={IS_WEB}
-        stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
-        onScroll={isProgressBarOnTop}>
-        <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.buttonsContainer}>
-          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
-            bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
-        </View>
-        {!!(questionnaires.length || attendanceSheetsToSign.length) &&
+  const renderHeader = () => course && has(course, 'subProgram.program') && <>
+    <CourseProfileHeader source={source} goBack={goBack} title={title} />
+    <View style={styles.buttonsContainer}>
+      <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
+        bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
+    </View>
+    {!!(questionnaires.length || attendanceSheetsToSign.length) &&
           <PendingActionsContainer questionnaires={questionnaires} profileId={course._id}
             attendanceSheets={attendanceSheetsToSign}/>
-        }
-        {getHeader()}
-        {renderStepList(course, LEARNER, route)}
+    }
+    <View style={styles.progressBarContainer}>
+      <Text style={styles.progressBarText}>ÉTAPES</Text>
+      <View style={commonStyles.progressBarContainer}>
+        <ProgressBar progress={getCourseProgress(course) * 100} />
+      </View>
+      <Text style={styles.progressBarText}>{(getCourseProgress(course) * 100).toFixed(0)}%</Text>
+    </View>
+  </>;
+
+  return course && has(course, 'subProgram.program') ? (
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <View>
+        <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} ListHeaderComponent={renderHeader}
+          renderItem={({ item, index }) => renderStepList(course, LEARNER, route, item, index)}
+          showsVerticalScrollIndicator={IS_WEB} />
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
             disabled={isLoading}>
@@ -218,7 +196,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
               </View>}
           </TouchableOpacity>
         </View>}
-      </ScrollView>
+      </View>
     </SafeAreaView>
   )
     : <View style={commonStyles.loadingContainer}>
