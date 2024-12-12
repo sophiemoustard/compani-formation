@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
@@ -32,6 +32,7 @@ const AttendanceSignatureContainer = ({
   const iframeRef = useRef<any>(null);
   const webViewRef = useRef<WebView>(null);
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
+  const isFocused = useIsFocused();
 
   const onMessage = (event: any) => {
     const dataURI = event.nativeEvent.data;
@@ -73,14 +74,14 @@ const AttendanceSignatureContainer = ({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-      if (exitConfirmationModal) return;
+      if (exitConfirmationModal || !isFocused) return;
 
       e.preventDefault();
       setExitConfirmationModal(true);
     });
 
     return unsubscribe;
-  }, [navigation, exitConfirmationModal]);
+  }, [navigation, exitConfirmationModal, isFocused]);
 
   const sendMessageToWebView = (message: string) => {
     webViewRef.current?.injectJavaScript(`handleMessage("${message}"); true;`);

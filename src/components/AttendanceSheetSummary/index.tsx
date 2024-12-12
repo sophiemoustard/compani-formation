@@ -1,17 +1,17 @@
 import { ScrollView, View, Text, BackHandler, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useCallback, useEffect } from 'react';
-import styles from './styles';
+import { ErrorStateType } from '../../reducers/error';
+import { DataOptionsType } from '../../store/attendanceSheets/slice';
+import NiErrorMessage from '../../components/ErrorMessage';
+import Checkbox from '../form/Checkbox';
+import MultipleCheckboxList from '../form/MultipleCheckboxList';
 import NiPrimaryButton from '../form/PrimaryButton';
 import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
-import NiErrorMessage from '../../components/ErrorMessage';
-import MultipleCheckboxList from '../form/MultipleCheckboxList';
-import { DataOptionsType } from '../../store/attendanceSheets/slice';
-import Checkbox from '../form/Checkbox';
-import { ErrorStateType } from '../../reducers/error';
+import styles from './styles';
 
 interface AttendanceSheetSummaryProps {
   goToNextScreen: () => void,
@@ -38,11 +38,12 @@ const AttendanceSheetSummary = ({
 }: AttendanceSheetSummaryProps) => {
   const navigation = useNavigation();
   const checkedList = slotsOptions.flat().map(option => option.value);
+  const isFocused = useIsFocused();
 
   const hardwareBackPress = useCallback(() => {
-    navigation.goBack();
+    if (isFocused) navigation.goBack();
     return true;
-  }, [navigation]);
+  }, [isFocused, navigation]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);

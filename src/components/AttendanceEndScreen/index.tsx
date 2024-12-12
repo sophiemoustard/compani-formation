@@ -1,9 +1,9 @@
 import { View, Text, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
-import styles from './styles';
 import NiPrimaryButton from '../form/PrimaryButton';
 import { PINK } from '../../styles/colors';
+import styles from './styles';
 
 interface AttendanceEndScreenProps {
   traineeName: string,

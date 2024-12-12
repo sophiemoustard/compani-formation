@@ -6,17 +6,17 @@ import Checkbox from '../Checkbox';
 interface MultipleCheckboxListProps {
   optionsGroups: DataOptionsType[][],
   groupTitles: string[],
-  setOptions?: (options: string[]) => void,
   checkedList: string[],
   disabled?: boolean,
+  setOptions?: (options: string[]) => void,
 }
 
 const MultipleCheckboxList = ({
   optionsGroups,
   groupTitles,
-  setOptions = () => {},
   checkedList,
   disabled = false,
+  setOptions = () => {},
 }: MultipleCheckboxListProps) => {
   const onPressCheckbox = (value: string) => {
     const indexToRemove = checkedList.indexOf(value);
