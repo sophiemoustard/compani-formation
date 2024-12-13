@@ -1,36 +1,23 @@
-import { View, Text, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { GREY, PINK } from '../../../styles/colors';
+import { View, Text } from 'react-native';
 import { DataOptionsType } from '../../../store/attendanceSheets/slice';
 import styles from './styles';
+import Checkbox from '../Checkbox';
 
 interface MultipleCheckboxListProps {
   optionsGroups: DataOptionsType[][],
   groupTitles: string[],
-  setOptions: (options: string[]) => void,
   checkedList: string[],
+  disabled?: boolean,
+  setOptions?: (options: string[]) => void,
 }
 
-interface RenderItemProps {
-  item: DataOptionsType,
-  checkedList: string[],
-  onPressCheckbox: (value: string) => void
-}
-
-const renderItem = ({ item, checkedList, onPressCheckbox }: RenderItemProps) => {
-  const iconName = checkedList.includes(item.value) ? 'check-box' : 'check-box-outline-blank';
-  const iconColor = checkedList.includes(item.value) ? PINK[500] : GREY[600];
-  const textStyle = checkedList.includes(item.value) ? styles.text : { ...styles.text, color: GREY[600] };
-
-  return (
-    <TouchableOpacity key={item.label} style={styles.itemContainer} onPress={() => onPressCheckbox(item.value)}>
-      <MaterialIcons style={styles.icon} size={24} name={iconName} color={iconColor} />
-      <Text style={textStyle}>{item.label}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const MultipleCheckboxList = ({ optionsGroups, groupTitles, setOptions, checkedList }: MultipleCheckboxListProps) => {
+const MultipleCheckboxList = ({
+  optionsGroups,
+  groupTitles,
+  checkedList,
+  disabled = false,
+  setOptions = () => {},
+}: MultipleCheckboxListProps) => {
   const onPressCheckbox = (value: string) => {
     const indexToRemove = checkedList.indexOf(value);
     if (indexToRemove !== -1) {
@@ -46,7 +33,11 @@ const MultipleCheckboxList = ({ optionsGroups, groupTitles, setOptions, checkedL
       {optionsGroups.map((options, index) => (
         <View key={index} style={styles.groupContainer}>
           <Text style={styles.groupLabel}>{groupTitles[index]}</Text>
-          {options.map(item => renderItem({ item, checkedList, onPressCheckbox }))}
+          {options.map((item) => {
+            const isChecked = checkedList.includes(item.value as string);
+            return <Checkbox key={item.value} itemLabel={item.label} isChecked={isChecked} disabled={disabled}
+              onPressCheckbox={() => onPressCheckbox(item.value)} />;
+          })}
         </View>
       ))}
     </View>
