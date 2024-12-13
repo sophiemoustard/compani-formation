@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { IS_DESKTOP_SCREEN, MARGIN, PADDING } from '../../styles/metrics';
+import { MARGIN, PADDING } from '../../styles/metrics';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -11,11 +11,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  iframeContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
   webviewContainer: {
     height: '50%',
-    width: IS_DESKTOP_SCREEN ? '50%' : 'auto',
-    ...IS_DESKTOP_SCREEN && { alignSelf: 'center' },
     margin: MARGIN.MD,
+    alignSelf: 'center',
+    aspectRatio: 1,
   },
   buttonContainer: {
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, View } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ICON } from '../../styles/metrics';
@@ -19,7 +19,7 @@ interface AttendanceSignatureContainerProps {
   error: ErrorStateType,
   goToNextScreen: () => void,
   resetError: () => void,
-  setSignature: (img: any) => void,
+  setSignature: (img: string) => void,
 }
 
 const AttendanceSignatureContainer = ({
@@ -34,19 +34,19 @@ const AttendanceSignatureContainer = ({
   const [exitConfirmationModal, setExitConfirmationModal] = useState<boolean>(false);
   const isFocused = useIsFocused();
 
-  const onMessage = (event: any) => {
+  const onMessage = (event: WebViewMessageEvent) => {
     const dataURI = event.nativeEvent.data;
     setSignature(dataURI);
     if (dataURI) resetError();
   };
 
-  const handleIframeMessage = useCallback((event: any) => {
+  const handleIframeMessage = useCallback((event: MessageEvent<string>) => {
     // eslint-disable-next-line no-undef
-    if (event.origin !== window.location.origin && event.origin !== 'null') return;
+    if ((event.origin !== window.location.origin && event.origin !== 'null') || !isFocused) return;
     const dataURI = event.data;
     setSignature(dataURI);
     if (dataURI) resetError();
-  }, [resetError, setSignature]);
+  }, [isFocused, resetError, setSignature]);
 
   useEffect(() => {
     if (IS_WEB) {
@@ -110,23 +110,26 @@ const AttendanceSignatureContainer = ({
         <ExitModal onPressConfirmButton={toggleModal} visible={exitConfirmationModal}
           title="Êtes-vous sûr(e) de cela ?" onPressCancelButton={() => setExitConfirmationModal(false)}
           contentText="Votre signature ne sera pas enregistrée" />
-        <View style={styles.webviewContainer}>
-          {
-            IS_WEB
-              ? <iframe
+        {
+          IS_WEB
+            ? <View style={styles.iframeContainer}>
+              <iframe
                 ref={iframeRef}
                 src={`data:text/html,${encodeURIComponent(htmlContent)}`}
-                style={{ width: '100%', height: '100%', border: '1px solid #ccc' }}
+                style={{ width: '50%', height: 'auto', aspectRatio: 1, border: '1px solid #ccc' }}
               />
-              : <WebView
+            </View>
+            : <View style={styles.webviewContainer}>
+              <WebView
                 ref={webViewRef}
                 source={{ html: htmlContent, baseUrl: '' }}
                 onMessage={onMessage}
                 javaScriptEnabled
                 originWhitelist={['*']}
               />
-          }
-        </View>
+            </View>
+
+        }
         <View style={styles.buttonContainer}>
           <NiSecondaryButton caption="Tout effacer" onPress={clearCanvas} />
           <NiSecondaryButton caption="Annuler" onPress={undoCanvas} />

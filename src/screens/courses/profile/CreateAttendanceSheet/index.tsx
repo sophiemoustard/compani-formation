@@ -139,19 +139,13 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
 
   const base64ToBlob = (base64Data: string, contentType: string) => {
     const byteCharacters = atob(base64Data.split(',')[1]);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-      const slice = byteCharacters.slice(offset, offset + 512);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i += 1) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i += 1) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
+    const byteArray = new Uint8Array(byteNumbers);
 
-    return new Blob(byteArrays, { type: contentType });
+    return new Blob([byteArray], { type: contentType });
   };
 
   const saveAttendances = async () => {

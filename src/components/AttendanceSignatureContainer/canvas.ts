@@ -8,12 +8,8 @@ export const htmlContent = `
         position: relative;
         width: 100%;
         height: 100%;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
       }
-      .signature-pad {
+      #signature-pad {
         position: absolute;
         left: 0;
         top: 0;
@@ -26,7 +22,7 @@ export const htmlContent = `
   </head>
   <body>
     <div class="wrapper">
-      <canvas id="signature-pad" class="signature-pad"></canvas>
+      <canvas id="signature-pad"></canvas>
     </div>
   </body>
   <script>
