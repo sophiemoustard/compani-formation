@@ -4,7 +4,7 @@ import { QuestionnaireType } from '../../../types/QuestionnaireType';
 import QuestionnaireCell from '../QuestionnaireCell';
 import styles from './styles';
 import { AttendanceSheetType } from '../../../types/AttendanceSheetTypes';
-import LearnerAttendanceSheetCell from '../LearnerAttendanceSheetCell';
+import AttendanceSheetCell from '../AttendanceSheetCell';
 
 interface PendingActionsContainerProps {
   questionnaires: QuestionnaireType[],
@@ -18,7 +18,7 @@ const PendingActionsContainer = React.memo(
       <Text style={styles.header}>Vous avez des actions à compléter.</Text>
       <ScrollView style={styles.cellContainer} horizontal showsHorizontalScrollIndicator={false}>
         {!!questionnaires.length && <QuestionnaireCell questionnaires={questionnaires} profileId={profileId} />}
-        {attendanceSheets.map(as => <LearnerAttendanceSheetCell key={as._id} attendanceSheet={as} />)}
+        {attendanceSheets.map(as => <AttendanceSheetCell key={as._id} attendanceSheet={as} />)}
       </ScrollView>
     </View>
   )

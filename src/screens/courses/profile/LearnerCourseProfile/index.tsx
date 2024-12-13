@@ -35,7 +35,7 @@ import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/ma
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import PendingActionsContainer from '../../../../components/questionnaires/PendingActionsContainer';
+import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';

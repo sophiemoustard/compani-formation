@@ -8,11 +8,11 @@ import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import styles from './styles';
 
-interface LearnerAttendanceSheetCellProps {
+interface AttendanceSheetCellProps {
   attendanceSheet: AttendanceSheetType,
 }
 
-const LearnerAttendanceSheetCell = ({ attendanceSheet }: LearnerAttendanceSheetCellProps) => (
+const AttendanceSheetCell = ({ attendanceSheet }: AttendanceSheetCellProps) => (
   <View style={styles.container}>
     <TouchableOpacity style={styles.iconContainer}>
       <View style={styles.icon}>
@@ -28,4 +28,4 @@ const LearnerAttendanceSheetCell = ({ attendanceSheet }: LearnerAttendanceSheetC
   </View>
 );
 
-export default LearnerAttendanceSheetCell;
+export default AttendanceSheetCell;
