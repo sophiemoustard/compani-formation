@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   AttendanceSheetName: {
     ...FIRA_SANS_REGULAR.MD,
     textAlign: 'center',
+    marginHorizontal: MARGIN.SM,
   },
   iconContainer: {
     marginBottom: MARGIN.SM,
