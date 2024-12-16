@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -35,13 +35,13 @@ import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/ma
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
+import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
-import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../../../core/data/constants';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -59,19 +59,27 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
   const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
   const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
+
+  const attendanceSheetsToSign = useMemo(() =>
+    (SINGLE_COURSES_SUBPROGRAM_IDS.includes(course?.subProgram._id || '')
+      ? (course as BlendedCourseType)?.attendanceSheets?.filter(as =>
+        has(as, 'signatures.trainer') && !has(as, 'signatures.trainee')) || []
+      : []),
+  [course]);
+
+  const title = useMemo(() => getTitle(course), [course]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
-        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        const [fetchedCourse, fetchedQuestionnaires] = await Promise.all([
+          Courses.getCourse(route.params.courseId, PEDAGOGY),
+          Questionnaires.getUserQuestionnaires({ course: route.params.courseId }),
+        ]);
+        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
-        setTitle(getTitle(fetchedCourse));
-
-        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         if (programImage) setSource({ uri: programImage });
       } catch (e: any) {
         console.error(e);
@@ -183,7 +191,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     }
   };
 
-  return course && has(course, 'subProgram.program') && (
+  return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={IS_WEB}
         stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
@@ -193,7 +201,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
           <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
             bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
         </View>
-        {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
+        {!!(questionnaires.length || attendanceSheetsToSign.length) &&
+          <PendingActionsContainer questionnaires={questionnaires} profileId={course._id}
+            attendanceSheets={attendanceSheetsToSign}/>
+        }
         {getHeader()}
         {renderStepList(course, LEARNER, route)}
         {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
@@ -209,7 +220,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         </View>}
       </ScrollView>
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default LearnerCourseProfile;

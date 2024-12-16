@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
     paddingVertical: PADDING.MD,
     ...FIRA_SANS_ITALIC.SM,
   },
+  cellContainer: {
+    flexDirection: 'row',
+  },
 });
 
 export default styles;

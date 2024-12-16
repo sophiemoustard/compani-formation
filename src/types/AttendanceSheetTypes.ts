@@ -4,6 +4,7 @@ type BaseAttendanceSheetType = {
   _id: string,
   course: string,
   file: { publicId: string, link: string },
+  slots?: SlotType[]
 }
 
 export type IntraOrIntraHoldingAttendanceSheetType = BaseAttendanceSheetType & { date: Date }
