@@ -121,6 +121,7 @@ export const DAY_OF_MONTH = 'd';
 export const DAY_OF_WEEK_SHORT = 'ccc';
 export const YEAR = 'yyyy';
 export const DAY_D_MONTH = 'cccc d LLLL';
+export const DAY_D_MONTH_YEAR = 'ccc d LLL yyyy';
 
 // COMPANIDURATION FORMATS
 export const LONG_DURATION_H_MM = 'h\'h\' mm\'min\'';
