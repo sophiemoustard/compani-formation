@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
+import get from 'lodash/get';
 import { RootStackParamList } from '../../../types/NavigationType';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
@@ -63,12 +64,12 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
               <Markdown style={markdownStyle(commonStyles.sectionContent)}>{`- ${item}`}</Markdown>
             </View>)}
           </>}
-        {!!course.trainers.length && <>
+        {!!get(course, 'trainers', []).length && <>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>
-            {formatQuantity('Intervenant·e', course.trainers.length, '·s', false)}
+            {formatQuantity('Intervenant·e', course.trainers.length, 's', false)}
           </Text>
-          {course.trainers
+          {get(course, 'trainers', [])
             .map((trainer: TrainerType, index: number) => <TrainerCell key={`trainer_${index}`} trainer={trainer} />)}
         </>}
         {!!course.contact?.identity && <>
