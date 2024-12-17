@@ -3,8 +3,6 @@ import {
   View,
   Text,
   ImageBackground,
-  StyleProp,
-  ViewStyle,
   BackHandler,
   ImageSourcePropType,
   FlatList,
@@ -84,16 +82,14 @@ const SubProgramProfile = ({ route, navigation }: SubProgramProfileProps) => {
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  const renderHeader = () => <><ImageBackground source={source} imageStyle={styles.image}
-    style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
+  const renderHeader = () => <ImageBackground source={source} imageStyle={styles.image}>
     <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
     <View style={styles.header}>
       <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
         iconStyle={styles.arrowShadow} />
       <Text style={styles.title}>{programName}</Text>
     </View>
-  </ImageBackground>
-  </>;
+  </ImageBackground>;
 
   return subProgram && subProgram.steps ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>

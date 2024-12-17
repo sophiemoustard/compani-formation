@@ -1,5 +1,4 @@
 import { View, FlatList } from 'react-native';
-import React from 'react';
 import { ActivityType } from '../../../types/ActivityTypes';
 import { CourseModeType } from '../../../types/CourseTypes';
 import ActivityCell from '../ActivityCell';
@@ -11,7 +10,7 @@ type ActivityListProps = {
   mode: CourseModeType,
 }
 
-const ActivityList = React.memo(({ activities, profileId, mode }: ActivityListProps) => {
+const ActivityList = ({ activities, profileId, mode }: ActivityListProps) => {
   const renderActivityCell = (activity: ActivityType) => (
     <ActivityCell activity={activity} profileId={profileId} mode={mode} />
   );
@@ -24,6 +23,6 @@ const ActivityList = React.memo(({ activities, profileId, mode }: ActivityListPr
       contentContainerStyle={styles.cell} showsHorizontalScrollIndicator={false} initialNumToRender={5}
       maxToRenderPerBatch={10} windowSize={5} />
   );
-});
+};
 
 export default ActivityList;
