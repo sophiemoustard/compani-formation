@@ -179,24 +179,24 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     </View>
   </>;
 
+  const renderFooter = () => <View style={styles.buttonContainer}>
+    {course?.areLastSlotAttendancesValidated &&
+    <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
+      disabled={isLoading}>
+      {isLoading
+        ? <ActivityIndicator color={WHITE} size="small" />
+        : <View style={styles.certificateContent}>
+          <Feather name='award' color={WHITE} size={ICON.MD} />
+          <Text style={styles.certificateText}>Attestation</Text>
+        </View>}
+    </TouchableOpacity>}
+  </View>;
+
   return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <View>
-        <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} ListHeaderComponent={renderHeader}
-          renderItem={({ item, index }) => renderStepList(course, LEARNER, route, item, index)}
-          showsVerticalScrollIndicator={IS_WEB} />
-        {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
-            disabled={isLoading}>
-            {isLoading
-              ? <ActivityIndicator color={WHITE} size="small" />
-              : <View style={styles.certificateContent}>
-                <Feather name='award' color={WHITE} size={ICON.MD} />
-                <Text style={styles.certificateText}>Attestation</Text>
-              </View>}
-          </TouchableOpacity>
-        </View>}
-      </View>
+      <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} ListHeaderComponent={renderHeader}
+        renderItem={({ item, index }) => renderStepList(course, LEARNER, route, item, index)}
+        showsVerticalScrollIndicator={IS_WEB} ListFooterComponent={renderFooter} />
     </SafeAreaView>
   )
     : <View style={commonStyles.loadingContainer}>
