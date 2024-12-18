@@ -20,6 +20,7 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import { Buffer } from 'buffer';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
+import pick from 'lodash/pick';
 import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import Questionnaires from '../../../../api/questionnaires';
@@ -29,6 +30,7 @@ import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
+import { useSetCourse } from '../../../../store/attendanceSheets/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
@@ -37,7 +39,14 @@ import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
-import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../../../core/data/constants';
+import {
+  BLENDED,
+  IS_IOS,
+  IS_WEB,
+  LEARNER,
+  PEDAGOGY,
+  SINGLE_COURSES_SUBPROGRAM_IDS,
+} from '../../../../core/data/constants';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -47,6 +56,7 @@ StackScreenProps<RootBottomTabParamList>
 const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
   const setStatusBarVisible = useSetStatusBarVisible();
   const userId: string | null = useGetLoggedUserId();
+  const setCourseInStore = useSetCourse();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -75,6 +85,13 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
         if (programImage) setSource({ uri: programImage });
+        if (fetchedCourse.format === BLENDED) {
+          const formattedCourse = pick(
+            fetchedCourse,
+            ['subProgram.steps', 'trainer.identity', '_id']
+          ) as BlendedCourseType;
+          setCourseInStore(formattedCourse);
+        }
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -85,7 +102,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId, setCourseInStore]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
@@ -168,7 +185,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     </View>
     {!!(questionnaires.length || attendanceSheetsToSign.length) &&
           <PendingActionsContainer questionnaires={questionnaires} profileId={course._id}
-            attendanceSheets={attendanceSheetsToSign}/>
+            attendanceSheets={attendanceSheetsToSign} />
     }
     <View style={styles.progressBarContainer}>
       <Text style={styles.progressBarText}>ÉTAPES</Text>

@@ -4,7 +4,7 @@ import { UserType } from '../../types/UserType';
 import { resetAllReducers } from '../actions';
 
 type MainStateType = {
-  loggedUser: object | null,
+  loggedUser: any | null,
   statusBarVisible: boolean,
 }
 
