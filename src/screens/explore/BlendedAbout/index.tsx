@@ -69,7 +69,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           <Text style={styles.sectionTitle}>
             {formatQuantity('Intervenant·e', course.trainers.length, 's', false)}
           </Text>
-          {get(course, 'trainers', [])
+          {course.trainers
             .map((trainer: TrainerType, index: number) => <TrainerCell key={`trainer_${index}`} trainer={trainer} />)}
         </>}
         {!!course.contact?.identity && <>
