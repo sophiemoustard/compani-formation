@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import keyBy from 'lodash/keyBy';
 import AttendanceSheets from '../../../../api/attendanceSheets';
 import { RootStackParamList, RootUpdateAttendanceSheetParamList } from '../../../../types/NavigationType';
-import { DD_MM_YYYY, HH_MM, IS_WEB, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../../core/data/constants';
+import { DD_MM_YYYY, HH_MM, IS_WEB, LEARNER, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../../core/data/constants';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
 import AttendanceSheetSelectionForm from '../../../../components/AttendanceSheetSelectionForm';
 import { useGetCourse, useGetGroupedSlotsToBeSigned } from '../../../../store/attendanceSheets/hooks';
@@ -28,7 +28,7 @@ const ATTENDANCE_SIGNATURE = 'attendance-signature';
 const ATTENDANCE_SUMMARY = 'attendance-summary';
 const END_SCREEN = 'end-screen';
 
-const CreateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps) => {
+const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps) => {
   const { attendanceSheetId } = route.params;
   const course = useGetCourse();
   const loggedUser = useGetLoggedUser();
@@ -43,7 +43,6 @@ const CreateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
   const [errorSignature, dispatchErrorSignature] = useReducer(errorReducer, initialErrorState);
   const [errorConfirmation, dispatchErrorConfirmation] = useReducer(errorReducer, initialErrorState);
   const stepsById = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
-  console.log(stepsById);
   const stepsName = useMemo(() =>
     Object.keys(groupedSlotsToBeSigned).map(stepId => (stepsById[stepId].name)),
   [groupedSlotsToBeSigned, stepsById]);
@@ -140,7 +139,8 @@ const CreateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
       traineeName={traineeName} slotsOptions={slotsOptions} />
   );
   const renderEndScreen = () => (
-    <AttendanceEndScreen goToNextScreen={navigation.goBack} traineeName={traineeName} failUpload={failUpload} />
+    <AttendanceEndScreen goToNextScreen={navigation.goBack} traineeName={traineeName} failUpload={failUpload}
+      mode={LEARNER} />
   );
 
   const Stack = createStackNavigator<RootUpdateAttendanceSheetParamList>();
@@ -155,4 +155,4 @@ const CreateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
   );
 };
 
-export default CreateAttendanceSheet;
+export default UpdateAttendanceSheet;

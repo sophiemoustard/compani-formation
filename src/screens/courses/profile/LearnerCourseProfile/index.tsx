@@ -20,7 +20,6 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import { Buffer } from 'buffer';
 import { Feather } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import pick from 'lodash/pick';
 import { RootStackParamList, RootBottomTabParamList } from '../../../../types/NavigationType';
 import Courses from '../../../../api/courses';
 import Questionnaires from '../../../../api/questionnaires';
@@ -56,7 +55,7 @@ StackScreenProps<RootBottomTabParamList>
 const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
   const setStatusBarVisible = useSetStatusBarVisible();
   const userId: string | null = useGetLoggedUserId();
-  const setCourseInStore = useSetCourse();
+  const setCourseToStore = useSetCourse();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -81,17 +80,18 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
           Courses.getCourse(route.params.courseId, PEDAGOGY),
           Questionnaires.getUserQuestionnaires({ course: route.params.courseId }),
         ]);
+        if (fetchedCourse.format === BLENDED) {
+          const formattedCourse = {
+            _id: fetchedCourse._id,
+            trainer: { identity: (fetchedCourse as BlendedCourseType).trainer.identity },
+            subProgram: { steps: fetchedCourse.subProgram.steps.map(s => ({ _id: s._id, name: s.name })) },
+          } as BlendedCourseType;
+          setCourseToStore(formattedCourse);
+        }
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
         if (programImage) setSource({ uri: programImage });
-        if (fetchedCourse.format === BLENDED) {
-          const formattedCourse = pick(
-            fetchedCourse,
-            ['subProgram.steps', 'trainer.identity', '_id']
-          ) as BlendedCourseType;
-          setCourseInStore(formattedCourse);
-        }
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -102,7 +102,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId, setCourseInStore]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId, setCourseToStore]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
