@@ -25,12 +25,12 @@ const renderStepCell = (item, index, course, mode, route) => {
 
 const renderSeparator = () => <View style={styles.separator} />;
 
-export const renderStepList = (course, mode, route) => <View style={styles.flatList}>
-  {course.subProgram.steps.map((s, index) => <View key={s._id}>
-    {index !== 0 && renderSeparator()}
-    {renderStepCell(s, index, course, mode, route)}
-  </View>)}
-</View>;
+export const renderStepList = (course, mode, route, item, index) => (
+  <>
+    {renderSeparator()}
+    {renderStepCell(item, index, course, mode, route)}
+  </>
+);
 
 export const getTitle = (course) => {
   if (!course) return '';

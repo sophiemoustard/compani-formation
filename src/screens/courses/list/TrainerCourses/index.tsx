@@ -1,6 +1,6 @@
 import 'array-flat-polyfill';
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Text, View, ScrollView, ImageBackground } from 'react-native';
+import { Text, View, ImageBackground, FlatList } from 'react-native';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -119,28 +119,33 @@ const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
       : []
   ), [coursesDisplays]);
 
+  const renderHeader = () => <>
+    <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
+    {!!nextSteps.length && <View style={styles.nextSteps}>
+      <CoursesSection items={nextSteps} title="Les prochaines sessions que j'anime"
+        countStyle={styles.purpleCount} renderItem={renderNextStepsItem} type={EVENT_SECTION} />
+    </View>
+    }
+  </>;
+
+  const renderFooter = () => (!!coursesDisplays.length &&
+    <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.webp')} />
+  );
+
+  const renderCourseDisplay = (content: CourseDisplayType) =>
+    <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
+      key={content.title} source={content.source}>
+      <CoursesSection items={content.courses} title={content.title}
+        countStyle={content.countStyle} renderItem={renderItem} />
+    </ImageBackground>;
+
   return (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        <Text style={commonStyles.title} testID='header'>Espace intervenant</Text>
-        {!!nextSteps.length &&
-          <View style={styles.nextSteps}>
-            <CoursesSection items={nextSteps} title="Les prochaines sessions que j'anime"
-              countStyle={styles.purpleCount} renderItem={renderNextStepsItem} type={EVENT_SECTION} />
-          </View>
-        }
-        {coursesDisplays.length
-          ? coursesDisplays.map(content => (
-            <ImageBackground imageStyle={content.imageStyle} style={styles.sectionContainer}
-              key={content.title} source={content.source}>
-              <CoursesSection items={content.courses} title={content.title}
-                countStyle={content.countStyle} renderItem={renderItem} />
-            </ImageBackground>
-          ))
-          : <TrainerEmptyState />
-        }
-        <HomeScreenFooter source={require('../../../../../assets/images/pa_aidant_balade_bleu.webp')} />
-      </ScrollView>
+      <View style={styles.container}>
+        <FlatList data={coursesDisplays} keyExtractor={item => item.title} ListHeaderComponent={renderHeader}
+          renderItem={({ item }) => renderCourseDisplay(item)} showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<TrainerEmptyState />} ListFooterComponent={renderFooter}/>
+      </View>
     </SafeAreaView>
   );
 };

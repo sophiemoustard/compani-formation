@@ -20,7 +20,8 @@ const ActivityList = ({ activities, profileId, mode }: ActivityListProps) => {
   return (
     <FlatList horizontal data={activities} keyExtractor={item => item._id}
       renderItem={({ item }) => renderActivityCell(item)} ItemSeparatorComponent={renderSeparator}
-      contentContainerStyle={styles.cell} showsHorizontalScrollIndicator={false} />
+      contentContainerStyle={styles.cell} showsHorizontalScrollIndicator={false} initialNumToRender={5}
+      maxToRenderPerBatch={10} windowSize={5} />
   );
 };
 

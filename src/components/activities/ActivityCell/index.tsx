@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -32,7 +32,7 @@ const colorsReducer = (state: ColorStateType, action: ColorActionType): ColorSta
   }
 };
 
-const ActivityCell = ({ activity, profileId, mode }: ActivityCellProps) => {
+const ActivityCell = React.memo(({ activity, profileId, mode }: ActivityCellProps) => {
   const setQuestionnaireAnswersList = useSetQuestionnaireAnswersList();
   const disabled = !activity.cards.length;
   const isCompleted = !!activity.activityHistories?.length;
@@ -83,6 +83,6 @@ const ActivityCell = ({ activity, profileId, mode }: ActivityCellProps) => {
       </Text>
     </View>
   );
-};
+});
 
 export default ActivityCell;

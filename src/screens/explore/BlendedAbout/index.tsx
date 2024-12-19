@@ -1,34 +1,18 @@
 import { useEffect, useState, useMemo } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/NavigationType';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../core/helpers/dates/utils';
 import About from '../../../components/About';
 import styles from './styles';
 import { capitalize, formatIdentity } from '../../../core/helpers/utils';
 import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import ContactInfoContainer from '../../../components/ContactInfoContainer';
-import {
-  LEARNER,
-  DAY_OF_WEEK_SHORT,
-  DAY_OF_MONTH,
-  MONTH_SHORT,
-  YEAR,
-  LONG_FIRSTNAME_LONG_LASTNAME,
-} from '../../../core/data/constants';
+import { DAY_D_MONTH_YEAR, LEARNER, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../core/data/constants';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
-
-const formatDate = (date: Date) => {
-  const dayOfWeek = capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT));
-  const dayOfMonth = capitalize(CompaniDate(date).format(DAY_OF_MONTH));
-  const month = capitalize(CompaniDate(date).format(MONTH_SHORT));
-  const year = capitalize(CompaniDate(date).format(YEAR));
-  return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
-};
 
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course, mode } = route.params;
@@ -41,9 +25,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const formattedDates = useMemo(() => {
     if (!course.slots.length) return [];
 
-    const formattedSlots = course.slots
-      .sort(ascendingSort('startDate'))
-      .map(slot => formatDate(slot.startDate));
+    const formattedSlots = course.slots.map(slot => capitalize(CompaniDate(slot.startDate).format(DAY_D_MONTH_YEAR)));
 
     return [...new Set(formattedSlots)];
   }, [course.slots]);
@@ -65,9 +47,9 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           <>
             <View style={commonStyles.sectionDelimiter} />
             <Text style={styles.sectionTitle}>Dates de formation</Text>
-            {formattedDates.map((item, idx) => <View key={idx}>
-              <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>
-            </View>)}
+            <FlatList data={formattedDates} scrollEnabled={false}
+              renderItem={({ item }) => <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>}
+            />
           </>}
         {!!course.trainer && <>
           <View style={commonStyles.sectionDelimiter} />

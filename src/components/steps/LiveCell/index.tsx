@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import get from 'lodash/get';
@@ -19,7 +19,7 @@ type LiveCellProps = {
   slots?: SlotType[],
 }
 
-const LiveCell = ({ step, index, mode, slots = [] }: LiveCellProps) => {
+const LiveCell = React.memo(({ step, index, mode, slots = [] }: LiveCellProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [stepSlots, setStepSlots] = useState<SlotType[]>([]);
   const [dates, setDates] = useState<Date[]>([]);
@@ -41,8 +41,8 @@ const LiveCell = ({ step, index, mode, slots = [] }: LiveCellProps) => {
 
   return (
     <>
-      <LiveCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
-        onRequestClose={closeModal} />
+      {isModalVisible && (<LiveCellInfoModal title={modalTitle} stepSlots={stepSlots} visible={isModalVisible}
+        onRequestClose={closeModal} />)}
       <TouchableOpacity style={[styles.container, styles.upperContainer]} onPress={openModal}>
         <CalendarIcon slots={dates} progress={get(step, 'progress.live')} mode={mode} />
         <StepCellTitle index={index} name={step.name} type={step.type} mode={mode} />
@@ -52,6 +52,6 @@ const LiveCell = ({ step, index, mode, slots = [] }: LiveCellProps) => {
       </TouchableOpacity>
     </>
   );
-};
+});
 
 export default LiveCell;

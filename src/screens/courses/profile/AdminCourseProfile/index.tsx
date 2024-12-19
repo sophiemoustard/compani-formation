@@ -1,5 +1,14 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
+import {
+  View,
+  BackHandler,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
@@ -160,13 +169,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS) as BlendedCourseType;
-        await refreshAttendanceSheets(fetchedCourse._id);
-        await getQuestionnaireQRCode(fetchedCourse._id);
+        await Promise.all([refreshAttendanceSheets(fetchedCourse._id), getQuestionnaireQRCode(fetchedCourse._id)]);
 
         if (fetchedCourse.slots.length) setFirstSlot(fetchedCourse.slots[0]);
-        setCourse(fetchedCourse as BlendedCourseType);
         setTitle(getTitle(fetchedCourse));
         setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
+        setCourse(fetchedCourse as BlendedCourseType);
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -272,7 +280,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { isSingle });
 
-  return course && has(course, 'subProgram.program') && (
+  return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={goBack} />
@@ -338,7 +346,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       {imagePreview.visible && <ImagePreview source={pick(imagePreview, ['link', 'type'])}
         onRequestClose={resetImagePreview} deleteFile={deleteAttendanceSheets} showButton={!course.archivedAt}/>}
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default AdminCourseProfile;
