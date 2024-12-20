@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { createStackNavigator, StackScreenProps } from '@react-navigation/stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import keyBy from 'lodash/keyBy';
 import AttendanceSheets from '../../../../api/attendanceSheets';
 import { RootStackParamList, RootUpdateAttendanceSheetParamList } from '../../../../types/NavigationType';
-import { DD_MM_YYYY, HH_MM, IS_WEB, LEARNER, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../../core/data/constants';
+import { DD_MM_YYYY, HH_MM, LEARNER, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../../core/data/constants';
 import { errorReducer, initialErrorState, RESET_ERROR, SET_ERROR } from '../../../../reducers/error';
 import AttendanceSheetSelectionForm from '../../../../components/AttendanceSheetSelectionForm';
 import { useGetCourse, useGetGroupedSlotsToBeSigned } from '../../../../store/attendanceSheets/hooks';
@@ -17,6 +16,7 @@ import AttendanceSheetSummary from '../../../../components/AttendanceSheetSummar
 import AttendanceEndScreen from '../../../../components/AttendanceEndScreen';
 import { useGetLoggedUser } from '../../../../store/main/hooks';
 import { formatIdentity } from '../../../../core/helpers/utils';
+import { generateFile } from '../helper';
 
 interface UpdateAttendanceSheetProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'UpdateAttendanceSheet'>,
@@ -42,10 +42,8 @@ const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
   const [failUpload, setFailUpload] = useState<boolean>(false);
   const [errorSignature, dispatchErrorSignature] = useReducer(errorReducer, initialErrorState);
   const [errorConfirmation, dispatchErrorConfirmation] = useReducer(errorReducer, initialErrorState);
-  const stepsById = useMemo(() => keyBy(course?.subProgram.steps, '_id'), [course]);
   const stepsName = useMemo(() =>
-    Object.keys(groupedSlotsToBeSigned).map(stepId => (stepsById[stepId].name)),
-  [groupedSlotsToBeSigned, stepsById]);
+    Object.keys(groupedSlotsToBeSigned), [groupedSlotsToBeSigned]);
   const slotsOptions = useMemo(() =>
     Object.values(groupedSlotsToBeSigned)
       .map(slotGroup => [...slotGroup]
@@ -82,26 +80,10 @@ const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
     }
   };
 
-  const base64ToBlob = (base64Data: string, contentType: string) => {
-    const byteCharacters = atob(base64Data.split(',')[1]);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i += 1) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-
-    return new Blob([byteArray], { type: contentType });
-  };
-
   const saveAttendances = async () => {
     try {
       setIsLoading(true);
-      let file;
-      const contentType = 'image/png';
-      if (IS_WEB) {
-        const blob = base64ToBlob(signature, contentType);
-        file = new File([blob], `trainee_signature_${course?._id}.png`, { type: contentType });
-      } else file = { uri: signature, type: contentType, name: `trainee_signature_${course?._id}` };
+      const file = generateFile(signature, course?._id, 'trainee');
       const data = formatPayload({ signature: file });
       await AttendanceSheets.sign(attendanceSheetId, data);
       setIsLoading(false);

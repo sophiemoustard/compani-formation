@@ -29,7 +29,7 @@ import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
-import { useSetCourse } from '../../../../store/attendanceSheets/hooks';
+import { useSetCourse, useResetAttendanceSheetReducer } from '../../../../store/attendanceSheets/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
@@ -56,6 +56,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
   const setStatusBarVisible = useSetStatusBarVisible();
   const userId: string | null = useGetLoggedUserId();
   const setCourseToStore = useSetCourse();
+  const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -83,10 +84,10 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         if (fetchedCourse.format === BLENDED) {
           const formattedCourse = {
             _id: fetchedCourse._id,
-            trainer: { identity: (fetchedCourse as BlendedCourseType).trainer.identity },
+            trainer: { identity: get(fetchedCourse, 'trainer.identity') || {} },
             subProgram: { steps: fetchedCourse.subProgram.steps.map(s => ({ _id: s._id, name: s.name })) },
-          } as BlendedCourseType;
-          setCourseToStore(formattedCourse);
+          };
+          setCourseToStore(formattedCourse as BlendedCourseType);
         }
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         setCourse(fetchedCourse);
@@ -103,6 +104,13 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       getCourse();
     }
   }, [isFocused, setStatusBarVisible, route.params.courseId, setCourseToStore]);
+
+  useEffect(() => () => {
+    const currentRoute = navigation.getState().routes[navigation.getState().index];
+    if (currentRoute?.name !== 'UpdateAttendanceSheet') {
+      resetAttendanceSheetReducer();
+    }
+  }, [navigation, resetAttendanceSheetReducer]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');

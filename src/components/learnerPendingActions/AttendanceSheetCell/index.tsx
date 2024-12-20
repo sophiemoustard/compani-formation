@@ -22,19 +22,14 @@ const AttendanceSheetCell = ({ attendanceSheet }: AttendanceSheetCellProps) => {
   const setGroupedSlotsToBeSigned = useSetGroupedSlotsToBeSigned();
 
   const goToSignature = () => {
-    if (course?.subProgram.steps) {
-      const groupedSlots = groupBy(attendanceSheet.slots, 'step');
-      const groupedSlotsToBeSigned = course?.subProgram.steps
-        .map(s => s._id).reduce<Record<string, SlotType[]>>((acc, step) => {
-        if (groupedSlots[step]) {
-          acc[step] = groupedSlots[step];
-        }
-        return acc;
-      }, {});
+    const groupedSlots = groupBy(attendanceSheet.slots, 'step');
+    const groupedSlotsToBeSigned = course?.subProgram.steps.reduce<Record<string, SlotType[]>>((acc, step) => {
+      if (groupedSlots[step._id]) acc[step.name] = groupedSlots[step._id];
+      return acc;
+    }, {});
 
-      setGroupedSlotsToBeSigned(groupedSlotsToBeSigned);
-      navigation.navigate('UpdateAttendanceSheet', { attendanceSheetId: attendanceSheet._id });
-    }
+    setGroupedSlotsToBeSigned(groupedSlotsToBeSigned!);
+    navigation.navigate('UpdateAttendanceSheet', { attendanceSheetId: attendanceSheet._id });
   };
   return (
     <View style={styles.container}>
