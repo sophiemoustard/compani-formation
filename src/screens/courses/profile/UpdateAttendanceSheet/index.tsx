@@ -16,7 +16,7 @@ import AttendanceSheetSummary from '../../../../components/AttendanceSheetSummar
 import AttendanceEndScreen from '../../../../components/AttendanceEndScreen';
 import { useGetLoggedUser } from '../../../../store/main/hooks';
 import { formatIdentity } from '../../../../core/helpers/utils';
-import { generateFile } from '../helper';
+import { generateSignatureFile } from '../helper';
 
 interface UpdateAttendanceSheetProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'UpdateAttendanceSheet'>,
@@ -83,7 +83,7 @@ const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
   const saveAttendances = async () => {
     try {
       setIsLoading(true);
-      const file = generateFile(signature, course?._id, 'trainee');
+      const file = generateSignatureFile(signature, course?._id, 'trainee');
       const data = formatPayload({ signature: file });
       await AttendanceSheets.sign(attendanceSheetId, data);
       setIsLoading(false);
@@ -128,7 +128,7 @@ const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
   const Stack = createStackNavigator<RootUpdateAttendanceSheetParamList>();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={SLOTS_SELECTION}>
+    <Stack.Navigator screenOptions={{ headerShown: false, cardStyle: { flex: 1 } }} initialRouteName={SLOTS_SELECTION}>
       <Stack.Screen key={1} name={SLOTS_SELECTION}>{renderSlotSelection}</Stack.Screen>
       <Stack.Screen key={2} name={ATTENDANCE_SIGNATURE}>{renderSignatureContainer}</Stack.Screen>
       <Stack.Screen key={3} name={ATTENDANCE_SUMMARY}>{renderSummary}</Stack.Screen>

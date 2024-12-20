@@ -21,7 +21,7 @@ import MultipleCheckboxList from '../../../../components/form/MultipleCheckboxLi
 import AttendanceSignatureContainer from '../../../../components/AttendanceSignatureContainer';
 import AttendanceSheetSummary from '../../../../components/AttendanceSheetSummary';
 import AttendanceEndScreen from '../../../../components/AttendanceEndScreen';
-import { generateFile } from '../helper';
+import { generateSignatureFile } from '../helper';
 
 interface CreateAttendanceSheetProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'CreateAttendanceSheet'>,
@@ -137,7 +137,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const saveAttendances = async () => {
     try {
       setIsLoading(true);
-      const file = generateFile(signature, course?._id, 'trainer');
+      const file = generateSignatureFile(signature, course?._id, 'trainer');
       const data = formatPayload({
         signature: file,
         course: course?._id,

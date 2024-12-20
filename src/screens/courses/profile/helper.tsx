@@ -52,7 +52,7 @@ const base64ToBlob = (base64Data: string, contentType: string) => {
   return new Blob([byteArray], { type: contentType });
 };
 
-export const generateFile = (signature, courseId, mode) => {
+export const generateSignatureFile = (signature, courseId, mode) => {
   let file;
   const contentType = 'image/png';
   if (IS_WEB) {

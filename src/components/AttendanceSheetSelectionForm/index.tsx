@@ -9,6 +9,7 @@ import { ErrorStateType } from '../../reducers/error';
 import FeatherButton from '../icons/FeatherButton';
 import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
+import { IS_WEB } from '../../core/data/constants';
 
 interface AttendanceSheetSelectionFormProps {
   title: string,
@@ -41,7 +42,7 @@ const AttendanceSheetSelectionForm = ({
     <View style={styles.header}>
       <FeatherButton name='arrow-left' onPress={() => navigation.goBack()} size={ICON.MD} color={GREY[600]} />
     </View>
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={IS_WEB}>
       <Text style={styles.title}>{title}</Text>
       {children}
     </ScrollView>
