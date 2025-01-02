@@ -5,9 +5,8 @@ import { PINK } from '../../styles/colors';
 
 const styles = StyleSheet.create({
   safeArea: {
-    flexGrow: 1,
+    flex: 1,
     marginHorizontal: MARGIN.LG,
-    justifyContent: 'space-between',
   },
   title: {
     ...FIRA_SANS_BOLD.LG,
@@ -36,12 +35,13 @@ const styles = StyleSheet.create({
     marginHorizontal: MARGIN.MD,
   },
   errorContainer: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  upperContainer: {
-    justifyContent: 'flex-start',
+  container: {
+    flexGrow: 1,
+    justifyContent: 'space-between',
   },
 });
 
