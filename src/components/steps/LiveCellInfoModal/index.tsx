@@ -1,9 +1,9 @@
 // @ts-nocheck
 
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ScrollView } from 'react-native';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../core/helpers/dates/utils';
-import { DD_MM_YYYY } from '../../../core/data/constants';
+import { DD_MM_YYYY, IS_WEB } from '../../../core/data/constants';
 import NiModal from '../../Modal';
 import FeatherButton from '../../icons/FeatherButton';
 import { ICON } from '../../../styles/metrics';
@@ -37,14 +37,16 @@ const formatStepSlots = (slots: SlotType[]): { startDate: string, slots: SlotTyp
 
 const LiveCellInfoModal = ({ visible, title, stepSlots, onRequestClose }: LiveCellInfoModalProps) => (
   <NiModal visible={visible}>
-    <View style={styles.header}>
-      <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={3}>{title}</Text>
-      <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[500]}
-        style={styles.closeButton} />
-    </View>
-    <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={true}
-      data={formatStepSlots(stepSlots)} renderItem={({ item }) => <LiveInfoItem slots={item.slots} />}
-      keyExtractor={item => item.startDate} />
+    <ScrollView showsVerticalScrollIndicator={IS_WEB}>
+      <View style={styles.header}>
+        <Text style={styles.title} lineBreakMode={'tail'} numberOfLines={3}>{title}</Text>
+        <FeatherButton name='x-circle' onPress={onRequestClose} size={ICON.LG} color={GREY[500]}
+          style={styles.closeButton} />
+      </View>
+      <FlatList ItemSeparatorComponent={() => <View style={styles.stepInfoSeparator} />} scrollEnabled={false}
+        data={formatStepSlots(stepSlots)} renderItem={({ item }) => <LiveInfoItem slots={item.slots} />}
+        keyExtractor={item => item.startDate} />
+    </ScrollView>
   </NiModal>
 );
 
