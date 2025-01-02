@@ -29,6 +29,7 @@ import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
+import { useSetCourse, useResetAttendanceSheetReducer } from '../../../../store/attendanceSheets/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
 import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
@@ -37,7 +38,14 @@ import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
-import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../../../core/data/constants';
+import {
+  BLENDED,
+  IS_IOS,
+  IS_WEB,
+  LEARNER,
+  PEDAGOGY,
+  SINGLE_COURSES_SUBPROGRAM_IDS,
+} from '../../../../core/data/constants';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -47,6 +55,8 @@ StackScreenProps<RootBottomTabParamList>
 const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
   const setStatusBarVisible = useSetStatusBarVisible();
   const userId: string | null = useGetLoggedUserId();
+  const setCourseToStore = useSetCourse();
+  const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
@@ -71,6 +81,14 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
           Courses.getCourse(route.params.courseId, PEDAGOGY),
           Questionnaires.getUserQuestionnaires({ course: route.params.courseId }),
         ]);
+        if (fetchedCourse.format === BLENDED) {
+          const formattedCourse = {
+            _id: fetchedCourse._id,
+            trainer: { identity: get(fetchedCourse, 'trainer.identity', {}) },
+            subProgram: { steps: fetchedCourse.subProgram.steps.map(s => ({ _id: s._id, name: s.name })) },
+          };
+          setCourseToStore(formattedCourse as BlendedCourseType);
+        }
         const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
@@ -85,7 +103,14 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId, setCourseToStore]);
+
+  useEffect(() => () => {
+    const currentRoute = navigation.getState().routes[navigation.getState().index];
+    if (currentRoute?.name !== 'UpdateAttendanceSheet') {
+      resetAttendanceSheetReducer();
+    }
+  }, [navigation, resetAttendanceSheetReducer]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
@@ -168,7 +193,7 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     </View>
     {!!(questionnaires.length || attendanceSheetsToSign.length) &&
           <PendingActionsContainer questionnaires={questionnaires} profileId={course._id}
-            attendanceSheets={attendanceSheetsToSign}/>
+            attendanceSheets={attendanceSheetsToSign} />
     }
     <View style={styles.progressBarContainer}>
       <Text style={styles.progressBarText}>ÉTAPES</Text>

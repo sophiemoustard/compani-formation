@@ -4,7 +4,7 @@ import { UserType } from '../../types/UserType';
 import { resetAllReducers } from '../actions';
 
 type MainStateType = {
-  loggedUser: object | null,
+  loggedUser: UserType | null,
   statusBarVisible: boolean,
 }
 
@@ -22,7 +22,7 @@ const setUser = (state: MainStateType, action: PayloadAction<UserType>) => ({
     'contact.phone',
     'role',
     'companyLinkRequest',
-  ]),
+  ]) as UserType,
 });
 
 const setStatusBar = (state: MainStateType, action: PayloadAction<boolean>) => (

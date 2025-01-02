@@ -94,10 +94,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
     const groupedSlots = groupBy(course.slots.filter(slot => !signedSlots.includes(slot._id)), 'step');
 
-    return course?.subProgram.steps.map(s => s._id).reduce<Record<string, SlotType[]>>((acc, step) => {
-      if (groupedSlots[step]) {
-        acc[step] = groupedSlots[step];
-      }
+    return course?.subProgram.steps.reduce<Record<string, SlotType[]>>((acc, step) => {
+      if (groupedSlots[step._id]) acc[step.name] = groupedSlots[step._id];
       return acc;
     }, {});
   }, [course, isSingle, savedAttendanceSheets]);

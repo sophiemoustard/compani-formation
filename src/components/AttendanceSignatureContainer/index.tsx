@@ -116,7 +116,7 @@ const AttendanceSignatureContainer = ({
               <iframe
                 ref={iframeRef}
                 src={`data:text/html,${encodeURIComponent(htmlContent)}`}
-                style={{ width: '50%', height: 'auto', aspectRatio: 1, border: '1px solid #ccc' }}
+                style={{ width: '30%', height: 'auto', aspectRatio: 1, border: '1px solid #ccc' }}
               />
             </View>
             : <View style={styles.webviewContainer}>

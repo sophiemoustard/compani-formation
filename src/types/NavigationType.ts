@@ -10,7 +10,8 @@ export type RootStackParamList = {
   BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }
-  CreateAttendanceSheet: {isSingle: boolean};
+  CreateAttendanceSheet: { isSingle: boolean };
+  UpdateAttendanceSheet: { attendanceSheetId: string },
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   ImagePickerManager: undefined;
@@ -41,6 +42,13 @@ export type RootCreateAccountParamList = {
 export type RootCreateAttendanceSheetParamList = {
   'attendance-sheet-data-selection': undefined;
   'upload-method-selection': undefined;
+  'slots-data-selection': undefined;
+  'attendance-signature': undefined;
+  'attendance-summary': undefined;
+  'end-screen': undefined;
+}
+
+export type RootUpdateAttendanceSheetParamList = {
   'slots-data-selection': undefined;
   'attendance-signature': undefined;
   'attendance-summary': undefined;
