@@ -3,7 +3,7 @@ import { BackHandler, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ICON } from '../../styles/metrics';
+import { ICON, IS_DESKTOP_SCREEN, MARGIN } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
@@ -113,10 +113,14 @@ const AttendanceSignatureContainer = ({
         {
           IS_WEB
             ? <View style={styles.iframeContainer}>
-              <iframe
-                ref={iframeRef}
-                src={`data:text/html,${encodeURIComponent(htmlContent)}`}
-                style={{ width: '30%', height: 'auto', aspectRatio: 1, border: '1px solid #ccc' }}
+              <iframe ref={iframeRef} src={`data:text/html,${encodeURIComponent(htmlContent)}`}
+                style={{
+                  width: IS_DESKTOP_SCREEN ? '30%' : '100%',
+                  marginTop: MARGIN.MD,
+                  height: 'auto',
+                  aspectRatio: 1,
+                  border: '1px solid #ccc',
+                }}
               />
             </View>
             : <View style={styles.webviewContainer}>
