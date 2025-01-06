@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { MARGIN, PADDING } from '../../styles/metrics';
+import { BORDER_WIDTH, IS_DESKTOP_SCREEN, MARGIN, PADDING } from '../../styles/metrics';
+import { BLACK } from '../../styles/colors';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -17,6 +18,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
+  iframeContent: {
+    width: IS_DESKTOP_SCREEN ? '30%' : '100%',
+    marginTop: MARGIN.MD,
+    height: 'auto',
+    aspectRatio: 1,
+    borderWidth: BORDER_WIDTH,
+    borderColor: BLACK,
+  },
   webviewContainer: {
     height: '50%',
     margin: MARGIN.MD,
@@ -25,8 +34,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     padding: PADDING.LG,
+  },
+  button: {
+    marginHorizontal: MARGIN.MD,
   },
   footer: {
     justifyContent: 'flex-end',

@@ -113,11 +113,8 @@ const AttendanceSignatureContainer = ({
         {
           IS_WEB
             ? <View style={styles.iframeContainer}>
-              <iframe
-                ref={iframeRef}
-                src={`data:text/html,${encodeURIComponent(htmlContent)}`}
-                style={{ width: '30%', height: 'auto', aspectRatio: 1, border: '1px solid #ccc' }}
-              />
+              <iframe ref={iframeRef} src={`data:text/html,${encodeURIComponent(htmlContent)}`}
+                style={styles.iframeContent} />
             </View>
             : <View style={styles.webviewContainer}>
               <WebView
@@ -131,8 +128,8 @@ const AttendanceSignatureContainer = ({
 
         }
         <View style={styles.buttonContainer}>
-          <NiSecondaryButton caption="Tout effacer" onPress={clearCanvas} />
-          <NiSecondaryButton caption="Annuler" onPress={undoCanvas} />
+          <NiSecondaryButton customStyle={styles.button} caption="Tout effacer" onPress={clearCanvas} />
+          <NiSecondaryButton customStyle={styles.button} caption="Annuler" onPress={undoCanvas} />
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={error.message} show={error.value} />
