@@ -12,6 +12,7 @@ import LoginCodeForm from '../../screens/LoginCodeForm';
 import CreateAccount from '../../screens/CreateAccount';
 import CreateAttendanceSheet from '../../screens/courses/profile/CreateAttendanceSheet';
 import UpdateAttendanceSheet from '../../screens/courses/profile/UpdateAttendanceSheet';
+import HandleAttendanceSheetNotification from '../../screens/courses/profile/HandleAttendanceSheetNotification';
 import BlendedAbout from '../../screens/explore/BlendedAbout';
 import ElearningAbout from '../../screens/explore/ELearningAbout';
 import LearnerCourseProfile from '../../screens/courses/profile/LearnerCourseProfile';
@@ -44,6 +45,7 @@ const AppNavigation = () => {
     AdminCourseProfile,
     CreateAttendanceSheet,
     UpdateAttendanceSheet,
+    HandleAttendanceSheetNotification,
     ...Profile,
     ...Courses,
   };

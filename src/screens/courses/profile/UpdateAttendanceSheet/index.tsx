@@ -16,6 +16,7 @@ import AttendanceSheetSummary from '../../../../components/AttendanceSheetSummar
 import AttendanceEndScreen from '../../../../components/AttendanceEndScreen';
 import { useGetLoggedUser } from '../../../../store/main/hooks';
 import { formatIdentity } from '../../../../core/helpers/utils';
+import { tabsNames } from '../../../../core/data/tabs';
 import { generateSignatureFile } from '../helper';
 
 interface UpdateAttendanceSheetProps extends CompositeScreenProps<
@@ -129,10 +130,19 @@ const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, cardStyle: { flex: 1 } }} initialRouteName={SLOTS_SELECTION}>
-      <Stack.Screen key={1} name={SLOTS_SELECTION}>{renderSlotSelection}</Stack.Screen>
-      <Stack.Screen key={2} name={ATTENDANCE_SIGNATURE}>{renderSignatureContainer}</Stack.Screen>
-      <Stack.Screen key={3} name={ATTENDANCE_SUMMARY}>{renderSummary}</Stack.Screen>
-      <Stack.Screen options={{ gestureEnabled: false }} key={4} name={END_SCREEN}>{renderEndScreen}</Stack.Screen>
+      <Stack.Screen key={1} name={SLOTS_SELECTION} options={{ title: tabsNames.UpdateAttendanceSheet }}>
+        {renderSlotSelection}
+      </Stack.Screen>
+      <Stack.Screen key={2} name={ATTENDANCE_SIGNATURE} options={{ title: tabsNames.UpdateAttendanceSheet }}>
+        {renderSignatureContainer}
+      </Stack.Screen>
+      <Stack.Screen key={3} name={ATTENDANCE_SUMMARY} options={{ title: tabsNames.UpdateAttendanceSheet }}>
+        {renderSummary}
+      </Stack.Screen>
+      <Stack.Screen options={{ gestureEnabled: false, title: tabsNames.UpdateAttendanceSheet }} key={4}
+        name={END_SCREEN}>
+        {renderEndScreen}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

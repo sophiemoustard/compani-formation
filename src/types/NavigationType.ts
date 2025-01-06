@@ -20,12 +20,11 @@ export type RootStackParamList = {
     endedActivity?: string | null,
     endedQuestionnaire?: string | null,
   };
-  TrainerCourseProfile: {
-    courseId: string,
-  };
+  TrainerCourseProfile: { courseId: string };
   SubProgramProfile: { subProgramId: string };
   CourseProfileHeader: undefined,
   LoginCodeForm: undefined,
+  HandleAttendanceSheetNotification: { attendanceSheetId: string, courseId: string }
 }
 
 export type RootBottomTabParamList = {
