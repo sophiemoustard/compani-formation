@@ -3,7 +3,7 @@ import { BackHandler, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ICON, IS_DESKTOP_SCREEN, MARGIN } from '../../styles/metrics';
+import { ICON } from '../../styles/metrics';
 import { GREY } from '../../styles/colors';
 import FeatherButton from '../../components/icons/FeatherButton';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
@@ -114,14 +114,7 @@ const AttendanceSignatureContainer = ({
           IS_WEB
             ? <View style={styles.iframeContainer}>
               <iframe ref={iframeRef} src={`data:text/html,${encodeURIComponent(htmlContent)}`}
-                style={{
-                  width: IS_DESKTOP_SCREEN ? '30%' : '100%',
-                  marginTop: MARGIN.MD,
-                  height: 'auto',
-                  aspectRatio: 1,
-                  border: '1px solid #ccc',
-                }}
-              />
+                style={styles.iframeContent} />
             </View>
             : <View style={styles.webviewContainer}>
               <WebView
@@ -135,8 +128,8 @@ const AttendanceSignatureContainer = ({
 
         }
         <View style={styles.buttonContainer}>
-          <NiSecondaryButton caption="Tout effacer" onPress={clearCanvas} />
-          <NiSecondaryButton caption="Annuler" onPress={undoCanvas} />
+          <NiSecondaryButton customStyle={styles.button} caption="Tout effacer" onPress={clearCanvas} />
+          <NiSecondaryButton customStyle={styles.button} caption="Annuler" onPress={undoCanvas} />
         </View>
         <View style={styles.footer}>
           <NiErrorMessage message={error.message} show={error.value} />
