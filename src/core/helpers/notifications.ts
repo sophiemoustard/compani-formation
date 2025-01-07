@@ -8,6 +8,7 @@ import {
   NEW_ELEARNING_COURSE,
   PEDAGOGY,
   LEARNER,
+  ATTENDANCE_SHEET_SIGNATURE_REQUEST,
 } from '../data/constants';
 import { navigationRef } from '../../navigationRef';
 import asyncStorage from './asyncStorage';
@@ -54,12 +55,13 @@ export const registerForPushNotificationsAsync = async (): Promise<ExpoTokenAndS
 };
 
 type NotificationRequestDataType = {
-  type: typeof BLENDED_COURSE_REGISTRATION | typeof NEW_ELEARNING_COURSE,
-  _id: string
+  type: typeof BLENDED_COURSE_REGISTRATION | typeof NEW_ELEARNING_COURSE | typeof ATTENDANCE_SHEET_SIGNATURE_REQUEST,
+  _id: string,
+  courseId: string,
 };
 
 export const handleNotificationResponse = async (response: Notifications.NotificationResponse) => {
-  const { type, _id } = response.notification.request.content.data as NotificationRequestDataType;
+  const { type, _id, courseId } = response.notification.request.content.data as NotificationRequestDataType;
 
   switch (type) {
     case BLENDED_COURSE_REGISTRATION: {
@@ -71,6 +73,9 @@ export const handleNotificationResponse = async (response: Notifications.Notific
       const program = await Programs.getELearningPrograms({ _id });
 
       return navigationRef.current?.navigate('ElearningAbout', { program: program[0] as ELearningProgramType });
+    }
+    case ATTENDANCE_SHEET_SIGNATURE_REQUEST: {
+      return navigationRef.current?.navigate('HandleAttendanceSheetNotification', { attendanceSheetId: _id, courseId });
     }
     default:
       return null;
