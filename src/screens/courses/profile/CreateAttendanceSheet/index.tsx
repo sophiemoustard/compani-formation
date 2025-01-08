@@ -12,6 +12,7 @@ import {
   useGetMissingAttendanceSheets,
   useGetGroupedSlotsToBeSigned,
 } from '../../../../store/attendanceSheets/hooks';
+import { useGetLoggedUserId } from '../../../../store/main/hooks';
 import { DataOptionsType } from '../../../../store/attendanceSheets/slice';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import { ascendingSort } from '../../../../core/helpers/dates/utils';
@@ -40,6 +41,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
   const course = useGetCourse();
   const missingAttendanceSheets = useGetMissingAttendanceSheets();
   const groupedSlotsToBeSigned = useGetGroupedSlotsToBeSigned();
+  const loggedUserId = useGetLoggedUserId();
   const [dataSelectionTitle, setDataSelectionTitle] = useState<string>('');
   const [slotSelectionTitle, setSlotSelectionTitle] = useState<string>('');
   const [attendanceSheetToAdd, setAttendanceSheetToAdd] = useState<string>('');
@@ -143,6 +145,7 @@ const CreateAttendanceSheet = ({ route, navigation }: CreateAttendanceSheetProps
         course: course?._id,
         trainee: attendanceSheetToAdd,
         slots: slotsToAdd,
+        trainer: loggedUserId,
       });
       await AttendanceSheets.upload(data);
       setIsLoading(false);

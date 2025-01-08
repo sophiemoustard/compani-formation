@@ -30,7 +30,7 @@ const ATTENDANCE_SUMMARY = 'attendance-summary';
 const END_SCREEN = 'end-screen';
 
 const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps) => {
-  const { attendanceSheetId } = route.params;
+  const { attendanceSheetId, trainerName } = route.params;
   const course = useGetCourse();
   const loggedUser = useGetLoggedUser();
   const groupedSlotsToBeSigned = useGetGroupedSlotsToBeSigned();
@@ -61,11 +61,8 @@ const UpdateAttendanceSheet = ({ route, navigation }: UpdateAttendanceSheetProps
   }, [loggedUser]);
 
   useEffect(() => {
-    const trainerName = course?.trainer.identity
-      ? formatIdentity(course.trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME)
-      : 'Votre formateur';
     setSlotSelectionTitle(`${trainerName} vous demande d'émarger les créneaux suivants : `);
-  }, [course]);
+  }, [trainerName]);
 
   const setConfirmationCheckbox = () => {
     setConfirmation(prevState => !prevState);

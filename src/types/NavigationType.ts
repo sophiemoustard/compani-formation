@@ -11,7 +11,7 @@ export type RootStackParamList = {
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }
   CreateAttendanceSheet: { isSingle: boolean };
-  UpdateAttendanceSheet: { attendanceSheetId: string },
+  UpdateAttendanceSheet: { attendanceSheetId: string, trainerName: string },
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   ImagePickerManager: undefined;

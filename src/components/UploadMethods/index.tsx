@@ -11,6 +11,7 @@ import styles from './styles';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import CameraModal from '../../components/camera/CameraModal';
 import ImagePickerManager from '../../components/ImagePickerManager';
+import { useGetLoggedUserId } from '../../store/main/hooks';
 import { PictureType } from '../../types/PictureTypes';
 import { formatImage, formatPayload } from '../../core/helpers/pictures';
 import { CourseType } from '../../types/CourseTypes';
@@ -26,6 +27,7 @@ interface UploadMethodsProps {
 
 const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToParent }: UploadMethodsProps) => {
   const navigation = useNavigation();
+  const loggedUserId = useGetLoggedUserId();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
@@ -85,6 +87,7 @@ const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToPare
         const data = formatPayload({
           file,
           course: course._id,
+          trainer: loggedUserId,
           ...(course.type === INTER_B2B ? { trainee: attendanceSheetToAdd } : { date: attendanceSheetToAdd }),
           ...(isSingle && { slots: slotsToAdd }),
         });

@@ -84,7 +84,6 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
         if (fetchedCourse.format === BLENDED) {
           const formattedCourse = {
             _id: fetchedCourse._id,
-            trainer: { identity: get(fetchedCourse, 'trainer.identity', {}) },
             subProgram: { steps: fetchedCourse.subProgram.steps.map(s => ({ _id: s._id, name: s.name })) },
           };
           setCourseToStore(formattedCourse as BlendedCourseType);
