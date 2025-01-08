@@ -1,9 +1,10 @@
-import { SlotType, TraineeType } from './CourseTypes';
+import { SlotType, TraineeType, TrainerType } from './CourseTypes';
 
 type BaseAttendanceSheetType = {
   _id: string,
   course: string,
   file: { publicId: string, link: string },
+  trainer: TrainerType,
   slots?: SlotType[]
 }
 
