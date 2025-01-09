@@ -9,9 +9,10 @@ interface QuestionnaireQRCodeCellProps {
   img: string,
   types: string[],
   courseId: string,
+  courseTimeline: string,
 }
 
-const QuestionnaireQRCodeCell = ({ img, types, courseId }: QuestionnaireQRCodeCellProps) => {
+const QuestionnaireQRCodeCell = ({ img, types, courseId, courseTimeline }: QuestionnaireQRCodeCellProps) => {
   const [questionnaireTypeTitle, setQuestionnaireTypeTitle] = useState('');
   const [qrCodePlaceHolder, setQrCodePlaceHolder] = useState('');
   const [url, setUrl] = useState<string>('');
@@ -20,11 +21,11 @@ const QuestionnaireQRCodeCell = ({ img, types, courseId }: QuestionnaireQRCodeCe
     const defineURL = async () => {
       const webappURL = await Environment.getWebappUrl();
 
-      setUrl(`${webappURL}/ni/questionnaires?courseId=${courseId}`);
+      setUrl(`${webappURL}/ni/questionnaires?courseId=${courseId}&courseTimeline=${courseTimeline}`);
     };
 
     defineURL();
-  }, [courseId]);
+  }, [courseId, courseTimeline]);
 
   useEffect(() => {
     const title = getQuestionnaireTitle(types);
