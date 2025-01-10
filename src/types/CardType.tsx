@@ -64,7 +64,7 @@ export type TitleTextType = {
 
 export type StoreAnswerType = {
   _id: string
-  correct: boolean,
+  isCorrect: boolean,
   text: string,
   isSelected: boolean
   position?: number
@@ -115,7 +115,7 @@ export type OrderTheSequenceType = {
 export type GapAnswerType = {
   text: string,
   _id: string,
-  correct: boolean,
+  isCorrect: boolean,
 }
 
 export type FillTheGapType = {

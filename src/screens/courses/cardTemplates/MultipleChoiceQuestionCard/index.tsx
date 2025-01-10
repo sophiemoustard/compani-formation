@@ -47,7 +47,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
         const answerList = quizzAnswer.answerList as StoreAnswerType[];
         setAnswers(answerList);
         setIsValidated(true);
-        const areAnswersCorrect = answerList.every(answer => answer.isSelected === answer.correct);
+        const areAnswersCorrect = answerList.every(answer => answer.isSelected === answer.isCorrect);
         setIsAnsweredCorrectly(areAnswersCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
@@ -83,7 +83,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
     if (!isOneAnswerSelected()) return null;
 
     if (!isValidated) {
-      const areAnswersCorrect = answers.every(answer => answer.isSelected === answer.correct);
+      const areAnswersCorrect = answers.every(answer => answer.isSelected === answer.isCorrect);
 
       quizJingle(areAnswersCorrect);
       setIsAnsweredCorrectly(areAnswersCorrect);
@@ -97,7 +97,7 @@ const MultipleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: Multi
   };
 
   const renderItem = (item: StoreAnswerType, index: number) => <QuizProposition onPress={onSelectAnswer} index={index}
-    isValidated={isValidated} isGoodAnswer={item.correct} isSelected={item.isSelected} item={item.text} />;
+    isValidated={isValidated} isGoodAnswer={item.isCorrect} isSelected={item.isSelected} item={item.text} />;
 
   const style = styles(footerColors.background);
 

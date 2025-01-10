@@ -45,7 +45,7 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
         const answerList = quizzAnswer.answerList as StoreAnswerType[];
         setAnswers(answerList);
         setIsPressed(true);
-        const isAnswerCorrect = answerList.every(answer => answer.isSelected === answer.correct);
+        const isAnswerCorrect = answerList.every(answer => answer.isSelected === answer.isCorrect);
         setIsAnsweredCorrectly(isAnswerCorrect);
       } else setAnswers(shuffle(card.qcAnswers.map(ans => ({ ...ans, isSelected: false }))));
     }
@@ -67,14 +67,14 @@ const SingleChoiceQuestionCard = ({ isLoading, setIsRightSwipeEnabled }: SingleC
   if (isLoading) return null;
 
   const renderItem = (item: StoreAnswerType, answerIndex: number) => <QuizProposition onPress={onSelectAnswer}
-    isValidated={isPressed} isGoodAnswer={item.correct} index={answerIndex} item={item.text}
+    isValidated={isPressed} isGoodAnswer={item.isCorrect} index={answerIndex} item={item.text}
     isSelected={item.isSelected} />;
 
   const onSelectAnswer = (selectedIndex: number) => {
     const updatedAnswers = answers.map((answer, i) => (i === selectedIndex ? { ...answer, isSelected: true } : answer));
     setAnswers(updatedAnswers);
 
-    const isAnswerCorrect = updatedAnswers.every(answer => answer.isSelected === answer.correct);
+    const isAnswerCorrect = updatedAnswers.every(answer => answer.isSelected === answer.isCorrect);
     setIsAnsweredCorrectly(isAnswerCorrect);
 
     quizJingle(isAnswerCorrect);
