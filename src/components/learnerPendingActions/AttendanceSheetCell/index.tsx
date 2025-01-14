@@ -3,9 +3,10 @@ import { Feather } from '@expo/vector-icons';
 import groupBy from 'lodash/groupBy';
 import { useNavigation } from '@react-navigation/native';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
+import { formatIdentity } from '../../../core/helpers/utils';
 import { AttendanceSheetType } from '../../../types/AttendanceSheetTypes';
 import Shadow from '../../design/Shadow';
-import { DD_MM_YYYY } from '../../../core/data/constants';
+import { DD_MM_YYYY, LONG_FIRSTNAME_LONG_LASTNAME } from '../../../core/data/constants';
 import { ICON } from '../../../styles/metrics';
 import { GREY } from '../../../styles/colors';
 import styles from './styles';
@@ -29,7 +30,8 @@ const AttendanceSheetCell = ({ attendanceSheet }: AttendanceSheetCellProps) => {
     }, {});
 
     setGroupedSlotsToBeSigned(groupedSlotsToBeSigned!);
-    navigation.navigate('UpdateAttendanceSheet', { attendanceSheetId: attendanceSheet._id });
+    const trainerName = formatIdentity(attendanceSheet.trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME);
+    navigation.navigate('UpdateAttendanceSheet', { attendanceSheetId: attendanceSheet._id, trainerName });
   };
   return (
     <View style={styles.container}>

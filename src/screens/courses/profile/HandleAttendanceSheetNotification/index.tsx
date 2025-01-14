@@ -5,6 +5,8 @@ import { useSetGroupedSlotsToBeSigned } from '../../../../store/attendanceSheets
 import Courses from '../../../../api/courses';
 import { RootStackParamList } from '../../../../types/NavigationType';
 import { BlendedCourseType, SlotType } from '../../../../types/CourseTypes';
+import { LONG_FIRSTNAME_LONG_LASTNAME } from '../../../../core/data/constants';
+import { formatIdentity } from '../../../../core/helpers/utils';
 
 interface HandleAttendanceSheetNotificationProps extends StackScreenProps<
 RootStackParamList, 'HandleAttendanceSheetNotification'>{}
@@ -26,7 +28,8 @@ const HandleAttendanceSheetNotification = ({ route, navigation }: HandleAttendan
 
         setGroupedSlotsToBeSigned(groupedSlotsToBeSigned);
 
-        navigation.replace('UpdateAttendanceSheet', { attendanceSheetId });
+        const trainerName = formatIdentity(attendanceSheet!.trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME);
+        navigation.replace('UpdateAttendanceSheet', { attendanceSheetId, trainerName });
       } catch (error) {
         console.error(error);
       }
