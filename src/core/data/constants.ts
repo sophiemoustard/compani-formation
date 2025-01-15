@@ -64,6 +64,8 @@ export const PUBLISHED = 'published';
 export const EXPECTATIONS = 'expectations';
 export const END_OF_COURSE = 'end_of_course';
 export const SELF_POSITIONNING = 'self_positionning';
+export const START_COURSE = 'start_course';
+export const END_COURSE = 'end_course';
 
 // ROLE
 export const VENDOR_ADMIN = 'vendor_admin';

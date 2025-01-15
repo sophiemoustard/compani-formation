@@ -40,6 +40,10 @@ import {
   PDF,
   SHORT_FIRSTNAME_LONG_LASTNAME,
   SINGLE_COURSES_SUBPROGRAM_IDS,
+  EXPECTATIONS,
+  END_OF_COURSE,
+  START_COURSE,
+  END_COURSE,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
 import PersonCell from '../../../../components/PersonCell';
@@ -72,6 +76,8 @@ interface imagePreviewProps {
   link: string,
   type: string,
 }
+
+type QRCodeType = { img: string, courseTimeline: string };
 
 const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const course = useGetCourse();
@@ -139,7 +145,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
-  const [questionnaireQRCode, setQuestionnaireQRCode] = useState<string>('');
+  const [questionnaireQRCodes, setQuestionnaireQRCodes] = useState<QRCodeType[]>([]);
   const [questionnairesType, setQuestionnairesType] = useState<string[]>([]);
 
   const refreshAttendanceSheets = async (courseId: string) => {
@@ -151,15 +157,25 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const getQuestionnaireQRCode = async (courseId: string) => {
     try {
       const publishedQuestionnaires = await Questionnaires.list({ course: courseId });
-      setQuestionnairesType(publishedQuestionnaires.map(q => q.type).sort((a, b) => sortStrings(a, b)));
+      const questionnairesTypeList = publishedQuestionnaires.map(q => q.type).sort((a, b) => sortStrings(a, b));
+      setQuestionnairesType(questionnairesTypeList);
 
+      const qrCodes = [];
       if (publishedQuestionnaires.length) {
-        const qrCode = await Questionnaires.getQRCode({ course: courseId });
-        setQuestionnaireQRCode(qrCode);
+        if (questionnairesTypeList.includes(EXPECTATIONS)) {
+          const img = await Questionnaires.getQRCode({ course: courseId, courseTimeline: START_COURSE });
+          qrCodes.push({ img, courseTimeline: START_COURSE });
+        }
+        if (questionnairesTypeList.includes(END_OF_COURSE)) {
+          const img = await Questionnaires.getQRCode({ course: courseId, courseTimeline: END_COURSE });
+          qrCodes.push({ img, courseTimeline: END_COURSE });
+        }
+
+        setQuestionnaireQRCodes(qrCodes);
       }
     } catch (e: any) {
       console.error(e);
-      setQuestionnaireQRCode('');
+      setQuestionnaireQRCodes([]);
     }
   };
 
@@ -278,6 +294,14 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { isSingle });
 
+  const renderQuestionnaireCell = (item: QRCodeType) => {
+    const types = questionnairesType
+      .filter(qType => (item.courseTimeline === START_COURSE ? qType !== END_OF_COURSE : qType !== EXPECTATIONS));
+
+    return <QuestionnaireQRCodeCell img={item.img} types={types} courseId={course!._id}
+      courseTimeline={item.courseTimeline}/>;
+  };
+
   return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -328,11 +352,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           }
           {!!course.trainees && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
         </View>
-        {!!questionnaireQRCode && <View style={styles.sectionContainer}>
+        {!!questionnaireQRCodes.length && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
-          <QuestionnaireQRCodeCell img={questionnaireQRCode} types={questionnairesType}
-            courseId={course._id} />
+          <FlatList data={questionnaireQRCodes} keyExtractor={(item, idx) => `qrcode_${idx}`} scrollEnabled={false}
+            renderItem={({ item }) => renderQuestionnaireCell(item)}
+            showsHorizontalScrollIndicator={false} />
         </View>}
         {course.type !== INTER_B2B && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
