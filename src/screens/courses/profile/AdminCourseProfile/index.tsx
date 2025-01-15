@@ -355,7 +355,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
         {!!questionnaireQRCodes.length && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
-          <FlatList data={questionnaireQRCodes} keyExtractor={(item, idx) => `qrcode_${idx}`}
+          <FlatList data={questionnaireQRCodes} keyExtractor={(item, idx) => `qrcode_${idx}`} scrollEnabled={false}
             renderItem={({ item }) => renderQuestionnaireCell(item)}
             showsHorizontalScrollIndicator={false} />
         </View>}
