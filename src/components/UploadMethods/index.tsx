@@ -3,7 +3,7 @@ import { Alert, BackHandler, View } from 'react-native';
 import * as Camera from 'expo-camera/legacy';
 import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { GREY, PINK } from '../../styles/colors';
 import { INTER_B2B, SINGLE_COURSES_SUBPROGRAM_IDS } from '../../core/data/constants';
 import AttendanceSheets from '../../api/attendanceSheets';
@@ -11,6 +11,7 @@ import styles from './styles';
 import NiPrimaryButton from '../../components/form/PrimaryButton';
 import CameraModal from '../../components/camera/CameraModal';
 import ImagePickerManager from '../../components/ImagePickerManager';
+import { useGetLoggedUserId } from '../../store/main/hooks';
 import { PictureType } from '../../types/PictureTypes';
 import { formatImage, formatPayload } from '../../core/helpers/pictures';
 import { CourseType } from '../../types/CourseTypes';
@@ -26,14 +27,21 @@ interface UploadMethodsProps {
 
 const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToParent }: UploadMethodsProps) => {
   const navigation = useNavigation();
+  const loggedUserId = useGetLoggedUserId();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [camera, setCamera] = useState<boolean>(false);
   const [imagePickerManager, setImagePickerManager] = useState<boolean>(false);
+  const [isSingle, setIsSingle] = useState<boolean>(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(course.subProgram._id));
+  }, [course]);
 
   const hardwareBackPress = useCallback(() => {
-    navigation.goBack();
+    if (isFocused) navigation.goBack();
     return true;
-  }, [navigation]);
+  }, [navigation, isFocused]);
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', hardwareBackPress);
@@ -79,8 +87,9 @@ const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToPare
         const data = formatPayload({
           file,
           course: course._id,
+          trainer: loggedUserId,
           ...(course.type === INTER_B2B ? { trainee: attendanceSheetToAdd } : { date: attendanceSheetToAdd }),
-          ...(SINGLE_COURSES_SUBPROGRAM_IDS.includes(course.subProgram._id) && { slots: slotsToAdd }),
+          ...(isSingle && { slots: slotsToAdd }),
         });
         await AttendanceSheets.upload(data);
       }
@@ -101,6 +110,8 @@ const UploadMethods = ({ attendanceSheetToAdd, slotsToAdd = [], course, goToPare
           disabled={isLoading} bgColor={GREY[100]} color={PINK[500]} />
         <NiPrimaryButton caption='Ajouter une photo' customStyle={styles.button} disabled={isLoading} color={PINK[500]}
           onPress={requestPermissionsForImagePicker} bgColor={GREY[100]} />
+        {isSingle && <NiPrimaryButton caption='Ajouter une signature' customStyle={styles.button} disabled={isLoading}
+          color={PINK[500]} onPress={() => navigation.navigate('attendance-signature')} bgColor={GREY[100]} />}
       </View>
       {camera && <CameraModal onRequestClose={() => setCamera(false)} savePicture={savePicture} visible={camera} />}
       {imagePickerManager && <ImagePickerManager onRequestClose={() => setImagePickerManager(false)}

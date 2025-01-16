@@ -15,6 +15,7 @@ export default StyleSheet.create({
     backgroundColor: WHITE,
     borderRadius: BORDER_RADIUS.MD,
     width: '90%',
+    maxHeight: '60%',
     padding: PADDING.LG,
   },
 });

@@ -64,6 +64,8 @@ export const PUBLISHED = 'published';
 export const EXPECTATIONS = 'expectations';
 export const END_OF_COURSE = 'end_of_course';
 export const SELF_POSITIONNING = 'self_positionning';
+export const START_COURSE = 'start_course';
+export const END_COURSE = 'end_course';
 
 // ROLE
 export const VENDOR_ADMIN = 'vendor_admin';
@@ -104,6 +106,7 @@ export const DENIED = 'denied';
 export const GRANTED = 'granted';
 export const BLENDED_COURSE_REGISTRATION = 'blended_course_registration';
 export const NEW_ELEARNING_COURSE = 'new_elearning_course';
+export const ATTENDANCE_SHEET_SIGNATURE_REQUEST = 'attendance_sheet_signature_request';
 
 // CONTEXT
 export const BEFORE_SIGNIN = 'beforeSignin';
@@ -121,6 +124,7 @@ export const DAY_OF_MONTH = 'd';
 export const DAY_OF_WEEK_SHORT = 'ccc';
 export const YEAR = 'yyyy';
 export const DAY_D_MONTH = 'cccc d LLLL';
+export const DAY_D_MONTH_YEAR = 'ccc d LLL yyyy';
 
 // COMPANIDURATION FORMATS
 export const LONG_DURATION_H_MM = 'h\'h\' mm\'min\'';

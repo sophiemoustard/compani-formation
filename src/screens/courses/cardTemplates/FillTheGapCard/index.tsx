@@ -54,7 +54,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
 
   useEffect(() => {
     if (!isLoading && !isValidated) {
-      setGoodAnswers(card.gapAnswers.filter(a => a.correct).map(a => a._id));
+      setGoodAnswers(card.gapAnswers.filter(a => a.isCorrect).map(a => a._id));
     }
   }, [card, isLoading, isValidated]);
 
@@ -68,7 +68,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
           answerList.filter(a => a.isSelected).sort((a, b) => a.position! - b.position!).map(a => a._id)
         );
         const areAnswersCorrect = card.canSwitchAnswers
-          ? answerList.every(a => a.isSelected === a.correct)
+          ? answerList.every(a => a.isSelected === a.isCorrect)
           : answerList.filter(a => a.isSelected).every(a => (a._id === goodAnswers[a.position!]));
         setIsAnsweredCorrectly(areAnswersCorrect);
       } else {
@@ -177,7 +177,7 @@ const FillTheGapCard = ({ isLoading, setIsRightSwipeEnabled }: FillTheGap) => {
       const answers = propositions
         .map(p => ({
           ...p,
-          correct: goodAnswers.includes(p._id),
+          isCorrect: goodAnswers.includes(p._id),
           ...p.isSelected && { position: selectedAnswers.indexOf(p._id) },
         }));
       addQuizzAnswer({ card: card._id, answerList: answers });

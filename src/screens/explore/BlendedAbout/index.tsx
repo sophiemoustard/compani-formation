@@ -1,56 +1,34 @@
-import { useEffect, useState, useMemo } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { useState, useMemo } from 'react';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 import { StackScreenProps } from '@react-navigation/stack';
+import get from 'lodash/get';
 import { RootStackParamList } from '../../../types/NavigationType';
 import CompaniDate from '../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../core/helpers/dates/utils';
 import About from '../../../components/About';
 import styles from './styles';
-import { capitalize, formatIdentity } from '../../../core/helpers/utils';
+import { capitalize, formatQuantity } from '../../../core/helpers/utils';
 import commonStyles, { markdownStyle } from '../../../styles/common';
 import InternalRulesModal from '../../../components/InternalRulesModal';
 import ContactInfoContainer from '../../../components/ContactInfoContainer';
-import {
-  LEARNER,
-  DAY_OF_WEEK_SHORT,
-  DAY_OF_MONTH,
-  MONTH_SHORT,
-  YEAR,
-  LONG_FIRSTNAME_LONG_LASTNAME,
-} from '../../../core/data/constants';
+import { DAY_D_MONTH_YEAR, LEARNER } from '../../../core/data/constants';
+import TrainerCell from '../../../components/TrainerCell';
+import { TrainerType } from '../../../types/CourseTypes';
 
 interface BlendedAboutProps extends StackScreenProps<RootStackParamList, 'BlendedAbout'> {}
-
-const formatDate = (date: Date) => {
-  const dayOfWeek = capitalize(CompaniDate(date).format(DAY_OF_WEEK_SHORT));
-  const dayOfMonth = capitalize(CompaniDate(date).format(DAY_OF_MONTH));
-  const month = capitalize(CompaniDate(date).format(MONTH_SHORT));
-  const year = capitalize(CompaniDate(date).format(YEAR));
-  return `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
-};
 
 const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
   const { course, mode } = route.params;
   const program = course.subProgram?.program || null;
-  const [trainerPictureSource, setTrainerPictureSource] = useState(
-    require('../../../../assets/images/default_avatar.webp')
-  );
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
   const formattedDates = useMemo(() => {
     if (!course.slots.length) return [];
 
-    const formattedSlots = course.slots
-      .sort(ascendingSort('startDate'))
-      .map(slot => formatDate(slot.startDate));
+    const formattedSlots = course.slots.map(slot => capitalize(CompaniDate(slot.startDate).format(DAY_D_MONTH_YEAR)));
 
     return [...new Set(formattedSlots)];
   }, [course.slots]);
-
-  useEffect(() => {
-    if (course?.trainer?.picture?.link) setTrainerPictureSource({ uri: course.trainer.picture.link });
-  }, [course?.trainer?.picture?.link]);
 
   const goToCourse = () => {
     if (course._id) {
@@ -65,20 +43,19 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
           <>
             <View style={commonStyles.sectionDelimiter} />
             <Text style={styles.sectionTitle}>Dates de formation</Text>
-            {formattedDates.map((item, idx) => <View key={idx}>
-              <Markdown style={markdownStyle(styles.sectionContent)}>{`- ${item}`}</Markdown>
-            </View>)}
+            <FlatList data={formattedDates} scrollEnabled={false}
+              renderItem={({ item }) => <Markdown style={markdownStyle(commonStyles.sectionContent)}>
+                {`- ${item}`}
+              </Markdown>}
+            />
           </>}
-        {!!course.trainer && <>
+        {!!get(course, 'trainers', []).length && <>
           <View style={commonStyles.sectionDelimiter} />
-          <Text style={styles.sectionTitle}>Intervenant(e)</Text>
-          <View style={styles.subSectionContainer}>
-            <Image style={styles.trainerPicture} source={trainerPictureSource} />
-            <Text style={styles.subSectionTitle}>
-              {formatIdentity(course.trainer.identity, LONG_FIRSTNAME_LONG_LASTNAME)}
-            </Text>
-          </View>
-          {!!course.trainer.biography && <Text style={styles.sectionContent}>{course.trainer.biography}</Text>}
+          <Text style={styles.sectionTitle}>
+            {formatQuantity('Intervenant·e', course.trainers.length, 's', false)}
+          </Text>
+          {course.trainers
+            .map((trainer: TrainerType, index: number) => <TrainerCell key={`trainer_${index}`} trainer={trainer} />)}
         </>}
         {!!course.contact?.identity && <>
           <View style={commonStyles.sectionDelimiter} />

@@ -1,17 +1,14 @@
 /* eslint-env browser */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   BackHandler,
   TouchableOpacity,
   ImageSourcePropType,
   ActivityIndicator,
-  LayoutChangeEvent,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
+  FlatList,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -27,21 +24,28 @@ import { RootStackParamList, RootBottomTabParamList } from '../../../../types/Na
 import Courses from '../../../../api/courses';
 import Questionnaires from '../../../../api/questionnaires';
 import { WHITE, GREY } from '../../../../styles/colors';
-import { ICON, SCROLL_EVENT_THROTTLE } from '../../../../styles/metrics';
+import { ICON } from '../../../../styles/metrics';
 import commonStyles from '../../../../styles/common';
 import { CourseType, BlendedCourseType, ELearningProgramType } from '../../../../types/CourseTypes';
 import styles from '../styles';
 import { useGetLoggedUserId, useSetStatusBarVisible } from '../../../../store/main/hooks';
+import { useSetCourse, useResetAttendanceSheetReducer } from '../../../../store/attendanceSheets/hooks';
 import ProgressBar from '../../../../components/cards/ProgressBar';
-import CourseProfileStickyHeader from '../../../../components/CourseProfileStickyHeader';
 import NiSecondaryButton from '../../../../components/form/SecondaryButton';
-import QuestionnairesContainer from '../../../../components/questionnaires/QuestionnairesContainer';
+import PendingActionsContainer from '../../../../components/learnerPendingActions/PendingActionsContainer';
 import { QuestionnaireType } from '../../../../types/QuestionnaireType';
 import { getCourseProgress } from '../../../../core/helpers/utils';
 import CourseProfileHeader from '../../../../components/CourseProfileHeader';
 import { FIRA_SANS_MEDIUM } from '../../../../styles/fonts';
 import { renderStepList, getTitle } from '../helper';
-import { IS_IOS, IS_WEB, LEARNER, PEDAGOGY } from '../../../../core/data/constants';
+import {
+  BLENDED,
+  IS_IOS,
+  IS_WEB,
+  LEARNER,
+  PEDAGOGY,
+  SINGLE_COURSES_SUBPROGRAM_IDS,
+} from '../../../../core/data/constants';
 
 interface LearnerCourseProfileProps extends CompositeScreenProps<
 StackScreenProps<RootStackParamList, 'LearnerCourseProfile'>,
@@ -51,27 +55,42 @@ StackScreenProps<RootBottomTabParamList>
 const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) => {
   const setStatusBarVisible = useSetStatusBarVisible();
   const userId: string | null = useGetLoggedUserId();
+  const setCourseToStore = useSetCourse();
+  const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
 
   const [course, setCourse] = useState<CourseType | null>(null);
   const [questionnaires, setQuestionnaires] = useState<QuestionnaireType[]>([]);
   const [source, setSource] =
     useState<ImageSourcePropType>(require('../../../../../assets/images/authentication_background_image.webp'));
-  const [isHeaderSticky, setIsHeaderSticky] = useState <boolean>(false);
-  const [progressBarY, setProgressBarY] = useState <number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
+
+  const attendanceSheetsToSign = useMemo(() =>
+    (SINGLE_COURSES_SUBPROGRAM_IDS.includes(course?.subProgram._id || '')
+      ? (course as BlendedCourseType)?.attendanceSheets?.filter(as =>
+        has(as, 'signatures.trainer') && !has(as, 'signatures.trainee')) || []
+      : []),
+  [course]);
+
+  const title = useMemo(() => getTitle(course), [course]);
 
   const isFocused = useIsFocused();
   useEffect(() => {
     const getCourse = async () => {
       try {
-        const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
-        const fetchedQuestionnaires = await Questionnaires.getUserQuestionnaires({ course: route.params.courseId });
+        const [fetchedCourse, fetchedQuestionnaires] = await Promise.all([
+          Courses.getCourse(route.params.courseId, PEDAGOGY),
+          Questionnaires.getUserQuestionnaires({ course: route.params.courseId }),
+        ]);
+        if (fetchedCourse.format === BLENDED) {
+          const formattedCourse = {
+            _id: fetchedCourse._id,
+            subProgram: { steps: fetchedCourse.subProgram.steps.map(s => ({ _id: s._id, name: s.name })) },
+          };
+          setCourseToStore(formattedCourse as BlendedCourseType);
+        }
+        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         setCourse(fetchedCourse);
         setQuestionnaires(fetchedQuestionnaires);
-        setTitle(getTitle(fetchedCourse));
-
-        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         if (programImage) setSource({ uri: programImage });
       } catch (e: any) {
         console.error(e);
@@ -83,7 +102,14 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
       setStatusBarVisible(true);
       getCourse();
     }
-  }, [isFocused, setStatusBarVisible, route.params.courseId]);
+  }, [isFocused, setStatusBarVisible, route.params.courseId, setCourseToStore]);
+
+  useEffect(() => () => {
+    const currentRoute = navigation.getState().routes[navigation.getState().index];
+    if (currentRoute?.name !== 'UpdateAttendanceSheet') {
+      resetAttendanceSheetReducer();
+    }
+  }, [navigation, resetAttendanceSheetReducer]);
 
   const goBack = useCallback(() => {
     navigation.navigate('LearnerCourses');
@@ -144,31 +170,6 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     setIsLoading(false);
   };
 
-  const isProgressBarOnTop = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { y } = event.nativeEvent.contentOffset;
-    setIsHeaderSticky(y >= progressBarY);
-  };
-
-  const getProgressBarY = (event: LayoutChangeEvent) => {
-    const { layout } = event.nativeEvent;
-    setProgressBarY(layout.y);
-  };
-
-  const getHeader = () => course && has(course, 'subProgram.program') && (
-    <View onLayout={getProgressBarY}>
-      {isHeaderSticky
-        ? <CourseProfileStickyHeader progress={getCourseProgress(course)} title={title} />
-        : <View style={styles.progressBarContainer}>
-          <Text style={styles.progressBarText}>ÉTAPES</Text>
-          <View style={commonStyles.progressBarContainer}>
-            <ProgressBar progress={getCourseProgress(course) * 100} />
-          </View>
-          <Text style={styles.progressBarText}>{(getCourseProgress(course) * 100).toFixed(0)}%</Text>
-        </View>
-      }
-    </View>
-  );
-
   const goToAbout = () => {
     if (!course) return;
     if (course.subProgram.isStrictlyELearning) {
@@ -183,33 +184,48 @@ const LearnerCourseProfile = ({ route, navigation }: LearnerCourseProfileProps) 
     }
   };
 
-  return course && has(course, 'subProgram.program') && (
-    <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={IS_WEB}
-        stickyHeaderIndices={[questionnaires.length ? 3 : 2]} scrollEventThrottle={SCROLL_EVENT_THROTTLE}
-        onScroll={isProgressBarOnTop}>
-        <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.buttonsContainer}>
-          <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
-            bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
-        </View>
-        {!!questionnaires.length && <QuestionnairesContainer questionnaires={questionnaires} profileId={course._id}/>}
-        {getHeader()}
-        {renderStepList(course, LEARNER, route)}
-        {course.areLastSlotAttendancesValidated && <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
-            disabled={isLoading}>
-            {isLoading
-              ? <ActivityIndicator color={WHITE} size="small" />
-              : <View style={styles.certificateContent}>
-                <Feather name='award' color={WHITE} size={ICON.MD} />
-                <Text style={styles.certificateText}>Attestation</Text>
-              </View>}
-          </TouchableOpacity>
+  const renderHeader = () => course && has(course, 'subProgram.program') && <>
+    <CourseProfileHeader source={source} goBack={goBack} title={title} />
+    <View style={styles.buttonsContainer}>
+      <NiSecondaryButton caption='A propos' onPress={goToAbout} icon='info' borderColor={GREY[200]}
+        bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
+    </View>
+    {!!(questionnaires.length || attendanceSheetsToSign.length) &&
+          <PendingActionsContainer questionnaires={questionnaires} profileId={course._id}
+            attendanceSheets={attendanceSheetsToSign} />
+    }
+    <View style={styles.progressBarContainer}>
+      <Text style={styles.progressBarText}>ÉTAPES</Text>
+      <View style={commonStyles.progressBarContainer}>
+        <ProgressBar progress={getCourseProgress(course) * 100} />
+      </View>
+      <Text style={styles.progressBarText}>{(getCourseProgress(course) * 100).toFixed(0)}%</Text>
+    </View>
+  </>;
+
+  const renderFooter = () => <View style={styles.buttonContainer}>
+    {course?.areLastSlotAttendancesValidated &&
+    <TouchableOpacity style={styles.buttonContent} onPress={downloadCompletionCertificate}
+      disabled={isLoading}>
+      {isLoading
+        ? <ActivityIndicator color={WHITE} size="small" />
+        : <View style={styles.certificateContent}>
+          <Feather name='award' color={WHITE} size={ICON.MD} />
+          <Text style={styles.certificateText}>Attestation</Text>
         </View>}
-      </ScrollView>
+    </TouchableOpacity>}
+  </View>;
+
+  return course && has(course, 'subProgram.program') ? (
+    <SafeAreaView style={commonStyles.container} edges={['top']}>
+      <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} ListHeaderComponent={renderHeader}
+        renderItem={({ item, index }) => renderStepList(course, LEARNER, route, item, index)}
+        showsVerticalScrollIndicator={IS_WEB} ListFooterComponent={renderFooter} />
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default LearnerCourseProfile;

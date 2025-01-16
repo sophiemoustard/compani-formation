@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ELearningStepType } from '../../types/StepTypes';
 import { CourseModeType } from '../../types/CourseTypes';
@@ -18,7 +18,7 @@ type ELearningCellProps = {
   endedActivity?: string,
 }
 
-const ELearningCell = ({ step, index, profileId, mode, endedActivity = '' }: ELearningCellProps) => {
+const ELearningCell = React.memo(({ step, index, profileId, mode, endedActivity = '' }: ELearningCellProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const onPressChevron = () => { setIsOpen(prevState => !prevState); };
   const [iconButtonStyle, setIconButtonStyle] = useState<object>(styles.iconButtonContainer);
@@ -48,6 +48,6 @@ const ELearningCell = ({ step, index, profileId, mode, endedActivity = '' }: ELe
       {isOpen && <ActivityList activities={step.activities} profileId={profileId} mode={mode} />}
     </View>
   );
-};
+});
 
 export default ELearningCell;

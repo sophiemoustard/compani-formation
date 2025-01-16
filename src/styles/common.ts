@@ -3,9 +3,14 @@
 import { StyleSheet } from 'react-native';
 import { MARGIN, MAIN_MARGIN_LEFT, PROGRESS_BAR_HEIGHT, BORDER_WIDTH } from './metrics';
 import { WHITE, PINK, GREY } from './colors';
-import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC } from './fonts';
+import { FIRA_SANS_BLACK, FIRA_SANS_BOLD, FIRA_SANS_ITALIC, FIRA_SANS_REGULAR } from './fonts';
 
 export default StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: WHITE,
@@ -35,6 +40,11 @@ export default StyleSheet.create({
     borderColor: GREY[200],
     marginBottom: MARGIN.MD,
     justifyContent: 'center',
+  },
+  sectionContent: {
+    ...FIRA_SANS_REGULAR.MD,
+    color: GREY[800],
+    marginBottom: MARGIN.MD,
   },
 });
 

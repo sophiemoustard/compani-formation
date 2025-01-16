@@ -3,11 +3,10 @@ import {
   View,
   Text,
   ImageBackground,
-  ScrollView,
-  StyleProp,
-  ViewStyle,
   BackHandler,
   ImageSourcePropType,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
@@ -15,7 +14,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import get from 'lodash/get';
 import { LinearGradient } from 'expo-linear-gradient';
 import SubPrograms from '../../../../api/subPrograms';
-import { WHITE } from '../../../../styles/colors';
+import { GREY, WHITE } from '../../../../styles/colors';
 import { ICON } from '../../../../styles/metrics';
 import FeatherButton from '../../../../components/icons/FeatherButton';
 import { TESTER } from '../../../../core/data/constants';
@@ -83,22 +82,25 @@ const SubProgramProfile = ({ route, navigation }: SubProgramProfileProps) => {
     return () => { BackHandler.removeEventListener('hardwareBackPress', hardwareBackPress); };
   }, [hardwareBackPress]);
 
-  return subProgram && subProgram.steps && (
+  const renderHeader = () => <ImageBackground source={source} imageStyle={styles.image}>
+    <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
+    <View style={styles.header}>
+      <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
+        iconStyle={styles.arrowShadow} />
+      <Text style={styles.title}>{programName}</Text>
+    </View>
+  </ImageBackground>;
+
+  return subProgram && subProgram.steps ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-        <ImageBackground source={source} imageStyle={styles.image}
-          style={{ resizeMode: 'cover' } as StyleProp<ViewStyle>}>
-          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.4)']} style={styles.gradient} />
-          <View style={styles.header}>
-            <FeatherButton style={styles.arrow} onPress={goBack} name="arrow-left" color={WHITE} size={ICON.MD}
-              iconStyle={styles.arrowShadow} />
-            <Text style={styles.title}>{programName}</Text>
-          </View>
-        </ImageBackground>
-        {renderStepList({ subProgram }, TESTER, route)}
-      </ScrollView>
+      <FlatList data={subProgram.steps} keyExtractor={item => item._id} ListHeaderComponent={renderHeader}
+        renderItem={({ item, index }) => renderStepList(subProgram, TESTER, route, item, index)}
+        showsVerticalScrollIndicator={false} />
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default SubProgramProfile;

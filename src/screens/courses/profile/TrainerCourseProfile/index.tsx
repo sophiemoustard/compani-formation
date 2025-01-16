@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, BackHandler, ImageSourcePropType } from 'react-native';
+import { View, BackHandler, ImageSourcePropType, FlatList, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused, CompositeScreenProps } from '@react-navigation/native';
 import get from 'lodash/get';
@@ -45,10 +45,10 @@ const TrainerCourseProfile = ({
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, PEDAGOGY);
+        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
+
         setCourse(fetchedCourse);
         setTitle(getTitle(fetchedCourse));
-
-        const programImage = get(fetchedCourse, 'subProgram.program.image.link') || '';
         if (programImage) setSource({ uri: programImage });
       } catch (e: any) {
         console.error(e);
@@ -84,20 +84,26 @@ const TrainerCourseProfile = ({
     else navigation.navigate(screen, { courseId: course._id });
   };
 
-  return course && has(course, 'subProgram.program') && (
+  const renderHeader = () => <>
+    <CourseProfileHeader source={source} goBack={goBack} title={title} />
+    <View style={styles.buttonsContainer}>
+      <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN_SCREEN)} icon='folder' color={GREY[700]}
+        customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
+      <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
+        bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
+    </View>
+  </>;
+
+  return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
-      <ScrollView nestedScrollEnabled={false} showsVerticalScrollIndicator={false}>
-        <CourseProfileHeader source={source} goBack={goBack} title={title} />
-        <View style={styles.buttonsContainer}>
-          <NiSecondaryButton caption='Espace admin' onPress={() => goTo(ADMIN_SCREEN)} icon='folder' color={GREY[700]}
-            customStyle={styles.adminButton} borderColor={GREY[200]} bgColor={GREY[200]} font={FIRA_SANS_MEDIUM.LG} />
-          <NiSecondaryButton caption='A propos' onPress={() => goTo(ABOUT_SCREEN)} icon='info' borderColor={GREY[200]}
-            bgColor={WHITE} font={FIRA_SANS_MEDIUM.LG} />
-        </View>
-        {renderStepList(course, TRAINER, route)}
-      </ScrollView>
+      <FlatList data={course.subProgram.steps} keyExtractor={item => item._id} ListHeaderComponent={renderHeader}
+        renderItem={({ item, index }) => renderStepList(course, TRAINER, route, item, index)}
+        showsVerticalScrollIndicator={false} />
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default TrainerCourseProfile;

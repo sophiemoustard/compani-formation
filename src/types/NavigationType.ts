@@ -10,7 +10,8 @@ export type RootStackParamList = {
   BlendedAbout: { course: BlendedCourseType, mode: CourseModeType }
   ElearningAbout: { program: ELearningProgramType }
   AdminCourseProfile: { courseId: string }
-  CreateAttendanceSheet: {isSingle: boolean};
+  CreateAttendanceSheet: { isSingle: boolean };
+  UpdateAttendanceSheet: { attendanceSheetId: string, trainerName: string },
   ProfileEdition: undefined;
   PasswordEdition: { userId: string };
   ImagePickerManager: undefined;
@@ -19,12 +20,11 @@ export type RootStackParamList = {
     endedActivity?: string | null,
     endedQuestionnaire?: string | null,
   };
-  TrainerCourseProfile: {
-    courseId: string,
-  };
+  TrainerCourseProfile: { courseId: string };
   SubProgramProfile: { subProgramId: string };
   CourseProfileHeader: undefined,
   LoginCodeForm: undefined,
+  HandleAttendanceSheetNotification: { attendanceSheetId: string, courseId: string }
 }
 
 export type RootBottomTabParamList = {
@@ -42,6 +42,16 @@ export type RootCreateAttendanceSheetParamList = {
   'attendance-sheet-data-selection': undefined;
   'upload-method-selection': undefined;
   'slots-data-selection': undefined;
+  'attendance-signature': undefined;
+  'attendance-summary': undefined;
+  'end-screen': undefined;
+}
+
+export type RootUpdateAttendanceSheetParamList = {
+  'slots-data-selection': undefined;
+  'attendance-signature': undefined;
+  'attendance-summary': undefined;
+  'end-screen': undefined;
 }
 
 export type RootCardParamList = {

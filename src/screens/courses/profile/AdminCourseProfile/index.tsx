@@ -1,5 +1,14 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { View, BackHandler, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
+import {
+  View,
+  BackHandler,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import pick from 'lodash/pick';
 import uniqBy from 'lodash/uniqBy';
@@ -31,9 +40,12 @@ import {
   PDF,
   SHORT_FIRSTNAME_LONG_LASTNAME,
   SINGLE_COURSES_SUBPROGRAM_IDS,
+  EXPECTATIONS,
+  END_OF_COURSE,
+  START_COURSE,
+  END_COURSE,
 } from '../../../../core/data/constants';
 import CompaniDate from '../../../../core/helpers/dates/companiDates';
-import { ascendingSort } from '../../../../core/helpers/dates/utils';
 import PersonCell from '../../../../components/PersonCell';
 import ContactInfoContainer from '../../../../components/ContactInfoContainer';
 import {
@@ -65,6 +77,8 @@ interface imagePreviewProps {
   type: string,
 }
 
+type QRCodeType = { img: string, courseTimeline: string };
+
 const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const course = useGetCourse();
   const setCourse = useSetCourse();
@@ -73,6 +87,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
   const resetAttendanceSheetReducer = useResetAttendanceSheetReducer();
   const [isSingle, setIsSingle] = useState<boolean>(false);
   const [savedAttendanceSheets, setSavedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
+  const [completedAttendanceSheets, setCompletedAttendanceSheets] = useState<AttendanceSheetType[]>([]);
   const [title, setTitle] = useState<string>('');
   const [firstSlot, setFirstSlot] = useState<SlotType | null>(null);
   const [noAttendancesMessage, setNoAttendancesMessage] = useState<string>('');
@@ -85,10 +100,8 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
     const groupedSlots = groupBy(course.slots.filter(slot => !signedSlots.includes(slot._id)), 'step');
 
-    return course?.subProgram.steps.map(s => s._id).reduce<Record<string, SlotType[]>>((acc, step) => {
-      if (groupedSlots[step]) {
-        acc[step] = groupedSlots[step];
-      }
+    return course?.subProgram.steps.reduce<Record<string, SlotType[]>>((acc, step) => {
+      if (groupedSlots[step._id]) acc[step.name] = groupedSlots[step._id];
       return acc;
     }, {});
   }, [course, isSingle, savedAttendanceSheets]);
@@ -132,26 +145,37 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const [imagePreview, setImagePreview] =
     useState<imagePreviewProps>({ visible: false, id: '', link: '', type: '' });
-  const [questionnaireQRCode, setQuestionnaireQRCode] = useState<string>('');
+  const [questionnaireQRCodes, setQuestionnaireQRCodes] = useState<QRCodeType[]>([]);
   const [questionnairesType, setQuestionnairesType] = useState<string[]>([]);
 
   const refreshAttendanceSheets = async (courseId: string) => {
     const fetchedAttendanceSheets = await AttendanceSheets.getAttendanceSheetList({ course: courseId });
     setSavedAttendanceSheets(fetchedAttendanceSheets);
+    setCompletedAttendanceSheets(fetchedAttendanceSheets.filter(as => !!as.file));
   };
 
   const getQuestionnaireQRCode = async (courseId: string) => {
     try {
       const publishedQuestionnaires = await Questionnaires.list({ course: courseId });
-      setQuestionnairesType(publishedQuestionnaires.map(q => q.type).sort((a, b) => sortStrings(a, b)));
+      const questionnairesTypeList = publishedQuestionnaires.map(q => q.type).sort((a, b) => sortStrings(a, b));
+      setQuestionnairesType(questionnairesTypeList);
 
+      const qrCodes = [];
       if (publishedQuestionnaires.length) {
-        const qrCode = await Questionnaires.getQRCode({ course: courseId });
-        setQuestionnaireQRCode(qrCode);
+        if (questionnairesTypeList.includes(EXPECTATIONS)) {
+          const img = await Questionnaires.getQRCode({ course: courseId, courseTimeline: START_COURSE });
+          qrCodes.push({ img, courseTimeline: START_COURSE });
+        }
+        if (questionnairesTypeList.includes(END_OF_COURSE)) {
+          const img = await Questionnaires.getQRCode({ course: courseId, courseTimeline: END_COURSE });
+          qrCodes.push({ img, courseTimeline: END_COURSE });
+        }
+
+        setQuestionnaireQRCodes(qrCodes);
       }
     } catch (e: any) {
       console.error(e);
-      setQuestionnaireQRCode('');
+      setQuestionnaireQRCodes([]);
     }
   };
 
@@ -159,13 +183,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
     const getCourse = async () => {
       try {
         const fetchedCourse = await Courses.getCourse(route.params.courseId, OPERATIONS) as BlendedCourseType;
-        await refreshAttendanceSheets(fetchedCourse._id);
-        await getQuestionnaireQRCode(fetchedCourse._id);
+        await Promise.all([refreshAttendanceSheets(fetchedCourse._id), getQuestionnaireQRCode(fetchedCourse._id)]);
 
-        if (fetchedCourse.slots.length) setFirstSlot([...fetchedCourse.slots].sort(ascendingSort('startDate'))[0]);
-        setCourse(fetchedCourse as BlendedCourseType);
+        if (fetchedCourse.slots.length) setFirstSlot(fetchedCourse.slots[0]);
         setTitle(getTitle(fetchedCourse));
         setIsSingle(SINGLE_COURSES_SUBPROGRAM_IDS.includes(fetchedCourse.subProgram._id));
+        setCourse(fetchedCourse as BlendedCourseType);
       } catch (e: any) {
         console.error(e);
         setCourse(null);
@@ -200,8 +223,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       setNoAttendancesMessage('L\'émargement sera disponible une fois le premier créneau passé.');
     } else if (course?.type === INTER_B2B && !course?.trainees?.length) {
       setNoAttendancesMessage('Veuillez ajouter des stagiaires pour émarger la formation.');
+    } else if (!!savedAttendanceSheets.length && !completedAttendanceSheets.length) {
+      setNoAttendancesMessage('Toutes les feuilles d\'émargement sont en attente de signature du stagiaire.');
     }
-  }, [course, firstSlot]);
+  }, [completedAttendanceSheets, course, firstSlot, savedAttendanceSheets]);
 
   const goBack = useCallback(() => {
     navigation.goBack();
@@ -269,14 +294,22 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
 
   const goToAttendanceSheetUpload = () => navigation.navigate('CreateAttendanceSheet', { isSingle });
 
-  return course && has(course, 'subProgram.program') && (
+  const renderQuestionnaireCell = (item: QRCodeType) => {
+    const types = questionnairesType
+      .filter(qType => (item.courseTimeline === START_COURSE ? qType !== END_OF_COURSE : qType !== EXPECTATIONS));
+
+    return <QuestionnaireQRCodeCell img={item.img} types={types} courseId={course!._id}
+      courseTimeline={item.courseTimeline}/>;
+  };
+
+  return course && has(course, 'subProgram.program') ? (
     <SafeAreaView style={commonStyles.container} edges={['top']}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CourseAboutHeader screenTitle="ESPACE INTERVENANT" courseTitle={title} goBack={goBack} />
         <View style={styles.attendancesContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.sectionTitle}>Emargements</Text>
-            {!missingAttendanceSheets.length && !savedAttendanceSheets.length &&
+            {!missingAttendanceSheets.length && !completedAttendanceSheets.length &&
               <Text style={styles.italicText}>{noAttendancesMessage}</Text>}
           </View>
           {!!missingAttendanceSheets.length && !course.archivedAt && <View style={styles.uploadContainer}>
@@ -303,7 +336,7 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           {!!savedAttendanceSheets.length && <>
             {
               isSingle
-                ? (savedAttendanceSheets as SingleAttendanceSheetType[])
+                ? (completedAttendanceSheets as SingleAttendanceSheetType[])
                   .map(sheet => renderSingleSavedAttendanceSheets(sheet))
                 : <FlatList data={savedAttendanceSheets} keyExtractor={item => item._id} style={styles.listContainer}
                   showsHorizontalScrollIndicator={false} renderItem={({ item }) => renderSavedAttendanceSheets(item)}
@@ -319,11 +352,12 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
           }
           {!!course.trainees && course.trainees.map(item => <View key={item._id}>{renderTrainee(item)}</View>)}
         </View>
-        {!!questionnaireQRCode && <View style={styles.sectionContainer}>
+        {!!questionnaireQRCodes.length && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
           <Text style={styles.sectionTitle}>Questionnaires</Text>
-          <QuestionnaireQRCodeCell img={questionnaireQRCode} types={questionnairesType}
-            courseId={course._id} />
+          <FlatList data={questionnaireQRCodes} keyExtractor={(item, idx) => `qrcode_${idx}`} scrollEnabled={false}
+            renderItem={({ item }) => renderQuestionnaireCell(item)}
+            showsHorizontalScrollIndicator={false} />
         </View>}
         {course.type !== INTER_B2B && <View style={styles.sectionContainer}>
           <View style={commonStyles.sectionDelimiter} />
@@ -335,7 +369,10 @@ const AdminCourseProfile = ({ route, navigation }: AdminCourseProfileProps) => {
       {imagePreview.visible && <ImagePreview source={pick(imagePreview, ['link', 'type'])}
         onRequestClose={resetImagePreview} deleteFile={deleteAttendanceSheets} showButton={!course.archivedAt}/>}
     </SafeAreaView>
-  );
+  )
+    : <View style={commonStyles.loadingContainer}>
+      <ActivityIndicator color={GREY[800]} size="small" />
+    </View>;
 };
 
 export default AdminCourseProfile;
