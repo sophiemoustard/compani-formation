@@ -108,6 +108,7 @@ export type BlendedCourseType = BaseCourseType & {
   misc: string,
   trainees?: TraineeType[],
   companies?: CompanyType[],
+  tutors?: string[],
   attendanceSheets?: AttendanceSheetType[]
 }
 

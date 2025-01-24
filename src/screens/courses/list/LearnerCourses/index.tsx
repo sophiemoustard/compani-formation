@@ -31,19 +31,29 @@ const SET_COURSES = 'SET_COURSES';
 const RESET_COURSES = 'RESET_COURSES';
 type CourseStateType = {
   onGoing: CourseType[],
-  achieved: CourseType[]
+  achieved: CourseType[],
+  tutor: CourseType[],
 };
-type CourseActionType = { type: typeof SET_COURSES, payload: CourseType[] } | { type: typeof RESET_COURSES };
+type CourseActionType = { type: typeof SET_COURSES, payload: CourseType[], loggedUserId: string } |
+{ type: typeof RESET_COURSES };
 
 const courseReducer = (state: CourseStateType, action: CourseActionType) => {
   switch (action.type) {
-    case SET_COURSES:
-      return {
-        onGoing: action.payload.filter(course => getCourseProgress(course) < 1),
-        achieved: action.payload.filter(course => getCourseProgress(course) === 1),
-      };
+    case SET_COURSES: {
+      const onGoing: CourseType[] = [];
+      const achieved: CourseType[] = [];
+      const tutor: CourseType[] = [];
+
+      action.payload.forEach((course) => {
+        if ((get(course, 'tutors', []) as string[]).includes(action.loggedUserId)) tutor.push(course);
+        else if (getCourseProgress(course) < 1) onGoing.push(course);
+        else achieved.push(course);
+      });
+
+      return { onGoing, achieved, tutor };
+    }
     case RESET_COURSES:
-      return { onGoing: [], achieved: [] };
+      return { onGoing: [], achieved: [], tutor: [] };
     default:
       return state;
   }
@@ -54,18 +64,18 @@ const renderNextStepsItem = (step: NextSlotsStepType) => <NextStepCell nextSlots
 const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
   const loggedUserId = useGetLoggedUserId();
 
-  const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [] });
+  const [courses, dispatch] = useReducer(courseReducer, { onGoing: [], achieved: [], tutor: [] });
   const [elearningDraftSubPrograms, setElearningDraftSubPrograms] = useState<SubProgramType[]>(new Array(0));
 
   const getCourses = useCallback(async () => {
     try {
       const fetchedCourses = await Courses.getCourseList({ action: PEDAGOGY });
-      dispatch({ type: SET_COURSES, payload: fetchedCourses });
+      dispatch({ type: SET_COURSES, payload: fetchedCourses, loggedUserId: loggedUserId || '' });
     } catch (e: any) {
       console.error(e);
       dispatch({ type: RESET_COURSES });
     }
-  }, []);
+  }, [loggedUserId]);
 
   const getElearningDraftSubPrograms = useCallback(async () => {
     try {
@@ -99,6 +109,10 @@ const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
     progress={getCourseProgress(course)} onPress={() => onPressProgramCell(course._id, true)} misc={get(course, 'misc')}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}/>;
 
+  const renderTutorCourseItem = (course: CourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
+    theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))} onPress={() => {}}
+    misc={get(course, 'misc')} />;
+
   const renderSubProgramItem = (subProgram: SubProgramWithProgramType) => <ProgramCell program={subProgram.program}
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(subProgram.steps))}
     onPress={() => onPressProgramCell(subProgram._id, false)} />;
@@ -127,8 +141,15 @@ const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
               countStyle={styles.greenCount} />
           </ImageBackground>
         }
-        {!!elearningDraftSubPrograms.length &&
+        {!!courses.tutor.length &&
           <ImageBackground imageStyle={styles.leftBackground} style={styles.sectionContainer}
+            source={require('../../../../../assets/images/pink_section_background.webp')}>
+            <CoursesSection items={courses.tutor} title='Tutorat' renderItem={renderTutorCourseItem}
+              countStyle={styles.pinkCount} />
+          </ImageBackground>
+        }
+        {!!elearningDraftSubPrograms.length &&
+          <ImageBackground imageStyle={styles.rightBackground} style={styles.sectionContainer}
             source={require('../../../../../assets/images/purple_section_background.webp')}>
             <CoursesSection items={elearningDraftSubPrograms} title='Mes formations à tester'
               countStyle={styles.purpleCount} renderItem={renderSubProgramItem} />
