@@ -34,19 +34,20 @@ type CourseStateType = {
   achieved: CourseType[],
   tutor: CourseType[],
 };
-type CourseActionType = { type: typeof SET_COURSES, payload: CourseType[], loggedUserId: string } |
-{ type: typeof RESET_COURSES };
+
+type PedagogyCourseType = {traineeCourses: CourseType[], tutorCourses: CourseType[]}
+
+type CourseActionType = { type: typeof SET_COURSES, payload: PedagogyCourseType} | { type: typeof RESET_COURSES };
 
 const courseReducer = (state: CourseStateType, action: CourseActionType) => {
   switch (action.type) {
     case SET_COURSES: {
       const onGoing: CourseType[] = [];
       const achieved: CourseType[] = [];
-      const tutor: CourseType[] = [];
+      const tutor: CourseType[] = action.payload.tutorCourses;
 
-      action.payload.forEach((course) => {
-        if ((get(course, 'tutors', []) as string[]).includes(action.loggedUserId)) tutor.push(course);
-        else if (getCourseProgress(course) < 1) onGoing.push(course);
+      action.payload.traineeCourses.forEach((course) => {
+        if (getCourseProgress(course) < 1) onGoing.push(course);
         else achieved.push(course);
       });
 
@@ -70,12 +71,12 @@ const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
   const getCourses = useCallback(async () => {
     try {
       const fetchedCourses = await Courses.getCourseList({ action: PEDAGOGY });
-      dispatch({ type: SET_COURSES, payload: fetchedCourses, loggedUserId: loggedUserId || '' });
+      dispatch({ type: SET_COURSES, payload: fetchedCourses as PedagogyCourseType });
     } catch (e: any) {
       console.error(e);
       dispatch({ type: RESET_COURSES });
     }
-  }, [loggedUserId]);
+  }, []);
 
   const getElearningDraftSubPrograms = useCallback(async () => {
     try {

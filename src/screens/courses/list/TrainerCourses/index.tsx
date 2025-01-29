@@ -90,7 +90,7 @@ const TrainerCourses = ({ navigation }: TrainerCoursesProps) => {
           format: BLENDED,
           trainer: loggedUserId,
         });
-        const formatedCourses = formatCoursesDiplaysContent(fetchedCourses);
+        const formatedCourses = formatCoursesDiplaysContent(fetchedCourses as BlendedCourseType[]);
         setCoursesDisplays(formatedCourses);
       }
     } catch (e: any) {

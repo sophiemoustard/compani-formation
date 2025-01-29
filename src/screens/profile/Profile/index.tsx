@@ -71,8 +71,8 @@ const Profile = ({ navigation }: ProfileProps) => {
     async function fetchData() {
       try {
         const fetchedCourses = await Courses.getCourseList({ action: PEDAGOGY });
-        setOnGoingCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) < 1).length);
-        setAchievedCoursesCount(fetchedCourses.filter(course => getCourseProgress(course) === 1).length);
+        setOnGoingCoursesCount(fetchedCourses.traineeCourses.filter(course => getCourseProgress(course) < 1).length);
+        setAchievedCoursesCount(fetchedCourses.traineeCourses.filter(course => getCourseProgress(course) === 1).length);
       } catch (e: any) {
         console.error(e);
         setOnGoingCoursesCount(0);

@@ -11,8 +11,10 @@ type GetCourseListType = {
   trainer?: string
 }
 
+type PedagogyCourseResponseType = { traineeCourses: BlendedCourseType[], tutorCourses: BlendedCourseType[] }
+
 export default {
-  getCourseList: async (params: GetCourseListType): Promise<BlendedCourseType[]> => {
+  getCourseList: async (params: GetCourseListType): Promise<BlendedCourseType[] | PedagogyCourseResponseType> => {
     const baseURL = await Environment.getBaseUrl();
     const response: AxiosResponse<BlendedCourseListResponseType> = await axiosLogged.get(
       `${baseURL}/courses`,
