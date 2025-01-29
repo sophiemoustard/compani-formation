@@ -21,6 +21,7 @@ import { LEARNER, PEDAGOGY, IS_WEB } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
+import { PedagogyCourseListResponseType as PedagogyCourseListType } from '../../../../types/AxiosTypes';
 
 interface LearnerCoursesProps extends CompositeScreenProps<
 StackScreenProps<RootBottomTabParamList>,
@@ -35,9 +36,7 @@ type CourseStateType = {
   tutor: CourseType[],
 };
 
-type PedagogyCourseType = {traineeCourses: CourseType[], tutorCourses: CourseType[]}
-
-type CourseActionType = { type: typeof SET_COURSES, payload: PedagogyCourseType} | { type: typeof RESET_COURSES };
+type CourseActionType = { type: typeof SET_COURSES, payload: PedagogyCourseListType} | { type: typeof RESET_COURSES };
 
 const courseReducer = (state: CourseStateType, action: CourseActionType) => {
   switch (action.type) {
@@ -71,7 +70,7 @@ const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
   const getCourses = useCallback(async () => {
     try {
       const fetchedCourses = await Courses.getCourseList({ action: PEDAGOGY });
-      dispatch({ type: SET_COURSES, payload: fetchedCourses as PedagogyCourseType });
+      dispatch({ type: SET_COURSES, payload: fetchedCourses as PedagogyCourseListType });
     } catch (e: any) {
       console.error(e);
       dispatch({ type: RESET_COURSES });
