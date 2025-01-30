@@ -6,7 +6,7 @@
     "declaration": true,
     "outDir": "lib",
     "noEmit": true,
-    "jsx": "react-native",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "sourceMap": true,
     "noImplicitAny": true,
