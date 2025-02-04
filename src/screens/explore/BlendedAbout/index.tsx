@@ -65,7 +65,7 @@ const BlendedAbout = ({ route, navigation }: BlendedAboutProps) => {
             {formatQuantity('Tuteur', course.tutors.length, 's', false)}
           </Text>
           {course.tutors
-            .map((tutor: TutorType, index: number) => <InterlocutorCell key={`tutor${index}`} interlocutor={tutor} />)}
+            .map((tutor: TutorType, index: number) => <InterlocutorCell key={`tutor_${index}`} interlocutor={tutor} />)}
         </>}
         {!!course.contact?.identity && <>
           <View style={commonStyles.sectionDelimiter} />
