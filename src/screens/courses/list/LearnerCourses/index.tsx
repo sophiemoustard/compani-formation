@@ -17,7 +17,7 @@ import { RootBottomTabParamList, RootStackParamList } from '../../../../types/Na
 import { CourseType, SubProgramType, SubProgramWithProgramType } from '../../../../types/CourseTypes';
 import { NextSlotsStepType } from '../../../../types/StepTypes';
 import { getCourseProgress, getTheoreticalDuration } from '../../../../core/helpers/utils';
-import { LEARNER, PEDAGOGY, IS_WEB } from '../../../../core/data/constants';
+import { LEARNER, PEDAGOGY, IS_WEB, TUTOR } from '../../../../core/data/constants';
 import styles from '../styles';
 import { formatNextSteps, getElearningSteps } from '../helper';
 import LearnerEmptyState from '../LearnerEmptyState';
@@ -110,7 +110,8 @@ const LearnerCourses = ({ navigation }: LearnerCoursesProps) => {
     theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}/>;
 
   const renderTutorCourseItem = (course: CourseType) => <ProgramCell program={get(course, 'subProgram.program') || {}}
-    theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))} onPress={() => {}}
+    theoreticalDuration={getTheoreticalDuration(getElearningSteps(get(course, 'subProgram.steps')))}
+    onPress={() => navigation.navigate('LearnerCourseProfile', { courseId: course._id, mode: TUTOR })}
     misc={get(course, 'misc')} />;
 
   const renderSubProgramItem = (subProgram: SubProgramWithProgramType) => <ProgramCell program={subProgram.program}
